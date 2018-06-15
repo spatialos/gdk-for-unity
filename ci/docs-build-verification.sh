@@ -28,7 +28,7 @@ trap cleanUp EXIT
 BRANCH_TO_TEST=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_DIR=$(pwd)
 
-CLONE_URL="git@github.com:improbable/unity-gdk.git"
+CLONE_URL="git@github.com:spatialos/UnityGdk.git"
 TMP_DIR=$(mktemp -d)
 
 # Go to a temporary directory and simulate the merge
