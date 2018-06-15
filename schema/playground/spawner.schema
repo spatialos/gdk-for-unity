@@ -1,0 +1,20 @@
+package playground;
+import "improbable/vector3.schema";
+
+type SpawnRequest
+{
+    improbable.Vector3f location = 1; 
+}
+
+type SpawnResponse
+{
+    bool success = 1;
+    string error_message = 2;
+    EntityId created_entity_id = 3;
+}
+
+component Spawner
+{
+    id = 12002;
+    command SpawnResponse spawn_player(SpawnRequest);
+}

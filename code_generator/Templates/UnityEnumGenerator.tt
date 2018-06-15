@@ -1,0 +1,17 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var enumDetails = GetEnumDetails();
+#>
+<#= generatedHeader #>
+
+namespace <#= qualifiedNamespace #>
+{ 
+    public enum <#=  enumDetails.PascalCaseName #> : uint
+    {
+<# foreach (var valueDefinition in enumDefinition.valueDefinitions) { #>
+        <#= valueDefinition.name #> = <#= valueDefinition.value #>,
+<# } #>
+    }
+}

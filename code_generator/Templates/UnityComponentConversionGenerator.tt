@@ -1,0 +1,396 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var fieldDetailsList = GetFieldDetailsList();
+    var componentDetails = GetComponentDetails();
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var commandDetailsList = GetCommandDetailsList();
+    var eventDetailsList = GetEventDetailsList();
+#>
+<#= generatedHeader #>
+
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Unity.Mathematics;
+using Unity.Entities;
+using Improbable.Worker;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Components;
+using <#= spatialNamespace #>;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+        public class Translation : ComponentTranslation, IDispatcherCallbacks<<#= componentDetails.FullyQualifiedSpatialTypeName #>>
+        {
+            public override ComponentType TargetComponentType => targetComponentType;
+            private static readonly ComponentType targetComponentType = typeof(<#= componentDetails.TypeName #>);
+
+            public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
+            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId)};
+
+            public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
+            private static readonly ComponentType[] cleanUpComponentTypes = 
+            { 
+                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>>), typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>), 
+<# foreach(var commandDetails in commandDetailsList) { #>
+                typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(CommandResponses<<#= commandDetails.CommandName #>.Response>),
+<# } #>
+<# foreach(var eventDetails in eventDetailsList) { #>
+                typeof(EventsReceived<<#= eventDetails.EventName #>Event>),
+<# } #>
+            };
+<# if(commandDetailsList.Count > 0) { #>
+
+            private Dictionary<uint, RequestContext> RequestIdToRequestContext = new Dictionary<uint, RequestContext>();
+
+<# foreach(var commandDetails in commandDetailsList) { #>
+            internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
+            internal List<<#= commandDetails.CommandName #>.OutgoingResponse> <#= commandDetails.CommandName #>Responses = new List<<#= commandDetails.CommandName #>.OutgoingResponse>();
+            private static readonly ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>> <#= commandDetails.CommandName #>RequestPool =
+                new ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>>(
+                    () => new CommandRequests<<#= commandDetails.CommandName #>.Request>(),
+                    (component) => component.Buffer.Clear());
+            private static readonly ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>> <#= commandDetails.CommandName #>ResponsePool =
+                new ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>>(
+                    () => new CommandResponses<<#= commandDetails.CommandName #>.Response>(),
+                    (component) => component.Buffer.Clear());
+<# } #>
+<# } #>
+
+<# foreach(var eventDetails in eventDetailsList) { #>
+            internal readonly Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>> EntityIdTo<#= eventDetails.EventName#>Events = new Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>>();
+        
+            private static readonly ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>> <#= eventDetails.EventName#>EventPool =
+                new ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>>(
+                    () => new EventsReceived<<#= eventDetails.EventName#>Event>(),
+                    (component) => component.Buffer.Clear());
+<# } #>
+
+            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>>>(
+                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>>(),
+                    (component) => component.Buffer.Clear());
+        
+            private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
+                new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
+                    () => new AuthoritiesChanged<<#= componentDetails.TypeName #>>(),
+                    (component) => component.Buffer.Clear());
+
+            public Translation(MutableView view) : base(view)
+            {
+            }
+
+            public override void RegisterWithDispatcher(Dispatcher dispatcher)
+            {
+                dispatcher.OnAddComponent<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnAddComponent);
+                dispatcher.OnComponentUpdate<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnComponentUpdate);
+                dispatcher.OnRemoveComponent<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnRemoveComponent);
+                dispatcher.OnAuthorityChange<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnAuthorityChange);
+
+<# foreach(var commandDetails in commandDetailsList) { #>
+                dispatcher.OnCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>(OnCommandRequest<#= commandDetails.CommandName #>);
+                dispatcher.OnCommandResponse<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>(OnCommandResponse<#= commandDetails.CommandName #>);
+<# } #>
+            }
+
+            public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
+            {
+<# if(commandDetailsList.Count > 0) { #>
+                view.AddComponent(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+<# } #>
+            }
+
+            public void OnAddComponent(AddComponentOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
+            {
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                {
+                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    return;
+                }
+
+                var data = op.Data.Get().Value;
+
+                var <#= componentDetails.CamelCaseTypeName #> = new <#= componentDetails.TypeName#>();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>;
+<# } #>
+                <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
+                view.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
+                view.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+            }
+
+            public void OnComponentUpdate(ComponentUpdateOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
+            {
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                {
+                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    return;
+                }
+
+                var <#= componentDetails.CamelCaseTypeName #> = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+                var update = op.Update.Get();
+
+<# if(fieldDetailsList.Count > 0) { #>
+                if (view.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
+                {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                    if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
+                    {
+                        <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName#> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>;
+                    }
+<# } #>
+                }
+<# } #>
+
+<# foreach(var eventDetails in eventDetailsList) { #>
+                var <#= eventDetails.CamelCaseTypeName #>Events = update.<#= eventDetails.CamelCaseTypeName #>;
+                foreach (var spatialEvent in <#= eventDetails.CamelCaseTypeName #>Events)
+                {
+                    var nativeEvent = new <#= eventDetails.EventName #>Event
+                    {
+                        Payload = <#= eventDetails.FullyQualifiedPayloadTypeName #>.ToNative(spatialEvent)
+                    };
+
+                    view.AddEventReceived(entity, nativeEvent, <#= eventDetails.EventName #>EventPool);
+                }
+<# } #>
+                <#= componentDetails.CamelCaseTypeName #>.DirtyBit = false;
+                view.UpdateComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>, UpdatesPool);
+            }
+
+            public void OnRemoveComponent(RemoveComponentOp op)
+            {
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                {
+                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    return;
+                }
+
+                view.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+            }
+
+            public void OnAuthorityChange(AuthorityChangeOp op)
+            {
+                var entityId = op.EntityId.Id;
+<# if(eventDetailsList.Count > 0) { #>
+                if (op.Authority == Authority.Authoritative)
+                {
+<# foreach(var eventDetails in eventDetailsList) { #>
+                    EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
+<# } #>
+                    view.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                }
+                else if (op.Authority == Authority.NotAuthoritative)
+                {
+<# foreach(var eventDetails in eventDetailsList) { #>
+                    EntityIdTo<#= eventDetails.EventName #>Events.Remove(entityId);
+<# } #>
+                    view.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
+                }
+<# } #>
+                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+            }
+
+            public override void ExecuteReplication(Connection connection)
+            {
+                var <#= componentDetails.CamelCaseTypeName #>Data = ReplicationComponentGroup.GetComponentArray<<#= componentDetails.TypeName #>>();
+                var spatialEntityIdData = ReplicationComponentGroup.GetComponentDataArray<SpatialEntityId>();
+
+                for (var i = 0; i < <#= componentDetails.CamelCaseTypeName #>Data.Length; i++)
+                {
+                    var <#= componentDetails.CamelCaseTypeName #> = <#= componentDetails.CamelCaseTypeName #>Data[i];
+                    var entityId = spatialEntityIdData[i].EntityId;
+                    var hasPendingEvents = false;
+<# foreach(var eventDetails in eventDetailsList) { #>
+                    var <#= eventDetails.CamelCaseTypeName #>Events = EntityIdTo<#= eventDetails.EventName #>Events[entityId];
+                    hasPendingEvents |= <#= eventDetails.CamelCaseTypeName #>Events.Count() > 0;
+<# } #>
+
+                    if (<#= componentDetails.CamelCaseTypeName #>.DirtyBit || hasPendingEvents)
+                    {
+                        var update = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Update();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                        update.Set<#= fieldDetails.PascalCaseName #>(<#= UnityTypeMappings.GetSpatialTypeMethod(fieldDetails.RawFieldDefinition, componentDetails.CamelCaseTypeName + "." + fieldDetails.PascalCaseName, enumSet) #>);
+<# } #>
+<# foreach(var eventDetails in eventDetailsList) { #>
+                        foreach (var nativeEvent in <#= eventDetails.CamelCaseTypeName #>Events)
+                        {
+                            var spatialEvent = <#= eventDetails.FullyQualifiedPayloadTypeName #>.ToSpatial(nativeEvent);
+                            update.<#= eventDetails.CamelCaseTypeName #>.Add(spatialEvent);
+                        }
+<# } #>
+                        SendComponentUpdate(connection, entityId, update);
+                        <#= componentDetails.CamelCaseTypeName #>.DirtyBit = false;
+                        view.SetComponentObject(entityId, <#= componentDetails.CamelCaseTypeName #>);
+<# foreach(var eventDetails in eventDetailsList) { #>
+                        <#= eventDetails.CamelCaseTypeName #>Events.Clear();
+<# } #>
+                    }
+                }
+            }
+
+            public static void SendComponentUpdate(Connection connection, long entityId, <#= componentDetails.FullyQualifiedSpatialTypeName #>.Update update)
+            {
+                connection.SendComponentUpdate(new global::Improbable.EntityId(entityId), update);
+            }
+
+            public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
+            {
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+<# for(var i = 0; i < commandDetailsList.Count; i++) { #>
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + 2 #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + 3 #>);
+<# } #>
+<# for(var i = 0; i < eventDetailsList.Count; i++) { #>
+                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + 2 #>);
+<# } #>
+            }
+
+<# foreach (var commandDetails in commandDetailsList) { #>
+            public void OnCommandRequest<#= commandDetails.CommandName #>(CommandRequestOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
+            {
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                {
+                    Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandRequest, op.EntityId.Id,
+                        "<#= commandDetails.CommandName #>");
+                    return;
+                }
+
+                var requestPayload = op.Request.Get().Value;
+                var unityRequestPayload = <#= commandDetails.RequestType #>.ToNative(requestPayload);
+                var request = new <#= commandDetails.CommandName #>.Request(op.RequestId.Id, this, op.CallerAttributeSet, unityRequestPayload);
+
+                view.AddCommandRequest(entity, request, <#= commandDetails.CommandName #>RequestPool);
+            }
+
+            public void OnCommandResponse<#= commandDetails.CommandName #>(CommandResponseOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
+            {
+                var requestId = op.RequestId.Id;
+                RequestContext requestContext;
+                if (!RequestIdToRequestContext.TryGetValue(requestId, out requestContext))
+                {
+                    Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandResponse, op.EntityId.Id,
+                        "<#= commandDetails.CommandName #>");
+                    return;
+                }
+
+                RequestIdToRequestContext.Remove(requestId);
+
+                Unity.Entities.Entity entity;
+                if (requestContext.EntityId == MutableView.WorkerEntityId)
+                {
+                    entity = view.WorkerEntity;
+                }
+                else if (!view.TryGetEntity(requestContext.EntityId, out entity))
+                {
+                    return;
+                }
+
+                var unityResponsePayload = op.Response.HasValue 
+                    ? <#= commandDetails.ResponseType #>.ToNative(op.Response.Value.Get().Value) 
+                    : (<#= commandDetails.ResponseType #>?) null;
+                var outgoingRequest = (<#= commandDetails.CommandName #>.OutgoingRequest) requestContext.Request;
+                var response = new <#= commandDetails.CommandName #>.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
+
+                view.AddCommandResponse(entity, response, <#= commandDetails.CommandName #>ResponsePool);
+            }
+
+            private void Send<#= commandDetails.CommandName #>Request(Connection connection, <#= commandDetails.CommandName #>.OutgoingRequest outgoingRequest)
+            {
+                var requestPayload = <#= commandDetails.RequestType #>.ToSpatial(outgoingRequest.RawRequest);
+                var request = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>.Request(requestPayload);
+
+                var requestId = connection.SendCommandRequest(new global::Improbable.EntityId(outgoingRequest.TargetEntityId), request, null);
+
+                RequestIdToRequestContext.Add(requestId.Id, new RequestContext(outgoingRequest.SenderEntityId, outgoingRequest));
+            }
+
+            private void Send<#= commandDetails.CommandName #>Response(Connection connection, <#= commandDetails.CommandName #>.OutgoingResponse outgoingResponse)
+            {
+                var responsePayload = <#= commandDetails.ResponseType #>.ToSpatial(outgoingResponse.RawResponse);
+                var response = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>.Response(responsePayload);
+
+                var requestId = new RequestId<IncomingCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>>(
+                    outgoingResponse.RequestId);
+
+                connection.SendCommandResponse(requestId, response);
+            }
+
+<# } #>
+            public override void SendCommands(Connection connection)
+            {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                foreach (var request in <#= commandDetails.CommandName #>Requests)
+                {
+                    Send<#= commandDetails.CommandName #>Request(connection, request);
+                }
+                <#= commandDetails.CommandName #>Requests.Clear();
+
+                foreach (var response in <#= commandDetails.CommandName #>Responses)
+                {
+                    Send<#= commandDetails.CommandName #>Response(connection, response);
+                }
+                <#= commandDetails.CommandName #>Responses.Clear();
+
+<# } #>
+            }
+
+            public static <#= componentDetails.ComponentName #>.Translation GetTranslation(uint internalHandleToTranslation)
+            {
+                return (<#= componentDetails.ComponentName #>.Translation) ComponentTranslation.HandleToTranslation[internalHandleToTranslation];
+            }
+        }
+    }
+
+<# if(commandDetailsList.Count > 0) { #>
+    public static class <#= componentDetails.TypeName #>CommandRequestHandlers
+    {
+<# foreach (var commandDetails in commandDetailsList) { #>
+        public static void Send<#= commandDetails.CommandName #>Request(this CommandRequestSender<<#= componentDetails.TypeName #>> commandRequestSender,
+            long targetEntityId, <#= commandDetails.RequestType #> request)
+        {
+            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(commandRequestSender.InternalHandleToTranslation);
+
+            translation.<#= commandDetails.CommandName #>Requests.Add(new <#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.OutgoingRequest(targetEntityId,
+                commandRequestSender.EntityId, request));
+        }
+
+<# } #>
+    }
+<# } #>
+
+<# if(eventDetailsList.Count > 0) { #>
+    public static class <#= componentDetails.TypeName #>EventHandlers
+    {
+<# foreach (var eventDetails in eventDetailsList) { #>
+        public static void Send<#= eventDetails.EventName #>Event(this EventSender<<#= componentDetails.TypeName #>> eventSender,
+            <#= eventDetails.FullyQualifiedPayloadTypeName #> eventData)
+        {
+            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Add(eventData);
+        }
+
+        public static List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Get<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
+        {
+            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            return translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId];
+        }
+
+        public static void Clear<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
+        {
+            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Clear();
+        }
+
+<# } #>
+    }
+<# } #>
+}

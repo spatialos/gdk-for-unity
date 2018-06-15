@@ -1,0 +1,67 @@
+{
+  "build": {
+    "tasks_filename": "spatialos.unity.gamelogic.build.json"
+  },
+  "bridge": {
+    "worker_attribute_set": {
+      "attributes": [
+          "UnityGameLogic"
+      ]
+    },
+    "entity_interest": {
+      "range_entity_interest": {
+        "radius": 500
+      }
+    },
+    "component_delivery": {
+      "default": "RELIABLE_ORDERED",
+      "checkoutAllInitially": true
+    }
+  },
+  "managed": {
+    "windows": {
+      "artifact_name": "UnityGameLogic@Windows.zip",
+      "command": "UnityGameLogic@Windows.exe",
+      "arguments": [
+        "+workerType",
+        "UnityGameLogic",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+projectName",
+        "${IMPROBABLE_PROJECT_NAME}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "RakNet",
+        "-batchmode",
+        "-nographics",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    },
+    "linux": {
+      "artifact_name": "UnityGameLogic@Linux.zip",
+      "command": "UnityGameLogic@Linux",
+      "arguments": [
+        "+workerType",
+        "UnityGameLogic",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+projectName",
+        "${IMPROBABLE_PROJECT_NAME}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "RakNet",
+        "-batchmode",
+        "-nographics",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    }
+  }
+}

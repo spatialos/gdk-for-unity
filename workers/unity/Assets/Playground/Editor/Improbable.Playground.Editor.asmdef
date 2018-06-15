@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Playground.Editor",
+    "references": [
+        "Improbable.Playground",
+        "Improbable.CSharp",
+        "Improbable.Gdk.Legacy"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

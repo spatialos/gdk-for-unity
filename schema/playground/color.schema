@@ -1,0 +1,17 @@
+package playground;
+
+enum Color {
+    YELLOW = 0;
+    GREEN = 1;
+    BLUE = 2;
+    RED = 3;
+}
+
+type ColorData {
+    Color color = 1;
+}
+
+component CubeColor {
+    id = 12000;
+    event ColorData change_color;
+}
