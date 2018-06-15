@@ -1,0 +1,7 @@
+package playground;
+
+component Prefab
+{
+    id = 12003;
+    string prefab = 1;
+}

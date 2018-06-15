@@ -1,0 +1,35 @@
+{
+  "template": "small",
+  "world": {
+    "chunkEdgeLengthMeters": 50,
+    "snapshots": {
+      "snapshotWritePeriodSeconds": 0
+    },
+    "dimensions": {
+      "xMeters": 5000,
+      "zMeters": 5000
+    }
+  },
+  "workers": [
+    {
+      "worker_type": "UnityGameLogic",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ],
+      "load_balancing": {
+        "singleton_worker": {}
+      }
+    },
+    {
+      "worker_type": "UnityClient",
+      "permissions": [{
+          "all": {}
+      }],
+      "load_balancing": {
+        "singleton_worker": {}
+      }
+    }
+  ]
+}

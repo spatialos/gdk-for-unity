@@ -1,0 +1,41 @@
+{
+  "build": {
+    "tasks_filename": "spatialos.unity.client.build.json"
+  },
+  "bridge": {
+    "worker_attribute_set": {
+      "attributes": [
+        "UnityClient"
+      ]
+    },
+    "entity_interest": {
+      "range_entity_interest": {
+        "radius": 500
+      }
+    },
+    "component_delivery": {
+      "default": "RELIABLE_ORDERED",
+      "checkoutAllInitially": true
+    }
+  },
+  "external": {
+    "default": {
+      "run_type": "EXECUTABLE",
+      "windows": {
+        "command": "build/worker/UnityClient@Windows/UnityClient@Windows.exe",
+        "arguments": [
+          "+workerType",
+          "UnityClient",
+          "+workerId",
+          "ExternalUnityClient",
+          "+infraServicesUrl",
+          "http://127.0.0.1:21000",
+          "+projectName",
+          "${IMPROBABLE_PROJECT_NAME}",
+          "-logfile",
+          "external-default-unityclient.log"
+        ]
+      }
+    }
+  }
+}

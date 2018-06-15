@@ -1,0 +1,33 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var fieldDetailsList = GetFieldDetailsList();
+    var componentDetails = GetComponentDetails();
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+#>
+<#= generatedHeader #>
+
+using UnityEngine;
+using Unity.Mathematics;
+
+namespace <#= qualifiedNamespace #>
+{ 
+    public class <#= componentDetails.TypeName #> : Component
+    {
+        public bool1 DirtyBit { get; set; }
+<# foreach(var fieldDetails in fieldDetailsList) { #>
+
+        private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
+
+        public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
+        {
+            get { return <#= fieldDetails.CamelCaseName #>; }
+            set
+            {
+                DirtyBit = true;
+                <#= fieldDetails.CamelCaseName #> = value;
+            }
+        }
+<# } #>
+    }
+}

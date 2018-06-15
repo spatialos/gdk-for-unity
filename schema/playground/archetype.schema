@@ -1,0 +1,7 @@
+package playground;
+
+component ArchetypeComponent
+{
+    id = 12004;
+    string archetype_name = 1;
+}

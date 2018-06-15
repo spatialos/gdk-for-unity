@@ -1,0 +1,14 @@
+package improbable.player_lifecycle;
+
+type Empty {}
+
+component PlayerHeartbeatClient
+{
+    id = 13001;
+    command Empty player_heartbeat(Empty);
+}
+
+component PlayerHeartbeatServer
+{
+    id = 13002;
+}

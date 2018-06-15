@@ -1,0 +1,13 @@
+{
+    "name": "Improbable.Gdk.Core",
+    "references": [
+        "Improbable.CSharp",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Mathematics"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

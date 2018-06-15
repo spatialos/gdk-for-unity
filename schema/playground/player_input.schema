@@ -1,0 +1,9 @@
+package playground;
+
+component PlayerInput
+{
+    id = 12001;
+    float horizontal = 1;
+    float vertical = 2;
+    bool running = 3;
+}

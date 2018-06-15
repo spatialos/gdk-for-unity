@@ -1,0 +1,107 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using Improbable.Gdk.Core;
+using System.Collections.Generic;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# foreach (var commandDetails in commandDetailsList) {#>
+        public class <#= commandDetails.CommandName #>
+        {
+            public struct Request : IIncomingCommandRequest
+            {
+                public uint RequestId { get; }
+
+                internal Translation Translation { get; }
+
+                public List<string> CallerAttributeSet { get; }
+
+                public <#= commandDetails.RequestType #> RawRequest { get; }
+
+                internal Request(uint requestId, 
+                    Translation translation,
+                    List<string> callerAttributeSet,
+                    <#= commandDetails.RequestType #> request)
+                {
+                    this.RequestId = requestId;
+                    this.Translation = translation;
+                    this.CallerAttributeSet = callerAttributeSet;
+                    this.RawRequest = request;
+                }
+
+                public void Send<#= commandDetails.CommandName #>Response(<#= commandDetails.ResponseType #> response)
+                {
+                    Translation.<#= commandDetails.CommandName #>Responses.Add(
+                        new OutgoingResponse(RequestId, response));
+                }
+            }
+
+            internal struct OutgoingRequest : IOutgoingCommandRequest
+            {
+                public long TargetEntityId { get; }
+
+                public long SenderEntityId { get; }
+
+                public <#= commandDetails.RequestType #> RawRequest { get; }
+
+                internal OutgoingRequest(long targetEntityId, long senderEntityId,
+                    <#= commandDetails.RequestType #> request)
+                {
+                    this.TargetEntityId = targetEntityId;
+                    this.SenderEntityId = senderEntityId;
+                    this.RawRequest = request;
+                }
+            }
+
+            public struct Response : IIncomingCommandResponse
+            {
+                public long EntityId { get; }
+
+                public string Message { get; }
+
+                public CommandStatusCode StatusCode { get; }
+
+                public <#= commandDetails.ResponseType #>? RawResponse { get; }
+
+                public <#= commandDetails.RequestType #> RawRequest { get; }
+
+                internal Response(long entityId, 
+                    string message,
+                    CommandStatusCode statusCode, 
+                    <#= commandDetails.ResponseType #>? response,
+                    <#= commandDetails.RequestType #> request)
+                {
+                    this.EntityId = entityId;
+                    this.Message = message;
+                    this.StatusCode = statusCode;
+                    this.RawResponse = response;
+                    this.RawRequest = request;
+                }
+            }
+
+            internal struct OutgoingResponse : IOutgoingCommandResponse
+            {
+                public uint RequestId { get; }
+
+                public <#= commandDetails.ResponseType #> RawResponse { get; }
+
+                internal OutgoingResponse(uint requestId, 
+                    <#= commandDetails.ResponseType #> response)
+                {
+                    this.RequestId = requestId;
+                    this.RawResponse = response;
+                }
+            }
+        }
+<# } #>
+    }
+}
