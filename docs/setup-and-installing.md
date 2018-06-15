@@ -1,5 +1,3 @@
-![SpatialOS Unity GDK documentation](assets/unity-gdk-header.png)
-
 **Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
 
 -----
@@ -8,7 +6,7 @@
 
 ## Short version (for SpatialOS local deployment only)
 
-1. Set up your machine by installing [Unity 2018.1.1](https://unity3d.com/get-unity/download/archive), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), (optional) [ReSharper](https://www.jetbrains.com/resharper/), and (optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt).
+1. Set up your machine by installing: [Unity 2018.1.1](https://unity3d.com/get-unity/download/archive), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional).
 
 1. Clone the repository: `git clone git@github.com:spatialos/UnityGDK.git`  or `git clone  https://github.com/spatialos/UnityGDK.git`
 
@@ -34,8 +32,8 @@
 		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 	- (Optional) [ReSharper](https://www.jetbrains.com/resharper/)
-	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](http://github/spatialos/UnityGDK/docs/contributions/unity-gdk-coding-standards.md). 
-		> We are currently not accepting public contributions - see our [contributions](https://github.com/spatialos/blob/master/UnityGDK/docs/contributions/contributions.md) policy.
+	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](https://github.com/spatialos/UnityGDK/blob/master/docs/contributions/unity-gdk-coding-standards.md). 
+		> We are currently not accepting public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/CONTRIBUTING.md) policy.
     - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) 
     <br> You'll need this if you want to lint your code. Add it to your `PATH` environment variable.
 
@@ -141,4 +139,4 @@ Currently, you can try this out using the `Playground`.
     1. Once you’ve finished playing, click **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../README.md/#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

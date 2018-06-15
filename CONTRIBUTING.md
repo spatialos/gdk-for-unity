@@ -1,5 +1,3 @@
-![SpatialOS Unity GDK documentation](https://github.com/spatialos/UnityGDK/blob/master/docs/assets/unity-gdk-header.png)
-
 # Repository contributions
 
 ## Contributions policy

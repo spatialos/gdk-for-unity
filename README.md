@@ -1,5 +1,3 @@
-![SpatialOS Unity GDK documentation](docs/assets/unity-gdk-header.png)
-
 # The SpatialOS Unity GDK readme (pre-alpha)
 
 The Unity Game Development Kit (GDK), made by [Improbable](https://improbable.io/), uses [Unity's](http://unity3d.com) experimental [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS). 
@@ -25,7 +23,7 @@ This pre-alpha release is for experienced Unity developers who have some underst
 We have released the Unity GDK this early in development because we want your feedback. Please come and talk to us about the software and the documentation via:
 
 **Discord**<br/>
-Find us in the [**#unity** channel](https://discordapp.com/invite/MUEQg5y). You may need to grab Discord [here](https://discordapp.com). 
+Find us in the [**#unity** channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com). 
 
 **The SpatialOS forums**<br/>
 Visit the **feedback** section in our [forums](https://forums.improbable.io) and use the **unity-gdk** tag. [This link](https://forums.improbable.io/new-topic?category=Feedback&tags=unity-gdk) takes you there and pre-fills the category and tag.

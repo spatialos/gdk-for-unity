@@ -1,5 +1,3 @@
-![SpatialOS Unity GDK documentation](assets/unity-gdk-header.png)
-
 # SpatialOS Unity GDK documentation
 
 The Unity GDK will be made up of three parts: 

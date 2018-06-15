@@ -1,5 +1,3 @@
-![SpatialOS Unity GDK documentation](../assets/unity-gdk-header.png)
-
 **Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 ----
