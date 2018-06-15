@@ -13,7 +13,7 @@ _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
 
 ## Table of contents
 
-- [Unity GDK C# coding ctandards :ok_hand:](#unity-gdk-c-coding-standards--ok-hand)
+- Unity GDK C# coding standards
     - [Table of contents](#table-of-contents)
     - [Introduction](#introduction)
     - [ReSharper and formatting](#resharper-and-formatting)
