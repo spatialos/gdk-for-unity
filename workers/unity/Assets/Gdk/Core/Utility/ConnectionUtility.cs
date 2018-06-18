@@ -47,7 +47,6 @@ namespace Improbable.Gdk.Core
                 var deploymentName = GetDeploymentName(locator);
                 if (deploymentName == null)
                 {
-                    Debug.LogError("Failed to retrieve deployment name.");
                     return null;
                 }
 
@@ -113,6 +112,7 @@ namespace Improbable.Gdk.Core
 
                 if (!deployments.HasValue)
                 {
+                    Debug.LogError("Failed to retrieve deployment.");
                     return null;
                 }
 
