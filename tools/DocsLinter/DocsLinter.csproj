@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Markdig, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
+      <HintPath>packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,4 +54,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <ItemGroup>
+      <ReleaseBuildFiles Include="bin\Release\*.exe" />
+      <ReleaseBuildFiles Include="bin\Release\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ReleaseBuildFiles)" DestinationFolder="../../bin/DocsLinter" />
+  </Target>
 </Project>
