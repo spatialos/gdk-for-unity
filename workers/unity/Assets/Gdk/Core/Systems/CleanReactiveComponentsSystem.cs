@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
         private MutableView view;
-        private ComponentGroup newlyCreatedSpatialOSEntityComponentGroup;
+        private ComponentGroup newlyAddedSpatialOSEntityComponentGroup;
         private ComponentGroup onConnectedComponentGroup;
         private ComponentGroup onDisconnectedComponentGroup;
 
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
 
             GenerateComponentGroups();
 
-            newlyCreatedSpatialOSEntityComponentGroup = GetComponentGroup(typeof(NewlyAddedSpatialOSEntity));
+            newlyAddedSpatialOSEntityComponentGroup = GetComponentGroup(typeof(NewlyAddedSpatialOSEntity));
             onConnectedComponentGroup = GetComponentGroup(typeof(OnConnected));
             onDisconnectedComponentGroup = GetComponentGroup(typeof(OnDisconnected));
         }
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
 
-            var newlyCreatedEntities = newlyCreatedSpatialOSEntityComponentGroup.GetEntityArray();
+            var newlyCreatedEntities = newlyAddedSpatialOSEntityComponentGroup.GetEntityArray();
             for (var i = 0; i < newlyCreatedEntities.Length; i++)
             {
                 var entity = newlyCreatedEntities[i];
