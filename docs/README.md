@@ -11,7 +11,7 @@ The Unity GDK will be made up of three parts:
 The GDK Core is based on the new Unity [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS). For background on the Unity GDK's current development and plans, as well as our open development ethos, see our [Unity GDK deep-dive blogpost](https://improbable.io/games/blog/unity-gdk-deepdive-1).
 
 #### Warning
-This pre-alpha release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
 
 #### How to get started
 We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
