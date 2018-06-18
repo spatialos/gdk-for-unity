@@ -21,7 +21,7 @@ namespace Playground
             public int Length;
             [ReadOnly] public ComponentArray<SpatialOSArchetypeComponent> ArchetypeComponents;
             [ReadOnly] public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<NewlyCreatedEntity> NewlyCreatedEntities;
+            [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
         [Inject] private Data data;
