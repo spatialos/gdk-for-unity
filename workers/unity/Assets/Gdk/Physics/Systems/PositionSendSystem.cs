@@ -18,15 +18,15 @@ namespace Improbable.Gdk.TransformSynchronization
         [Inject] private PositionData positionData;
 
         // Number of position sends per second.
-        private const float SendRate = 1.0f;
+        private const float SendRateHz = 1.0f;
 
         private float timeSinceLastSend = 0.0f;
 
         protected override void OnUpdate()
         {
-            // Send update at SendRate.
+            // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < (1.0f / SendRate))
+            if (timeSinceLastSend < (1.0f / SendRateHz))
             {
                 return;
             }
