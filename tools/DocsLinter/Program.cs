@@ -110,7 +110,9 @@ namespace DocsLinter
 
         private static void LogMissingLink(string markdownFilePath, Link.LocalReference localLink)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Error in {markdownFilePath}. The link: {localLink} is invalid");
+            Console.ResetColor();
         }
 
         private static Dictionary<string, SimplifiedMarkdownDoc> GetMarkdownFiles(string[] allFiles)
