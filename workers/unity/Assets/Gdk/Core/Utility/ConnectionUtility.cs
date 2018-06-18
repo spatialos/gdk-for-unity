@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Core
 
                 if (deployments.Value.Error != null)
                 {
-                    Debug.LogError($"Failed to obtain deployment name with error: {deployments.Value.Error}");
+                    Debug.LogError($"Failed to obtain deployment name with error: {deployments.Value.Error}.");
                     return null;
                 }
 
