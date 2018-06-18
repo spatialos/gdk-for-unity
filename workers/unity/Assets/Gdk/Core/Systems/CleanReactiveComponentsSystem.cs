@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
 
             GenerateComponentGroups();
 
-            newlyCreatedSpatialOSEntityComponentGroup = GetComponentGroup(typeof(NewlyCreatedSpatialOSEntity));
+            newlyCreatedSpatialOSEntityComponentGroup = GetComponentGroup(typeof(NewlyAddedSpatialOSEntity));
             onConnectedComponentGroup = GetComponentGroup(typeof(OnConnected));
             onDisconnectedComponentGroup = GetComponentGroup(typeof(OnDisconnected));
         }
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < newlyCreatedEntities.Length; i++)
             {
                 var entity = newlyCreatedEntities[i];
-                commandBuffer.RemoveComponent<NewlyCreatedSpatialOSEntity>(entity);
+                commandBuffer.RemoveComponent<NewlyAddedSpatialOSEntity>(entity);
             }
 
             var onConnectedEntities = onConnectedComponentGroup.GetEntityArray();

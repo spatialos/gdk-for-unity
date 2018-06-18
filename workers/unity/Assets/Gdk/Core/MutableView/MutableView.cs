@@ -281,7 +281,7 @@ namespace Improbable.Gdk.Core
             {
                 EntityId = entityId
             });
-            EntityManager.AddComponentData(entity, new NewlyCreatedSpatialOSEntity());
+            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
             AddAllCommandRequestSenders(entity, entityId);
             entityMapping.Add(entityId, entity);
