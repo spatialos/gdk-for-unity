@@ -23,7 +23,7 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-            [ReadOnly] public ComponentDataArray<NewlyCreatedEntity> NewlyCreatedEntities;
+            [ReadOnly] public ComponentDataArray<NewlyCreatedSpatialOSEntity> NewlyCreatedEntities;
         }
 
         [Inject] private Data data;
