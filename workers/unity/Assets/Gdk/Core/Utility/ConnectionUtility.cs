@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Worker;
 using UnityEngine;
@@ -45,10 +46,6 @@ namespace Improbable.Gdk.Core
             {
                 Debug.Log("Attempting to retrieve deployment name...");
                 var deploymentName = GetDeploymentName(locator);
-                if (deploymentName == null)
-                {
-                    return null;
-                }
 
                 Debug.Log("Successfully obtained deployment name!");
 
@@ -112,20 +109,18 @@ namespace Improbable.Gdk.Core
 
                 if (!deployments.HasValue)
                 {
-                    Debug.LogError("Failed to retrieve deployment.");
-                    return null;
+                    throw new ApplicationException("Failed to retrieve deployment.");
                 }
 
                 if (deployments.Value.Error != null)
                 {
-                    Debug.LogError($"Failed to obtain deployment name with error: {deployments.Value.Error}");
-                    return null;
+                    throw new ApplicationException(
+                        $"Failed to obtain deployment name with error: {deployments.Value.Error}");
                 }
 
                 if (deployments.Value.Deployments.Count == 0)
                 {
-                    Debug.LogError("Received an empty list of deployments.");
-                    return null;
+                    throw new ApplicationException("Received an empty list of deployments.");
                 }
 
                 return deployments.Value.Deployments[0].DeploymentName;
