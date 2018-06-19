@@ -11,13 +11,17 @@ namespace DocsLinter
         public List<LinkBase> Links = new List<LinkBase>();
         public List<Heading> Headings = new List<Heading>();
 
+        public SimplifiedMarkdownDoc()
+        {
+        }
+
         public SimplifiedMarkdownDoc(MarkdownDocument markdownDoc)
         {
             Links.AddRange(markdownDoc.Descendants().OfType<LinkInline>().Select(ParseLink));
             Headings.AddRange(markdownDoc.Descendants().OfType<HeadingBlock>().Select(heading => new Heading(heading)));
         }
 
-        private static LinkBase ParseLink(LinkInline linkInline)
+        public static LinkBase ParseLink(LinkInline linkInline)
         {
             if (linkInline.Url.StartsWith("http") || linkInline.Url.StartsWith("www"))
             {

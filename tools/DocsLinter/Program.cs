@@ -48,7 +48,7 @@ namespace DocsLinter
             }
         }
 
-        private static bool CheckMarkdownFile(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
+        internal static bool CheckMarkdownFile(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
         {
             var allLinksValid = true;
@@ -67,7 +67,7 @@ namespace DocsLinter
             return allLinksValid;
         }
 
-        private static bool CheckLocalLink(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
+        internal static bool CheckLocalLink(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             LocalLink localLink,
             Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
         {
@@ -128,7 +128,7 @@ namespace DocsLinter
             return true;
         }
 
-        private static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
+        internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
         {
             try
             {
