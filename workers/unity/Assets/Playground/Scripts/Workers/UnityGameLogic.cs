@@ -1,6 +1,6 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
 
 namespace Playground

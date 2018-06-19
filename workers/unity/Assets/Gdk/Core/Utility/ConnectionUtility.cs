@@ -47,7 +47,6 @@ namespace Improbable.Gdk.Core
                 var deploymentName = GetDeploymentName(locator);
                 if (deploymentName == null)
                 {
-                    Debug.Log("Failed to retrieve deployment name.");
                     return null;
                 }
 
@@ -110,7 +109,26 @@ namespace Improbable.Gdk.Core
             using (var deploymentsFuture = locator.GetDeploymentListAsync())
             {
                 var deployments = deploymentsFuture.Get(RuntimeConfigDefaults.ConnectionTimeout);
-                return deployments.HasValue ? deployments.Value.Deployments[0].DeploymentName : null;
+
+                if (!deployments.HasValue)
+                {
+                    Debug.LogError("Failed to retrieve deployment.");
+                    return null;
+                }
+
+                if (deployments.Value.Error != null)
+                {
+                    Debug.LogError($"Failed to obtain deployment name with error: {deployments.Value.Error}.");
+                    return null;
+                }
+
+                if (deployments.Value.Deployments.Count == 0)
+                {
+                    Debug.LogError("Received an empty list of deployments.");
+                    return null;
+                }
+
+                return deployments.Value.Deployments[0].DeploymentName;
             }
         }
 
