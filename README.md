@@ -8,6 +8,8 @@ You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/
 
 * License: use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
 * Version: pre-alpha (for evaluation only)
+* Unity Game Development Kit repository: [github.com/spatialos/UnityGDK](https://github.com/spatialos/UnityGDK)
+
 
 ## Recommended use
 
