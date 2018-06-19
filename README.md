@@ -2,7 +2,7 @@
 
 The Unity Game Development Kit (GDK), made by [Improbable](https://improbable.io/), uses [Unity's](http://unity3d.com) experimental [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS). 
 
-In the future you will be able to use the Unity GDK to make massively multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product. To find out more see the [Unity GDK deep dive blogpost](https://improbable.io/games/blog/unity-gdk-deepdive-1).
+In the future you will be able to use the Unity GDK to make massively multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product. To find out more see the [Unity GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps).
 
 * License: use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
 * Version: pre-alpha (for evaluation only)
@@ -52,6 +52,6 @@ For prerequisites, installation and setup, see the [Installation and setup](docs
 Currently the Unity GDK is in its early development, so there is no migration path from the [Unity SDK](https://github.com/spatialos/UnitySDK) to the Unity GDK. There will be a migration path in later releases.
 
 ## Email updates
-You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-05-10/26yzpy) direct to your mailbox.
+You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-18/27lhqx) direct to your mailbox.
 
 &copy; 2018 Improbable
