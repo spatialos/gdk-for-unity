@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
@@ -7,108 +8,84 @@ namespace DocsLinter
 {
     public class SimplifiedMarkdownDoc
     {
-        public List<Link> Links = new List<Link>();
+        public List<LinkBase> Links = new List<LinkBase>();
         public List<Heading> Headings = new List<Heading>();
 
         public SimplifiedMarkdownDoc(MarkdownDocument markdownDoc)
         {
-            foreach (var child in markdownDoc.Descendants())
-            {
-                if (child is LinkInline link)
-                {
-                    Links.Add(new Link(link));
-                }
-                else if (child is HeadingBlock heading)
-                {
-                    Headings.Add(new Heading(heading));
-                }
-            }
+            Links.AddRange(markdownDoc.Descendants().OfType<LinkInline>().Select(ParseLink));
+            Headings.AddRange(markdownDoc.Descendants().OfType<HeadingBlock>().Select(heading => new Heading(heading)));
         }
-    }
 
-    public class Link
-    {
-        public RemoteUrl? RemoteLink;
-        public LocalReference? LocalLink;
-
-        public Link(LinkInline linkInline)
+        private static LinkBase ParseLink(LinkInline linkInline)
         {
             if (linkInline.Url.StartsWith("http") || linkInline.Url.StartsWith("www"))
             {
-                RemoteLink = new RemoteUrl
-                {
-                    Url = linkInline.Url,
-                };
+                return new RemoteLink(linkInline);
+            }
+
+            return new LocalLink(linkInline);
+        }
+    }
+
+    public abstract class LinkBase
+    {
+    }
+
+    public class RemoteLink : LinkBase
+    {
+        public string Url;
+
+        public RemoteLink(LinkInline link)
+        {
+            Url = link.Url;
+        }
+
+        public override string ToString()
+        {
+            return Url;
+        }
+    }
+
+    public class LocalLink : LinkBase
+    {
+        public Heading? Heading;
+        public string FilePath;
+
+        public LocalLink(LinkInline link)
+        {
+            if (!link.Url.Contains("#"))
+            {
+                FilePath = link.Url;
+                Heading = null;
+            }
+            else if (link.Url.StartsWith("#"))
+            {
+                FilePath = null;
+                Heading = new Heading(link.Url);
             }
             else
             {
-                LocalLink = new LocalReference(linkInline.Url);
+                FilePath = link.Url.Split('#')[0];
+                Heading = new Heading(link.Url.Remove(0, FilePath.Length));
             }
         }
 
         public override string ToString()
         {
-            if (RemoteLink.HasValue)
-            {
-                return RemoteLink.Value.Url;
-            }
-
-            if (LocalLink.HasValue)
-            {
-                return LocalLink.Value.ToString();
-            }
-
-            return "Empty link!";
-        }
-
-        public struct RemoteUrl
-        {
-            public string Url;
-        }
-
-        public struct LocalReference
-        {
-            public string FilePath;
-            public Heading? Heading;
-
-            public LocalReference(string path)
-            {
-                if (!path.Contains("#"))
-                {
-                    FilePath = path;
-                    Heading = null;
-                }
-                else
-                {
-                    if (path.StartsWith("#"))
-                    {
-                        FilePath = null;
-                        Heading = new Heading(path);
-                    }
-                    else
-                    {
-                        FilePath = path.Split('#')[0];
-                        Heading = new Heading(path.Remove(0, FilePath.Length));
-                    }
-                }
-            }
-
-            public override string ToString()
-            {
-                return $"{FilePath ?? ""}{Heading?.ToString() ?? ""}";
-            }
+            return $"{FilePath ?? string.Empty}{Heading?.ToString() ?? string.Empty}";
         }
     }
 
     public struct Heading
     {
-        private static Regex sanitizationRegex = new Regex("[^a-zA-Z -]");
+        private static readonly Regex sanitizationRegex = new Regex("[^a-zA-Z -]");
 
         public string Title;
 
         public Heading(HeadingBlock headingBlock)
         {
-            Title = "";
+            Title = string.Empty;
             for (var inline = headingBlock.Inline.FirstChild; inline != null; inline = inline.NextSibling)
             {
                 if (inline is CodeInline codeInline)
@@ -126,7 +103,7 @@ namespace DocsLinter
 
         public Heading(string heading)
         {
-            Title = "";
+            Title = string.Empty;
             for (var i = 0; i < heading.Length; i++)
             {
                 if (heading[i] == '#')
@@ -147,7 +124,7 @@ namespace DocsLinter
 
         private void SanitizeTitle()
         {
-            var sanitized = sanitizationRegex.Replace(Title.ToLower(), "");
+            var sanitized = sanitizationRegex.Replace(Title.ToLower(), string.Empty);
             Title = sanitized.Trim().Replace(" ", "-");
         }
     }
