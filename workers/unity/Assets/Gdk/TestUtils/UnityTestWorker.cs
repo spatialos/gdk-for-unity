@@ -1,8 +1,9 @@
+using Improbable.Gdk.Core;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.EditmodeTests.Utils
+namespace Improbable.Gdk.TestUtils
 {
-    internal class UnityTestWorker : WorkerBase
+    public class UnityTestWorker : WorkerBase
     {
         public const string WorkerType = "UnityTestWorker";
 

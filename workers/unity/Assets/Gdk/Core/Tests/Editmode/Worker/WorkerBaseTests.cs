@@ -1,4 +1,4 @@
-using Improbable.Gdk.Core.EditmodeTests.Utils;
+using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 using UnityEngine;
 
