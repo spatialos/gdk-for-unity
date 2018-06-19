@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public abstract class WorkerBase
+    public abstract class WorkerBase : IDisposable
     {
         public World World { get; private set; }
 
@@ -32,6 +32,13 @@ namespace Improbable.Gdk.Core
 
             View = new MutableView(World);
             Origin = origin;
+        }
+
+        public void Dispose()
+        {
+            WorkerRegistry.UnsetWorkerForWorld(this);
+            View.Dispose();
+            World.Dispose();
         }
 
         public bool Connect(ConnectionConfig config)

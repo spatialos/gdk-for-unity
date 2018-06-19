@@ -10,7 +10,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
-    public class MutableView
+    public class MutableView : IDisposable
     {
         public const long WorkerEntityId = -1337;
 
@@ -50,6 +50,16 @@ namespace Improbable.Gdk.Core
             // Create the worker entity
             WorkerEntity = EntityManager.CreateEntity(typeof(WorkerEntityTag));
             AddAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
+        }
+
+        public void Dispose()
+        {
+            EntityManager.DestroyEntity(WorkerEntity);
+
+            foreach (var translation in TranslationUnits.Values)
+            {
+                translation.Dispose();
+            }
         }
 
         internal void Connect()

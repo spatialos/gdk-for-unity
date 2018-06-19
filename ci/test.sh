@@ -30,6 +30,10 @@ markEndOfBlock "Code Generator Testing"
 
 markStartOfBlock "Editmode Testing"
 
+if [ -d "${PROJECT_DIR}/workers/unity/Library" ]; then
+  mv "${PROJECT_DIR}/workers/unity/Library" "${PROJECT_DIR}/workers/unity/Library-Backup"
+fi
+
 rm -rf "${PROJECT_DIR}/workers/unity/Library/"
 rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 
@@ -44,11 +48,11 @@ ${UNITY_EXE} \
 
 EDITMODE_TEST_RESULT=$?
 
+rm -rf "${PROJECT_DIR}/workers/unity/Library/"
+rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 markEndOfBlock "Editmode Testing"
 
 markStartOfBlock "Playmode Testing"
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 
 ${UNITY_EXE} \
     -nographics \
@@ -61,7 +65,13 @@ ${UNITY_EXE} \
 
 PLAYMODE_TEST_RESULT=$?
 
+rm -rf "${PROJECT_DIR}/workers/unity/Library/"
+rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 markEndOfBlock "Playmode Testing"
+
+if [ -d "${PROJECT_DIR}/workers/unity/Library-Backup" ]; then
+  mv "${PROJECT_DIR}/workers/unity/Library-Backup" "${PROJECT_DIR}/workers/unity/Library"
+fi
 
 if [ $CODE_GENERATOR_TEST_RESULT -ne 0 ]; then
     >&2 echo "Code Generator Tests failed. Please check the file ${CODE_GENERATOR_TEST_RESULTS_FILE} for more information."
