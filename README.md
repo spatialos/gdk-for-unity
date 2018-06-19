@@ -31,16 +31,6 @@ Visit the **feedback** section in our [forums](https://forums.improbable.io) and
 **Github issues**<br/>
 Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issues).
 
-## Roadmap
-
-Here is our current roadmap, we would love your feedback on it.
-
-|                |Faster Development Iteration |Native Workflows| High Performance
-|----------------|-------------------------------|-----------------------------|--|
-|First Look|  **Build Less Often**<br>Run Client and Server in your Unity editor simultaneously.<br><br> **Transform Feature Module**<br>Buffer and interpolate position and rotation updates.        |**Automatic synchronisation**<br>Changes to components are synchronised for you by generated code - but you have full control if you want to override this.            | **Harness the power of ECS**<br>Make use of the advantages of the Unity Entity Component System (ECS). 
-|Coming Soon   |**Examples game**<br>An example game will both test the GDK and provide a scaled example to speed up development.           |**MonoBehaviour workflow**<br>ECS isn't the right workflow for everything. We will also provide APIs to inject state into MonoBehaviours.            |
-|R&D    |**New Feature Modules**<br>We are considering pathfinding, NPC AI, shooting and character controllers. Let us know what you'd like to see! | **Schema auto-generation**<br>We are experimenting with automatically generating schema, based upon the structs and classes you define in C#.<br><br>**Synchronous spawning**<br>Asynchronous spawning on SpatialOS has been a magnet for bugs. We're looking to provide a synchornous API and to handle replication behind the scenes. | **Multithreading**<br>We want to investigate multithreading via the Unity Jobs System. We also want to make using Jobs in game logic as easy as possible. |
-
 ## Contributions 
 
 **Public contributors**<br/>
@@ -60,6 +50,9 @@ For prerequisites, installation and setup, see the [Installation and setup](docs
 
 ## Migration from the SpatialOS Unity SDK
 Currently the Unity GDK is in its early development, so there is no migration path from the [Unity SDK](https://github.com/spatialos/UnitySDK) to the Unity GDK. There will be a migration path in later releases.
+
+## Roadmap
+See the latest Roadmap [here](docs/Roadmap.md) and don't hesitate to feedback!
 
 ## Email updates
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-05-10/26yzpy) direct to your mailbox.
