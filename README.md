@@ -10,7 +10,6 @@ You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/
 * Version: pre-alpha (for evaluation only)
 * Unity Game Development Kit repository: [github.com/spatialos/UnityGDK](https://github.com/spatialos/UnityGDK)
 
-
 ## Recommended use
 
 This pre-alpha version software and its documentation is, by its very nature, rough and ready; every part of it is subject to change, including the APIs, and it isn’t optimised for performance. In addition, the GDK is based on Unity’s experimental [Entity Component System and Job System](https://unity3d.com/unity/features/job-system-ECS). Currently it's Windows only but later releases will also support MacOS.
