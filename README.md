@@ -51,6 +51,9 @@ For prerequisites, installation and setup, see the [Installation and setup](docs
 ## Migration from the SpatialOS Unity SDK
 Currently the Unity GDK is in its early development, so there is no migration path from the [Unity SDK](https://github.com/spatialos/UnitySDK) to the Unity GDK. There will be a migration path in later releases.
 
+## Roadmap
+See the latest Roadmap [here](docs/Roadmap.md) and don't hesitate to feedback!
+
 ## Email updates
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-18/27lhqx) direct to your mailbox.
 
