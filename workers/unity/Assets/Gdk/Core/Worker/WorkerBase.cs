@@ -27,10 +27,6 @@ namespace Improbable.Gdk.Core
             }
 
             WorkerId = workerId;
-            World = new World(WorkerId);
-            WorkerRegistry.SetWorkerForWorld(this);
-
-            View = new MutableView(World);
             Origin = origin;
         }
 
@@ -45,20 +41,45 @@ namespace Improbable.Gdk.Core
                 Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig) config, GetWorkerType);
             }
 
-            if (Connection == null)
+            if (Connection == null || !Connection.IsConnected)
             {
                 return false;
             }
 
+            World = new World(WorkerId);
+            WorkerRegistry.SetWorkerForWorld(this);
+
+            View = new MutableView(World);
             View.Connection = Connection;
 
-            Application.quitting += () =>
-            {
-                ConnectionUtility.Disconnect(Connection);
-                Connection = null;
-            };
+            RegisterSystems();
+
             View.Connect();
             return true;
+        }
+
+        public void Clear()
+        {
+            if (Connection == null || World == null)
+            {
+                return;
+            }
+
+            // This is required because the systems will still tick once when the world is disposed causing exceptions
+            foreach (var manager in World.BehaviourManagers)
+            {
+                var system = manager as ComponentSystem;
+                if (system != null)
+                {
+                    system.Enabled = false;
+                }
+            }
+
+            World.Dispose();
+            ConnectionUtility.Disconnect(Connection);
+
+            View = null;
+            World = null;
         }
 
         public virtual void RegisterSystems()

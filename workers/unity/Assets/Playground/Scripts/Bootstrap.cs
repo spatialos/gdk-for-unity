@@ -77,6 +77,15 @@ namespace Playground
 
                 connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
             }
+        }
+
+        public void Start()
+        {
+            foreach (var worker in Workers)
+            {
+                LoadLevel(worker);
+                worker.Connect(connectionConfig);
+            }
 
             if (World.AllWorlds.Count <= 0)
             {
@@ -90,13 +99,15 @@ namespace Playground
             World.Active = worlds[0];
         }
 
-        public void Start()
+        private void OnDisable()
         {
             foreach (var worker in Workers)
             {
-                LoadLevel(worker);
-                worker.Connect(connectionConfig);
+                worker.Clear();
             }
+
+            WorkerRegistry.Clear();
+            ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
 
         public static void InitializeWorkerTypes()
