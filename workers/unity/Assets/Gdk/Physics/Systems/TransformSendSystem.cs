@@ -1,6 +1,7 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -16,13 +17,21 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private TransformData transformData;
 
+        // Number of transform sends per second.
+        private const float SendRateHz = 30.0f;
+
+        private float timeSinceLastSend = 0.0f;
+
         protected override void OnUpdate()
         {
-            // Send update every other tick.
-            if (World.GetExistingManager<TickSystem>().GlobalTick % 2 != 0)
+            // Send update at SendRateHz.
+            timeSinceLastSend += Time.deltaTime;
+            if (timeSinceLastSend < (1.0f / SendRateHz))
             {
                 return;
             }
+
+            timeSinceLastSend = 0.0f;
 
             for (var i = 0; i < transformData.Length; i++)
             {

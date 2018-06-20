@@ -94,8 +94,8 @@ Currently, you can try this out using the `Playground`.
 <br>The first step of running a cloud deployment is uploading all the files that your game uses. This includes executable files for the clients and workers, and the assets your workers use (like models and textures used by the Unity client to visualise the game). We call that set of game files an assembly.
 <br><br> To build an assembly for your game to use while running in the cloud, either:
     - In the Unity Editor, select **Improbable** > **Build all workers for cloud**
-    - Or, close the Unity Editor and, in the root directory of the project, run `spatial worker build --target=deployment`
-        > If you don’t close Unity before running `spatial worker build`, the command will report an error.
+    - Or, close the Unity Editor and, in the root directory of the project, run `spatial build`
+        > If you don’t close Unity before running `spatial build`, the command will report an error.
     
         **It’s done when:** You see `spatial build UnityClient UnityGameLogic succeeded` printed in your console output.
 

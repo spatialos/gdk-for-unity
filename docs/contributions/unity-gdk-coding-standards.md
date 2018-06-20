@@ -9,7 +9,7 @@
 
 _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
 
-**Contributions**: We are not currently taking public contributions - see our [contributions](../../README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](../../README.md#feedback).
+**Contributions**: We are not currently taking public contributions - see our [contributions](../../README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](../../README.md#give-us-feedback).
 
 ## Table of contents
 
