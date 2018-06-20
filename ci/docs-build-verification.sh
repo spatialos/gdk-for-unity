@@ -33,7 +33,8 @@ TMP_DIR=$(mktemp -d)
 
 # Go to a temporary directory and simulate the merge
 cd ${TMP_DIR}
-git clone ${CLONE_URL}
+mkdir -p unity-gdk
+git clone ${CLONE_URL} unity-gdk
 cd unity-gdk
 git checkout master
 git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
