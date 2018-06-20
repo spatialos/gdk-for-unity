@@ -31,7 +31,7 @@ public class ReactiveSystem : ComponentSystem
     public struct Data
     {
         public int Length;
-        public ComponentDataArray<ComponentsUpdated<SpatialOSPosition>> PositionUpdated;
+        public ComponentArray<ComponentsUpdated<SpatialOSPosition>> PositionUpdated;
     }
 
     [Inject] Data data;
