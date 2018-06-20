@@ -48,6 +48,14 @@ namespace DocsLinter
             }
         }
 
+        /// <summary>
+        /// A helper method that checks all the links in a markdown file and returns a success/fail.
+        /// Side effects: Prints to the console.
+        /// </summary>
+        /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
+        /// <param name="markdownFileContents">An object representing the Markdown file to check.</param>
+        /// <param name="markdownFiles">The corpus of Markdown files undergoing linting. Maps filename to Markdown file object representation.</param>
+        /// <returns>A bool indicating the success of the check.</returns>
         internal static bool CheckMarkdownFile(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
         {
@@ -67,6 +75,15 @@ namespace DocsLinter
             return allLinksValid;
         }
 
+        /// <summary>
+        /// A helper function that checks the validity of a single local link.
+        /// Side effects: Prints to the console.
+        /// </summary>
+        /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
+        /// <param name="markdownFileContents">An object representing the Markdown file to check.</param>
+        /// <param name="localLink">The object representing the local link to check.</param>
+        /// <param name="markdownFiles">The corpus of Markdown files undergoing linting. Maps filename to Markdown file object representation.</param>
+        /// <returns>A bool indicating the success of the check.</returns>
         internal static bool CheckLocalLink(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             LocalLink localLink,
             Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
@@ -127,7 +144,13 @@ namespace DocsLinter
 
             return true;
         }
-
+        /// <summary>
+        /// A helper function that checks the validity of a single remote link.
+        /// Side effects: Prints to the console.
+        /// </summary>
+        /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
+        /// <param name="remoteLink">The object representing the remote link to check.</param>
+        /// <returns>A bool indicating success/failure</returns>
         internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
         {
             try
@@ -182,6 +205,11 @@ namespace DocsLinter
             }
         }
 
+        /// <summary>
+        /// A helper function to print a error when an invalid link is found.
+        /// </summary>
+        /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
+        /// <param name="link">The link that is invalid.</param>
         private static void LogInvalidLink(string markdownFilePath, LinkBase link)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -189,6 +217,12 @@ namespace DocsLinter
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// A helper function to print a warning about a specific link.
+        /// </summary>
+        /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
+        /// <param name="link">The link that the warning is about.</param>
+        /// <param name="message">The warning message to print.</param>
         private static void LogLinkWarning(string markdownFilePath, LinkBase link, string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -196,6 +230,11 @@ namespace DocsLinter
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// A helper function the collects all Markdown files from a list of file paths.
+        /// </summary>
+        /// <param name="allMarkdownFiles">A list of file paths.</param>
+        /// <returns>A dictionary mapping a Markdown file path to the object representing that Markdown file.</returns>
         private static Dictionary<string, SimplifiedMarkdownDoc> GetMarkdownFiles(string[] allMarkdownFiles)
         {
             var markdownFiles = new Dictionary<string, SimplifiedMarkdownDoc>();
