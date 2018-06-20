@@ -5,8 +5,8 @@ using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-
-namespace Improbable.Gdk.Core.EditmodeTests.Systems {
+namespace Improbable.Gdk.Core.EditmodeTests.Systems
+{
     [TestFixture]
     internal class CleanReactiveComponentsSystemTests
     {
@@ -66,5 +66,4 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems {
             }
         }
     }
-
 }

@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Core
         {
             WorkerBase workerForWorld;
 
-            if(WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
+            if (WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
             {
                 WorldToWorker.Remove(worker.World);
             }

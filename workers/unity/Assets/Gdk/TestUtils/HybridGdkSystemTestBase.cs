@@ -22,10 +22,10 @@ namespace Improbable.Gdk.TestUtils
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            gameobjectArrayInjectionHook = (InjectionHook)Activator.CreateInstance(GameObjectArrayInjectionHookType);
+            gameobjectArrayInjectionHook = (InjectionHook) Activator.CreateInstance(GameObjectArrayInjectionHookType);
             transformAccessArrayInjectionHook =
-                (InjectionHook)Activator.CreateInstance(TransformAccessArrayInjectionHookType);
-            componentArrayInjectionHook = (InjectionHook)Activator.CreateInstance(ComponentArrayInjectionHookType);
+                (InjectionHook) Activator.CreateInstance(TransformAccessArrayInjectionHookType);
+            componentArrayInjectionHook = (InjectionHook) Activator.CreateInstance(ComponentArrayInjectionHookType);
 
             InjectionHookSupport.RegisterHook(gameobjectArrayInjectionHook);
             InjectionHookSupport.RegisterHook(transformAccessArrayInjectionHook);

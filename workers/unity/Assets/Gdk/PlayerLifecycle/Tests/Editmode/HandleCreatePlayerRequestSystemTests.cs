@@ -25,7 +25,8 @@ public class HandleCreatePlayerRequestSystemTests : HybridGdkSystemTestBase
     }
 
     [Test]
-    public void HandleCreatePlayerRequestSystem_should_call_CreatePlayerEntityTemplate_when_it_handles_a_CreatePlayer_request()
+    public void
+        HandleCreatePlayerRequestSystem_should_call_CreatePlayerEntityTemplate_when_it_handles_a_CreatePlayer_request()
     {
         var world = worker.World;
 
@@ -59,7 +60,7 @@ public class HandleCreatePlayerRequestSystemTests : HybridGdkSystemTestBase
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = previousCreatePlayerEntityTemplate;
         }
     }
-    
+
     private void CreateEntityWithCreatePlayerRequest(EntityManager entityManager)
     {
         var entity = entityManager.CreateEntity();
@@ -72,5 +73,4 @@ public class HandleCreatePlayerRequestSystemTests : HybridGdkSystemTestBase
 
         worker.View.SetComponentObject(entity, commandRequests);
     }
-
 }
