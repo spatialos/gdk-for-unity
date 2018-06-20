@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var empty_exception = Assert.Throws<System.ArgumentException>(() =>
             {
                 var worker = new UnityTestWorker("", new Vector3());
+                worker.Dispose();
             });
             Assert.IsTrue(empty_exception.Message.Contains("WorkerId"));
 
@@ -21,6 +22,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var null_exception = Assert.Throws<System.ArgumentException>(() =>
             {
                 var worker = new UnityTestWorker(null, new Vector3());
+                worker.Dispose();
             });
             Assert.IsTrue(null_exception.Message.Contains("WorkerId"));
         }
