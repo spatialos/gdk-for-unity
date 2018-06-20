@@ -38,51 +38,51 @@ namespace DocsLinter
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex.ToString());
-                if (ex.InnerException != null)
-                {
-                    Console.Error.WriteLine(ex.InnerException.ToString());
-                }
-
+                LogException(ex);
                 Environment.Exit(1);
             }
         }
 
         /// <summary>
-        /// A helper method that checks all the links in a markdown file and returns a success/fail.
-        /// Side effects: Prints to the console.
+        ///     A helper method that checks all the links in a markdown file and returns a success/fail.
+        ///     Side effects: Prints to the console.
         /// </summary>
         /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
         /// <param name="markdownFileContents">An object representing the Markdown file to check.</param>
-        /// <param name="markdownFiles">The corpus of Markdown files undergoing linting. Maps filename to Markdown file object representation.</param>
+        /// <param name="markdownFiles">
+        ///     The corpus of Markdown files undergoing linting. Maps filename to Markdown file object
+        ///     representation.
+        /// </param>
         /// <returns>A bool indicating the success of the check.</returns>
         internal static bool CheckMarkdownFile(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
         {
             var allLinksValid = true;
-            foreach (var link in markdownFileContents.Links)
+
+            foreach (var localLink in markdownFileContents.Links.OfType<LocalLink>())
             {
-                if (link is LocalLink localLink)
-                {
-                    allLinksValid &= CheckLocalLink(markdownFilePath, markdownFileContents, localLink, markdownFiles);
-                }
-                else if (link is RemoteLink remoteLink)
-                {
-                    allLinksValid &= CheckRemoteLink(markdownFilePath, remoteLink);
-                }
+                allLinksValid &= CheckLocalLink(markdownFilePath, markdownFileContents, localLink, markdownFiles);
+            }
+
+            foreach (var remoteLink in markdownFileContents.Links.OfType<RemoteLink>())
+            {
+                allLinksValid &= CheckRemoteLink(markdownFilePath, remoteLink);
             }
 
             return allLinksValid;
         }
 
         /// <summary>
-        /// A helper function that checks the validity of a single local link.
-        /// Side effects: Prints to the console.
+        ///     A helper function that checks the validity of a single local link.
+        ///     Side effects: Prints to the console.
         /// </summary>
         /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
         /// <param name="markdownFileContents">An object representing the Markdown file to check.</param>
         /// <param name="localLink">The object representing the local link to check.</param>
-        /// <param name="markdownFiles">The corpus of Markdown files undergoing linting. Maps filename to Markdown file object representation.</param>
+        /// <param name="markdownFiles">
+        ///     The corpus of Markdown files undergoing linting. Maps filename to Markdown file object
+        ///     representation.
+        /// </param>
         /// <returns>A bool indicating the success of the check.</returns>
         internal static bool CheckLocalLink(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
             LocalLink localLink,
@@ -144,9 +144,10 @@ namespace DocsLinter
 
             return true;
         }
+
         /// <summary>
-        /// A helper function that checks the validity of a single remote link.
-        /// Side effects: Prints to the console.
+        ///     A helper function that checks the validity of a single remote link.
+        ///     Side effects: Prints to the console.
         /// </summary>
         /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
         /// <param name="remoteLink">The object representing the remote link to check.</param>
@@ -163,7 +164,8 @@ namespace DocsLinter
                 // Check for non-200 error codes.
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
-                    LogLinkWarning(markdownFilePath, remoteLink, $"returned a status code of: {(int)response.StatusCode}");
+                    LogLinkWarning(markdownFilePath, remoteLink,
+                        $"returned a status code of: {(int) response.StatusCode}");
                 }
 
                 return true;
@@ -181,32 +183,22 @@ namespace DocsLinter
                         return false;
                     }
 
-                    LogLinkWarning(markdownFilePath, remoteLink, $"returned a status code of: {(int)statusCode}");
+                    LogLinkWarning(markdownFilePath, remoteLink, $"returned a status code of: {(int) statusCode}");
                     return true;
                 }
 
-                Console.Error.WriteLine(ex.ToString());
-                if (ex.InnerException != null)
-                {
-                    Console.Error.WriteLine(ex.InnerException.ToString());
-                }
-
+                LogException(ex);
                 return false;
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex.ToString());
-                if (ex.InnerException != null)
-                {
-                    Console.Error.WriteLine(ex.InnerException.ToString());
-                }
-
+                LogException(ex);
                 return false;
             }
         }
 
         /// <summary>
-        /// A helper function to print a error when an invalid link is found.
+        ///     A helper function to print a error when an invalid link is found.
         /// </summary>
         /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
         /// <param name="link">The link that is invalid.</param>
@@ -218,7 +210,7 @@ namespace DocsLinter
         }
 
         /// <summary>
-        /// A helper function to print a warning about a specific link.
+        ///     A helper function to print a warning about a specific link.
         /// </summary>
         /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
         /// <param name="link">The link that the warning is about.</param>
@@ -231,7 +223,20 @@ namespace DocsLinter
         }
 
         /// <summary>
-        /// A helper function the collects all Markdown files from a list of file paths.
+        /// A helper function to log exceptions when they are caught.
+        /// </summary>
+        /// <param name="ex">The exception that was caught</param>
+        private static void LogException(Exception ex)
+        {
+            Console.Error.WriteLine(ex.ToString());
+            if (ex.InnerException != null)
+            {
+                Console.Error.WriteLine(ex.InnerException.ToString());
+            }
+        }
+
+        /// <summary>
+        ///     A helper function the collects all Markdown files from a list of file paths.
         /// </summary>
         /// <param name="allMarkdownFiles">A list of file paths.</param>
         /// <returns>A dictionary mapping a Markdown file path to the object representing that Markdown file.</returns>

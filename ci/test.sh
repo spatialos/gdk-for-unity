@@ -15,7 +15,7 @@ markStartOfBlock "Setup variables"
 PROJECT_DIR="$(pwd)"
 mkdir -p "${PROJECT_DIR}/logs/"
 
-TOOLS_TEST_RESULTS_FILES="${PROJECT_DIR}/logs/code-generator-test-results.xml"
+TOOLS_TEST_RESULTS_FILES="${PROJECT_DIR}/logs/tools-test-results.xml"
 CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-results.xml"
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
@@ -72,7 +72,7 @@ PLAYMODE_TEST_RESULT=$?
 markEndOfBlock "Playmode Testing"
 
 if [ $TOOLS_TEST_RESULT -ne 0 ]; then
-    >&2 echo "Code Generator Tests failed. Please check the file ${TOOLS_TEST_RESULTS_FILES} for more information."
+    >&2 echo "Tools Tests failed. Please check the file ${TOOLS_TEST_RESULTS_FILES} for more information."
 fi
 
 if [ $CODE_GENERATOR_TEST_RESULT -ne 0 ]; then
