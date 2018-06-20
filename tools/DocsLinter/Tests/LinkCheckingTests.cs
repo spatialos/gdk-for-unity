@@ -4,10 +4,10 @@ using System.IO;
 using Markdig.Syntax.Inlines;
 using NUnit.Framework;
 
-namespace DocsLinter.Tests 
+namespace DocsLinter.Tests
 {
     [TestFixture]
-    class RemoteLinkCheckingTests 
+    internal class RemoteLinkCheckingTests
     {
         private static RemoteLink GetUrlForStatusCode(int statusCode)
         {
@@ -18,7 +18,7 @@ namespace DocsLinter.Tests
         [Test]
         public void CheckRemoteLink_returns_true_for_200_status_code()
         {
-            var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200));   
+            var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200));
             Assert.IsTrue(result);
         }
 
@@ -38,7 +38,7 @@ namespace DocsLinter.Tests
     }
 
     [TestFixture]
-    class LocalLinkCheckingTests
+    internal class LocalLinkCheckingTests
     {
         private string currentDirectory;
         private string tempDirectory;
@@ -106,7 +106,8 @@ namespace DocsLinter.Tests
         [Test]
         public void CheckLocalLink_should_return_false_if_same_file_heading_does_not_exist()
         {
-            var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, sameFileHeadingDoesNotExistLink,
+            var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest,
+                sameFileHeadingDoesNotExistLink,
                 corpus);
 
             Assert.IsFalse(result);
@@ -142,7 +143,8 @@ namespace DocsLinter.Tests
         [Test]
         public void CheckLocalLink_should_return_false_if_other_file_heading_does_not_exist()
         {
-            var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherFileHeadingDoesNotExistLink,
+            var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest,
+                otherFileHeadingDoesNotExistLink,
                 corpus);
 
             Assert.IsFalse(result);

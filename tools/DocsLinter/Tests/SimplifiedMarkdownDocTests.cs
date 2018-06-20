@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Markdig.Parsers;
+﻿using Markdig.Parsers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using NUnit.Framework;
 
-namespace DocsLinter.Tests 
+namespace DocsLinter.Tests
 {
     [TestFixture]
-    public class SimplifiedMarkdownDocTests 
+    public class SimplifiedMarkdownDocTests
     {
-
         [Test]
         public void ParseLink_should_return_RemoteLink_when_url_starts_with_http()
         {
@@ -68,7 +62,7 @@ namespace DocsLinter.Tests
 
             Assert.IsFalse(localLink.Heading.HasValue);
             Assert.IsNotNull(localLink.FilePath);
-            
+
             Assert.AreEqual(linkInline.Url, localLink.FilePath);
         }
 

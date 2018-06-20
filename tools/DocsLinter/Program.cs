@@ -223,7 +223,7 @@ namespace DocsLinter
         }
 
         /// <summary>
-        /// A helper function to log exceptions when they are caught.
+        ///     A helper function to log exceptions when they are caught.
         /// </summary>
         /// <param name="ex">The exception that was caught</param>
         private static void LogException(Exception ex)
@@ -234,6 +234,7 @@ namespace DocsLinter
             {
                 Console.Error.WriteLine(ex.InnerException.ToString());
             }
+
             Console.ResetColor();
         }
 
