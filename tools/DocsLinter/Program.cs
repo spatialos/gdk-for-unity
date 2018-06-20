@@ -228,11 +228,13 @@ namespace DocsLinter
         /// <param name="ex">The exception that was caught</param>
         private static void LogException(Exception ex)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.Error.WriteLine(ex.ToString());
             if (ex.InnerException != null)
             {
                 Console.Error.WriteLine(ex.InnerException.ToString());
             }
+            Console.ResetColor();
         }
 
         /// <summary>
