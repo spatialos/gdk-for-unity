@@ -154,12 +154,15 @@ namespace DocsLinter
     /// <returns>A bool indicating success/failure</returns>
     internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
     {
+      // Necessary to be in scope in finally block.
+      HttpWebResponse response = null;
+
       try
       {
         var request = WebRequest.CreateHttp(remoteLink.Url);
-        request.Method = "GET";
-        var response = request.GetResponse() as HttpWebResponse;
-        response.Close();
+        request.Method = WebRequestMethods.Http.Get;
+        response = request.GetResponse() as HttpWebResponse;
+
 
         // Check for non-200 error codes.
         if (response.StatusCode != HttpStatusCode.OK)
@@ -195,6 +198,10 @@ namespace DocsLinter
         LogException(ex);
         return false;
       }
+      finally
+      {
+        response?.Close();
+      }
     }
 
     /// <summary>
@@ -202,7 +209,7 @@ namespace DocsLinter
     /// </summary>
     /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
     /// <param name="link">The link that is invalid.</param>
-    private static void LogInvalidLink(string markdownFilePath, LinkBase link)
+    private static void LogInvalidLink(string markdownFilePath, ILink link)
     {
       Console.ForegroundColor = ConsoleColor.Red;
       Console.WriteLine($"Error in {markdownFilePath}. The link: {link} is invalid");
@@ -215,7 +222,7 @@ namespace DocsLinter
     /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
     /// <param name="link">The link that the warning is about.</param>
     /// <param name="message">The warning message to print.</param>
-    private static void LogLinkWarning(string markdownFilePath, LinkBase link, string message)
+    private static void LogLinkWarning(string markdownFilePath, ILink link, string message)
     {
       Console.ForegroundColor = ConsoleColor.Yellow;
       Console.WriteLine($"Warning in {markdownFilePath}. The link {link} {message}");

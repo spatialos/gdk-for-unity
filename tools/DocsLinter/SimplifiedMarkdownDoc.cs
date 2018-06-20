@@ -11,14 +11,7 @@ namespace DocsLinter
   /// </summary>
   public class SimplifiedMarkdownDoc
   {
-    /// <summary>
-    ///   List of links in the markdown file
-    /// </summary>
-    public List<LinkBase> Links = new List<LinkBase>();
-
-    /// <summary>
-    ///   List of headings in the markdown file
-    /// </summary>
+    public List<ILink> Links = new List<ILink>();
     public List<Heading> Headings = new List<Heading>();
 
     public SimplifiedMarkdownDoc()
@@ -40,7 +33,7 @@ namespace DocsLinter
     /// </summary>
     /// <param name="linkInline">The object from Markdig to parse.</param>
     /// <returns></returns>
-    public static LinkBase ParseLink(LinkInline linkInline)
+    public static ILink ParseLink(LinkInline linkInline)
     {
       if (linkInline.Url.StartsWith("http") || linkInline.Url.StartsWith("www"))
       {
@@ -54,18 +47,15 @@ namespace DocsLinter
   /// <summary>
   ///   Abstract base class for a link.
   /// </summary>
-  public abstract class LinkBase
+  public interface ILink
   {
   }
 
   /// <summary>
   ///   A data class that represents a remote link. I.e. - "https://www.google.com".
   /// </summary>
-  public class RemoteLink : LinkBase
+  public struct RemoteLink : ILink
   {
-    /// <summary>
-    ///   The URL of the link.
-    /// </summary>
     public string Url;
 
     /// <summary>
@@ -86,16 +76,9 @@ namespace DocsLinter
   /// <summary>
   ///   A data class that represents a local link. I.e. - "../README.md#heading"
   /// </summary>
-  public class LocalLink : LinkBase
+  public struct LocalLink : ILink
   {
-    /// <summary>
-    ///   The heading in a local link. May be null.
-    /// </summary>
     public Heading? Heading;
-
-    /// <summary>
-    ///   The file path of the local link. May be null.
-    /// </summary>
     public string FilePath;
 
     /// <summary>
@@ -132,14 +115,8 @@ namespace DocsLinter
   /// </summary>
   public struct Heading
   {
-    /// <summary>
-    ///   Regex used in the sanitization of a Markdown title
-    /// </summary>
     private static readonly Regex sanitizationRegex = new Regex("[^a-zA-Z -]");
 
-    /// <summary>
-    ///   The heading title.
-    /// </summary>
     public string Title;
 
     /// <summary>
