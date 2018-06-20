@@ -33,11 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Markdig, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
+      <HintPath Condition="Exists('packages')">packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
+      <HintPath Condition="Exists('..\packages')">..\packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath Condition="Exists('packages')">packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath Condition="Exists('..\packages')">..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
