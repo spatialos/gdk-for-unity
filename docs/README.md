@@ -1,15 +1,5 @@
 # SpatialOS Unity GDK documentation
 
-The Unity GDK will be made up of three parts: 
-
-* the GDK Core, a performant, data-driven [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) multiplayer integration.
-
-* a library of solutions for hard or common networked game development problems via Feature Modules.
-
-* the example game, with shared source code which both tests and demonstrates the Feature Modules; for use as a starting point or resource for game development.
-
-The GDK Core is based on the new Unity [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS). For background on the Unity GDK's current development and plans, as well as our open development ethos, see our [Unity GDK deep-dive blogpost](https://improbable.io/games/blog/unity-gdk-deepdive-1).
-
 #### Warning
 This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
 

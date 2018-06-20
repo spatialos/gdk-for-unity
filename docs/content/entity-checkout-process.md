@@ -13,7 +13,7 @@ For each of your entity's SpatialOS components, the following Unity ECS componen
 
 In addition, the following components are added to your entity as well:
 - `SpatialEntityId`: Holds the corresponding SpatialOS EntityId of an entity.
-- `NewlyCreatedEntity`: Tag component for marking entities that were just checked-out. This component is automatically removed from your entity at the end of the frame it was created.
+- `NewlyAddedSpatialOSEntity`: Tag component for marking entities that were just checked-out. This component is automatically removed from your entity at the end of the frame it was created.
 - `WorldCommandSender`: Component that exposes the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
 - A `CommandRequestSender<T>` for every SpatialOS schema component `T` that defines a command: Component that exposes the API for [sending schema commands](commands.md#sending-command-requests) defined in `T`.
 
@@ -52,7 +52,7 @@ The components specified in `WorkerTypeToArchetypeNameToComponentTypes` are auto
 
 To perform more complex setup logic, you can add components that themselves act as temporary markers for performing additional setup logic. E.g. you could add a `NeedsHelperChildEntity` ECS component as part of the Archetype initialization feature and have an additional `CreateHelperChildEntitySystem` inject that component.
 
-**Note:** It is currently not possible to set the initial field values of the ECS components that were added through this feature. Those fields need to be set manually in a follow-up setup step, e.g. with a system that also injects the `NewlyCreatedEntity` component and is run after the `ArchetypeInitializationSystem`.
+**Note:** It is currently not possible to set the initial field values of the ECS components that were added through this feature. Those fields need to be set manually in a follow-up setup step, e.g. with a system that also injects the `NewlyAddedSpatialOSEntity` component and is run after the `ArchetypeInitializationSystem`.
 
 ### Representing your Entity with a GameObject
 

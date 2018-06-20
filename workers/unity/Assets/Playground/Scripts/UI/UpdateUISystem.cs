@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace Playground
 {
-    [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
+    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class UpdateUISystem : ComponentSystem
     {
         public struct PlayerData

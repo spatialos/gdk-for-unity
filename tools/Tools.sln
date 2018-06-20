@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpNuget", "ImpNuget\ImpNuget.csproj", "{CE7B8A3F-099F-45B7-8F41-396FE3640A16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocsLinter", "DocsLinter\DocsLinter.csproj", "{A8D920E3-1239-4280-9FD8-CEB5D013DE45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
