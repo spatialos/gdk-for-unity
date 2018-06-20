@@ -15,7 +15,7 @@ function buildCodeGenerator
 
 function fetchNugetDependencies
 {
-    "${MSBUILD}" tools/Tools.sln //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
+    "${MSBUILD}" tools/ImpNuget/ImpNuget.csproj //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
 
     pushd "code_generator"
         "../bin/ImpNuget/ImpNuget.exe"
