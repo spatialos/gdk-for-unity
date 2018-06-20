@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.PlayerLifecycle.EditmodeTests",
+    "name": "Improbable.Gdk.TestUtils.EditmodeTests",
     "references": [
         "Improbable.Gdk.TestUtils",
         "Improbable.Gdk.PlayerLifecycle",
