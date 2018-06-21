@@ -39,10 +39,12 @@ markEndOfBlock "Code Generator Testing"
 markStartOfBlock "Editmode Testing"
 
 if [ -d "${PROJECT_DIR}/workers/unity/Library" ]; then
+  if [ -d "${PROJECT_DIR}/workers/unity/Library-Backup" ]; then
+    rm -rf "${PROJECT_DIR}/workers/unity/Library-Backup"
+  fi
   mv "${PROJECT_DIR}/workers/unity/Library" "${PROJECT_DIR}/workers/unity/Library-Backup"
 fi
 
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"
 rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 
 ${UNITY_EXE} \

@@ -21,8 +21,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             private struct PreparationData
             {
                 public int Length;
-                public EntityArray Entity;
-
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
 
                 public ComponentDataArray<TestPreparation> PreparationStruct;
@@ -30,6 +28,18 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
 
             [Inject] private PreparationData testDataToPrepare;
 #pragma warning restore 649
+
+            public void TestInjection(World world)
+            {
+                OnBeforeCreateManagerInternal(world, 10);
+            }
+
+            public void ManualDispose()
+            {
+                OnBeforeDestroyManagerInternal();
+                OnDestroyManager();
+                OnAfterDestroyManagerInternal();
+            }
 
             protected override void OnUpdate()
             {
@@ -49,21 +59,26 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         {
             // If this test fails, then we can get rid of HybridGdkSystemTestBase!
             [Test]
-            public static void HybridSystems_will_result_in_errors_when_created_if_fixture_does_not_extend_HybridGdkSystemTestBase()
+            public static void
+                HybridSystems_will_result_in_errors_when_created_if_fixture_does_not_extend_HybridGdkSystemTestBase()
             {
-                Assert.Throws<ArgumentException>(() =>
-                    {
-                        using (var world = new World("test-world"))
-                        {
-                            var testSystem =
-                                world.GetOrCreateManager<ExampleHybridSystem>();
+                using (var world = new World("test-world"))
+                {
+                    var system = new ExampleHybridSystem();
 
-                            Assert.IsNotNull(testSystem);
-                        }
-                    },
-                    "The `{0}` class may no longer be necessary, since an `{1}` system could be created without InjectionHooks.",
-                    nameof(HybridGdkSystemTestBase),
-                    nameof(ExampleHybridSystem));
+                    Assert.Throws<ArgumentException>(() =>
+                        {
+                            // This is basically the same action as world.GetOrCreateManager<ExampleHybridSystem>();
+                            // However, if we actually called the above it would cause memory leaks and make other tests fail.
+                            system.TestInjection(world);
+                        },
+                        "The `{0}` class may no longer be necessary, since an `{1}` system could be created without InjectionHooks.",
+                        nameof(HybridGdkSystemTestBase),
+                        nameof(ExampleHybridSystem));
+
+                    // Ensure that the system does not leak.
+                    system.ManualDispose();
+                }
             }
         }
 

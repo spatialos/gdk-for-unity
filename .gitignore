@@ -17,3 +17,6 @@ obj/
 packages/
 
 *.DotSettings.user
+
+# used by test.sh
+/workers/unity/Library-Backup/
