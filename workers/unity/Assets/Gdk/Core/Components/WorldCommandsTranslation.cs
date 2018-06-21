@@ -201,8 +201,8 @@ namespace Improbable.Gdk.Core
                 () => new CommandResponses<DeleteEntityResponse>(),
                 (component) => component.Buffer.Clear());
 
-        private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> reserveEntityIdsResponsesPool =
-            new ComponentPool<CommandResponses<ReserveEntityIdsResponse>>(
+        private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> reserveEntityIdsResponsesPool
+            = new ComponentPool<CommandResponses<ReserveEntityIdsResponse>>(
                 () => new CommandResponses<ReserveEntityIdsResponse>(),
                 (component) => component.Buffer.Clear());
 
