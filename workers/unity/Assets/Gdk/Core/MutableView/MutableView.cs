@@ -17,7 +17,6 @@ namespace Improbable.Gdk.Core
         public Dictionary<int, ComponentTranslation> TranslationUnits;
         public Action<Entity, long> AddAllCommandRequestSenders;
 
-        public Connection Connection;
         public World World;
 
         public EntityManager EntityManager { get; }
@@ -127,22 +126,6 @@ namespace Improbable.Gdk.Core
             AddComponent(entity, component);
         }
 
-        public void AddSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
-        {
-            EntityManager.AddSharedComponentData(entity, component);
-        }
-
-        public void AddSharedComponent<T>(long entityId, T component) where T : struct, ISharedComponentData
-        {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
-            }
-
-            AddSharedComponent(entity, component);
-        }
-
         public void RemoveComponent<T>(Entity entity)
         {
             EntityManager.RemoveComponent<T>(entity);
@@ -167,11 +150,6 @@ namespace Improbable.Gdk.Core
         public T GetComponent<T>(Entity entity) where T : struct, IComponentData
         {
             return EntityManager.GetComponentData<T>(entity);
-        }
-
-        public T GetSharedComponent<T>(Entity entity) where T : struct, ISharedComponentData
-        {
-            return EntityManager.GetSharedComponentData<T>(entity);
         }
 
         public T GetComponentObject<T>(Entity entity) where T : Component
@@ -220,12 +198,7 @@ namespace Improbable.Gdk.Core
             where T : struct, IComponentData
         {
             EntityManager.SetComponentData(entity, component);
-            AddReceivedMessageToComponent<ComponentsUpdated<T>, T>(entity, component, pool);
-        }
-
-        public void UpdateSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
-        {
-            EntityManager.SetSharedComponentData(entity, component);
+            AddReceivedMessageToComponent(entity, component, pool);
         }
 
         public void UpdateComponentObject<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
@@ -247,11 +220,6 @@ namespace Improbable.Gdk.Core
             AddReceivedMessageToComponent(entity, commandRequest, pool);
         }
 
-        public void AddCommandResponse<T>(Entity entity, T commandResponse) where T : struct, IIncomingCommandResponse
-        {
-            AddReceivedMessageToComponent<CommandResponses<T>, T>(entity, commandResponse);
-        }
-
         public void AddCommandResponse<T>(Entity entity, T commandResponse, ComponentPool<CommandResponses<T>> pool)
             where T : struct, IIncomingCommandResponse
         {
@@ -268,7 +236,7 @@ namespace Improbable.Gdk.Core
             return EntityManager.HasComponent(entity, componentType);
         }
 
-        public void CreateEntity(long entityId)
+        internal void CreateEntity(long entityId)
         {
             if (entityMapping.ContainsKey(entityId))
             {
@@ -295,7 +263,7 @@ namespace Improbable.Gdk.Core
         public void RemoveEntity(long entityId)
         {
             Entity entity;
-            if (!entityMapping.TryGetValue(entityId, out entity))
+            if (!TryGetEntity(entityId, out entity))
             {
                 Debug.LogErrorFormat(Errors.DeleteNonExistantEntity, entityId);
                 return;
@@ -370,7 +338,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            HandleAuthorityChange<T>(entity, authority, pool);
+            HandleAuthorityChange(entity, authority, pool);
         }
 
         private static class Errors

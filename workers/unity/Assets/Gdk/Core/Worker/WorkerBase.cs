@@ -50,8 +50,6 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            View.Connection = Connection;
-
             Application.quitting += () =>
             {
                 ConnectionUtility.Disconnect(Connection);
