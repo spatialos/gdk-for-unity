@@ -38,8 +38,6 @@ markEndOfBlock "Code Generator Testing"
 
 markStartOfBlock "Editmode Testing"
 
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
-
 ${UNITY_EXE} \
     -nographics \
     -batchmode \
