@@ -92,14 +92,6 @@ namespace Improbable.Gdk.Core
             return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
         }
 
-        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message)
-            where TMessagesReceived : MessagesReceived<TMessage>, new()
-        {
-            TMessagesReceived messageBuffer = GetOrCreateComponent<TMessagesReceived>(entity);
-            messageBuffer.Buffer.Add(message);
-            SetComponentObject(entity, messageBuffer);
-        }
-
         private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
             ComponentPool<TMessagesReceived> pool)
             where TMessagesReceived : MessagesReceived<TMessage>, new()
