@@ -82,11 +82,6 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private T GetOrCreateComponent<T>(Entity entity) where T : Component, new()
-        {
-            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : new T();
-        }
-
         private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
         {
             return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
@@ -252,7 +247,7 @@ namespace Improbable.Gdk.Core
             gameObjectManager.AddGameObjectEntity(entity, gameObject);
         }
 
-        public void RemoveEntity(long entityId)
+        internal void RemoveEntity(long entityId)
         {
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
@@ -271,14 +266,19 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public void HandleAuthorityChange<T>(Entity entity, Authority authority,
+        public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
-            switch (authority)
+            Entity entity;
+            if (!TryGetEntity(entityId, out entity))
             {
+                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                return;
+            }
+
+            switch (authority) {
                 case Authority.Authoritative:
-                    if (!HasComponent<NotAuthoritative<T>>(entity))
-                    {
+                    if (!HasComponent<NotAuthoritative<T>>(entity)) {
                         Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.Authoritative,
                             Authority.NotAuthoritative);
                         return;
@@ -288,8 +288,7 @@ namespace Improbable.Gdk.Core
                     AddComponent(entity, new Authoritative<T>());
                     break;
                 case Authority.AuthorityLossImminent:
-                    if (!HasComponent<Authoritative<T>>(entity))
-                    {
+                    if (!HasComponent<Authoritative<T>>(entity)) {
                         Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.AuthorityLossImminent,
                             Authority.Authoritative);
                         return;
@@ -298,15 +297,13 @@ namespace Improbable.Gdk.Core
                     AddComponent(entity, new AuthorityLossImminent<T>());
                     break;
                 case Authority.NotAuthoritative:
-                    if (!HasComponent<Authoritative<T>>(entity))
-                    {
+                    if (!HasComponent<Authoritative<T>>(entity)) {
                         Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.NotAuthoritative,
                             Authority.Authoritative);
                         return;
                     }
 
-                    if (HasComponent<AuthorityLossImminent<T>>(entity))
-                    {
+                    if (HasComponent<AuthorityLossImminent<T>>(entity)) {
                         RemoveComponent<AuthorityLossImminent<T>>(entity);
                     }
 
@@ -318,19 +315,6 @@ namespace Improbable.Gdk.Core
             AuthoritiesChanged<T> bufferedComponents = GetOrCreateComponent(entity, pool);
             bufferedComponents.Buffer.Add(authority);
             SetComponentObject(entity, bufferedComponents);
-        }
-
-        public void HandleAuthorityChange<T>(long entityId, Authority authority,
-            ComponentPool<AuthoritiesChanged<T>> pool)
-        {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
-                return;
-            }
-
-            HandleAuthorityChange(entity, authority, pool);
         }
 
         private static class Errors
