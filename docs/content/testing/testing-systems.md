@@ -50,7 +50,7 @@ public class TickSystemTests
 
 ## Systems which depend on workers
 There are some systems which assume that the world they are in belongs to a worker.
-For example, in their `OnCreateManager` method, they get a handle of the worker
+For example, in their `OnCreateManager` method, they get a reference of the worker
 using `WorkerRegistry.GetWorkerForWorld`. For these systems, you can create an
  instance of `UnityTestWorker` in your `[SetUp]` and dispose of it in `[TearDown]`.
 
