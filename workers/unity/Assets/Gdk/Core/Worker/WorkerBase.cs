@@ -80,6 +80,7 @@ namespace Improbable.Gdk.Core
 
             View = null;
             World = null;
+            Connection = null;
         }
 
         public virtual void RegisterSystems()
