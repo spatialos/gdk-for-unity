@@ -32,6 +32,13 @@ namespace Improbable.Gdk.Core
             return worker;
         }
 
+        public static void Clear()
+        {
+            WorkerTypeToInitializationFunction.Clear();
+            WorkerTypeToAttributeSet.Clear();
+            WorldToWorker.Clear();
+        }
+
         public static void RegisterWorkerType<T>() where T : WorkerBase
         {
             string workerType = (string) typeof(T).GetField("WorkerType").GetValue(null);
@@ -46,7 +53,6 @@ namespace Improbable.Gdk.Core
         public static T CreateWorker<T>(string workerId, Vector3 origin) where T : WorkerBase
         {
             var worker = (T) Activator.CreateInstance(typeof(T), workerId, origin);
-            worker.RegisterSystems();
             return worker;
         }
 
