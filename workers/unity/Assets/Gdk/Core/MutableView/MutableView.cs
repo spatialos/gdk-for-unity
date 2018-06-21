@@ -51,51 +51,6 @@ namespace Improbable.Gdk.Core
             AddAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
         }
 
-        internal void Connect()
-        {
-            EntityManager.AddComponent(WorkerEntity, typeof(IsConnected));
-            EntityManager.AddComponent(WorkerEntity, typeof(OnConnected));
-        }
-
-        internal void Disconnect(string reason)
-        {
-            EntityManager.RemoveComponent<IsConnected>(WorkerEntity);
-            EntityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
-        }
-
-        private void FindTranslationUnits()
-        {
-            TranslationUnits = new Dictionary<int, ComponentTranslation>();
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var translationTypes = assembly.GetTypes().Where(
-                    type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
-
-                foreach (var translationType in translationTypes)
-                {
-                    var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
-                    TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
-
-                    AddAllCommandRequestSenders += translator.AddCommandRequestSender;
-                }
-            }
-        }
-
-        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
-        {
-            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
-        }
-
-        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
-            ComponentPool<TMessagesReceived> pool)
-            where TMessagesReceived : MessagesReceived<TMessage>, new()
-        {
-            TMessagesReceived messageBuffer = GetOrCreateComponent(entity, pool);
-            messageBuffer.Buffer.Add(message);
-            SetComponentObject(entity, messageBuffer);
-        }
-
         public void AddComponent<T>(Entity entity, T component) where T : struct, IComponentData
         {
             EntityManager.AddComponentData(entity, component);
@@ -223,6 +178,84 @@ namespace Improbable.Gdk.Core
             return EntityManager.HasComponent(entity, componentType);
         }
 
+        public bool TryGetEntity(long entityId, out Entity entity)
+        {
+            return entityMapping.TryGetValue(entityId, out entity);
+        }
+
+        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
+        {
+            gameObjectManager.AddGameObjectEntity(entity, gameObject);
+        }
+
+        public void HandleAuthorityChange<T>(long entityId, Authority authority,
+            ComponentPool<AuthoritiesChanged<T>> pool)
+        {
+            Entity entity;
+            if (!TryGetEntity(entityId, out entity))
+            {
+                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                return;
+            }
+
+            switch (authority)
+            {
+                case Authority.Authoritative:
+                    if (!HasComponent<NotAuthoritative<T>>(entity))
+                    {
+                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.Authoritative,
+                            Authority.NotAuthoritative);
+                        return;
+                    }
+
+                    RemoveComponent<NotAuthoritative<T>>(entity);
+                    AddComponent(entity, new Authoritative<T>());
+                    break;
+                case Authority.AuthorityLossImminent:
+                    if (!HasComponent<Authoritative<T>>(entity))
+                    {
+                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.AuthorityLossImminent,
+                            Authority.Authoritative);
+                        return;
+                    }
+
+                    AddComponent(entity, new AuthorityLossImminent<T>());
+                    break;
+                case Authority.NotAuthoritative:
+                    if (!HasComponent<Authoritative<T>>(entity))
+                    {
+                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.NotAuthoritative,
+                            Authority.Authoritative);
+                        return;
+                    }
+
+                    if (HasComponent<AuthorityLossImminent<T>>(entity))
+                    {
+                        RemoveComponent<AuthorityLossImminent<T>>(entity);
+                    }
+
+                    RemoveComponent<Authoritative<T>>(entity);
+                    AddComponent(entity, new NotAuthoritative<T>());
+                    break;
+            }
+
+            var bufferedComponents = GetOrCreateComponent(entity, pool);
+            bufferedComponents.Buffer.Add(authority);
+            SetComponentObject(entity, bufferedComponents);
+        }
+
+        internal void Connect()
+        {
+            EntityManager.AddComponent(WorkerEntity, typeof(IsConnected));
+            EntityManager.AddComponent(WorkerEntity, typeof(OnConnected));
+        }
+
+        internal void Disconnect(string reason)
+        {
+            EntityManager.RemoveComponent<IsConnected>(WorkerEntity);
+            EntityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
+        }
+
         internal void CreateEntity(long entityId)
         {
             if (entityMapping.ContainsKey(entityId))
@@ -242,11 +275,6 @@ namespace Improbable.Gdk.Core
             entityMapping.Add(entityId, entity);
         }
 
-        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
-        {
-            gameObjectManager.AddGameObjectEntity(entity, gameObject);
-        }
-
         internal void RemoveEntity(long entityId)
         {
             Entity entity;
@@ -261,60 +289,37 @@ namespace Improbable.Gdk.Core
             entityMapping.Remove(entityId);
         }
 
-        public bool TryGetEntity(long entityId, out Entity entity)
+        private void FindTranslationUnits()
         {
-            return entityMapping.TryGetValue(entityId, out entity);
+            TranslationUnits = new Dictionary<int, ComponentTranslation>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var translationTypes = assembly.GetTypes().Where(
+                    type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+                foreach (var translationType in translationTypes)
+                {
+                    var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
+                    TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
+
+                    AddAllCommandRequestSenders += translator.AddCommandRequestSender;
+                }
+            }
         }
 
-        public void HandleAuthorityChange<T>(long entityId, Authority authority,
-            ComponentPool<AuthoritiesChanged<T>> pool)
+        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
-                return;
-            }
+            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
+        }
 
-            switch (authority) {
-                case Authority.Authoritative:
-                    if (!HasComponent<NotAuthoritative<T>>(entity)) {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.Authoritative,
-                            Authority.NotAuthoritative);
-                        return;
-                    }
-
-                    RemoveComponent<NotAuthoritative<T>>(entity);
-                    AddComponent(entity, new Authoritative<T>());
-                    break;
-                case Authority.AuthorityLossImminent:
-                    if (!HasComponent<Authoritative<T>>(entity)) {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.AuthorityLossImminent,
-                            Authority.Authoritative);
-                        return;
-                    }
-
-                    AddComponent(entity, new AuthorityLossImminent<T>());
-                    break;
-                case Authority.NotAuthoritative:
-                    if (!HasComponent<Authoritative<T>>(entity)) {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.NotAuthoritative,
-                            Authority.Authoritative);
-                        return;
-                    }
-
-                    if (HasComponent<AuthorityLossImminent<T>>(entity)) {
-                        RemoveComponent<AuthorityLossImminent<T>>(entity);
-                    }
-
-                    RemoveComponent<Authoritative<T>>(entity);
-                    AddComponent(entity, new NotAuthoritative<T>());
-                    break;
-            }
-
-            AuthoritiesChanged<T> bufferedComponents = GetOrCreateComponent(entity, pool);
-            bufferedComponents.Buffer.Add(authority);
-            SetComponentObject(entity, bufferedComponents);
+        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
+            ComponentPool<TMessagesReceived> pool)
+            where TMessagesReceived : MessagesReceived<TMessage>, new()
+        {
+            var messageBuffer = GetOrCreateComponent(entity, pool);
+            messageBuffer.Buffer.Add(message);
+            SetComponentObject(entity, messageBuffer);
         }
 
         private static class Errors
