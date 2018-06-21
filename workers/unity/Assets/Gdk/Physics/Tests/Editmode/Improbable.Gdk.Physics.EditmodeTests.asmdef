@@ -1,0 +1,15 @@
+{
+    "name": "Improbable.Gdk.Physics.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.Physics",
+        "Unity.Entities"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

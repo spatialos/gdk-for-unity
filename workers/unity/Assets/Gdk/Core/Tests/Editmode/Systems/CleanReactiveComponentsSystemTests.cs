@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {
     [TestFixture]
-    internal class CleanReactiveComponentsSystemTests
+    public class CleanReactiveComponentsSystemTests
     {
         private UnityTestWorker worker;
 

@@ -21,6 +21,8 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             private struct PreparationData
             {
                 public int Length;
+
+                // The ComponentArray<> here makes this a hybrid system.
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
 
                 public ComponentDataArray<TestPreparation> PreparationStruct;
@@ -66,7 +68,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 {
                     var system = new ExampleHybridSystem();
 
-                    Assert.Throws<ArgumentException>(() =>
+                    var argumentException = Assert.Throws<ArgumentException>(() =>
                         {
                             // This is basically the same action as world.GetOrCreateManager<ExampleHybridSystem>();
                             // However, if we actually called the above it would cause memory leaks and make other tests fail.
@@ -75,6 +77,10 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                         "The `{0}` class may no longer be necessary, since an `{1}` system could be created without InjectionHooks.",
                         nameof(HybridGdkSystemTestBase),
                         nameof(ExampleHybridSystem));
+
+                    Assert.IsTrue(argumentException.Message.Contains("[Inject]"),
+                        "The error message ({0}) was not about an injection annotation.",
+                        argumentException.Message);
 
                     // Ensure that the system does not leak.
                     system.ManualDispose();
