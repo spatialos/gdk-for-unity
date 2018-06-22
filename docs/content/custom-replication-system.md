@@ -1,17 +1,49 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+![SpatialOS Unity GDK documentation](../assets/unity-gdk-header.png)
+
+**Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 -----
 
+## Writing a custom replication system
 
-## Custom replication systems
+### What the Unity GDK's replication system does
 
-By default in the Unity GDK, components are automatically replicated to SpatialOS whenever a component's fields are modified. However if some components require more complex replication logic, the Unity GDK supports creating custom replication systems on a per component basis by extending the `CustomSpatialOSSendSystem<T>` class, where `T` is a component.
+By default, the Unity GDK automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
-For standard replication, each component has an internal bool named `DirtyBit`. When any property within the component is set, the dirty bit is set to `true`. The `SpatialOSSendSystem` then checks the `DirtyBit` of each component. If set to `true`, a component update is pushed and `DirtyBit` is set to `false`.
+#### For properties
 
-A custom replication system needs to handle the testing and setting of the `DirtyBit` explictly since the standard replication is not being executed.
+Each ECS component has an internal bool named `DirtyBit`. When a worker set any property of a SpatialOS component in the corresponding ECS component, the Unity GDK sets `DirtyBit` to `true`. The `SpatialOSSendSystem` then checks the `DirtyBit` of each ECS component. If set to `true`, the Unty GDK pushes a SpatialOS component update and sets `DirtyBit` to `false`.
 
-Example of a custom replication system for a `Transform` component:
+#### For events
+
+When a worker sends a SpatialOS event, the Unity GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
+
+### Writing your own replication system
+
+If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
+
+* Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component).
+
+* Deal with properties:
+
+    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because the standard replication won't happen.
+
+* Deal with events:
+
+    If you write a custom replication system that works with events, it needs to take ownership of sending events and clearing the buffer.
+
+* Register the system:
+
+    You need to register a custom replication system by attaching the system to a world. For example:
+
+    ```csharp
+    // This means the default replication code will not be executed.
+    World.GetOrCreateManager<TransformSendSystem>();
+    ```
+
+### Examples
+
+Here's an example of a custom replication system for a `Transform` component:
 
 ```csharp
 [UpdateInGroup(typeof(UpdateGroupSpatialOSSend))]
@@ -60,19 +92,9 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 }
 ```
 
-Note: The update objects are generated types from the C# Worker SDK.
+> **Note**: The update objects are generated types from the SpatialOS C# SDK.
 
-To register a custom replication system, attach this system to a world and the default replication code will not be executed.
-
-```
-World.GetOrCreateManager<TransformSendSystem>();
-```
-
-### Custom Replication with Events
-
-In standard replication, when an event is sent the event object is put into an internal buffer. When it comes time to replicate a component, all buffered events are sent and the buffer is cleared. A custom replication system needs to take ownership of sending events and clearing this buffer.
-
-Below is an example custom replication system for a component called `CubeColor` with one event called `change_color` which has the type `ColorData`.
+Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData`.
 
 ```csharp
 [UpdateInGroup(typeof(UpdateGroupSpatialOSSend))]
@@ -120,3 +142,8 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+
+<!-- 
+Questions to deal with (but not limited to):
+1. RE: line 15, "The `SpatialOSSendSystem` then checks the `DirtyBit` " - This suggests that the SpatialOSSendSystem checks the DirtyBit after it's been set to true, is that what triggers the SpatialOSSendSystem check?
+-->
