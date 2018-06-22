@@ -66,6 +66,18 @@ namespace Improbable.Gdk.Core
             return true;
         }
 
+        public void Disconnect()
+        {
+            if (Connection == null)
+            {
+                return;
+            }
+
+            View.Disconnect("WorkerBase.Disconnect() called.");
+            ConnectionUtility.Disconnect(Connection);
+            Connection = null;
+        }
+
         public virtual void RegisterSystems()
         {
             RegisterCoreSystems();

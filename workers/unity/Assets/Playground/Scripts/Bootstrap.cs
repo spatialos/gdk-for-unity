@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
+using UnityEditor.Compilation;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,6 +29,7 @@ namespace Playground
             SetupInjectionHooks(); // Register hybrid injection hooks
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
+            CompilationPipeline.assemblyCompilationStarted += CompilationStarted;
             Application.targetFrameRate = TargetFrameRate;
             if (Application.isEditor)
             {
@@ -88,6 +90,14 @@ namespace Playground
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop(worlds);
             // Systems don't tick if World.Active isn't set
             World.Active = worlds[0];
+        }
+
+        private static void CompilationStarted(String destination) 
+        {
+            foreach (var worker in Workers)
+            {
+                worker.Disconnect();
+            }
         }
 
         public void Start()
