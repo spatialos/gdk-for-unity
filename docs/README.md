@@ -32,13 +32,14 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
 ##### Contents
-* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
-* [Authority](content/authority.md)
+* [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
 * [Sending and receiving commands](content/commands.md)
+* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
 * [Custom replication systems](content/custom-replication-system.md)
-* [The code generator](content/code-generator.md)
+* [Authority](content/authority.md)
 * [Creating entities](content/create-entity.md)
 * [Entity checkout process](content/entity-checkout-process.md)
+* [The code generator](content/code-generator.md)
 
 &copy; 2018 Improbable
