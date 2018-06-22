@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Improbable.Gdk.Core
 {
-    public interface ISpatialComponentData : IComponentData
+    public interface ISpatialComponentData
     {
         bool1 DirtyBit { get; set; }
     }
