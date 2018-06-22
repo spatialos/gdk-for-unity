@@ -9,6 +9,9 @@ namespace DocsLinter
 {
   internal class Program
   {
+    private const string GithubRepoBlobPath = "github.com/spatialos/unitygdk/blob";
+    private const string GithubRepoTreePath = "github.com/spatialos/unitygdk/tree";
+
     private static void Main(string[] args)
     {
       if (args.Contains("--help") || args.Contains("/?") || args.Contains("/help"))
@@ -132,9 +135,9 @@ namespace DocsLinter
         }
         else
         {
-          // May be a markdown file (without a heading) or non-markdown file. E.g. - "../README.md" or "../../spatialos.json".
+          // May be a markdown file (without a heading) or non-markdown file or a directory. E.g. - "../README.md" or "../../spatialos.json".
           if (!markdownFiles.ContainsKey(fullyQualifiedFilePath) &&
-            !File.Exists(fullyQualifiedFilePath))
+            !File.Exists(fullyQualifiedFilePath) && !Directory.Exists(fullyQualifiedFilePath))
           {
             LogInvalidLink(markdownFilePath, localLink);
             return false;
@@ -154,6 +157,17 @@ namespace DocsLinter
     /// <returns>A bool indicating success/failure</returns>
     internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
     {
+      // First check if its linking to something in our repository.
+      // Note that github URLs are case-insensitive
+      var lowerUrl = remoteLink.Url.ToLower();
+      if (lowerUrl.Contains(GithubRepoBlobPath) || lowerUrl.Contains(GithubRepoTreePath))
+      {
+        LogInvalidLink(markdownFilePath, remoteLink,
+          "Remote link to repository detected. Use a relative path instead.");
+        return false;
+      }
+
+
       // Necessary to be in scope in finally block.
       HttpWebResponse response = null;
 
@@ -190,11 +204,13 @@ namespace DocsLinter
           return true;
         }
 
+        LogInvalidLink(markdownFilePath, remoteLink, "An exception occured when trying to access this remote link.");
         LogException(ex);
         return false;
       }
       catch (Exception ex)
       {
+        LogInvalidLink(markdownFilePath, remoteLink, "An exception occured when trying to access this remote link.");
         LogException(ex);
         return false;
       }
@@ -209,10 +225,10 @@ namespace DocsLinter
     /// </summary>
     /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
     /// <param name="link">The link that is invalid.</param>
-    private static void LogInvalidLink(string markdownFilePath, ILink link)
+    private static void LogInvalidLink(string markdownFilePath, ILink link, string message = "")
     {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine($"Error in {markdownFilePath}. The link: {link} is invalid");
+      Console.WriteLine($"Error in {markdownFilePath}. The link: {link} is invalid. {message}");
       Console.ResetColor();
     }
 

@@ -35,6 +35,18 @@ namespace DocsLinter.Tests
       var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(301)); // Permanent redirect
       Assert.IsTrue(result);
     }
+
+    [Test]
+    public void CheckRemoteLink_returns_false_for_remote_links_to_repo_files()
+    {
+      var repoLinkBlob = "https://www.github.com/spatialos/UnityGDK/blob/README,md";
+      var resultBlob = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkBlob, "")));
+      Assert.IsFalse(resultBlob);
+
+      var repoLinkTree = "https://www.github.com/spatialos/UnityGDK/tree/README,md";
+      var resultTree = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkTree, "")));
+      Assert.IsFalse(resultTree);
+    }
   }
 
   [TestFixture]
@@ -52,6 +64,9 @@ namespace DocsLinter.Tests
 
     private LocalLink otherFileExistsLink;
     private LocalLink otherFileDoesNotExistLink;
+
+    private LocalLink otherDirectoryExistsLink;
+    private LocalLink otherDirectoryDoesNotExistLink;
 
     private LocalLink otherFileHeadingExistsLink;
     private LocalLink otherFileHeadingDoesNotExistLink;
@@ -90,6 +105,10 @@ namespace DocsLinter.Tests
       otherFileExistsLink = new LocalLink(new LinkInline("test/image.png", string.Empty));
       otherFileDoesNotExistLink = new LocalLink(new LinkInline("test/no-image.png", string.Empty));
 
+      // Create other directory links.
+      otherDirectoryExistsLink = new LocalLink(new LinkInline("test/", string.Empty));
+      otherDirectoryDoesNotExistLink = new LocalLink(new LinkInline("no-test/", string.Empty));
+
       // Create other file links with heading
       otherFileHeadingExistsLink = new LocalLink(new LinkInline("test/test.md#test-heading", string.Empty));
       otherFileHeadingDoesNotExistLink = new LocalLink(new LinkInline("test/test.md#no-heading", string.Empty));
@@ -126,6 +145,24 @@ namespace DocsLinter.Tests
     public void CheckLocalLink_should_return_false_if_other_file_link_does_not_exist()
     {
       var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherFileDoesNotExistLink,
+        corpus);
+
+      Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void CheckLocalLink_should_return_true_if_other_directory_link_exists()
+    {
+      var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherDirectoryExistsLink,
+        corpus);
+
+      Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CheckLocalLink_should_return_false_if_other_directory_link_does_not_exist()
+    {
+      var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherDirectoryDoesNotExistLink,
         corpus);
 
       Assert.IsFalse(result);
