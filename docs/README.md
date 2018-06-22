@@ -32,7 +32,7 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
 ##### Contents
-* [Components and component udpates](content/component-data.md)
+* [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
 * [Sending and receiving commands](content/commands.md)
 * [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
