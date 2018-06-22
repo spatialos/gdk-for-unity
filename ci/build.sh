@@ -28,4 +28,8 @@ export UNITY_HOME="${UNITY_DIR}"
 spatial worker build -t=local
 markEndOfBlock "Building Unity Project"
 
+markStartOfBlock "Code Generation End2End"
+"${MSBUILD}" code_generator/End2End/End2End.sln //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
+markEndOfBlock "Code Generation End2End"
+
 markEndOfBlock "$0"

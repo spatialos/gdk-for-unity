@@ -1,0 +1,10 @@
+package improbable.test_schema;
+
+component BlittableComponent {
+  id = 1001;
+  bool bool_field = 1;
+  int32 int_field = 2;
+  int64 long_field = 3;
+  float float_field = 4;
+  double double_field = 5;
+}
