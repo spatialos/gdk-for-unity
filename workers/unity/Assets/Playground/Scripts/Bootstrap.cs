@@ -92,7 +92,7 @@ namespace Playground
             World.Active = worlds[0];
         }
 
-        private static void CompilationStarted(String destination) 
+        private static void CompilationStarted(String destination)
         {
             foreach (var worker in Workers)
             {
