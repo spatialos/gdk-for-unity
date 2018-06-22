@@ -1,5 +1,5 @@
 
-We are accepting issues and we want your [feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
+We are accepting issues and we want your [feedback](../README.md#give-us-feedback).
 
 -------
 
