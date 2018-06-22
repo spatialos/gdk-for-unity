@@ -80,7 +80,7 @@ public class CleanReactiveComponentsSystemTests
 
     [Test]
     public void SomeTest() {
-      // the world will be disposed in the [TearDown] above.
+      // The world will be disposed in the [TearDown] above.
       var world = worker.World;
       
       // The CleanReactiveComponentsSystem can now be created and it will be
@@ -91,7 +91,7 @@ public class CleanReactiveComponentsSystemTests
 
     [Test]
     public void SomeOtherTest() {
-      // new worker, new world, since [SetUp] and [TearDown] happen for each
+      // New worker, new world, since [SetUp] and [TearDown] happen for each
       // test.
       var world = worker.World;
 
