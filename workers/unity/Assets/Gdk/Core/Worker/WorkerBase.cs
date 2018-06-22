@@ -73,7 +73,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            View.Disconnect("WorkerBase.Disconnect() called.");
+            View.Disconnect("Disconnect called.");
             ConnectionUtility.Disconnect(Connection);
             Connection = null;
         }

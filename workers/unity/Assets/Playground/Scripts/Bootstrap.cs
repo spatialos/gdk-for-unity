@@ -92,7 +92,7 @@ namespace Playground
             World.Active = worlds[0];
         }
 
-        private static void CompilationStarted(String destination)
+        private static void CompilationStarted(string destination)
         {
             foreach (var worker in Workers)
             {
@@ -136,6 +136,7 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            CompilationPipeline.assemblyCompilationStarted -= CompilationStarted;
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
