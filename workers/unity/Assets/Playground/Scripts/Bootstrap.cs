@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEditor.Compilation;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Compilation;
 
 #endif
 
@@ -29,11 +29,12 @@ namespace Playground
             SetupInjectionHooks(); // Register hybrid injection hooks
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
-            CompilationPipeline.assemblyCompilationStarted += CompilationStarted;
             Application.targetFrameRate = TargetFrameRate;
             if (Application.isEditor)
             {
 #if UNITY_EDITOR
+                CompilationPipeline.assemblyCompilationStarted += CompilationStarted;
+
                 var workerConfigurations =
                     AssetDatabase.LoadAssetAtPath<ScriptableWorkerConfiguration>(ScriptableWorkerConfiguration
                         .AssetPath);
@@ -115,7 +116,7 @@ namespace Playground
             WorkerRegistry.RegisterWorkerType<UnityGameLogic>();
         }
 
-        public static void SetupInjectionHooks()
+        public static void SetupInjectionHooks() 
         {
             // Reflection to get internal hook classes. Doesn't seem to be a proper way to do this.
             var gameObjectArrayInjectionHookType =
@@ -136,7 +137,10 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+#if UNITY_EDITOR
             CompilationPipeline.assemblyCompilationStarted -= CompilationStarted;
+#endif
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
