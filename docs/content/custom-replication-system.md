@@ -142,8 +142,3 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
-
-<!-- 
-Questions to deal with (but not limited to):
-1. RE: line 15, "The `SpatialOSSendSystem` then checks the `DirtyBit` " - This suggests that the SpatialOSSendSystem checks the DirtyBit after it's been set to true, is that what triggers the SpatialOSSendSystem check?
--->
