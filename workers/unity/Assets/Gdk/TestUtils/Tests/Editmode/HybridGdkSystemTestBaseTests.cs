@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils.EditmodeTests
 {
-    public class HybridSystemTests
+    public class HybridGdkSystemTestBaseTests
     {
         private struct TestPreparation : IComponentData
         {
@@ -14,14 +14,18 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         }
 
         [UsedImplicitly]
-        [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
             private struct PreparationData
             {
                 public int Length;
 
-                // The ComponentArray<> here makes this a hybrid system.
+                /* 
+                The ComponentArray<> here makes this a hybrid system.
+                For this test, the GameObjectRigidBody[i] will always be null,
+                but we are only testing that this struct can be injected even if
+                it has ComponentArray<> fields, and not its contents.
+                */ 
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
 
                 public ComponentDataArray<TestPreparation> PreparationStruct;
