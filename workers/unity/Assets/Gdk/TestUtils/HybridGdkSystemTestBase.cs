@@ -22,6 +22,8 @@ namespace Improbable.Gdk.TestUtils
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            // This behaves the same way as Bootstrap.SetupInjectionHooks
+            // We have to use reflection because these classes are not exposed by default.
             gameobjectArrayInjectionHook = (InjectionHook) Activator.CreateInstance(GameObjectArrayInjectionHookType);
             transformAccessArrayInjectionHook =
                 (InjectionHook) Activator.CreateInstance(TransformAccessArrayInjectionHookType);
