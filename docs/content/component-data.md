@@ -8,17 +8,14 @@ SpatialOS components are generated from `.schema` files into components that the
 
 ### Overview
 
-A `struct`, which implements `Unity.Entities.IComponentData`, by implementing `Improbable.Gdk.Core.ISpatialComponentData`,
+A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each [blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types) SpatialOS component.
-A `class`, extending `UnityEngine.Component`, is generated for each non-blittable SpatialOS component.
+A `class`, which extends `UnityEngine.Component` and implements `Improbable.Gdk.Core.ISpatialComponentData` is generated for each non-blittable SpatialOS component.
 
 Each of these structs will be named `SpatialOS[schemalang component name]` and will contain only the schema data fields.
 It will **Not** contain any fields or methods pertaining to [commands](commands.md) or [events](events.md) defined on that component. 
 
-**NOTE** Blittable components actually implement `ISpatialComponentData` which implements `IComponentData`. 
-This is an implementaion detail of the current replication system.
-
-For example, the following component contains only blittable fields, so an `ISpatialComponentData` will be generated, similar to the example below.
+For example, the following component contains only blittable fields, so an `IComponentData` will be generated, similar to the example below.
 
 Schemalang
 ```
@@ -29,7 +26,7 @@ component Blittable {
 ```
 Generated component
 ```	csharp
-struct SpatialOSBlittable : ISpatialComponentData
+struct SpatialOSBlittable : IComponentData, ISpatialComponentData
 {
   public int Value;
 }
@@ -48,7 +45,7 @@ component NonBlittableComponent {
 ```
 Generated component
 ```	csharp
-class SpatialOSNonBlittable : Component
+class SpatialOSNonBlittable : Component, ISpatialComponentData
 {
   public int IntBlittable;
   public Dictionary<int, float> MapNonBlittable;
