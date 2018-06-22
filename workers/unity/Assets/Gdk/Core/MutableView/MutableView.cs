@@ -13,13 +13,12 @@ namespace Improbable.Gdk.Core
     public class MutableView
     {
         public const long WorkerEntityId = -1337;
+        public Entity WorkerEntity { get; }
 
         public readonly Dictionary<int, ComponentTranslation> TranslationUnits = new Dictionary<int, ComponentTranslation>();
-        private Action<Entity, long> AddAllCommandRequestSenders;
+        private Action<Entity, long> addAllCommandRequestSenders;
 
-        private EntityManager EntityManager { get; }
-
-        public Entity WorkerEntity { get; }
+        private readonly EntityManager entityManager;
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
         private readonly GameObjectManager gameObjectManager;
@@ -34,23 +33,23 @@ namespace Improbable.Gdk.Core
 
         public MutableView(World world)
         {
-            EntityManager = world.GetOrCreateManager<EntityManager>();
+            entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
-                typeof(Action<Entity, ComponentType, object>), EntityManager, setComponentObjectMethodInfo);
+                typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
 
             FindTranslationUnits();
 
             // Create the worker entity
-            WorkerEntity = EntityManager.CreateEntity(typeof(WorkerEntityTag));
-            AddAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
+            WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
+            addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
         }
 
         public void AddComponent<T>(Entity entity, T component) where T : struct, IComponentData
         {
-            EntityManager.AddComponentData(entity, component);
+            entityManager.AddComponentData(entity, component);
         }
 
         public void AddComponent<T>(long entityId, T component) where T : struct, IComponentData
@@ -67,12 +66,12 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent<T>(Entity entity)
         {
-            EntityManager.RemoveComponent<T>(entity);
+            entityManager.RemoveComponent<T>(entity);
         }
 
         public void RemoveComponent(Entity entity, ComponentType componentType)
         {
-            EntityManager.RemoveComponent(entity, componentType);
+            entityManager.RemoveComponent(entity, componentType);
         }
 
         public void RemoveComponent<T>(long entityId)
@@ -88,19 +87,19 @@ namespace Improbable.Gdk.Core
 
         public T GetComponent<T>(Entity entity) where T : struct, IComponentData
         {
-            return EntityManager.GetComponentData<T>(entity);
+            return entityManager.GetComponentData<T>(entity);
         }
 
         public T GetComponentObject<T>(Entity entity) where T : Component
         {
-            return EntityManager.GetComponentObject<T>(entity);
+            return entityManager.GetComponentObject<T>(entity);
         }
 
         public void SetComponentObject<T>(Entity entity, T component) where T : Component
         {
             if (!HasComponent<T>(entity))
             {
-                EntityManager.AddComponent(entity, typeof(T));
+                entityManager.AddComponent(entity, typeof(T));
             }
 
             setComponentObjectAction(entity, typeof(T), component);
@@ -110,7 +109,7 @@ namespace Improbable.Gdk.Core
         {
             if (!HasComponent(entity, componentType))
             {
-                EntityManager.AddComponent(entity, componentType);
+                entityManager.AddComponent(entity, componentType);
             }
 
             setComponentObjectAction(entity, componentType, component);
@@ -127,7 +126,7 @@ namespace Improbable.Gdk.Core
 
             if (!HasComponent<T>(entity))
             {
-                EntityManager.AddComponent(entity, typeof(T));
+                entityManager.AddComponent(entity, typeof(T));
             }
 
             setComponentObjectAction(entity, typeof(T), component);
@@ -136,7 +135,7 @@ namespace Improbable.Gdk.Core
         public void UpdateComponent<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
             where T : struct, IComponentData
         {
-            EntityManager.SetComponentData(entity, component);
+            entityManager.SetComponentData(entity, component);
             AddReceivedMessageToComponent(entity, component, pool);
         }
 
@@ -172,7 +171,7 @@ namespace Improbable.Gdk.Core
 
         public bool HasComponent(Entity entity, ComponentType componentType)
         {
-            return EntityManager.HasComponent(entity, componentType);
+            return entityManager.HasComponent(entity, componentType);
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)
@@ -243,14 +242,14 @@ namespace Improbable.Gdk.Core
 
         internal void Connect()
         {
-            EntityManager.AddComponent(WorkerEntity, typeof(IsConnected));
-            EntityManager.AddComponent(WorkerEntity, typeof(OnConnected));
+            entityManager.AddComponent(WorkerEntity, typeof(IsConnected));
+            entityManager.AddComponent(WorkerEntity, typeof(OnConnected));
         }
 
         internal void Disconnect(string reason)
         {
-            EntityManager.RemoveComponent<IsConnected>(WorkerEntity);
-            EntityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
+            entityManager.RemoveComponent<IsConnected>(WorkerEntity);
+            entityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
         }
 
         internal void CreateEntity(long entityId)
@@ -261,14 +260,14 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            var entity = EntityManager.CreateEntity();
-            EntityManager.AddComponentData(entity, new SpatialEntityId
+            var entity = entityManager.CreateEntity();
+            entityManager.AddComponentData(entity, new SpatialEntityId
             {
                 EntityId = entityId
             });
-            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
+            entityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
-            AddAllCommandRequestSenders(entity, entityId);
+            addAllCommandRequestSenders(entity, entityId);
             entityMapping.Add(entityId, entity);
         }
 
@@ -281,7 +280,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            EntityManager.DestroyEntity(entityMapping[entityId]);
+            entityManager.DestroyEntity(entityMapping[entityId]);
             gameObjectManager.TryRemoveGameObjectEntity(entity);
             entityMapping.Remove(entityId);
         }
@@ -296,7 +295,7 @@ namespace Improbable.Gdk.Core
                 var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
                 TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
 
-                AddAllCommandRequestSenders += translator.AddCommandRequestSender;
+                addAllCommandRequestSenders += translator.AddCommandRequestSender;
             }
         }
 
