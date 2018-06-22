@@ -194,22 +194,22 @@ namespace Improbable.Gdk.Core
         private static readonly ComponentPool<CommandResponses<CreateEntityResponse>> createEntityResponsePool =
             new ComponentPool<CommandResponses<CreateEntityResponse>>(
                 () => new CommandResponses<CreateEntityResponse>(),
-                (component) => component.Buffer.Clear());
+                component => component.Buffer.Clear());
 
         private static readonly ComponentPool<CommandResponses<DeleteEntityResponse>> deleteEntityResponsePool =
             new ComponentPool<CommandResponses<DeleteEntityResponse>>(
                 () => new CommandResponses<DeleteEntityResponse>(),
-                (component) => component.Buffer.Clear());
+                component => component.Buffer.Clear());
 
         private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> reserveEntityIdsResponsesPool
             = new ComponentPool<CommandResponses<ReserveEntityIdsResponse>>(
                 () => new CommandResponses<ReserveEntityIdsResponse>(),
-                (component) => component.Buffer.Clear());
+                component => component.Buffer.Clear());
 
         private static readonly ComponentPool<CommandResponses<EntityQueryResponse>> entityQueryResponsePool =
             new ComponentPool<CommandResponses<EntityQueryResponse>>(
                 () => new CommandResponses<EntityQueryResponse>(),
-                (component) => component.Buffer.Clear());
+                component => component.Buffer.Clear());
 
         public WorldCommandsTranslation(MutableView view) : base(view)
         {

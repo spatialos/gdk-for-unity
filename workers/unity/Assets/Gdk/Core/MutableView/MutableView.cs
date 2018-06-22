@@ -14,12 +14,10 @@ namespace Improbable.Gdk.Core
     {
         public const long WorkerEntityId = -1337;
 
-        public Dictionary<int, ComponentTranslation> TranslationUnits;
-        public Action<Entity, long> AddAllCommandRequestSenders;
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits = new Dictionary<int, ComponentTranslation>();
+        private Action<Entity, long> AddAllCommandRequestSenders;
 
-        public World World;
-
-        public EntityManager EntityManager { get; }
+        private EntityManager EntityManager { get; }
 
         public Entity WorkerEntity { get; }
 
@@ -36,7 +34,6 @@ namespace Improbable.Gdk.Core
 
         public MutableView(World world)
         {
-            World = world;
             EntityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
@@ -280,7 +277,7 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.DeleteNonExistantEntity, entityId);
+                Debug.LogErrorFormat(Errors.DeleteNonExistentEntity, entityId);
                 return;
             }
 
@@ -291,20 +288,15 @@ namespace Improbable.Gdk.Core
 
         private void FindTranslationUnits()
         {
-            TranslationUnits = new Dictionary<int, ComponentTranslation>();
+            var translationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var translationType in translationTypes)
             {
-                var translationTypes = assembly.GetTypes().Where(
-                    type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+                var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
+                TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
 
-                foreach (var translationType in translationTypes)
-                {
-                    var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
-                    TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
-
-                    AddAllCommandRequestSenders += translator.AddCommandRequestSender;
-                }
+                AddAllCommandRequestSenders += translator.AddCommandRequestSender;
             }
         }
 
@@ -333,7 +325,7 @@ namespace Improbable.Gdk.Core
             public const string AddEntityButEntityIdAlreadyExists =
                 "Tried to add an entity with EntityId {0}, but there is already an entity associated with that EntityId.";
 
-            public const string DeleteNonExistantEntity =
+            public const string DeleteNonExistentEntity =
                 "Tried to delete an entity with EntityId {0}, but there is no entity associated with that EntityId";
         }
     }
