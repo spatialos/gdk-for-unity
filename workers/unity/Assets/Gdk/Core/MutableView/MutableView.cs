@@ -13,16 +13,12 @@ namespace Improbable.Gdk.Core
     public class MutableView : IDisposable
     {
         public const long WorkerEntityId = -1337;
-
-        public Dictionary<int, ComponentTranslation> TranslationUnits;
-        public Action<Entity, long> AddAllCommandRequestSenders;
-
-        public Connection Connection;
-        public World World;
-
-        public EntityManager EntityManager { get; }
-
         public Entity WorkerEntity { get; }
+
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits = new Dictionary<int, ComponentTranslation>();
+        private Action<Entity, long> addAllCommandRequestSenders;
+
+        private readonly EntityManager entityManager;
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
         private readonly GameObjectManager gameObjectManager;
@@ -37,24 +33,23 @@ namespace Improbable.Gdk.Core
 
         public MutableView(World world)
         {
-            World = world;
-            EntityManager = world.GetOrCreateManager<EntityManager>();
+            entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
-                typeof(Action<Entity, ComponentType, object>), EntityManager, setComponentObjectMethodInfo);
+                typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
 
             FindTranslationUnits();
 
             // Create the worker entity
-            WorkerEntity = EntityManager.CreateEntity(typeof(WorkerEntityTag));
-            AddAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
+            WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
+            addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
         }
 
         public void Dispose()
         {
-            EntityManager.DestroyEntity(WorkerEntity);
+            entityManager.DestroyEntity(WorkerEntity);
 
             foreach (var translation in TranslationUnits.Values)
             {
@@ -62,67 +57,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        internal void Connect()
-        {
-            EntityManager.AddComponent(WorkerEntity, typeof(IsConnected));
-            EntityManager.AddComponent(WorkerEntity, typeof(OnConnected));
-        }
-
-        internal void Disconnect(string reason)
-        {
-            EntityManager.RemoveComponent<IsConnected>(WorkerEntity);
-            EntityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
-        }
-
-        private void FindTranslationUnits()
-        {
-            TranslationUnits = new Dictionary<int, ComponentTranslation>();
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var translationTypes = assembly.GetTypes().Where(
-                    type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
-
-                foreach (var translationType in translationTypes)
-                {
-                    var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
-                    TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
-
-                    AddAllCommandRequestSenders += translator.AddCommandRequestSender;
-                }
-            }
-        }
-
-        private T GetOrCreateComponent<T>(Entity entity) where T : Component, new()
-        {
-            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : new T();
-        }
-
-        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
-        {
-            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
-        }
-
-        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message)
-            where TMessagesReceived : MessagesReceived<TMessage>, new()
-        {
-            TMessagesReceived messageBuffer = GetOrCreateComponent<TMessagesReceived>(entity);
-            messageBuffer.Buffer.Add(message);
-            SetComponentObject(entity, messageBuffer);
-        }
-
-        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
-            ComponentPool<TMessagesReceived> pool)
-            where TMessagesReceived : MessagesReceived<TMessage>, new()
-        {
-            TMessagesReceived messageBuffer = GetOrCreateComponent(entity, pool);
-            messageBuffer.Buffer.Add(message);
-            SetComponentObject(entity, messageBuffer);
-        }
-
         public void AddComponent<T>(Entity entity, T component) where T : struct, IComponentData
         {
-            EntityManager.AddComponentData(entity, component);
+            entityManager.AddComponentData(entity, component);
         }
 
         public void AddComponent<T>(long entityId, T component) where T : struct, IComponentData
@@ -137,30 +74,14 @@ namespace Improbable.Gdk.Core
             AddComponent(entity, component);
         }
 
-        public void AddSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
-        {
-            EntityManager.AddSharedComponentData(entity, component);
-        }
-
-        public void AddSharedComponent<T>(long entityId, T component) where T : struct, ISharedComponentData
-        {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
-            }
-
-            AddSharedComponent(entity, component);
-        }
-
         public void RemoveComponent<T>(Entity entity)
         {
-            EntityManager.RemoveComponent<T>(entity);
+            entityManager.RemoveComponent<T>(entity);
         }
 
         public void RemoveComponent(Entity entity, ComponentType componentType)
         {
-            EntityManager.RemoveComponent(entity, componentType);
+            entityManager.RemoveComponent(entity, componentType);
         }
 
         public void RemoveComponent<T>(long entityId)
@@ -176,24 +97,19 @@ namespace Improbable.Gdk.Core
 
         public T GetComponent<T>(Entity entity) where T : struct, IComponentData
         {
-            return EntityManager.GetComponentData<T>(entity);
-        }
-
-        public T GetSharedComponent<T>(Entity entity) where T : struct, ISharedComponentData
-        {
-            return EntityManager.GetSharedComponentData<T>(entity);
+            return entityManager.GetComponentData<T>(entity);
         }
 
         public T GetComponentObject<T>(Entity entity) where T : Component
         {
-            return EntityManager.GetComponentObject<T>(entity);
+            return entityManager.GetComponentObject<T>(entity);
         }
 
         public void SetComponentObject<T>(Entity entity, T component) where T : Component
         {
             if (!HasComponent<T>(entity))
             {
-                EntityManager.AddComponent(entity, typeof(T));
+                entityManager.AddComponent(entity, typeof(T));
             }
 
             setComponentObjectAction(entity, typeof(T), component);
@@ -203,7 +119,7 @@ namespace Improbable.Gdk.Core
         {
             if (!HasComponent(entity, componentType))
             {
-                EntityManager.AddComponent(entity, componentType);
+                entityManager.AddComponent(entity, componentType);
             }
 
             setComponentObjectAction(entity, componentType, component);
@@ -220,7 +136,7 @@ namespace Improbable.Gdk.Core
 
             if (!HasComponent<T>(entity))
             {
-                EntityManager.AddComponent(entity, typeof(T));
+                entityManager.AddComponent(entity, typeof(T));
             }
 
             setComponentObjectAction(entity, typeof(T), component);
@@ -229,13 +145,8 @@ namespace Improbable.Gdk.Core
         public void UpdateComponent<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
             where T : struct, IComponentData
         {
-            EntityManager.SetComponentData(entity, component);
-            AddReceivedMessageToComponent<ComponentsUpdated<T>, T>(entity, component, pool);
-        }
-
-        public void UpdateSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
-        {
-            EntityManager.SetSharedComponentData(entity, component);
+            entityManager.SetComponentData(entity, component);
+            AddReceivedMessageToComponent(entity, component, pool);
         }
 
         public void UpdateComponentObject<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
@@ -257,11 +168,6 @@ namespace Improbable.Gdk.Core
             AddReceivedMessageToComponent(entity, commandRequest, pool);
         }
 
-        public void AddCommandResponse<T>(Entity entity, T commandResponse) where T : struct, IIncomingCommandResponse
-        {
-            AddReceivedMessageToComponent<CommandResponses<T>, T>(entity, commandResponse);
-        }
-
         public void AddCommandResponse<T>(Entity entity, T commandResponse, ComponentPool<CommandResponses<T>> pool)
             where T : struct, IIncomingCommandResponse
         {
@@ -275,45 +181,7 @@ namespace Improbable.Gdk.Core
 
         public bool HasComponent(Entity entity, ComponentType componentType)
         {
-            return EntityManager.HasComponent(entity, componentType);
-        }
-
-        public void CreateEntity(long entityId)
-        {
-            if (entityMapping.ContainsKey(entityId))
-            {
-                Debug.LogErrorFormat(Errors.AddEntityButEntityIdAlreadyExists, entityId);
-                return;
-            }
-
-            var entity = EntityManager.CreateEntity();
-            EntityManager.AddComponentData(entity, new SpatialEntityId
-            {
-                EntityId = entityId
-            });
-            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
-
-            AddAllCommandRequestSenders(entity, entityId);
-            entityMapping.Add(entityId, entity);
-        }
-
-        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
-        {
-            gameObjectManager.AddGameObjectEntity(entity, gameObject);
-        }
-
-        public void RemoveEntity(long entityId)
-        {
-            Entity entity;
-            if (!entityMapping.TryGetValue(entityId, out entity))
-            {
-                Debug.LogErrorFormat(Errors.DeleteNonExistantEntity, entityId);
-                return;
-            }
-
-            EntityManager.DestroyEntity(entityMapping[entityId]);
-            gameObjectManager.TryRemoveGameObjectEntity(entity);
-            entityMapping.Remove(entityId);
+            return entityManager.HasComponent(entity, componentType);
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)
@@ -321,9 +189,21 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public void HandleAuthorityChange<T>(Entity entity, Authority authority,
+        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
+        {
+            gameObjectManager.AddGameObjectEntity(entity, gameObject);
+        }
+
+        public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
+            Entity entity;
+            if (!TryGetEntity(entityId, out entity))
+            {
+                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                return;
+            }
+
             switch (authority)
             {
                 case Authority.Authoritative:
@@ -365,22 +245,82 @@ namespace Improbable.Gdk.Core
                     break;
             }
 
-            AuthoritiesChanged<T> bufferedComponents = GetOrCreateComponent(entity, pool);
+            var bufferedComponents = GetOrCreateComponent(entity, pool);
             bufferedComponents.Buffer.Add(authority);
             SetComponentObject(entity, bufferedComponents);
         }
 
-        public void HandleAuthorityChange<T>(long entityId, Authority authority,
-            ComponentPool<AuthoritiesChanged<T>> pool)
+        internal void Connect()
+        {
+            entityManager.AddComponent(WorkerEntity, typeof(IsConnected));
+            entityManager.AddComponent(WorkerEntity, typeof(OnConnected));
+        }
+
+        internal void Disconnect(string reason)
+        {
+            entityManager.RemoveComponent<IsConnected>(WorkerEntity);
+            entityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
+        }
+
+        internal void CreateEntity(long entityId)
+        {
+            if (entityMapping.ContainsKey(entityId))
+            {
+                Debug.LogErrorFormat(Errors.AddEntityButEntityIdAlreadyExists, entityId);
+                return;
+            }
+
+            var entity = entityManager.CreateEntity();
+            entityManager.AddComponentData(entity, new SpatialEntityId
+            {
+                EntityId = entityId
+            });
+            entityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
+
+            addAllCommandRequestSenders(entity, entityId);
+            entityMapping.Add(entityId, entity);
+        }
+
+        internal void RemoveEntity(long entityId)
         {
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                Debug.LogErrorFormat(Errors.DeleteNonExistentEntity, entityId);
                 return;
             }
 
-            HandleAuthorityChange<T>(entity, authority, pool);
+            entityManager.DestroyEntity(entityMapping[entityId]);
+            gameObjectManager.TryRemoveGameObjectEntity(entity);
+            entityMapping.Remove(entityId);
+        }
+
+        private void FindTranslationUnits()
+        {
+            var translationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+            foreach (var translationType in translationTypes)
+            {
+                var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
+                TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
+
+                addAllCommandRequestSenders += translator.AddCommandRequestSender;
+            }
+        }
+
+        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
+        {
+            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
+        }
+
+        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
+            ComponentPool<TMessagesReceived> pool)
+            where TMessagesReceived : MessagesReceived<TMessage>, new()
+        {
+            var messageBuffer = GetOrCreateComponent(entity, pool);
+            messageBuffer.Buffer.Add(message);
+            SetComponentObject(entity, messageBuffer);
         }
 
         private static class Errors
@@ -394,7 +334,7 @@ namespace Improbable.Gdk.Core
             public const string AddEntityButEntityIdAlreadyExists =
                 "Tried to add an entity with EntityId {0}, but there is already an entity associated with that EntityId.";
 
-            public const string DeleteNonExistantEntity =
+            public const string DeleteNonExistentEntity =
                 "Tried to delete an entity with EntityId {0}, but there is no entity associated with that EntityId";
         }
     }

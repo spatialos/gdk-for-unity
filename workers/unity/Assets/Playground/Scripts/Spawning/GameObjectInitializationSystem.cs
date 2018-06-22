@@ -93,6 +93,7 @@ namespace Playground
             var spatialOSComponent = gameObject.AddComponent<SpatialOSComponent>();
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
+            spatialOSComponent.World = World;
 
             foreach (var component in gameObject.GetComponents<Component>())
             {
