@@ -12,8 +12,6 @@ By default, the Unity GDK automatically replicates ECS components to SpatialOS w
 
 Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the Unity GDK sets `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the Unity GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
-If you are using `CustomSpatialOSSendSystem`, rather than the generic `SpatialOSSendSystem`, you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../workers/unity/Assets/Gdk/Physics/Systems/TransformSendSystem.cs) for an example.
-
 #### For events
 
 When a worker sends a SpatialOS event, the Unity GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
@@ -22,15 +20,15 @@ When a worker sends a SpatialOS event, the Unity GDK puts the event object into 
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component).
+* Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for T.
 
 * Handle replication of properties:
 
-    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because the standard replication won't happen.
+    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because standard replication won't happen. This means that you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../workers/unity/Assets/Gdk/Physics/Systems/TransformSendSystem.cs) for an example.
 
 * Handle replication of events:
 
-    If you write a custom replication system that works with events, it needs to take ownership of sending events and clearing the buffer.
+    If you write a custom replication system for a component that has events, it needs to take ownership of sending events and clearing the buffer.
 
 * Register the system:
 
