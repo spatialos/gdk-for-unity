@@ -90,7 +90,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 }
 ```
 
-> **Note**: The update objects are generated types from the SpatialOS C# SDK.
+> **Note**: The update objects are generated types from the [SpatialOS C# SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction).
 
 Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData`.
 
