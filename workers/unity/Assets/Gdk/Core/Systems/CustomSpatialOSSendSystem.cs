@@ -3,7 +3,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
-    public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : struct, ISpatialComponentData
+    public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData
     {
         private SpatialOSSendSystem spatialOSSendSystem;
 
