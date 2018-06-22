@@ -12,6 +12,8 @@ By default, the Unity GDK automatically replicates ECS components to SpatialOS w
 
 Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the Unity GDK sets `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the Unity GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
+If you are using `CustomSpatialOSSendSystem`, rather than the generic `SpatialOSSendSystem`, you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../workers/unity/Assets/Gdk/Physics/Systems/TransformSendSystem.cs) for an example.
+
 #### For events
 
 When a worker sends a SpatialOS event, the Unity GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
