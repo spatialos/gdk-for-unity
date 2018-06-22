@@ -60,6 +60,9 @@
     <Reference Include="Unity.Entities">
       <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Unity.Entities.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Entities.Hybrid">
+      <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Unity.Entities.Hybrid.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
