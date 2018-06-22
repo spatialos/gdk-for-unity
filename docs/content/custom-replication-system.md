@@ -24,11 +24,11 @@ If some ECS components need more complex replication logic, you can create custo
 
 * Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component).
 
-* Deal with properties:
+* Handle replication of properties:
 
     If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because the standard replication won't happen.
 
-* Deal with events:
+* Handle replication of events:
 
     If you write a custom replication system that works with events, it needs to take ownership of sending events and clearing the buffer.
 
