@@ -9,6 +9,11 @@ namespace DocsLinter.Tests
   [TestFixture]
   internal class RemoteLinkCheckingTests
   {
+    private static readonly Dictionary<string, string> dotenv = new Dictionary<string, string>
+    {
+      { Program.GithubUrlEnvKey, "github.com/spatialos/UnityGDK" }
+    };
+
     private static RemoteLink GetUrlForStatusCode(int statusCode)
     {
       var url = $"https://httpstat.us/{statusCode}";
@@ -18,21 +23,21 @@ namespace DocsLinter.Tests
     [Test]
     public void CheckRemoteLink_returns_true_for_200_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200));
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200), dotenv);
       Assert.IsTrue(result);
     }
 
     [Test]
     public void CheckRemoteLink_returns_false_for_404_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(404));
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(404), dotenv);
       Assert.IsFalse(result);
     }
 
     [Test]
     public void CheckRemoteLink_returns_true_for_arbitrary_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(301)); // Permanent redirect
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(301), dotenv); // Permanent redirect
       Assert.IsTrue(result);
     }
 
@@ -40,11 +45,11 @@ namespace DocsLinter.Tests
     public void CheckRemoteLink_returns_false_for_remote_links_to_repo_files()
     {
       var repoLinkBlob = "https://www.github.com/spatialos/UnityGDK/blob/README.md";
-      var resultBlob = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkBlob, "")));
+      var resultBlob = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkBlob, "")), dotenv);
       Assert.IsFalse(resultBlob);
 
       var repoLinkTree = "https://www.github.com/spatialos/UnityGDK/tree/README.md";
-      var resultTree = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkTree, "")));
+      var resultTree = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkTree, "")), dotenv);
       Assert.IsFalse(resultTree);
     }
   }
