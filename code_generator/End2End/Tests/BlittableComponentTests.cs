@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         private static readonly bool1 BoolValue = Bool1True;
 
         [Test]
-        public void ComponentIsASpatialIComponentData()
+        public void component_should_be_an_ISpatialComponentData()
         {
             var component = new SpatialOSBlittableComponent();
             Assert.True(component is ISpatialComponentData,
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         }
 
         [Test]
-        public void FieldGettersReturnExpectedValues()
+        public void getters_should_return_values_set_in_constructor()
         {
             var component = new SpatialOSBlittableComponent
             {
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         }
 
         [Test]
-        public void FieldSettersAlsoSetDirtyBit()
+        public void setters_should_set_dirty_bit_to_true()
         {
             var component = new SpatialOSBlittableComponent();
 

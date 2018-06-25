@@ -25,7 +25,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         private const string StringValue = "A String value";
 
         [Test]
-        public void ComponentIsAComponent()
+        public void component_should_subclass_unityengine_component()
         {
             var component = new SpatialOSNonBlittableComponent();
             Assert.True(component is Component,
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         }
 
         [Test]
-        public void FieldGettersReturnExpectedValues()
+        public void getters_should_return_set_values()
         {
             var component = new SpatialOSNonBlittableComponent();
             component.BoolField = true;
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         }
 
         [Test]
-        public void FieldSettersAlsoSetDirtyBit()
+        public void setters_should_set_dirty_bit_to_true()
         {
             var component = new SpatialOSNonBlittableComponent();
             Assert.AreEqual(Bool1False, component.DirtyBit, "Dirty bit is initially false.");
