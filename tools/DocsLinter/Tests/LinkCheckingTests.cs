@@ -39,11 +39,11 @@ namespace DocsLinter.Tests
     [Test]
     public void CheckRemoteLink_returns_false_for_remote_links_to_repo_files()
     {
-      var repoLinkBlob = "https://www.github.com/spatialos/UnityGDK/blob/README,md";
+      var repoLinkBlob = "https://www.github.com/spatialos/UnityGDK/blob/README.md";
       var resultBlob = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkBlob, "")));
       Assert.IsFalse(resultBlob);
 
-      var repoLinkTree = "https://www.github.com/spatialos/UnityGDK/tree/README,md";
+      var repoLinkTree = "https://www.github.com/spatialos/UnityGDK/tree/README.md";
       var resultTree = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkTree, "")));
       Assert.IsFalse(resultTree);
     }
