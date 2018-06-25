@@ -3,8 +3,16 @@ using System.IO;
 
 namespace DocsLinter
 {
+  /// <summary>
+  ///   Helper class for loading the dotenv file.
+  /// </summary>
   public class DotenvLoader
   {
+    /// <summary>
+    ///   Helper method that parses the dotenv file.
+    ///   The dotenv file is assumed to be in the cwd.
+    /// </summary>
+    /// <returns>The dotenv file parsed into environment variables.</returns>
     public static Dictionary<string, string> LoadDotenvFile()
     {
       var dotenvContents = new Dictionary<string, string>();
