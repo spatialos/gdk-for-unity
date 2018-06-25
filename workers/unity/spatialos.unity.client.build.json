@@ -75,10 +75,11 @@
       "name": "Clean",
       "steps": [
         {
-          "name": "Dependencies",
+          "name": "Remove Codegen",
+          "command": "rm",
           "arguments": [
-            "worker_package",
-            "clean"
+            "-rf",
+            "./Assets/improbable/genereated/*"
           ]
         }
       ]
