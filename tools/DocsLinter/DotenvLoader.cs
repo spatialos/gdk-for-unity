@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DocsLinter
@@ -25,6 +26,9 @@ namespace DocsLinter
 
         if (index < 0)
         {
+          Console.ForegroundColor = ConsoleColor.Yellow;
+          Console.WriteLine($"Warning: Malformed environment variable declaration in .env detected: {dotenvRow}");
+          Console.ResetColor();
           continue;
         }
 

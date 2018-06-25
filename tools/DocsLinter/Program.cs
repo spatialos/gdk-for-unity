@@ -185,7 +185,7 @@ namespace DocsLinter
       if (lowerUrl.Contains(githubRepoBlobPath) || lowerUrl.Contains(githubRepoTreePath))
       {
         LogInvalidLink(markdownFilePath, remoteLink,
-          "Remote link to repository detected. Use a relative path instead.");
+          "Remote link to repository detected. Use a relative path instead. For example, https://www.github.com/spatialos/UnityGDK/blob/master/README.md#docs referenced from docs/my-docs.md should be ../README.md#docs");
         return false;
       }
 
