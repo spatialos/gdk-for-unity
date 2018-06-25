@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Generated.Improbable.TestSchema;
+using Improbable.Gdk.Core;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Unity.Mathematics;
@@ -23,6 +25,15 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
         private static readonly bool1 BoolValue = Bool1True;
+
+        [Test]
+        public void ComponentIsASpatialIComponentData()
+        {
+            var component = new SpatialOSBlittableComponent();
+            Assert.True(component is ISpatialComponentData,
+                "SpatialOSBlittableComponent implements ISpatialComponentData");
+            
+        }
 
         [Test]
         public void FieldGettersReturnExpectedValues()

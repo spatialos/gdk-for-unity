@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Generated.Improbable.TestSchema;
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Improbable.Gdk.CodeGenerator.End2EndTests
 {
@@ -21,6 +22,14 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         private const double DoubleValue = 3.14159;
         private static readonly bool1 BoolValue = Bool1True;
         private const string StringValue = "A String value";
+
+        [Test]
+        public void ComponentIsAComponent()
+        {
+            var component = new SpatialOSNonBlittableComponent();
+            Assert.True(component is Component,
+                "SpatialOSNonBlittableComponent is subclass of UnityEngine.Component");
+        }
 
         [Test]
         public void FieldGettersReturnExpectedValues()
