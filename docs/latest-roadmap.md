@@ -1,7 +1,7 @@
 # SpatialOS Unity GDK roadmap
 **Date:** 2018-06-19
 
-We'd love to hear what you think about the roadmap; [give us feedback](../README.MD#give-us-feedback) on what you'd like to see in it.
+We'd love to hear what you think about the roadmap; [give us feedback](../README.md#give-us-feedback) on what you'd like to see in it.
 
 |....................| Faster development iteration | Native workflows| High performance|
 |------|---|----|--|
