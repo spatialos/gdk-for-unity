@@ -7,7 +7,7 @@ using Generated.Improbable.TestSchema;
 using NUnit.Framework;
 using Unity.Mathematics;
 
-namespace End2End
+namespace Improbable.Gdk.CodeGenerator.End2EndTests
 {
     [TestFixture]
     public class NonBlittableComponentTests
@@ -23,7 +23,7 @@ namespace End2End
         private const string StringValue = "A String value";
 
         [Test]
-        public void TestFieldGetters()
+        public void FieldGettersReturnExpectedValues()
         {
             var component = new SpatialOSNonBlittableComponent();
             component.BoolField = true;
@@ -42,7 +42,7 @@ namespace End2End
         }
 
         [Test]
-        public void TestFieldSettersAndDirtyBit()
+        public void FieldSettersAlsoSetDirtyBit()
         {
             var component = new SpatialOSNonBlittableComponent();
             Assert.AreEqual(Bool1False, component.DirtyBit, "Dirty bit is initially false.");

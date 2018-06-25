@@ -10,7 +10,7 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Unity.Mathematics;
 
-namespace End2End
+namespace Improbable.Gdk.CodeGenerator.End2EndTests
 {
     [TestFixture]
     public class BlittableComponentTests
@@ -25,7 +25,7 @@ namespace End2End
         private static readonly bool1 BoolValue = Bool1True;
 
         [Test]
-        public void TestFieldGetters()
+        public void FieldGettersReturnExpectedValues()
         {
             var component = new SpatialOSBlittableComponent
             {
@@ -44,7 +44,7 @@ namespace End2End
         }
 
         [Test]
-        public void TestFieldSettersAndDirtyBit()
+        public void FieldSettersAlsoSetDirtyBit()
         {
             var component = new SpatialOSBlittableComponent();
 
