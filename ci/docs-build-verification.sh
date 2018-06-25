@@ -23,12 +23,19 @@ function cleanUp() {
     rm -rf ${TMP_DIR}
 }
 
+function fetchCloneUrl() {
+    export $(cat .env | xargs)
+    
+    echo "git@${GITHUB_URL/.com\//.com:}"
+    return 0
+}
+
 trap cleanUp EXIT
 
 BRANCH_TO_TEST=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_DIR=$(pwd)
 
-CLONE_URL="git@github.com:spatialos/UnityGdk.git"
+CLONE_URL=$(fetchCloneUrl)
 TMP_DIR=$(mktemp -d)
 
 # Go to a temporary directory and simulate the merge
