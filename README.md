@@ -63,6 +63,6 @@ Currently the Unity GDK is in its early development, so there is no migration pa
 See the [latest roadmap](docs/roadmap.md) and let us know what you'd like to see in there.
 
 ## Email updates
-You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-05-10/26yzpy) direct to your mailbox.
+You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.
 
 &copy; 2018 Improbable
