@@ -75,11 +75,11 @@
       "name": "Clean",
       "steps": [
         {
-          "name": "Remove Codegen",
+          "name": "Codegen",
           "command": "rm",
           "arguments": [
             "-rf",
-            "./Assets/improbable/genereated/*"
+            "Assets/improbable/genereated/*"
           ]
         }
       ]
