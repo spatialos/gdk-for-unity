@@ -5,6 +5,7 @@
 /workers/unity/Temp/
 /workers/unity/logs/
 
+!/workers/unity/Assets/improbable/dependencies/
 !/workers/unity/Assets/improbable/Improbable.CSharp.asmdef
 !/workers/unity/Assets/improbable/Improbable.CSharp.asmdef.meta
 
