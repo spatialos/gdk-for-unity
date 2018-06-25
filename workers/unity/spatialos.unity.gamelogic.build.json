@@ -4,13 +4,6 @@
       "name": "Codegen",
       "steps": [
         {
-          "name": "Dependencies",
-          "arguments": [
-            "worker_package",
-            "unpack"
-          ]
-        },
-        {
           "name": "C#",
           "arguments": [
             "process_schema",
@@ -82,10 +75,11 @@
       "name": "Clean",
       "steps": [
         {
-          "name": "Dependencies",
+          "name": "Codegen",
+          "command": "rm",
           "arguments": [
-            "worker_package",
-            "clean"
+            "-rf",
+            "Assets/improbable/generated/*"
           ]
         }
       ]
