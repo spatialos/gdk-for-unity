@@ -23,7 +23,7 @@ namespace <#= qualifiedNamespace #>
 
                 internal Translation Translation { get; }
 
-                public string CallerWorkerId;
+                public string CallerWorkerId {get; }
 
                 public List<string> CallerAttributeSet { get; }
 
