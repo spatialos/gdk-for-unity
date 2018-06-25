@@ -1,4 +1,30 @@
-package improbable.test_schema;
+package improbable.test_schema.nonblittable;
+
+type FirstCommandRequest {
+  int32 field = 1;
+}
+
+type FirstCommandResponse {
+  string response = 1;
+}
+
+type SecondCommandRequest {
+  int64 field = 1;
+}
+
+type SecondCommandResponse {
+  string response = 1;
+}
+
+type FirstEventPayload {
+  bool field1 = 1;
+  string field2 = 2;
+}
+
+type SecondEventPayload {
+  float field1 = 1;
+  list<double> field2 = 2;
+}
 
 component NonBlittableComponent {
     id = 1002;
@@ -11,4 +37,10 @@ component NonBlittableComponent {
     option<int32> optional_field = 7;
     list<int32> list_field = 8;
     map<int32, string> map_field = 9;
+
+    command FirstCommandResponse first_command(FirstCommandRequest);
+    command SecondCommandResponse second_command(SecondCommandRequest);
+
+    // event FirstEventPayload first_event; Uncomment when non-blittable component events bug fixed
+    // event SecondEventPayload second_event; Uncomment when non-blittable component events bug fixed
 }

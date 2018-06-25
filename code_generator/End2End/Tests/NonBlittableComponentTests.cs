@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Generated.Improbable.TestSchema;
+using Generated.Improbable.TestSchema.Nonblittable;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
