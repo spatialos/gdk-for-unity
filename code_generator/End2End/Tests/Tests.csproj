@@ -7,7 +7,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DEB14EBD-5B43-4AE8-9398-8243EBBD657B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>Tests</RootNamespace>
     <AssemblyName>Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -36,7 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Tests.EntryPoint</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlittableComponentTests.cs" />
-    <Compile Include="EntryPoint.cs" />
     <Compile Include="NonBlittableComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
