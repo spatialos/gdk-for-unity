@@ -15,7 +15,13 @@ You need to do this once after you check out the repository, or if anything in
 Open the repository directory in your terminal, for example using Git Bash.
 
 ```bash
-./prepare-workspace.sh
+$ ./prepare-workspace.sh
+```
+
+You also need to build the tools that will be used for testing.
+
+```bash
+$ ./ci/build.sh
 ```
 
 ## 2. (Optional) Run All Tests From The Command Line
