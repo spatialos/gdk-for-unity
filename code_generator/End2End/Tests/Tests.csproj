@@ -52,7 +52,6 @@
     <Compile Include="BlittableComponentTests.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="NonBlittableComponentTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Unity.Entities">
