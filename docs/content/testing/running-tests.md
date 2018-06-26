@@ -4,7 +4,8 @@
 
 # Running Tests
 
-You can run tests from the command line, or using the Unity Editor.
+You can run tests from the command line, or using the Unity Editor, through
+ the [Unity Test Runner window](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
 
 ## 1. Prepare Workspace
 
