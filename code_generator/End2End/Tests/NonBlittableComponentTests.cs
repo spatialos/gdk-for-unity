@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Generated.Improbable.TestSchema;
 using Generated.Improbable.TestSchema.Nonblittable;
 using Improbable.Gdk.Core;
 using NUnit.Framework;

@@ -1,16 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Generated.Improbable.TestSchema;
 using Generated.Improbable.TestSchema.Blittable;
 using Improbable.Gdk.Core;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using Unity.Mathematics;
 
 namespace Improbable.Gdk.CodeGenerator.End2EndTests
