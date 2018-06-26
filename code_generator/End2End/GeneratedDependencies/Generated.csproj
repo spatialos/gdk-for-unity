@@ -47,7 +47,7 @@
       <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.Gdk.Core.dll</HintPath>
     </Reference>
     <Reference Include="Improbable.WorkerSdkCsharp">
-      <HintPath>..\..\..\workers\unity\Assets\improbable\dependencies\managed\Improbable.WorkerSdkCsharp.dll</HintPath>
+      <HintPath>..\..\..\workers\unity\Assets\Plugins\Improbable\Sdk\Improbable.WorkerSdkCsharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
