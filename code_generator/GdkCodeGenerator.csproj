@@ -79,7 +79,6 @@
     <Compile Include="src\Generation\Generators\CommonGeneratorUtils.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityCommandPayloadGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentConversionGeneratorPart.cs" />
-    <Compile Include="src\Generation\Generators\Parts\UnityComponentDataConversionGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentDataGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEnumGeneratorPart.cs" />
@@ -110,7 +109,6 @@
   <ItemGroup>
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
     <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
-    <T4Files Include="Templates\UnityComponentDataConversionGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
     <T4Files Include="Templates\UnityComponentGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />

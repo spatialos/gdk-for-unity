@@ -34,7 +34,7 @@ namespace <#= qualifiedNamespace #>
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>>), typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>), 
+                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>>), typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
 <# foreach(var commandDetails in commandDetailsList) { #>
                 typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(CommandResponses<<#= commandDetails.CommandName #>.Response>),
 <# } #>
@@ -44,7 +44,7 @@ namespace <#= qualifiedNamespace #>
             };
 <# if(commandDetailsList.Count > 0) { #>
 
-            private Dictionary<uint, RequestContext> RequestIdToRequestContext = new Dictionary<uint, RequestContext>();
+            private readonly Dictionary<uint, RequestContext> RequestIdToRequestContext = new Dictionary<uint, RequestContext>();
 
 <# foreach(var commandDetails in commandDetailsList) { #>
             internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
@@ -62,7 +62,7 @@ namespace <#= qualifiedNamespace #>
 
 <# foreach(var eventDetails in eventDetailsList) { #>
             internal readonly Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>> EntityIdTo<#= eventDetails.EventName#>Events = new Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>>();
-        
+
             private static readonly ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>> <#= eventDetails.EventName#>EventPool =
                 new ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>>(
                     () => new EventsReceived<<#= eventDetails.EventName#>Event>(),
@@ -73,7 +73,7 @@ namespace <#= qualifiedNamespace #>
                 new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>>>(
                     () => new ComponentsUpdated<<#= componentDetails.TypeName #>>(),
                     (component) => component.Buffer.Clear());
-        
+
             private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
                     () => new AuthoritiesChanged<<#= componentDetails.TypeName #>>(),
@@ -119,7 +119,12 @@ namespace <#= qualifiedNamespace #>
                 <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>;
 <# } #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
+
+<# if (componentDetails.IsBlittable) { #>
+                view.AddComponent(entity, <#= componentDetails.CamelCaseTypeName#>);
+<# } else { #>
                 view.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
+<# } #>
                 view.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
             }
 
@@ -132,7 +137,11 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var <#= componentDetails.CamelCaseTypeName #> = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+<# if (componentDetails.IsBlittable) { #>
+                var componentData = view.GetComponent<<#= componentDetails.TypeName #>>(entity);
+<# } else { #>
+                var componentData = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+<# } #>
                 var update = op.Update.Get();
 
 <# if(fieldDetailsList.Count > 0) { #>
@@ -141,7 +150,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
                     {
-                        <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName#> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>;
+                        componentData.<#= fieldDetails.PascalCaseName#> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>;
                     }
 <# } #>
                 }
@@ -159,8 +168,12 @@ namespace <#= qualifiedNamespace #>
                     view.AddEventReceived(entity, nativeEvent, <#= eventDetails.EventName #>EventPool);
                 }
 <# } #>
-                <#= componentDetails.CamelCaseTypeName #>.DirtyBit = false;
-                view.UpdateComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>, UpdatesPool);
+                componentData.DirtyBit = false;
+<# if (componentDetails.IsBlittable) { #>
+                view.UpdateComponent(entity, componentData, UpdatesPool);
+<# } else { #>
+                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+<# } #>
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -199,12 +212,16 @@ namespace <#= qualifiedNamespace #>
 
             public override void ExecuteReplication(Connection connection)
             {
-                var <#= componentDetails.CamelCaseTypeName #>Data = ReplicationComponentGroup.GetComponentArray<<#= componentDetails.TypeName #>>();
+<# if (componentDetails.IsBlittable) { #>
+                var componentDataArray = ReplicationComponentGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
+<# } else { #>
+                var componentDataArray = ReplicationComponentGroup.GetComponentArray<<#= componentDetails.TypeName #>>();
+<# } #>
                 var spatialEntityIdData = ReplicationComponentGroup.GetComponentDataArray<SpatialEntityId>();
 
-                for (var i = 0; i < <#= componentDetails.CamelCaseTypeName #>Data.Length; i++)
+                for (var i = 0; i < componentDataArray.Length; i++)
                 {
-                    var <#= componentDetails.CamelCaseTypeName #> = <#= componentDetails.CamelCaseTypeName #>Data[i];
+                    var componentData = componentDataArray[i];
                     var entityId = spatialEntityIdData[i].EntityId;
                     var hasPendingEvents = false;
 <# foreach(var eventDetails in eventDetailsList) { #>
@@ -212,11 +229,11 @@ namespace <#= qualifiedNamespace #>
                     hasPendingEvents |= <#= eventDetails.CamelCaseTypeName #>Events.Count() > 0;
 <# } #>
 
-                    if (<#= componentDetails.CamelCaseTypeName #>.DirtyBit || hasPendingEvents)
+                    if (componentData.DirtyBit || hasPendingEvents)
                     {
                         var update = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                        update.Set<#= fieldDetails.PascalCaseName #>(<#= UnityTypeMappings.GetSpatialTypeMethod(fieldDetails.RawFieldDefinition, componentDetails.CamelCaseTypeName + "." + fieldDetails.PascalCaseName, enumSet) #>);
+                        update.Set<#= fieldDetails.PascalCaseName #>(<#= UnityTypeMappings.GetSpatialTypeMethod(fieldDetails.RawFieldDefinition, "componentData." + fieldDetails.PascalCaseName, enumSet) #>);
 <# } #>
 <# foreach(var eventDetails in eventDetailsList) { #>
                         foreach (var nativeEvent in <#= eventDetails.CamelCaseTypeName #>Events)
@@ -226,8 +243,14 @@ namespace <#= qualifiedNamespace #>
                         }
 <# } #>
                         SendComponentUpdate(connection, entityId, update);
-                        <#= componentDetails.CamelCaseTypeName #>.DirtyBit = false;
-                        view.SetComponentObject(entityId, <#= componentDetails.CamelCaseTypeName #>);
+
+                        componentData.DirtyBit = false;
+<# if (componentDetails.IsBlittable) { #>
+                        componentDataArray[i] = componentData;
+<# } else { #>
+                        view.SetComponentObject(entityId, componentData);
+<# } #>
+
 <# foreach(var eventDetails in eventDetailsList) { #>
                         <#= eventDetails.CamelCaseTypeName #>Events.Clear();
 <# } #>
@@ -374,19 +397,19 @@ namespace <#= qualifiedNamespace #>
         public static void Send<#= eventDetails.EventName #>Event(this EventSender<<#= componentDetails.TypeName #>> eventSender,
             <#= eventDetails.FullyQualifiedPayloadTypeName #> eventData)
         {
-            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
             translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Add(eventData);
         }
 
         public static List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Get<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
         {
-            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
             return translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId];
         }
 
         public static void Clear<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
         {
-            var translation = <#= componentDetails.TypeName #>Translation.GetTranslation(eventSender.InternalHandleToTranslation);
+            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
             translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Clear();
         }
 
