@@ -26,6 +26,9 @@ This release is for evaluation and feedback only, with limited documentation; we
 
 This pre-alpha release is for experienced Unity developers who have some understanding of [SpatialOS concepts](https://docs.improbable.io/reference/13.0/shared/concepts/spatialos), are interested in Unity's [Entity Component System](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md), and want to give early feedback.
 
+## Installation and setup 
+For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation. 
+
 ## Give us feedback
 
 We have released the Unity GDK this early in development because we want your feedback. Please come and talk to us about the software and the documentation via:
@@ -51,10 +54,7 @@ See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
 See the [documentation](docs/README.md#documentation) in this GitHub repository.
 
 ## Support
-We are not supporting the pre-alpha release for game development, as this version is for evaluation only. However, please give us your feedback. 
-
-## Installation and setup 
-For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation. 
+We are not supporting the pre-alpha release for game development, as this version is for evaluation only. However, please give us your feedback.
 
 ## Migration from the SpatialOS Unity SDK
 Currently the Unity GDK is in its early development, so there is no migration path from the [Unity SDK](https://github.com/spatialos/UnitySDK) to the Unity GDK. There will be a migration path in later releases.
