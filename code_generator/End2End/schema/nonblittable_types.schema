@@ -41,6 +41,6 @@ component NonBlittableComponent {
     command FirstCommandResponse first_command(FirstCommandRequest);
     command SecondCommandResponse second_command(SecondCommandRequest);
 
-    // event FirstEventPayload first_event; Uncomment when non-blittable component events bug fixed
-    // event SecondEventPayload second_event; Uncomment when non-blittable component events bug fixed
+    event FirstEventPayload first_event;
+    event SecondEventPayload second_event;
 }
