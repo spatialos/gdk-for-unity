@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
             var component = new SpatialOSNonBlittableComponent();
             Assert.AreEqual(Bool1False, component.DirtyBit, "Dirty bit is initially false.");
             
-            component.BoolField = true;
+            component.BoolField = BoolValue;
             Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting bool field.");
 
             component.DirtyBit = false;
