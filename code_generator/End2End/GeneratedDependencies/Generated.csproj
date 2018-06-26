@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C2342BDE-6EE1-4B79-9187-FE76503D6128}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>End2End</RootNamespace>
     <AssemblyName>End2End</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -71,7 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +84,7 @@
   <Target Name="BeforeCompile">
     <Exec Command="before-compile.sh" />
     <ItemGroup>
-      <Compile Include="Generated_Schema\**\*.cs" />
+      <Compile Include="Generated_Csharp_Worker\**\*.cs" />
       <Compile Include="Generated\**\*.cs" />
     </ItemGroup>
   </Target>
