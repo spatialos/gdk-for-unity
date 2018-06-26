@@ -9,12 +9,15 @@ namespace DocsLinter
 {
   internal class Program
   {
+    public const string GithubUrlEnvKey = "GITHUB_URL";
+
     private static void Main(string[] args)
     {
       if (args.Contains("--help") || args.Contains("/?") || args.Contains("/help"))
       {
         Console.WriteLine(
           "A cross-platform helper that lints markdown documents in the current working directory.");
+        Console.WriteLine("This linter expects there to be a .env file in the current working directory.");
         Console.WriteLine("This linter currently supports checking local links and images.");
         Console.WriteLine("Make sure to run this linter in the root of the project you wish to lint.");
         Console.WriteLine("Example Usage:");
@@ -24,6 +27,14 @@ namespace DocsLinter
 
       try
       {
+        var dotenv = DotenvLoader.LoadDotenvFile();
+
+        if (!dotenv.ContainsKey(GithubUrlEnvKey))
+        {
+          Console.WriteLine($"Environment variable {GithubUrlEnvKey} not found in .env file.");
+          Environment.Exit(1);
+        }
+
         var allFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.md", SearchOption.AllDirectories);
         var markdownFiles = GetMarkdownFiles(allFiles);
         var areLinksValid = true;
@@ -31,7 +42,7 @@ namespace DocsLinter
         {
           Console.WriteLine($"Checking links for: {markdownFilePair.Key}");
           areLinksValid &=
-            CheckMarkdownFile(markdownFilePair.Key, markdownFilePair.Value, markdownFiles);
+            CheckMarkdownFile(markdownFilePair.Key, markdownFilePair.Value, markdownFiles, dotenv);
         }
 
         Environment.Exit(areLinksValid ? 0 : 1);
@@ -53,9 +64,10 @@ namespace DocsLinter
     ///   The corpus of Markdown files undergoing linting. Maps filename to Markdown file object
     ///   representation.
     /// </param>
+    /// <param name="dotenv">A dictionary representing the dotenv contents.</param>
     /// <returns>A bool indicating the success of the check.</returns>
     internal static bool CheckMarkdownFile(string markdownFilePath, SimplifiedMarkdownDoc markdownFileContents,
-      Dictionary<string, SimplifiedMarkdownDoc> markdownFiles)
+      Dictionary<string, SimplifiedMarkdownDoc> markdownFiles, Dictionary<string, string> dotenv)
     {
       var allLinksValid = true;
 
@@ -66,7 +78,7 @@ namespace DocsLinter
 
       foreach (var remoteLink in markdownFileContents.Links.OfType<RemoteLink>())
       {
-        allLinksValid &= CheckRemoteLink(markdownFilePath, remoteLink);
+        allLinksValid &= CheckRemoteLink(markdownFilePath, remoteLink, dotenv);
       }
 
       return allLinksValid;
@@ -132,9 +144,9 @@ namespace DocsLinter
         }
         else
         {
-          // May be a markdown file (without a heading) or non-markdown file. E.g. - "../README.md" or "../../spatialos.json".
+          // May be a markdown file (without a heading) or non-markdown file or a directory. E.g. - "../README.md" or "../../spatialos.json".
           if (!markdownFiles.ContainsKey(fullyQualifiedFilePath) &&
-            !File.Exists(fullyQualifiedFilePath))
+            !File.Exists(fullyQualifiedFilePath) && !Directory.Exists(fullyQualifiedFilePath))
           {
             LogInvalidLink(markdownFilePath, localLink);
             return false;
@@ -151,9 +163,33 @@ namespace DocsLinter
     /// </summary>
     /// <param name="markdownFilePath">The fully qualified path of the Markdown file to check</param>
     /// <param name="remoteLink">The object representing the remote link to check.</param>
+    /// <param name="dotenv">A dictionary representing the dotenv contents.</param>
     /// <returns>A bool indicating success/failure</returns>
-    internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink)
+    internal static bool CheckRemoteLink(string markdownFilePath, RemoteLink remoteLink,
+      Dictionary<string, string> dotenv)
     {
+      // First check if its linking to something in our repository.
+      // Note that github URLs are case-insensitive
+
+      string githubUrl;
+      if (!dotenv.TryGetValue("GITHUB_URL", out githubUrl))
+      {
+        Console.WriteLine("No dotenv file found. Aborting linting.");
+        Environment.Exit(1);
+      }
+
+      var githubRepoBlobPath = (githubUrl + "/blob/").ToLower();
+      var githubRepoTreePath = (githubUrl + "/tree/").ToLower();
+
+      var lowerUrl = remoteLink.Url.ToLower();
+      if (lowerUrl.Contains(githubRepoBlobPath) || lowerUrl.Contains(githubRepoTreePath))
+      {
+        LogInvalidLink(markdownFilePath, remoteLink,
+          "Remote link to repository detected. Use a relative path instead. For example, https://www.github.com/spatialos/UnityGDK/blob/master/README.md#docs referenced from docs/my-docs.md should be ../README.md#docs");
+        return false;
+      }
+
+
       // Necessary to be in scope in finally block.
       HttpWebResponse response = null;
 
@@ -190,11 +226,13 @@ namespace DocsLinter
           return true;
         }
 
+        LogInvalidLink(markdownFilePath, remoteLink, "An exception occured when trying to access this remote link.");
         LogException(ex);
         return false;
       }
       catch (Exception ex)
       {
+        LogInvalidLink(markdownFilePath, remoteLink, "An exception occured when trying to access this remote link.");
         LogException(ex);
         return false;
       }
@@ -209,10 +247,10 @@ namespace DocsLinter
     /// </summary>
     /// <param name="markdownFilePath">The path of the markdown file the error was found in.</param>
     /// <param name="link">The link that is invalid.</param>
-    private static void LogInvalidLink(string markdownFilePath, ILink link)
+    private static void LogInvalidLink(string markdownFilePath, ILink link, string message = "")
     {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine($"Error in {markdownFilePath}. The link: {link} is invalid");
+      Console.WriteLine($"Error in {markdownFilePath}. The link: {link} is invalid. {message}");
       Console.ResetColor();
     }
 

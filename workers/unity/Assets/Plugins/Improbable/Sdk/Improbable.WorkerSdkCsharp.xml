@@ -1,0 +1,1652 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Improbable.WorkerSdkCsharp</name>
+    </assembly>
+    <members>
+        <member name="T:Improbable.EntityId">
+            <summary>
+            A unique identifier used to look up entity in SpatialOS.
+            </summary>
+            <remarks>
+            Instances of this type should be treated as a transient identifiers that will not be
+            consistent between different runs of the same simulation.
+            </remarks>
+        </member>
+        <member name="F:Improbable.EntityId.InvalidEntityId">
+            <summary>
+            An invalid entity ID. Note that this just one of many invalid entity IDs.
+            <seealso cref="M:Improbable.EntityId.IsValid"/>
+            </summary>
+        </member>
+        <member name="F:Improbable.EntityId.Id">
+            <summary>
+            The value of the EntityId.
+            </summary>
+            <remarks>
+            Though this value is numeric, you should not perform any mathematical operations on it.
+            </remarks>
+        </member>
+        <member name="M:Improbable.EntityId.#ctor(System.Int64)">
+            <summary>
+            Constructs a new instance of an EntityId.
+            </summary>
+        </member>
+        <member name="M:Improbable.EntityId.IsValid">
+            <summary>
+            Whether this represents a valid SpatialOS entity ID. Specifically, <code>Id > 0</code>.
+            </summary>
+            <returns>True iff valid.</returns>
+        </member>
+        <member name="M:Improbable.EntityId.IsInvalidEntityId(Improbable.EntityId)">
+            <summary>
+            Whether the specified entity ID is invalid.
+            <see cref="M:Improbable.EntityId.IsValid"/>
+            </summary>
+            <param name="entityId">An entity ID.</param>
+            <returns>True iff entityId is invalid</returns>
+        </member>
+        <member name="M:Improbable.EntityId.IsValidEntityId(Improbable.EntityId)">
+            <summary>
+            Whether the specified entity ID is valid.
+            <see cref="M:Improbable.EntityId.IsValid"/>
+            </summary>
+            <param name="entityId">An entity ID.</param>
+            <returns>True iff entityId is valid</returns>
+        </member>
+        <member name="M:Improbable.EntityId.Equals(System.Object)">
+            <inheritdoc cref="T:System.IEquatable`1"/>
+        </member>
+        <member name="M:Improbable.EntityId.Equals(Improbable.EntityId)">
+            <inheritdoc cref="T:System.IEquatable`1"/>
+        </member>
+        <member name="M:Improbable.EntityId.op_Equality(Improbable.EntityId,Improbable.EntityId)">
+            <summary>
+            Returns true if entityId1 is exactly equal to entityId2.
+            </summary>
+        </member>
+        <member name="M:Improbable.EntityId.op_Inequality(Improbable.EntityId,Improbable.EntityId)">
+            <summary>
+            Returns true if entityId1 is not exactly equal to entityId2.
+            </summary>
+        </member>
+        <member name="M:Improbable.EntityId.GetHashCode">
+            <inheritdoc cref="T:System.Object"/>
+        </member>
+        <member name="M:Improbable.EntityId.ToString">
+            <inheritdoc cref="T:System.Object"/>
+        </member>
+        <member name="T:Improbable.Collections.DeepCopier`1">
+            <summary>
+            This class maintains a per-type cache of DeepCopier objects for efficiency.
+            This helps to avoid performing multiple runtime type checks and keeps the
+            logic of creating DeepCopier objects all in the same place.
+            </summary>
+        </member>
+        <member name="T:Improbable.Collections.List`1">
+            <summary>
+            This class is the same as <c>System.Collections.Generic.List</c>, except that it is
+            augmented with proper structural equality and <c>GetHashCode</c>.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.List`1.DeepCopy">
+             <summary>
+             Returns a deep copy of this list. Checks if the types in the list are either
+             primitive or implement the <c>IDeepCopyable</c> interface, then performs a
+             deep copy of the list if they are and throws an invalid operation exception
+             otherwise. If the list is empty it will return a new list.
+            </summary>
+        </member>
+        <member name="T:Improbable.Collections.Map`2">
+            <summary>
+            Very similar to the usual C# Dictionary. However: iteration order is guaranteed to be
+            identical to insertion order; the dictionary can be traversed without allocation using
+            the <c>First</c> and <c>Last</c> properties; and it properly implements structural
+            equality and <c>GetHashCode</c>.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Map`2.DeepCopy">
+             <summary>
+             Returns a deep copy of this map. Checks if the types in the map are either
+             primitive or implement the <c>IDeepCopyable</c> interface, then performs a
+             deep copy of the map if they are and throws an invalid operation exception
+             otherwise. If the map is empty it will return a new map.
+            </summary>
+        </member>
+        <member name="T:Improbable.Collections.Option`1">
+            <summary>
+            Represents an optional value. Works with both value types (in which case it behaves
+            similarly to a nullable type) and non-value types. Only allocates if a value is present.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.#ctor(`0)">
+            <summary>
+            Creates an <c>Option</c> containing the given value.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.op_Implicit(`0)~Improbable.Collections.Option{`0}">
+            <summary>
+            Implicit conversion from a value to an <c>Option</c> containing that value.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.op_Implicit(Improbable.Collections.Internal.EmptyValueFromNull)~Improbable.Collections.Option{`0}">
+            <summary>
+            Implicit conversion from <c>null</c> to an empty <c>Option</c> (for value types).
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.DeepCopy">
+             <summary>
+             Returns a deep copy of this option. Checks if the type in the option is either
+             primitive or implements the <c>IDeepCopyable</c> interface, then performs a
+             deep copy of the option if it is and throws an invalid operation exception
+             otherwise. If the option is empty it will return a new option.
+            </summary>
+        </member>
+        <member name="P:Improbable.Collections.Option`1.Count">
+            <summary>
+            Returns 1 if this <c>Option</c> contains a value, and 0 otherwise.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.Clear">
+            <summary>
+            Removes the value from this <c>Option</c>, if present.
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.Set(`0)">
+            <summary>
+            Assigns the value contained in this <c>Option</c>, replacing the existing value (if
+            present).
+            </summary>
+        </member>
+        <member name="M:Improbable.Collections.Option`1.TryGetValue(`0@)">
+            <summary>
+            Returns <c>true</c> and assigns to <c>value</c> if this <c>Option</c> contains a value;
+            returns false otherwise.
+            </summary>
+        </member>
+        <member name="P:Improbable.Collections.Option`1.HasValue">
+            <summary>
+            Returns <c>true</c> if this <c>Option</c> contains a value, and <c>false</c>
+            otherwise.
+            </summary>
+        </member>
+        <member name="P:Improbable.Collections.Option`1.Value">
+            <summary>
+            Returns the value stored in this <c>Option</c>. Throws <c>InvalidOperationException</c>
+            if no value is present.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Bytes">
+            <summary>
+            A wrapper for a byte array, with structural equality and hash code.
+            </summary>
+            <remarks>
+            This is used by generated schema types to represent <code>bytes</code> fields.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.CopyOf(System.Byte[])">
+            <summary>
+            Creates a new <code>Bytes</code> object wrapping a copy of the given byte array.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.CopyOf(System.Byte*,System.UInt32)">
+            <summary>
+            Creates a new <code>Bytes</code> object wrapping a copy of the given native byte buffer.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.FromBackingArray(System.Byte[])">
+            <summary>
+            Creates a new <code>Bytes</code> object directly wrapping the given byte array.
+            </summary>
+            <remarks>
+            Warning: since this method does not copy the array, modifications made to the source
+            array will be reflected by this <code>Bytes</code> object. In particular, it is illegal
+            to modify the source array concurrently with other operations on this object.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.GetCopy">
+            <summary>
+            Returns a copy of the byte array wrapped by this <code>Bytes</code> object.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.Bytes.BackingArray">
+            <summary>
+            Directly returns the backing byte array wrapped by this <code>Bytes</code> object.
+            </summary>
+            <remarks>
+            Warning: since this method does not copy the array, modifications made to the returned
+            array will be reflected by this <code>Bytes</code> object. In particular, it is illegal
+            to modify the source array concurrently with other operations on this object.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.Equals(System.Object)">
+            <inheritdoc cref="T:System.IEquatable`1"/>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.Equals(Improbable.Worker.Bytes)">
+            <inheritdoc cref="T:System.IEquatable`1"/>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.GetHashCode">
+            <inheritdoc cref="T:System.Object"/>
+        </member>
+        <member name="M:Improbable.Worker.Bytes.ToString">
+            <inheritdoc cref="T:System.Object"/>
+        </member>
+        <member name="T:Improbable.Worker.ClientError">
+            <summary>
+            Exposes a global hook to be invoked when errors are detected in client-side code. This is
+            generally used to indicate programmer error, and covers cases such as attempting to throw
+            an exception from a <c>Dispatcher</c> callback.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.ClientError.ExceptionCallback">
+            <summary>
+            Sets the <c>Action</c> to be invoked when a client exception is detected.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.ClientError.LogClientException(System.Exception)">
+            <summary>
+            Invokes the global client error hook to handle an exception.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.IComponentMetaclass">
+            <summary>
+            Interface representing a particular component. The generated code will contain a metaclass
+            for each component in the schema. These metaclasses are used to identify components; in
+            particular they are given as the generic type parameter to various component-related classes
+            and methods.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.IComponentMetaclass.ComponentId">
+            <summary>
+            The ID of this component.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.IComponentMetaclass.Vtable">
+            <summary>
+            This is an implementation detail provided by generated code.
+            </summary>
+            <remarks>
+            Clients should not need to call this method.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.IComponentMetaclass.InvokeHandler(Improbable.Worker.Dynamic.Handler)">
+            <summary>
+            This is an implementation detail provided by generated code.
+            </summary>
+            <remarks>
+            Clients should not need to call this method.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.IComponentData`1">
+            <summary>
+            Represents data-at-rest for the component identified by the metaclass C. Each component data
+            has an extension method <c>Get()</c> that returns the concrete data type.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.IComponentData`1.ToUpdate">
+            <summary>
+            Converts the at-rest data type to an update.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.IComponentUpdate`1">
+            <summary>
+            Represents an update for the component identified by the metaclass C. Each component update
+            has an extension method <c>Get()</c> that returns the concrete update type.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.IComponentUpdate`1.ToInitialData">
+            <summary>
+            Converts the update to an at-rest data type. Calling this method is only valid if the
+            update provides a value for each field in the component; otherwise an exception is
+            thrown.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.IComponentUpdate`1.ApplyTo(Improbable.Worker.IComponentData{`0})">
+            <summary>
+            Applies this update to the corresponding at-rest data type for the component.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.ICommandMetaclass">
+            <summary>
+            Interface representing a command for a particular component. The generated code for a
+            component will contain a command metaclass for each command defined by the component.
+            These metaclasses are used to identify commands; in particular they are given as the generic
+            type parameter to various command-related classes and methods.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.ICommandRequest`1">
+            <summary>
+            Represents a request for the command identified by the metaclass C. Each command request has
+            an extension method <c>Get()</c> that returns the concrete request type.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.ICommandRequest`1.ToGenericObject">
+            <summary>
+            This is an implementation detail provided by generated code.
+            </summary>
+            <remarks>
+            Clients should not need to call this method.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.ICommandResponse`1">
+            <summary>
+            Represents a response for the command identified by the metaclass C. Each command response
+            has an extension method <c>Get()</c> that returns the concrete response type.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.ICommandResponse`1.ToGenericObject">
+            <summary>
+            This is an implementation detail provided by generated code.
+            </summary>
+            <remarks>
+            Clients should not need to call this method.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.OpList">
+            <summary>
+            An opaque list of operations retrieved from Connection::GetOpList(). It is usually passed to
+            Dispatcher::Process(), which dispatches the operations to the appropriate callbacks.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.OpList.Dispose">
+            <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="T:Improbable.Worker.InterestOverride">
+            <summary>
+            Overrides the default interest settings for a particular entity and component.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.InterestOverride.IsInterested">
+            <summary>Controls whether checkout is explicitly enabled or disabled.</summary>
+        </member>
+        <member name="T:Improbable.Worker.CommandParameters">
+            <summary>
+            Parameters used to alter the behaviour of a command request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandParameters.AllowShortCircuiting">
+            <summary>
+            Allow command requests to bypass the bridge when this worker is authoritative over the target
+            entity-component.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Connection">
+            <summary>
+            Worker Connection API. This is the main way of connecting to SpatialOS, processing
+            operations, and sending component updates.
+            </summary>
+            <remarks>
+            This object should not be used concurrently by multiple threads.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.ConnectAsync(System.String,System.UInt16,System.String,Improbable.Worker.ConnectionParameters)">
+            <summary>
+            Connects to a SpatialOS deployment via a receptionist. This is the flow used to connect
+            a managed worker running in the cloud alongside the deployment, and also to connect any
+            local worker to a (local or remote) deployment via a locally-running receptionist.
+            </summary>
+            <remarks>
+            The hostname and port would typically be provided by SpatialOS on the command-line, if
+            this is a managed worker on the cloud, or otherwise be predetermined (e.g.
+            localhost:7777 for the default receptionist of a locally-running deployment).
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.Dispose">
+            <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="P:Improbable.Worker.Connection.IsConnected">
+            <summary>
+            Returns true if the Connection object was created correctly and has successfully
+            connected to SpatialOS.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.GetOpList(System.UInt32)">
+            <summary>
+            Retrieves the list of operations that have occurred since the last call to this
+            function.
+            </summary>
+            <remarks>
+            If timeoutMillis is non-zero, the function will block until there is at least one
+            operation to return, or the timeout has been exceeded. If the timeout is exceeded, an
+            empty list will be returned. If timeoutMillis is zero the function is non-blocking.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.GetWorkerId">
+            <summary>
+            Returns the ID that was assigned to this worker at runtime.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.GetWorkerAttributes">
+            <summary>
+            Returns the attributes associated with this worker at runtime.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendLogMessage(Improbable.Worker.LogLevel,System.String,System.String,Improbable.Collections.Option{Improbable.EntityId})">
+            <summary>
+            Sends a log message for the worker to SpatialOS.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendMetrics(Improbable.Worker.Metrics)">
+            <summary>
+            Sends a set of metrics for the worker to SpatialOS. Typically this function should be
+            called periodically (e.g. once every second) to report the worker's status. Since
+            histogram metrics are diff-based, calling this function clears each histogram in the
+            Metrics parameter.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendReserveEntityIdRequest(Improbable.Collections.Option{System.UInt32})">
+            <summary>
+            Requests SpatialOS to reserve an entity ID. Returns a request ID, which can be used to identify a
+            response to the request via the Dispatcher.OnReserveEntityIdResponse callback.
+            </summary>
+            <remarks>
+            If timeout_millis is not specified, the default timeout will be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendReserveEntityIdsRequest(System.UInt32,Improbable.Collections.Option{System.UInt32})">
+            <summary>
+            Requests SpatialOS to reserve a batch of entity IDs. Returns a request ID, which can be
+            used to identify a response to the request via the Dispatcher.OnReserveEntityIdResponse
+            callback.
+            </summary>
+            <remarks>
+            If timeout_millis is not specified, the default timeout will be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendCreateEntityRequest(Improbable.Worker.Entity,Improbable.Collections.Option{Improbable.EntityId},Improbable.Collections.Option{System.UInt32})">
+            <summary>
+            Requests SpatialOS to create an entity. Returns a request ID, which can be used to identify
+            response to the request via the Dispatcher.OnCreateEntityResponse callback.
+            </summary>
+            <remarks>
+            If an entity ID is provided, it must have been reserved using SendReserveEntityIdRequest().
+            If timeout_millis is not specified, the default timeout will be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendDeleteEntityRequest(Improbable.EntityId,Improbable.Collections.Option{System.UInt32})">
+            <summary>
+            Requests SpatialOS to delete an entity. Returns a request ID, which can be used to
+            identify a response to the request via the Dispatcher.OnDeleteEntityResponse callback.
+            </summary>
+            <remarks>
+            If timeout_millis is not specified, the default timeout will be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendEntityQueryRequest(Improbable.Worker.Query.EntityQuery,Improbable.Collections.Option{System.UInt32})">
+            <summary>
+            Queries SpatialOS for remote entity data. Returns a request Id, which can be used to
+            identify a response to the request via the Dispatcher.OnEntityQueryResponse callback.
+            </summary>
+            <remarks>
+            If timeout_millis is not specified, the default timeout will be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendComponentInterest(Improbable.EntityId,System.Collections.Generic.Dictionary{System.UInt32,Improbable.Worker.InterestOverride})">
+            <summary>
+            Sends a component interest update for the given entity to SpatialOS. By default, the
+            worker receives data for all entities according to the default component interests
+            specified in its bridge settings. This function overrides the default to explicitly
+            add or remove interest for particular components.
+            </summary>
+            <remarks>
+            Interest for components not present in the interestOverrides map is unaffected. Note
+            also that components over which the worker is authoritative are always received,
+            regardless of interest settings.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendAuthorityLossImminentAcknowledgement``1(Improbable.EntityId)">
+            <summary>
+            Sends an acknowledgement of the receipt of an AuthorityLossImminent authority change for a
+            component. Sending the acknowledgement signifies that this worker is ready to lose authority
+            over the component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendComponentUpdate``1(Improbable.EntityId,Improbable.Worker.IComponentUpdate{``0},System.Boolean)">
+            <summary>
+            Sends an update for an entity's component to SpatialOS. Note that the sent component
+            update is added as an operation to the operation list and will be returned by a
+            subsequent call to GetOpList().
+            </summary>
+            <remarks>
+            The behaviour is undefined if the update is mutated after it is sent; use
+            <c>SendComponentUpdate(update.DeepCopy())</c> if you intend to hold on to the update and
+            modify it later. The legacyCallbackSemantics parameter is deprecated and exists for
+            legacy compatibility only. It will be removed soon and should not be used.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendCommandRequest``1(Improbable.EntityId,Improbable.Worker.ICommandRequest{``0},Improbable.Collections.Option{System.UInt32},Improbable.Worker.CommandParameters)">
+            <summary>
+            Sends a command request to a component on a specific target entity. Returns a request
+            ID which can be used to identify a response to the command via the
+            Dispatcher.OnCommandResponse callback.
+            </summary>
+            <remarks>
+            If timeoutMillis is not specified, the default timeout will be used. Like
+            SendComponentUpdate, the behaviour is undefined if the request is mutated after it is
+            sent; <c>SendCommandRequest(request.DeepCopy())</c> if you intend to modify the object
+            later.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendCommandResponse``1(Improbable.Worker.RequestId{Improbable.Worker.IncomingCommandRequest{``0}},Improbable.Worker.ICommandResponse{``0})">
+            <summary>
+            Sends a response to an incoming command request for a component on an entity over which
+            this worker has authority. The request ID should match an incoming command request via
+            the Dispatcher.OnCommandRequest callback.
+            </summary>
+            <remarks>
+            Like SendComponentUpdate, the behaviour is undefined if the response is mutated after it
+            is sent; <c>SendCommandResponse(response.DeepCopy())</c> if you intend to modify the
+            object later.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SendCommandFailure``1(Improbable.Worker.RequestId{Improbable.Worker.IncomingCommandRequest{``0}},System.String)">
+            <summary>
+            Explicitly fails an incoming command request for a component on an entity over which
+            this worker has authority. The request ID should match an incoming command request via
+            the Dispatcher.OnCommandRequest callback.
+            </summary>
+            <remarks>
+            The calling worker will receive a command response with status code
+            StatusCode.ApplicationError.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Connection.SetProtocolLoggingEnabled(System.Boolean)">
+            <summary>
+            Enables or disables protocol logging. Logging uses the parameters specified when the Connection
+            was created. Enabling it when already enabled, or disabling it when already disabled, do
+            nothing.
+            </summary>
+            <remarks>
+            Note that logs from any previous protocol logging sessions will be overwritten.
+            </remarks>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.Success">
+            <summary>The request was successfully executed and returned a response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.Timeout">
+            <summary>
+            The request timed out before a response was received. It can be retried, but carefully -
+            this usually means the deployment is overloaded, so some sort of backoff should be used
+            to avoid making the problem worse. This can also be caused by the target worker's
+            handling code failing to respond to the command at all, perhaps due to a bug in its
+            implementation.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.NotFound">
+            <summary>
+            The target entity did not exist, or did not have the target component. This probably
+            means the entity either hasn't been created yet or has already been deleted. It might
+            make sense to retry the request if there is reason to believe the entity hasn't yet been
+            created but will be soon.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.AuthorityLost">
+            <summary>
+            The request could not be executed by a worker, either because it lost authority while
+            handling the request, or because no worker was authoritative at all. Assuming the
+            deployment isn't irrecoverably broken (e.g. due to misconfigured loadbalancing or
+            crash-looping workers) this is a transient failure and can be retried immediately.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.PermissionDenied">
+            <summary>
+            The worker did not have the required permissions to make the request. Permissions do
+            not change at runtime, so it doesn't make sense to retry the request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.ApplicationError">
+            <summary>
+            The command was delivered successfully, but the handler rejected it. Either the command
+            was delivered to a worker that explicitly rejected it by calling
+            Connection.SendCommandFailure, or the request data was rejected as invalid by SpatialOS
+            itself. In the latter case, in particular, Connection.SendCreateEntityRequest will
+            return ApplicationError if an entity ID reservation has expired, and
+            Connection.SendEntityQueryRequest will return ApplicationError if the result set is
+            incomplete.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.StatusCode.InternalError">
+            <summary>
+            Some other error occurred. This likely indicates a bug in SpatialOS and should be
+            reported.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Authority">
+            <summary>
+            The authority state of an entity-component.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.DisconnectOp">
+            <summary>
+            Data for an operation that indicates the Connection has disconnected and can no longer be
+            used.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.FlagUpdateOp">
+            <summary>
+            Data for an operation that indicates that a worker flag has been updated
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.LogMessageOp">
+            <summary>
+            Data for an operation that provides a log message from the SDK.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.MetricsOp">
+            <summary>
+            Data for an operation that provides a report on built-in metrics from the SDK.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.CriticalSectionOp">
+            <summary>
+            Data for an operation that provides a report on built-in metrics from the SDK.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.AddEntityOp">
+            <summary>
+            Data for an operation that indicates an entity has been added to the worker's view of the
+            simulation.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.RemoveEntityOp">
+            <summary>
+            Data for an operation that indicates an entity has been removed from the worker's view of
+            the simulation.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.ReserveEntityIdResponseOp">
+            <summary>
+            A response indicating the result of the entity ID reservation request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdResponseOp.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendReserveEntityIdRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdResponseOp.StatusCode">
+            <summary>The status code of the command response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdResponseOp.Message">
+            <summary> The error message.</summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdResponseOp.EntityId">
+            <summary>
+            If successful, a newly allocated entity id which is guaranteed to be unused in the current
+            deployment.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.ReserveEntityIdsResponseOp">
+            <summary>
+            A response indicating the result of the multiple entity ID reservation request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdsResponseOp.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendReserveEntityIdRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdsResponseOp.StatusCode">
+            <summary>The status code of the command response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdsResponseOp.Message">
+            <summary> The error message.</summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdsResponseOp.FirstEntityId">
+            <summary>
+            If successful, an ID which is the first in a contiguous range of newly allocated entity
+            IDs which are guaranteed to be unused in the current deployment.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ReserveEntityIdsResponseOp.NumberOfEntityIds">
+            <summary>
+            If successful, the number of IDs reserved in the contiguous range, otherwise 0.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.CreateEntityResponseOp">
+            <summary>
+            A response indicating the result of an entity creation request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CreateEntityResponseOp.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendCreateEntityRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CreateEntityResponseOp.StatusCode">
+            <summary>The status code of the command response.</summary>
+            <remarks>
+            If the status code is StatusCode.ApplicationError, the entity ID reservation has
+            expired and must be retried.
+            </remarks>
+        </member>
+        <member name="F:Improbable.Worker.CreateEntityResponseOp.Message">
+            <summary> The error message.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CreateEntityResponseOp.EntityId">
+            <summary>If successful, the entity ID of the newly created entity.</summary>
+        </member>
+        <member name="T:Improbable.Worker.DeleteEntityResponseOp">
+            <summary>
+            A response indicating the result of an entity deletion request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.DeleteEntityResponseOp.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendDeleteEntityRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.DeleteEntityResponseOp.EntityId">
+            <summary>The ID of the target entity of this request.</summary>
+        </member>
+        <member name="F:Improbable.Worker.DeleteEntityResponseOp.StatusCode">
+            <summary>The status code of the command response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.DeleteEntityResponseOp.Message">
+            <summary>The error message.</summary>
+        </member>
+        <member name="T:Improbable.Worker.EntityQueryResponseOp">
+            <summary>
+            A response indicating the result of an entity query request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.EntityQueryResponseOp.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendEntityQueryRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.EntityQueryResponseOp.StatusCode">
+            <summary>The status code of the command response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.EntityQueryResponseOp.Message">
+            <summary>The error message.</summary>
+        </member>
+        <member name="F:Improbable.Worker.EntityQueryResponseOp.ResultCount">
+            <summary>The number of entities that matched the query.</summary>
+            <remarks>
+            Note that a best-effort attempt is made to count the entities when the status code is
+            StatusCode.ApplicationError. In this case, the count can still be non-zero, but should
+            be considered a lower bound (i.e. there might be entities matching the query that were
+            not counted).
+            </remarks>
+        </member>
+        <member name="F:Improbable.Worker.EntityQueryResponseOp.Result">
+            <summary>The result of the query. Not used for <c>CountResultType</c> queries.</summary>
+            <remarks>
+            Note that a best-effort attempt is made to get results when the status code is
+            StatusCode.ApplicationError. In this case, the result can still be non-empty, but should
+            be considered incomplete (i.e. there might be entities matching the query that were not
+            returned).
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.AddComponentOp`1">
+            <summary>
+            Data for an operation that indicates a component has been added to an existing entity in the
+            worker's view of the simulation.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.RemoveComponentOp">
+            <summary>
+            Data for an operation that indicates a component has been removed from an existing entity in
+            the worker's view of the simulation.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.AuthorityChangeOp">
+            <summary>
+            Data for an operation that indicates the worker's authority over a component for an entity
+            has been changed.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.ComponentUpdateOp`1">
+            <summary>
+            Data for an operation that indicates the component for an entity has been updated.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.CommandRequestOp`1">
+            <summary>
+            Data for an operation that indicates a command request has been received for a component on an
+            entity over which this worker has authority. The worker should respond to the command by
+            calling Connection.SendCommandResponse with the given request ID.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.RequestId">
+            <summary>
+            The incoming request ID. Should be passed to Connection.SendCommandResponse in
+            order to respond to this request.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.EntityId">
+            <summary>The ID of the target entity of this request.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.TimeoutMillis">
+            <summary>
+            An upper bound on the timeout of this request. Any response sent after the timeout has
+            expired will be ignored by the SDK.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.CallerWorkerId">
+            <summary>The ID of the worker that initiated this request.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.CallerAttributeSet">
+            <summary>The attribute set of the worker that initiated this request.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandRequestOp`1.Request">
+            <summary>The request data.</summary>
+        </member>
+        <member name="T:Improbable.Worker.CommandResponseOp`1">
+            <summary>
+            Data for an operation that indicates a command response has been received for a request
+            previously issued by this worker. The request ID will match a previous call to
+            Connection.SendCommandRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandResponseOp`1.RequestId">
+            <summary>
+            The outgoing request ID for which there was a response. Matches the request ID returned
+            by a previous call to Connection.SendCommandRequest.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandResponseOp`1.EntityId">
+            <summary>The target entity ID of the original request.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandResponseOp`1.StatusCode">
+            <summary>The status code of the command response.</summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandResponseOp`1.Message">
+            <summary>
+            A description of the status. Will contain the reason for failure if unsuccessful.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.CommandResponseOp`1.Response">
+            <summary>
+            The command response data. Present exactly when the status code is StatusCode.Success.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Dispatcher">
+            <summary>
+            A Dispatcher processes OpLists retrieved from the Connection and invokes appropriate
+            callbacks.
+            </summary>
+            <remarks>
+            This object should not be modified concurrently by multiple threads.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.Dispose">
+            <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnDisconnect(System.Action{Improbable.Worker.DisconnectOp})">
+            <summary>
+            Registers a callback to be invoked when the Connection has disconnected and can no
+            longer be used.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnFlagUpdate(System.Action{Improbable.Worker.FlagUpdateOp})">
+            <summary>
+            Registers a callback to be invoked when a worker flag is changed
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnLogMessage(System.Action{Improbable.Worker.LogMessageOp})">
+            <summary>
+            Registers a callback to be invoked when the SDK logs a message.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnMetrics(System.Action{Improbable.Worker.MetricsOp})">
+            <summary>
+            Registers a callback to be invoked when the SDK reports built-in metrics.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnCriticalSection(System.Action{Improbable.Worker.CriticalSectionOp})">
+            <summary>
+            Registers a callback to be invoked when the message stream enters or leaves a critical
+            section.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnAddEntity(System.Action{Improbable.Worker.AddEntityOp})">
+            <summary>
+            Registers a callback to be invoked when an entity is added to the worker's view of the
+            simulation.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnRemoveEntity(System.Action{Improbable.Worker.RemoveEntityOp})">
+            <summary>
+            Registers a callback to be invoked when an entity is removed from the worker's view of
+            the simulation.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnReserveEntityIdResponse(System.Action{Improbable.Worker.ReserveEntityIdResponseOp})">
+            <summary>
+            Registers a callback to be invoked when an entity ID reservation response is received.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnReserveEntityIdsResponse(System.Action{Improbable.Worker.ReserveEntityIdsResponseOp})">
+            <summary>
+            Registers a callback to be invoked when a multiple entity ID reservation response is received.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnCreateEntityResponse(System.Action{Improbable.Worker.CreateEntityResponseOp})">
+            <summary>
+            Registers a callback to be invoked when an entity creation response is received.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnDeleteEntityResponse(System.Action{Improbable.Worker.DeleteEntityResponseOp})">
+            <summary>
+            Registers a callback to be invoked when an entity deletion response is received.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnEntityQueryResponse(System.Action{Improbable.Worker.EntityQueryResponseOp})">
+            <summary>
+            Registers a callback to be invoked when an entity query response is received.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnAddComponent``1(System.Action{Improbable.Worker.AddComponentOp{``0}})">
+            <summary>
+            Registers a callback to be invoked when a particular component is added to an existing
+            entity in the worker's view of the sumulation.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnRemoveComponent``1(System.Action{Improbable.Worker.RemoveComponentOp})">
+            <summary>
+            Registers a callback to be invoked when a particular component is removed from an
+            existing entity in the worker's view of the simulation.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnAuthorityChange``1(System.Action{Improbable.Worker.AuthorityChangeOp})">
+            <summary>
+            Registers a callback to be invoked when the worker is granted authority over a
+            particular component for some entity, or when the worker's authority over that component
+            is revoked.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnComponentUpdate``1(System.Action{Improbable.Worker.ComponentUpdateOp{``0}})">
+            <summary>
+            Registers a callback to be invoked when a particular component is updated for an entity.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnCommandRequest``1(System.Action{Improbable.Worker.CommandRequestOp{``0}})">
+            <summary>
+            Registers a callback to be invoked when a command request is received for a particular
+            component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.OnCommandResponse``1(System.Action{Improbable.Worker.CommandResponseOp{``0}})">
+            <summary>
+            Registers a callback to be invoked when a command response is received for a particular
+            component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.Remove(System.UInt64)">
+            <summary>
+            Unregisters a callback identified by its CallbackKey, as returned from the registration
+            function. If the key does not exist, an exception will be thrown.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dispatcher.Process(Improbable.Worker.OpList)">
+            <summary>
+            Processes an OpList and invokes registered callbacks.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Dynamic">
+            <summary>
+            Provides facilities for manipulating components in a type-safe way when the component type is
+            not known statically.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Dynamic.Handler">
+            <summary>
+            This interface should be implemented to provide component-specific behaviour
+            for the <code>ForComponent</code> and <code>ForEachComponent</code> methods.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dynamic.Handler.Accept``1(``0)">
+            <summary>
+            Called by <code>ForComponent</code> and <code>ForEachComponent</code>, passing the
+            metaclass of a particular component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dynamic.GetComponentId``1">
+            <summary>
+            Returns the component ID of a given component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dynamic.GetComponentIds">
+            <summary>
+            Returns the set of all known component IDs.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dynamic.ForComponent(System.UInt32,Improbable.Worker.Dynamic.Handler)">
+            <summary>
+            Invokes the <code>Accept</code> method on the provided handler with appropriate
+            arguments for the component whose ID matches the given component ID.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Dynamic.ForEachComponent(Improbable.Worker.Dynamic.Handler)">
+            <summary>
+            Invokes the <code>Accept</code> method on the provided handler with appropriate
+            arguments for every known component.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Entity">
+            <summary>
+            Stores the complete data for an entity's components. This is used both for representing the
+            initial set of components for an entity by the AddEntity operation, and inside the
+            (optional) View.
+            </summary>
+            <remarks>
+            Note that an Entity object is simply a local data structure, and changes made here are not
+            automatically reflected across the SpatialOS simulation. To synchronize component state with
+            SpatialOS, use Connection.SendComponentUpdate. This object should not be modified
+            concurrently by multiple threads.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Entity.Get``1">
+            <summary>
+            Retrieves data for the given component. Returns an empty option if the entity does not have the
+            given component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Entity.Add``1(Improbable.Worker.IComponentData{``0})">
+            <summary>
+            Creates the given component with initial data. Has no effect if the entity already has
+            the given component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Entity.Update``1(Improbable.Worker.IComponentUpdate{``0})">
+            <summary>
+            Applies an update to the given component. Has no effect if the entity does not have the
+            given component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Entity.Remove``1">
+            <summary>
+            Removes a component.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Entity.GetComponentIds">
+            <summary>
+            Returns the set of IDs of the components present in this entity.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Future`1">
+            <summary>
+            A class representing the standard future concept. It can be used for both synchronous
+            and asynchronous interaction.
+            </summary>
+            <typeparam name="T">The type of object the future returns.</typeparam>
+        </member>
+        <member name="M:Improbable.Worker.Future`1.#ctor(Improbable.Worker.Internal.CptrHandle,System.Func{Improbable.Collections.Option{System.UInt32},Improbable.Collections.Option{`0}})">
+            <summary>
+            Objects of this class can be created by the SDK only.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Future`1.Dispose">
+            <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="M:Improbable.Worker.Future`1.Get">
+            <summary>
+            Waits until the result becomes available, and returns it. If the result was already
+            obtained by a previous call to Get() or Get(timeoutMillis), this function returns it
+            immediately.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:Improbable.Worker.Future`1.Get(System.UInt32)">
+            <summary>
+            Waits for the result to become available. Blocks until the specified timeout has
+            elapsed or the result has become available, whichever comes first. If the result was
+            already obtained by a previous call to Get() or Get(timeoutMillis), this function
+            returns it immediately.
+            </summary>
+            <param name="timeoutMillis">The time to wait for the result to become available.</param>
+            <returns>The result if it is available; an empty option, otherwise.</returns>
+        </member>
+        <member name="T:Improbable.Worker.Deployment">
+            <summary>
+            Details for a specific deployment obtained via Locator.GetDeploymentList.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Deployment.DeploymentName">
+            <summary>
+            The name of the deployment.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Deployment.AssemblyName">
+            <summary>
+            The name of the assembly used by this deployment.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Deployment.Description">
+            <summary>
+            Description of this deployment.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Deployment.UsersConnected">
+            <summary>
+            Number of users currently connected to the deployment.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Deployment.UsersCapacity">
+            <summary>
+            Total user capacity of the deployment.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.DeploymentList">
+            <summary>
+            A deployment list obtained via Locator.GetDeploymentList.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.DeploymentList.Deployments">
+            <summary>
+            List of accessible deployments for the given project.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.DeploymentList.Error">
+            <summary>
+            Will be non-null if an error occurred.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.QueueStatus">
+            <summary>
+            A queue status update when connecting to a deployment via Locator.Connect.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.QueueStatus.PositionInQueue">
+            <summary>
+            Position in the queue. Decreases as we advance to the front of the queue.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.QueueStatus.Error">
+            <summary>
+            Will be non-null if an error occurred.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Locator">
+            <summary>
+            A client which can be used to connect to a SpatialOS deployment via a locator service.
+            This is the standard flow used to connect a local worker to a cloud deployment.
+            </summary>
+            <remarks>
+            This object should not be used concurrently by multiple threads.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Locator.#ctor(System.String,Improbable.Worker.LocatorParameters)">
+            <summary>
+            Creates a client for the locator service.
+            </summary>
+            <param name="hostname">The hostname of the locator service. Typically either
+            "locator.improbable.io" (for production) or "locator-staging.improbable.io"
+            (for staging).</param>
+            <param name="locatorParams">The parameters for the locator service.</param>
+        </member>
+        <member name="M:Improbable.Worker.Locator.Dispose">
+            <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="M:Improbable.Worker.Locator.GetDeploymentListAsync">
+            <summary>
+            Queries the current list of deployments for the project specified in the
+            LocatorParameters. The resulting future can be used to make this connection either
+            synchronously or asyncronously.
+            </summary>
+            <returns>A future object for the list of deployments.</returns>
+            <seealso cref="M:Improbable.Worker.Locator.ConnectAsync(System.String,Improbable.Worker.ConnectionParameters,System.Func{Improbable.Worker.QueueStatus,System.Boolean})"/>
+        </member>
+        <member name="M:Improbable.Worker.Locator.ConnectAsync(System.String,Improbable.Worker.ConnectionParameters,System.Func{Improbable.Worker.QueueStatus,System.Boolean})">
+            <summary>
+            Connects to a specific deployment. The resulting future can be used to make this
+            connection either synchronously or asyncronously.
+            </summary>
+            <param name="deploymentName">The deployment name, which should be obtained by calling
+            GetDeploymentListAsync.</param>
+            <param name="connectionParams">The connection parameters.</param>
+            <param name="callback">The queueing callback, which should return false to cancel
+            queuing, or true to continue queueing.</param>
+            <returns>A future object for the connection.</returns>
+            <seealso cref="M:Improbable.Worker.Locator.GetDeploymentListAsync"/>
+        </member>
+        <member name="T:Improbable.Worker.HistogramMetric">
+            <summary>
+            A histogram metric tracks observations of a given value by bucket. This corresponds to a
+            Prometheus histogram metric.
+            </summary>
+            <remarks>This object should not be used concurrently by multiple threads.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.HistogramMetric.Bucket">
+            <summary>
+            A histogram bucket.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.HistogramMetric.Bucket.UpperBound">
+            <summary>
+            The upper bound.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.HistogramMetric.Bucket.Samples">
+            <summary>
+            The number of observations that were less than or equal to the upper bound.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.HistogramMetric.#ctor(System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Creates a histogram with the given bucket boundaries. Each bucket boundary is an upper
+            bound; the bucket tracks all observations with a value less than or equal to the bound.
+            A final bucket with a boundary of +INF is added automatically.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.HistogramMetric.#ctor">
+            <summary>
+            Creates a histogram with a single bucket.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.HistogramMetric.ClearObservations">
+            <summary>
+            Clears all recorded oservations. Automatically called by Connection.SendMetrics.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.HistogramMetric.RecordObservation(System.Double)">
+            <summary>
+            Records a sample and adds it to the corresponding buckets.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Metrics">
+            <summary>
+            A set of metrics sent up from a worker to SpatialOS.
+            </summary>
+            <remarks>
+            Keys for the contained metrics should match the following regex:
+            [a-zA-Z_][a-zA-Z0-9_]*
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Metrics.Merge(Improbable.Worker.Metrics)">
+            <summary>
+            Copies all metrics from another Metrics object into this one, overwriting existing values.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.Metrics.Load">
+            <summary>
+            The load value of this worker. A value of 0 indicates that the worker is completely
+            unloaded; a value greater than 1 indicates that the worker is overloaded. The load value
+            directs SpatialOS's load-balancing strategy for managed workers (spinning them up,
+            spinning them down, and assigning work between them).
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.Metrics.GaugeMetrics">
+            <summary>
+            Gauge metrics for the worker.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.Metrics.HistogramMetrics">
+            <summary>
+            Histogram metrics for the worker.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.RakNetNetworkParameters.HeartbeatTimeoutMillis">
+            <summary>
+            Time (in milliseconds) that RakNet should use for its heartbeat protocol.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.TcpNetworkParameters.MultiplexLevel">
+            <summary>
+            Number of multiplexed TCP connections.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.TcpNetworkParameters.SendBufferSize">
+            <summary>
+            Size in bytes of the TCP send buffer.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.TcpNetworkParameters.ReceiveBufferSize">
+            <summary>
+            Size in bytes of the TCP receive buffer.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.TcpNetworkParameters.NoDelay">
+            <summary>
+            Whether to enable TCP_NODELAY.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.NetworkParameters.UseExternalIp">
+            <summary>
+            Whether to connect to SpatialOS using the internal IP address. This is for managed
+            workers that run in the cloud alongside SpatialOS.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.NetworkParameters.ConnectionType">
+            <summary>
+            Type of network connection to use when connecting to SpatialOS.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.NetworkParameters.RakNet">
+            <summary>
+            Connection parameters specific to RakNet connections.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.NetworkParameters.Tcp">
+            <summary>
+            Connection parameters specific to TCP connections.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ProtocolLoggingParameters.LogPrefix">
+            <summary>
+            Log file names are prefixed with this prefix, are numbered, and have the extension .log.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ProtocolLoggingParameters.MaxLogFiles">
+            <summary>
+            Maximum number of log files to keep. Note that logs from any previous protocol logging
+            sessions will be overwritten.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ProtocolLoggingParameters.MaxLogFileSizeBytes">
+            <summary>
+            Once the size of a log file reaches this size, a new log file is created.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.WorkerType">
+            <summary>
+            Worker type (platform).
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.Network">
+            <summary>
+            Parameters controlling the network connection to SpatialOS.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.SendQueueCapacity">
+            <summary>
+            Number of messages that can be stored on the send queue. When the send queue is full,
+            calls to Connection.Send functions can block.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.ReceiveQueueCapacity">
+            <summary>
+            Number of messages that can be stored on the receive queue. When the receive queue is
+            full, SpatialOS can apply QoS and drop messages to the worker.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.LogMessageQueueCapacity">
+            <summary>
+            Number of messages logged by the SDK that can be stored in the log message queue. When
+            the log message queue is full, messages logged by the SDK can be dropped.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.BuiltInMetricsReportPeriodMillis">
+            <summary>
+            The Connection tracks several internal metrics, such as send and receive queue
+            statistics. This parameter controls how frequently the Connection will return a
+            MetricsOp reporting its built-in metrics. If set to zero, this functionality is
+            disabled.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.ProtocolLogging">
+            <summary>
+            Parameters for configuring protocol logging.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.ConnectionParameters.EnableProtocolLoggingAtStartup">
+            <summary>
+            Whether to enable protocol logging at startup.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.LoginTokenCredentials.Token">
+            <summary>
+            The token would typically be provided on the command-line by the SpatialOS
+            launcher.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.SteamCredentials.Ticket">
+            <summary>
+            Steam ticket for the steam app ID and publisher key corresponding to the project name
+            specified in the LocatorParameters. Typically obtained from the steam APIs.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.SteamCredentials.DeploymentTag">
+            <summary>
+            Deployment tag to request access for. If non-empty, must match the following regex:
+            [A-Za-z0-9][A-Za-z0-9_]*
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.LocatorParameters.ProjectName">
+            <summary>
+            The name of the SpatialOS project.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.LocatorParameters.CredentialsType">
+            <summary>
+            Type of credentials to use when authenticating via the Locator.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.LocatorParameters.LoginToken">
+            <summary>
+            Parameters used if the CredentialsType is LoginToken.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.LocatorParameters.Steam">
+            <summary>
+            Parameters used if the CredentialsType is Steam.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.IConstraint">
+            <summary>Base class for entity query constraints.</summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.EntityIdConstraint">
+            <summary>Constrains a query to match only entities with a particular ID.</summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.ComponentConstraint">
+            <summary>Constrains a query to match only entities that have a specific component.</summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.SphereConstraint">
+            <summary>
+            Constrains a query to match only entities whose position lies within a given sphere.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.AndConstraint">
+            <summary>
+            Constrains a query by the conjunction of one or more constraints.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.OrConstraint">
+            <summary>
+            Constrains a query by the disjunction of one or more constraints.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.NotConstraint">
+            <summary>
+            Constrains a query by negating a constraint.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.IResultType">
+            <summary>Base class for entity query result types.</summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.CountResultType">
+            <summary>Indicates that a query should return the number of entites it matched.</summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.SnapshotResultType">
+            <summary>
+            Indicates that a query should return a component data snapshot for each matched entity.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Query.SnapshotResultType.ComponentIds">
+            <summary>
+            If nonempty, filters the components returned in the snapshot for each entity.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Query.EntityQuery">
+            <summary>Represents a global query for entity data across the simulation.</summary>
+        </member>
+        <member name="T:Improbable.Worker.ReserveEntityIdRequest">
+            <summary>Type parameter for entity ID reservation request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.ReserveEntityIdsRequest">
+            <summary>Type parameter for multiple entity ID reservation request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.CreateEntityRequest">
+            <summary>Type parameter for entity creation request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.DeleteEntityRequest">
+            <summary>Type parameter for entity deletion request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.EntityQueryRequest">
+            <summary>Type parameter for entity query request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.OutgoingCommandRequest`1">
+            <summary>Type parameter for outgoing entity command request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.IncomingCommandRequest`1">
+            <summary>Type parameter for incoming entity command request IDs.</summary>
+        </member>
+        <member name="T:Improbable.Worker.RequestId`1">
+            <summary>
+            Represents an ID for a request. The type parameter should be one of the marker interfaces
+            defined above.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.RequestId`1.Id">
+            <summary>
+            The underlying raw ID of the request. Only use this if you know what you
+            are doing; prefer to use the RequestId object instead.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.SnapshotInputStream">
+            <summary>
+            A stream for reading snapshot one Entity at a time.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotInputStream.#ctor(System.String)">
+            <summary>
+            Creates a SnapshotInputStream to read the Snapshot at the given string path.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotInputStream.Dispose">
+            <summary>
+            Releases the resources of the SnapshotInputStream.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotInputStream.ReadEntity(Improbable.EntityId@,Improbable.Worker.Entity@)">
+            <summary>
+            Reads the next EntityId entityId, Entity entity pair from the Snapshot.
+            </summary>
+            <remarks> Returns an optional string error message if an error occurs during reading.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotInputStream.HasNext">
+            <summary>
+            Returns true if the SnapshotInputStream has not reached the end of the Snapshot.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.SnapshotOutputStream">
+            <summary>
+            A stream for outputting entities to a Snapshot one at a time.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotOutputStream.#ctor(System.String)">
+            <summary>
+            Creates a SnapshotOutputStream to write a Snapshot at the given string path.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotOutputStream.Dispose">
+            <summary>
+            Writes the end of Snapshot header and releases the resources of the SnapshotOutputStream.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.SnapshotOutputStream.WriteEntity(Improbable.EntityId,Improbable.Worker.Entity)">
+            <summary>
+            Writes the EntityId entityId, Entity entity pair to the Snapshot.
+            </summary>
+            <remarks> Returns an Optional string error message if an error occurs during writing.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.View">
+            <summary>
+            The View is an optional data structure that maintains the known state of entities in the worker's
+            view of the simulation.
+            </summary>
+            <remarks>
+            This object should not be modified concurrently by multiple threads. Note that as of
+            SpatialOS 11.1 this class is intended primarily as an example: using the
+            <code>Improbable.Worker.Dynamic</code> functionality, a custom <code>View</code> can be
+            implemented from scratch with any semantics desired.
+            </remarks>
+        </member>
+        <member name="P:Improbable.Worker.View.Entities">
+            <summary>
+            Current component data for all entities in the worker's view.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.View.Authority">
+            <summary>
+            Current authority delegations.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.View.GetAuthority``1(Improbable.EntityId)">
+            <summary>
+            Helper function that checks if the worker has authority over a particular component of a
+            particular entity.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.Callbacks`1.UpdateCallbacks">
+            <summary>
+            Merge toAdd and toRemove with map.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.Callbacks`1.EnterUpdateGuard">
+            <summary>
+            Registers that a call is entered to update the state of the map accordingly.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.Callbacks`1.ExitUpdateGuard">
+            <summary>
+            Registers that a call is exited to update the state of the map accordingly.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.DisposableObjects.RequireObjectNotDisposed(Improbable.Worker.Internal.CptrHandle,System.IDisposable)">
+            <summary>
+            Checks that a disposableObject representing an unmanaged handle is not disposed
+            (assuming that in such a context it can no longer be used). If the handle has been
+            disposed of, this throws an ObjectDisposedException. Otherwise, nothing happens.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Internal.MonoPInvokeCallbackAttribute">
+            <summary>
+            This attribute is valid on static functions and it is used by Mono's 
+            Ahead of Time Compiler (AOT) to generate the code necessary to support
+            native calls back into managed code.
+            </summary>
+            <remarks>
+            Implemented here as a custom attribute as we do not include Xamarin's
+            Mono library within the C# Worker SDK layer itself. Based on the official Mono
+            implementation.
+            See: https://github.com/mono/mono/blob/master/mcs/class/System/Mono.Util/MonoPInvokeCallbackAttribute.cs
+            See: https://developer.xamarin.com/api/type/MonoTouch.MonoPInvokeCallbackAttribute/
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Internal.ComponentDatabase">
+            <summary>
+            Manages the associations between unique component IDs and instances of metaclasses.
+            </summary>
+        </member>
+        <member name="P:Improbable.Worker.Internal.ComponentDatabase.MetaclassMap">
+            <summary>
+            Maps component IDs to their metaclass.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.ComponentDatabase.IdToMetaclass(System.UInt32)">
+            <summary>
+            Looks up a metaclass instance from a component ID.
+            Returns null if the componentId is unknown.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Internal.ComponentDatabase.MetaclassToId``1">
+            <summary>
+            Returns the component ID associated with a metaclass.
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">
+            <typeparamref name="C"/> is not a known metaclass.
+            </exception>
+        </member>
+    </members>
+</doc>

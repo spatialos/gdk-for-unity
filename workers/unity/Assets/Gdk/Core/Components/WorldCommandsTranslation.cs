@@ -191,6 +191,26 @@ namespace Improbable.Gdk.Core
         internal List<ReserveEntityIdsRequest> ReserveEntityIdsRequests = new List<ReserveEntityIdsRequest>();
         internal List<EntityQueryRequest> EntityQueryRequests = new List<EntityQueryRequest>();
 
+        private static readonly ComponentPool<CommandResponses<CreateEntityResponse>> createEntityResponsePool =
+            new ComponentPool<CommandResponses<CreateEntityResponse>>(
+                () => new CommandResponses<CreateEntityResponse>(),
+                component => component.Buffer.Clear());
+
+        private static readonly ComponentPool<CommandResponses<DeleteEntityResponse>> deleteEntityResponsePool =
+            new ComponentPool<CommandResponses<DeleteEntityResponse>>(
+                () => new CommandResponses<DeleteEntityResponse>(),
+                component => component.Buffer.Clear());
+
+        private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> reserveEntityIdsResponsesPool
+            = new ComponentPool<CommandResponses<ReserveEntityIdsResponse>>(
+                () => new CommandResponses<ReserveEntityIdsResponse>(),
+                component => component.Buffer.Clear());
+
+        private static readonly ComponentPool<CommandResponses<EntityQueryResponse>> entityQueryResponsePool =
+            new ComponentPool<CommandResponses<EntityQueryResponse>>(
+                () => new CommandResponses<EntityQueryResponse>(),
+                component => component.Buffer.Clear());
+
         public WorldCommandsTranslation(MutableView view) : base(view)
         {
         }
@@ -274,7 +294,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id);
 
-            view.AddCommandResponse(entity, response);
+            view.AddCommandResponse(entity, response, createEntityResponsePool);
         }
 
         public void OnDeleteEntityResponse(DeleteEntityResponseOp op)
@@ -288,7 +308,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id);
 
-            view.AddCommandResponse(entity, response);
+            view.AddCommandResponse(entity, response, deleteEntityResponsePool);
         }
 
         public void OnReserveEntityIdResponse(ReserveEntityIdsResponseOp op)
@@ -302,7 +322,7 @@ namespace Improbable.Gdk.Core
             var response = new ReserveEntityIdsResponse((CommandStatusCode) op.StatusCode, op.Message,
                 op.FirstEntityId.Value.Id, op.NumberOfEntityIds);
 
-            view.AddCommandResponse(entity, response);
+            view.AddCommandResponse(entity, response, reserveEntityIdsResponsesPool);
         }
 
         public void OnEntityQueryResponse(EntityQueryResponseOp op)
@@ -322,7 +342,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result);
 
-            view.AddCommandResponse(entity, response);
+            view.AddCommandResponse(entity, response, entityQueryResponsePool);
         }
 
         private bool TryGetEntityFromRequestId(uint requestId, string responseName, out Entity entity)

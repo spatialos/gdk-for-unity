@@ -18,8 +18,7 @@ namespace Playground
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
 
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
+            [ReadOnly] public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
 
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
         }
@@ -29,8 +28,7 @@ namespace Playground
             public int Length;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
 
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
+            [ReadOnly] public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
 
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
         }

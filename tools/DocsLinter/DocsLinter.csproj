@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotenvLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SimplifiedMarkdownDoc.cs" />
     <Compile Include="Tests\LinkCheckingTests.cs" />

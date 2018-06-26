@@ -23,17 +23,21 @@ namespace <#= qualifiedNamespace #>
 
                 internal Translation Translation { get; }
 
+                public string CallerWorkerId {get; }
+
                 public List<string> CallerAttributeSet { get; }
 
                 public <#= commandDetails.RequestType #> RawRequest { get; }
 
                 internal Request(uint requestId, 
                     Translation translation,
+                    string callerWorkerId,
                     List<string> callerAttributeSet,
                     <#= commandDetails.RequestType #> request)
                 {
                     this.RequestId = requestId;
                     this.Translation = translation;
+                    this.CallerWorkerId = callerWorkerId;
                     this.CallerAttributeSet = callerAttributeSet;
                     this.RawRequest = request;
                 }

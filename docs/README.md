@@ -8,7 +8,7 @@ We recommend you start by following the [Installation and setup guide](setup-and
 
 Note that the Unity GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
 
-We want your feedback on the Unity GDK and its documentation - see [Give us feedback](../README.md#give-us-feedback).
+We want your feedback on the Unity GDK, its documentation and its [roadmap](latest-roadmap.md) - see [Give us feedback](../README.md#give-us-feedback).
 
 ## Documentation 
 
@@ -28,17 +28,18 @@ The Unity GDK documentation assumes you are familiar with the Unity Entity Compo
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
  want your [feedback](../README.md#give-us-feedback).
-* [Contributions policy](https://github.com/spatialos/UnityGDK/blob/master/.github/CONTRIBUTING.md)
+* [Contributions policy](../.github/CONTRIBUTING.md)
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
 ##### Contents
-* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
-* [Authority](content/authority.md)
+* [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
 * [Sending and receiving commands](content/commands.md)
+* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
 * [Custom replication systems](content/custom-replication-system.md)
-* [The code generator](content/code-generator.md)
+* [Authority](content/authority.md)
 * [Creating entities](content/create-entity.md)
 * [Entity checkout process](content/entity-checkout-process.md)
+* [The code generator](content/code-generator.md)
 
 &copy; 2018 Improbable

@@ -7,5 +7,6 @@ namespace Playground
     {
         public long SpatialEntityId;
         public Entity Entity;
+        public World World;
     }
 }

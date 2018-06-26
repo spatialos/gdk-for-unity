@@ -266,7 +266,7 @@ namespace <#= qualifiedNamespace #>
 
                 var requestPayload = op.Request.Get().Value;
                 var unityRequestPayload = <#= commandDetails.RequestType #>.ToNative(requestPayload);
-                var request = new <#= commandDetails.CommandName #>.Request(op.RequestId.Id, this, op.CallerAttributeSet, unityRequestPayload);
+                var request = new <#= commandDetails.CommandName #>.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
 
                 view.AddCommandRequest(entity, request, <#= commandDetails.CommandName #>RequestPool);
             }
