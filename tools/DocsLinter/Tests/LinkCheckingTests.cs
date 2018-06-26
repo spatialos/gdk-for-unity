@@ -9,6 +9,11 @@ namespace DocsLinter.Tests
   [TestFixture]
   internal class RemoteLinkCheckingTests
   {
+    private static readonly Dictionary<string, string> dotenv = new Dictionary<string, string>
+    {
+      { Program.GithubUrlEnvKey, "github.com/spatialos/UnityGDK" }
+    };
+
     private static RemoteLink GetUrlForStatusCode(int statusCode)
     {
       var url = $"https://httpstat.us/{statusCode}";
@@ -18,22 +23,34 @@ namespace DocsLinter.Tests
     [Test]
     public void CheckRemoteLink_returns_true_for_200_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200));
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(200), dotenv);
       Assert.IsTrue(result);
     }
 
     [Test]
     public void CheckRemoteLink_returns_false_for_404_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(404));
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(404), dotenv);
       Assert.IsFalse(result);
     }
 
     [Test]
     public void CheckRemoteLink_returns_true_for_arbitrary_status_code()
     {
-      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(301)); // Permanent redirect
+      var result = Program.CheckRemoteLink(string.Empty, GetUrlForStatusCode(301), dotenv); // Permanent redirect
       Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CheckRemoteLink_returns_false_for_remote_links_to_repo_files()
+    {
+      var repoLinkBlob = "https://www.github.com/spatialos/UnityGDK/blob/README.md";
+      var resultBlob = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkBlob, "")), dotenv);
+      Assert.IsFalse(resultBlob);
+
+      var repoLinkTree = "https://www.github.com/spatialos/UnityGDK/tree/README.md";
+      var resultTree = Program.CheckRemoteLink(string.Empty, new RemoteLink(new LinkInline(repoLinkTree, "")), dotenv);
+      Assert.IsFalse(resultTree);
     }
   }
 
@@ -52,6 +69,9 @@ namespace DocsLinter.Tests
 
     private LocalLink otherFileExistsLink;
     private LocalLink otherFileDoesNotExistLink;
+
+    private LocalLink otherDirectoryExistsLink;
+    private LocalLink otherDirectoryDoesNotExistLink;
 
     private LocalLink otherFileHeadingExistsLink;
     private LocalLink otherFileHeadingDoesNotExistLink;
@@ -90,6 +110,10 @@ namespace DocsLinter.Tests
       otherFileExistsLink = new LocalLink(new LinkInline("test/image.png", string.Empty));
       otherFileDoesNotExistLink = new LocalLink(new LinkInline("test/no-image.png", string.Empty));
 
+      // Create other directory links.
+      otherDirectoryExistsLink = new LocalLink(new LinkInline("test/", string.Empty));
+      otherDirectoryDoesNotExistLink = new LocalLink(new LinkInline("no-test/", string.Empty));
+
       // Create other file links with heading
       otherFileHeadingExistsLink = new LocalLink(new LinkInline("test/test.md#test-heading", string.Empty));
       otherFileHeadingDoesNotExistLink = new LocalLink(new LinkInline("test/test.md#no-heading", string.Empty));
@@ -126,6 +150,24 @@ namespace DocsLinter.Tests
     public void CheckLocalLink_should_return_false_if_other_file_link_does_not_exist()
     {
       var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherFileDoesNotExistLink,
+        corpus);
+
+      Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void CheckLocalLink_should_return_true_if_other_directory_link_exists()
+    {
+      var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherDirectoryExistsLink,
+        corpus);
+
+      Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CheckLocalLink_should_return_false_if_other_directory_link_does_not_exist()
+    {
+      var result = Program.CheckLocalLink(markdownDocToTestPath, markdownDocToTest, otherDirectoryDoesNotExistLink,
         corpus);
 
       Assert.IsFalse(result);
