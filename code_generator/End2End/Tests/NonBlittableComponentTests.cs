@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Generated.Improbable.TestSchema;
 using Generated.Improbable.TestSchema.Nonblittable;
+using Improbable.Gdk.Core;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
@@ -30,6 +31,15 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
             var component = new SpatialOSNonBlittableComponent();
             Assert.True(component is Component,
                 "SpatialOSNonBlittableComponent is subclass of UnityEngine.Component");
+            
+        }
+
+        [Test]
+        public void component_should_implement_ISpatialComponentData()
+        {
+            var component = new SpatialOSNonBlittableComponent();
+            Assert.True(component is ISpatialComponentData,
+                "SpatialOSNonBlittableComponent implements ISpatialComponentData");
         }
 
         [Test]

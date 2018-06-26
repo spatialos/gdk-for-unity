@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         private static readonly bool1 BoolValue = Bool1True;
 
         [Test]
-        public void component_should_be_an_ISpatialComponentData()
+        public void component_should_implement_ISpatialComponentData()
         {
             var component = new SpatialOSBlittableComponent();
             Assert.True(component is ISpatialComponentData,
