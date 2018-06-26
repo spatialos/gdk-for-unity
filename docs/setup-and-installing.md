@@ -33,7 +33,7 @@
 		- the 32-bit and 64-bit Visual C++ Redistributables
 	- (Optional) [ReSharper](https://www.jetbrains.com/resharper/)
 	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](contributions/unity-gdk-coding-standards.md). 
-		> We are currently not accepting public contributions - see our [contributions](../CONTRIBUTING.md) policy.
+		> We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy.
     - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) 
     <br> You'll need this if you want to lint your code. Add it to your `PATH` environment variable.
 

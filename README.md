@@ -42,7 +42,7 @@ Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issue
 ## Contributions 
 
 **Public contributors**<br/>
-We are currently not accepting public contributions (but we do plan to in later releases and we’ll keep you posted). However, we are taking issues and we do want your feedback.
+We are not currently accepting public contributions - see our [contributions](.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your feedback.
 
 **Improbable developers**<br/>
 See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
@@ -64,6 +64,5 @@ See the [latest roadmap](docs/latest-roadmap.md) and let us know what you'd like
 
 ## Email updates
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.
-
 
 &copy; 2018 Improbable

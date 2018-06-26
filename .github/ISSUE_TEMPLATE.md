@@ -6,16 +6,16 @@ We are accepting issues and we want your [feedback](../README.md#give-us-feedbac
 #### Description
 Describe your issue.
 
-## Expected Behavior
+## Expected behaviour
 <!--- Tell us what should happen. -->
 
-## Current Behavior
-<!--- Tell us what happens instead of the expected behavior. -->
+## Current behaviour
+<!--- Tell us what happens instead of the expected behaviour. -->
 
-## Possible Solution
-<!--- Not obligatory, but suggest a fix/reason for the bug. -->
+## Possible solution
+<!--- This is not obligatory but if you have a preference, please suggest a fix for the bug. -->
 
-## Steps to Reproduce
+## Steps to reproduce
 <!--- Provide an unambiguous set of steps to reproduce this bug. Include code snippets if relevant. -->
 1.
 2.
@@ -24,7 +24,7 @@ Describe your issue.
 
 ## Environment
 <!--- What were you trying to accomplish? -->
-<!--- Please include your spatial diangose output in full. -->
+<!--- Please include your spatial diagnose output in full. -->
 <!--- Please detail your OS & Unity versions. -->
 
-<!--- Provide a general summary of the issue in the Title above -->
+<!--- Provide a general summary of the issue in the title field above. -->

@@ -28,7 +28,7 @@ The Unity GDK documentation assumes you are familiar with the Unity Entity Compo
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
  want your [feedback](../README.md#give-us-feedback).
-* [Contributions policy](../CONTRIBUTING.md)
+* [Contributions policy](../.github/CONTRIBUTING.md)
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
 ##### Contents
