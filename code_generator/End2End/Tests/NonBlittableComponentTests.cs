@@ -25,7 +25,6 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
             var component = new SpatialOSNonBlittableComponent();
             Assert.True(component is Component,
                 "SpatialOSNonBlittableComponent is subclass of UnityEngine.Component");
-            
         }
 
         [Test]

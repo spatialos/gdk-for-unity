@@ -23,7 +23,6 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
             var component = new SpatialOSBlittableComponent();
             Assert.True(component is ISpatialComponentData,
                 "SpatialOSBlittableComponent implements ISpatialComponentData");
-            
         }
 
         [Test]
