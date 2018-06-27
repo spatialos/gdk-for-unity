@@ -17,8 +17,3 @@ obj/
 packages/
 
 *.DotSettings.user
-
-code_generator/End2End/schema_json_ast/
-code_generator/End2End/GeneratedDependencies/Generated/
-code_generator/End2End/GeneratedDependencies/Generated_Csharp_Worker/
-

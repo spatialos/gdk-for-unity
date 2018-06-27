@@ -80,10 +80,10 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeCompile">
     <Exec Command="spatial schema generate -i ../schema -L ast_json -o ../schema_json_ast --force" />
-    <Exec Command="spatial schema generate -i ../schema -L csharp -o ./Generated_Csharp_Worker --force" />
+    <Exec Command="spatial schema generate -i ../schema -L csharp -o ./GeneratedCSharpWorker --force" />
     <Exec Command="..\..\bin\Release\GdkCodeGenerator.exe --json-dir ..\schema_json_ast --output-dir .\Generated"/>
     <ItemGroup>
-      <Compile Include="Generated_Csharp_Worker\**\*.cs" />
+      <Compile Include="GeneratedCSharpWorker\**\*.cs" />
       <Compile Include="Generated\**\*.cs" />
     </ItemGroup>
   </Target>

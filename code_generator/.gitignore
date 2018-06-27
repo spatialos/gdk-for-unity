@@ -329,3 +329,6 @@ ASALocalRun/
 .mfractor/
 
 Generated/
+End2End/schema_json_ast/
+End2End/GeneratedDependencies/Generated/
+End2End/GeneratedDependencies/GeneratedCSharpWorker/
