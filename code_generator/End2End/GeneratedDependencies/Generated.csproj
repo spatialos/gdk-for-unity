@@ -69,10 +69,7 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(UNITY_HOME)\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
+  </ItemGroup> 
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
