@@ -4,54 +4,58 @@
 
 # Running Tests
 
-You can run tests from the command line, or using the Unity Editor, through
- the [Unity Test Runner window](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
+Using your terminal, in the repository directory:
 
-## 1. Prepare Workspace
-
-You need to do this once after you check out the repository, or if anything in
- the project setup has changed.
-
-Open the repository directory in your terminal, for example using Git Bash.
+For the first run:
 
 ```bash
-$ ./prepare-workspace.sh
+./prepare-workspace.sh
+./ci/build-test.sh
 ```
 
-You also need to build the tools that will be used for testing.
+If you have modified anything in the code generator or docs linter tool;
+ to re-test these you need to re-run:
 
 ```bash
-$ ./ci/build.sh
+./ci/build-test.sh
 ```
 
-## 2. (Optional) Run All Tests From The Command Line
-
-From the repository directory:
+If you have modified anything in the Unity Project; to re-test this you can
+ re-run:
 
 ```bash
 ./ci/test.sh
 ```
 
-## 3. Open the Unity Project in Unity Editor
+For Unity tests, you can also follow these steps after preparing workspace:
 
-The unity project can be found in this directory:
+1. Open the Unity project in Unity Editor
+1. Open test runner window
+1. Run tests
 
-> repository/worker/unity
+## 1. Open the Unity Project in Unity Editor
 
-## 3. Open Test Runner Window
+The unity project can be found in this directory within the repository:
+
+> /worker/unity
+
+## 2. Open Test Runner Window
 
 From the toolbar at the top of the Unity Editor, select "Window" > "Test Runner".
 
-## 4. Run Tests
+## 3. Run Tests
 
-You can press the "run all" button to run all tests. These will include the tests that come with the Unity Entities packages.
+You can press the "run all" button to run all tests. These will include the
+ tests that come with the Unity Entities packages.
 
 As each test is being run, the status of it will be displayed next to the test,
  with a green tick if it passes, or a red cross if it fails.
 
-The tests for the GDK can be found in the assemblies that start with "Improbable.Gdk.".
+The tests for the GDK can be found in the assemblies that start with
+ "Improbable.Gdk.".
 
-You can click on the arrows on the left of the assemblies to expand or collapse them.
+You can click on the arrows on the left of the assemblies to expand or collapse
+ them.
 
 Double click any item in the hierarchy to run the tests within that entry.
 
