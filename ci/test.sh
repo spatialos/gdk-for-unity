@@ -25,21 +25,21 @@ markEndOfBlock "Setup variables"
 
 markStartOfBlock "Tools Testing"
 
-${NUNIT3_CONSOLE} tools/DocsLinter/DocsLinter.csproj --result=${TOOLS_TEST_RESULTS_FILES}
+"${NUNIT3_CONSOLE}" tools/DocsLinter/DocsLinter.csproj --result=${TOOLS_TEST_RESULTS_FILES}
 TOOLS_TEST_RESULT=$?
 
 markEndOfBlock "Tools Testing"
 
 markStartOfBlock "Code Generator Testing"
 
-${NUNIT3_CONSOLE} code_generator/GdkCodeGenerator.sln --result=${CODE_GENERATOR_TEST_RESULTS_FILE}
+"${NUNIT3_CONSOLE}" code_generator/GdkCodeGenerator.sln --result=${CODE_GENERATOR_TEST_RESULTS_FILE}
 CODE_GENERATOR_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator Testing"
 
 markStartOfBlock "Code Generator End2End Testing"
 
-${NUNIT3_CONSOLE} code_generator/End2End/Tests/Tests.csproj --result=${CODE_GENERATOR_E2E_TEST_RESULTS_FILE}
+"${NUNIT3_CONSOLE}" code_generator/End2End/Tests/Tests.csproj --result=${CODE_GENERATOR_E2E_TEST_RESULTS_FILE}
 CODE_GENERATOR_E2E_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator End2End Testing"
@@ -101,6 +101,11 @@ fi
 
 markEndOfBlock "$0"
 
-if [ $EDITMODE_TEST_RESULT -ne 0 ] || [ $PLAYMODE_TEST_RESULT -ne 0 ] || [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || [ $CODE_GENERATOR_E2E_TEST_RESULT -ne 0 ] || [ $TOOLS_TEST_RESULT -ne 0 ]; then
+if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
+   [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
+   [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
+   [ $CODE_GENERATOR_E2E_TEST_RESULT -ne 0 ] || \
+   [ $TOOLS_TEST_RESULT -ne 0 ]
+then
     exit 1
 fi
