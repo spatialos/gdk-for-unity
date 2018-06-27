@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "com.unity.burst": "0.2.4-preview.17",
+    "com.unity.burst": "0.2.4-preview.18",
     "com.unity.entities": "0.0.12-preview.3",
     "com.unity.package-manager-ui": "1.9.9",
-    "com.unity.postprocessing": "2.0.5-preview",
+    "com.unity.postprocessing": "2.0.7-preview",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0",
