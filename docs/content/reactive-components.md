@@ -3,7 +3,7 @@
 -----
 
 
-## Receiving updates from SpatialOS: reactive components
+## Receiving entity updates from SpatialOS: reactive components
 
 To represent state changes or messages from SpatialOS, the Unity GDK uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
