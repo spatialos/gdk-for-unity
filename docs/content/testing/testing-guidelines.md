@@ -160,6 +160,19 @@ public class ExampleTests
 }
 ```
 
+### Assertions
+
+For NUnit, you can use the `Assert` class to make assertions.
+
+Please pay attention to parameter names, for example, for `Assert.AreEqual`,
+ the first parameter is the expected value, and the second parameter is the
+ value we are testing.
+
+```cs
+  var sumResult = Add(2, 3);
+  Assert.AreEqual(5, sumResult);
+```
+
 #### Disposables vs Setup And Teardown
 
 If you have a fixture that has only one test, and the setup is simple, then you
