@@ -18,8 +18,27 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
                 CreateNoWindow = true
             });
 
-            var output = GetOutput(process.StandardOutput);
-            var errOut = GetOutput(process.StandardError);
+            var output = "";
+            var errOut = "";
+            process.EnableRaisingEvents = true;
+            process.OutputDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    output += e.Data;
+                }
+            };
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    errOut += e.Data;
+                }
+            };
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
@@ -27,25 +46,6 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
                     "Could not {2}. The following error occurred: {0}, {1}\n", output,
                     errOut, description));
             }
-        }
-
-        private static string GetOutput(TextReader reader)
-        {
-            var line = "";
-            var output = "";
-            while (line != null)
-            {
-                try
-                {
-                    line = reader.ReadLine();
-                    output += line;
-                }
-                catch
-                {
-                    line = null;
-                }
-            }
-            return output;
         }
     }
 }
