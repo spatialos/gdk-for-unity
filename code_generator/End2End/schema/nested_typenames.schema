@@ -1,6 +1,6 @@
 package improbable.test_schema;
 
-// Uncomment this file when Nested Type definitions are implemented.
+// TODO: UTY-360 Uncomment this file when Nested Type definitions are supported.
 //
 // type NestedTypeName {
 //     type Other {

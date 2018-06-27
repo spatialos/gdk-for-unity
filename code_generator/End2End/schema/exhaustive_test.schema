@@ -8,7 +8,7 @@ component ExhaustiveSingular {
   id = 197715;
   bool field1 = 1;
   float field2 = 2;
-  // bytes field3 = 3; Uncomment when bytes are supported.
+  // bytes field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   int32 field4 = 4;
   int64 field5 = 5;
   double field6 = 6;
@@ -27,13 +27,13 @@ component ExhaustiveSingular {
 
 component ExhaustiveOptional {
   id = 197716;
-  // option<bool> field1 = 1; Uncomment when Optional bool1 supported.
+  // option<bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
   option<float> field2 = 2;
-  // option<bytes> field3 = 3; Uncomment when bytes are supported.
+  // option<bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   option<int32> field4 = 4;
   option<int64> field5 = 5;
   option<double> field6 = 6;
-  // option<string> field7 = 7; Uncomment when Nullable<string> bug is fixed.
+  // option<string> field7 = 7; TODO: UTY-496 Uncomment when Nullable<string> bug is fixed.
   option<uint32> field8 = 8;
   option<uint64> field9 = 9;
   option<sint32> field10 = 10;
@@ -48,9 +48,9 @@ component ExhaustiveOptional {
 
 component ExhaustiveRepeated {
   id = 197717;
-  // list<bool> field1 = 1; Uncomment when List<bool1> supported.
+  // list<bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
   list<float> field2 = 2;
-  // list<bytes> field3 = 3; Uncomment when bytes are supported
+  // list<bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   list<int32> field4 = 4;
   list<int64> field5 = 5;
   list<double> field6 = 6;
@@ -69,9 +69,9 @@ component ExhaustiveRepeated {
 
 component ExhaustiveMapValue {
   id = 197718;
-  // map<string, bool> field1 = 1; Uncomment when map with bool1 is supported.
+  // map<string, bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
   map<string, float> field2 = 2;
-  // map<string, bytes> field3 = 3; Uncomment when bytes are supported.
+  // map<string, bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   map<string, int32> field4 = 4;
   map<string, int64> field5 = 5;
   map<string, double> field6 = 6;
@@ -90,9 +90,9 @@ component ExhaustiveMapValue {
 
 component ExhaustiveMapKey {
   id = 197719;
-  // map<bool, string> field1 = 1; Uncomment when bool1 is supported in Maps
+  // map<bool, string> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
   map<float, string> field2 = 2;
-  // map<bytes, string> field3 = 3; Uncomment when bytes are supported.
+  // map<bytes, string> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   map<int32, string> field4 = 4;
   map<int64, string> field5 = 5;
   map<double, string> field6 = 6;
