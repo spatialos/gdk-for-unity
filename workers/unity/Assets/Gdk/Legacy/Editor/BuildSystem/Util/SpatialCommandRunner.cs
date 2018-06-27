@@ -17,8 +17,38 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
                 CreateNoWindow = true
             });
 
-            var output = process.StandardOutput.ReadToEnd();
-            var errOut = process.StandardError.ReadToEnd();
+            var line = "";
+            var output = "";
+            while (line != null)
+            {
+                try
+                {
+                    line= process.StandardOutput.ReadToEnd();
+                    output += line;
+                }
+                catch
+                {
+                    line = null;
+                }
+            }
+
+            line = "";
+            var errOut = "";
+            while (line != null)
+            {
+                try
+                {
+                    line = process.StandardError.ReadToEnd();
+                    errOut += line;
+                }
+                catch
+                {
+                    line = null;
+                }
+            }
+
+            //var output = process.StandardOutput.ReadToEnd();
+            //var errOut = process.StandardError.ReadToEnd();
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
