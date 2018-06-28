@@ -1,16 +1,14 @@
 {
-    "name": "Improbable.Gdk.Core.EditmodeTests",
+    "name": "Improbable.Gdk.TestUtils",
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Improbable.Gdk.TestUtils"
+        "Unity.Entities.Hybrid"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false
 }

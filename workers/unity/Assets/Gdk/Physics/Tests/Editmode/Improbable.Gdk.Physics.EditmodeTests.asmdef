@@ -1,9 +1,8 @@
 {
-    "name": "Improbable.Gdk.Core.EditmodeTests",
+    "name": "Improbable.Gdk.Physics.EditmodeTests",
     "references": [
-        "Improbable.Gdk.Core",
-        "Unity.Entities",
-        "Improbable.Gdk.TestUtils"
+        "Improbable.Gdk.Physics",
+        "Unity.Entities"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

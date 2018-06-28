@@ -46,9 +46,6 @@ markEndOfBlock "Code Generator End2End Testing"
 
 markStartOfBlock "Editmode Testing"
 
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
-
 ${UNITY_EXE} \
     -nographics \
     -batchmode \
@@ -63,8 +60,6 @@ EDITMODE_TEST_RESULT=$?
 markEndOfBlock "Editmode Testing"
 
 markStartOfBlock "Playmode Testing"
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
 
 ${UNITY_EXE} \
     -nographics \
