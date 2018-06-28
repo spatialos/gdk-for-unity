@@ -1,0 +1,26 @@
+package improbable.test_schema;
+
+// TODO: UTY-360 Uncomment this file when Nested Type definitions are supported.
+//
+// type NestedTypeName {
+//     type Other {
+//         type NestedTypeSameName {
+//             type Other0 {
+//                 int32 foo = 1;
+//             }
+//             enum NestedEnum {
+//                 enum_value = 1;
+//             }
+//             Other0 other_zero = 1;
+//             NestedEnum enum_field = 2;
+//         }
+//         NestedTypeSameName same_name = 1;
+//     }
+//     Other other = 1;
+// }
+
+// component NestedComponent {
+//     id = 20152;
+//     NestedTypeName nested_type = 1;
+// }
+//
