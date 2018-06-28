@@ -14,19 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
             qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
             this.typeDefinition = typeDefinition;
             this.enumSet = enumSet;
-
             return TransformText();
-        }
-
-        private UnityTypeDetails GetTypeDetails()
-        {
-            return new UnityTypeDetails(typeDefinition);
-        }
-
-        private List<UnityFieldDetails> GetFieldDetailsList()
-        {
-            return typeDefinition.FieldDefinitions
-                .Select(fieldDefinition => new UnityFieldDetails(fieldDefinition.RawFieldDefinition)).ToList();
         }
     }
 }

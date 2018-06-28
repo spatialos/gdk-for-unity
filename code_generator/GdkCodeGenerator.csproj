@@ -81,8 +81,10 @@
     <Compile Include="src\Generation\Generators\Parts\UnityComponentConversionGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentDataGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentGeneratorPart.cs" />
+    <Compile Include="src\Generation\Generators\Parts\UnityEnumContentPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEnumGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEventGeneratorPart.cs" />
+    <Compile Include="src\Generation\Generators\Parts\UnityTypeContentPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityTypeGeneratorPart.cs" />
     <Compile Include="src\Generation\Model\Details\UnityCommandDetails.cs" />
     <Compile Include="src\Generation\Model\Details\UnityComponentDetails.cs" />
@@ -112,8 +114,10 @@
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
     <T4Files Include="Templates\UnityComponentGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
+    <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
+    <T4Files Include="Templates\UnityTypeContent.tt" />
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="$(SolutionDir)dependencies\Improbable.TextTemplating.dll" />
   <Target Name="BeforeBuild">
