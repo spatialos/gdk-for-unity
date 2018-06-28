@@ -79,9 +79,27 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     enumSet.Add(unityEnum.qualifiedName);
                 }
+
+                foreach (var typeDefinition in schema.TypeDefinitions)
+                {
+                    ExtractEnums(typeDefinition, enumSet);
+                }
             }
 
             return enumSet;
+        }
+
+        private void ExtractEnums(UnityTypeDefinition typeDefinition, HashSet<string> enumSet)
+        {
+            foreach (var enumDefinition in typeDefinition.EnumDefinitions)
+            {
+                enumSet.Add(enumDefinition.qualifiedName);
+            }
+
+            foreach (var nestedTypeDefinition in typeDefinition.TypeDefinitions)
+            {
+                ExtractEnums(nestedTypeDefinition, enumSet);
+            }
         }
 
         private void CleanTargetDirectory()
