@@ -1,5 +1,3 @@
-using System;
-
 namespace Improbable.Gdk.CodeGenerator
 {
     public static class CommonGeneratorUtils
