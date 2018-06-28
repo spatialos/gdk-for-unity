@@ -2,7 +2,7 @@
 
 -----
 
-# Testing Guidelines
+# Testing guidelines
 
 The tests should:
 
@@ -11,9 +11,9 @@ The tests should:
 - Make assertions in the new state against the expected changes
 - Clean up
 
-NUnit allows this to be done through the use of Fixtures and special method annotations.
+NUnit allows this to be done through the use of fixtures and special method annotations.
 
-## Module Directory Structure
+## Module directory structure
 
 The Unity GDK project's assets are divided into modules, such as `Core`, `Physics`, `PlayerLifecycle`.
 
@@ -21,59 +21,47 @@ Each module is in its own directory within `workers\unity\Assets\Gdk`.
 
 Each module has its own tests that cover the functionality of that module.
 
-Unity Test Runner also allows separate playmode and editmode tests. For more information on this division, please refer to the [Unity Test Runner manual page](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
+Unity Test Runner also allows separate Playmode and Editmode tests. For more information on this division, please refer to the [Unity Test Runner manual page](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
 
-Each module folder will contain the tests about that module, and within separate subdirectories if a module needs both editmode and playmode testing - this is a requirement from Unity:
+Each module folder will contain the tests about that module, and within separate subdirectories if a module needs both Editmode and Playmode testing - this is a requirement from Unity:
 
 > The Editmode and Playmode folders need to be separate as the tests need to be in different assemblies, and currently Unity `.asmdef` files affect all files within the same directory.
 
-The folder structure for a module should look like this:
-- `<ModuleName>` (e.g. `Core`)/
-  - Improbable.Gdk.`<ModuleName>`.asmdef
-  - `Some/Folder/<ClassName>`.cs
-  - `Some/Other/Folder/<ClassName>`.cs
-  - Tests/
-    - Editmode/
-      - Improbable.Gdk.`<ModuleName>`.EditmodeTests.asmdef
-      - `Some/Folder/<ClassName>`Tests.cs
-    - Playmode/
-      - Improbable.Gdk.`<ModuleName>`.PlaymodeTests.asmdef
-      - `Some/Other/Folder/<ClassName>`Tests.cs
+Within the root of the module, the `Tests` directory should contain `Editmode`
+ and `Playmode` subdirectories, with their own assembly definition files.
 
-Test assemblies must match this pattern (see [Namespaces](#namespaces)):
+For example, for the `Core` module, the module files are within
+ `workers\unity\Assets\Gdk\Core`. The Editmode tests should be in
+ `workers\unity\Assets\Gdk\Core\Tests\Editmode`.
+
+Test assembly definition files must match this pattern:
 > `Improbable.Gdk.<ModuleName>.<TestMode>Tests.asmdef`
 
 If a class to be tested will have both Editmode and Playmode tests, you can name the test filenames as `<ClassName>EditmodeTests.cs` and `<ClassName>PlaymodeTests.cs` within their respective assemblies.
 
 Within each test folder, the folder structure should match the non-test code structure.
 
-If any file path can be broken down into this pattern:
-
-> `<module path>`/`<path within module>`.cs
-
-The Editmode test for this class should be in:
-
-> `<module path>`/Tests/Editmode/`<path within module>`Tests.cs
+If any file path can be broken down into the pattern `<module path>/<path within module>.cs`, the Editmode tests for this class should be in `<module path>/Tests/Editmode/<path within module>Tests.cs`.
 
 For a more concrete example, if you look at this class:
 
-workers/unity/Assets/Gdk/`Core`/`Utility/CommandLineUtility`.cs
+`workers/unity/Assets/Gdk/Core/Utility/CommandLineUtility.cs`
 
 The test class should be within:
 
-workers/unity/Assets/Gdk/`Core`/Tests/Editmode/`Utility/CommandLineUtility`Tests.cs
+`workers/unity/Assets/Gdk/Core/Tests/Editmode/Utility/CommandLineUtilityTests.cs`
 
 ### Editmode vs. Playmode tests
 
-As many unit tests as possible should be Editmode tests. This is because editmode tests are faster, since they do not require scenes and Gameobjects to be set up.
+As many unit tests as possible should be Editmode tests. This is because Editmode tests are faster, since they do not require scenes and Gameobjects to be set up.
 
 Playmode-specific features should be mocked as much as possible, unless it’s impractical to do so. For example, if a function depends on some time passing, it should be using a mockable time interface instead of the `UnityEngine.Time` class directly.
 
-If it is impossible to do a test as an editor test, e.g. a particular kind of functionality that responds to a physics callback, then they can be playmode tests.
+If it is impossible to do a test as an editor test, e.g. a particular kind of functionality that responds to a physics callback, then they can be Playmode tests.
 
-Another justification for a playmode test is to check that certain functionality will still be present when a game is being played, or for more complicated integration testing that may depend on multiple systems interacting with each other.
+Another justification for a Playmode test is to check that certain functionality will still be present when a game is being played, or for more complicated integration testing that may depend on multiple systems interacting with each other.
 
-## File Structure
+## File structure
 
 ### Namespaces
 
@@ -83,17 +71,17 @@ The tests should be grouped under this namespace pattern:
 
 Where:
 - `<ModuleName>` is the GDK module being tested (e.g. `Core`)
-- `<TestMode>` is one of `Editmode` or `Playmode`.
+- `<TestMode>` is one of `Editmode` or `Playmode`
 
-### Fixtures and Methods
+### Fixtures and methods
 
 NUnit allows us to use test fixtures to set up common properties for tests for a particular part of a feature, and test cases within fixtures that will each test a single functionality.
 
 You can have multiple fixtures within a test file. These fixtures set up and clean up different base conditions that can be tested.
 
 For example, if a class has both static and instance methods, this can be tested within two fixtures:
-- `<ClassName>StaticTests`, and
-- `<ClassName>InstanceTests`.
+- `<ClassName>StaticTests`
+- `<ClassName>InstanceTests`
 
 The `StaticTests` may not need to set anything up, but the `InstanceTests` may need to create an instance of the class to be able to verify the instance methods.
 
@@ -101,13 +89,14 @@ There are other reasons to create multiple fixtures, for example if you would li
 
 In most cases, each test file will contain one fixture. In this case, this fixture can be named `<ClassName>Tests`.
 
-The test methods should math this pattern:
+The test methods should match this pattern:
 
 > `<method>_should_<action>_when_<conditions>`.
 
-### Setup and Teardown
+### Setup and teardown
 
-Structure within the file, using NUnit concepts for set up and tear down:
+The following snippet shows the recommended order of the NUnit set up and tear
+ down annotations:
 
 ```cs
 [TestFixture]
@@ -173,10 +162,32 @@ Please pay attention to parameter names, for example, for `Assert.AreEqual`,
   Assert.AreEqual(5, sumResult);
 ```
 
-#### Disposables vs Setup And Teardown
+#### Assertions for exceptions
+
+By default, tests will fail if any code within throws an exception.
+
+Sometimes you may want to test that an exception will be thrown in certain
+ situations.
+
+You can do this using the `Assert.Throws` method. This method returns the caught
+ exception, and you can do further assertions against that.
+
+```cs
+        [Test]
+        public void Validate_should_return_false_when_LocatorHost_is_empty()
+        {
+            var config = GetDefaultWorkingConfig();
+            config.LocatorHost = "";
+
+            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
+            Assert.IsTrue(exception.Message.Contains("locatorHost"));
+        }
+```
+
+### Disposables vs setup and teardown
 
 If you have a fixture that has only one test, and the setup is simple, then you
- may be tempted to use the `using` keyword within the test.
+ can use the `using` keyword within the test.
 
 e.g.:
 ```cs
@@ -190,11 +201,9 @@ public void World_should_have_an_EntityManager()
 }
 ```
 
-This is allowed.
-
 However, if you will be adding a similar test to the same
- fixture, e.g. you need to create another world to assert something else about
- the world, move the creation and disposal of the instance into the `[SetUp]`
+ fixture, e.g. you need to create another `world` to assert something else about
+ the `world`, move the creation and disposal of the instance into the `[SetUp]`
  and `[TearDown]` functions:
 
 ```cs
@@ -219,35 +228,13 @@ public void World_should_have_an_EntityManager()
 }
 
 [Test]
-public void World_should_not_have_entities()
+public void World_should_not_have_behaviour_managers_when_created()
 {
     Assert.AreEqual(0, world.BehaviourManagers.Count());
 }
 ```
 
-#### Assertions for Exceptions
-
-By default, tests will fail if any code within throws an exception.
-
-Sometimes you may want to test that an exception will be thrown in certain
- situations.
-
-You can do this using the `Assert.Throws` method. This method returns the caught
- exception, and you can do further assertions against that.
-
-```cs
-        [Test]
-        public void Validate_should_return_false_when_LocatorHost_is_empty()
-        {
-            var config = GetDefaultWorkingConfig();
-            config.LocatorHost = "";
-
-            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
-            Assert.IsTrue(exception.Message.Contains("locatorHost"));
-        }
-```
-
-#### Handling Unity Logs
+### Handling Unity logs
 
 By default, any error logs will fail tests.
 

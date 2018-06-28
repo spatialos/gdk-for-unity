@@ -2,7 +2,7 @@
 
 -----
 
-# Writing a New Test
+# Writing a new test
 
 This document walks through creating tests for a made-up class to explain how
  the parts of the Unity GDK can be tested.
@@ -74,7 +74,7 @@ And this class exists at this path:
 
 `workers/unity/Assets/Gdk/Core/Utility/MyClass.cs`.
 
-### Test Folder and Filename
+### Test folder and filename
 
 The module for this class is:
 
@@ -93,7 +93,7 @@ This assumes that the `workers/unity/Assets/Gdk/Core/Tests/` directory exists.
  [Creating a New Test Folder and Assembly](#creating-a-new-test-folder-and-assembly)
  heading.
 
-### Test Fixtures
+### Test fixtures
 
 Test Fixtures allow test methods within them to share similar setups.
 
@@ -157,15 +157,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Utility
 }
 ```
 
-### Test Methods
+### Test methods
 
 Let's write a few test methods.
 
-We want to ensure that the `AddTwoNumbers` static method returns the sum of the
+The test should ensure that the `AddTwoNumbers` static method returns the sum of the
  input numbers.
 
-So, the test name should match, and we make the assertions within the test
- method.
+The test name should match this expectation and contain relevant assertions.
 
 ```cs
     [TestFixture]
@@ -181,7 +180,7 @@ So, the test name should match, and we make the assertions within the test
     }
 ```
 
-For the instance functionality, we can add tests similarly:
+For the instance functionality, you can add tests similarly:
 
 ```cs
     [TestFixture]
@@ -233,14 +232,14 @@ For the instance functionality, we can add tests similarly:
     }
 ```
 
-### Internal Variables and Methods
+### Internal variables and methods
 
 The tests above will not compile.
 
 This is because the test class is in another assembly than the implementation
- class.
+ class, and the tests are looking at internal fields.
 
-There is a solution. In the `MyClass.cs` file, we can make its internals
+There is a solution. In the `MyClass.cs` file, you can make its internals
  visible to the test assembly:
 
 ```
@@ -249,7 +248,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Improbable.Gdk.Core.EditmodeTests")]
 ```
 
-### Running the New Tests
+### Running the new tests
 
 In the Test Runner window of Unity, you can find the test under:
 - Improbable.Gdk.Core.EditmodeTests.dll (this matches the folder name
@@ -262,7 +261,7 @@ And you can follow the namespace and fixture name in the hierarchy:
 
 Double-click the fixture name to run all tests within that fixture.
 
-## Creating a New Test Folder and Assembly
+## Creating a new test folder and assembly
 
 Let's say you want to add tests for the `/workers/unity/Assets/Gdk/Legacy`
  folder within the Unity project's assets.
@@ -287,24 +286,24 @@ Hit the "Apply" button.
 
 Check the "Test Assemblies" checkbox.
 
-If you're writing Editmode tests, uncheck the "Any Platform" checkbox below.
-
-Scroll to the bottom, and press the "Deselect All" button, and then check the
- "Editor" checkbox only.
-
-Hit the "Apply" button again.
+If you're writing Editmode tests:
+- Uncheck the "Any Platform" checkbox.
+- Scroll to the bottom, and press the "Deselect All" button.
+- Check the "Editor" checkbox only.
+- Hit the "Apply" button again.
 
 In the references list, add the reference to the module you are testing (in this
- case, `Improbable.Gdk.Legacy`)
+ case, `Improbable.Gdk.Legacy`).
 
 Hit the "Apply button" again.
 
-### Adding the Entities package references to test assemblies
+### Adding the entities package references to test assemblies
 
 You need to edit the `.asmdef` file manually to add references to the Entities
  preview package assemblies.
 
-Right click the assembly definition file, and show in explorer.
+Right click the assembly definition file, and press the "show in explorer"
+ action.
 
 Open in your favourite text editor.
 
