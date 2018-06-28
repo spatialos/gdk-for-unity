@@ -23,33 +23,11 @@ Each module has its own tests that cover the functionality of that module.
 
 Unity Test Runner also allows separate Playmode and Editmode tests. For more information on this division, please refer to the [Unity Test Runner manual page](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
 
-Each module folder will contain the tests about that module, and within separate subdirectories if a module needs both Editmode and Playmode testing - this is a requirement from Unity:
-
-> The Editmode and Playmode folders need to be separate as the tests need to be in different assemblies, and currently Unity `.asmdef` files affect all files within the same directory.
-
 Within the root of the module, the `Tests` directory should contain `Editmode`
- and `Playmode` subdirectories, with their own assembly definition files.
-
-For example, for the `Core` module, the module files are within
- `workers\unity\Assets\Gdk\Core`. The Editmode tests should be in
- `workers\unity\Assets\Gdk\Core\Tests\Editmode`.
+ and `Playmode` subdirectories with their own assembly definition files.
 
 Test assembly definition files must match this pattern:
 > `Improbable.Gdk.<ModuleName>.<TestMode>Tests.asmdef`
-
-If a class to be tested will have both Editmode and Playmode tests, you can name the test filenames as `<ClassName>EditmodeTests.cs` and `<ClassName>PlaymodeTests.cs` within their respective assemblies.
-
-Within each test folder, the folder structure should match the non-test code structure.
-
-If any file path can be broken down into the pattern `<module path>/<path within module>.cs`, the Editmode tests for this class should be in `<module path>/Tests/Editmode/<path within module>Tests.cs`.
-
-For a more concrete example, if you look at this class:
-
-`workers/unity/Assets/Gdk/Core/Utility/CommandLineUtility.cs`
-
-The test class should be within:
-
-`workers/unity/Assets/Gdk/Core/Tests/Editmode/Utility/CommandLineUtilityTests.cs`
 
 ### Editmode vs. Playmode tests
 
@@ -60,6 +38,16 @@ Playmode-specific features should be mocked as much as possible, unless it’s i
 If it is impossible to do a test as an editor test, e.g. a particular kind of functionality that responds to a physics callback, then they can be Playmode tests.
 
 Another justification for a Playmode test is to check that certain functionality will still be present when a game is being played, or for more complicated integration testing that may depend on multiple systems interacting with each other.
+
+### Test Folder Structure
+
+Within each test folder, the folder structure should match the non-test code structure.
+
+If any class file path can be broken down into the pattern `<module path>/<path within module>.cs`, the Editmode tests for this class should be in `<module path>/Tests/Editmode/<path within module>Tests.cs`.
+
+For a more concrete example, for the class  `workers/unity/Assets/Gdk/Core/Utility/CommandLineUtility.cs` the test fixtures should be within `workers/unity/Assets/Gdk/Core/Tests/Editmode/Utility/CommandLineUtilityTests.cs`.
+
+If a class has both Editmode and Playmode tests, you can name the test filenames as `<ClassName>EditmodeTests.cs` and `<ClassName>PlaymodeTests.cs` within their respective assemblies.
 
 ## File structure
 
@@ -77,9 +65,7 @@ Where:
 
 NUnit allows us to use test fixtures to set up common properties for tests for a particular part of a feature, and test cases within fixtures that will each test a single functionality.
 
-You can have multiple fixtures within a test file. These fixtures set up and clean up different base conditions that can be tested.
-
-For example, if a class has both static and instance methods, this can be tested within two fixtures:
+You can have multiple fixtures within a test file. These fixtures set up and clean up different base conditions that can be tested. For example, if a class has both static and instance methods, this can be tested within two fixtures:
 - `<ClassName>StaticTests`
 - `<ClassName>InstanceTests`
 
@@ -245,7 +231,7 @@ You can choose to expect these errors or ignore them using the `LogAssert`
 It is recommended to:
 - expect any error logging that the Unity GDK outputs.
 - expect any error logging that is relevant to the functionality that you are
- testing
+ testing.
 - ignore irrelevant ones as last resort.
 
 Do not forget to reset `LogAssert.ignoreFailingMessages` to false if you had

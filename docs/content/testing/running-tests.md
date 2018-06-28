@@ -13,15 +13,13 @@ For the first run, you need these commands:
 ./ci/build-test.sh
 ```
 
-If you have modified anything in the code generator or docs linter tool;
- to re-test these you need to re-run this command:
+To test the code generator or docs linter tool after modifying them, you need to run this command:
 
 ```bash
 ./ci/build-test.sh
 ```
 
-If you have modified anything in the Unity Project; to re-test this you can
- re-run this command:
+To test the Unity project after modifying it, you need to run this command:
 
 ```bash
 ./ci/test.sh
@@ -33,15 +31,15 @@ For Unity tests, you can also run tests from the Unity Test Runner Window.
 
 ### 1. Open the Unity project in Unity 
 
-The unity project can be found in this directory within the repository: `/worker/unity`
+The unity project can be found in this directory within the repository: `/worker/unity`.
 
 ### 2. Open test runner window
 
-From the toolbar at the top of the Unity Editor, select "Window" > "Test Runner".
+From the toolbar at the top of the Unity Editor, select `Window > Test Runner`.
 
 ### 3. Run tests
 
-You can press the "run all" button to run all tests. These will include the
+You can press the `run all` button to run all tests. These will include the
  tests that come with the Unity Entities packages.
 
 As each test is being run, the status of it will be displayed next to the test,

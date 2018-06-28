@@ -17,13 +17,13 @@ Please read through and understand the [Testing Overview](./testing-overview.md)
 To help get started with testing, we recommend these documents which help cover
  the basics:
 
-- https://www.youtube.com/watch?v=1TPZetHaZ-A 
+- [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A):
   - Skip the part between 0:40 - 2:49
     - Project setup
   - Skip the part between 5:25 - 7:57
     - It explains how to use the NUnit Runner
     - We’ll use Unity Test Runner instead
-- https://www.codeproject.com/articles/178635/unit-testing-using-nunit
+- [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
 
 Unity specific testing guidelines:
 - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
@@ -210,11 +210,9 @@ For the instance functionality, you can add tests similarly:
         public void DoInstanceOperation_increases_InstanceValue_by_1()
         {
             myClassInstance.DoInstanceOperation();
-
             Assert.AreEqual(1, myClassInstance.InstanceValue);
 
             myClassInstance.DoInstanceOperation();
-
             Assert.AreEqual(2, myClassInstance.InstanceValue);
         }
 
@@ -222,11 +220,9 @@ For the instance functionality, you can add tests similarly:
         public void DoSomethingElse_increses_InstanceValue_by_5()
         {
             myClassInstance.DoSomethingElse();
-
             Assert.AreEqual(5, myClassInstance.InstanceValue);
 
             myClassInstance.DoSomethingElse();
-
             Assert.AreEqual(10, myClassInstance.InstanceValue);
         }
     }
@@ -256,8 +252,8 @@ In the Test Runner window of Unity, you can find the test under:
 
 And you can follow the namespace and fixture name in the hierarchy:
 
-- `Improbable` > `Gdk` > `Core` > `EditmodeTests` > `Utility` > `MyClassStaticTests`,
-- `Improbable` > `Gdk` > `Core` > `EditmodeTests` > `Utility` > `MyClassInstanceTests`.
+- `Improbable` > `Gdk` > `Core` > `EditmodeTests` > `Utility` > `MyClassStaticTests`
+- `Improbable` > `Gdk` > `Core` > `EditmodeTests` > `Utility` > `MyClassInstanceTests`
 
 Double-click the fixture name to run all tests within that fixture.
 
@@ -282,27 +278,27 @@ Select this file, and change the `name` property in the inspector to match the
 
 `Improbable.Gdk.Legacy.EditmodeTests`.
 
-Hit the "Apply" button.
+Hit the `Apply` button.
 
-Check the "Test Assemblies" checkbox.
+Check the `Test Assemblies` checkbox.
 
 If you're writing Editmode tests:
-- Uncheck the "Any Platform" checkbox.
-- Scroll to the bottom, and press the "Deselect All" button.
-- Check the "Editor" checkbox only.
-- Hit the "Apply" button again.
+- Uncheck the `Any Platform` checkbox.
+- Scroll to the bottom, and press the `Deselect All` button.
+- Check the `Editor` checkbox only.
+- Hit the `Apply` button again.
 
 In the references list, add the reference to the module you are testing (in this
  case, `Improbable.Gdk.Legacy`).
 
-Hit the "Apply button" again.
+Hit the `Apply button` again.
 
 ### Adding the entities package references to test assemblies
 
 You need to edit the `.asmdef` file manually to add references to the Entities
  preview package assemblies.
 
-Right click the assembly definition file, and press the "show in explorer"
+Right click the assembly definition file, and press the `show in explorer`
  action.
 
 Open in your favourite text editor.
