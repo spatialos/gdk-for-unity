@@ -23,7 +23,7 @@
 ### Setting up your machine
 
 1. Install prerequisites:
-	- [Unity 2018.1.1](https://unity3d.com/get-unity/download/archive)
+	- [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download)
 	- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
 	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS Unity GDK requires Unity 2018.1.1). Make sure **Visual Studio Tools for Unity** is selected.
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win)

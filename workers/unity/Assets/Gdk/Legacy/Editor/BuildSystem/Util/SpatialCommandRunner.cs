@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Improbable.Gdk.Legacy.BuildSystem.Util
 {
@@ -17,8 +18,27 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
                 CreateNoWindow = true
             });
 
-            var output = process.StandardOutput.ReadToEnd();
-            var errOut = process.StandardError.ReadToEnd();
+            var output = "";
+            var errOut = "";
+            process.EnableRaisingEvents = true;
+            process.OutputDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    output += e.Data;
+                }
+            };
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    errOut += e.Data;
+                }
+            };
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
