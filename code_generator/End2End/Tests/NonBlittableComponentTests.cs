@@ -1,7 +1,6 @@
 using Generated.Improbable.TestSchema.Nonblittable;
 using Improbable.Gdk.Core;
 using NUnit.Framework;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Improbable.Gdk.CodeGenerator.End2EndTests
@@ -9,14 +8,14 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
     [TestFixture]
     public class NonBlittableComponentTests
     {
-        private static readonly bool1 Bool1False = new bool1(false);
-        private static readonly bool1 Bool1True = new bool1(true);
+        private static readonly Bool Bool1False = false;
+        private static readonly Bool Bool1True = true;
 
         private const int IntValue = 123;
         private const long LongValue = 5678L;
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
-        private static readonly bool1 BoolValue = Bool1True;
+        private static readonly Bool BoolValue = Bool1True;
         private const string StringValue = "A String value";
 
         [Test]
