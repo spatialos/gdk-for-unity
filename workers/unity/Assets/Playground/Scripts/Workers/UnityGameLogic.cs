@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.Timing;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace Playground
         {
             base.RegisterSystems();
             TransfromSynchronizationSystemHelper.RegisterServerSystems(World);
+            TimingSystemHelper.RegisterServerSystems(World);
             PlayerLifecycleConfig.RegisterServerSystems(World);
 
             // Entity initialization systems
@@ -36,6 +38,7 @@ namespace Playground
             World.GetOrCreateManager<MoveLocalPlayerSystem>();
 
             // Server test event systems
+            World.GetOrCreateManager<InitializeColorChangeSystem>();
             World.GetOrCreateManager<TriggerColorChangeSystem>();
 
             // Server test command systems

@@ -1,16 +1,12 @@
 {
-    "name": "Improbable.Playground",
+    "name": "Improbable.Gdk.Timing",
     "references": [
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.Physics",
-        "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.CSharp",
         "Unity.Mathematics",
-        "Improbable.Gdk.Timing"
+        "Improbable.CSharp"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
