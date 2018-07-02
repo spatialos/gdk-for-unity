@@ -84,7 +84,6 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 <# } #>
 
-
             public Translation(MutableView view) : base(view)
             {
             }
