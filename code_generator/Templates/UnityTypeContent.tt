@@ -1,0 +1,47 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var typeDetails = GetTypeDetails();
+    var fieldDetailsList = GetFieldDetailsList();
+#>
+
+public struct <#= typeDetails.CapitalisedName #>
+{
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+    public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
+<# } #>
+
+    public static <#= typeDetails.CapitalisedName #> ToNative(<#= typeDetails.FullyQualifiedSpatialTypeName #> spatialType)
+    {
+        var nativeType = new <#= typeDetails.CapitalisedName #>();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+        nativeType.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "spatialType." + fieldDetails.CamelCaseName, enumSet) #>;
+<# } #>
+        return nativeType;
+    }
+
+    public static <#= typeDetails.FullyQualifiedSpatialTypeName #> ToSpatial(<#= typeDetails.FullyQualifiedTypeName #> nativeType)
+    {
+        var spatialType = new <#= typeDetails.FullyQualifiedSpatialTypeName #>();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+        spatialType.<#= fieldDetails.CamelCaseName #> = <#= UnityTypeMappings.GetSpatialTypeMethod(fieldDetails.RawFieldDefinition, "nativeType." + fieldDetails.PascalCaseName, enumSet) #>;
+<# } #>
+        return spatialType;
+    }
+<# 
+    var typeGenerator = new UnityTypeContent();
+    foreach (var nestedType in nestedTypes) 
+    {
+#>
+
+    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, enumSet)) #>
+<# } #>
+<# 
+    var enumGenerator = new UnityEnumContent();
+    foreach (var nestedEnum in nestedEnums) 
+    {
+#>
+
+    <#= CommonGeneratorUtils.IndentEveryNewline(enumGenerator.Generate(nestedEnum)) #>
+<# } #>
+}
