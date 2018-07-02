@@ -34,7 +34,7 @@ public struct <#= typeDetails.CapitalisedName #>
     {
 #>
 
-    <#= CommonGeneratorUtils.IndentString(typeGenerator.Generate(nestedType, enumSet)) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, enumSet)) #>
 <# } #>
 <# 
     var enumGenerator = new UnityEnumContent();
@@ -42,6 +42,6 @@ public struct <#= typeDetails.CapitalisedName #>
     {
 #>
 
-    <#= CommonGeneratorUtils.IndentString(enumGenerator.Generate(nestedEnum)) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(enumGenerator.Generate(nestedEnum)) #>
 <# } #>
 }

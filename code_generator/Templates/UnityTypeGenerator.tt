@@ -10,5 +10,5 @@ namespace <#= qualifiedNamespace #>
 <# 
     var generator = new UnityTypeContent();
 #>
-    <#= CommonGeneratorUtils.IndentString(generator.Generate(typeDefinition, enumSet)) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(typeDefinition, enumSet)) #>
 }

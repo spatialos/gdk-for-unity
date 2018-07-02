@@ -7,7 +7,7 @@ namespace Improbable.Gdk.CodeGenerator
             return "// ===========\r\n// DO NOT EDIT - this file is automatically regenerated.\r\n// ===========";
         }
 
-        public static string IndentString(string input)
+        public static string IndentEveryNewline(string input)
         {
             return input.Replace("\r\n", "\r\n    ");
         }
