@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 
 namespace Improbable.Gdk.Core
 {
@@ -15,7 +14,7 @@ namespace Improbable.Gdk.Core
             Value = newValue;
         }
 
-        public bool1 HasValue => hasValue;
+        public BlittableBool HasValue => hasValue;
 
         public T Value
         {

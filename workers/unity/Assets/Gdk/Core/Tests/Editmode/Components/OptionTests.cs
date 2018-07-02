@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Unity.Mathematics;
 
 namespace Improbable.Gdk.Core.EditmodeTests
 {
@@ -11,7 +10,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Parameterless_constructor_creates_empty_option()
         {
             var option = new Option<bool>();
-            Assert.AreEqual((bool1)false, option.HasValue);
+            Assert.AreEqual(false, (bool)option.HasValue);
         }
 
         [Test]
@@ -19,7 +18,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual((bool1)true, option.HasValue);
+            Assert.AreEqual(true, (bool)option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
@@ -37,7 +36,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var payload = true;
             var option = new Option<bool>();
             option.Value = payload;
-            Assert.AreEqual((bool1)true, option.HasValue);
+            Assert.AreEqual(true, (bool)option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
@@ -45,7 +44,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Accessing_value_of_empty_option_throws()
         {
             var option = new Option<bool>();
-            Assert.AreEqual((bool1)false, option.HasValue);
+            Assert.AreEqual(false, (bool)option.HasValue);
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var value = option.Value;
@@ -56,7 +55,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Setting_null_value_throws()
         {
             var option = new Option<string>();
-            Assert.AreEqual((bool1)false, option.HasValue);
+            Assert.AreEqual(false, (bool)option.HasValue);
             Assert.Throws<ArgumentException>(() =>
             {
                 option.Value = null;
@@ -67,9 +66,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Option_payload_can_be_cleared()
         {
             var option = new Option<bool>(true);
-            Assert.AreEqual((bool1)true, option.HasValue);
+            Assert.AreEqual(true, (bool)option.HasValue);
             option.Clear();
-            Assert.AreEqual((bool1)false, option.HasValue);
+            Assert.AreEqual(false, (bool)option.HasValue);
         }
 
         [Test]

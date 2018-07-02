@@ -81,11 +81,8 @@
     <Compile Include="src\Generation\Generators\Parts\UnityComponentConversionGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentDataGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentGeneratorPart.cs" />
-<<<<<<< HEAD
     <Compile Include="src\Generation\Generators\Parts\UnityComponentUpdateGeneratorPart.cs" />
-=======
     <Compile Include="src\Generation\Generators\Parts\UnityEnumContentPart.cs" />
->>>>>>> origin/master
     <Compile Include="src\Generation\Generators\Parts\UnityEnumGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEventGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityTypeContentPart.cs" />
