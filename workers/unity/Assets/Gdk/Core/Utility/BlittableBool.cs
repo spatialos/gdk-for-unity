@@ -32,7 +32,8 @@ namespace Improbable.Gdk.Core
             {
                 return false;
             }
-            return obj is BlittableBool && Equals((BlittableBool)obj);
+
+            return obj is BlittableBool && Equals((BlittableBool) obj);
         }
 
         public override int GetHashCode()
@@ -52,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         public override string ToString()
         {
-            return ((bool)this).ToString();
+            return ((bool) this).ToString();
         }
     }
 }
