@@ -2,7 +2,7 @@
 
 Welcome to the SpatialOS and Unity GDK community. 
 
-Our SpatialOS community shapes the functionality of the Unity GDK, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us on the *feedback* section in our [forums](https://forums.improbable.io/) (use the *unity-gdk tag* - this [link](https://forums.improbable.io/latest?tags=unity-gdk) takes you there and pre-fills the category and tag.)
+Our SpatialOS community shapes the functionality of the Unity GDK, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us on the *feedback* section in our [forums](https://forums.improbable.io/) (use the *unity-gdk tag* - this [link](https://forums.improbable.io/latest?tags=unity-gdk) takes you there and pre-fills the category and tag).
 
 #### What's the Unity GDK all about?
 The Unity Game Development Kit (GDK) enables game developers to build multiplayer games with SpatialOS. It will be made up of three parts: 
