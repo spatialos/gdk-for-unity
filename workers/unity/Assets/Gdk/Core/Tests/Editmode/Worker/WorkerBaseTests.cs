@@ -1,3 +1,4 @@
+using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -6,17 +7,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class WorkerBaseTests
     {
-        internal class UnityTestWorker : WorkerBase
-        {
-            public const string WorkerType = "UnityTestWorker";
-
-            public override string GetWorkerType => WorkerType;
-
-            public UnityTestWorker(string workerId, Vector3 origin) : base(workerId, origin)
-            {
-            }
-        }
-
         [Test]
         public void WorkerBase_should_throw_exception_when_WorkerId_is_null_or_empty()
         {
@@ -24,6 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var empty_exception = Assert.Throws<System.ArgumentException>(() =>
             {
                 var worker = new UnityTestWorker("", new Vector3());
+                worker.Dispose();
             });
             Assert.IsTrue(empty_exception.Message.Contains("WorkerId"));
 
@@ -31,6 +22,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var null_exception = Assert.Throws<System.ArgumentException>(() =>
             {
                 var worker = new UnityTestWorker(null, new Vector3());
+                worker.Dispose();
             });
             Assert.IsTrue(null_exception.Message.Contains("WorkerId"));
         }
@@ -41,6 +33,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             Assert.DoesNotThrow(() =>
             {
                 var worker = new UnityTestWorker("worker-id", new Vector3());
+                worker.Dispose();
             });
         }
     }

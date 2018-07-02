@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Worker;
 using Unity.Entities;
@@ -6,7 +7,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.Components
 {
-    public abstract class ComponentTranslation
+    public abstract class ComponentTranslation : IDisposable
     {
         protected struct RequestContext
         {
@@ -28,6 +29,16 @@ namespace Improbable.Gdk.Core.Components
             this.view = view;
             translationHandle = GetNextHandle();
             HandleToTranslation.Add(translationHandle, this);
+        }
+
+        public void Dispose()
+        {
+            ComponentTranslation translationForHandle;
+            if (HandleToTranslation.TryGetValue(translationHandle, out translationForHandle) &&
+                translationForHandle == this)
+            {
+                HandleToTranslation.Remove(translationHandle);
+            }
         }
 
         protected static class TranslationErrors

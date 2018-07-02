@@ -25,6 +25,16 @@ namespace Improbable.Gdk.Core
             WorldToWorker[worker.World] = worker;
         }
 
+        public static void UnsetWorkerForWorld(WorkerBase worker)
+        {
+            WorkerBase workerForWorld;
+
+            if (WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
+            {
+                WorldToWorker.Remove(worker.World);
+            }
+        }
+
         public static WorkerBase GetWorkerForWorld(World world)
         {
             WorkerBase worker;

@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Gdk.TestUtils",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

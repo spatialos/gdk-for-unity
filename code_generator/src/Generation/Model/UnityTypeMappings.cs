@@ -23,7 +23,7 @@ namespace Improbable.Gdk.CodeGenerator
                 { BuiltInTypeConstants.builtInFixed64, "ulong" },
                 { BuiltInTypeConstants.builtInSfixed32, "int" },
                 { BuiltInTypeConstants.builtInSfixed64, "long" },
-                { BuiltInTypeConstants.builtInBool, "bool1" },
+                { BuiltInTypeConstants.builtInBool, "BlittableBool" },
                 { BuiltInTypeConstants.builtInString, "string" },
                 { BuiltInTypeConstants.builtInBytes, "global::Improbable.Worker.Bytes" },
                 { BuiltInTypeConstants.builtInEntityId, "long" },
