@@ -25,7 +25,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 For this test, the GameObjectRigidBody[i] will always be null,
                 but we are only testing that this struct can be injected even if
                 it has ComponentArray<> fields, and not its contents.
-                */ 
+                */
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
 
                 public ComponentDataArray<TestPreparation> PreparationStruct;

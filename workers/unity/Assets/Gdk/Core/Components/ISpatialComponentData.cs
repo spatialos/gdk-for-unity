@@ -1,4 +1,3 @@
-using Unity.Entities;
 using Unity.Mathematics;
 
 namespace Improbable.Gdk.Core

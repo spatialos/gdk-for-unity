@@ -15,7 +15,9 @@ namespace Improbable.Gdk.Core
         public const long WorkerEntityId = -1337;
         public Entity WorkerEntity { get; }
 
-        public readonly Dictionary<int, ComponentTranslation> TranslationUnits = new Dictionary<int, ComponentTranslation>();
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
+            new Dictionary<int, ComponentTranslation>();
+
         private Action<Entity, long> addAllCommandRequestSenders;
 
         private readonly EntityManager entityManager;
