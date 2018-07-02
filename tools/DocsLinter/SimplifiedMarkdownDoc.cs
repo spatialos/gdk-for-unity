@@ -45,7 +45,7 @@ namespace DocsLinter
     }
 
     /// <summary>
-    ///     Abstract base class for a link.
+    ///     Interface for a link.
     /// </summary>
     public interface ILink
     {
