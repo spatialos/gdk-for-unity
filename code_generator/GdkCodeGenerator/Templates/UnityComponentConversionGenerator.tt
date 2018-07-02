@@ -36,6 +36,7 @@ namespace <#= qualifiedNamespace #>
             { 
                 typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
                 typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
+                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
 <# if (fieldDetailsList.Count > 0) { #>
                 typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), 
 <# } #>
@@ -223,6 +224,16 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 view.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+
+                if (view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    var removedTag = new ComponentRemoved<<#= componentDetails.TypeName #>>();
+                    view.AddComponent(entity, removedTag);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -304,16 +315,17 @@ namespace <#= qualifiedNamespace #>
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
                 RemoveComponents<ComponentAdded<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 2);
 <# if (fieldDetailsList.Count > 0) { #>
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 2);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
 <# } #>
                 
 <# for(var i = 0; i < commandDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 2 : 3) #>);
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 4 : 5) #>);
 <# } #>
 <# for(var i = 0; i < eventDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 2 : 3) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
 <# } #>                
             }
 
