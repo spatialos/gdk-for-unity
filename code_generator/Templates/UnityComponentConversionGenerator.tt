@@ -111,8 +111,9 @@ namespace <#= qualifiedNamespace #>
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
+<# if(fieldDetailsList.Count > 0) { #>
                 var data = op.Data.Get().Value;
+<# } #>
 
                 var <#= componentDetails.CamelCaseTypeName #> = new <#= componentDetails.TypeName#>();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
@@ -142,7 +143,9 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
                 var componentData = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
 <# } #>
+<# if(fieldDetailsList.Count > 0 || eventDetailsList.Count > 0) { #>
                 var update = op.Update.Get();
+<# } #>
 
 <# if(fieldDetailsList.Count > 0) { #>
                 if (view.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))

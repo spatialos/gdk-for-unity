@@ -7,7 +7,6 @@
 #>
 <#= generatedHeader #>
 
-using Unity.Mathematics;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 
@@ -15,7 +14,7 @@ namespace <#= qualifiedNamespace #>
 { 
     public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
         private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;

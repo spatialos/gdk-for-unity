@@ -3,7 +3,7 @@
 <#= CommonGeneratorUtils.GetGeneratedHeader() #>
 
 using System.Linq;
-using Unity.Mathematics;
+using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
 { 

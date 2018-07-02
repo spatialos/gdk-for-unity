@@ -1,7 +1,6 @@
 using Generated.Improbable.TestSchema.Nonblittable;
 using Improbable.Gdk.Core;
 using NUnit.Framework;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Improbable.Gdk.CodeGenerator.End2EndTests
@@ -9,14 +8,14 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
     [TestFixture]
     public class NonBlittableComponentTests
     {
-        private static readonly bool1 Bool1False = new bool1(false);
-        private static readonly bool1 Bool1True = new bool1(true);
+        private static readonly BlittableBool BlittableBoolFalse = false;
+        private static readonly BlittableBool BlittableBoolTrue = true;
 
         private const int IntValue = 123;
         private const long LongValue = 5678L;
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
-        private static readonly bool1 BoolValue = Bool1True;
+        private static readonly BlittableBool BoolValue = BlittableBoolTrue;
         private const string StringValue = "A String value";
 
         [Test]
@@ -58,30 +57,30 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         public void setters_should_set_dirty_bit_to_true()
         {
             var component = new SpatialOSNonBlittableComponent();
-            Assert.AreEqual(Bool1False, component.DirtyBit, "Dirty bit is initially false.");
+            Assert.AreEqual(BlittableBoolFalse, component.DirtyBit, "Dirty bit is initially false.");
             
             component.BoolField = BoolValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting bool field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting bool field.");
 
             component.DirtyBit = false;
             component.DoubleField = DoubleValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting double field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting double field.");
 
             component.DirtyBit = false;
             component.FloatField = FloatValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting float field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting float field.");
 
             component.DirtyBit = false;
             component.IntField = IntValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting int field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting int field.");
 
             component.DirtyBit = false;
             component.LongField = LongValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting long field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting long field.");
 
             component.DirtyBit = false;
             component.StringField = StringValue;
-            Assert.AreEqual(Bool1True, component.DirtyBit, "Dirty bit true after setting string field.");
+            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting string field.");
         }
     }
 }

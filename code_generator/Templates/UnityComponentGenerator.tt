@@ -8,14 +8,13 @@
 <#= generatedHeader #>
 
 using UnityEngine;
-using Unity.Mathematics;
 using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
 { 
     public class <#= componentDetails.TypeName #> : Component, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
         private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
