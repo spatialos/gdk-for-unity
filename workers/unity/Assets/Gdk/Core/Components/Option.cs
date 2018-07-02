@@ -113,7 +113,7 @@ namespace Improbable.Gdk.Core
             return new Option<T>(value);
         }
 
-        public static explicit operator T(Option<T> option)
+        public static implicit operator T(Option<T> option)
         {
             return option.Value;
         }

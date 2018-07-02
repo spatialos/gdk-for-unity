@@ -2,7 +2,8 @@
     "name": "Improbable.Gdk.Core.EditmodeTests",
     "references": [
         "Improbable.Gdk.Core",
-        "Unity.Entities"
+        "Unity.Entities",
+        "Unity.Mathematics"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
