@@ -70,10 +70,11 @@ namespace Improbable.Gdk.Core
         {
             if (Connection == null)
             {
+                Debug.LogError("Attempted to disconnect but connection is already null.");
                 return;
             }
 
-            View.Disconnect("Disconnect called.");
+            View.Disconnect("Disconnect called on worker.");
             ConnectionUtility.Disconnect(Connection);
             Connection = null;
         }

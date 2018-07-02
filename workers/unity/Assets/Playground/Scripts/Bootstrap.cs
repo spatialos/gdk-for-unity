@@ -116,7 +116,7 @@ namespace Playground
             WorkerRegistry.RegisterWorkerType<UnityGameLogic>();
         }
 
-        public static void SetupInjectionHooks() 
+        public static void SetupInjectionHooks()
         {
             // Reflection to get internal hook classes. Doesn't seem to be a proper way to do this.
             var gameObjectArrayInjectionHookType =
