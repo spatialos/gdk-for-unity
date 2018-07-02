@@ -28,16 +28,20 @@ namespace Improbable.Gdk.TransformSynchronization
                 var transformSnapshots = new List<SpatialOSTransform>();
                 foreach (var update in transformUpdates)
                 {
-                    lastTransformSnapshot.Location = update.Location.HasValue
-                        ? update.Location.Value
-                        : lastTransformSnapshot.Location;
-                    lastTransformSnapshot.Rotation = update.Rotation.HasValue
-                        ? update.Rotation.Value
-                        : lastTransformSnapshot.Rotation;
-                    lastTransformSnapshot.Tick = update.Tick.HasValue
-                        ? update.Tick.Value
-                        : lastTransformSnapshot.Tick;
-                    transformSnapshots.Add(lastTransformSnapshot);
+                    if (update.Location.HasValue)
+                    {
+                        lastTransformSnapshot.Location = update.Location.Value;
+                    }
+
+                    if (update.Rotation.HasValue)
+                    {
+                        lastTransformSnapshot.Rotation = update.Rotation.Value;
+                    }
+
+                    if (update.Tick.HasValue)
+                    {
+                        lastTransformSnapshot.Tick = update.Tick.Value;
+                    }
                 }
                 transformUpdateData.BufferedTransform[i].TransformUpdates.AddRange(transformSnapshots);
                 transformUpdateData.BufferedTransform[i].LastTransformSnapshot = transformUpdateData.Transform[i];
