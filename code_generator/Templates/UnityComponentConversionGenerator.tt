@@ -34,7 +34,10 @@ namespace <#= qualifiedNamespace #>
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>>), typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
+                typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
+<# if (fieldDetailsList.Count > 0) { #>
+                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>Update>), 
+<# } #>
 <# foreach(var commandDetails in commandDetailsList) { #>
                 typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(CommandResponses<<#= commandDetails.CommandName #>.Response>),
 <# } #>
@@ -69,10 +72,12 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 <# } #>
 
-            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>>>(
-                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>>(),
+<# if (fieldDetailsList.Count > 0) { #>
+            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>>(
+                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>Update>(),
                     (component) => component.Buffer.Clear());
+<# } #>
 
             private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
@@ -169,10 +174,33 @@ namespace <#= qualifiedNamespace #>
                 }
 <# } #>
                 componentData.DirtyBit = false;
+
 <# if (componentDetails.IsBlittable) { #>
-                view.UpdateComponent(entity, componentData, UpdatesPool);
+                view.SetComponentData(entity, componentData);
 <# } else { #>
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+                view.SetComponentObject(entity, componentData);
+<# } #>
+
+<# if (fieldDetailsList.Count > 0) { #>
+                var componentFieldsUpdated = false;
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+<# } #>
+
+                if (componentFieldsUpdated)
+                {
+                    var updateComponent = new <#= componentDetails.TypeName #>Update();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                    if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
+                    {
+                        updateComponent.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
+                    }
+<# } #>
+                    view.AddComponentsUpdated(entity, updateComponent, UpdatesPool);
+                }
 <# } #>
             }
 
@@ -265,8 +293,10 @@ namespace <#= qualifiedNamespace #>
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+<# if (fieldDetailsList.Count > 0) { #>
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
+<# } #>
 <# for(var i = 0; i < commandDetailsList.Count; i++) { #>
                 RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + 2 #>);
                 RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + 3 #>);

@@ -9,7 +9,7 @@ namespace Improbable.Gdk.TransformSynchronization
             world.GetOrCreateManager<TickSystem>();
             world.GetOrCreateManager<LocalTransformSyncSystem>();
             world.GetOrCreateManager<InterpolateTransformSystem>();
-            world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
+            //world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
             world.GetOrCreateManager<TransformSendSystem>();
             world.GetOrCreateManager<PositionSendSystem>();
         }
@@ -19,7 +19,7 @@ namespace Improbable.Gdk.TransformSynchronization
             world.GetOrCreateManager<TickSystem>();
             world.GetOrCreateManager<LocalTransformSyncSystem>();
             world.GetOrCreateManager<InterpolateTransformSystem>();
-            world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
+            //world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
             world.GetOrCreateManager<TransformSendSystem>();
             world.GetOrCreateManager<PositionSendSystem>();
         }

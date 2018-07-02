@@ -79,7 +79,9 @@
     <Compile Include="src\Generation\Generators\CommonGeneratorUtils.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityCommandPayloadGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentConversionGeneratorPart.cs" />
+    <Compile Include="src\Generation\Generators\Parts\UnityComponentDataUpdateGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentDataGeneratorPart.cs" />
+    <Compile Include="src\Generation\Generators\Parts\UnityComponentUpdateGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEnumGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEventGeneratorPart.cs" />
@@ -145,6 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <T4Files Include="Templates\UnityComponentDataUpdateGenerator.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <T4Files Include="Templates\UnityComponentUpdateGenerator.tt" />
   </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -7,8 +7,8 @@
 #>
 <#= generatedHeader #>
 
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>

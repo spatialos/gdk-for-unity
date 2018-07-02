@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
         public List<T> Buffer = new List<T>();
     }
 
-    public class ComponentsUpdated<T> : MessagesReceived<T>
+    public class ComponentsUpdated<T> : MessagesReceived<T> where T : ISpatialComponentUpdate
     {
     }
 
