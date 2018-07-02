@@ -8,14 +8,14 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
     [TestFixture]
     public class NonBlittableComponentTests
     {
-        private static readonly Bool Bool1False = false;
-        private static readonly Bool Bool1True = true;
+        private static readonly BlittableBool Bool1False = false;
+        private static readonly BlittableBool Bool1True = true;
 
         private const int IntValue = 123;
         private const long LongValue = 5678L;
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
-        private static readonly Bool BoolValue = Bool1True;
+        private static readonly BlittableBool BoolValue = Bool1True;
         private const string StringValue = "A String value";
 
         [Test]

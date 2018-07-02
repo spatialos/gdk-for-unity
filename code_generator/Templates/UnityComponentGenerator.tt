@@ -14,7 +14,7 @@ namespace <#= qualifiedNamespace #>
 { 
     public class <#= componentDetails.TypeName #> : Component, ISpatialComponentData
     {
-        public Bool DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
         private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
