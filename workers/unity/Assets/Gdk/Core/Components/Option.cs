@@ -5,18 +5,28 @@ namespace Improbable.Gdk.Core
 {
     public struct Option<T> : IEquatable<Option<T>>
     {
-        public bool1 HasValue { get; private set; }
+        private bool hasValue;
+        private T value;
+        
+        public Option(T newValue)
+        {
+            hasValue = false;
+            value = default(T);
+            Value = newValue;
+        }
+
+        public bool1 HasValue => hasValue;
 
         public T Value
         {
             get
             {
-                if (!HasValue)
+                if (!hasValue)
                 {
                     throw new InvalidOperationException("Called Value on empty Option.");
                 }
 
-                return Value;
+                return value;
             }
             set
             {
@@ -25,38 +35,32 @@ namespace Improbable.Gdk.Core
                     throw new ArgumentException("newValue is null.");
                 }
 
-                HasValue = true;
-                Value = value;
+                hasValue = true;
+                this.value = value;
             }
-        }
-
-        public Option(T newValue)
-        {
-            HasValue = false;
-            Value = newValue;
         }
 
         public void Clear()
         {
-            HasValue = false;
-            Value = default(T);
+            hasValue = false;
+            value = default(T);
         }
 
         public bool TryGetValue(out T value)
         {
-            if (!HasValue)
+            if (!hasValue)
             {
                 value = default(T);
                 return false;
             } 
 
-            value = Value;
+            value = this.value;
             return true;
         }
 
         public T GetValueOrDefault(T defaultValue)
         {
-            return HasValue ? Value : defaultValue;
+            return hasValue ? value : defaultValue;
         }
 
         public override bool Equals(object other)
@@ -71,14 +75,14 @@ namespace Improbable.Gdk.Core
 
         public bool Equals(Option<T> other)
         {
-            if (!HasValue && !other.HasValue)
+            if (!hasValue && !other.HasValue)
             {
                 return true;
             }
 
-            if (HasValue && other.HasValue)
+            if (hasValue && other.HasValue)
             {
-                return Value.Equals(other.Value);
+                return value.Equals(other.Value);
             }
 
             return false;
@@ -96,12 +100,12 @@ namespace Improbable.Gdk.Core
 
         public override int GetHashCode()
         {
-            return HasValue ? Value.GetHashCode() : 0;
+            return hasValue ? value.GetHashCode() : 0;
         }
 
         public override string ToString()
         {
-            return HasValue ? $"Option[{Value.ToString()}]" : "Option.Empty";
+            return hasValue ? $"Option[{value.ToString()}]" : "Option.Empty";
         }
 
         public static implicit operator Option<T>(T value)

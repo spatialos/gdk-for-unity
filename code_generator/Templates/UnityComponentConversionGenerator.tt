@@ -72,6 +72,11 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 <# } #>
 
+            private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
+                new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
+                    () => new AuthoritiesChanged<<#= componentDetails.TypeName #>>(),
+                    (component) => component.Buffer.Clear());
+
 <# if (fieldDetailsList.Count > 0) { #>
             private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>> UpdatesPool =
                 new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>>(
@@ -79,10 +84,6 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 <# } #>
 
-            private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
-                new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
-                    () => new AuthoritiesChanged<<#= componentDetails.TypeName #>>(),
-                    (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
             {
@@ -192,14 +193,14 @@ namespace <#= qualifiedNamespace #>
 
                 if (componentFieldsUpdated)
                 {
-                    var updateComponent = new <#= componentDetails.TypeName #>Update();
+                    var gdkUpdate = new <#= componentDetails.TypeName #>Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
                     {
-                        updateComponent.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
+                        gdkUpdate.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
                     }
 <# } #>
-                    view.AddComponentsUpdated(entity, updateComponent, UpdatesPool);
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
 <# } #>
             }
@@ -293,16 +294,16 @@ namespace <#= qualifiedNamespace #>
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
 <# if (fieldDetailsList.Count > 0) { #>
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
 <# } #>
 <# for(var i = 0; i < commandDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + 2 #>);
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + 3 #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 1 : 2) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 2 : 3) #>);
 <# } #>
 <# for(var i = 0; i < eventDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + 2 #>);
+                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 1 : 2) #>);
 <# } #>
             }
 

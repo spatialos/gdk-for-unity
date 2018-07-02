@@ -86,6 +86,7 @@ namespace Improbable.Gdk.CodeGenerator
         internal readonly TypeReferenceRaw RawValueType;
         public UnityTypeReference KeyType;
         public UnityTypeReference ValueType;
+
         public readonly FieldDefinitionRaw RawFieldDefinition;
 
         internal UnityFieldDefinition(FieldDefinitionRaw rawFieldDefinition)
