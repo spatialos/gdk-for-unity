@@ -1,6 +1,11 @@
 # The SpatialOS Unity GDK readme (pre-alpha)
 
-The Unity Game Development Kit (GDK) enables developers to build multiplayer games with SpatialOS. It will be made up of three parts: 
+Welcome to the SpatialOS and Unity GDK community. 
+
+Our SpatialOS community shapes the functionality of the Unity GDK, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us on the *feedback* section in our [forums](https://forums.improbable.io/) (use the *unity-gdk tag* - this [link](https://forums.improbable.io/latest?tags=unity-gdk) takes you there and pre-fills the category and tag.)
+
+#### What's the Unity GDK all about?
+The Unity Game Development Kit (GDK) enables game developers to build multiplayer games with SpatialOS. It will be made up of three parts: 
 
 * the GDK Core, a performant, data-driven [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) multiplayer integration based on the new Unity [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS).
 
@@ -8,7 +13,7 @@ The Unity Game Development Kit (GDK) enables developers to build multiplayer gam
 
 * the example game, which both tests and demonstrates the Feature Modules; for use as a starting point or resource for game development.
 
-In the future you will be able to use the Unity GDK to make multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product. To find out more see the [Unity GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps).
+In the future you will be able to use the Unity GDK to make multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product (currently it's Windows only but later releases will also support MacOS). To find out more see the [Unity GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps). 
 
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.
 
@@ -60,7 +65,7 @@ We are not supporting the pre-alpha release for game development, as this versio
 Currently the Unity GDK is in its early development, so there is no migration path from the [Unity SDK](https://github.com/spatialos/UnitySDK) to the Unity GDK. There will be a migration path in later releases.
 
 ## Roadmap
-See the [latest roadmap](docs/latest-roadmap.md) and let us know what you'd like to see in there.
+See the [latest roadmap Trello board](https://trello.com/b/29tMKyQC) and let us know what you'd like to see in there.
 
 ## Email updates
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.

@@ -8,7 +8,7 @@ We recommend you start by following the [Installation and setup guide](setup-and
 
 Note that the Unity GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
 
-We want your feedback on the Unity GDK, its documentation and its [roadmap](latest-roadmap.md) - see [Give us feedback](../README.md#give-us-feedback).
+We want your feedback on the Unity GDK, its documentation and its [roadmap (Trello board)](https://trello.com/b/29tMKyQC) - see [Give us feedback](../README.md#give-us-feedback).
 
 ## Documentation 
 
