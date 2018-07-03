@@ -11,6 +11,7 @@ namespace FindUnity
         private static readonly string ProgramFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         private static readonly string UnityHubPath = Path.Combine(ProgramFiles, "Unity", "Hub");
         private static readonly string UnityPath = Path.Combine(ProgramFiles, "Unity");
+        private static readonly string ImprobableUnityPath = Path.Combine(@"c:\", "Unity");
         private const string UnityHomeEnvVar = "UNITY_HOME";
 
         private static void Main(string[] args)
@@ -21,6 +22,7 @@ namespace FindUnity
                 Console.Out.WriteLine($"  1) The path set in the environment variable {UnityHomeEnvVar}");
                 Console.Out.WriteLine($"  2) The default installation path for the Unity Hub ({UnityHubPath})");
                 Console.Out.WriteLine($"  3) The default installation path for Unity ({UnityPath})");
+                Console.Out.WriteLine($"  4) An Improbable-specific installation path for Unity ({ImprobableUnityPath})");
                 Environment.Exit(0);
             }
 
@@ -55,7 +57,15 @@ namespace FindUnity
 
                 if (Directory.Exists(Path.Combine(UnityPath, "Editor")))
                 {
+                    // The UnityPath may contain other folders like "Hub", so sanity check that there's an Editor folder in it.
                     Console.Out.WriteLine(UnityPath);
+                    Environment.Exit(0);
+                }
+
+                var improbableUnityPath = Path.Combine(ImprobableUnityPath, $"Unity-{projectVersion}");
+                if (Directory.Exists(improbableUnityPath))
+                {
+                    Console.Out.WriteLine(improbableUnityPath);
                     Environment.Exit(0);
                 }
 
