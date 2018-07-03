@@ -36,12 +36,6 @@ namespace Playground.Editor.SnapshotGenerator
                 new WorkerAttributeSet(new Improbable.Collections.List<string> { UnityGameLogicType })
             });
 
-        private static readonly WorkerRequirementSet ClientSet = new WorkerRequirementSet(
-            new Improbable.Collections.List<WorkerAttributeSet>
-            {
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { UnityClientType })
-            });
-
         private const string EntityName = "Cube";
 
         public static void Generate(Arguments arguments)
