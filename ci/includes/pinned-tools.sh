@@ -24,7 +24,7 @@ function getUnityDir() {
 }
 
 UNITY_DIR="$(getUnityDir)"
-export UNITY_EXE=$(printf %q "${UNITY_DIR}/Editor/Unity.exe")
+export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
 
 export LINTER="cleanupcode.exe"
 

@@ -46,7 +46,7 @@ markEndOfBlock "Code Generator End2End Testing"
 
 markStartOfBlock "Editmode Testing"
 
-${UNITY_EXE} \
+"${UNITY_EXE}" \
     -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
@@ -61,7 +61,7 @@ markEndOfBlock "Editmode Testing"
 
 markStartOfBlock "Playmode Testing"
 
-${UNITY_EXE} \
+"${UNITY_EXE}" \
     -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
