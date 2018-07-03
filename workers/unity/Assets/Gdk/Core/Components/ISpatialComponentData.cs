@@ -1,5 +1,3 @@
-using Unity.Mathematics;
-
 namespace Improbable.Gdk.Core
 {
     public interface ISpatialComponentData
