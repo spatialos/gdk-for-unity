@@ -29,5 +29,14 @@ namespace <#= qualifiedNamespace #>
             }
         }
 <# } #>
+
+<# if (fieldDetailsList.Count > 0) { #>
+        public struct Update : ISpatialComponentUpdate
+        {
+<# foreach(var fieldDetails in fieldDetailsList) { #>
+            public Option<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>;
+<# } #>
+        }
+<# } #>
     }
 }

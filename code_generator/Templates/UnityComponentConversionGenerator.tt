@@ -36,7 +36,7 @@ namespace <#= qualifiedNamespace #>
             { 
                 typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
 <# if (fieldDetailsList.Count > 0) { #>
-                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>Update>), 
+                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), 
 <# } #>
 <# foreach(var commandDetails in commandDetailsList) { #>
                 typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(CommandResponses<<#= commandDetails.CommandName #>.Response>),
@@ -78,9 +78,9 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 
 <# if (fieldDetailsList.Count > 0) { #>
-            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>Update>>(
-                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>Update>(),
+            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>(
+                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>.Update>(),
                     (component) => component.Buffer.Clear());
 <# } #>
 
@@ -195,7 +195,7 @@ namespace <#= qualifiedNamespace #>
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new <#= componentDetails.TypeName #>Update();
+                    var gdkUpdate = new <#= componentDetails.TypeName #>.Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
                     {

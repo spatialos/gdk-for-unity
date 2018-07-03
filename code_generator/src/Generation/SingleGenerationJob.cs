@@ -70,7 +70,6 @@ namespace Improbable.Gdk.CodeGenerator
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var nonBlittableComponentGenerator = new UnityComponentGenerator();
-            var componentUpdateGenerator = new UnityComponentUpdateGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
 
             foreach (var enumType in enumsToGenerate)
@@ -94,13 +93,6 @@ namespace Improbable.Gdk.CodeGenerator
                     ? blittableComponentGenerator.Generate(component, package)
                     : nonBlittableComponentGenerator.Generate(component, package);
                 Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
-
-                if (component.DataDefinition.typeDefinition.FieldDefinitions.Count > 0)
-                {
-                    var componentUpdateFileName = Path.ChangeExtension($"{component.Name}Update", fileExtension);
-                    var componentUpdateCode = componentUpdateGenerator.Generate(component, package);
-                    Content.Add(Path.Combine(relativeOutputPath, componentUpdateFileName), componentUpdateCode);
-                }
 
                 if (component.CommandDefinitions.Count > 0)
                 {

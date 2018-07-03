@@ -7,44 +7,55 @@ namespace Improbable.Gdk.Core.EditmodeTests
     public class OptionTests
     {
         [Test]
-        public void Parameterless_constructor_creates_empty_option()
+        public void Parameterless_constructor_creates_empty_option_for_value_types()
         {
             var option = new Option<bool>();
-            Assert.AreEqual(false, (bool)option.HasValue);
+            Assert.AreEqual(false, (bool) option.HasValue);
         }
 
         [Test]
-        public void Constructor_with_parameters_creates_option_with_payload()
+        public void Parameterless_constructor_creates_empty_option_for_reference_types()
+        {
+            var option = new Option<string>();
+            Assert.AreEqual(false, (bool) option.HasValue);
+        }
+
+        [Test]
+        public void Constructor_with_parameters_creates_option_with_payload_for_value_types()
         {
             var payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(true, (bool)option.HasValue);
+            Assert.AreEqual(true, (bool) option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
         [Test]
-        public void Value_can_be_read()
+        public void Constructor_with_parameters_creates_option_with_payload_for_reference_types()
         {
-            var payload = true;
-            var option = new Option<bool>(payload);
+            var payload = "";
+            var option = new Option<string>(payload);
+            Assert.AreEqual(true, (bool) option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
         [Test]
-        public void Value_can_be_set()
+        public void Option_empty_returns_an_empty_option_for_value_types()
         {
-            var payload = true;
+            var emptyOption = Option<bool>.Empty;
+            Assert.AreEqual(new Option<bool>(), emptyOption);
+        }
+
+        [Test]
+        public void Option_empty_returns_an_empty_option_for_reference_types()
+        {
+            var emptyOption = Option<string>.Empty;
+            Assert.AreEqual(new Option<string>(), emptyOption);
+        }
+
+        [Test]
+        public void Reading_value_of_empty_option_throws_for_value_types()
+        {
             var option = new Option<bool>();
-            option.Value = payload;
-            Assert.AreEqual(true, (bool)option.HasValue);
-            Assert.AreEqual(payload, option.Value);
-        }
-
-        [Test]
-        public void Accessing_value_of_empty_option_throws()
-        {
-            var option = new Option<bool>();
-            Assert.AreEqual(false, (bool)option.HasValue);
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var value = option.Value;
@@ -52,23 +63,21 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void Setting_null_value_throws()
+        public void Reading_value_of_empty_option_throws_for_reference_types()
         {
             var option = new Option<string>();
-            Assert.AreEqual(false, (bool)option.HasValue);
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
-                option.Value = null;
+                var value = option.Value;
             });
         }
 
         [Test]
-        public void Payload_can_be_cleared()
+        public void Null_option_is_not_empty()
         {
-            var option = new Option<bool>(true);
-            Assert.AreEqual(true, (bool)option.HasValue);
-            option.Clear();
-            Assert.AreEqual(false, (bool)option.HasValue);
+            var option = new Option<string>(null);
+            Assert.AreEqual(true, (bool) option.HasValue);
+            Assert.AreEqual(null, option.Value);
         }
 
         [Test]
@@ -82,7 +91,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void TryGetValue_returns_false_when_option_has_payload()
+        public void TryGetValue_returns_true_when_option_has_payload()
         {
             var payload = true;
             var option = new Option<bool>(payload);

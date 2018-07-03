@@ -81,7 +81,6 @@
     <Compile Include="src\Generation\Generators\Parts\UnityComponentConversionGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentDataGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityComponentGeneratorPart.cs" />
-    <Compile Include="src\Generation\Generators\Parts\UnityComponentUpdateGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEnumContentPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEnumGeneratorPart.cs" />
     <Compile Include="src\Generation\Generators\Parts\UnityEventGeneratorPart.cs" />
@@ -114,7 +113,6 @@
     <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
     <T4Files Include="Templates\UnityComponentGenerator.tt" />
-    <T4Files Include="Templates\UnityComponentUpdateGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
     <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />

@@ -12,7 +12,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public int Length;
             public ComponentDataArray<SpatialOSTransform> Transform;
-            public ComponentArray<ComponentsUpdated<SpatialOSTransformUpdate>> TransformUpdate;
+            public ComponentArray<ComponentsUpdated<SpatialOSTransform.Update>> TransformUpdate;
             public ComponentArray<BufferedTransform> BufferedTransform;
             public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
         }
@@ -42,7 +42,10 @@ namespace Improbable.Gdk.TransformSynchronization
                     {
                         lastTransformSnapshot.Tick = update.Tick.Value;
                     }
+
+                    transformSnapshots.Add(lastTransformSnapshot);
                 }
+
                 transformUpdateData.BufferedTransform[i].TransformUpdates.AddRange(transformSnapshots);
                 transformUpdateData.BufferedTransform[i].LastTransformSnapshot = transformUpdateData.Transform[i];
             }
