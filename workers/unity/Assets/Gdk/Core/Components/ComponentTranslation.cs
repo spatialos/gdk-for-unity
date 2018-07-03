@@ -51,6 +51,9 @@ namespace Improbable.Gdk.Core.Components
 
             public const string CannotFindEntityForCommandResponse =
                 "Cannot find entity {0} locally to receive command response {1}.";
+
+            public const string RequestDoesNotExist =
+                "Cannot find request with ID {0}, response type {1}.";
         }
 
         public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =
