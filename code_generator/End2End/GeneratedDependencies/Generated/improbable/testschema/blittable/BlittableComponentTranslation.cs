@@ -27,7 +27,8 @@ namespace Generated.Improbable.TestSchema.Blittable
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSBlittableComponent>), typeof(AuthoritiesChanged<SpatialOSBlittableComponent>),
+                typeof(AuthoritiesChanged<SpatialOSBlittableComponent>),
+                typeof(ComponentsUpdated<SpatialOSBlittableComponent.Update>), 
                 typeof(CommandRequests<FirstCommand.Request>), typeof(CommandResponses<FirstCommand.Response>),
                 typeof(CommandRequests<SecondCommand.Request>), typeof(CommandResponses<SecondCommand.Response>),
                 typeof(EventsReceived<FirstEventEvent>),
@@ -70,14 +71,14 @@ namespace Generated.Improbable.TestSchema.Blittable
                     () => new EventsReceived<SecondEventEvent>(),
                     (component) => component.Buffer.Clear());
 
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSBlittableComponent>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSBlittableComponent>>(
-                    () => new ComponentsUpdated<SpatialOSBlittableComponent>(),
-                    (component) => component.Buffer.Clear());
-
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSBlittableComponent>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSBlittableComponent>>(
                     () => new AuthoritiesChanged<SpatialOSBlittableComponent>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSBlittableComponent.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(
+                    () => new ComponentsUpdated<SpatialOSBlittableComponent.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -110,7 +111,6 @@ namespace Generated.Improbable.TestSchema.Blittable
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSBlittableComponent = new SpatialOSBlittableComponent();
@@ -182,7 +182,56 @@ namespace Generated.Improbable.TestSchema.Blittable
                     view.AddEventReceived(entity, nativeEvent, SecondEventEventPool);
                 }
                 componentData.DirtyBit = false;
-                view.UpdateComponent(entity, componentData, UpdatesPool);
+
+                view.SetComponentData(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                if (update.boolField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+                if (update.intField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+                if (update.longField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+                if (update.floatField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+                if (update.doubleField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    var gdkUpdate = new SpatialOSBlittableComponent.Update();
+                    if (update.boolField.HasValue)
+                    {
+                        gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
+                    }
+                    if (update.intField.HasValue)
+                    {
+                        gdkUpdate.IntField = new Option<int>(update.intField.Value);
+                    }
+                    if (update.longField.HasValue)
+                    {
+                        gdkUpdate.LongField = new Option<long>(update.longField.Value);
+                    }
+                    if (update.floatField.HasValue)
+                    {
+                        gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
+                    }
+                    if (update.doubleField.HasValue)
+                    {
+                        gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
+                    }
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -266,8 +315,8 @@ namespace Generated.Improbable.TestSchema.Blittable
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
                 RemoveComponents(ref entityCommandBuffer, FirstCommandRequestPool, groupIndex: 2);
                 RemoveComponents(ref entityCommandBuffer, FirstCommandResponsePool, groupIndex: 3);
                 RemoveComponents(ref entityCommandBuffer, SecondCommandRequestPool, groupIndex: 4);

@@ -3,14 +3,13 @@
 // ===========
 
 using UnityEngine;
-using Unity.Mathematics;
 using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema
 { 
     public class SpatialOSExhaustiveOptional : Component, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 
         private global::System.Nullable<float> field2;
 
@@ -178,6 +177,24 @@ namespace Generated.Improbable.TestSchema
                 DirtyBit = true;
                 field17 = value;
             }
+        }
+
+        public struct Update : ISpatialComponentUpdate
+        {
+            public Option<global::System.Nullable<float>> Field2;
+            public Option<global::System.Nullable<int>> Field4;
+            public Option<global::System.Nullable<long>> Field5;
+            public Option<global::System.Nullable<double>> Field6;
+            public Option<global::System.Nullable<uint>> Field8;
+            public Option<global::System.Nullable<ulong>> Field9;
+            public Option<global::System.Nullable<int>> Field10;
+            public Option<global::System.Nullable<long>> Field11;
+            public Option<global::System.Nullable<uint>> Field12;
+            public Option<global::System.Nullable<ulong>> Field13;
+            public Option<global::System.Nullable<int>> Field14;
+            public Option<global::System.Nullable<long>> Field15;
+            public Option<global::System.Nullable<long>> Field16;
+            public Option<global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>> Field17;
         }
     }
 }

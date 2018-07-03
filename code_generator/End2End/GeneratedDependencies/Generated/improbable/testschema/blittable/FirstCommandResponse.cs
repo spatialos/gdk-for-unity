@@ -3,14 +3,14 @@
 // ===========
 
 using System.Linq;
-using Unity.Mathematics;
+using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema.Blittable
 { 
     
     public struct FirstCommandResponse
     {
-        public bool1 Response;
+        public BlittableBool Response;
     
         public static FirstCommandResponse ToNative(global::Improbable.TestSchema.Blittable.FirstCommandResponse spatialType)
         {
@@ -26,4 +26,5 @@ namespace Generated.Improbable.TestSchema.Blittable
             return spatialType;
         }
     }
+    
 }

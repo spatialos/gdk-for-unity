@@ -3,7 +3,7 @@
 // ===========
 
 using System.Linq;
-using Unity.Mathematics;
+using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema.Nonblittable
 { 
@@ -29,4 +29,5 @@ namespace Generated.Improbable.TestSchema.Nonblittable
             return spatialType;
         }
     }
+    
 }
