@@ -30,4 +30,4 @@ export LINTER="cleanupcode.exe"
 
 export MSBUILD="$(powershell  –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
 
-export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
+export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
