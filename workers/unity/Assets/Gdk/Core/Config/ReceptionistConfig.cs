@@ -26,12 +26,11 @@ namespace Improbable.Gdk.Core
 
         public static ReceptionistConfig CreateConnectionConfigForAndroidEmulator()
         {
-            var config = new ReceptionistConfig
+            return new ReceptionistConfig
             {
                 ReceptionistHost = "10.0.2.2",
                 UseExternalIp = true
             };
-            return config;
         }
     }
 }
