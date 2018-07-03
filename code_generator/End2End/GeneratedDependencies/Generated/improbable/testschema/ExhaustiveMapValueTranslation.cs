@@ -28,6 +28,8 @@ namespace Generated.Improbable.TestSchema
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
                 typeof(AuthoritiesChanged<SpatialOSExhaustiveMapValue>),
+                typeof(ComponentAdded<SpatialOSExhaustiveMapValue>),
+                typeof(ComponentRemoved<SpatialOSExhaustiveMapValue>),
                 typeof(ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>), 
             };
 
@@ -89,6 +91,16 @@ namespace Generated.Improbable.TestSchema
 
                 view.SetComponentObject(entity, spatialOSExhaustiveMapValue);
                 view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveMapValue>());
+
+                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity);
+                }
+                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    var addedTag = new ComponentAdded<SpatialOSExhaustiveMapValue>();
+                    view.AddComponent(entity, addedTag);
+                }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.TestSchema.ExhaustiveMapValue> op)
@@ -265,6 +277,16 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 view.RemoveComponent<SpatialOSExhaustiveMapValue>(entity);
+
+                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    var removedTag = new ComponentRemoved<SpatialOSExhaustiveMapValue>();
+                    view.AddComponent(entity, removedTag);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -319,7 +341,11 @@ namespace Generated.Improbable.TestSchema
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
+                RemoveComponents<ComponentAdded<SpatialOSExhaustiveMapValue>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<SpatialOSExhaustiveMapValue>>(ref entityCommandBuffer, groupIndex: 2);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
+                
+                
             }
 
             public override void SendCommands(Connection connection)

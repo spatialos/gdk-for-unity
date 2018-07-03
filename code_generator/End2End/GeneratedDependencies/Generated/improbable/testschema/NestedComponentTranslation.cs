@@ -28,6 +28,8 @@ namespace Generated.Improbable.TestSchema
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
                 typeof(AuthoritiesChanged<SpatialOSNestedComponent>),
+                typeof(ComponentAdded<SpatialOSNestedComponent>),
+                typeof(ComponentRemoved<SpatialOSNestedComponent>),
                 typeof(ComponentsUpdated<SpatialOSNestedComponent.Update>), 
             };
 
@@ -75,6 +77,16 @@ namespace Generated.Improbable.TestSchema
 
                 view.AddComponent(entity, spatialOSNestedComponent);
                 view.AddComponent(entity, new NotAuthoritative<SpatialOSNestedComponent>());
+
+                if (view.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
+                {
+                    view.RemoveComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity);
+                }
+                else if (!view.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
+                {
+                    var addedTag = new ComponentAdded<SpatialOSNestedComponent>();
+                    view.AddComponent(entity, addedTag);
+                }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.TestSchema.NestedComponent> op)
@@ -125,6 +137,16 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 view.RemoveComponent<SpatialOSNestedComponent>(entity);
+
+                if (view.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<SpatialOSNestedComponent>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
+                {
+                    var removedTag = new ComponentRemoved<SpatialOSNestedComponent>();
+                    view.AddComponent(entity, removedTag);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -165,7 +187,11 @@ namespace Generated.Improbable.TestSchema
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
+                RemoveComponents<ComponentAdded<SpatialOSNestedComponent>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<SpatialOSNestedComponent>>(ref entityCommandBuffer, groupIndex: 2);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
+                
+                
             }
 
             public override void SendCommands(Connection connection)
