@@ -27,18 +27,19 @@ namespace Generated.Improbable.TestSchema
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSExhaustiveRepeated>), typeof(AuthoritiesChanged<SpatialOSExhaustiveRepeated>),
+                typeof(AuthoritiesChanged<SpatialOSExhaustiveRepeated>),
+                typeof(ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>), 
             };
 
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveRepeated>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveRepeated>>(
-                    () => new ComponentsUpdated<SpatialOSExhaustiveRepeated>(),
-                    (component) => component.Buffer.Clear());
 
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveRepeated>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveRepeated>>(
                     () => new AuthoritiesChanged<SpatialOSExhaustiveRepeated>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>>(
+                    () => new ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -66,7 +67,6 @@ namespace Generated.Improbable.TestSchema
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSExhaustiveRepeated = new SpatialOSExhaustiveRepeated();
@@ -168,7 +168,91 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 componentData.DirtyBit = false;
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+
+                view.SetComponentObject(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSExhaustiveRepeated.Update();
+                if (update.field2.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field2 = new Option<global::System.Collections.Generic.List<float>>(update.field2.Value);
+                }
+                if (update.field4.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field4 = new Option<global::System.Collections.Generic.List<int>>(update.field4.Value);
+                }
+                if (update.field5.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field5 = new Option<global::System.Collections.Generic.List<long>>(update.field5.Value);
+                }
+                if (update.field6.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field6 = new Option<global::System.Collections.Generic.List<double>>(update.field6.Value);
+                }
+                if (update.field7.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field7 = new Option<global::System.Collections.Generic.List<string>>(update.field7.Value);
+                }
+                if (update.field8.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field8 = new Option<global::System.Collections.Generic.List<uint>>(update.field8.Value);
+                }
+                if (update.field9.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field9 = new Option<global::System.Collections.Generic.List<ulong>>(update.field9.Value);
+                }
+                if (update.field10.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field10 = new Option<global::System.Collections.Generic.List<int>>(update.field10.Value);
+                }
+                if (update.field11.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field11 = new Option<global::System.Collections.Generic.List<long>>(update.field11.Value);
+                }
+                if (update.field12.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field12 = new Option<global::System.Collections.Generic.List<uint>>(update.field12.Value);
+                }
+                if (update.field13.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field13 = new Option<global::System.Collections.Generic.List<ulong>>(update.field13.Value);
+                }
+                if (update.field14.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field14 = new Option<global::System.Collections.Generic.List<int>>(update.field14.Value);
+                }
+                if (update.field15.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field15 = new Option<global::System.Collections.Generic.List<long>>(update.field15.Value);
+                }
+                if (update.field16.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field16 = new Option<global::System.Collections.Generic.List<long>>(update.field16.Value.Select(internalObject => internalObject.Id).ToList());
+                }
+                if (update.field17.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field17 = new Option<global::System.Collections.Generic.List<global::Generated.Improbable.TestSchema.SomeType>>(update.field17.Value.Select(internalObject => global::Generated.Improbable.TestSchema.SomeType.ToNative(internalObject)).ToList());
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -234,8 +318,8 @@ namespace Generated.Improbable.TestSchema
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
             }
 
             public override void SendCommands(Connection connection)

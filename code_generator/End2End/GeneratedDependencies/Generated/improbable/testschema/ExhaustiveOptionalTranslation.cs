@@ -27,18 +27,19 @@ namespace Generated.Improbable.TestSchema
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSExhaustiveOptional>), typeof(AuthoritiesChanged<SpatialOSExhaustiveOptional>),
+                typeof(AuthoritiesChanged<SpatialOSExhaustiveOptional>),
+                typeof(ComponentsUpdated<SpatialOSExhaustiveOptional.Update>), 
             };
 
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveOptional>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveOptional>>(
-                    () => new ComponentsUpdated<SpatialOSExhaustiveOptional>(),
-                    (component) => component.Buffer.Clear());
 
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveOptional>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveOptional>>(
                     () => new AuthoritiesChanged<SpatialOSExhaustiveOptional>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveOptional.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveOptional.Update>>(
+                    () => new ComponentsUpdated<SpatialOSExhaustiveOptional.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -66,7 +67,6 @@ namespace Generated.Improbable.TestSchema
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSExhaustiveOptional = new SpatialOSExhaustiveOptional();
@@ -163,7 +163,86 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 componentData.DirtyBit = false;
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+
+                view.SetComponentObject(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSExhaustiveOptional.Update();
+                if (update.field2.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field2 = new Option<global::System.Nullable<float>>(update.field2.Value.HasValue ? new global::System.Nullable<float>(update.field2.Value.Value) : new global::System.Nullable<float>());
+                }
+                if (update.field4.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field4 = new Option<global::System.Nullable<int>>(update.field4.Value.HasValue ? new global::System.Nullable<int>(update.field4.Value.Value) : new global::System.Nullable<int>());
+                }
+                if (update.field5.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field5 = new Option<global::System.Nullable<long>>(update.field5.Value.HasValue ? new global::System.Nullable<long>(update.field5.Value.Value) : new global::System.Nullable<long>());
+                }
+                if (update.field6.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field6 = new Option<global::System.Nullable<double>>(update.field6.Value.HasValue ? new global::System.Nullable<double>(update.field6.Value.Value) : new global::System.Nullable<double>());
+                }
+                if (update.field8.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field8 = new Option<global::System.Nullable<uint>>(update.field8.Value.HasValue ? new global::System.Nullable<uint>(update.field8.Value.Value) : new global::System.Nullable<uint>());
+                }
+                if (update.field9.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field9 = new Option<global::System.Nullable<ulong>>(update.field9.Value.HasValue ? new global::System.Nullable<ulong>(update.field9.Value.Value) : new global::System.Nullable<ulong>());
+                }
+                if (update.field10.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field10 = new Option<global::System.Nullable<int>>(update.field10.Value.HasValue ? new global::System.Nullable<int>(update.field10.Value.Value) : new global::System.Nullable<int>());
+                }
+                if (update.field11.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field11 = new Option<global::System.Nullable<long>>(update.field11.Value.HasValue ? new global::System.Nullable<long>(update.field11.Value.Value) : new global::System.Nullable<long>());
+                }
+                if (update.field12.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field12 = new Option<global::System.Nullable<uint>>(update.field12.Value.HasValue ? new global::System.Nullable<uint>(update.field12.Value.Value) : new global::System.Nullable<uint>());
+                }
+                if (update.field13.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field13 = new Option<global::System.Nullable<ulong>>(update.field13.Value.HasValue ? new global::System.Nullable<ulong>(update.field13.Value.Value) : new global::System.Nullable<ulong>());
+                }
+                if (update.field14.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field14 = new Option<global::System.Nullable<int>>(update.field14.Value.HasValue ? new global::System.Nullable<int>(update.field14.Value.Value) : new global::System.Nullable<int>());
+                }
+                if (update.field15.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field15 = new Option<global::System.Nullable<long>>(update.field15.Value.HasValue ? new global::System.Nullable<long>(update.field15.Value.Value) : new global::System.Nullable<long>());
+                }
+                if (update.field16.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field16 = new Option<global::System.Nullable<long>>(update.field16.Value.HasValue ? new global::System.Nullable<long>(update.field16.Value.Value.Id) : new global::System.Nullable<long>());
+                }
+                if (update.field17.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field17 = new Option<global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>>(update.field17.Value.HasValue ? new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>(global::Generated.Improbable.TestSchema.SomeType.ToNative(update.field17.Value.Value)) : new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>());
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -228,8 +307,8 @@ namespace Generated.Improbable.TestSchema
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
             }
 
             public override void SendCommands(Connection connection)

@@ -27,18 +27,19 @@ namespace Generated.Improbable.TestSchema
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSExhaustiveSingular>), typeof(AuthoritiesChanged<SpatialOSExhaustiveSingular>),
+                typeof(AuthoritiesChanged<SpatialOSExhaustiveSingular>),
+                typeof(ComponentsUpdated<SpatialOSExhaustiveSingular.Update>), 
             };
 
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveSingular>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveSingular>>(
-                    () => new ComponentsUpdated<SpatialOSExhaustiveSingular>(),
-                    (component) => component.Buffer.Clear());
 
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveSingular>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveSingular>>(
                     () => new AuthoritiesChanged<SpatialOSExhaustiveSingular>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveSingular.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveSingular.Update>>(
+                    () => new ComponentsUpdated<SpatialOSExhaustiveSingular.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -66,7 +67,6 @@ namespace Generated.Improbable.TestSchema
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSExhaustiveSingular = new SpatialOSExhaustiveSingular();
@@ -173,7 +173,96 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 componentData.DirtyBit = false;
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+
+                view.SetComponentObject(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSExhaustiveSingular.Update();
+                if (update.field1.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field1 = new Option<BlittableBool>(update.field1.Value);
+                }
+                if (update.field2.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field2 = new Option<float>(update.field2.Value);
+                }
+                if (update.field4.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field4 = new Option<int>(update.field4.Value);
+                }
+                if (update.field5.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field5 = new Option<long>(update.field5.Value);
+                }
+                if (update.field6.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field6 = new Option<double>(update.field6.Value);
+                }
+                if (update.field7.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field7 = new Option<string>(update.field7.Value);
+                }
+                if (update.field8.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field8 = new Option<uint>(update.field8.Value);
+                }
+                if (update.field9.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field9 = new Option<ulong>(update.field9.Value);
+                }
+                if (update.field10.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field10 = new Option<int>(update.field10.Value);
+                }
+                if (update.field11.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field11 = new Option<long>(update.field11.Value);
+                }
+                if (update.field12.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field12 = new Option<uint>(update.field12.Value);
+                }
+                if (update.field13.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field13 = new Option<ulong>(update.field13.Value);
+                }
+                if (update.field14.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field14 = new Option<int>(update.field14.Value);
+                }
+                if (update.field15.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field15 = new Option<long>(update.field15.Value);
+                }
+                if (update.field16.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field16 = new Option<long>(update.field16.Value.Id);
+                }
+                if (update.field17.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field17 = new Option<global::Generated.Improbable.TestSchema.SomeType>(global::Generated.Improbable.TestSchema.SomeType.ToNative(update.field17.Value));
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -240,8 +329,8 @@ namespace Generated.Improbable.TestSchema
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
             }
 
             public override void SendCommands(Connection connection)

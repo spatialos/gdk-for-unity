@@ -27,18 +27,19 @@ namespace Generated.Improbable.TestSchema
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSExhaustiveMapValue>), typeof(AuthoritiesChanged<SpatialOSExhaustiveMapValue>),
+                typeof(AuthoritiesChanged<SpatialOSExhaustiveMapValue>),
+                typeof(ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>), 
             };
 
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue>>(
-                    () => new ComponentsUpdated<SpatialOSExhaustiveMapValue>(),
-                    (component) => component.Buffer.Clear());
 
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveMapValue>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveMapValue>>(
                     () => new AuthoritiesChanged<SpatialOSExhaustiveMapValue>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>>(
+                    () => new ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -66,7 +67,6 @@ namespace Generated.Improbable.TestSchema
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSExhaustiveMapValue = new SpatialOSExhaustiveMapValue();
@@ -168,7 +168,91 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 componentData.DirtyBit = false;
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+
+                view.SetComponentObject(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSExhaustiveMapValue.Update();
+                if (update.field2.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field2 = new Option<global::System.Collections.Generic.Dictionary<string, float>>(update.field2.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field4.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field4 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field4.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field5.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field5 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field5.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field6.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field6 = new Option<global::System.Collections.Generic.Dictionary<string, double>>(update.field6.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field7.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field7 = new Option<global::System.Collections.Generic.Dictionary<string, string>>(update.field7.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field8.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field8 = new Option<global::System.Collections.Generic.Dictionary<string, uint>>(update.field8.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field9.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field9 = new Option<global::System.Collections.Generic.Dictionary<string, ulong>>(update.field9.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field10.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field10 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field10.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field11.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field11 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field11.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field12.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field12 = new Option<global::System.Collections.Generic.Dictionary<string, uint>>(update.field12.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field13.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field13 = new Option<global::System.Collections.Generic.Dictionary<string, ulong>>(update.field13.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field14.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field14 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field14.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field15.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field15 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field15.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+                if (update.field16.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field16 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field16.Value.ToDictionary(entry => entry.Key, entry => entry.Value.Id));
+                }
+                if (update.field17.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.Field17 = new Option<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.TestSchema.SomeType>>(update.field17.Value.ToDictionary(entry => entry.Key, entry => global::Generated.Improbable.TestSchema.SomeType.ToNative(entry.Value)));
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -234,8 +318,8 @@ namespace Generated.Improbable.TestSchema
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
             }
 
             public override void SendCommands(Connection connection)

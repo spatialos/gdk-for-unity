@@ -3,18 +3,17 @@
 // ===========
 
 using UnityEngine;
-using Unity.Mathematics;
 using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema.Nonblittable
 { 
     public class SpatialOSNonBlittableComponent : Component, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 
-        private bool1 boolField;
+        private BlittableBool boolField;
 
-        public bool1 BoolField
+        public BlittableBool BoolField
         {
             get { return boolField; }
             set
@@ -118,6 +117,19 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                 DirtyBit = true;
                 mapField = value;
             }
+        }
+
+        public struct Update : ISpatialComponentUpdate
+        {
+            public Option<BlittableBool> BoolField;
+            public Option<int> IntField;
+            public Option<long> LongField;
+            public Option<float> FloatField;
+            public Option<double> DoubleField;
+            public Option<string> StringField;
+            public Option<global::System.Nullable<int>> OptionalField;
+            public Option<global::System.Collections.Generic.List<int>> ListField;
+            public Option<global::System.Collections.Generic.Dictionary<int, string>> MapField;
         }
     }
 }
