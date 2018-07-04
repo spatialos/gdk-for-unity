@@ -25,8 +25,7 @@ markEndOfBlock "Setup variables"
 
 markStartOfBlock "Tools Testing"
 
-"${NUNIT3_CONSOLE}" tools/DocsLinter/DocsLinter.csproj --result=${TOOLS_TEST_RESULTS_FILES}
-TOOLS_TEST_RESULT=$?
+dotnet test tools/DocsLinter/DocsLinter.csproj > ${TOOLS_TEST_RESULTS_FILES}
 
 markEndOfBlock "Tools Testing"
 
