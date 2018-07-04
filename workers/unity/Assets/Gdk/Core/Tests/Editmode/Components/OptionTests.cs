@@ -53,6 +53,15 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
+        public void Creating_option_with_null_payload_throws()
+        {
+            Assert.Throws<CreatedOptionWithNullPayloadException>(() =>
+            {
+                var emptyOption = new Option<string>(null);
+            });
+        }
+
+        [Test]
         public void Reading_value_of_empty_option_throws_for_value_types()
         {
             var option = new Option<bool>();
@@ -70,14 +79,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
             {
                 var value = option.Value;
             });
-        }
-
-        [Test]
-        public void Null_option_is_not_empty()
-        {
-            var option = new Option<string>(null);
-            Assert.AreEqual(true, (bool) option.HasValue);
-            Assert.AreEqual(null, option.Value);
         }
 
         [Test]

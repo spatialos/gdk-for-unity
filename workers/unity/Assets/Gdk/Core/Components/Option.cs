@@ -25,6 +25,11 @@ namespace Improbable.Gdk.Core
 
         public Option(T value)
         {
+            if (!typeof(T).IsValueType && value == null)
+            {
+                throw new CreatedOptionWithNullPayloadException("Options may not have null payloads.");
+            }
+
             HasValue = true;
             this.value = value;
         }
@@ -97,19 +102,18 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    public class CalledValueOnEmptyOptionException : Exception
+    public class CreatedOptionWithNullPayloadException : Exception
     {
-        public CalledValueOnEmptyOptionException()
-        {
-        }
-
-        public CalledValueOnEmptyOptionException(string message)
+        public CreatedOptionWithNullPayloadException(string message)
             : base(message)
         {
         }
+    }
 
-        public CalledValueOnEmptyOptionException(string message, Exception innerException)
-            : base(message, innerException)
+    public class CalledValueOnEmptyOptionException : Exception
+    {
+        public CalledValueOnEmptyOptionException(string message)
+            : base(message)
         {
         }
     }
