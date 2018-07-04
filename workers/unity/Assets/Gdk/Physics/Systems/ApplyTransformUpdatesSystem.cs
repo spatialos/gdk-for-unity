@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
@@ -11,10 +11,9 @@ namespace Improbable.Gdk.TransformSynchronization
         public struct TransformUpdateData
         {
             public int Length;
-            public ComponentDataArray<SpatialOSTransform> Transform;
-            public ComponentArray<ComponentsUpdated<SpatialOSTransform.Update>> TransformUpdate;
+            [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSTransform.Update>> TransformUpdate;
             public ComponentArray<BufferedTransform> BufferedTransform;
-            public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;
@@ -25,7 +24,6 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 var transformUpdates = transformUpdateData.TransformUpdate[i].Buffer;
                 var lastTransformSnapshot = transformUpdateData.BufferedTransform[i].LastTransformSnapshot;
-                var transformSnapshots = new List<SpatialOSTransform>();
                 foreach (var update in transformUpdates)
                 {
                     if (update.Location.HasValue)
@@ -43,11 +41,10 @@ namespace Improbable.Gdk.TransformSynchronization
                         lastTransformSnapshot.Tick = update.Tick.Value;
                     }
 
-                    transformSnapshots.Add(lastTransformSnapshot);
+                    transformUpdateData.BufferedTransform[i].TransformUpdates.Add(lastTransformSnapshot);
                 }
 
-                transformUpdateData.BufferedTransform[i].TransformUpdates.AddRange(transformSnapshots);
-                transformUpdateData.BufferedTransform[i].LastTransformSnapshot = transformUpdateData.Transform[i];
+                transformUpdateData.BufferedTransform[i].LastTransformSnapshot = lastTransformSnapshot;
             }
         }
     }
