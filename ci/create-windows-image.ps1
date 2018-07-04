@@ -1,3 +1,7 @@
+### This script is a guide for Improbable's internal build machine images.
+### If you don't work at Improbable, this may be interesting as a guide to what software versions we use for our
+### automation, but not much more than that.
+
 ### Run from an Administrator command prompt with:
 ### powershell -executionpolicy Unrestricted ci/create-image.sh
 ### The machine will reboot after the script runs.
@@ -14,8 +18,8 @@ $RESHARPER_CLI_VERSION="2018.1.2"
 $SPATIAL_VERSION="1.1.9"
 
 # From https://public-cdn.cloud.unity3d.com/hub/prod/releases-win32.json
-$UNITY_VERSION="2018.1.6f1"
-$UNITY_RELEASE_HASH="57cc34175ccf"
+$UNITY_VERSION="2018.2.0b10"
+$UNITY_RELEASE_HASH="4bc57476174c"
 
 # Direct link to installer at https://my.visualstudio.com/Downloads?q=Visual%20Studio%202017
 # VS Professional 15.7
