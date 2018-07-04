@@ -24,9 +24,12 @@ namespace FindUnity
             {
                 Console.Out.WriteLine("Looks for a path to Unity in the following locations, in order:");
                 Console.Out.WriteLine($"  1) The path set in the environment variable {UnityHomeEnvVar}");
-                Console.Out.WriteLine($"  2) The default installation path for the Unity Hub ({UnityHubPath})");
-                Console.Out.WriteLine($"  3) The default installation path for Unity ({UnityPath})");
-                Console.Out.WriteLine($"  4) An Improbable-specific installation path for Unity ({improbableUnityRootPath})");
+                Console.Out.WriteLine($"  2) An Improbable-specific installation path for Unity ({improbableUnityRootPath})");            
+                Console.Out.WriteLine($"  3) The default installation path for the Unity Hub ({UnityHubPath})");
+                Console.Out.WriteLine($"  4) The default installation path for Unity ({UnityPath})");
+                Console.Out.WriteLine();
+                Console.Out.WriteLine("If Unity is found, prints the path to standard out and return exit code 0.");
+                Console.Out.WriteLine("If not, prints an error message to standard error and return exit code 1.");
                 Environment.Exit(0);
             }
 
@@ -34,7 +37,7 @@ namespace FindUnity
             {
                 if (!Directory.Exists("Assets"))
                 {
-                    throw new Exception("Please run from within a Unity project");
+                    throw new Exception($"Please run from within a Unity project folder. {Environment.CurrentDirectory} is not a Unity project.");
                 }
 
                 var unityHome = Environment.GetEnvironmentVariable(UnityHomeEnvVar);
@@ -52,6 +55,14 @@ namespace FindUnity
                 var projectVersion = File.ReadAllText(Path.Combine("ProjectSettings", "ProjectVersion.txt"))
                     .Remove(0, "m_EditorVersion:".Length).Trim();
 
+
+                var improbableUnityPath = Path.Combine(improbableUnityRootPath, $"Unity-{projectVersion}");
+                if (Directory.Exists(improbableUnityPath))
+                {
+                    Console.Out.WriteLine(improbableUnityPath);
+                    Environment.Exit(0);
+                }
+
                 var hubPath = Path.Combine(UnityHubPath, "Editor", projectVersion);
                 if (Directory.Exists(hubPath))
                 {
@@ -63,13 +74,6 @@ namespace FindUnity
                 {
                     // The UnityPath may contain other folders like "Hub", so sanity check that there's an Editor folder in it.
                     Console.Out.WriteLine(UnityPath);
-                    Environment.Exit(0);
-                }
-
-                var improbableUnityPath = Path.Combine(improbableUnityRootPath, $"Unity-{projectVersion}");
-                if (Directory.Exists(improbableUnityPath))
-                {
-                    Console.Out.WriteLine(improbableUnityPath);
                     Environment.Exit(0);
                 }
 
