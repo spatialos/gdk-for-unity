@@ -167,122 +167,80 @@ namespace Generated.Improbable.TestSchema
                 view.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSExhaustiveOptional.Update();
                 if (update.field2.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field2 = new Option<global::System.Nullable<float>>(update.field2.Value.HasValue ? new global::System.Nullable<float>(update.field2.Value.Value) : new global::System.Nullable<float>());
                 }
                 if (update.field4.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field4 = new Option<global::System.Nullable<int>>(update.field4.Value.HasValue ? new global::System.Nullable<int>(update.field4.Value.Value) : new global::System.Nullable<int>());
                 }
                 if (update.field5.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field5 = new Option<global::System.Nullable<long>>(update.field5.Value.HasValue ? new global::System.Nullable<long>(update.field5.Value.Value) : new global::System.Nullable<long>());
                 }
                 if (update.field6.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field6 = new Option<global::System.Nullable<double>>(update.field6.Value.HasValue ? new global::System.Nullable<double>(update.field6.Value.Value) : new global::System.Nullable<double>());
                 }
                 if (update.field8.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field8 = new Option<global::System.Nullable<uint>>(update.field8.Value.HasValue ? new global::System.Nullable<uint>(update.field8.Value.Value) : new global::System.Nullable<uint>());
                 }
                 if (update.field9.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field9 = new Option<global::System.Nullable<ulong>>(update.field9.Value.HasValue ? new global::System.Nullable<ulong>(update.field9.Value.Value) : new global::System.Nullable<ulong>());
                 }
                 if (update.field10.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field10 = new Option<global::System.Nullable<int>>(update.field10.Value.HasValue ? new global::System.Nullable<int>(update.field10.Value.Value) : new global::System.Nullable<int>());
                 }
                 if (update.field11.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field11 = new Option<global::System.Nullable<long>>(update.field11.Value.HasValue ? new global::System.Nullable<long>(update.field11.Value.Value) : new global::System.Nullable<long>());
                 }
                 if (update.field12.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field12 = new Option<global::System.Nullable<uint>>(update.field12.Value.HasValue ? new global::System.Nullable<uint>(update.field12.Value.Value) : new global::System.Nullable<uint>());
                 }
                 if (update.field13.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field13 = new Option<global::System.Nullable<ulong>>(update.field13.Value.HasValue ? new global::System.Nullable<ulong>(update.field13.Value.Value) : new global::System.Nullable<ulong>());
                 }
                 if (update.field14.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field14 = new Option<global::System.Nullable<int>>(update.field14.Value.HasValue ? new global::System.Nullable<int>(update.field14.Value.Value) : new global::System.Nullable<int>());
                 }
                 if (update.field15.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field15 = new Option<global::System.Nullable<long>>(update.field15.Value.HasValue ? new global::System.Nullable<long>(update.field15.Value.Value) : new global::System.Nullable<long>());
                 }
                 if (update.field16.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field16 = new Option<global::System.Nullable<long>>(update.field16.Value.HasValue ? new global::System.Nullable<long>(update.field16.Value.Value.Id) : new global::System.Nullable<long>());
                 }
                 if (update.field17.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.Field17 = new Option<global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>>(update.field17.Value.HasValue ? new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>(global::Generated.Improbable.TestSchema.SomeType.ToNative(update.field17.Value.Value)) : new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>());
                 }
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new SpatialOSExhaustiveOptional.Update();
-                    if (update.field2.HasValue)
-                    {
-                        gdkUpdate.Field2 = new Option<global::System.Nullable<float>>(update.field2.Value.HasValue ? new global::System.Nullable<float>(update.field2.Value.Value) : new global::System.Nullable<float>());
-                    }
-                    if (update.field4.HasValue)
-                    {
-                        gdkUpdate.Field4 = new Option<global::System.Nullable<int>>(update.field4.Value.HasValue ? new global::System.Nullable<int>(update.field4.Value.Value) : new global::System.Nullable<int>());
-                    }
-                    if (update.field5.HasValue)
-                    {
-                        gdkUpdate.Field5 = new Option<global::System.Nullable<long>>(update.field5.Value.HasValue ? new global::System.Nullable<long>(update.field5.Value.Value) : new global::System.Nullable<long>());
-                    }
-                    if (update.field6.HasValue)
-                    {
-                        gdkUpdate.Field6 = new Option<global::System.Nullable<double>>(update.field6.Value.HasValue ? new global::System.Nullable<double>(update.field6.Value.Value) : new global::System.Nullable<double>());
-                    }
-                    if (update.field8.HasValue)
-                    {
-                        gdkUpdate.Field8 = new Option<global::System.Nullable<uint>>(update.field8.Value.HasValue ? new global::System.Nullable<uint>(update.field8.Value.Value) : new global::System.Nullable<uint>());
-                    }
-                    if (update.field9.HasValue)
-                    {
-                        gdkUpdate.Field9 = new Option<global::System.Nullable<ulong>>(update.field9.Value.HasValue ? new global::System.Nullable<ulong>(update.field9.Value.Value) : new global::System.Nullable<ulong>());
-                    }
-                    if (update.field10.HasValue)
-                    {
-                        gdkUpdate.Field10 = new Option<global::System.Nullable<int>>(update.field10.Value.HasValue ? new global::System.Nullable<int>(update.field10.Value.Value) : new global::System.Nullable<int>());
-                    }
-                    if (update.field11.HasValue)
-                    {
-                        gdkUpdate.Field11 = new Option<global::System.Nullable<long>>(update.field11.Value.HasValue ? new global::System.Nullable<long>(update.field11.Value.Value) : new global::System.Nullable<long>());
-                    }
-                    if (update.field12.HasValue)
-                    {
-                        gdkUpdate.Field12 = new Option<global::System.Nullable<uint>>(update.field12.Value.HasValue ? new global::System.Nullable<uint>(update.field12.Value.Value) : new global::System.Nullable<uint>());
-                    }
-                    if (update.field13.HasValue)
-                    {
-                        gdkUpdate.Field13 = new Option<global::System.Nullable<ulong>>(update.field13.Value.HasValue ? new global::System.Nullable<ulong>(update.field13.Value.Value) : new global::System.Nullable<ulong>());
-                    }
-                    if (update.field14.HasValue)
-                    {
-                        gdkUpdate.Field14 = new Option<global::System.Nullable<int>>(update.field14.Value.HasValue ? new global::System.Nullable<int>(update.field14.Value.Value) : new global::System.Nullable<int>());
-                    }
-                    if (update.field15.HasValue)
-                    {
-                        gdkUpdate.Field15 = new Option<global::System.Nullable<long>>(update.field15.Value.HasValue ? new global::System.Nullable<long>(update.field15.Value.Value) : new global::System.Nullable<long>());
-                    }
-                    if (update.field16.HasValue)
-                    {
-                        gdkUpdate.Field16 = new Option<global::System.Nullable<long>>(update.field16.Value.HasValue ? new global::System.Nullable<long>(update.field16.Value.Value.Id) : new global::System.Nullable<long>());
-                    }
-                    if (update.field17.HasValue)
-                    {
-                        gdkUpdate.Field17 = new Option<global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>>(update.field17.Value.HasValue ? new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>(global::Generated.Improbable.TestSchema.SomeType.ToNative(update.field17.Value.Value)) : new global::System.Nullable<global::Generated.Improbable.TestSchema.SomeType>());
-                    }
                     view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }

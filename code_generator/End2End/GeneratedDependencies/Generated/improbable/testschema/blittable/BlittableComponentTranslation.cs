@@ -186,50 +186,35 @@ namespace Generated.Improbable.TestSchema.Blittable
                 view.SetComponentData(entity, componentData);
 
                 var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSBlittableComponent.Update();
                 if (update.boolField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
                 }
                 if (update.intField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.IntField = new Option<int>(update.intField.Value);
                 }
                 if (update.longField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.LongField = new Option<long>(update.longField.Value);
                 }
                 if (update.floatField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
                 }
                 if (update.doubleField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
                 }
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new SpatialOSBlittableComponent.Update();
-                    if (update.boolField.HasValue)
-                    {
-                        gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
-                    }
-                    if (update.intField.HasValue)
-                    {
-                        gdkUpdate.IntField = new Option<int>(update.intField.Value);
-                    }
-                    if (update.longField.HasValue)
-                    {
-                        gdkUpdate.LongField = new Option<long>(update.longField.Value);
-                    }
-                    if (update.floatField.HasValue)
-                    {
-                        gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
-                    }
-                    if (update.doubleField.HasValue)
-                    {
-                        gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
-                    }
                     view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }

@@ -206,82 +206,55 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                 view.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSNonBlittableComponent.Update();
                 if (update.boolField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
                 }
                 if (update.intField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.IntField = new Option<int>(update.intField.Value);
                 }
                 if (update.longField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.LongField = new Option<long>(update.longField.Value);
                 }
                 if (update.floatField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
                 }
                 if (update.doubleField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
                 }
                 if (update.stringField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.StringField = new Option<string>(update.stringField.Value);
                 }
                 if (update.optionalField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.OptionalField = new Option<global::System.Nullable<int>>(update.optionalField.Value.HasValue ? new global::System.Nullable<int>(update.optionalField.Value.Value) : new global::System.Nullable<int>());
                 }
                 if (update.listField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.ListField = new Option<global::System.Collections.Generic.List<int>>(update.listField.Value);
                 }
                 if (update.mapField.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.MapField = new Option<global::System.Collections.Generic.Dictionary<int, string>>(update.mapField.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
                 }
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new SpatialOSNonBlittableComponent.Update();
-                    if (update.boolField.HasValue)
-                    {
-                        gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
-                    }
-                    if (update.intField.HasValue)
-                    {
-                        gdkUpdate.IntField = new Option<int>(update.intField.Value);
-                    }
-                    if (update.longField.HasValue)
-                    {
-                        gdkUpdate.LongField = new Option<long>(update.longField.Value);
-                    }
-                    if (update.floatField.HasValue)
-                    {
-                        gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
-                    }
-                    if (update.doubleField.HasValue)
-                    {
-                        gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
-                    }
-                    if (update.stringField.HasValue)
-                    {
-                        gdkUpdate.StringField = new Option<string>(update.stringField.Value);
-                    }
-                    if (update.optionalField.HasValue)
-                    {
-                        gdkUpdate.OptionalField = new Option<global::System.Nullable<int>>(update.optionalField.Value.HasValue ? new global::System.Nullable<int>(update.optionalField.Value.Value) : new global::System.Nullable<int>());
-                    }
-                    if (update.listField.HasValue)
-                    {
-                        gdkUpdate.ListField = new Option<global::System.Collections.Generic.List<int>>(update.listField.Value);
-                    }
-                    if (update.mapField.HasValue)
-                    {
-                        gdkUpdate.MapField = new Option<global::System.Collections.Generic.Dictionary<int, string>>(update.mapField.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                    }
                     view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }

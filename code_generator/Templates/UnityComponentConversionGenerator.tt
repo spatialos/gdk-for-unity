@@ -186,22 +186,17 @@ namespace <#= qualifiedNamespace #>
 
 <# if (fieldDetailsList.Count > 0) { #>
                 var componentFieldsUpdated = false;
+                var gdkUpdate = new <#= componentDetails.TypeName #>.Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
                 }
 <# } #>
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new <#= componentDetails.TypeName #>.Update();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                    if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
-                    {
-                        gdkUpdate.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
-                    }
-<# } #>
                     view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
 <# } #>

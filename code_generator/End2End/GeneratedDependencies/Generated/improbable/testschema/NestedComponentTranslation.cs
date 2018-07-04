@@ -102,18 +102,15 @@ namespace Generated.Improbable.TestSchema
                 view.SetComponentData(entity, componentData);
 
                 var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSNestedComponent.Update();
                 if (update.nestedType.HasValue)
                 {
                     componentFieldsUpdated = true;
+                    gdkUpdate.NestedType = new Option<global::Generated.Improbable.TestSchema.TypeName>(global::Generated.Improbable.TestSchema.TypeName.ToNative(update.nestedType.Value));
                 }
 
                 if (componentFieldsUpdated)
                 {
-                    var gdkUpdate = new SpatialOSNestedComponent.Update();
-                    if (update.nestedType.HasValue)
-                    {
-                        gdkUpdate.NestedType = new Option<global::Generated.Improbable.TestSchema.TypeName>(global::Generated.Improbable.TestSchema.TypeName.ToNative(update.nestedType.Value));
-                    }
                     view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }
