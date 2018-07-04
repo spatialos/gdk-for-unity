@@ -15,6 +15,8 @@ namespace FindUnity
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             var unityHubPath = Path.Combine(programFiles, "Unity", "Hub");
             var unityPath = Path.Combine(programFiles, "Unity");
+
+            // Adjust the root based on Windows or MacOS. Linux is currently unsupported.
             var improbableUnityRootPath = programFiles == "/Applications" ? "/Applications" : Path.Combine(@"c:\", "Unity");
 
             if (args.Contains("--help") || args.Contains("/?") || args.Contains("/help"))
