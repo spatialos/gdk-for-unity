@@ -2,7 +2,8 @@
 
 export LINTER="cleanupcode.exe"
 
-export MSBUILD="$(powershell –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
+MSBUILD="$(powershell –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
+export MSBUILD
 
 export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
 
@@ -11,4 +12,6 @@ export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/n
 pushd workers/unity
     UNITY_DIR="$(../../tools/FindUnity/bin/Release/FindUnity.exe)"
 popd
+
+export UNITY_HOME="${UNITY_DIR}"
 export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
