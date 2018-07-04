@@ -6,25 +6,26 @@ namespace FindUnity
 {
     internal static class Program
     {
+        // If SpecialFolder.ProgramFiles returns the (x86) variant instead of "Program Files",
+        // check that "Prefer 32 bit" is unticked in the project's Build settings.
+        // On MacOS, SpecialFolder.ProgramFiles maps to "/Applications"
+
+        private static readonly string ProgramFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+        private static readonly string UnityHubPath = Path.Combine(ProgramFiles, "Unity", "Hub");
+        private static readonly string UnityPath = Path.Combine(ProgramFiles, "Unity");
         private const string UnityHomeEnvVar = "UNITY_HOME";
 
         private static void Main(string[] args)
         {
-            // If SpecialFolder.ProgramFiles returns the (x86) variant instead of "Program Files",
-            // check that "Prefer 32 bit" is unticked in the project's Build settings.
-            var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            var unityHubPath = Path.Combine(programFiles, "Unity", "Hub");
-            var unityPath = Path.Combine(programFiles, "Unity");
-
             // Adjust the root based on Windows or MacOS. Linux is currently unsupported.
-            var improbableUnityRootPath = programFiles == "/Applications" ? "/Applications" : Path.Combine(@"c:\", "Unity");
+            var improbableUnityRootPath = ProgramFiles == "/Applications" ? "/Applications" : Path.Combine(@"c:\", "Unity");
 
             if (args.Contains("--help") || args.Contains("/?") || args.Contains("/help"))
             {
                 Console.Out.WriteLine("Looks for a path to Unity in the following locations, in order:");
                 Console.Out.WriteLine($"  1) The path set in the environment variable {UnityHomeEnvVar}");
-                Console.Out.WriteLine($"  2) The default installation path for the Unity Hub ({unityHubPath})");
-                Console.Out.WriteLine($"  3) The default installation path for Unity ({unityPath})");
+                Console.Out.WriteLine($"  2) The default installation path for the Unity Hub ({UnityHubPath})");
+                Console.Out.WriteLine($"  3) The default installation path for Unity ({UnityPath})");
                 Console.Out.WriteLine($"  4) An Improbable-specific installation path for Unity ({improbableUnityRootPath})");
                 Environment.Exit(0);
             }
@@ -51,17 +52,17 @@ namespace FindUnity
                 var projectVersion = File.ReadAllText(Path.Combine("ProjectSettings", "ProjectVersion.txt"))
                     .Remove(0, "m_EditorVersion:".Length).Trim();
 
-                var hubPath = Path.Combine(unityHubPath, "Editor", projectVersion);
+                var hubPath = Path.Combine(UnityHubPath, "Editor", projectVersion);
                 if (Directory.Exists(hubPath))
                 {
                     Console.Out.WriteLine(hubPath);
                     Environment.Exit(0);
                 }
 
-                if (Directory.Exists(Path.Combine(unityPath, "Editor")))
+                if (Directory.Exists(Path.Combine(UnityPath, "Editor")))
                 {
                     // The UnityPath may contain other folders like "Hub", so sanity check that there's an Editor folder in it.
-                    Console.Out.WriteLine(unityPath);
+                    Console.Out.WriteLine(UnityPath);
                     Environment.Exit(0);
                 }
 
@@ -72,7 +73,7 @@ namespace FindUnity
                     Environment.Exit(0);
                 }
 
-                throw new Exception($"Could not find Unity in\n  {UnityHomeEnvVar}={unityHome}\n  {hubPath}\n  {unityPath}");
+                throw new Exception($"Could not find Unity in\n  {UnityHomeEnvVar}={unityHome}\n  {hubPath}\n  {UnityPath}");
             }
             catch (Exception e)
             {
