@@ -27,7 +27,9 @@
 1. Install prerequisites:
 	- [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download)
 	- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
-	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS Unity GDK requires Unity 2018.2.0b10). Make sure **Visual Studio Tools for Unity** is selected.
+	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity** and **.NET Core cross-platform development**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS Unity GDK requires Unity 2018.2.0b10). Make sure **Visual Studio Tools for Unity** is selected.
+    - [.NET Core 2.x](https://www.microsoft.com/net/download/)
+        > If you installed the **.NET Core cross-platform development** Workload with Visual Studio, you should have this installed already.
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win)
 	<br>This installs:
 		- the [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
