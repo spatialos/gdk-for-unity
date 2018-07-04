@@ -33,6 +33,7 @@ elif isLinux; then
 fi
 
 GOPATH="$(pwd)/go"
+export GOPATH
 UNITY_PACKAGE="github.com/improbable/unity_downloader"
 
 markStartOfBlock "$0"
