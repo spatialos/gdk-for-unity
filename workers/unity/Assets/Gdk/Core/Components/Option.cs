@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
             {
                 if (!HasValue)
                 {
-                    throw new InvalidOperationException("Called Value on empty Option.");
+                    throw new CalledValueOnEmptyOptionException("Called Value on empty Option.");
                 }
 
                 return value;
@@ -94,6 +94,23 @@ namespace Improbable.Gdk.Core
         public static implicit operator T(Option<T> option)
         {
             return option.Value;
+        }
+    }
+
+    public class CalledValueOnEmptyOptionException : Exception
+    {
+        public CalledValueOnEmptyOptionException()
+        {
+        }
+
+        public CalledValueOnEmptyOptionException(string message)
+            : base(message)
+        {
+        }
+
+        public CalledValueOnEmptyOptionException(string message, Exception innerException)
+            : base(message, innerException)
+        {
         }
     }
 }

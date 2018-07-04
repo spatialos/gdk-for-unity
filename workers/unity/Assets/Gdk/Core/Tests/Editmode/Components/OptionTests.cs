@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Reading_value_of_empty_option_throws_for_value_types()
         {
             var option = new Option<bool>();
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
                 var value = option.Value;
             });
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Reading_value_of_empty_option_throws_for_reference_types()
         {
             var option = new Option<string>();
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
                 var value = option.Value;
             });
@@ -179,7 +179,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Implicit_conversion_to_payload_type_using_empty_option_throws()
         {
             var option = new Option<bool>();
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
                 bool value = option.Value;
             });
