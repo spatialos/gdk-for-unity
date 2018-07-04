@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
+UNITY_ROOT="C:/Unity"
 UNITY_VERSION=$(cat "workers/unity/ProjectSettings/ProjectVersion.txt" | grep "m_EditorVersion" | cut -d ' ' -f2)
+
+function isLinux() {
+  [[ "$(uname -s)" == "Linux" ]];
+}
+
+function isMacOS() {
+  [[ "$(uname -s)" == "Darwin" ]];
+}
+
+function isWindows() {
+  ! ( isLinux || isMacOS );
+}
 
 function isUnityHomeSet() {
   UNITY_HOME=${UNITY_HOME:-}
@@ -8,7 +21,7 @@ function isUnityHomeSet() {
 }
 
 function isUnityImprobablePathPresent() {
-  UNITY_DIR="C:/Unity/Unity-${UNITY_VERSION}/"
+  UNITY_DIR="${UNITY_ROOT}/${UNITY_VERSION}/"
   [ -d "$UNITY_DIR" ]
 }
 
