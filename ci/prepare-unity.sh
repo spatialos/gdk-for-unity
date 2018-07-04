@@ -6,7 +6,20 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
-if isNotTeamCity; then
+function isLinux() {
+  [[ "$(uname -s)" == "Linux" ]];
+}
+
+function isMacOS() {
+  [[ "$(uname -s)" == "Darwin" ]];
+}
+
+function isWindows() {
+  ! ( isLinux || isMacOS );
+}
+
+# Only run inside TeamCity
+if [ -z "${TEAMCITY_CAPTURE_ENV+x}" ]; then
     exit 0
 fi
 
@@ -26,7 +39,6 @@ markStartOfBlock "$0"
 
 # Check if version is installed
 if isUnityImprobablePathPresent; then
-    echo "Unity ${UNITY_VERSION} is already installed"
     exit 0
 fi
 
