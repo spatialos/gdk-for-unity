@@ -6,6 +6,10 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
+if isNotTeamCity; then
+    exit 0
+fi
+
 if isWindows; then
     MODULES="linux mac-mono"
 elif isMacOS; then

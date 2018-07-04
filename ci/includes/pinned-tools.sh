@@ -20,6 +20,16 @@ function isUnityHomeSet() {
   [ -n "$UNITY_HOME" ]
 }
 
+function isTeamCity() {
+  # -n == string comparison "not null"
+  [ -n "${TEAMCITY_CAPTURE_ENV+x}" ]
+}
+
+function isNotTeamCity() {
+  # -z == string comparison "null, that is, 0-length"
+  [ -z "${TEAMCITY_CAPTURE_ENV+x}" ]
+}
+
 function isUnityImprobablePathPresent() {
   UNITY_DIR="${UNITY_ROOT}/${UNITY_VERSION}/"
   [ -d "$UNITY_DIR" ]

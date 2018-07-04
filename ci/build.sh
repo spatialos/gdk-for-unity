@@ -10,6 +10,10 @@ PROJECT_DIR="$(pwd)"
 
 markStartOfBlock "$0"
 
+markStartOfBlock "Prepare Unity"
+ci/prepare-unity.sh
+markEndOfBlock "Prepare Unity"
+
 markStartOfBlock "Building Tools"
 "${MSBUILD}" tools/ImpNuget/ImpNuget.csproj //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
 pushd "tools/DocsLinter"
