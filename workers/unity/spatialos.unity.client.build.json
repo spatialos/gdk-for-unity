@@ -4,6 +4,13 @@
       "name": "Codegen",
       "steps": [
         {
+          "name": "Copy Gdk Packages Schema",
+          "command": "bash",
+          "arguments": [
+            "./copy_packages_schema.sh"
+          ]
+        },
+        {
           "name": "C#",
           "arguments": [
             "process_schema",
