@@ -9,15 +9,16 @@ using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Android.Editor
 {
     internal class AndroidSpatialRunner
     {
         private static readonly string ProjectDirectory = Path.Combine(Application.dataPath, "..", "..", "..");
-        private static readonly string ProcessName = "spatial";
-        private static readonly string ProcessParams = "local launch";
-        private static readonly string Config = "android_launch.json";
+        private const string ProcessName = "spatial";
+        private const string ProcessParams = "local launch";
+        private const string Config = "android_launch.json";
 
         [MenuItem("Improbable/Run Spatial for Android")]
         public static void RunAndroidSpatial()
@@ -34,6 +35,7 @@ namespace Improbable.Gdk.Android.Editor
                 throw new NullReferenceException("Could not find local IP Address. Make sure you are connected to the Internet.");
             }
 
+            Debug.Log(ipAddress.ToString());
             return ipAddress.ToString();
         }
 
