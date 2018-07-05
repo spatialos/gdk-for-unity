@@ -1,11 +1,17 @@
-# The SpatialOS Unity GDK readme (pre-alpha)
+# The SpatialOS Android Unity GDK readme (EXPERIMENTAL)
 
-Welcome to the SpatialOS and Unity GDK community. 
+<img align="left" src="docs/assets/warning.png" width="150px"> 
 
-Our SpatialOS community shapes the functionality of the Unity GDK, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us on the *feedback* section in our [forums](https://forums.improbable.io/) (use the *unity-gdk tag* - this [link](https://forums.improbable.io/latest?tags=unity-gdk) takes you there and pre-fills the category and tag).
+## WARNING: Experimental feature
+This branch contains an experimental feature. It may change, break or disappear at any time and without notice. It might get no improvements, maintenance or support from Improbable (or it might get a load). Do not rely on it: the only thing reliable about this branch is its unreliability.
 
-#### What's the Unity GDK all about?
-The Unity Game Development Kit (GDK) enables game developers to build multiplayer games with SpatialOS. It will be made up of three parts: 
+**Proceed with extreme caution!**
+
+We are sharing this feature in its early development in the spirit of our open development ethos.
+
+ ---
+ 
+The Unity Game Development Kit (GDK) enables developers to build multiplayer games with SpatialOS. It will be made up of three parts: 
 
 * the GDK Core, a performant, data-driven [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) multiplayer integration based on the new Unity [Entity Component System (ECS)](https://unity3d.com/unity/features/job-system-ECS).
 
