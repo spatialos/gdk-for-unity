@@ -97,8 +97,11 @@ namespace Generated.Improbable.TestSchema
                 }
                 else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    var addedTag = new ComponentAdded<SpatialOSExhaustiveOptional>();
-                    view.AddComponent(entity, addedTag);
+                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSExhaustiveOptional).Name, op.EntityId.Id);
                 }
             }
 
@@ -274,8 +277,11 @@ namespace Generated.Improbable.TestSchema
                 }
                 else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    var removedTag = new ComponentRemoved<SpatialOSExhaustiveOptional>();
-                    view.AddComponent(entity, removedTag);
+                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSExhaustiveOptional).Name, op.EntityId.Id);
                 }
             }
 

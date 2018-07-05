@@ -132,8 +132,11 @@ namespace Generated.Improbable.TestSchema.Blittable
                 }
                 else if (!view.HasComponent<ComponentAdded<SpatialOSBlittableComponent>>(entity))
                 {
-                    var addedTag = new ComponentAdded<SpatialOSBlittableComponent>();
-                    view.AddComponent(entity, addedTag);
+                    view.AddComponent(entity, new ComponentAdded<SpatialOSBlittableComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSBlittableComponent).Name, op.EntityId.Id);
                 }
             }
 
@@ -248,8 +251,11 @@ namespace Generated.Improbable.TestSchema.Blittable
                 }
                 else if (!view.HasComponent<ComponentRemoved<SpatialOSBlittableComponent>>(entity))
                 {
-                    var removedTag = new ComponentRemoved<SpatialOSBlittableComponent>();
-                    view.AddComponent(entity, removedTag);
+                    view.AddComponent(entity, new ComponentRemoved<SpatialOSBlittableComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSBlittableComponent).Name, op.EntityId.Id);
                 }
             }
 

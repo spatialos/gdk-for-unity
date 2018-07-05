@@ -57,6 +57,13 @@ namespace Improbable.Gdk.Core.Components
 
             public const string RequestDoesNotExist =
                 "Cannot find request with ID {0}, response type {1}.";
+                "Cannot find entity {0} locally to receive command response {1}.";
+
+            public const string ComponentAlreadyAdded =
+                "Received ComponentAdded op for {0} on entity {1}, but have already received one.";
+
+            public const string ComponentAlreadyRemoved =
+                "Received ComponentRemoved op for {0} on entity {1}, but have already received one.";
         }
 
         public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =

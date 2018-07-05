@@ -141,8 +141,11 @@ namespace <#= qualifiedNamespace #>
                 }
                 else if (!view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    var addedTag = new ComponentAdded<<#= componentDetails.TypeName #>>();
-                    view.AddComponent(entity, addedTag);
+                    view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
                 }
             }
 
@@ -231,8 +234,11 @@ namespace <#= qualifiedNamespace #>
                 }
                 else if (!view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    var removedTag = new ComponentRemoved<<#= componentDetails.TypeName #>>();
-                    view.AddComponent(entity, removedTag);
+                    view.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
                 }
             }
 

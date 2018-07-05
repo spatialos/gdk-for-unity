@@ -84,8 +84,11 @@ namespace Generated.Improbable.TestSchema
                 }
                 else if (!view.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
                 {
-                    var addedTag = new ComponentAdded<SpatialOSNestedComponent>();
-                    view.AddComponent(entity, addedTag);
+                    view.AddComponent(entity, new ComponentAdded<SpatialOSNestedComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSNestedComponent).Name, op.EntityId.Id);
                 }
             }
 
@@ -144,8 +147,11 @@ namespace Generated.Improbable.TestSchema
                 }
                 else if (!view.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
                 {
-                    var removedTag = new ComponentRemoved<SpatialOSNestedComponent>();
-                    view.AddComponent(entity, removedTag);
+                    view.AddComponent(entity, new ComponentRemoved<SpatialOSNestedComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSNestedComponent).Name, op.EntityId.Id);
                 }
             }
 
