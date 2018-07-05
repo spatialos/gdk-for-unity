@@ -27,7 +27,7 @@ if [ ! -f workers/unity/Assembly-CSharp.csproj ]; then
     markStartOfBlock "Generating Solution Files"
     PROJECT_DIR="$(pwd)"
     touch "workers/unity/unity.sln"
-    eval "${UNITY_EXE} -projectPath \"${PROJECT_DIR}\"/workers/unity -batchmode -quit"
+    "${UNITY_EXE}" -projectPath "${PROJECT_DIR}/workers/unity" -batchmode -quit
     markEndOfBlock "Generating Solution Files"
 fi
 
