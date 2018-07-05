@@ -23,6 +23,8 @@ namespace Improbable.Gdk.Core
         private readonly EntityManager entityManager;
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
+
+        private readonly SpatialOSGameObjectCreator spatialOSGameObjectCreator;
         private readonly GameObjectManager gameObjectManager;
 
         // Reflection magic to get the internal method "SetComponentObject" on the specific EntityManager instance. This is required to add Components to Entities at runtime
@@ -38,6 +40,7 @@ namespace Improbable.Gdk.Core
             entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
+            spatialOSGameObjectCreator = new SpatialOSGameObjectCreator(this, world);
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
@@ -195,8 +198,34 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
+        public bool TryGetEntityId(Entity entity, out long entityId)
         {
+            if (!entityManager.HasComponent<SpatialEntityId>(entity))
+            {
+                entityId = 0;
+                return false;
+            }
+
+            entityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
+            return true;
+        }
+
+        public void AddGameObjectToEntity(Entity entity, string prefabName, Vector3 position, Quaternion rotation, ViewCommandBuffer viewCommandBuffer)
+        {
+            long spatialEntityId;
+            if (!TryGetEntityId(entity, out spatialEntityId))
+            {
+                Debug.LogErrorFormat(Errors.EntityIdNotFound, entity.Index);
+                return;
+            }
+
+            if (gameObjectManager.HasGameObjectEntity(entity))
+            {
+                Debug.LogErrorFormat(Errors.EntityAlreadyHasGameObject, spatialEntityId);
+                return;
+            }
+
+            var gameObject = spatialOSGameObjectCreator.CreateSpatialOSGameObject(entity, prefabName, position, rotation, viewCommandBuffer, spatialEntityId);
             gameObjectManager.AddGameObjectEntity(entity, gameObject);
         }
 
@@ -296,8 +325,12 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            if (gameObjectManager.HasGameObjectEntity(entity))
+            {
+                gameObjectManager.RemoveGameObjectEntity(entity);
+            }
+
             entityManager.DestroyEntity(entityMapping[entityId]);
-            gameObjectManager.TryRemoveGameObjectEntity(entity);
             entityMapping.Remove(entityId);
         }
 
@@ -342,6 +375,12 @@ namespace Improbable.Gdk.Core
 
             public const string DeleteNonExistentEntity =
                 "Tried to delete an entity with EntityId {0}, but there is no entity associated with that EntityId";
+
+            public const string EntityIdNotFound =
+                "SpatialOS EntityId for entity with Index {0} not found.";
+
+            public const string EntityAlreadyHasGameObject =
+                "Entity with EntityId {0} already has GameObject.";
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
@@ -14,15 +13,12 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        private readonly Dictionary<string, GameObject> cachedPrefabs = new Dictionary<string, GameObject>();
-
         public struct Data
         {
             public int Length;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
@@ -49,7 +45,6 @@ namespace Playground
                 var prefabMapping = PrefabConfig.PrefabMappings[data.PrefabNames[i].Prefab];
                 var transform = data.Transforms[i];
                 var entity = data.Entities[i];
-                var spatialEntityId = data.SpatialEntityIds[i].EntityId;
 
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
@@ -60,54 +55,17 @@ namespace Playground
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
 
-                InstantiateAndLinkGameObject(ref entity, ref prefabName, ref transform, spatialEntityId);
+                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
+                var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y, transform.Rotation.Z, transform.Rotation.W);
+
+                view.AddGameObjectToEntity(entity, prefabName, position, rotation, viewCommandBuffer);
             }
 
             viewCommandBuffer.FlushBuffer(view);
         }
 
-        private void InstantiateAndLinkGameObject(ref Entity entity, ref string prefabName,
-            ref SpatialOSTransform transform,
-            long spatialEntityId)
-        {
-            GameObject prefab;
-            if (!cachedPrefabs.TryGetValue(prefabName, out prefab))
-            {
-                prefab = Resources.Load<GameObject>(prefabName);
-                if (prefab == null)
-                {
-                    Debug.LogErrorFormat(Errors.PrefabNotFound, prefabName);
-                    return;
-                }
-
-                cachedPrefabs[prefabName] = prefab;
-            }
-
-            var spawningPosition =
-                new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
-            var spawningRotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
-                transform.Rotation.Z, transform.Rotation.W);
-            var gameObject = GameObject.Instantiate(prefab, spawningPosition, spawningRotation);
-            gameObject.name = $"{prefab.name}(SpatialOS: {spatialEntityId}, Unity: {entity.Index}/{World.Name})";
-
-            var spatialOSComponent = gameObject.AddComponent<SpatialOSComponent>();
-            spatialOSComponent.Entity = entity;
-            spatialOSComponent.SpatialEntityId = spatialEntityId;
-            spatialOSComponent.World = World;
-
-            foreach (var component in gameObject.GetComponents<Component>())
-            {
-                viewCommandBuffer.AddComponent(entity, component.GetType(), component);
-            }
-
-            view.AddGameObjectEntity(entity, gameObject);
-        }
-
         internal static class Errors
         {
-            public const string PrefabNotFound =
-                "Prefab for prefabPath {0} not found.";
-
             public const string UnknownWorkerType =
                 "Unknown workerType for world name {0}.";
         }
