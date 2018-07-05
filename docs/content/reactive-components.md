@@ -17,7 +17,7 @@ Reactive components inherit from `MessagesReceived<T>` (where `T` is the generat
 
 These are the types of reactive component available:
 
-1. `ComponentsUpdated`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/13.0/shared/design/operations#component-related-operations) for the current SpatialOS entity, except the initial value.
+1. `ComponentsUpdated`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/13.0/shared/design/operations#component-related-operations) for the current SpatialOS entity.
 2. `AuthoritiesChanged`: Updates to the [authority](https://docs.improbable.io/reference/13.0/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority](authority.md) for information on how this works.
 3. `EventsReceived`: All received [events](https://docs.improbable.io/reference/13.0/shared/design/object-interaction#events) for the current entity. See [Events](events.md) for information on how this works.
 4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) requests. See [Commands](commands.md) for information on how this works.
@@ -31,7 +31,7 @@ public class ReactiveSystem : ComponentSystem
     public struct Data
     {
         public int Length;
-        public ComponentArray<ComponentsUpdated<SpatialOSPosition>> PositionUpdated;
+        public ComponentArray<ComponentsUpdated<SpatialOSPosition.Update>> PositionUpdates;
     }
 
     [Inject] Data data;
@@ -40,10 +40,13 @@ public class ReactiveSystem : ComponentSystem
     {
         for(var i = 0; i < data.Length; i++)
         {
-            var componentUpdates = data.PositionUpdated[i].Buffer;
-            foreach (var componentUpdate in componentUpdates) 
+            var updates = data.PositionUpdates[i].Buffer;
+            foreach (var update in updates)
             {
-                // Do something
+                if (update.Coords.HasValue)
+                {
+                    // Do something
+                }
             }            
         }
     }

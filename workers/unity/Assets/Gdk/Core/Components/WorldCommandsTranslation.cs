@@ -286,7 +286,7 @@ namespace Improbable.Gdk.Core
         public void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntityResponse", out entity))
+            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntity", out entity))
             {
                 return;
             }
@@ -300,7 +300,7 @@ namespace Improbable.Gdk.Core
         public void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntityResponse", out entity))
+            if (!TryGetEntityFromRequestId(op.RequestId.Id, "DeleteEntity", out entity))
             {
                 return;
             }
@@ -314,7 +314,7 @@ namespace Improbable.Gdk.Core
         public void OnReserveEntityIdResponse(ReserveEntityIdsResponseOp op)
         {
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntityResponse", out entity))
+            if (!TryGetEntityFromRequestId(op.RequestId.Id, "ReserveEntityIds", out entity))
             {
                 return;
             }
@@ -328,7 +328,7 @@ namespace Improbable.Gdk.Core
         public void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntityResponse", out entity))
+            if (!TryGetEntityFromRequestId(op.RequestId.Id, "EntityQuery", out entity))
             {
                 return;
             }
@@ -352,7 +352,7 @@ namespace Improbable.Gdk.Core
             long entityId;
             if (!RequestIdToEntityId.TryGetValue(requestId, out entityId))
             {
-                Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandResponse, requestId, responseName);
+                Debug.LogErrorFormat(TranslationErrors.RequestDoesNotExist, requestId, responseName);
                 return false;
             }
 
@@ -364,7 +364,7 @@ namespace Improbable.Gdk.Core
             }
             else if (!view.TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandResponse, requestId, responseName);
+                Debug.LogWarningFormat(TranslationErrors.CannotFindEntityForWorldCommandResponse, entityId, responseName);
                 return false;
             }
 

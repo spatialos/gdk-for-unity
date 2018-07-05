@@ -3,7 +3,7 @@
 // ===========
 
 using System.Linq;
-using Unity.Mathematics;
+using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema
 { 
@@ -23,4 +23,5 @@ namespace Generated.Improbable.TestSchema
             return spatialType;
         }
     }
+    
 }

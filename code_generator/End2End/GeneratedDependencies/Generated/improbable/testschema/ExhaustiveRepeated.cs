@@ -3,14 +3,13 @@
 // ===========
 
 using UnityEngine;
-using Unity.Mathematics;
 using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema
 { 
     public class SpatialOSExhaustiveRepeated : Component, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 
         private global::System.Collections.Generic.List<float> field2;
 
@@ -190,6 +189,25 @@ namespace Generated.Improbable.TestSchema
                 DirtyBit = true;
                 field17 = value;
             }
+        }
+
+        public struct Update : ISpatialComponentUpdate
+        {
+            public Option<global::System.Collections.Generic.List<float>> Field2;
+            public Option<global::System.Collections.Generic.List<int>> Field4;
+            public Option<global::System.Collections.Generic.List<long>> Field5;
+            public Option<global::System.Collections.Generic.List<double>> Field6;
+            public Option<global::System.Collections.Generic.List<string>> Field7;
+            public Option<global::System.Collections.Generic.List<uint>> Field8;
+            public Option<global::System.Collections.Generic.List<ulong>> Field9;
+            public Option<global::System.Collections.Generic.List<int>> Field10;
+            public Option<global::System.Collections.Generic.List<long>> Field11;
+            public Option<global::System.Collections.Generic.List<uint>> Field12;
+            public Option<global::System.Collections.Generic.List<ulong>> Field13;
+            public Option<global::System.Collections.Generic.List<int>> Field14;
+            public Option<global::System.Collections.Generic.List<long>> Field15;
+            public Option<global::System.Collections.Generic.List<long>> Field16;
+            public Option<global::System.Collections.Generic.List<global::Generated.Improbable.TestSchema.SomeType>> Field17;
         }
     }
 }

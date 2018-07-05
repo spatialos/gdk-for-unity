@@ -117,6 +117,18 @@ namespace Improbable.Gdk.Core
             setComponentObjectAction(entity, typeof(T), component);
         }
 
+        public void SetComponentData<T>(Entity entity, T componentData) where T : struct, IComponentData
+        {
+            if (!HasComponent<T>(entity))
+            {
+                AddComponent(entity, componentData);
+            }
+            else
+            {
+                entityManager.SetComponentData(entity, componentData);
+            }
+        }
+
         public void SetComponentObject(Entity entity, ComponentType componentType, object component)
         {
             if (!HasComponent(entity, componentType))
@@ -144,18 +156,10 @@ namespace Improbable.Gdk.Core
             setComponentObjectAction(entity, typeof(T), component);
         }
 
-        public void UpdateComponent<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
-            where T : struct, IComponentData
+        public void AddComponentsUpdated<T>(Entity entity, T update, ComponentPool<ComponentsUpdated<T>> pool)
+            where T : struct, ISpatialComponentUpdate
         {
-            entityManager.SetComponentData(entity, component);
-            AddReceivedMessageToComponent(entity, component, pool);
-        }
-
-        public void UpdateComponentObject<T>(Entity entity, T component, ComponentPool<ComponentsUpdated<T>> pool)
-            where T : Component
-        {
-            setComponentObjectAction(entity, typeof(T), component);
-            AddReceivedMessageToComponent(entity, component, pool);
+            AddReceivedMessageToComponent(entity, update, pool);
         }
 
         public void AddEventReceived<T>(Entity entity, T eventData, ComponentPool<EventsReceived<T>> pool)

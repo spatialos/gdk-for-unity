@@ -2,7 +2,6 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
-using Unity.Mathematics;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 
@@ -10,11 +9,11 @@ namespace Generated.Improbable.TestSchema
 { 
     public struct SpatialOSExhaustiveBlittableSingular : IComponentData, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 
-        private bool1 field1;
+        private BlittableBool field1;
 
-        public bool1 Field1
+        public BlittableBool Field1
         {
             get { return field1; }
             set
@@ -190,6 +189,25 @@ namespace Generated.Improbable.TestSchema
                 DirtyBit = true;
                 field17 = value;
             }
+        }
+
+        public struct Update : ISpatialComponentUpdate
+        {
+            public Option<BlittableBool> Field1;
+            public Option<float> Field2;
+            public Option<int> Field4;
+            public Option<long> Field5;
+            public Option<double> Field6;
+            public Option<uint> Field8;
+            public Option<ulong> Field9;
+            public Option<int> Field10;
+            public Option<long> Field11;
+            public Option<uint> Field12;
+            public Option<ulong> Field13;
+            public Option<int> Field14;
+            public Option<long> Field15;
+            public Option<long> Field16;
+            public Option<global::Generated.Improbable.TestSchema.SomeType> Field17;
         }
     }
 }

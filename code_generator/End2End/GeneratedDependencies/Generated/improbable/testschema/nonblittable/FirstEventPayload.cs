@@ -3,14 +3,14 @@
 // ===========
 
 using System.Linq;
-using Unity.Mathematics;
+using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema.Nonblittable
 { 
     
     public struct FirstEventPayload
     {
-        public bool1 Field1;
+        public BlittableBool Field1;
         public string Field2;
     
         public static FirstEventPayload ToNative(global::Improbable.TestSchema.Nonblittable.FirstEventPayload spatialType)
@@ -29,4 +29,5 @@ namespace Generated.Improbable.TestSchema.Nonblittable
             return spatialType;
         }
     }
+    
 }

@@ -3,14 +3,13 @@
 // ===========
 
 using UnityEngine;
-using Unity.Mathematics;
 using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.TestSchema
 { 
     public class SpatialOSExhaustiveMapValue : Component, ISpatialComponentData
     {
-        public bool1 DirtyBit { get; set; }
+        public BlittableBool DirtyBit { get; set; }
 
         private global::System.Collections.Generic.Dictionary<string, float> field2;
 
@@ -190,6 +189,25 @@ namespace Generated.Improbable.TestSchema
                 DirtyBit = true;
                 field17 = value;
             }
+        }
+
+        public struct Update : ISpatialComponentUpdate
+        {
+            public Option<global::System.Collections.Generic.Dictionary<string, float>> Field2;
+            public Option<global::System.Collections.Generic.Dictionary<string, int>> Field4;
+            public Option<global::System.Collections.Generic.Dictionary<string, long>> Field5;
+            public Option<global::System.Collections.Generic.Dictionary<string, double>> Field6;
+            public Option<global::System.Collections.Generic.Dictionary<string, string>> Field7;
+            public Option<global::System.Collections.Generic.Dictionary<string, uint>> Field8;
+            public Option<global::System.Collections.Generic.Dictionary<string, ulong>> Field9;
+            public Option<global::System.Collections.Generic.Dictionary<string, int>> Field10;
+            public Option<global::System.Collections.Generic.Dictionary<string, long>> Field11;
+            public Option<global::System.Collections.Generic.Dictionary<string, uint>> Field12;
+            public Option<global::System.Collections.Generic.Dictionary<string, ulong>> Field13;
+            public Option<global::System.Collections.Generic.Dictionary<string, int>> Field14;
+            public Option<global::System.Collections.Generic.Dictionary<string, long>> Field15;
+            public Option<global::System.Collections.Generic.Dictionary<string, long>> Field16;
+            public Option<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.TestSchema.SomeType>> Field17;
         }
     }
 }

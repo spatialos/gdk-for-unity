@@ -27,7 +27,8 @@ namespace Generated.Improbable.TestSchema.Nonblittable
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSNonBlittableComponent>), typeof(AuthoritiesChanged<SpatialOSNonBlittableComponent>),
+                typeof(AuthoritiesChanged<SpatialOSNonBlittableComponent>),
+                typeof(ComponentsUpdated<SpatialOSNonBlittableComponent.Update>), 
                 typeof(CommandRequests<FirstCommand.Request>), typeof(CommandResponses<FirstCommand.Response>),
                 typeof(CommandRequests<SecondCommand.Request>), typeof(CommandResponses<SecondCommand.Response>),
                 typeof(EventsReceived<FirstEventEvent>),
@@ -70,14 +71,14 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                     () => new EventsReceived<SecondEventEvent>(),
                     (component) => component.Buffer.Clear());
 
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSNonBlittableComponent>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSNonBlittableComponent>>(
-                    () => new ComponentsUpdated<SpatialOSNonBlittableComponent>(),
-                    (component) => component.Buffer.Clear());
-
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSNonBlittableComponent>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSNonBlittableComponent>>(
                     () => new AuthoritiesChanged<SpatialOSNonBlittableComponent>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>>(
+                    () => new ComponentsUpdated<SpatialOSNonBlittableComponent.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -110,7 +111,6 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSNonBlittableComponent = new SpatialOSNonBlittableComponent();
@@ -202,7 +202,61 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                     view.AddEventReceived(entity, nativeEvent, SecondEventEventPool);
                 }
                 componentData.DirtyBit = false;
-                view.UpdateComponentObject(entity, componentData, UpdatesPool);
+
+                view.SetComponentObject(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSNonBlittableComponent.Update();
+                if (update.boolField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.BoolField = new Option<BlittableBool>(update.boolField.Value);
+                }
+                if (update.intField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.IntField = new Option<int>(update.intField.Value);
+                }
+                if (update.longField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.LongField = new Option<long>(update.longField.Value);
+                }
+                if (update.floatField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.FloatField = new Option<float>(update.floatField.Value);
+                }
+                if (update.doubleField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.DoubleField = new Option<double>(update.doubleField.Value);
+                }
+                if (update.stringField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.StringField = new Option<string>(update.stringField.Value);
+                }
+                if (update.optionalField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.OptionalField = new Option<global::System.Nullable<int>>(update.optionalField.Value.HasValue ? new global::System.Nullable<int>(update.optionalField.Value.Value) : new global::System.Nullable<int>());
+                }
+                if (update.listField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.ListField = new Option<global::System.Collections.Generic.List<int>>(update.listField.Value);
+                }
+                if (update.mapField.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.MapField = new Option<global::System.Collections.Generic.Dictionary<int, string>>(update.mapField.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -290,8 +344,8 @@ namespace Generated.Improbable.TestSchema.Nonblittable
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
                 RemoveComponents(ref entityCommandBuffer, FirstCommandRequestPool, groupIndex: 2);
                 RemoveComponents(ref entityCommandBuffer, FirstCommandResponsePool, groupIndex: 3);
                 RemoveComponents(ref entityCommandBuffer, SecondCommandRequestPool, groupIndex: 4);

@@ -27,18 +27,19 @@ namespace Generated.Improbable.TestSchema
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
-                typeof(ComponentsUpdated<SpatialOSNestedComponent>), typeof(AuthoritiesChanged<SpatialOSNestedComponent>),
+                typeof(AuthoritiesChanged<SpatialOSNestedComponent>),
+                typeof(ComponentsUpdated<SpatialOSNestedComponent.Update>), 
             };
 
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSNestedComponent>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSNestedComponent>>(
-                    () => new ComponentsUpdated<SpatialOSNestedComponent>(),
-                    (component) => component.Buffer.Clear());
 
             private static readonly ComponentPool<AuthoritiesChanged<SpatialOSNestedComponent>> AuthsPool =
                 new ComponentPool<AuthoritiesChanged<SpatialOSNestedComponent>>(
                     () => new AuthoritiesChanged<SpatialOSNestedComponent>(),
+                    (component) => component.Buffer.Clear());
+
+            private static readonly ComponentPool<ComponentsUpdated<SpatialOSNestedComponent.Update>> UpdatesPool =
+                new ComponentPool<ComponentsUpdated<SpatialOSNestedComponent.Update>>(
+                    () => new ComponentsUpdated<SpatialOSNestedComponent.Update>(),
                     (component) => component.Buffer.Clear());
 
             public Translation(MutableView view) : base(view)
@@ -66,7 +67,6 @@ namespace Generated.Improbable.TestSchema
                     Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
                     return;
                 }
-
                 var data = op.Data.Get().Value;
 
                 var spatialOSNestedComponent = new SpatialOSNestedComponent();
@@ -98,7 +98,21 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 componentData.DirtyBit = false;
-                view.UpdateComponent(entity, componentData, UpdatesPool);
+
+                view.SetComponentData(entity, componentData);
+
+                var componentFieldsUpdated = false;
+                var gdkUpdate = new SpatialOSNestedComponent.Update();
+                if (update.nestedType.HasValue)
+                {
+                    componentFieldsUpdated = true;
+                    gdkUpdate.NestedType = new Option<global::Generated.Improbable.TestSchema.TypeName>(global::Generated.Improbable.TestSchema.TypeName.ToNative(update.nestedType.Value));
+                }
+
+                if (componentFieldsUpdated)
+                {
+                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
@@ -150,8 +164,8 @@ namespace Generated.Improbable.TestSchema
 
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
             }
 
             public override void SendCommands(Connection connection)
