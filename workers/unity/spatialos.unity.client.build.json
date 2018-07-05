@@ -5,9 +5,10 @@
       "steps": [
         {
           "name": "Copy Gdk Packages Schema",
-          "command": "bash",
+          "command": "../../tools/CopySchema/bin/Release/CopySchema.exe",
           "arguments": [
-            "./copy_packages_schema.sh"
+            "Packages/manifest.json",
+            "../../schema"
           ]
         },
         {
