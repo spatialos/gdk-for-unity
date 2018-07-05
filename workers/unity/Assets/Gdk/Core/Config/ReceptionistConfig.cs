@@ -35,5 +35,14 @@ namespace Improbable.Gdk.Core
                 UseExternalIp = true
             };
         }
+
+        public static ReceptionistConfig CreateConnectionConfigForPhysicalAndroid(string ip)
+        {
+            return new ReceptionistConfig
+            {
+                ReceptionistHost = ip,
+                UseExternalIp = true
+            };
+        }
     }
 }
