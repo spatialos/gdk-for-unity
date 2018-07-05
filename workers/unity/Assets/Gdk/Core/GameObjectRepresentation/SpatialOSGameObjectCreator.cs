@@ -10,14 +10,13 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class SpatialOSGameObjectCreator
     {
-        private readonly MutableView mutableView;
         private readonly World world;
-        private readonly Dictionary<string, GameObject> cachedPrefabs = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> cachedPrefabs;
 
-        public SpatialOSGameObjectCreator(MutableView mutableView, World world)
+        public SpatialOSGameObjectCreator(World world, Dictionary<string, GameObject> initialCachedPrefabs)
         {
-            this.mutableView = mutableView;
             this.world = world;
+            cachedPrefabs = initialCachedPrefabs;
         }
 
         public GameObject CreateSpatialOSGameObject(Entity entity, string prefabName, Vector3 position, Quaternion rotation, ViewCommandBuffer viewCommandBuffer, long spatialEntityId)

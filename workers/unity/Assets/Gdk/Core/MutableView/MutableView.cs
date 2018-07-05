@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core
             entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
-            spatialOSGameObjectCreator = new SpatialOSGameObjectCreator(this, world);
+            spatialOSGameObjectCreator = new SpatialOSGameObjectCreator(world, new Dictionary<string, GameObject>());
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
