@@ -23,9 +23,8 @@ namespace Improbable.Gdk.Core
         private readonly EntityManager entityManager;
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
-
-        private readonly SpatialOSGameObjectCreator spatialOSGameObjectCreator;
         private readonly GameObjectManager gameObjectManager;
+        private readonly SpatialOSGameObjectCreator spatialOSGameObjectCreator;
 
         // Reflection magic to get the internal method "SetComponentObject" on the specific EntityManager instance. This is required to add Components to Entities at runtime
         private static readonly MethodInfo setComponentObjectMethodInfo =

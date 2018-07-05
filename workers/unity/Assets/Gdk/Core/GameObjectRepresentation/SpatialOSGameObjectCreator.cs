@@ -52,7 +52,6 @@ namespace Improbable.Gdk.Core
         internal static class Errors
         {
             public const string PrefabNotFound = "Prefab for prefabPath {0} not found.";
-            public const string SpatialEntityIdNotFound = "SpatialOS EntityId not found for entity {0}/{1}.";
         }
 
         internal class PrefabNotFoundException : Exception
