@@ -50,6 +50,8 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 rotation, viewCommandBuffer, spatialEntityId);
 
             Assert.NotNull(testGameObject);
+            Assert.AreEqual(position, testGameObject.transform.position);
+            Assert.AreEqual(rotation, testGameObject.transform.rotation);
             var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(spatialOSComponent);
             Assert.AreEqual(entity, spatialOSComponent.Entity);
