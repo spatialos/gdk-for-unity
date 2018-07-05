@@ -9,7 +9,8 @@
     "com.unity.modules.ui": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.improbable.gdk.core": "file:com.improbable.gdk.core",
-    "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle"
+    "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
+    "com.improbable.gdk.physics": "file:com.improbable.gdk.physics"
   },
   "testables": [
     "com.unity.collections",
