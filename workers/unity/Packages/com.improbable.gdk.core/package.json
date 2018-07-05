@@ -1,0 +1,12 @@
+{
+    "name": "com.improbable.gdk.core",
+    "displayName": "SpatialOS GDK Core",
+    "version": "0.0.1",
+    "unity": "2018.2",
+    "description": "SpatialOS GDK Core Module.",
+    "keywords": [
+        "spatialos",
+        "gdk"
+    ],
+    "category": "SpatialOS"
+}
