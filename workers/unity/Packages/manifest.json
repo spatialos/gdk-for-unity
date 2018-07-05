@@ -12,7 +12,8 @@
     "com.improbable.gdk.core": "file:com.improbable.gdk.core",
     "com.improbable.gdk.legacy": "file:com.improbable.gdk.legacy",
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
-    "com.improbable.gdk.physics": "file:com.improbable.gdk.transformsynchronization"
+    "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",
+    "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils"
   },
   "testables": [
     "com.unity.collections",
