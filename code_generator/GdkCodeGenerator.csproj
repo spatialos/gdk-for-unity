@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Generation\Utils\SystemTools.cs" />
     <Compile Include="src\CodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\CodeGeneratorOptions.cs" />
@@ -127,13 +128,6 @@
     <ItemGroup>
       <Compile Include="$(GeneratedFiles)" />
     </ItemGroup>
-  </Target>
-  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <ItemGroup>
-      <ReleaseBuildFiles Include="bin\Release\*.exe" />
-      <ReleaseBuildFiles Include="bin\Release\*.dll" />
-    </ItemGroup>
-    <Copy SourceFiles="@(ReleaseBuildFiles)" DestinationFolder="../bin/code_generator" />
   </Target>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

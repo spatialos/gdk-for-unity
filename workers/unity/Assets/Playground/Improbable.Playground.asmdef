@@ -8,7 +8,7 @@
         "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.CSharp",
+        "Improbable.Generated.NetworkTypes",
         "Unity.Mathematics"
     ],
     "optionalUnityReferences": [],

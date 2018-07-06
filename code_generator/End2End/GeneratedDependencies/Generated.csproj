@@ -40,8 +40,8 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Improbable.CSharp">
-      <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.CSharp.dll</HintPath>
+    <Reference Include="Improbable.Generated.NetworkTypes">
+      <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.Generated.NetworkTypes.dll</HintPath>
     </Reference>
     <Reference Include="Improbable.Gdk.Core">
       <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.Gdk.Core.dll</HintPath>
@@ -69,7 +69,7 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(UNITY_HOME)\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -79,9 +79,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeCompile">
-    <Exec Command="spatial schema generate -i ../schema -L ast_json -o ../schema_json_ast --force" />
-    <Exec Command="spatial schema generate -i ../schema -L csharp -o ./GeneratedCSharpWorker --force" />
-    <Exec Command="..\..\bin\Release\GdkCodeGenerator.exe --json-dir ..\schema_json_ast --output-dir .\Generated"/>
+    <Exec ConsoleToMSBuild="true" WorkingDirectory="..\..\..\" Command="code_generator\bin\Release\GdkCodeGenerator.exe --schema-path=code_generator/End2End/schema --json-dir=code_generator/schema_json_ast --native-output-dir=code_generator/End2End/GeneratedDependencies/Generated --network-types-output-dir=code_generator/End2End/GeneratedDependencies/GeneratedCSharpWorker"/>
     <ItemGroup>
       <Compile Include="GeneratedCSharpWorker\**\*.cs" />
       <Compile Include="Generated\**\*.cs" />

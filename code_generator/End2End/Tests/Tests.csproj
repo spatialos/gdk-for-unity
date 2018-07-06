@@ -63,8 +63,8 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(UNITY_HOME)\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="Improbable.CSharp">
-      <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.CSharp.dll</HintPath>
+    <Reference Include="Improbable.Generated.NetworkTypes">
+      <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.Generated.NetworkTypes.dll</HintPath>
     </Reference>
     <Reference Include="Improbable.Gdk.Core">
       <HintPath>..\..\..\workers\unity\Library\ScriptAssemblies\Improbable.Gdk.Core.dll</HintPath>

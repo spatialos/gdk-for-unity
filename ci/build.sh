@@ -6,8 +6,6 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
-PROJECT_DIR="$(pwd)"
-
 markStartOfBlock "$0"
 
 markStartOfBlock "Building Tools"
@@ -20,13 +18,8 @@ popd
 markEndOfBlock "Building Tools"
 
 markStartOfBlock "Code Generation"
-spatial codegen
+ci/codegen.sh
 markEndOfBlock "Code Generation"
-
-markStartOfBlock "Building Unity Project"
-export UNITY_HOME="${UNITY_DIR}"
-spatial worker build -t=local
-markEndOfBlock "Building Unity Project"
 
 markStartOfBlock "Code Generation End2End"
 pushd "code_generator/End2End/Tests"

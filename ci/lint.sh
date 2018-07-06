@@ -17,30 +17,28 @@ if [ $? -ne 0 ]; then
 fi
 set -e
 
-spatial codegen
+ci/codegen.sh
 
 pushd "tools/DocsLinter"
     "../../bin/ImpNuget/ImpNuget.exe"
 popd
 
-if [ ! -f workers/unity/Assembly-CSharp.csproj ]; then
-    markStartOfBlock "Generating Solution Files"
-    PROJECT_DIR="$(pwd)"
-    touch "workers/unity/unity.sln"
-    "${UNITY_EXE}" -projectPath "${PROJECT_DIR}/workers/unity" -batchmode -quit
-    markEndOfBlock "Generating Solution Files"
-fi
+markStartOfBlock "Generating Solution Files"
+PROJECT_DIR="$(pwd)"
+touch "workers/unity/unity.sln"
+"${UNITY_EXE}" -projectPath "${PROJECT_DIR}/workers/unity" -batchmode -quit
+markEndOfBlock "Generating Solution Files"
 
 markStartOfBlock "Linting tools"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings ./tools/Tools.sln
+${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings ./tools/Tools.sln
 markEndOfBlock "Linting tools"
 
 markStartOfBlock "Linting GDK Code Generator"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Generated/**/* ./code_generator/GdkCodeGenerator.sln
+${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings --exclude=/Generated/**/* ./code_generator/GdkCodeGenerator.sln
 markEndOfBlock "Linting GDK Code Generator"
 
 markStartOfBlock "Linting Unity GDK"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Assets/Generated/**/* --exlude=/Assets/improbable/**/* ./workers/unity/unity.sln
+${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* ./workers/unity/unity.sln
 markEndOfBlock "Linting Unity GDK"
 
 markEndOfBlock "$0"
