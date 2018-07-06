@@ -59,7 +59,9 @@ markEndOfBlock "Installing unity_downloader"
 
 # Run unity_downloader with platform specific modules
 markStartOfBlock "Download Unity"
-go run "${GOPATH}/src/${UNITY_PACKAGE}/main.go" install "${UNITY_VERSION}" "${UNITY_PINNED_HASH}" "${IMPROBABLE_UNITY_ROOT}" "--modules" ${MODULES}
+pushd "${GOPATH}/src/${UNITY_PACKAGE}"
+go run main.go install "${UNITY_VERSION}" "${UNITY_PINNED_HASH}" "${IMPROBABLE_UNITY_ROOT}" "--modules" ${MODULES}
+popd
 markEndOfBlock "Download Unity"
 
 markEndOfBlock "$0"
