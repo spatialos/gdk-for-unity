@@ -1,6 +1,6 @@
-using UnityPaths;
 using System;
 using System.Linq;
+using UnityPaths;
 
 namespace FindUnity
 {
