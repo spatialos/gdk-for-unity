@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.Android;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -57,7 +59,7 @@ namespace Playground
             {
                 var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
                 Workers.Add(worker);
-                if (DeviceInfo.isEmulator())
+                if (DeviceInfo.IsEmulator())
                 {
                     connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
                 }

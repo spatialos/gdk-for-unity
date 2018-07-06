@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Improbable.Gdk.Android
@@ -15,7 +12,7 @@ namespace Improbable.Gdk.Android
         private static readonly string Device = GetValue("DEVICE");
         private static readonly string Product = GetValue("PRODUCT");
 
-        public static bool isEmulator()
+        public static bool IsEmulator()
         {
             return Fingerprint.StartsWith("generic") || Fingerprint.StartsWith("unknown") ||
                 Model.Contains("google_sdk") || Model.Contains("Emulator") ||

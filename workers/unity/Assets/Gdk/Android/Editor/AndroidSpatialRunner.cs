@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Android.Editor
@@ -32,7 +29,8 @@ namespace Improbable.Gdk.Android.Editor
             var ipAddress = host.AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
             if (ipAddress == null)
             {
-                throw new NullReferenceException("Could not find local IP Address. Make sure you are connected to the Internet.");
+                throw new NullReferenceException(
+                    "Could not find local IP Address. Make sure you are connected to the Internet.");
             }
 
             Debug.Log(ipAddress.ToString());
