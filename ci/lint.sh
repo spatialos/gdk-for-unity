@@ -19,10 +19,6 @@ set -e
 
 spatial codegen
 
-pushd "tools/DocsLinter"
-    "../../bin/ImpNuget/ImpNuget.exe"
-popd
-
 if [ ! -f workers/unity/Assembly-CSharp.csproj ]; then
     markStartOfBlock "Generating Solution Files"
     PROJECT_DIR="$(pwd)"
