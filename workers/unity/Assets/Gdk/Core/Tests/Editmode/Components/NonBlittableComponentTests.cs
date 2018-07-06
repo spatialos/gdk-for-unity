@@ -44,7 +44,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
             component.IntField = IntValue;
             component.LongField = LongValue;
             component.StringField = StringValue;
-            
+
             Assert.AreEqual(DoubleValue, component.DoubleField, 0.001, "Double Field");
             Assert.AreEqual(FloatValue, component.FloatField, 0.001, "Float Field");
             Assert.AreEqual(IntValue, component.IntField, "Int Field");
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         {
             var component = new SpatialOSNonBlittableComponent();
             Assert.AreEqual(BlittableBoolFalse, component.DirtyBit, "Dirty bit is initially false.");
-            
+
             component.BoolField = BoolValue;
             Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting bool field.");
 
