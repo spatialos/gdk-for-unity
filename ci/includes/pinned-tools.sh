@@ -7,10 +7,8 @@ export MSBUILD
 
 export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
 
-"${MSBUILD}" tools/FindUnity/FindUnity.csproj //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
-
 pushd workers/unity
-    UNITY_DIR="$(../../tools/FindUnity/bin/Release/FindUnity.exe)"
+    UNITY_DIR="$(dotnet run -p ../../tools/FindUnity/FindUnity.csproj)"
 popd
 
 export UNITY_HOME="${UNITY_DIR}"
