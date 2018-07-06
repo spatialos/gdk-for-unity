@@ -56,7 +56,8 @@
           "arguments": [
             "run",
             "-p",
-            "../../tools/RunUnity/RunUnity.csproj",            "--",
+            "../../tools/RunUnity/RunUnity.csproj",
+            "--",
             "-batchmode",
             "-quit",
             "-logfile",
