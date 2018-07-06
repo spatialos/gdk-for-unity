@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
+
+### This script is used to setup Improbable's internal build machines.
+### If you don't work at Improbable, this may be interesting as a guide to what software versions we use for our
+### automation, but not much more than that.
+
 set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
+
+# Only run inside TeamCity
+if [ -z "${TEAMCITY_CAPTURE_ENV+x}" ]; then
+    exit 0
+fi
 
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
@@ -18,15 +28,10 @@ function isWindows() {
   ! ( isLinux || isMacOS );
 }
 
-# Only run inside TeamCity
-if [ -z "${TEAMCITY_CAPTURE_ENV+x}" ]; then
-    exit 0
-fi
-
 if isWindows; then
-    MODULES="linux mac-mono"
+    MODULES="linux,mac-mono,ios,android"
 elif isMacOS; then
-    MODULES="linux windows"
+    MODULES="linux,windows,ios,android"
 elif isLinux; then
     echo "Building is not supported on linux"
     exit 1
@@ -34,12 +39,15 @@ fi
 
 GOPATH="$(pwd)/go"
 export GOPATH
+
 UNITY_PACKAGE="github.com/improbable/unity_downloader"
+UNITY_PINNED_HASH=$(cat "workers/unity/ProjectSettings/ProjectVersionHash.txt")
 
 markStartOfBlock "$0"
 
 # Check if version is installed
 if isUnityImprobablePathPresent; then
+    echo "Unity ${UNITY_VERSION} is already installed."
     exit 0
 fi
 
@@ -51,7 +59,7 @@ markEndOfBlock "Installing unity_downloader"
 
 # Run unity_downloader with platform specific modules
 markStartOfBlock "Download Unity"
-go run "${GOPATH}/src/${UNITY_PACKAGE}/main.go" "${UNITY_VERSION}" "${UNITY_ROOT}" "--modules" ${MODULES}
+go run "${GOPATH}/src/${UNITY_PACKAGE}/main.go" "${UNITY_VERSION}" "${UNITY_PINNED_HASH}" "${IMPROBABLE_UNITY_ROOT}" "--modules" ${MODULES}
 markEndOfBlock "Download Unity"
 
 markEndOfBlock "$0"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-UNITY_ROOT="C:/Unity"
+IMPROBABLE_UNITY_ROOT="C:/Unity"
 UNITY_VERSION=$(cat "workers/unity/ProjectSettings/ProjectVersion.txt" | grep "m_EditorVersion" | cut -d ' ' -f2)
 
 function isUnityHomeSet() {
@@ -16,7 +16,7 @@ function getUnityDir() {
   if isUnityHomeSet; then
     echo "${UNITY_HOME}"
   else
-    echo "${UNITY_ROOT}/${UNITY_VERSION}/"
+    echo "${IMPROBABLE_UNITY_ROOT}/${UNITY_VERSION}/"
   fi
 }
 
