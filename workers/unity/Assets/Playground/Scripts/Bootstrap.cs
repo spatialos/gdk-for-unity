@@ -97,7 +97,10 @@ namespace Playground
         {
             foreach (var worker in Workers)
             {
-                worker.Disconnect();
+                if (worker.Connection != null && worker.Connection.IsConnected)
+                {
+                    worker.Disconnect();
+                }
             }
         }
 
