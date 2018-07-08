@@ -22,8 +22,8 @@ This parsing stage can be found in [CodeGenerator.cs](../../code_generator/GdkCo
 
 The code generator then does post-processing on the collection of C# objects that represent the schema. 
 
-1. It will flag each type and component as [blittable or not blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types). This information is required as blittable and non-blittable components need to be generated in a different manner. You can find the source for this in [BlittableFlagger.cs](../../code_generator/src/Generation/SchemaProcessing/BlittableFlagger.cs).
-2. It will mark data types that are used as event, command request, and/or command response payloads. You can find the source for this in [PayloadMarker.cs](../../code_generator/src/Generation/SchemaProcessing/PayloadMarker.cs).
+1. It will flag each type and component as [blittable or not blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types). This information is required as blittable and non-blittable components need to be generated in a different manner. You can find the source for this in [BlittableFlagger.cs](../../code_generator/GdkCodeGenerator/src/Generation/SchemaProcessing/BlittableFlagger.cs).
+2. It will mark data types that are used as event, command request, and/or command response payloads. You can find the source for this in [PayloadMarker.cs](../../code_generator/GdkCodeGenerator/src/Generation/SchemaProcessing/PayloadMarker.cs).
 
 #### T4 templates
 
