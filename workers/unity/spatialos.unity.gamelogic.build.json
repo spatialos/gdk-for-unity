@@ -5,8 +5,11 @@
       "steps": [
         {
           "name": "Copy Gdk Packages Schema",
-          "command": "../../tools/CopySchema/bin/Release/CopySchema.exe",
+          "command": "dotnet",
           "arguments": [
+            "run",
+            "-p",
+            "../../tools/CopySchema/CopySchema.csproj",
             "Packages/manifest.json",
             "../../schema"
           ]
