@@ -35,4 +35,4 @@ export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools
 
 DOTNET_VERSION="$(dotnet --version)"
 
-export MSBuildSDKsPath="/c/Program Files/dotnet/sdk/${DOTNET_VERSION}/Sdks"
+export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"

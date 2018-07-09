@@ -61,7 +61,7 @@ Each T4 template is paired with a hand-written partial class that defines the da
   
 #### Code generation jobs
 
-After post processing, a code generation job is ran on each C# object that represents a single schema file. This job is defined in [SingleGenerationJob.cs](../../code_generator/GDKCodeGenerator/src/Generation/SingleGenerationJob.cs). This job enumerates all the enums, types, and components in a single schema file and runs the correct generator for each.
+After post processing, a code generation job is run on each C# object that represents a single schema file. This job is defined in [SingleGenerationJob.cs](../../code_generator/GDKCodeGenerator/src/Generation/SingleGenerationJob.cs). This job enumerates all the enums, types, and components in a single schema file and runs the correct generator for each.
 
 
 ### Editing the code generator
