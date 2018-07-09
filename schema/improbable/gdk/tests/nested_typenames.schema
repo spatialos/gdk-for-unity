@@ -1,4 +1,4 @@
-package improbable.test_schema;
+package improbable.gdk.tests;
 
 type TypeName {
     type Other {

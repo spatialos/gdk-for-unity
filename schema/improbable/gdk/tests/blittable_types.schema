@@ -1,4 +1,4 @@
-package improbable.test_schema.blittable;
+package improbable.gdk.tests.blittable_types;
 
 type FirstCommandRequest {
   int32 field = 1;
