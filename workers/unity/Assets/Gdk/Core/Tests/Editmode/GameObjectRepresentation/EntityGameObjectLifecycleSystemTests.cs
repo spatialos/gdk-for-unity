@@ -28,7 +28,11 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [TearDown]
         public void TearDown()
         {
-            Object.DestroyImmediate(testGameObject);
+            if (testGameObject == null)
+            {
+                Object.DestroyImmediate(testGameObject);
+            }
+
             world.Dispose();
         }
 

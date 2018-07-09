@@ -16,29 +16,24 @@ namespace Playground
             cachedPrefabs = initialCachedPrefabs;
         }
 
-        public GameObject CreateEntityGameObject(Entity entity, string prefabName, Vector3 position,
+        public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,
             Quaternion rotation, long spatialEntityId)
         {
             GameObject prefab;
-            if (!cachedPrefabs.TryGetValue(prefabName, out prefab))
+            if (!cachedPrefabs.TryGetValue(prefabPath, out prefab))
             {
-                prefab = Resources.Load<GameObject>(prefabName);
+                prefab = Resources.Load<GameObject>(prefabPath);
                 if (prefab == null)
                 {
-                    throw new PrefabNotFoundException(string.Format(Errors.PrefabNotFound, prefabName));
+                    throw new PrefabNotFoundException($"Prefab for prefabPath {prefabPath} not found.");
                 }
 
-                cachedPrefabs[prefabName] = prefab;
+                cachedPrefabs[prefabPath] = prefab;
             }
 
             var gameObject = GameObject.Instantiate(prefab, position, rotation);
             gameObject.name = $"{prefab.name}(SpatialOS: {spatialEntityId}, Unity: {entity.Index}/{world.Name})";
             return gameObject;
-        }
-
-        internal static class Errors
-        {
-            public const string PrefabNotFound = "Prefab for prefabPath {0} not found.";
         }
 
         internal class PrefabNotFoundException : Exception

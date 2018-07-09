@@ -193,18 +193,6 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public bool TryGetEntityId(Entity entity, out long entityId)
-        {
-            if (!entityManager.HasComponent<SpatialEntityId>(entity))
-            {
-                entityId = 0;
-                return false;
-            }
-
-            entityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
-            return true;
-        }
-
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {

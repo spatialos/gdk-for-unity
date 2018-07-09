@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class EntityGameObjectLifecycleSystem : ComponentSystem
     {
         private uint currentHandle;
@@ -31,16 +32,16 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < addedEntitiesData.Length; i++)
+            for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var handle = currentHandle++;
-                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle { GameObjectHandle = handle };
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 var gameObject = addedEntitiesData.GameObjectReferences[i].GameObject;
                 entityGameObjectCache[handle] = gameObject;
+                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle { GameObjectHandle = handle };
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
             }
 
-            for (int i = 0; i < removedEntitiesData.Length; i++)
+            for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var handle = removedEntitiesData.GameObjectReferenceHandles[i].GameObjectHandle;
                 GameObject gameObject;
