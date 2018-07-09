@@ -40,7 +40,7 @@ ${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.D
 markEndOfBlock "Linting GDK Code Generator"
 
 markStartOfBlock "Linting Unity GDK"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Assets/Generated/**/* --exlude=/Assets/improbable/**/* ./workers/unity/unity.sln
+${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Assets/Generated/**/* --exclude=/Assets/improbable/**/* ./workers/unity/unity.sln
 markEndOfBlock "Linting Unity GDK"
 
 markEndOfBlock "$0"
