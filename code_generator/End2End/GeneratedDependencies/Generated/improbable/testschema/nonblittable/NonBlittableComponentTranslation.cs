@@ -28,6 +28,8 @@ namespace Generated.Improbable.TestSchema.Nonblittable
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
                 typeof(AuthoritiesChanged<SpatialOSNonBlittableComponent>),
+                typeof(ComponentAdded<SpatialOSNonBlittableComponent>),
+                typeof(ComponentRemoved<SpatialOSNonBlittableComponent>),
                 typeof(ComponentsUpdated<SpatialOSNonBlittableComponent.Update>), 
                 typeof(CommandRequests<FirstCommand.Request>), typeof(CommandResponses<FirstCommand.Response>),
                 typeof(CommandRequests<SecondCommand.Request>), typeof(CommandResponses<SecondCommand.Response>),
@@ -127,6 +129,19 @@ namespace Generated.Improbable.TestSchema.Nonblittable
 
                 view.SetComponentObject(entity, spatialOSNonBlittableComponent);
                 view.AddComponent(entity, new NotAuthoritative<SpatialOSNonBlittableComponent>());
+
+                if (view.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
+                {
+                    view.RemoveComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity);
+                }
+                else if (!view.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentAdded<SpatialOSNonBlittableComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSNonBlittableComponent).Name, op.EntityId.Id);
+                }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.TestSchema.Nonblittable.NonBlittableComponent> op)
@@ -269,6 +284,19 @@ namespace Generated.Improbable.TestSchema.Nonblittable
                 }
 
                 view.RemoveComponent<SpatialOSNonBlittableComponent>(entity);
+
+                if (view.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentRemoved<SpatialOSNonBlittableComponent>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSNonBlittableComponent).Name, op.EntityId.Id);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -345,13 +373,17 @@ namespace Generated.Improbable.TestSchema.Nonblittable
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
-                RemoveComponents(ref entityCommandBuffer, FirstCommandRequestPool, groupIndex: 2);
-                RemoveComponents(ref entityCommandBuffer, FirstCommandResponsePool, groupIndex: 3);
-                RemoveComponents(ref entityCommandBuffer, SecondCommandRequestPool, groupIndex: 4);
-                RemoveComponents(ref entityCommandBuffer, SecondCommandResponsePool, groupIndex: 5);
-                RemoveComponents(ref entityCommandBuffer, FirstEventEventPool, groupIndex: 6);
-                RemoveComponents(ref entityCommandBuffer, SecondEventEventPool, groupIndex: 7);
+                RemoveComponents<ComponentAdded<SpatialOSNonBlittableComponent>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<SpatialOSNonBlittableComponent>>(ref entityCommandBuffer, groupIndex: 2);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
+                
+                RemoveComponents(ref entityCommandBuffer, FirstCommandRequestPool, groupIndex: 4);
+                RemoveComponents(ref entityCommandBuffer, FirstCommandResponsePool, groupIndex: 5);
+                RemoveComponents(ref entityCommandBuffer, SecondCommandRequestPool, groupIndex: 6);
+                RemoveComponents(ref entityCommandBuffer, SecondCommandResponsePool, groupIndex: 7);
+                RemoveComponents(ref entityCommandBuffer, FirstEventEventPool, groupIndex: 8);
+                RemoveComponents(ref entityCommandBuffer, SecondEventEventPool, groupIndex: 9);
+                
             }
 
             public void OnCommandRequestFirstCommand(CommandRequestOp<global::Improbable.TestSchema.Nonblittable.NonBlittableComponent.Commands.FirstCommand> op)
