@@ -1,9 +1,10 @@
 using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
+using Improbable.Gdk.Timing;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Playground
 {
@@ -14,11 +15,15 @@ namespace Playground
         {
             public int Length;
             [ReadOnly] public ComponentDataArray<EventSender<SpatialOSCubeColor>> EventSenders;
+            [ReadOnly] public ComponentDataArray<ColorChangeComponent> ColorChangeData;
+            [ReadOnly] public ComponentDataArray<ShouldSendColorChangeTemporary> DenotesShouldSendEvent;
+            [ReadOnly] public EntityArray Entities;
         }
 
         [Inject] private CubeColorData cubeColorData;
 
         private Array colorValues;
+        private int lastColorIndex;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -29,21 +34,23 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (World.GetExistingManager<TickSystem>().GlobalTick % 100 != 0)
-            {
-                return;
-            }
-
-            var newColor = (Generated.Playground.Color) colorValues.GetValue(new Random().Next(colorValues.Length));
+            int colorIndex = (lastColorIndex + 1) % colorValues.Length;
+            lastColorIndex = colorIndex;
+            var nextColor = (Generated.Playground.Color) colorValues.GetValue(colorIndex);
 
             for (var i = 0; i < cubeColorData.Length; i++)
             {
                 var colorData = new Generated.Playground.ColorData
                 {
-                    Color = newColor
+                    Color = nextColor
                 };
 
                 cubeColorData.EventSenders[i].SendChangeColorEvent(colorData);
+
+                var timeTillNextUpdate = cubeColorData.ColorChangeData[i].TimeBetweenEvents;
+
+                LocalTimer.AddComponentAtLocalTime<ShouldSendColorChangeTemporary>(Time.time + timeTillNextUpdate,
+                    cubeColorData.Entities[i], World);
             }
         }
     }

@@ -17,7 +17,7 @@ namespace Playground
                     new Dictionary<string, ComponentType[]>()
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }
+                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform), typeof(ColorChangeComponent) } }
                     }
                 },
                 {

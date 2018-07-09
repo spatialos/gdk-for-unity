@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.Timing;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Playground
         {
             base.RegisterSystems();
             TransfromSynchronizationSystemHelper.RegisterClientSystems(World);
+            TimingSystemHelper.RegisterClientSystems(World);
             PlayerLifecycleConfig.RegisterClientSystems(World);
 
             // Entity initialization systems
