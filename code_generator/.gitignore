@@ -328,6 +328,6 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
-/Generated/
+/GdkCodeGenerator/Generated/
 End2End/schema_json_ast/
 End2End/GeneratedDependencies/GeneratedCSharpWorker/
