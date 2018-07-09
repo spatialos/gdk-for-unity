@@ -2,6 +2,7 @@
 /logs/
 /spatial/logs/
 /spatial/build/
+.spatialos
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 /unity/[Ll]ibrary/

@@ -131,7 +131,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             if (options.NativeOutputDirectory == null)
             {
-                Console.WriteLine("Output directory not specified");
+                Console.WriteLine("Native output directory not specified");
                 return false;
             }
 

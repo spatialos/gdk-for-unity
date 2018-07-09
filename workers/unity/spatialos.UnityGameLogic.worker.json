@@ -7,7 +7,7 @@
       },
       {
         "name": "build",
-        "steps": [{"name": "** Run ci/build.sh instead **", "command": "echo", "arguments": ["No-op."]}]
+        "steps": [{"name": "** Run ci/build-gamelogic.sh instead **", "command": "echo", "arguments": ["No-op."]}]
       },
       {
         "name": "clean",

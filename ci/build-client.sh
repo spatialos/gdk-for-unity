@@ -18,11 +18,11 @@ spatial build build-config UnityClient
 "${UNITY_EXE}" -projectPath "${UNITY_PROJECT_DIR}" \
     -batchmode \
     -quit \
-    -nographics \
     -logfile "$(pwd)/build/build_logs/UnityClientBuild.log" \
     -executeMethod "Improbable.Gdk.Legacy.BuildSystem.WorkerBuilder.Build" \
     +buildWorkerTypes "UnityClient" \
     +buildTarget "local"
+
 markEndOfBlock "Building UnityClient"
 
 markEndOfBlock "$0"
