@@ -11,15 +11,15 @@ This is an experimental branch of the [SpatialOS Unity GDK repository](https://g
 
 We are sharing this feature in its early development in the spirit of our open development ethos.
 
-## Issues and Feedback
+## Issues and feedback
 
 Despite the experimental nature of this feature, we would still love to have your feedback. Please refer to [the main repo feedback section](https://github.com/spatialos/UnityGDK#give-us-feedback).
 
-## The Feature
+## The feature
 
-This branch will explore adding Android support to the Unity GDK. Changes to code and documentation will relate to development of Android compilation, deployment and optimisation. There is currently no official documentation and the docs are a copy of the master branch. 
+This branch explores game development for Android with the SpatialOS Unity GDK. Changes to code and documentation relate to development of Android compilation, deployment and optimisation. There is currently no documentation for Android development; the documentation here is a copy of the documentation in the [SpatialOS Unity GDK repository](https://github.com/spatialos/UnityGDK). 
 
-The rest of the content in this document is a copy of the main [SpatialOS Unity GDK repository](https://github.com/spatialos/UnityGDK).
+The content below is a copy of the readme file in the SpatialOS Unity GDK master branch.
 
  ---
 
