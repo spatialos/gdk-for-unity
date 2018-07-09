@@ -218,14 +218,24 @@ namespace CopySchema.Tests
         [Test]
         public void CopyFiles_should_copy_from_key_to_value()
         {
-            var fileOne = Path.Combine(packages, "file_one.schema");
-            var fileOneDest = Path.Combine(schema);
+            var fileOne = Path.Combine(packages, "package_root", "file_one.schema");
+            var fileOneDest = Path.Combine(schema, "package.name", "file_one.schema");
+            Directory.CreateDirectory(Path.GetDirectoryName(fileOne));
             File.WriteAllText(fileOne, "This is file one");
-            var fileTwo = Path.Combine(packages, "file_one.schema");
+            var fileTwo = Path.Combine(packages, "other_package.root", "nested", "file_one.schema");
+            var fileTwoDest = Path.Combine(schema, "other.package.name", "nested", "file_one.schema");
+            Directory.CreateDirectory(Path.GetDirectoryName(fileTwo));
             File.WriteAllText(fileTwo, "Second file contents");
 
-            var filesCopied = Program.CopyFiles(new Dictionary<string, string>());
-            Assert.Fail("Finish this test");
+            var filesCopied = Program.CopyFiles(new Dictionary<string, string>()
+            {
+                { fileOne, fileOneDest },
+                { fileTwo, fileTwoDest }
+            });
+
+            Assert.AreEqual(2, filesCopied);
+            Assert.AreEqual("This is file one", File.ReadAllText(fileOneDest));
+            Assert.AreEqual("Second file contents", File.ReadAllText(fileTwoDest));
         }
     }
 }
