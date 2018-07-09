@@ -364,7 +364,8 @@ namespace Improbable.Gdk.Core
             }
             else if (!view.TryGetEntity(entityId, out entity))
             {
-                Debug.LogWarningFormat(TranslationErrors.CannotFindEntityForWorldCommandResponse, entityId, responseName);
+                Debug.LogWarningFormat(TranslationErrors.CannotFindEntityForWorldCommandResponse, entityId,
+                    responseName);
                 return false;
             }
 
