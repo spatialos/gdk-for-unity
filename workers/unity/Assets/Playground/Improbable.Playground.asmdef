@@ -6,11 +6,11 @@
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Android",
+        "Improbable.CSharp",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.CSharp",
-        "Unity.Mathematics",
-        "Improbable.Gdk.Android"
+        "Unity.Mathematics"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

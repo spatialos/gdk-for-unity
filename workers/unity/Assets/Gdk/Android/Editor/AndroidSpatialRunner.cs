@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Android.Editor
             Process.Start(GetProcessStartInfo());
         }
 
-        private static string GetLocalIpAddress()
+        private static IPAddress GetLocalIpAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             var ipAddress = host.AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Android.Editor
             }
 
             Debug.Log($"Runtime IP: {ipAddress}");
-            return ipAddress.ToString();
+            return ipAddress;
         }
 
         private static ProcessStartInfo GetProcessStartInfo()
