@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.EditmodeTests
+namespace Playground.EditmodeTests
 {
     [TestFixture]
     public class SpatialOSGameObjectCreatorTests
@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         private const string TestPrefabName = "testPrefab";
         private World world;
         private GameObject testPrefab;
-        private SpatialOSGameObjectCreator spatialOSGameObjectCreator;
+        private EntityGameObjectCreator entityGameObjectCreator;
         private GameObject testGameObject;
 
         [SetUp]
@@ -21,9 +21,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
             testPrefab = new GameObject();
             var initialCachedPrefabs = new Dictionary<string, GameObject>
             {
-                {TestPrefabName, testPrefab}
+                { TestPrefabName, testPrefab }
             };
-            spatialOSGameObjectCreator = new SpatialOSGameObjectCreator(world, initialCachedPrefabs);
+            entityGameObjectCreator = new EntityGameObjectCreator(world, initialCachedPrefabs);
         }
 
         [TearDown]
@@ -44,19 +44,13 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
             var position = Vector3.zero;
             var rotation = Quaternion.identity;
-            var viewCommandBuffer = new ViewCommandBuffer();
             long spatialEntityId = 1;
-            testGameObject = spatialOSGameObjectCreator.CreateSpatialOSGameObject(entity, TestPrefabName, position,
-                rotation, viewCommandBuffer, spatialEntityId);
+            testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, position,
+                rotation, spatialEntityId);
 
             Assert.NotNull(testGameObject);
             Assert.AreEqual(position, testGameObject.transform.position);
             Assert.AreEqual(rotation, testGameObject.transform.rotation);
-            var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
-            Assert.NotNull(spatialOSComponent);
-            Assert.AreEqual(entity, spatialOSComponent.Entity);
-            Assert.AreEqual(spatialEntityId, spatialOSComponent.SpatialEntityId);
-            Assert.AreEqual(world, spatialOSComponent.World);
         }
     }
 }

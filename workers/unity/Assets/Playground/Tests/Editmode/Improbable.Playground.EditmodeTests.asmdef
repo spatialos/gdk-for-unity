@@ -1,10 +1,9 @@
 {
-    "name": "Improbable.Gdk.Core.EditmodeTests",
+    "name": "Improbable.Playground.EditmodeTests",
     "references": [
         "Improbable.Gdk.Core",
-        "Unity.Entities",
-        "Unity.Entities.Hybrid",
-        "Improbable.Gdk.TestUtils"
+        "Improbable.Playground",
+        "Unity.Entities"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

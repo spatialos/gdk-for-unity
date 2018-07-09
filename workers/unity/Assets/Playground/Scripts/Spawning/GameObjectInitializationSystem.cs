@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
@@ -19,6 +20,7 @@ namespace Playground
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public EntityArray Entities;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
@@ -28,6 +30,7 @@ namespace Playground
         private WorkerBase worker;
         private Vector3 origin;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private EntityGameObjectCreator entityGameObjectCreator;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -36,6 +39,7 @@ namespace Playground
             worker = WorkerRegistry.GetWorkerForWorld(World);
             view = worker.View;
             origin = worker.Origin;
+            entityGameObjectCreator = new EntityGameObjectCreator(World, new Dictionary<string, GameObject>());
         }
 
         protected override void OnUpdate()
@@ -45,6 +49,7 @@ namespace Playground
                 var prefabMapping = PrefabConfig.PrefabMappings[data.PrefabNames[i].Prefab];
                 var transform = data.Transforms[i];
                 var entity = data.Entities[i];
+                var spatialEntityId = data.SpatialEntityIds[i].EntityId;
 
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
@@ -56,9 +61,14 @@ namespace Playground
                     : prefabMapping.UnityClient;
 
                 var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
-                var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y, transform.Rotation.Z, transform.Rotation.W);
+                var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
+                    transform.Rotation.Z, transform.Rotation.W);
 
-                view.AddGameObjectToEntity(entity, prefabName, position, rotation, viewCommandBuffer);
+                var gameObject =
+                    entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
+                        spatialEntityId);
+                worker.EntityGameObjectManager.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                    viewCommandBuffer);
             }
 
             viewCommandBuffer.FlushBuffer(view);
