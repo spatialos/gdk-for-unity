@@ -6,6 +6,7 @@ using Unity.Entities;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Compilation;
 
 #endif
 
@@ -32,6 +33,8 @@ namespace Playground
             if (Application.isEditor)
             {
 #if UNITY_EDITOR
+                CompilationPipeline.assemblyCompilationStarted += CompilationStarted;
+
                 var workerConfigurations =
                     AssetDatabase.LoadAssetAtPath<ScriptableWorkerConfiguration>(ScriptableWorkerConfiguration
                         .AssetPath);
@@ -90,6 +93,17 @@ namespace Playground
             World.Active = worlds[0];
         }
 
+        private static void CompilationStarted(string destination)
+        {
+            foreach (var worker in Workers)
+            {
+                if (worker.Connection != null && worker.Connection.IsConnected)
+                {
+                    worker.Disconnect();
+                }
+            }
+        }
+
         public void Start()
         {
             foreach (var worker in Workers)
@@ -126,6 +140,10 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+#if UNITY_EDITOR
+            CompilationPipeline.assemblyCompilationStarted -= CompilationStarted;
+#endif
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }

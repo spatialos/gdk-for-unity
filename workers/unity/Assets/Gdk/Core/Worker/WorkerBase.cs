@@ -66,6 +66,19 @@ namespace Improbable.Gdk.Core
             return true;
         }
 
+        public void Disconnect()
+        {
+            if (Connection == null)
+            {
+                Debug.LogError("Attempted to disconnect but connection is already null.");
+                return;
+            }
+
+            View.Disconnect("Disconnect called on worker.");
+            ConnectionUtility.Disconnect(Connection);
+            Connection = null;
+        }
+
         public virtual void RegisterSystems()
         {
             RegisterCoreSystems();
