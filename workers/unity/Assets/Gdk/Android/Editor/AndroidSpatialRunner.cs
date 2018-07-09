@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Android.Editor
                     "Could not find local IP Address. Make sure you are connected to the Internet.");
             }
 
-            Debug.Log(ipAddress.ToString());
+            Debug.Log($"Runtime IP: {ipAddress}");
             return ipAddress.ToString();
         }
 
