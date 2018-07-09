@@ -5,7 +5,7 @@ namespace Improbable.Gdk.Core
 {
     public class ScriptableWorkerConfiguration : ScriptableObject
     {
-        public static readonly string AssetPath = "Assets/ScriptableWorkerConfiguration.asset";
+        public static readonly string AssetPath = "Assets/Config/ScriptableWorkerConfiguration.asset";
 
         public List<WorkerConfiguration> WorkerConfigurations = new List<WorkerConfiguration>();
 
