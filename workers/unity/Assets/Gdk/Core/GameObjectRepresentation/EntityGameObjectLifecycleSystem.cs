@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 entityGameObjectCache.Remove(handle);
-                Object.Destroy(gameObject);
+                UnityObjectDestroyer.Destroy(gameObject);
                 PostUpdateCommands.RemoveSystemStateComponent<GameObjectReferenceHandle>(
                     removedEntitiesData.Entities[i]);
             }
