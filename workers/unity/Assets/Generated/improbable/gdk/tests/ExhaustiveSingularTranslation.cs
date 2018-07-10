@@ -66,7 +66,9 @@ namespace Generated.Improbable.Gdk.Tests
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -103,7 +105,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSExhaustiveSingular).Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Received ComponentAdded but have already received one for this entity.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", typeof(SpatialOSExhaustiveSingular).Name));
                 }
             }
 
@@ -112,7 +117,9 @@ namespace Generated.Improbable.Gdk.Tests
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
 
@@ -285,7 +292,9 @@ namespace Generated.Improbable.Gdk.Tests
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
 
@@ -301,7 +310,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSExhaustiveSingular).Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Received ComponentRemoved but have already received one for this entity.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", typeof(SpatialOSExhaustiveSingular).Name));
                 }
             }
 
