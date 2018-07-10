@@ -14,23 +14,34 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        public struct Data
+        public struct AddedEntitiesData
         {
             public int Length;
+            public EntityArray Entities;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
-            [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
-        [Inject] private Data data;
+        public struct RemovedEntitiesData
+        {
+            public int Length;
+            public EntityArray Entities;
+            [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
+            public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
+        }
+
+        [Inject] private AddedEntitiesData addedEntitiesData;
+        [Inject] private RemovedEntitiesData removedEntitiesData;
 
         private MutableView view;
         private WorkerBase worker;
         private Vector3 origin;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
         private EntityGameObjectCreator entityGameObjectCreator;
+        private uint currentHandle;
+        private readonly Dictionary<uint, GameObject> entityGameObjectCache = new Dictionary<uint, GameObject>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -44,12 +55,12 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            for (var i = 0; i < addedEntitiesData.Length; i++)
             {
-                var prefabMapping = PrefabConfig.PrefabMappings[data.PrefabNames[i].Prefab];
-                var transform = data.Transforms[i];
-                var entity = data.Entities[i];
-                var spatialEntityId = data.SpatialEntityIds[i].EntityId;
+                var prefabMapping = PrefabConfig.PrefabMappings[addedEntitiesData.PrefabNames[i].Prefab];
+                var transform = addedEntitiesData.Transforms[i];
+                var entity = addedEntitiesData.Entities[i];
+                var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
@@ -67,8 +78,32 @@ namespace Playground
                 var gameObject =
                     entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
                         spatialEntityId);
-                worker.EntityGameObjectManager.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                var gameObjectReference = new GameObjectReference { GameObject = gameObject };
+
+                var handle = currentHandle++;
+                entityGameObjectCache[handle] = gameObject;
+                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle { GameObjectHandle = handle };
+
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
+                viewCommandBuffer.AddComponent(entity, gameObjectReference);
+                worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
+            }
+
+            for (var i = 0; i < removedEntitiesData.Length; i++)
+            {
+                var handle = removedEntitiesData.GameObjectReferenceHandles[i].GameObjectHandle;
+                GameObject gameObject;
+                if (!entityGameObjectCache.TryGetValue(handle, out gameObject))
+                {
+                    Debug.LogErrorFormat(Errors.GameObjectNotFound, handle);
+                    continue;
+                }
+
+                entityGameObjectCache.Remove(handle);
+                UnityObjectDestroyer.Destroy(gameObject);
+                PostUpdateCommands.RemoveSystemStateComponent<GameObjectReferenceHandle>(
+                    removedEntitiesData.Entities[i]);
             }
 
             viewCommandBuffer.FlushBuffer(view);
@@ -78,6 +113,8 @@ namespace Playground
         {
             public const string UnknownWorkerType =
                 "Unknown workerType for world name {0}.";
+
+            public const string GameObjectNotFound = "EntityGameObject with handle {0} not found.";
         }
     }
 }

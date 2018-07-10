@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Playground.EditmodeTests
 {
     [TestFixture]
-    public class SpatialOSGameObjectCreatorTests
+    public class EntityGameObjectCreatorTests
     {
         private const string TestPrefabName = "testPrefab";
         private World world;

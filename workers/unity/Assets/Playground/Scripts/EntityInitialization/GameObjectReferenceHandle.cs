@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Playground
 {
     public struct GameObjectReferenceHandle : ISystemStateComponentData
     {

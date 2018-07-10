@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
 
         public abstract string GetWorkerType { get; }
 
-        public EntityGameObjectManager EntityGameObjectManager { get; private set; }
+        public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
 
         protected WorkerBase(string workerId, Vector3 origin)
         {
@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Core
             View = new MutableView(World);
             Origin = origin;
 
-            EntityGameObjectManager = new EntityGameObjectManager(World);
+            EntityGameObjectLinker = new EntityGameObjectLinker(World);
         }
 
         public void Dispose()
@@ -73,7 +73,6 @@ namespace Improbable.Gdk.Core
         public virtual void RegisterSystems()
         {
             RegisterCoreSystems();
-            RegisterGameObjectRepresentationSystems();
         }
 
         private void RegisterCoreSystems()
@@ -82,11 +81,6 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
-        }
-
-        private void RegisterGameObjectRepresentationSystems()
-        {
-            World.GetOrCreateManager<EntityGameObjectLifecycleSystem>();
         }
     }
 }

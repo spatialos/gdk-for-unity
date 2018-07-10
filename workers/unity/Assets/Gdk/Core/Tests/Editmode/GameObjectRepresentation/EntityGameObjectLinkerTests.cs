@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Improbable.Gdk.Core.EditmodeTests
 {
     [TestFixture]
-    public class EntityGameObjectManagerTests
+    public class EntityGameObjectLinkerTests
     {
         private World world;
-        private EntityGameObjectManager entityGameObjectManager;
+        private EntityGameObjectLinker entityGameObjectLinker;
         private GameObject testGameObject;
         private Entity testEntity;
         private const long testSpatialEntityId = 1337;
@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Setup()
         {
             world = new World("TestWorld");
-            entityGameObjectManager = new EntityGameObjectManager(world);
+            entityGameObjectLinker = new EntityGameObjectLinker(world);
             testGameObject = new GameObject();
             testEntity = world.GetOrCreateManager<EntityManager>().CreateEntity();
         }
@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void LinkGameObjectToEntity_adds_SpatialOSComponent_component()
         {
-            entityGameObjectManager.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 new ViewCommandBuffer());
             var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(spatialOSComponent);

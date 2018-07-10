@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class EntityGameObjectManager
+    public class EntityGameObjectLinker
     {
         private readonly World world;
 
-        public EntityGameObjectManager(World world)
+        public EntityGameObjectLinker(World world)
         {
             this.world = world;
         }
@@ -15,9 +15,6 @@ namespace Improbable.Gdk.Core
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, long spatialEntityId,
             ViewCommandBuffer viewCommandBuffer)
         {
-            var gameObjectReference = new GameObjectReference { GameObject = gameObject };
-            viewCommandBuffer.AddComponent(entity, gameObjectReference);
-
             foreach (var component in gameObject.GetComponents<Component>())
             {
                 viewCommandBuffer.AddComponent(entity, component.GetType(), component);
