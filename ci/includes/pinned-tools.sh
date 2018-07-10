@@ -6,11 +6,6 @@ dotnet --version
 
 export LINTER="cleanupcode.exe"
 
-MSBUILD="$(powershell –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
-export MSBUILD
-
-export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
-
 DOTNET_VERSION="$(dotnet --version)"
 
 export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
