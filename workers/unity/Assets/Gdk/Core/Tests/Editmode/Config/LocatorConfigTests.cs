@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var config = GetDefaultWorkingConfig();
             config.LocatorHost = "";
 
-            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
             Assert.IsTrue(exception.Message.Contains("locatorHost"));
         }
 
@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             config.LocatorParameters.LoginToken.Token = "some token who cares";
             config.LocatorParameters.ProjectName = "";
 
-            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
             Assert.IsTrue(exception.Message.Contains("projectName"));
         }
 
@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             config.LocatorParameters.LoginToken.Token = "";
             config.LocatorParameters.ProjectName = "some project who cares";
 
-            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
             Assert.IsTrue(exception.Message.Contains("loginToken"));
         }
 
