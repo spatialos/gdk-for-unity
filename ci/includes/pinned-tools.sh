@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+IMPROBABLE_UNITY_ROOT="C:/Unity"
 UNITY_VERSION=$(cat "workers/unity/ProjectSettings/ProjectVersion.txt" | grep "m_EditorVersion" | cut -d ' ' -f2)
 
 function isUnityHomeSet() {
@@ -8,18 +9,14 @@ function isUnityHomeSet() {
 }
 
 function isUnityImprobablePathPresent() {
-  UNITY_DIR="C:/Unity/Unity-${UNITY_VERSION}/"
   [ -d "$UNITY_DIR" ]
 }
 
 function getUnityDir() {
   if isUnityHomeSet; then
     echo "${UNITY_HOME}"
-  elif isUnityImprobablePathPresent; then
-    echo "${UNITY_DIR}"
   else
-    echo "ERROR: Unity was not found in the default location. Please set the UNITY_HOME environment variable to where Unity ${UNITY_VERSION} is installed." >&2
-    exit 1
+    echo "${IMPROBABLE_UNITY_ROOT}/${UNITY_VERSION}/"
   fi
 }
 

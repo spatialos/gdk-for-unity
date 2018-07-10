@@ -10,6 +10,10 @@ PROJECT_DIR="$(pwd)"
 
 markStartOfBlock "$0"
 
+markStartOfBlock "Prepare Unity"
+ci/prepare-unity.sh
+markEndOfBlock "Prepare Unity"
+
 markStartOfBlock "Building Tools"
 
 dotnet build -c Release tools/DocsLinter/DocsLinter.csproj

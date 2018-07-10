@@ -20,6 +20,10 @@ set -e
 spatial codegen
 
 if [ ! -f workers/unity/Assembly-CSharp.csproj ]; then
+    markStartOfBlock "Prepare Unity"
+    ci/prepare-unity.sh
+    markEndOfBlock "Prepare Unity"
+
     markStartOfBlock "Generating Solution Files"
     PROJECT_DIR="$(pwd)"
     touch "workers/unity/unity.sln"
