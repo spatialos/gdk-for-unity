@@ -5,8 +5,7 @@
         "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Unity.Mathematics",
-        "Improbable.CSharp"
+        "Unity.Mathematics"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
