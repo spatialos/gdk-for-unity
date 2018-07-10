@@ -1,8 +1,8 @@
 {
     "name": "unity_gdk",
     "project_version": "0.0.1",
-    "sdk_version": "14.0-b5142-2899b-WORKER-SNAPSHOT",
+    "sdk_version": "14.0-b5171-2d1a5-WORKER-SNAPSHOT",
     "dependencies": [
-        {"name": "standard_library", "version": "14.0-b5142-2899b-WORKER-SNAPSHOT"}
+        {"name": "standard_library", "version": "14.0-b5171-2d1a5-WORKER-SNAPSHOT"}
     ]
 }
