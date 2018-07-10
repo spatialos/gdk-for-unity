@@ -41,30 +41,6 @@ namespace Improbable.Gdk.Core.Components
             }
         }
 
-        protected static class TranslationErrors
-        {
-            public const string OpReceivedButNoEntity =
-                "Received {0} with EntityId {1}, but there is no entity associated with that EntityId.";
-
-            public const string CannotFindEntityForCommandRequest =
-                "Cannot find entity {0} locally to receive command request {1}.";
-
-            public const string CannotFindEntityForCommandResponse =
-                "Cannot find entity {0} locally to receive command response for {1}.";
-
-            public const string CannotFindEntityForWorldCommandResponse =
-                "Cannot find entity {0} locally to receive world command response for {1}.";
-
-            public const string RequestDoesNotExist =
-                "Cannot find request with ID {0}, response type {1}.";
-
-            public const string ComponentAlreadyAdded =
-                "Received ComponentAdded op for {0} on entity {1}, but have already received one.";
-
-            public const string ComponentAlreadyRemoved =
-                "Received ComponentRemoved op for {0} on entity {1}, but have already received one.";
-        }
-
         public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =
             new Dictionary<uint, ComponentTranslation>();
 
@@ -72,7 +48,7 @@ namespace Improbable.Gdk.Core.Components
 
         protected uint translationHandle { get; }
 
-        public abstract void RegisterWithDispatcher(Dispatcher dispatcher);
+        public abstract long ComponentId { get; }
 
         public abstract ComponentType[] ReplicationComponentTypes { get; }
         public ComponentGroup ReplicationComponentGroup { get; set; }
@@ -81,6 +57,8 @@ namespace Improbable.Gdk.Core.Components
         public abstract ComponentType[] CleanUpComponentTypes { get; }
         public List<ComponentGroup> CleanUpComponentGroups { get; set; }
         public abstract void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer);
+
+        public abstract void RegisterWithDispatcher(Dispatcher dispatcher);
 
         public abstract void AddCommandRequestSender(Entity entity, long entityId);
         public abstract void SendCommands(Connection connection);
@@ -115,13 +93,37 @@ namespace Improbable.Gdk.Core.Components
                 }
             }
         }
+
+        protected static class TranslationErrors {
+            public const string OpReceivedButNoEntity =
+                "Received {0} with EntityId {1}, but there is no entity associated with that EntityId.";
+
+            public const string CannotFindEntityForCommandRequest =
+                "Cannot find entity {0} locally to receive command request {1}.";
+
+            public const string CannotFindEntityForCommandResponse =
+                "Cannot find entity {0} locally to receive command response for {1}.";
+
+            public const string CannotFindEntityForWorldCommandResponse =
+                "Cannot find entity {0} locally to receive world command response for {1}.";
+
+            public const string RequestDoesNotExist =
+                "Cannot find request with ID {0}, response type {1}.";
+
+            public const string ComponentAlreadyAdded =
+                "Received ComponentAdded op for {0} on entity {1}, but have already received one.";
+
+            public const string ComponentAlreadyRemoved =
+                "Received ComponentRemoved op for {0} on entity {1}, but have already received one.";
+        }
     }
 
-    public interface IDispatcherCallbacks<T> where T : IComponentMetaclass
+    public interface IDispatcherCallbacks
     {
-        void OnAddComponent(AddComponentOp<T> op);
-        void OnComponentUpdate(ComponentUpdateOp<T> op);
+        void OnAddComponent(AddComponentOp op);
         void OnRemoveComponent(RemoveComponentOp op);
+
+        void OnComponentUpdate(ComponentUpdateOp op);
         void OnAuthorityChange(AuthorityChangeOp op);
     }
 }
