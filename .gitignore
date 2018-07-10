@@ -1,19 +1,13 @@
 /logs
-/workers/unity/Assets/improbable/*
-/workers/unity/improbable/
-/workers/unity/Library/
-/workers/unity/Temp/
-/workers/unity/logs/
-
-!/workers/unity/Assets/improbable/Improbable.CSharp.asmdef
-!/workers/unity/Assets/improbable/Improbable.CSharp.asmdef.meta
 
 *.csproj.user
 .vs/
+.idea/
 .spatialos/
 build/
-bin/
-obj/
+[Bb]in/
+[Oo]bj/
 packages/
 
 *.DotSettings.user
+

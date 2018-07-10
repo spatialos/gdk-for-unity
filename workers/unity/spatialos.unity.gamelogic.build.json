@@ -48,8 +48,11 @@
         },
         {
           "name": "Artifact",
-          "command": "../../tools/unity_invoker/${IMPROBABLE_PLATFORM_NAME}/unity_invoker",
+          "command": "dotnet",
           "arguments": [
+            "run",
+            "-p",
+            "../../tools/RunUnity/RunUnity.csproj",
             "--",
             "-batchmode",
             "-quit",
@@ -62,7 +65,7 @@
             "+buildWorkerTypes",
             "UnityGameLogic",
             "+buildTarget",
-            "${IMPROBABLE_BUILD_TARGET}"
+            "\"${IMPROBABLE_BUILD_TARGET}\""
           ]
         }
       ]

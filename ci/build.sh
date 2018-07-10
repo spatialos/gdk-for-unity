@@ -20,12 +20,7 @@ spatial codegen
 markEndOfBlock "Code Generation"
 
 markStartOfBlock "Building Unity Project"
-export UNITY_HOME="${UNITY_DIR}"
 spatial worker build -t=local
 markEndOfBlock "Building Unity Project"
-
-markStartOfBlock "Code Generation End2End"
-dotnet build -c Release code_generator/End2End/End2End.sln
-markEndOfBlock "Code Generation End2End"
 
 markEndOfBlock "$0"

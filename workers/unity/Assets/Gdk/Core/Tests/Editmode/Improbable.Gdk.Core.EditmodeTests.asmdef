@@ -3,7 +3,8 @@
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Improbable.Gdk.TestUtils"
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.Generated"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
