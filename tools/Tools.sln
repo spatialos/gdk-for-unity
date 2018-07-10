@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpNuget", "ImpNuget\ImpNuget.csproj", "{CE7B8A3F-099F-45B7-8F41-396FE3640A16}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocsLinter", "DocsLinter\DocsLinter.csproj", "{A8D920E3-1239-4280-9FD8-CEB5D013DE45}"
 EndProject
 Global
