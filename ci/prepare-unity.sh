@@ -53,8 +53,8 @@ fi
 
 # Setup unity_downloader
 markStartOfBlock "Installing unity_downloader"
-mkdir -p "${GOPATH}"
-go get -v -d -u "${UNITY_PACKAGE}"
+git clone "git@github.com:improbable/unity_downloader.git" "go/src/${UNITY_PACKAGE}"
+go get -v -d "${UNITY_PACKAGE}"
 markEndOfBlock "Installing unity_downloader"
 
 # Run unity_downloader with platform specific modules
