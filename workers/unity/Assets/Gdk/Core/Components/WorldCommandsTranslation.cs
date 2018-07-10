@@ -352,7 +352,10 @@ namespace Improbable.Gdk.Core
             long entityId;
             if (!RequestIdToEntityId.TryGetValue(requestId, out entityId))
             {
-                Debug.LogErrorFormat(TranslationErrors.RequestDoesNotExist, requestId, responseName);
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Entity not found when attempting to get EntityId from RequestId.")
+                    .WithField(IdType.RequestId.ToString(), requestId)
+                    .WithField("OpName", responseName));
                 return false;
             }
 
@@ -364,8 +367,10 @@ namespace Improbable.Gdk.Core
             }
             else if (!view.TryGetEntity(entityId, out entity))
             {
-                Debug.LogWarningFormat(TranslationErrors.CannotFindEntityForWorldCommandResponse, entityId,
-                    responseName);
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Entity not found when attempting to get Entity from EntityId.")
+                    .WithField(IdType.EntityId.ToString(), entityId)
+                    .WithField("OpName", responseName));
                 return false;
             }
 

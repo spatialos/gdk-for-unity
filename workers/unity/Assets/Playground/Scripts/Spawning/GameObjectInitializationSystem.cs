@@ -53,7 +53,10 @@ namespace Playground
 
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
-                    Debug.LogErrorFormat(Errors.UnknownWorkerType, World.Name);
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Worker type isn't supported by the GameObjectInitializationSystem.")
+                        .WithField("WorldName", World.Name)
+                        .WithField("WorkerType", worker));
                 }
 
                 var prefabName = worker is UnityGameLogic
@@ -76,7 +79,8 @@ namespace Playground
                 prefab = Resources.Load<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Debug.LogErrorFormat(Errors.PrefabNotFound, prefabName);
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Prefab not found.")
+                        .WithField("PrefabPath", prefabName));
                     return;
                 }
 
@@ -101,15 +105,6 @@ namespace Playground
             }
 
             view.AddGameObjectEntity(entity, gameObject);
-        }
-
-        internal static class Errors
-        {
-            public const string PrefabNotFound =
-                "Prefab for prefabPath {0} not found.";
-
-            public const string UnknownWorkerType =
-                "Unknown workerType for world name {0}.";
         }
     }
 }
