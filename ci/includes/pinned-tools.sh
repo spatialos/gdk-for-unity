@@ -23,6 +23,14 @@ function getUnityDir() {
   fi
 }
 
+function unpackTo() {
+  local SOURCE=$1
+  local TARGET=$2
+
+  mkdir -p "${TARGET}"
+  unzip -o -q "${SOURCE}" -d "${TARGET}"
+}
+
 UNITY_DIR="$(getUnityDir)"
 export UNITY_HOME="${UNITY_DIR}"
 export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
