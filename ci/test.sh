@@ -38,7 +38,8 @@ markEndOfBlock "Code Generator Testing"
 
 markStartOfBlock "Editmode Testing"
 
-"${UNITY_EXE}" \
+pushd "workers/unity"
+  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
     -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
@@ -46,6 +47,7 @@ markStartOfBlock "Editmode Testing"
     -testPlatform editmode \
     -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
     -testResults "${EDITMODE_TEST_RESULTS_FILE}"
+popd
 
 EDITMODE_TEST_RESULT=$?
 
@@ -53,7 +55,8 @@ markEndOfBlock "Editmode Testing"
 
 markStartOfBlock "Playmode Testing"
 
-"${UNITY_EXE}" \
+pushd "workers/unity"
+  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
     -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
@@ -61,6 +64,7 @@ markStartOfBlock "Playmode Testing"
     -testPlatform playmode \
     -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
     -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
+popd
 
 PLAYMODE_TEST_RESULT=$?
 
