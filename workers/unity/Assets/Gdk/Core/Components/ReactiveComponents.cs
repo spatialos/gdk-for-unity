@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Worker;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -26,6 +27,14 @@ namespace Improbable.Gdk.Core
     }
 
     public class AuthoritiesChanged<T> : MessagesReceived<Authority>
+    {
+    }
+
+    public struct ComponentAdded<T> : IComponentData where T : ISpatialComponentData
+    {
+    }
+
+    public struct ComponentRemoved<T> : IComponentData where T : ISpatialComponentData
     {
     }
 }

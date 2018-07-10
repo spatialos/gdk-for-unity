@@ -19,10 +19,6 @@ set -e
 
 ci/codegen.sh
 
-pushd "tools/DocsLinter"
-    "../../bin/ImpNuget/ImpNuget.exe"
-popd
-
 markStartOfBlock "Generating Solution Files"
 PROJECT_DIR="$(pwd)"
 touch "workers/unity/unity.sln"

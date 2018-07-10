@@ -31,13 +31,12 @@ function getUnityDir() {
 }
 
 UNITY_DIR="$(getUnityDir)"
+export UNITY_HOME="${UNITY_DIR}"
 export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
 
 export LINTER="cleanupcode.exe"
 
 export MSBUILD="$(powershell  –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
-
-export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
 
 function unpackTo() {
   local SOURCE=$1
@@ -47,4 +46,10 @@ function unpackTo() {
   unzip -o -q "${SOURCE}" -d "${TARGET}"
 }
 
-PINNED_CORE_SDK_VERSION="13.0.1"
+export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
+
+DOTNET_VERSION="$(dotnet --version)"
+
+export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
+
+PINNED_CORE_SDK_VERSION="$(cat core-sdk.version)"

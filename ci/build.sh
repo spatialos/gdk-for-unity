@@ -10,13 +10,7 @@ markStartOfBlock "$0"
 
 markStartOfBlock "Building Tools"
 
-"${MSBUILD}" tools/ImpNuget/ImpNuget.csproj //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
-pushd "tools/DocsLinter"
-    "../../bin/ImpNuget/ImpNuget.exe"
-popd
-
-"${MSBUILD}" tools/DocsLinter/DocsLinter.csproj //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
-
+dotnet build -c Release tools/DocsLinter/DocsLinter.csproj
 markEndOfBlock "Building Tools"
 
 markStartOfBlock "Code Generation"
@@ -26,13 +20,7 @@ ci/codegen.sh
 markEndOfBlock "Code Generation"
 
 markStartOfBlock "Code Generation End2End"
-
-pushd "code_generator/End2End/Tests"
-    "../../../bin/ImpNuget/ImpNuget.exe"
-popd
-
-"${MSBUILD}" code_generator/End2End/End2End.sln //property:Configuration=Release //clp:ErrorsOnly //nologo //m 1>&2
-
+dotnet build -c Release code_generator/End2End/End2End.sln
 markEndOfBlock "Code Generation End2End"
 
 markEndOfBlock "$0"

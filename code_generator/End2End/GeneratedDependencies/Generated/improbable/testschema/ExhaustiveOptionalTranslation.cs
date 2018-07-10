@@ -28,6 +28,8 @@ namespace Generated.Improbable.TestSchema
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
                 typeof(AuthoritiesChanged<SpatialOSExhaustiveOptional>),
+                typeof(ComponentAdded<SpatialOSExhaustiveOptional>),
+                typeof(ComponentRemoved<SpatialOSExhaustiveOptional>),
                 typeof(ComponentsUpdated<SpatialOSExhaustiveOptional.Update>), 
             };
 
@@ -88,6 +90,19 @@ namespace Generated.Improbable.TestSchema
 
                 view.SetComponentObject(entity, spatialOSExhaustiveOptional);
                 view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
+
+                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                {
+                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
+                }
+                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(SpatialOSExhaustiveOptional).Name, op.EntityId.Id);
+                }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.TestSchema.ExhaustiveOptional> op)
@@ -255,6 +270,19 @@ namespace Generated.Improbable.TestSchema
                 }
 
                 view.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
+
+                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(SpatialOSExhaustiveOptional).Name, op.EntityId.Id);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -308,7 +336,11 @@ namespace Generated.Improbable.TestSchema
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
+                RemoveComponents<ComponentAdded<SpatialOSExhaustiveOptional>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<SpatialOSExhaustiveOptional>>(ref entityCommandBuffer, groupIndex: 2);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
+                
+                
             }
 
             public override void SendCommands(Connection connection)

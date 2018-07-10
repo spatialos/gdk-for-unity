@@ -35,6 +35,8 @@ namespace <#= qualifiedNamespace #>
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
                 typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
+                typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
+                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
 <# if (fieldDetailsList.Count > 0) { #>
                 typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), 
 <# } #>
@@ -132,6 +134,19 @@ namespace <#= qualifiedNamespace #>
                 view.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
 <# } #>
                 view.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+
+                if (view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    view.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
+                }
+                else if (!view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
+                }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
@@ -212,6 +227,19 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 view.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+
+                if (view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    view.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                }
+                else if (!view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    view.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
+                }
             }
 
             public void OnAuthorityChange(AuthorityChangeOp op)
@@ -292,16 +320,19 @@ namespace <#= qualifiedNamespace #>
             public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
             {
                 RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
+                RemoveComponents<ComponentAdded<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 1);
+                RemoveComponents<ComponentRemoved<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 2);
 <# if (fieldDetailsList.Count > 0) { #>
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 1);
+                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
 <# } #>
+                
 <# for(var i = 0; i < commandDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 1 : 2) #>);
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 2 : 3) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
+                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 4 : 5) #>);
 <# } #>
 <# for(var i = 0; i < eventDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 1 : 2) #>);
-<# } #>
+                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
+<# } #>                
             }
 
 <# foreach (var commandDetails in commandDetailsList) { #>
