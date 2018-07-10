@@ -8,15 +8,7 @@ namespace Improbable.Gdk.Core
     {
         public static Connection ConnectToSpatial(ReceptionistConfig config, string workerType, string workerId)
         {
-            try
-            {
-                config.Validate();
-            }
-            catch (System.ArgumentException e)
-            {
-                Debug.LogError($"Config validation failed with: {e.Message}");
-                return null;
-            }
+            config.Validate();
 
             Debug.Log("Attempting connection to SpatialOS...");
 
@@ -31,24 +23,12 @@ namespace Improbable.Gdk.Core
 
         public static Connection LocatorConnectToSpatial(LocatorConfig config, string workerType)
         {
-            try
-            {
-                config.Validate();
-            }
-            catch (System.ArgumentException e)
-            {
-                Debug.LogError($"Config validation failed with: {e.Message}");
-                return null;
-            }
+            config.Validate();
 
             using (var locator = new Locator(config.LocatorHost, config.LocatorParameters))
             {
                 Debug.Log("Attempting to retrieve deployment name...");
                 var deploymentName = GetDeploymentName(locator);
-                if (deploymentName == null)
-                {
-                    return null;
-                }
 
                 Debug.Log("Successfully obtained deployment name!");
 
@@ -95,8 +75,8 @@ namespace Improbable.Gdk.Core
 
             if (!connection.HasValue || !connection.Value.IsConnected)
             {
-                Debug.LogError("Failed to connect to SpatialOS.");
-                return null;
+                throw new ConnectionFailedException("Failed to connect to SpatialOS.",
+                    ConnectionErrorReason.CannotEstablishConnection);
             }
 
             Debug.Log("Successfully connected to SpatialOS!");
@@ -112,20 +92,21 @@ namespace Improbable.Gdk.Core
 
                 if (!deployments.HasValue)
                 {
-                    Debug.LogError("Failed to retrieve deployment.");
-                    return null;
+                    throw new ConnectionFailedException("Failed to retrieve deployment.",
+                        ConnectionErrorReason.DeploymentNotFound);
                 }
 
                 if (deployments.Value.Error != null)
                 {
-                    Debug.LogError($"Failed to obtain deployment name with error: {deployments.Value.Error}.");
-                    return null;
+                    throw new ConnectionFailedException(
+                        $"Failed to obtain deployment name with error: {deployments.Value.Error}.",
+                        ConnectionErrorReason.DeploymentNotFound);
                 }
 
                 if (deployments.Value.Deployments.Count == 0)
                 {
-                    Debug.LogError("Received an empty list of deployments.");
-                    return null;
+                    throw new ConnectionFailedException("Received an empty list of deployments.",
+                        ConnectionErrorReason.DeploymentNotFound);
                 }
 
                 return deployments.Value.Deployments[0].DeploymentName;

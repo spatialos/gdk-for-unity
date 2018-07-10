@@ -2,7 +2,9 @@
 /logs/
 /spatial/logs/
 /spatial/build/
-.spatialos
+/logs
+.spatialos/
+.idea/
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 /unity/[Ll]ibrary/
@@ -21,6 +23,7 @@
 *.user
 *.userprefs
 *.svd
+*.DotSettings.user
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
@@ -40,3 +43,5 @@ sysinfo.txt
 
 tools/*/packages/
 code_generator/schema_json_ast/
+
+

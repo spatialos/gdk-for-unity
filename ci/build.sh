@@ -19,8 +19,4 @@ ci/codegen.sh
 
 markEndOfBlock "Code Generation"
 
-markStartOfBlock "Code Generation End2End"
-dotnet build -c Release code_generator/End2End/End2End.sln
-markEndOfBlock "Code Generation End2End"
-
 markEndOfBlock "$0"

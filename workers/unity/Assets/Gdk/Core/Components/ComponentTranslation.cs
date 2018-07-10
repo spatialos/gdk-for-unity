@@ -23,10 +23,12 @@ namespace Improbable.Gdk.Core.Components
 
         public abstract ComponentType TargetComponentType { get; }
         protected readonly MutableView view;
+        protected readonly ILogDispatcher LogDispatcher;
 
         protected ComponentTranslation(MutableView view)
         {
             this.view = view;
+            LogDispatcher = view.LogDispatcher;
             translationHandle = GetNextHandle();
             HandleToTranslation.Add(translationHandle, this);
         }
@@ -39,30 +41,6 @@ namespace Improbable.Gdk.Core.Components
             {
                 HandleToTranslation.Remove(translationHandle);
             }
-        }
-
-        protected static class TranslationErrors
-        {
-            public const string OpReceivedButNoEntity =
-                "Received {0} with EntityId {1}, but there is no entity associated with that EntityId.";
-
-            public const string CannotFindEntityForCommandRequest =
-                "Cannot find entity {0} locally to receive command request {1}.";
-
-            public const string CannotFindEntityForCommandResponse =
-                "Cannot find entity {0} locally to receive command response for {1}.";
-
-            public const string CannotFindEntityForWorldCommandResponse =
-                "Cannot find entity {0} locally to receive world command response for {1}.";
-
-            public const string RequestDoesNotExist =
-                "Cannot find request with ID {0}, response type {1}.";
-
-            public const string ComponentAlreadyAdded =
-                "Received ComponentAdded op for {0} on entity {1}, but have already received one.";
-
-            public const string ComponentAlreadyRemoved =
-                "Received ComponentRemoved op for {0} on entity {1}, but have already received one.";
         }
 
         public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =

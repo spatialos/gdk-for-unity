@@ -62,7 +62,8 @@ namespace Improbable.Gdk.CodeGenerator
 
             foreach (var processedSchema in schemaProcessor.ProcessedSchemaFiles)
             {
-                var job = new SingleGenerationJob(options.NativeOutputDirectory, processedSchema, fileSystem, globalEnumSet);
+                var job = new SingleGenerationJob(options.NativeOutputDirectory, processedSchema, fileSystem,
+                    globalEnumSet);
                 job.Run();
             }
 

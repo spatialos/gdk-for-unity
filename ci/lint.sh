@@ -17,24 +17,51 @@ if [ $? -ne 0 ]; then
 fi
 set -e
 
-ci/codegen.sh
+spatial codegen
+
+# Ensure that all dependencies are present for Resharper.
+dotnet restore code_generator/GdkCodeGenerator.sln
+dotnet restore tools/Tools.sln
 
 markStartOfBlock "Generating Solution Files"
+
 PROJECT_DIR="$(pwd)"
 touch "workers/unity/unity.sln"
-"${UNITY_EXE}" -projectPath "${PROJECT_DIR}/workers/unity" -batchmode -quit
+pushd "workers/unity"
+  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
+    -projectPath "${PROJECT_DIR}/workers/unity" \
+    -batchmode \
+    -quit
+popd
+
 markEndOfBlock "Generating Solution Files"
 
 markStartOfBlock "Linting tools"
-${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings ./tools/Tools.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  tools/Tools.sln
+
 markEndOfBlock "Linting tools"
 
 markStartOfBlock "Linting GDK Code Generator"
-${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings --exclude=/Generated/**/* ./code_generator/GdkCodeGenerator.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  --exclude=Generated/**/* \
+  --exclude=Improbable.TextTemplating/**/* \
+  --exclude=Mono.TextTemplating/**/* \
+  code_generator/GdkCodeGenerator.sln
+
 markEndOfBlock "Linting GDK Code Generator"
 
 markStartOfBlock "Linting Unity GDK"
-${LINTER} --profile="IW Code Cleanup" --settings=./ReSharper2017.DotSettings --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* ./workers/unity/unity.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* \
+  workers/unity/unity.sln
+
 markEndOfBlock "Linting Unity GDK"
 
 markEndOfBlock "$0"

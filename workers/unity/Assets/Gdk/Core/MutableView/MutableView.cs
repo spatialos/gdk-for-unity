@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Core
     {
         public const long WorkerEntityId = -1337;
         public Entity WorkerEntity { get; }
+        public ILogDispatcher LogDispatcher { get; }
 
         public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
             new Dictionary<int, ComponentTranslation>();
@@ -33,11 +34,14 @@ namespace Improbable.Gdk.Core
 
         private readonly Dictionary<long, Entity> entityMapping;
 
-        public MutableView(World world)
+        public const string UnexpectedAuthorityChangeError = "Unexpected state transition during authority change.";
+
+        public MutableView(World world, ILogDispatcher logDispatcher)
         {
             entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             gameObjectManager = new GameObjectManager();
+            LogDispatcher = logDispatcher;
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
@@ -69,7 +73,10 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Entity not found when attempting to add a component to an entity.")
+                    .WithField(IdType.EntityId.ToString(), entityId)
+                    .WithField("OpName", typeof(T).Name));
                 return;
             }
 
@@ -91,7 +98,10 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Entity not found when attemting to remove a component from an entity.")
+                    .WithField(IdType.EntityId.ToString(), entityId)
+                    .WithField("OpName", typeof(T).Name));
             }
 
             RemoveComponent<T>(entity);
@@ -144,7 +154,10 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Entity not found when attempting to set component object.")
+                    .WithField(IdType.EntityId.ToString(), entityId)
+                    .WithField("OpName", typeof(T).Name));
                 return;
             }
 
@@ -206,7 +219,9 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.NoCorrespondingEntityForEntityId, typeof(T).Name, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during authority change.")
+                    .WithField(IdType.EntityId.ToString(), entityId)
+                    .WithField("OpName", typeof(T).Name));
                 return;
             }
 
@@ -215,8 +230,10 @@ namespace Improbable.Gdk.Core
                 case Authority.Authoritative:
                     if (!HasComponent<NotAuthoritative<T>>(entity))
                     {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.Authoritative,
-                            Authority.NotAuthoritative);
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnexpectedAuthorityChangeError)
+                            .WithField("Type", typeof(Authority))
+                            .WithField("NewState", Authority.Authoritative)
+                            .WithField("OldState", Authority.NotAuthoritative));
                         return;
                     }
 
@@ -226,8 +243,10 @@ namespace Improbable.Gdk.Core
                 case Authority.AuthorityLossImminent:
                     if (!HasComponent<Authoritative<T>>(entity))
                     {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.AuthorityLossImminent,
-                            Authority.Authoritative);
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnexpectedAuthorityChangeError)
+                            .WithField("Type", typeof(Authority))
+                            .WithField("NewState", Authority.AuthorityLossImminent)
+                            .WithField("OldState", Authority.Authoritative));
                         return;
                     }
 
@@ -236,8 +255,10 @@ namespace Improbable.Gdk.Core
                 case Authority.NotAuthoritative:
                     if (!HasComponent<Authoritative<T>>(entity))
                     {
-                        Debug.LogErrorFormat(Errors.IncorrectAuthorityTransition, Authority.NotAuthoritative,
-                            Authority.Authoritative);
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnexpectedAuthorityChangeError)
+                            .WithField("Type", typeof(Authority))
+                            .WithField("NewState", Authority.NotAuthoritative)
+                            .WithField("OldState", Authority.Authoritative));
                         return;
                     }
 
@@ -272,7 +293,9 @@ namespace Improbable.Gdk.Core
         {
             if (entityMapping.ContainsKey(entityId))
             {
-                Debug.LogErrorFormat(Errors.AddEntityButEntityIdAlreadyExists, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Tried to add an entity but there is already an entity associated with that EntityId.")
+                    .WithField(IdType.EntityId.ToString(), entityId));
                 return;
             }
 
@@ -292,7 +315,9 @@ namespace Improbable.Gdk.Core
             Entity entity;
             if (!TryGetEntity(entityId, out entity))
             {
-                Debug.LogErrorFormat(Errors.DeleteNonExistentEntity, entityId);
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Tried to delete an entity but there is already an entity associated with that EntityId.")
+                    .WithField(IdType.EntityId.ToString(), entityId));
                 return;
             }
 
@@ -327,21 +352,6 @@ namespace Improbable.Gdk.Core
             var messageBuffer = GetOrCreateComponent(entity, pool);
             messageBuffer.Buffer.Add(message);
             SetComponentObject(entity, messageBuffer);
-        }
-
-        private static class Errors
-        {
-            public static string NoCorrespondingEntityForEntityId =
-                "Received {0} for EntityId {1}, but there is no entity associated with that EntityId.";
-
-            public const string IncorrectAuthorityTransition =
-                "Unexpected authority transition to state: {0}. Expected previous state: {1}.";
-
-            public const string AddEntityButEntityIdAlreadyExists =
-                "Tried to add an entity with EntityId {0}, but there is already an entity associated with that EntityId.";
-
-            public const string DeleteNonExistentEntity =
-                "Tried to delete an entity with EntityId {0}, but there is no entity associated with that EntityId";
         }
     }
 }

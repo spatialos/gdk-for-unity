@@ -1,42 +1,9 @@
 #!/usr/bin/env bash
-
 error() {
    local SOURCE_FILE=$1
    local LINE_NO=$2
    echo "ERROR: ${SOURCE_FILE}(${LINE_NO}):"
 }
-trap 'error "${BASH_SOURCE}" "${LINENO}"' ERR
-
-UNITY_VERSION=$(cat "workers/unity/ProjectSettings/ProjectVersion.txt" | grep "m_EditorVersion" | cut -d ' ' -f2)
-
-function isUnityHomeSet() {
-  UNITY_HOME=${UNITY_HOME:-}
-  [ -n "$UNITY_HOME" ]
-}
-
-function isUnityImprobablePathPresent() {
-  UNITY_DIR="C:/Unity/Unity-${UNITY_VERSION}/"
-  [ -d "$UNITY_DIR" ]
-}
-
-function getUnityDir() {
-  if isUnityHomeSet; then
-    echo "${UNITY_HOME}"
-  elif isUnityImprobablePathPresent; then
-    echo "${UNITY_DIR}"
-  else
-    echo "ERROR: Unity was not found in the default location. Please set the UNITY_HOME environment variable to where Unity ${UNITY_VERSION} is installed." >&2
-    exit 1
-  fi
-}
-
-UNITY_DIR="$(getUnityDir)"
-export UNITY_HOME="${UNITY_DIR}"
-export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
-
-export LINTER="cleanupcode.exe"
-
-export MSBUILD="$(powershell  –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
 
 function unpackTo() {
   local SOURCE=$1
@@ -46,10 +13,18 @@ function unpackTo() {
   unzip -o -q "${SOURCE}" -d "${TARGET}"
 }
 
-export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
+# Print the .NETCore version to aid debugging,
+# as well as ensuring that later calls to the tool don't print the welcome message on first run.
+dotnet --version
+
+export LINTER="cleanupcode.exe"
 
 DOTNET_VERSION="$(dotnet --version)"
 
 export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
 
 PINNED_CORE_SDK_VERSION="$(cat core-sdk.version)"
+
+pushd workers/unity
+    UNITY_DIR="$(dotnet run -p ../../tools/FindUnity/FindUnity.csproj)"
+popd

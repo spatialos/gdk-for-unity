@@ -115,7 +115,9 @@ namespace <#= qualifiedNamespace #>
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
 <# if(fieldDetailsList.Count > 0) { #>
@@ -145,7 +147,10 @@ namespace <#= qualifiedNamespace #>
                 }
                 else
                 {
-                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyAdded, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Received ComponentAdded but have already received one for this entity.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", typeof(<#= componentDetails.TypeName #>).Name));
                 }
             }
 
@@ -154,7 +159,9 @@ namespace <#= qualifiedNamespace #>
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
 
@@ -222,7 +229,9 @@ namespace <#= qualifiedNamespace #>
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.OpReceivedButNoEntity, op.GetType().Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", op.GetType().Name));
                     return;
                 }
 
@@ -238,7 +247,10 @@ namespace <#= qualifiedNamespace #>
                 }
                 else
                 {
-                    Debug.LogErrorFormat(TranslationErrors.ComponentAlreadyRemoved, typeof(<#= componentDetails.TypeName #>).Name, op.EntityId.Id);
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Received ComponentRemoved but have already received one for this entity.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", typeof(<#= componentDetails.TypeName #>).Name));
                 }
             }
 
@@ -341,8 +353,9 @@ namespace <#= qualifiedNamespace #>
                 Unity.Entities.Entity entity;
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandRequest, op.EntityId.Id,
-                        "<#= commandDetails.CommandName #>");
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", "<#= commandDetails.CommandName #>"));
                     return;
                 }
 
@@ -359,8 +372,9 @@ namespace <#= qualifiedNamespace #>
                 RequestContext requestContext;
                 if (!RequestIdToRequestContext.TryGetValue(requestId, out requestContext))
                 {
-                    Debug.LogErrorFormat(TranslationErrors.CannotFindEntityForCommandResponse, op.EntityId.Id,
-                        "<#= commandDetails.CommandName #>");
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandResponse.")
+                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
+                        .WithField("OpName", "<#= commandDetails.CommandName #>"));
                     return;
                 }
 
