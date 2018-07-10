@@ -10,6 +10,16 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
+function unpackTo() {
+  local SOURCE=$1
+  local TARGET=$2
+
+  mkdir -p "${TARGET}"
+  unzip -o -q "${SOURCE}" -d "${TARGET}"
+}
+
+PINNED_CORE_SDK_VERSION="$(cat core-sdk.version)"
+
 CORE_SDK_DIR="$(pwd)/build/core_sdk"
 UNITY_PROJECT_DIR="$(pwd)/workers/unity"
 NATIVE_DEPENDENCIES_PATH="${UNITY_PROJECT_DIR}/Assets/Plugins/Improbable/Core"
@@ -36,3 +46,7 @@ unpackTo "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"       "${NATIVE_D
 unpackTo "${CORE_SDK_DIR}/worker_sdk/csharp"                         "${MANAGED_DEPENDENCIES_PATH}"
 unpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "tools/schema_compiler/win"
 unpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "schema_standard_library"
+
+# Remove unused tools and files.
+rm tools/schema_compiler/win/protoc.exe
+rm -rf tools/schema_compiler/win/proto

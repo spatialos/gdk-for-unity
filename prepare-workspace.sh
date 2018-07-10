@@ -5,4 +5,4 @@ cd "$(dirname "$0")/"
 
 cp hooks/* .git/hooks/
 
-ci/build.sh
+ci/codegen.sh

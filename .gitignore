@@ -41,4 +41,4 @@ workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated/**/*.meta
 # Include some example generated code so that changes to codegen templates are easier to track
 /workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated/improbable/gdk/tests/*.cs
 
-
+code_generator/GdkCodeGenerator/Generated/
