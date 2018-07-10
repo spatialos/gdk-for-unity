@@ -41,5 +41,10 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Creating entities](content/create-entity.md)
 * [Entity checkout process](content/entity-checkout-process.md)
 * [The code generator](content/code-generator.md)
+* Testing
+  * [Testing overview](content/testing/testing-overview.md)
+  * [Testing guidelines](content/testing/testing-guidelines.md)
+  * [Running tests](content/testing/running-tests.md)
+  * [Writing a new test](content/testing/writing-a-new-test.md)
 
 &copy; 2018 Improbable
