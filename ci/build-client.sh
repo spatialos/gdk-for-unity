@@ -24,11 +24,10 @@ pushd "${UNITY_PROJECT_DIR}"
     -projectPath "${UNITY_PROJECT_DIR}" \
         -batchmode \
         -quit \
-        -logfile "$(pwd)/build/build_logs/UnityClientBuild.log" \
+        -logfile "$(pwd)/../../build/build_logs/UnityClientBuild.log" \
         -executeMethod "Improbable.Gdk.Legacy.BuildSystem.WorkerBuilder.Build" \
         +buildWorkerTypes "UnityClient" \
         +buildTarget "${TARGET}"
-
 popd
 
 markEndOfBlock "Building UnityClient"
