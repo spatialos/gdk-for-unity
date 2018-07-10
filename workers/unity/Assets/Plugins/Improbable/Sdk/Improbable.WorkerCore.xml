@@ -11,20 +11,6 @@
             logic of creating DeepCopier objects all in the same place.
             </summary>
         </member>
-        <member name="T:Improbable.Collections.List`1">
-            <summary>
-            This class is the same as <c>System.Collections.Generic.List</c>, except that it is
-            augmented with proper structural equality and <c>GetHashCode</c>.
-            </summary>
-        </member>
-        <member name="M:Improbable.Collections.List`1.DeepCopy">
-             <summary>
-             Returns a deep copy of this list. Checks if the types in the list are either
-             primitive or implement the <c>IDeepCopyable</c> interface, then performs a
-             deep copy of the list if they are and throws an invalid operation exception
-             otherwise. If the list is empty it will return a new list.
-            </summary>
-        </member>
         <member name="T:Improbable.Collections.Map`2">
             <summary>
             Very similar to the usual C# Dictionary. However: iteration order is guaranteed to be
@@ -233,7 +219,7 @@
             </summary>
             <typeparam name="T">The type of object the future returns.</typeparam>
         </member>
-        <member name="M:Improbable.Worker.Future`1.#ctor(Improbable.Worker.Internal.CptrHandle,System.Func{Improbable.Collections.Option{System.UInt32},Improbable.Collections.Option{`0}})">
+        <member name="M:Improbable.Worker.Future`1.#ctor(Improbable.Worker.Internal.CptrHandle,System.Func{System.Nullable{System.UInt32},Improbable.Collections.Option{`0}})">
             <summary>
             Objects of this class can be created by the SDK only.
             </summary>
@@ -654,7 +640,7 @@
             Returns the attributes associated with this worker at runtime.
             </summary>
         </member>
-        <member name="M:Improbable.Worker.Core.Connection.SendLogMessage(Improbable.Worker.LogLevel,System.String,System.String,Improbable.Collections.Option{Improbable.Worker.EntityId})">
+        <member name="M:Improbable.Worker.Core.Connection.SendLogMessage(Improbable.Worker.LogLevel,System.String,System.String,System.Nullable{Improbable.Worker.EntityId})">
             <summary>
             Sends a log message for the worker to SpatialOS.
             </summary>
@@ -667,7 +653,7 @@
             Metrics parameter.
             </summary>
         </member>
-        <member name="M:Improbable.Worker.Core.Connection.SendReserveEntityIdsRequest(System.UInt32,Improbable.Collections.Option{System.UInt32})">
+        <member name="M:Improbable.Worker.Core.Connection.SendReserveEntityIdsRequest(System.UInt32,System.Nullable{System.UInt32})">
             <summary>
             Requests SpatialOS to reserve a batch of entity IDs. Returns a request ID, which can be
             used to identify a response to the request via the Dispatcher.OnReserveEntityIdsResponse
