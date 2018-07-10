@@ -13,6 +13,3 @@ export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
 pushd workers/unity
     UNITY_DIR="$(dotnet run -p ../../tools/FindUnity/FindUnity.csproj)"
 popd
-
-export UNITY_HOME="${UNITY_DIR}"
-export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
