@@ -29,10 +29,6 @@ export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
 
 export LINTER="cleanupcode.exe"
 
-export MSBUILD="$(powershell  –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
-
-export NUNIT3_CONSOLE="tools/DocsLinter/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
-
 DOTNET_VERSION="$(dotnet --version)"
 
 export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
