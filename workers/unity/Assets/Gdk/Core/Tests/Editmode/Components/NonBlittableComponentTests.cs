@@ -1,4 +1,4 @@
-using Generated.Improbable.TestSchema.Nonblittable;
+using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core;
 using NUnit.Framework;
 using UnityEngine;

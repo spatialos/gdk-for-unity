@@ -24,16 +24,12 @@
           ]
         },
         {
-          "name": "Build GDK Codegenerator",
-          "command": "bash",
-          "arguments": [
-            "../../code_generator/build-code-generator.sh"
-          ]
-        },
-        {
           "name": "GDK Codegen",
-          "command": "../../bin/code_generator/GdkCodeGenerator.exe",
+          "command": "dotnet",
           "arguments": [
+              "run",
+              "-p",
+              "../../code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj",
               "--json-dir=./improbable/json/usr",
               "--output-dir=./Assets/Generated/"
           ]

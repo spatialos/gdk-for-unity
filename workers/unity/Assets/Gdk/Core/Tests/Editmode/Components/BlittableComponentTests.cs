@@ -1,4 +1,4 @@
-using Generated.Improbable.TestSchema.Blittable;
+using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core;
 using NUnit.Framework;
 

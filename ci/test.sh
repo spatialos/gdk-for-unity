@@ -24,14 +24,14 @@ markEndOfBlock "Setup variables"
 
 markStartOfBlock "Tools Testing"
 
-"${NUNIT3_CONSOLE}" tools/DocsLinter/DocsLinter.csproj --result=${TOOLS_TEST_RESULTS_FILES}
+dotnet test --logger:"nunit;LogFilePath=${TOOLS_TEST_RESULTS_FILES}" tools/DocsLinter/DocsLinter.csproj
 TOOLS_TEST_RESULT=$?
 
 markEndOfBlock "Tools Testing"
 
 markStartOfBlock "Code Generator Testing"
 
-"${NUNIT3_CONSOLE}" code_generator/GdkCodeGenerator.sln --result=${CODE_GENERATOR_TEST_RESULTS_FILE}
+dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator Testing"

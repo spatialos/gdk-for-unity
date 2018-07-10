@@ -1,69 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ 
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A8D920E3-1239-4280-9FD8-CEB5D013DE45}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DocsLinter</RootNamespace>
-    <AssemblyName>DocsLinter</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <StartupObject>DocsLinter.Program</StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+ 
   <ItemGroup>
-    <Reference Include="Markdig, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('packages')">packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
-      <HintPath Condition="Exists('..\packages')">..\packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.4.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath Condition="Exists('packages')">packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
-      <HintPath Condition="Exists('..\packages')">..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="NUnit" Version="3.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="1.1.0" />
+    <PackageReference Include="Markdig" Version="0.15.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DotenvLoader.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="SimplifiedMarkdownDoc.cs" />
-    <Compile Include="Tests\LinkCheckingTests.cs" />
-    <Compile Include="Tests\SimplifiedMarkdownDocTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <ItemGroup>
-      <ReleaseBuildFiles Include="bin\Release\*.exe" />
-      <ReleaseBuildFiles Include="bin\Release\*.dll" />
-    </ItemGroup>
-    <Copy SourceFiles="@(ReleaseBuildFiles)" DestinationFolder="../../bin/DocsLinter" />
-  </Target>
+ 
 </Project>
