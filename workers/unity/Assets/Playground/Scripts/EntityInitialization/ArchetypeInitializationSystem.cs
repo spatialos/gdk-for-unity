@@ -48,7 +48,10 @@ namespace Playground
 
             if (!(worker is UnityClient) && !(worker is UnityGameLogic))
             {
-                Debug.LogErrorFormat(Errors.UnknownWorkerType, World.Name);
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Worker type isn't supported by the ArchetypeInitializationSystem.")
+                    .WithField("WorldName", World.Name)
+                    .WithField("WorkerType", worker));
             }
 
             workerType = worker.GetWorkerType;
@@ -65,7 +68,10 @@ namespace Playground
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
                     .TryGetValue(archetypeName, out componentTypesToAdd))
                 {
-                    Debug.LogErrorFormat(Errors.MappingNotFound, workerType, archetypeName);
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "No corresponding archetype mapping found.")
+                        .WithField("ArchetypeName", archetypeName)
+                        .WithField("WorkerType", workerType));
                     continue;
                 }
 
@@ -101,15 +107,6 @@ namespace Playground
             }
 
             viewCommandBuffer.FlushBuffer(view);
-        }
-
-        internal static class Errors
-        {
-            public const string MappingNotFound =
-                "No corresponding archetype mapping found for workerType {0}, key {1}.";
-
-            public const string UnknownWorkerType =
-                "Unknown workerType for world name {0}.";
         }
     }
 }

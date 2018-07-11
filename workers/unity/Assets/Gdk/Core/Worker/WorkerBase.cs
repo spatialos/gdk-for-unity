@@ -21,18 +21,22 @@ namespace Improbable.Gdk.Core
 
         public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
 
-        protected WorkerBase(string workerId, Vector3 origin)
+        protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
+        {
+        }
+
+        protected WorkerBase(string workerId, Vector3 origin, ILogDispatcher loggingDispatcher)
         {
             if (string.IsNullOrEmpty(workerId))
             {
-                throw new ArgumentException("WorkerId is null or empty.");
+                throw new ArgumentException("WorkerId is null or empty.", nameof(workerId));
             }
 
             WorkerId = workerId;
             World = new World(WorkerId);
             WorkerRegistry.SetWorkerForWorld(this);
 
-            View = new MutableView(World);
+            View = new MutableView(World, loggingDispatcher);
             Origin = origin;
 
             EntityGameObjectLinker = new EntityGameObjectLinker(World);
@@ -45,7 +49,7 @@ namespace Improbable.Gdk.Core
             World.Dispose();
         }
 
-        public bool Connect(ConnectionConfig config)
+        public void Connect(ConnectionConfig config)
         {
             if (config is ReceptionistConfig)
             {
@@ -55,10 +59,10 @@ namespace Improbable.Gdk.Core
             {
                 Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig) config, GetWorkerType);
             }
-
-            if (Connection == null)
+            else
             {
-                return false;
+                throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
+                    "ReceptionistConfig and LocatorConfig are supported.");
             }
 
             Application.quitting += () =>
@@ -66,8 +70,8 @@ namespace Improbable.Gdk.Core
                 ConnectionUtility.Disconnect(Connection);
                 Connection = null;
             };
+
             View.Connect();
-            return true;
         }
 
         public virtual void RegisterSystems()

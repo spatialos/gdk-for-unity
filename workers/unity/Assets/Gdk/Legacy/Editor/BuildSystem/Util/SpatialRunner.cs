@@ -103,12 +103,6 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
                 startInfo.EnvironmentVariables["PATH"] = newPathEnv;
             }
 
-            // Ensure UNITY_HOME reflects the running instance of Unity.
-            // EditorApplication.applicationContentsPath returns "<path>/Editor/Data", so strip the upper two directories.
-            var combined = Path.Combine(EditorApplication.applicationContentsPath, "..");
-            var applicationPath = Path.GetFullPath(Path.Combine(combined, ".."));
-            startInfo.EnvironmentVariables["UNITY_HOME"] = applicationPath;
-
             try
             {
                 return Process.Start(startInfo);

@@ -1,4 +1,5 @@
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -16,7 +17,12 @@ namespace Improbable.Gdk.Core
             worker = WorkerRegistry.GetWorkerForWorld(World);
 
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
-            spatialOSSendSystem.RegisterCustomReplicationSystem(typeof(T));
+            if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
+            {
+                worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "Custom Replication System for this component already exists.")
+                    .WithField("ComponentType", typeof(T)));
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
         {
             if (WorldToWorker.ContainsKey(worker.World))
             {
-                throw new Exception(string.Format("A worker is already stored for world {0}", worker.World.Name));
+                throw new ArgumentException($"A worker is already stored for world '{worker.World.Name}'");
             }
 
             WorldToWorker[worker.World] = worker;
@@ -65,8 +65,7 @@ namespace Improbable.Gdk.Core
             Func<string, Vector3, WorkerBase> createWorker;
             if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out createWorker))
             {
-                Debug.LogErrorFormat("No worker found for worker type {0}", workerType);
-                return null;
+                throw new ArgumentException("No worker found for worker type '{0}'", workerType);
             }
 
             return createWorker(workerId, origin);

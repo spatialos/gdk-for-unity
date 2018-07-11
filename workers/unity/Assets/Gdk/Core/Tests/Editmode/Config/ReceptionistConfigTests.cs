@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var config = GetDefaultWorkingConfig();
             config.ReceptionistHost = "";
 
-            var exception = Assert.Throws<System.ArgumentException>(() => config.Validate());
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
             Assert.IsTrue(exception.Message.Contains("receptionistHost"));
         }
 

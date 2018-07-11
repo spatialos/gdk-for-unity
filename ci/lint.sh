@@ -19,28 +19,49 @@ set -e
 
 spatial codegen
 
-pushd "tools/DocsLinter"
-    "../../bin/ImpNuget/ImpNuget.exe"
+# Ensure that all dependencies are present for Resharper.
+dotnet restore code_generator/GdkCodeGenerator.sln
+dotnet restore tools/Tools.sln
+
+markStartOfBlock "Generating Solution Files"
+
+PROJECT_DIR="$(pwd)"
+touch "workers/unity/unity.sln"
+pushd "workers/unity"
+  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
+    -projectPath "${PROJECT_DIR}/workers/unity" \
+    -batchmode \
+    -quit
 popd
 
-if [ ! -f workers/unity/Assembly-CSharp.csproj ]; then
-    markStartOfBlock "Generating Solution Files"
-    PROJECT_DIR="$(pwd)"
-    touch "workers/unity/unity.sln"
-    eval "${UNITY_EXE} -projectPath \"${PROJECT_DIR}\"/workers/unity -batchmode -quit"
-    markEndOfBlock "Generating Solution Files"
-fi
+markEndOfBlock "Generating Solution Files"
 
 markStartOfBlock "Linting tools"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings ./tools/Tools.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  tools/Tools.sln
+
 markEndOfBlock "Linting tools"
 
 markStartOfBlock "Linting GDK Code Generator"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Generated/**/* ./code_generator/GdkCodeGenerator.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  --exclude=Generated/**/* \
+  --exclude=Improbable.TextTemplating/**/* \
+  --exclude=Mono.TextTemplating/**/* \
+  code_generator/GdkCodeGenerator.sln
+
 markEndOfBlock "Linting GDK Code Generator"
 
 markStartOfBlock "Linting Unity GDK"
-${LINTER} --profile="IW Code Cleanup" --settings=./workers/unity/ReSharper2017.DotSettings --exclude=/Assets/Generated/**/* --exlude=/Assets/improbable/**/* ./workers/unity/unity.sln
+
+${LINTER} --profile="IW Code Cleanup" \
+  --settings=ReSharper2017.DotSettings \
+  --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* \
+  workers/unity/unity.sln
+
 markEndOfBlock "Linting Unity GDK"
 
 markEndOfBlock "$0"

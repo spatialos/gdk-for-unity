@@ -1,15 +1,22 @@
-using Improbable.Collections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    /// Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
+    /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
         private MutableView view;
-        private ComponentGroup newlyAddedSpatialOSEntityComponentGroup;
-        private ComponentGroup onConnectedComponentGroup;
-        private ComponentGroup onDisconnectedComponentGroup;
+
+        private readonly List<Action> removeComponentActions = new List<Action>();
+        // Here to prevent adding an action for the same type multiple times
+        private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -19,10 +26,6 @@ namespace Improbable.Gdk.Core
             view = worker.View;
 
             GenerateComponentGroups();
-
-            newlyAddedSpatialOSEntityComponentGroup = GetComponentGroup(typeof(NewlyAddedSpatialOSEntity));
-            onConnectedComponentGroup = GetComponentGroup(typeof(OnConnected));
-            onDisconnectedComponentGroup = GetComponentGroup(typeof(OnDisconnected));
         }
 
         private void GenerateComponentGroups()
@@ -35,37 +38,72 @@ namespace Improbable.Gdk.Core
                     translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
                 }
             }
+
+            MethodInfo addRemoveComponentActionMethod =
+                typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+
+            // Find all components with the RemoveAtEndOfTick attribute
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
+                    {
+                        continue;
+                    }
+
+                    if (!typeof(IComponentData).IsAssignableFrom(type)
+                        && !typeof(ISharedComponentData).IsAssignableFrom(type))
+                    {
+                        continue;
+                    }
+
+                    if (typesToRemove.Contains(type))
+                    {
+                        continue;
+                    }
+
+                    typesToRemove.Add(type);
+                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                }
+            }
+        }
+
+        private void AddRemoveComponentAction<T>()
+        {
+            var componentGroup = GetComponentGroup(ComponentType.ReadOnly<T>());
+            removeComponentActions.Add(() =>
+            {
+                if (componentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var entityArray = componentGroup.GetEntityArray();
+                for (var i = 0; i < entityArray.Length; ++i)
+                {
+                    PostUpdateCommands.RemoveComponent<T>(entityArray[i]);
+                }
+            });
         }
 
         protected override void OnUpdate()
         {
             var commandBuffer = PostUpdateCommands;
 
+            // Clean generated components
             foreach (var translationUnit in view.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
 
-            var newlyCreatedEntities = newlyAddedSpatialOSEntityComponentGroup.GetEntityArray();
-            for (var i = 0; i < newlyCreatedEntities.Length; i++)
+            // Clean components with RemoveAtEndOfTick attribute
+            foreach (var removeComponentAction in removeComponentActions)
             {
-                var entity = newlyCreatedEntities[i];
-                commandBuffer.RemoveComponent<NewlyAddedSpatialOSEntity>(entity);
-            }
-
-            var onConnectedEntities = onConnectedComponentGroup.GetEntityArray();
-            for (var i = 0; i < onConnectedEntities.Length; i++)
-            {
-                var entity = onConnectedEntities[i];
-                commandBuffer.RemoveComponent<OnConnected>(entity);
-            }
-
-            var onDisconnectedEntities = onDisconnectedComponentGroup.GetEntityArray();
-            for (var i = 0; i < onDisconnectedEntities.Length; i++)
-            {
-                var entity = onDisconnectedEntities[i];
-                commandBuffer.RemoveComponent<OnDisconnected>(entity);
+                removeComponentAction();
             }
         }
     }
 }
+
