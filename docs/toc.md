@@ -1,4 +1,4 @@
-- <h3>[Unity GDK documentation]({{urlRoot}}/README.md)</h3>
+- <h3>[Unity GDK documentation]({{urlRoot}}/index.md)</h3>
 - <h3>Get started</h3>
     - [Installation and setup guide]({{urlRoot}}/setup-and-installing.md) 
 - <h3>Contents</h3>
