@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 using UnityEngine;
 
@@ -13,11 +16,18 @@ namespace Improbable.Gdk.Core
                 "Custom Replication System for type {0} already exists!";
         }
 
+        internal struct ComponentReplicator
+        {
+            public ComponentReplication ComponentReplication;
+            public ComponentGroup BasicReplicationGroup;
+            public List<ComponentGroup> CommandReplicationGroups;
+        }
+
         private WorkerBase worker;
         private MutableView view;
 
-        private readonly List<int> registeredReplicators = new List<int>();
-        private readonly List<int> commandSenders = new List<int>();
+
+        private readonly Dictionary<uint, ComponentReplicator> componentReplicators = new Dictionary<uint, ComponentReplicator>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -31,28 +41,32 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            foreach (var componentTranslatorPair in view.TranslationUnits)
+            var replicators = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentReplication).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+            foreach (var replicator in replicators)
             {
-                var componentIndex = componentTranslatorPair.Key;
-                var componentTranslator = componentTranslatorPair.Value;
+                var r = (ComponentReplication)Activator.CreateInstance(replicator, this);
+                var basicReplicationGroup = GetComponentGroup(r.BasicReplicationComponentTypes);
+                var commandReplicationGroup = r.CommandTypes.Select(commandType => GetComponentGroup(commandType)).ToList();
 
-                var replicationComponentGroup = GetComponentGroup(componentTranslator.ReplicationComponentTypes);
-                componentTranslator.ReplicationComponentGroup = replicationComponentGroup;
-
-                registeredReplicators.Add(componentIndex);
-                commandSenders.Add(componentIndex);
+                componentReplicators.Add(r.ComponentId, new ComponentReplicator {
+                    ComponentReplication = r,
+                    BasicReplicationGroup = basicReplicationGroup,
+                    CommandReplicationGroups = commandReplicationGroup,
+                });
             }
         }
 
-        public void RegisterCustomReplicationSystem(ComponentType type)
+        public void RegisterCustomReplicationSystem(uint componentId)
         {
-            if (!registeredReplicators.Contains(type.TypeIndex))
+            if (!componentReplicators.ContainsKey(componentId))
             {
-                Debug.LogWarningFormat(Warnings.CustomReplicationSystemAlreadyExists, type);
+                Debug.LogWarningFormat(Warnings.CustomReplicationSystemAlreadyExists, componentId);
                 return;
             }
 
-            registeredReplicators.Remove(type.TypeIndex);
+            componentReplicators.Remove(componentId);
         }
 
         protected override void OnUpdate()
@@ -63,15 +77,11 @@ namespace Improbable.Gdk.Core
             }
 
             var connection = worker.Connection;
-
-            foreach (var componentTypeIndex in registeredReplicators)
+            foreach (var replicator in componentReplicators)
             {
-                view.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
-            }
-
-            foreach (var componentTypeIndex in commandSenders)
-            {
-                view.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                var r = replicator.Value;
+                r.ComponentReplication.ExecuteReplication(r.BasicReplicationGroup, connection);
+                r.ComponentReplication.SendCommands(r.CommandReplicationGroups, connection);
             }
         }
     }

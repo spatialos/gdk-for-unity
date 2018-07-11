@@ -1,4 +1,7 @@
-using Improbable.Collections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -10,6 +13,8 @@ namespace Improbable.Gdk.Core
         private ComponentGroup newlyAddedSpatialOSEntityComponentGroup;
         private ComponentGroup onConnectedComponentGroup;
         private ComponentGroup onDisconnectedComponentGroup;
+
+        private List<ComponentCleanupData> cleaners = new List<ComponentCleanupData>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -27,13 +32,19 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            foreach (var translationUnit in view.TranslationUnits.Values)
+            var cleanupers = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentCleanup).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+            foreach (var cleanuper in cleanupers)
             {
-                translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
-                foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
+                var c = (ComponentCleanup) Activator.CreateInstance(cleanuper, this);
+                var cGroups = c.CleanUpComponentTypes.Select(type => GetComponentGroup(type)).ToList();
+
+                cleaners.Add(new ComponentCleanupData
                 {
-                    translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
-                }
+                    cleanupObj = c,
+                    cleanupGroups = cGroups
+                });
             }
         }
 
@@ -41,9 +52,9 @@ namespace Improbable.Gdk.Core
         {
             var commandBuffer = PostUpdateCommands;
 
-            foreach (var translationUnit in view.TranslationUnits.Values)
+            foreach (var cleaner in cleaners)
             {
-                translationUnit.CleanUpComponents(ref commandBuffer);
+                cleaner.cleanupObj.CleanupComponents(cleaner.cleanupGroups, ref commandBuffer);
             }
 
             var newlyCreatedEntities = newlyAddedSpatialOSEntityComponentGroup.GetEntityArray();
@@ -66,6 +77,12 @@ namespace Improbable.Gdk.Core
                 var entity = onDisconnectedEntities[i];
                 commandBuffer.RemoveComponent<OnDisconnected>(entity);
             }
+        }
+
+        private struct ComponentCleanupData
+        {
+            public ComponentCleanup cleanupObj;
+            public List<ComponentGroup> cleanupGroups;
         }
     }
 }
