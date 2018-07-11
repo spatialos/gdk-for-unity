@@ -2,17 +2,14 @@
 
 -----
 
-
-## Sending and receiving events
-
+# Sending and receiving events
 Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
 Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event.
 
 > For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/13.0/shared/design/object-interaction#events) in the SpatialOS documentation.
 
-### Sending events
-
+## Sending events
 A worker instance can send an event using a `EventSender<T>` ECS component (where `T` is the SpatialOS component that the event is defined in).
 
 For each SpatialOS component containing an event, the Unity GDK automatically attaches an `EventSender<T>` ECS component when (and only when) the worker instance has authority over the SpatialOS component `T`.
@@ -79,10 +76,7 @@ public class SendChangeColorEvent : ComponentSystem
 }
 ```
 
-### Receiving events
-
-<!-- TODO explain that events are propagated? -->
-
+## Receiving events
 When a worker instance receives an event, this is represented with reactive ECS components. 
 
 For SpatialOS entity that the event was sent on, the Unity GDK attaches an `EventsReceived<T>` component to the corresponding ECS entity (where `T` is the generated type associated with the event). The ECS component holds a list of `T`, each one being an event.
@@ -122,4 +116,4 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 ```
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="../footer-feedback.md")%>

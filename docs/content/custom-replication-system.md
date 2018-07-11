@@ -2,22 +2,17 @@
 
 -----
 
-## Writing a custom replication system
-
-### What the Unity GDK's replication system does
-
+# Writing a custom replication system
+## What the Unity GDK's replication system does
 By default, the Unity GDK automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
-#### For properties
-
+### For properties
 Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the Unity GDK sets `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the Unity GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
-#### For events
-
+### For events
 When a worker sends a SpatialOS event, the Unity GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
 
-### Writing your own replication system
-
+## Writing your own replication system
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
 * Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T`.
@@ -39,8 +34,7 @@ If some ECS components need more complex replication logic, you can create custo
     World.GetOrCreateManager<TransformSendSystem>();
     ```
 
-### Examples
-
+## Examples
 Here's an example of a custom replication system for a `Transform` component:
 
 ```csharp
@@ -139,4 +133,4 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 ```
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="../footer-feedback.md")%>

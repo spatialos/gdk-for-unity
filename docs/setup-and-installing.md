@@ -143,4 +143,4 @@ Currently, you can try this out using the `Playground`.
     1. Once you’ve finished playing, click **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="footer-feedback.md")%>

@@ -2,13 +2,10 @@
 
 -----
 
-
-## Component Data
-
+# Components and component updates
 SpatialOS components are generated from `.schema` files into components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/13.0/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-### Overview
-
+## Overview
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each [blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types) SpatialOS component.
 A `class`, which extends `UnityEngine.Component` and implements `Improbable.Gdk.Core.ISpatialComponentData` is generated for each non-blittable SpatialOS component.
@@ -18,7 +15,7 @@ It will **Not** contain any fields or methods pertaining to [commands]({{urlRoot
 
 For example, the following component contains only blittable fields, so an `IComponentData` will be generated, similar to the example below.
 
-Schemalang
+Schemalang:
 
 ```
 component Blittable {
@@ -27,9 +24,9 @@ component Blittable {
 }
 ```
 
-Generated component
+Generated component:
 
-```	csharp
+```csharp
 struct SpatialOSBlittable : IComponentData, ISpatialComponentData
 {
   public int Value;
@@ -38,7 +35,7 @@ struct SpatialOSBlittable : IComponentData, ISpatialComponentData
 
 However the following component contains non-blittable fields, so a `Component` will be generated, similar to the example below.
 
-Schemalang
+Schemalang:
 
 ```
 component NonBlittableComponent {
@@ -49,7 +46,7 @@ component NonBlittableComponent {
 }
 ```
 
-Generated component
+Generated component:
 
 ```csharp
 class SpatialOSNonBlittable : Component, ISpatialComponentData
@@ -60,8 +57,7 @@ class SpatialOSNonBlittable : Component, ISpatialComponentData
 }
 ```
 
-### Reading and writing
-
+## Reading and writing
 When a SpatialOS entity is [checked out]({{urlRoot}}/content/entity-checkout-process.md), the generated components will be automatically added to the corresponding ECS entity. 
 
 A component's value can be read by injecting that component into a system, just like any other ECS component.
@@ -99,13 +95,12 @@ public class ChangeComponentFieldSystem : ComponentSystem
 }
 ```
 
-### Updates
+## Updates
 When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/reactive-components.md).
 
+## Generation details
 
-### Generation details
-
-#### Primitive types
+### Primitive types
 Each primitive type in schemalang corresponds to some type in the Unity GDK.
 
 | Schemalang type                | Unity GDK type      | Blittable |
@@ -122,7 +117,7 @@ Each primitive type in schemalang corresponds to some type in the Unity GDK.
 
 Note that, for the moment, schemalang `bool` corresponds to a Unity `bool1`.
 
-#### Collections 
+### Collections 
 Schemalang has 3 collection types:
 
 | Schemalang collection | Unity GDK collection                          | Blittable |
@@ -133,17 +128,20 @@ Schemalang has 3 collection types:
 
 Note that the Unity GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
-#### Custom types 
+### Custom types 
 For every custom data type in schema a `struct` will be generated.
 
-Schemalang
+Schemalang:
+
 ```
 type SomeData {
   int32 value = 1;
 }
 ```
-Generated C#
-```	csharp
+
+Generated C#:
+
+```csharp
 struct SomeData 
 {
   public int Value;
@@ -153,11 +151,12 @@ struct SomeData
 If the type contains a non-blittable field then that type is itself non-blittable. 
 Any component containing that type will then be non-blittable.
 
-#### Enums 
+### Enums 
 For every schemalang enum, a C# enum will be generated.
 Enums are blittable.
 
-Schemalang
+Schemalang:
+
 ```
 enum Color {
     YELLOW = 0;
@@ -165,9 +164,10 @@ enum Color {
     BLUE = 2;
     RED = 3;
 }
-
 ```
-Generated C#
+
+Generated C#:
+
 ```csharp 
 public enum Color : uint
 {
@@ -180,4 +180,4 @@ public enum Color : uint
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="../footer-feedback.md")%>

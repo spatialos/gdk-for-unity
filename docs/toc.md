@@ -6,9 +6,12 @@
     - [Sending and receiving events]({{urlRoot}}/content/events.md)
     - [Sending and receiving commands]({{urlRoot}}/content/commands.md)
     - [Receiving updates from SpatialOS: Reactive components]({{urlRoot}}/content/reactive-components.md)
-    - [Custom replication systems]({{urlRoot}}/content/custom-replication-system.md)
+    - [Writing a custom replication systems]({{urlRoot}}/content/custom-replication-system.md)
     - [Authority]({{urlRoot}}/content/authority.md)
     - [Creating entities]({{urlRoot}}/content/create-entity.md)
     - [Entity checkout process]({{urlRoot}}/content/entity-checkout-process.md)
     - [The code generator]({{urlRoot}}/content/code-generator.md)
     - [Temporary components]({{urlRoot}}/content/temporary-components.md)
+- <h3>Internal</h3>
+    - [Testing]({{urlRoot}}/content/testing/testing-systems.md)
+    - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards.md)

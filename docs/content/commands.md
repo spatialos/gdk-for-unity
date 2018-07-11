@@ -2,14 +2,12 @@
 
 -----
 
-## Sending and receiving commands
-
+# Sending and receiving commands
 Commands are SpatialOS's equivalent of remote procedure calls.
 
 > For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/13.0/shared/design/commands#component-commands) in the SpatialOS documentation.
 
-### Sending command requests
-
+## Sending command requests
 A worker instance can send a command using a `CommandRequestSender<T>` ECS component, where `T` is the SpatialOS component the command is defined in.
 
 Note that a worker instance _does not need_ authority over the relevant SpatialOS component to send commands to a SpatialOS entity.
@@ -89,8 +87,7 @@ This system runs on a client. It injects all SpatialOS entities in the client's 
 
 To send a `build_wall` command in a system, you need to inject `CommandRequestSender<Builder>` into the system like any other ECS component.
 
-### Responding to command requests
-
+## Responding to command requests
 When a worker instance receives a command request, the command request is represented with reactive ECS components. 
 
 The Unity GDK attaches a `CommandRequests<T>` ECS component to the specified ECS entity (where `T` implements `IIncomingCommandRequest`). `CommandRequests<T>` holds a list of `T`. The Unity GDK cleans it up at the end of the tick.
@@ -137,8 +134,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 `build_wall` command requests are on a `CommandRequests<BuildWallRequest>` ECS component. The worker instance should respond to the request using the `SendBuildWallResponse(BuildResponse buildResponse)` method on the request itself.
 
-### Receiving command responses
-
+## Receiving command responses
 Like requests, when an ECS entity receives a command response, the Unity GDK attaches a `CommandResponses<T>` ECS component to the ECS entity (where `T` implements `IIncomingCommandResponse`).
 
 The ECS entity that sent the request receives the response. The response object includes the payload of the response and the request payload that originally send the command. **This payload is null** when no payload is sent back.
@@ -184,11 +180,10 @@ public class BuildWallResponseHandler : ComponentSystem
 
 `build_wall` command responses are on a `CommandResponses<BuildWallResponse>` ECS component.
 
-### World commands
-
+## World commands
 World commands are RPCs to request specific things from the SpatialOS. 
 
-> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/13.0/shared/design/commands#world-commands)in the SpatialOS documentation.
+> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/13.0/shared/design/commands#world-commands) in the SpatialOS documentation.
 
 Every ECS entity has a `WorldCommandSender` ECS component for sending world commands. For each world command, there is a corresponding method to send the command and response object.
 
@@ -254,4 +249,4 @@ This system iterates through every entity with a `Foo` SpatialOS component and s
 For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity]({{urlRoot}}/content/create-entity.md#1-create-an-entity-definition-using-the-entitybuilder) page.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="../footer-feedback.md")%>

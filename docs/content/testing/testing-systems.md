@@ -2,8 +2,7 @@
 
 -----
 
-# Testing GDK Systems
-
+# Testing GDK systems
 We can test systems functionality like this:
 
 - Construct a world
@@ -16,7 +15,6 @@ We can test systems functionality like this:
 See Unite Berlin talk: https://youtu.be/BW9qSy6ZB0A?t=9048 - 2:30:48 to 2:31:10.
 
 See this example test:
-
 
 ```cs
 [TestFixture]
@@ -101,9 +99,10 @@ public class CleanReactiveComponentsSystemTests
 }
 ```
 
-## Hybrid Systems
+## Hybrid systems
 Your system is not pure and is hybrid if it  `[Inject]`s a struct that has any
  one of these types as fields:
+ 
 - `ComponentArray<>`,
 - `GameObjectArray`,
 - `TransformAccessArray`.

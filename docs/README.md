@@ -1,7 +1,7 @@
 # SpatialOS Unity GDK documentation
 
 #### Warning
-This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK#recommended-use).
+<%(Include file="header-warning.md")%>
 
 #### How to get started
 We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
@@ -17,6 +17,7 @@ The Unity GDK documentation assumes you are familiar with SpatialOS concepts. Fo
 
 #### Entity Component System
 The Unity GDK documentation assumes you are familiar with the Unity Entity Component System. See:
+
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
 
@@ -28,6 +29,7 @@ The Unity GDK documentation assumes you are familiar with the Unity Entity Compo
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
  want your [feedback](../README.md#give-us-feedback).
+
 * [Contributions policy](../.github/CONTRIBUTING.md)
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 

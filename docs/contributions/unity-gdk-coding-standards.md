@@ -3,7 +3,6 @@
 -------
 
 # Unity GDK C# coding standards
-
 ![Header Image]({{assetRoot}}assets/unity-gdk-header-cartoon.png)
 
 _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
@@ -11,7 +10,6 @@ _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
 **Contributions**: We are not currently taking public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your [feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
 
 ## Table of contents
-
 - Unity GDK C# coding standards
     - [Table of contents](#table-of-contents)
     - [Introduction](#introduction)
@@ -23,11 +21,9 @@ _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
     - [Unity specific](#unity-specific)
 
 ## Introduction
-
 Generally, we use [Microsoft's C# Coding Conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions). See also the [Framework Design Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/index). Anything noted below overrides these conventions.
 
 ## ReSharper and formatting
-
 (Optional) Install [ReSharper](https://www.jetbrains.com/resharper/) for Visual Studio.
 
 Please format any code files that you've touched (normally `Ctrl+Alt+F`) before committing changes.
@@ -35,7 +31,6 @@ Please format any code files that you've touched (normally `Ctrl+Alt+F`) before 
 If you don't have ReSharper, or want to format from the command line, run `ci/lint.sh`.
 
 ## General
-
 * Avoid interfaces with fewer than two implementations.
 * Avoid extension methods. They can introduce magic and make implementation hard to find.
 * Avoid Linq. It often introduces unnecessary allocation.
@@ -54,7 +49,6 @@ If you don't have ReSharper, or want to format from the command line, run `ci/li
 * Use spaces instead of tabs for indentation.
 
 ## Casing
-
 * PascalCase for class and method names.
 * PascalCase for public variables and private const variables, camelCase for private variables.
 * Acronyms have only their first letter capitalised in variable or method names. In comments, acronyms are fully-capitalised.
@@ -64,16 +58,13 @@ If you don't have ReSharper, or want to format from the command line, run `ci/li
     * :x: `var entityAcl = GetEntityAcl(); //Gets the Entity Acl.`
 
 ## Deprecation
-
 * Annotate deprecated functions  with `[System.Obsolete(<string>)]` where `<string>` is a short summary of the deprecation reason and either a guide on how to upgrade or a link to a guide on how to upgrade.
 
 ## Tests
-
 * Name test fixtures as `<class>Test`
 * Name test methods as `<method>_should_<action>_when_<conditions>`
 
-## Unity specific
-
+## Unity-specific
 * We are using the experimental support for `.NET 4.6` in the Unity GDK (mandated by use of the Unity ECS). This equates to `C# 6` so newer language features are supported.
 * Implement logic in a `ComponentSystem` instead of a `MonoBehaviour` wherever possible.
 * Each call to `Debug.Log` takes ~11ms (even in built players!), so use it sparingly ([relevant thread in Unity Answers](https://answers.unity.com/questions/126315/debuglog-in-build.html)).

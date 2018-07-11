@@ -2,17 +2,14 @@
 
 -----
 
-
-## Receiving entity updates from SpatialOS: reactive components
-
+# Receiving entity updates from SpatialOS: reactive components
 To represent state changes or messages from SpatialOS, the Unity GDK uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
 When the Unity GDK receives an update or message from SpatialOS, it places a "reactive component" on the associated ECS entity until the end of the tick. This reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to react to the change or message.
 
 At the end of the tick, the Unity GDK removes the reactive component. 
 
-### Reactive component types
-
+## Reactive component types
 Reactive components inherit from `MessagesReceived<T>` (where `T` is the generated component type associated with the message or the state update). `MessagesReceived<T>` gives you the field `Buffer`, a list of all currently stored messages.
 
 These are the types of reactive component available:
@@ -24,13 +21,12 @@ These are the types of reactive component available:
 5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/commands.md) for information on how this works.
 
 ### Component Lifecycle tags
-
 There are tags for handling the addition and removal of components:
 
 1. `ComponentAdded`: SpatialOS component has been added to the local view of a SpatialOS entity due to checkout of an entity or a change in interest.
 2. `ComponentRemoved`: SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
 
-### Example of a system using a reactive component
+## Example of a system using a reactive component
 
 ```csharp
 public class ReactiveSystem : ComponentSystem
@@ -60,10 +56,8 @@ public class ReactiveSystem : ComponentSystem
 }
 ```
 
-### Removal of reactive components
-
+## Removal of reactive components
 The Unity GDK automatically removes reactive components from the ECS entity as soon as `CleanReactiveComponentsSystem` is run. This means that you must run any logic processing that reactive component _before_ `CleanReactiveComponentsSystem`. (This system is run at the end of each frame.)
 
-
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
+<%(Include file="../footer-feedback.md")%>
