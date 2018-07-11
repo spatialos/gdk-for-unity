@@ -23,5 +23,10 @@ namespace Assets.Gdk.Core.Collections
             freeActions.Add(handle, MapProvider<TValue, TKey>.FreeHandle);
             return handle;
         }
+
+        public static void FreeHandle(uint handle)
+        {
+            freeActions[handle](handle);
+        }
     }
 }
