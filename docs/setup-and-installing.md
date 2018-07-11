@@ -32,8 +32,8 @@
         > If you installed the **.NET Core cross-platform development** Workload with Visual Studio, you should have this installed already.
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win)
 	<br>This installs:
-		- the [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
-		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
+		- the [`spatial` CLI](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/spatial-cli-introduction)
+		- the SpatialOS [Launcher](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 	- (Optional) [ReSharper](https://www.jetbrains.com/resharper/)
 	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards.md). 
@@ -72,7 +72,7 @@ Currently, you can try this out using the `Playground`.
 #### 2. Run the `Playground` locally using SpatialOS
 
 1. In the same terminal window, run `spatial local launch`. 
-<br>This launches a SpatialOS deployment locally. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
+<br>This launches a SpatialOS deployment locally. You can open the [Inspector](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#inspector) and see what’s happening in the game.
     > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in your console output.
 
 1. Open Unity, and open the `unity` project. 

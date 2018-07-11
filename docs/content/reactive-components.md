@@ -14,11 +14,11 @@ Reactive components inherit from `MessagesReceived<T>` (where `T` is the generat
 
 These are the types of reactive component available:
 
-1. `ComponentsUpdated`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/13.0/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-2. `AuthoritiesChanged`: Updates to the [authority](https://docs.improbable.io/reference/13.0/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/authority.md) for information on how this works.
-3. `EventsReceived`: All received [events](https://docs.improbable.io/reference/13.0/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/events.md) for information on how this works.
-4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/commands.md) for information on how this works.
-5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/commands.md) for information on how this works.
+1. `ComponentsUpdated`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/operations#component-related-operations) for the current SpatialOS entity.
+2. `AuthoritiesChanged`: Updates to the [authority](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/authority.md) for information on how this works.
+3. `EventsReceived`: All received [events](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/events.md) for information on how this works.
+4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/commands.md) for information on how this works.
+5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/commands.md) for information on how this works.
 
 ### Component Lifecycle tags
 There are tags for handling the addition and removal of components:
