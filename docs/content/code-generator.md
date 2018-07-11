@@ -74,7 +74,7 @@ The process of editing the code generator is simple:
 
 #### Spatial Codegen configuration
 
-If any changes you make change the input parameters or add new ones, you should add them `ci/codegen.sh` so it runs correctly!
+If any changes you make change the input parameters or add new ones, you should add them to `ci/codegen.sh` so it runs correctly!
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

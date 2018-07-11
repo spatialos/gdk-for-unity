@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# Modify the PINNED_CORE_SDK_VERSION variable in `ci/includes/pinned-tools.sh` and run this script to download
-# the new version of the CoreSDK and supporting tools.
+# Modify "../core-sdk.version" and run this script to download the new version of the CoreSDK and supporting tools.
 
 set -e -u -x -o pipefail
 
@@ -10,10 +9,11 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
-function unpackTo() {
+function cleanAndUnpackTo() {
   local SOURCE=$1
   local TARGET=$2
 
+  rm -rf "${TARGET}"
   mkdir -p "${TARGET}"
   unzip -o -q "${SOURCE}" -d "${TARGET}"
 }
@@ -39,13 +39,13 @@ spatial package retrieve "worker_sdk" "csharp"                       "${PINNED_C
 spatial package retrieve "tools"      "schema_compiler-x86_64-win32" "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"
 spatial package retrieve "schema"     "standard_library"             "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/schema/standard_library"
 
-unpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86-win32"         "${NATIVE_DEPENDENCIES_PATH}/Windows/x86"
-unpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86_64-win32"      "${NATIVE_DEPENDENCIES_PATH}/Windows/x86_64"
-unpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86_64-linux"      "${NATIVE_DEPENDENCIES_PATH}/Linux/x86_64"
-unpackTo "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"       "${NATIVE_DEPENDENCIES_PATH}/OSX"
-unpackTo "${CORE_SDK_DIR}/worker_sdk/csharp"                         "${MANAGED_DEPENDENCIES_PATH}"
-unpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "tools/schema_compiler/win"
-unpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "schema_standard_library"
+cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86-win32"         "${NATIVE_DEPENDENCIES_PATH}/Windows/x86"
+cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86_64-win32"      "${NATIVE_DEPENDENCIES_PATH}/Windows/x86_64"
+cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86_64-linux"      "${NATIVE_DEPENDENCIES_PATH}/Linux/x86_64"
+cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"       "${NATIVE_DEPENDENCIES_PATH}/OSX"
+cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/csharp"                         "${MANAGED_DEPENDENCIES_PATH}"
+cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "tools/schema_compiler/win"
+cleanAndUnpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "schema_standard_library"
 
 # Remove unused tools and files.
 rm tools/schema_compiler/win/protoc.exe
