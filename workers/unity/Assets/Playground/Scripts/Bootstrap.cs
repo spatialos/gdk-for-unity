@@ -22,7 +22,7 @@ namespace Playground
 
         private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
 
-        private static ConnectionConfig connectionConfig;
+        // private static ConnectionConfig connectionConfig;
 
         public void Awake()
         {
@@ -48,10 +48,9 @@ namespace Playground
                     var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
                         workerConfig.Origin);
                     Workers.Add(worker);
+                    worker.ConnectionConfig = new ReceptionistConfig();
+                    worker.ConnectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
                 }
-
-                connectionConfig = new ReceptionistConfig();
-                connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
 #endif
             }
 #if UNITY_ANDROID
@@ -62,7 +61,7 @@ namespace Playground
 
                 if (DeviceInfo.IsAndroidStudioEmulator())
                 {
-                    connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
+                    worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
                 }
             }
 #endif
@@ -90,7 +89,7 @@ namespace Playground
 
                 Workers.Add(worker);
 
-                connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                worker.ConnectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
             }
 
             if (World.AllWorlds.Count <= 0)
@@ -110,7 +109,13 @@ namespace Playground
             foreach (var worker in Workers)
             {
                 LoadLevel(worker);
-                worker.Connect(connectionConfig);
+
+                if (worker.GetWorkerType.Equals("UnityClient"))
+                {
+                    continue;
+                }
+
+                worker.Connect(worker.ConnectionConfig);
             }
         }
 
