@@ -94,13 +94,13 @@ namespace CopySchema.Tests
         [Test]
         public void CleanDestination_should_delete_existing_packages_destination()
         {
-            Directory.CreateDirectory(Path.Combine(schema, Program.FROM_GDK_PACKAGES, "nested"));
+            Directory.CreateDirectory(Path.Combine(schema, Program.FromGdkPackages, "nested"));
             File.WriteAllText(Path.Combine(schema, Path.GetRandomFileName()), string.Empty);
-            File.WriteAllText(Path.Combine(schema, Program.FROM_GDK_PACKAGES, "nested", Path.GetRandomFileName()), string.Empty);
+            File.WriteAllText(Path.Combine(schema, Program.FromGdkPackages, "nested", Path.GetRandomFileName()), string.Empty);
 
             Program.CleanDestination(schema);
 
-            Assert.False(Directory.Exists(Path.Combine(schema, Program.FROM_GDK_PACKAGES)));
+            Assert.False(Directory.Exists(Path.Combine(schema, Program.FromGdkPackages)));
         }
 
         [Test]
@@ -194,11 +194,11 @@ namespace CopySchema.Tests
             var depThree = new Program.PackageInfo("dep.three", relativePackagePath);
 
             var fileOne = Path.Combine(packages, "path_of", "dep_one", "Schema", "schema_file.schema");
-            var fileOneDestination = Path.Combine(schema, Program.FROM_GDK_PACKAGES, depOne.Name, "schema_file.schema");
+            var fileOneDestination = Path.Combine(schema, Program.FromGdkPackages, depOne.Name, "schema_file.schema");
             var fileTwo = Path.Combine(relativePackagePath, "Schema", "other.schema");
-            var fileTwoDestination = Path.Combine(schema, Program.FROM_GDK_PACKAGES, depThree.Name, "other.schema");
+            var fileTwoDestination = Path.Combine(schema, Program.FromGdkPackages, depThree.Name, "other.schema");
             var fileThree = Path.Combine(relativePackagePath, "Schema", "nested", "nested.schema");
-            var fileThreeDestination = Path.Combine(schema, Program.FROM_GDK_PACKAGES, depThree.Name, "nested", "nested.schema");
+            var fileThreeDestination = Path.Combine(schema, Program.FromGdkPackages, depThree.Name, "nested", "nested.schema");
 
             var schemaFiles = new List<KeyValuePair<Program.PackageInfo, string>>()
             {
