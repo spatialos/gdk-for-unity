@@ -19,12 +19,33 @@ namespace Improbable.Gdk.Core
         private readonly List<int> registeredReplicators = new List<int>();
         private readonly List<int> commandSenders = new List<int>();
 
+        private int ticks = 0;
+        private const int METRIC_TICKS_UPDATE = 200;
+
+        public delegate Worker.Metrics MetricsComputation();
+        private MetricsComputation metricComputedEverySend;
+
         protected override void OnCreateManager(int capacity)
+        {
+            OnCreateManager(capacity, delegate()
+            {
+                float fps = 1.0f / Time.deltaTime;
+                return new Worker.Metrics
+                {
+                    // Load is 0 is fps is at most 20, 1 if it is at least 30, and linear in between.
+                    Load = Mathf.Min(1.0f, Mathf.Max(0.0f, 3.0f - 0.1f * fps))
+                };
+            });
+        }
+
+        protected void OnCreateManager(int capacity, MetricsComputation metricsComputation)
         {
             base.OnCreateManager(capacity);
 
             worker = WorkerRegistry.GetWorkerForWorld(World);
             view = worker.View;
+
+            metricComputedEverySend = metricsComputation;
 
             GenerateComponentGroups();
         }
@@ -72,6 +93,13 @@ namespace Improbable.Gdk.Core
             foreach (var componentTypeIndex in commandSenders)
             {
                 view.TranslationUnits[componentTypeIndex].SendCommands(connection);
+            }
+
+            ticks++;
+            if (ticks == METRIC_TICKS_UPDATE)
+            {
+                ticks = 0;
+                connection.SendMetrics(metricComputedEverySend());
             }
         }
     }
