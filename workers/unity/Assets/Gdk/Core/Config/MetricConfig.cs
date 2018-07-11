@@ -1,7 +1,7 @@
 namespace Improbable.Gdk.Core.Config
 {
 
-    public delegate float CalculateLoadDelegate(float);
+    public delegate float CalculateLoadDelegate(float fps);
 
     public static class MetricConfig
     {

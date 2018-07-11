@@ -3,7 +3,7 @@ using Unity.Entities;
 using UnityEngine;
 using Improbable.Gdk.Core.Config;
 
-namespace Improbable.Gdk.Core.Systems
+namespace Improbable.Gdk.Core
 {
     public class MetricSendSystem : ComponentSystem
     {
