@@ -56,7 +56,19 @@ namespace Improbable.Gdk.Core.EditmodeTests
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 viewCommandBuffer);
             Assert.IsFalse(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
-            viewCommandBuffer.FlushBuffer(new MutableView(world));
+            viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
+            Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
+        }
+
+        [Test]
+        public void LinkGameObjectToEntity_adds_duplicate_GameObject_components_only_once()
+        {
+            testGameObject.AddComponent<TestMonoBehaviour>();
+            testGameObject.AddComponent<TestMonoBehaviour>();
+            var viewCommandBuffer = new ViewCommandBuffer();
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
+                viewCommandBuffer);
+            viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
     }
