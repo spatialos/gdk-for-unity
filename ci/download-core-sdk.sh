@@ -51,4 +51,6 @@ cleanAndUnpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "sc
 
 # Remove unused tools and files.
 rm tools/schema_compiler/win/protoc.exe
+rm tools/schema_compiler/macos/protoc.exe
 rm -rf tools/schema_compiler/win/proto
+rm -rf tools/schema_compiler/macos/proto
