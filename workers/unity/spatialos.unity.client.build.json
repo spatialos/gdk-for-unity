@@ -4,6 +4,17 @@
       "name": "Codegen",
       "steps": [
         {
+          "name": "Copy Gdk Packages Schema",
+          "command": "dotnet",
+          "arguments": [
+            "run",
+            "-p",
+            "../../tools/CopySchema/CopySchema.csproj",
+            "Packages/manifest.json",
+            "../../schema"
+          ]
+        },
+        {
           "name": "C#",
           "arguments": [
             "process_schema",

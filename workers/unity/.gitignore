@@ -40,3 +40,6 @@ sysinfo.txt
 
 # Include some example generated code so that changes to codegen templates are easier to track
 !Assets/Generated/improbable/gdk/tests/*.cs
+
+# Include Unity Package Manager Packages
+!Packages
