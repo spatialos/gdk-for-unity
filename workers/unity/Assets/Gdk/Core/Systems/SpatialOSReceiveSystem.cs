@@ -1,4 +1,6 @@
 using Improbable.Worker.Core;
+using System.Collections.Generic;
+using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -9,6 +11,8 @@ namespace Improbable.Gdk.Core
         private WorkerBase worker;
         private MutableView view;
         private Dispatcher dispatcher;
+
+        private Dictionary<long, IDispatcherCallbacks> componentCallbacks = new Dictionary<long, IDispatcherCallbacks>();
 
         private bool inCriticalSection = false;
 
@@ -55,15 +59,46 @@ namespace Improbable.Gdk.Core
             view.Disconnect(op.Reason);
         }
 
+        private void OnAddComponent(AddComponentOp op)
+        {
+            componentCallbacks[op.Data.ComponentId].OnAddComponent(op);
+        }
+
+        private void OnRemoveComponent(RemoveComponentOp op)
+        {
+            componentCallbacks[op.ComponentId].OnRemoveComponent(op);
+        }
+
+        private void OnComponentUpdate(ComponentUpdateOp op)
+        {
+            componentCallbacks[op.Update.ComponentId].OnComponentUpdate(op);
+        }
+
+        private void OnAuthorityChange(AuthorityChangeOp op)
+        {
+            componentCallbacks[op.ComponentId].OnAuthorityChange(op);
+        }
+
         private void SetupDispatcherHandlers()
         {
+            dispatcher.OnDisconnect(OnDisconnect);
+
             dispatcher.OnAddEntity(OnAddEntity);
             dispatcher.OnRemoveEntity(OnRemoveEntity);
-            dispatcher.OnDisconnect(OnDisconnect);
+
             dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
+
+            dispatcher.OnAddComponent(OnAddComponent);
+            dispatcher.OnRemoveComponent(OnRemoveComponent);
+            dispatcher.OnComponentUpdate(OnComponentUpdate);
+            dispatcher.OnAuthorityChange(OnAuthorityChange);
 
             foreach (var translationUnit in view.TranslationUnits.Values)
             {
+                if (translationUnit is IDispatcherCallbacks)
+                {
+                    componentCallbacks.Add(translationUnit.ComponentId, translationUnit as IDispatcherCallbacks);
+                }
                 translationUnit.RegisterWithDispatcher(dispatcher);
             }
         }

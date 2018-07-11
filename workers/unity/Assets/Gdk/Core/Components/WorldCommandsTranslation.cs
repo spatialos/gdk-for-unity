@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -10,30 +11,30 @@ namespace Improbable.Gdk.Core
 {
     internal struct CreateEntityRequest
     {
-        public Worker.Entity Entity;
-        public Collections.Option<EntityId> EntityId;
-        public uint TimeoutMillis;
+        public Worker.Core.Entity Entity;
+        public EntityId? EntityId;
+        public uint? TimeoutMillis;
         public long SenderEntityId;
     }
 
     internal struct DeleteEntityRequest
     {
         public long EntityId;
-        public uint TimeoutMillis;
+        public uint? TimeoutMillis;
         public long SenderEntityId;
     }
 
     internal struct ReserveEntityIdsRequest
     {
         public uint NumberOfEntityIds;
-        public uint TimeoutMillis;
+        public uint? TimeoutMillis;
         public long SenderEntityId;
     }
 
     internal struct EntityQueryRequest
     {
         public Worker.Query.EntityQuery EntityQuery;
-        public uint TimeoutMillis;
+        public uint? TimeoutMillis;
         public long SenderEntityId;
     }
 
@@ -87,10 +88,10 @@ namespace Improbable.Gdk.Core
         public CommandStatusCode StatusCode { get; }
         public string Message { get; }
         public int ResultCount { get; }
-        public Dictionary<long, Worker.Entity> Result { get; }
+        public Dictionary<long, Worker.Core.Entity> Result { get; }
 
         internal EntityQueryResponse(CommandStatusCode statusCode, string message, int resultCount,
-            Dictionary<long, Worker.Entity> result)
+            Dictionary<long, Worker.Core.Entity> result)
         {
             StatusCode = statusCode;
             Message = message;
@@ -111,14 +112,15 @@ namespace Improbable.Gdk.Core
             HandleToTranslation = handleToTranslation;
         }
 
-        public void SendCreateEntityRequest(Worker.Entity entity, long entityId = 0, uint timeoutMillis = 0)
+        public void SendCreateEntityRequest(Worker.Core.Entity entity, long? entityId = default(long?), uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
-
-            var entityIdOption = entityId != 0
-                ? new Collections.Option<EntityId>(new EntityId(entityId))
-                : new Collections.Option<EntityId>();
+            Worker.EntityId? entityIdOption = null;
+            if (entityId.HasValue)
+            {
+                entityIdOption = new EntityId(entityId.Value);
+            }
 
             translation.CreateEntityRequests.Add(new CreateEntityRequest
             {
@@ -129,7 +131,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendDeleteEntityRequest(long entityId, uint timeoutMillis = 0)
+        public void SendDeleteEntityRequest(long entityId, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -141,7 +143,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendReserveEntityIdsRequest(uint numberOfEntities, uint timeoutMillis = 0)
+        public void SendReserveEntityIdsRequest(uint numberOfEntities, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -153,7 +155,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint timeoutMillis = 0)
+        public void SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -168,6 +170,8 @@ namespace Improbable.Gdk.Core
 
     public class WorldCommandsTranslation : ComponentTranslation
     {
+        public override long ComponentId => -1;
+
         public override ComponentType TargetComponentType => targetComponentType;
         private static readonly ComponentType targetComponentType = null;
 
@@ -229,7 +233,7 @@ namespace Improbable.Gdk.Core
             foreach (var request in CreateEntityRequests)
             {
                 var requestId = connection.SendCreateEntityRequest(request.Entity, request.EntityId,
-                    new TimeoutOption(request.TimeoutMillis));
+                    request.TimeoutMillis);
 
                 RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
             }
@@ -239,7 +243,7 @@ namespace Improbable.Gdk.Core
             foreach (var request in DeleteEntityRequests)
             {
                 var requestId = connection.SendDeleteEntityRequest(new EntityId(request.EntityId),
-                    new TimeoutOption(request.TimeoutMillis));
+                    request.TimeoutMillis);
 
                 RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
             }
@@ -249,7 +253,7 @@ namespace Improbable.Gdk.Core
             foreach (var request in ReserveEntityIdsRequests)
             {
                 var requestId = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds,
-                    new TimeoutOption(request.TimeoutMillis));
+                    request.TimeoutMillis);
 
                 RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
             }
@@ -259,7 +263,7 @@ namespace Improbable.Gdk.Core
             foreach (var request in EntityQueryRequests)
             {
                 var requestId = connection.SendEntityQueryRequest(request.EntityQuery,
-                    new TimeoutOption(request.TimeoutMillis));
+                    request.TimeoutMillis);
 
                 RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
             }
@@ -333,7 +337,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            var result = new Dictionary<long, Worker.Entity>();
+            var result = new Dictionary<long, Worker.Core.Entity>();
             foreach (var pair in op.Result)
             {
                 result.Add(pair.Key.Id, pair.Value);
