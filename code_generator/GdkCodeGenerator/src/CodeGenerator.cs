@@ -54,7 +54,7 @@ namespace Improbable.Gdk.CodeGenerator
                 return 1;
             }
 
-            CleanTargetDirectory();
+            GenerateNativeTypesAndAst();
 
             var schemaFilesRaw = SchemaFiles.GetSchemaFilesRaw(options.JsonDirectory, fileSystem).ToList();
             var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
@@ -62,13 +62,33 @@ namespace Improbable.Gdk.CodeGenerator
 
             foreach (var processedSchema in schemaProcessor.ProcessedSchemaFiles)
             {
-                var job = new SingleGenerationJob(options.OutputDirectory, processedSchema, fileSystem, globalEnumSet);
+                var job = new SingleGenerationJob(options.NativeOutputDirectory, processedSchema, fileSystem,
+                    globalEnumSet);
                 job.Run();
             }
 
             return 0;
         }
 
+        private void GenerateNativeTypesAndAst()
+        {
+            var files = options.SchemaInputDirs.SelectMany(dir =>
+                Directory.GetFiles(dir, "*.schema", SearchOption.AllDirectories));
+            var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path={dir}");
+
+            SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
+            SystemTools.EnsureDirectoryEmpty(options.NetworkTypesOutputDirectory);
+            SystemTools.EnsureDirectoryEmpty(options.NativeOutputDirectory);
+
+            // Add all of the files we found to the command line.
+            var arguments = new[]
+            {
+                $@"--csharp_out={options.NetworkTypesOutputDirectory}",
+                $@"--ast_json_out={options.JsonDirectory}"
+            }.Union(inputPaths).Union(files).ToList();
+
+            SystemTools.RunRedirected(@"tools\schema_compiler\win\schema_compiler.exe", arguments);
+        }
 
         private HashSet<string> ExtractEnums(ICollection<UnitySchemaFile> schemas)
         {
@@ -102,16 +122,6 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        private void CleanTargetDirectory()
-        {
-            if (!fileSystem.DirectoryExists(options.OutputDirectory))
-            {
-                return;
-            }
-
-            Directory.GetDirectories(options.OutputDirectory).ToList().ForEach(dir => fileSystem.DeleteDirectory(dir));
-        }
-
         private void ShowHelpMessage()
         {
             Console.WriteLine("Usage: ");
@@ -120,21 +130,21 @@ namespace Improbable.Gdk.CodeGenerator
 
         private bool ValidateOptions()
         {
-            if (options.JsonDirectory == null)
+            if (options.NativeOutputDirectory == null)
             {
-                Console.WriteLine("Input directory not specified.");
+                Console.WriteLine("Native output directory not specified");
                 return false;
             }
 
-            if (!fileSystem.DirectoryExists(options.JsonDirectory))
+            if (options.NetworkTypesOutputDirectory == null)
             {
-                Console.WriteLine("The provided input directory does not exist: {0}", options.JsonDirectory);
+                Console.WriteLine("Network types output directory not specified");
                 return false;
             }
 
-            if (options.OutputDirectory == null)
+            if (options.SchemaInputDirs == null || options.SchemaInputDirs.Count == 0)
             {
-                Console.WriteLine("Output directory not specified");
+                Console.WriteLine("Schema input directories not specified");
                 return false;
             }
 

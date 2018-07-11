@@ -2,7 +2,7 @@
     "name": "Improbable.Gdk.Legacy",
     "references": [
         "Improbable.Gdk.Core",
-        "Improbable.CSharp"
+        "Improbable.Generated.NetworkTypes"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

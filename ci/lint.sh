@@ -39,7 +39,7 @@ markEndOfBlock "Generating Solution Files"
 markStartOfBlock "Linting tools"
 
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=workers/unity/ReSharper2017.DotSettings \
+  --settings=ReSharper2017.DotSettings \
   tools/Tools.sln
 
 markEndOfBlock "Linting tools"
@@ -47,7 +47,7 @@ markEndOfBlock "Linting tools"
 markStartOfBlock "Linting GDK Code Generator"
 
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=workers/unity/ReSharper2017.DotSettings \
+  --settings=ReSharper2017.DotSettings \
   --exclude=Generated/**/* \
   --exclude=Improbable.TextTemplating/**/* \
   --exclude=Mono.TextTemplating/**/* \
@@ -58,9 +58,8 @@ markEndOfBlock "Linting GDK Code Generator"
 markStartOfBlock "Linting Unity GDK"
 
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=workers/unity/ReSharper2017.DotSettings \
-  --exclude=Assets/Generated/**/* \
-  --exclude=Assets/improbable/**/* \
+  --settings=ReSharper2017.DotSettings \
+  --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* \
   workers/unity/unity.sln
 
 markEndOfBlock "Linting Unity GDK"
