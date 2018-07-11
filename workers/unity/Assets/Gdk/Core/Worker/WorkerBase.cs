@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core
             RegisterCoreSystems();
         }
 
-        private void RegisterCoreSystems()
+        protected void RegisterCoreSystems()
         {
             World.GetOrCreateManager<EntityManager>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();

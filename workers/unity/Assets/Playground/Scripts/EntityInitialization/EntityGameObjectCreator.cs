@@ -35,12 +35,12 @@ namespace Playground
             gameObject.name = $"{prefab.name}(SpatialOS: {spatialEntityId}, Unity: {entity.Index}/{world.Name})";
             return gameObject;
         }
+    }
 
-        internal class PrefabNotFoundException : Exception
+    public class PrefabNotFoundException : Exception
+    {
+        public PrefabNotFoundException(string message) : base(message)
         {
-            public PrefabNotFoundException(string message) : base(message)
-            {
-            }
         }
     }
 }

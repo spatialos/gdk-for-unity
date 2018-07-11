@@ -41,7 +41,7 @@ namespace Playground
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
         private EntityGameObjectCreator entityGameObjectCreator;
         private uint currentHandle;
-        private readonly Dictionary<uint, GameObject> entityGameObjectCache = new Dictionary<uint, GameObject>();
+        private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -65,6 +65,7 @@ namespace Playground
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
                     Debug.LogErrorFormat(Errors.UnknownWorkerType, World.Name);
+                    continue;
                 }
 
                 var prefabName = worker is UnityGameLogic
@@ -80,9 +81,8 @@ namespace Playground
                         spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
-                var handle = currentHandle++;
-                entityGameObjectCache[handle] = gameObject;
-                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle { GameObjectHandle = handle };
+                entityGameObjectCache[entity.Index] = gameObject;
+                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
@@ -92,15 +92,15 @@ namespace Playground
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
-                var handle = removedEntitiesData.GameObjectReferenceHandles[i].GameObjectHandle;
+                var entityIndex = removedEntitiesData.Entities[i].Index;
                 GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(handle, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
                 {
-                    Debug.LogErrorFormat(Errors.GameObjectNotFound, handle);
+                    Debug.LogErrorFormat(Errors.GameObjectNotFound, entityIndex);
                     continue;
                 }
 
-                entityGameObjectCache.Remove(handle);
+                entityGameObjectCache.Remove(entityIndex);
                 UnityObjectDestroyer.Destroy(gameObject);
                 PostUpdateCommands.RemoveSystemStateComponent<GameObjectReferenceHandle>(
                     removedEntitiesData.Entities[i]);

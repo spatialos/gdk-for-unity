@@ -42,8 +42,8 @@ namespace Playground.EditmodeTests
         public void CreateSpatialOSGameObject_creates_a_gameobject()
         {
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
-            var position = Vector3.zero;
-            var rotation = Quaternion.identity;
+            var position = Vector3.one * 1337;
+            var rotation = new Quaternion(0, 0, 1, 0);
             long spatialEntityId = 1;
             testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, position,
                 rotation, spatialEntityId);
@@ -51,6 +51,21 @@ namespace Playground.EditmodeTests
             Assert.NotNull(testGameObject);
             Assert.AreEqual(position, testGameObject.transform.position);
             Assert.AreEqual(rotation, testGameObject.transform.rotation);
+        }
+
+        [Test]
+        public void CreateSpatialOSGameObject_throws_if_prefab_not_found()
+        {
+            var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
+            var position = Vector3.zero;
+            var rotation = Quaternion.identity;
+            long spatialEntityId = 1;
+            Assert.Throws<PrefabNotFoundException>(() =>
+            {
+                testGameObject =
+                    entityGameObjectCreator.CreateEntityGameObject(entity, "foobar", position, rotation,
+                        spatialEntityId);
+            });
         }
     }
 }
