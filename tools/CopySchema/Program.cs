@@ -45,7 +45,7 @@ namespace CopySchema
             }
         }
 
-        public const string FROM_GDK_PACKAGES = "from_gdk_packages";
+        public const string FromGdkPackages = "from_gdk_packages";
 
         static void Main(string[] args)
         {
@@ -109,7 +109,7 @@ namespace CopySchema
             foreach (var file in schemaFiles)
             {
                 var relativeFilePath = file.Value.Replace(Path.Combine(file.Key.Path, "Schema"), string.Empty).TrimStart(Path.DirectorySeparatorChar);
-                var newPath = Path.Combine(schemaRoot, FROM_GDK_PACKAGES, file.Key.Name, relativeFilePath);
+                var newPath = Path.Combine(schemaRoot, FromGdkPackages, file.Key.Name, relativeFilePath);
                 results.Add(file.Value, newPath);
             }
 
@@ -192,7 +192,7 @@ namespace CopySchema
 
         public static void CleanDestination(string schemaDirectory)
         {
-            var destination = Path.Combine(schemaDirectory, FROM_GDK_PACKAGES);
+            var destination = Path.Combine(schemaDirectory, FromGdkPackages);
             if (Directory.Exists(destination))
             {
                 Directory.Delete(destination, true);
