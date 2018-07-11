@@ -1,4 +1,4 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+<%(Include file="../header-warning.md")%>
 
 -----
 
@@ -251,7 +251,7 @@ public class CreateEntitySystem : ComponentSystem
 
 This system iterates through every entity with a `Foo` SpatialOS component and sends a create entity request.
 
-For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity](create-entity.md#create-an-entity-definition-using-the-entitybuilder) page.
+For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity]({{urlRoot}}/content/create-entity.md#1-create-an-entity-definition-using-the-entitybuilder) page.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

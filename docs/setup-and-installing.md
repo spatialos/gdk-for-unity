@@ -1,4 +1,4 @@
-**Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+<%(Include file="header-warning.md")%>
 
 -----
 
@@ -36,8 +36,8 @@
 		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 	- (Optional) [ReSharper](https://www.jetbrains.com/resharper/)
-	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](contributions/unity-gdk-coding-standards.md). 
-		> We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy.
+	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards.md). 
+		> We are currently not accepting public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/.github/CONTRIBUTING.md) policy.
     - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) 
     <br> You'll need this if you want to lint your code. Add it to your `PATH` environment variable.
 
@@ -55,7 +55,7 @@
 
     The diagram below shows the structure of the `UnityGDK` SpatialOS project:
 
-	![UnityGDK structure](assets/UnityGDK-structure.png)
+	![UnityGDK structure]({{assetRoot}}assets/unity-gdk-structure.png)
 
 ### Running a game from your Unity Editor 
 
@@ -143,4 +143,4 @@ Currently, you can try this out using the `Playground`.
     1. Once you’ve finished playing, click **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

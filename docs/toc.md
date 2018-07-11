@@ -1,11 +1,14 @@
-- <h3>Unity GDK documentation</h3>
-    - [Components and component updates](content/component-data.md)
-    - [Sending and receiving events](content/events.md)
-    - [Sending and receiving commands](content/commands.md)
-    - [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
-    - [Custom replication systems](content/custom-replication-system.md)
-    - [Authority](content/authority.md)
-    - [Creating entities](content/create-entity.md)
-    - [Entity checkout process](content/entity-checkout-process.md)
-    - [The code generator](content/code-generator.md)
-    - [Temporary components](content/temporary-components.md)
+- <h3>[Unity GDK documentation]({{urlRoot}}/README.md)</h3>
+- <h3>Get started</h3>
+    - [Installation and setup guide]({{urlRoot}}/setup-and-installing.md) 
+- <h3>Contents</h3>
+    - [Components and component updates]({{urlRoot}}/content/component-data.md)
+    - [Sending and receiving events]({{urlRoot}}/content/events.md)
+    - [Sending and receiving commands]({{urlRoot}}/content/commands.md)
+    - [Receiving updates from SpatialOS: Reactive components]({{urlRoot}}/content/reactive-components.md)
+    - [Custom replication systems]({{urlRoot}}/content/custom-replication-system.md)
+    - [Authority]({{urlRoot}}/content/authority.md)
+    - [Creating entities]({{urlRoot}}/content/create-entity.md)
+    - [Entity checkout process]({{urlRoot}}/content/entity-checkout-process.md)
+    - [The code generator]({{urlRoot}}/content/code-generator.md)
+    - [Temporary components]({{urlRoot}}/content/temporary-components.md)

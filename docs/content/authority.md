@@ -1,4 +1,4 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+<%(Include file="../header-warning.md")%>
 
 ----
 
@@ -106,7 +106,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
 }
 ```
 
-The GDK automatically adds and removes authority tags: see [Reactive components](reactive-components.md) for more information.
+The GDK automatically adds and removes authority tags: see [Reactive components]({{urlRoot}}/content/reactive-components.md) for more information.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

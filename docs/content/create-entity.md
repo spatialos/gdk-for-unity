@@ -1,4 +1,4 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+<%(Include file="../header-warning.md")%>
 
 -----
 
@@ -11,7 +11,7 @@ To create an [entity](https://docs.improbable.io/reference/13.0/shared/glossary#
 
 ### 1. Create an entity definition using the `EntityBuilder`
 
-The `EntityBuilder` class is part of the `Improbable.Gdk.Legacy` assembly. It's a convenient way to create entity definitions, and allows you to specify [authority](authority.md) on a per-[component](https://docs.improbable.io/reference/13.0/shared/glossary#component) basis.
+The `EntityBuilder` class is part of the `Improbable.Gdk.Legacy` assembly. It's a convenient way to create entity definitions, and allows you to specify [authority]({{urlRoot}}/content/authority.md) on a per-[component](https://docs.improbable.io/reference/13.0/shared/glossary#component) basis.
 
 The `EntityBuilder` class has the following public methods:
 
@@ -48,7 +48,7 @@ public Entity CreateCreatureEntityDefinition(Coordinates position)
 
 ### 2. Send a `CreateEntity` world command
 
-Below is an example of how to send a `CreateEntity` world command. For more information, see [World commands](commands.md#world-commands).
+Below is an example of how to send a `CreateEntity` world command. For more information, see [World commands]({{urlRoot}}/content/commands.md#world-commands).
 
 ```csharp
 public class CreateEntitySystem : ComponentSystem
@@ -79,4 +79,4 @@ public class CreateEntitySystem : ComponentSystem
 ```
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

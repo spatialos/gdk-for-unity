@@ -1,4 +1,4 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+<%(Include file="../header-warning.md")%>
 
 -----
 
@@ -9,13 +9,13 @@ For every entity we receive from SpatialOS, an ECS entity representing the Spati
 
 For each of your entity's SpatialOS components, the following Unity ECS components are automatically added:
 - `SpatialOS<name of schema component>`: Codegenerated struct of type `ISpatialComponentData` or `Component` for accessing component field values. Fields of these components are automatically kept up-to-date.
-- An [authority maker tag](authority.md) (`Authoritative<T>`, `NotAuthoritative<T>` or `AuthorityLostImminent<T>`) based on the Worker's component write authority.
+- An [authority maker tag]({{urlRoot}}/content/authority.md) (`Authoritative<T>`, `NotAuthoritative<T>` or `AuthorityLostImminent<T>`) based on the Worker's component write authority.
 
 In addition, the following components are added to your entity as well:
 - `SpatialEntityId`: Holds the corresponding SpatialOS EntityId of an entity.
 - `NewlyAddedSpatialOSEntity`: Tag component for marking entities that were just checked-out. This component is automatically removed from your entity at the end of the frame it was created.
-- `WorldCommandSender`: Component that exposes the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
-- A `CommandRequestSender<T>` for every SpatialOS schema component `T` that defines a command: Component that exposes the API for [sending schema commands](commands.md#sending-command-requests) defined in `T`.
+- `WorldCommandSender`: Component that exposes the API for [sending world commands]({{urlRoot}}/content/commands.md#world-commands) (e.g. create entity, delete entity).
+- A `CommandRequestSender<T>` for every SpatialOS schema component `T` that defines a command: Component that exposes the API for [sending schema commands]({{urlRoot}}/content/commands.md#sending-command-requests) defined in `T`.
 
 ### Performing Setup Logic on Entities
 
@@ -81,4 +81,4 @@ Upon checking out an entity that has both a `Prefab` and a `Transform` component
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

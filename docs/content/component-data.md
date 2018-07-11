@@ -1,9 +1,10 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+<%(Include file="../header-warning.md")%>
 
 -----
 
 
 ## Component Data
+
 SpatialOS components are generated from `.schema` files into components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/13.0/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
 ### Overview
@@ -13,18 +14,21 @@ is generated for each [blittable](https://docs.microsoft.com/en-us/dotnet/framew
 A `class`, which extends `UnityEngine.Component` and implements `Improbable.Gdk.Core.ISpatialComponentData` is generated for each non-blittable SpatialOS component.
 
 Each of these structs will be named `SpatialOS[schemalang component name]` and will contain only the schema data fields.
-It will **Not** contain any fields or methods pertaining to [commands](commands.md) or [events](events.md) defined on that component. 
+It will **Not** contain any fields or methods pertaining to [commands]({{urlRoot}}/content/commands.md) or [events]({{urlRoot}}/content/events.md) defined on that component. 
 
 For example, the following component contains only blittable fields, so an `IComponentData` will be generated, similar to the example below.
 
 Schemalang
+
 ```
 component Blittable {
   id = 1;
   int32 value = 1;
 }
 ```
+
 Generated component
+
 ```	csharp
 struct SpatialOSBlittable : IComponentData, ISpatialComponentData
 {
@@ -35,6 +39,7 @@ struct SpatialOSBlittable : IComponentData, ISpatialComponentData
 However the following component contains non-blittable fields, so a `Component` will be generated, similar to the example below.
 
 Schemalang
+
 ```
 component NonBlittableComponent {
   id = 2;
@@ -43,8 +48,10 @@ component NonBlittableComponent {
   string string_non_blittable = 3;
 }
 ```
+
 Generated component
-```	csharp
+
+```csharp
 class SpatialOSNonBlittable : Component, ISpatialComponentData
 {
   public int IntBlittable;
@@ -55,14 +62,14 @@ class SpatialOSNonBlittable : Component, ISpatialComponentData
 
 ### Reading and writing
 
-When a SpatialOS entity is [checked out](entity-checkout-process.md), the generated components will be automatically added to the corresponding ECS entity. 
+When a SpatialOS entity is [checked out]({{urlRoot}}/content/entity-checkout-process.md), the generated components will be automatically added to the corresponding ECS entity. 
 
 A component's value can be read by injecting that component into a system, just like any other ECS component.
 Note that if the component is non-blittable then it must be injected as a `ComponentArray` rather than a `ComponentDataArray`.
 
 To send a component update, set the component to the value to be sent.
 It will automatically be sent at the end of the tick.
-To override this behaviour see [here](custom-replication-system.md).
+To override this behaviour see [here]({{urlRoot}}/content/custom-replication-system.md).
 
 ```csharp
 public class ChangeComponentFieldSystem : ComponentSystem
@@ -93,7 +100,7 @@ public class ChangeComponentFieldSystem : ComponentSystem
 ```
 
 ### Updates
-When a component update is received this will be added as a [reactive component](reactive-components.md).
+When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/reactive-components.md).
 
 
 ### Generation details
@@ -173,4 +180,4 @@ public enum Color : uint
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
