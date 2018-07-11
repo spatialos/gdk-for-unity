@@ -112,7 +112,7 @@ namespace Improbable.Gdk.Core
             HandleToTranslation = handleToTranslation;
         }
 
-        public void SendCreateEntityRequest(Worker.Core.Entity entity, long? entityId, uint? timeoutMillis)
+        public void SendCreateEntityRequest(Worker.Core.Entity entity, long? entityId = default(long?), uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -131,7 +131,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendDeleteEntityRequest(long entityId, uint? timeoutMillis)
+        public void SendDeleteEntityRequest(long entityId, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendReserveEntityIdsRequest(uint numberOfEntities, uint? timeoutMillis)
+        public void SendReserveEntityIdsRequest(uint numberOfEntities, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -155,7 +155,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint? timeoutMillis)
+        public void SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = default(uint?))
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
