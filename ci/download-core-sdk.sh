@@ -37,6 +37,7 @@ spatial package retrieve "worker_sdk" "core-dynamic-x86_64-linux"    "${PINNED_C
 spatial package retrieve "worker_sdk" "core-bundle-x86_64-macos"     "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"
 spatial package retrieve "worker_sdk" "csharp"                       "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/csharp"
 spatial package retrieve "tools"      "schema_compiler-x86_64-win32" "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"
+spatial package retrieve "tools"      "schema_compiler-x86_64-macos" "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-macos"
 spatial package retrieve "schema"     "standard_library"             "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/schema/standard_library"
 
 cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86-win32"         "${NATIVE_DEPENDENCIES_PATH}/Windows/x86"
@@ -45,8 +46,11 @@ cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-dynamic-x86_64-linux"      "${
 cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"       "${NATIVE_DEPENDENCIES_PATH}/OSX"
 cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/csharp"                         "${MANAGED_DEPENDENCIES_PATH}"
 cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "tools/schema_compiler/win"
+cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-macos"        "tools/schema_compiler/macos"
 cleanAndUnpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "schema_standard_library"
 
 # Remove unused tools and files.
 rm tools/schema_compiler/win/protoc.exe
+rm tools/schema_compiler/macos/protoc.exe
 rm -rf tools/schema_compiler/win/proto
+rm -rf tools/schema_compiler/macos/proto
