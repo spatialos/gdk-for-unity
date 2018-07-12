@@ -8,7 +8,6 @@ workers/unity/build/
 .vs/
 .DS_Store
 
-
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
 workers/unity/[Tt]emp/
