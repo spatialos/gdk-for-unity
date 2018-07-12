@@ -47,7 +47,7 @@ namespace Playground
         private float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
-            return Mathf.Max(0.0f, (targetFps - fps) / (targetFps - 20.0f));
+            return Mathf.Max(0.0f, (targetFps - fps) / (targetFps - 0.5f * targetFps));
         }
 
         private void AddFpsSample()
