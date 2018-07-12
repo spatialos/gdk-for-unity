@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             using (var testWorker = new UnityTestWorker("someId", Vector3.zero))
             {
                 testWorker.RegisterSystems();
-                var exception = Assert.Throws<System.Exception>(() => WorkerRegistry.SetWorkerForWorld(testWorker));
+                var exception = Assert.Throws<System.ArgumentException>(() => WorkerRegistry.SetWorkerForWorld(testWorker));
                 Assert.IsTrue(exception.Message.Contains("worker") && exception.Message.Contains("world"));
             }
         }

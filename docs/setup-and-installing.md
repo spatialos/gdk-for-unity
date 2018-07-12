@@ -36,9 +36,9 @@
 		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 	- (Optional) [ReSharper](https://www.jetbrains.com/resharper/)
-	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](contributions/unity-gdk-coding-standards.md). 
+	<br>It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](contributions/unity-gdk-coding-standards.md).
 		> We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy.
-    - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) 
+    - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt)
     <br> You'll need this if you want to lint your code. Add it to your `PATH` environment variable.
 
 1. Clone the SpatialOS Unity GDK repository:
@@ -50,14 +50,14 @@
     - a Unity project at `UnityGDK/workers/unity`, which you need to open to use the GDK
     - SpatialOS features, such as the schema and snapshot files
     - development code
-    
+
     The Unity project contains the core GDK code, the `TransformSynchronization` Feature Module (more feature modules to come), and the `Playground`, which is an example scene using the features of the GDK.
 
     The diagram below shows the structure of the `UnityGDK` SpatialOS project:
 
 	![UnityGDK structure](assets/UnityGDK-structure.png)
 
-### Running a game from your Unity Editor 
+### Running a game from your Unity Editor
 
 You can now run a game from your Unity Editor, either using SpatialOS locally, or using SpatialOS in the cloud.
 
@@ -71,11 +71,11 @@ Currently, you can try this out using the `Playground`.
 
 #### 2. Run the `Playground` locally using SpatialOS
 
-1. In the same terminal window, run `spatial local launch`. 
+1. In the same terminal window, run `spatial local launch`.
 <br>This launches a SpatialOS deployment locally. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
     > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in your console output.
 
-1. Open Unity, and open the `unity` project. 
+1. Open Unity, and open the `unity` project.
 <br>This causes Unity to generate a Visual Studio solution, `unity.sln`, within `UnityGDK/workers/unity`.
 
 1. In the Unity Editor's Project window, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
@@ -98,13 +98,9 @@ Currently, you can try this out using the `Playground`.
 <br>The first step of running a cloud deployment is uploading all the files that your game uses. This includes executable files for the clients and workers, and the assets your workers use (like models and textures used by the Unity client to visualise the game). We call that set of game files an assembly.
 <br><br> To build an assembly for your game to use while running in the cloud, either:
     - In the Unity Editor, select **Improbable** > **Build all workers for cloud**
-    - Or, close the Unity Editor and, in the root directory of the project, run `spatial build`
-        > If you don’t close Unity before running `spatial build`, the command will report an error.
-    
-        **It’s done when:** You see `spatial build UnityClient UnityGameLogic succeeded` printed in your console output.
 
 1. Upload the assembly to the cloud
-    
+
     In the same terminal window as before, run `spatial cloud upload <assembly name>`.
     > The `<assembly name>` is just a label so you can identify this assembly in the next step - for example, `MyGDKAssembly`.
 
@@ -125,7 +121,7 @@ Currently, you can try this out using the `Playground`.
     In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
 
     This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better performance.
-    
+
     **It’s done when:** You see `Successfully created deployment` printed in your console output.
 
 

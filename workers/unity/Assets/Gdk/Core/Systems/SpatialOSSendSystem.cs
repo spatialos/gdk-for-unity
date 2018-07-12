@@ -1,18 +1,11 @@
 using System.Collections.Generic;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
-        internal static class Warnings
-        {
-            public const string CustomReplicationSystemAlreadyExists =
-                "Custom Replication System for type {0} already exists!";
-        }
-
         private WorkerBase worker;
         private MutableView view;
 
@@ -44,15 +37,15 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void RegisterCustomReplicationSystem(ComponentType type)
+        public bool TryRegisterCustomReplicationSystem(ComponentType type)
         {
             if (!registeredReplicators.Contains(type.TypeIndex))
             {
-                Debug.LogWarningFormat(Warnings.CustomReplicationSystemAlreadyExists, type);
-                return;
+                return false;
             }
 
-            registeredReplicators.Remove(type.TypeIndex);
+            // The default replication system is removed, instead the custom one is responsible for replication.
+            return registeredReplicators.Remove(type.TypeIndex);
         }
 
         protected override void OnUpdate()

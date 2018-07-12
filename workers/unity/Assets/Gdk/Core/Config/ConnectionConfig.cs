@@ -14,7 +14,9 @@ namespace Improbable.Gdk.Core
         {
             if (string.IsNullOrEmpty(configValue))
             {
-                throw new System.ArgumentException($"No valid {configName} has been provided");
+                throw new ConnectionFailedException(
+                    $"Config validation failed with: No valid {configName} has been provided",
+                    ConnectionErrorReason.InvalidConfig);
             }
         }
     }
