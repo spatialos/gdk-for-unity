@@ -9,14 +9,14 @@ namespace Playground
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     internal class ConnectRequestSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<WorkerEntityTag> Worker;
+            public ComponentDataArray<WorkerEntityTag> DenotesWorker;
         }
 
-        public Button ConnectButton;
+        public Button connectButton;
         private bool clicked;
 
         [Inject] private Data data;
@@ -24,8 +24,8 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            ConnectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
-            ConnectButton.onClick.AddListener(IsClicked);
+            connectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
+            connectButton.onClick.AddListener(IsClicked);
         }
 
         protected override void OnUpdate()
@@ -38,7 +38,7 @@ namespace Playground
                 }
 
                 PostUpdateCommands.AddComponent(data.Entity[i], new ConnectButtonClicked());
-                ConnectButton.gameObject.SetActive(false);
+                connectButton.gameObject.SetActive(false);
                 clicked = false;
             }
         }
