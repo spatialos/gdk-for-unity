@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core
             View = new MutableView(World, loggingDispatcher);
             Origin = origin;
 
-            EntityGameObjectLinker = new EntityGameObjectLinker(World);
+            EntityGameObjectLinker = new EntityGameObjectLinker(World, View);
         }
 
         public void Dispose()

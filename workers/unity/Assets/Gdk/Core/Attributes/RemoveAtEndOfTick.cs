@@ -12,4 +12,3 @@ namespace Improbable.Gdk.Core
     {
     }
 }
-

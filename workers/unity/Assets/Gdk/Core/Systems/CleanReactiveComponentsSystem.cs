@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    /// Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
+    ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
@@ -15,6 +14,7 @@ namespace Improbable.Gdk.Core
         private MutableView view;
 
         private readonly List<Action> removeComponentActions = new List<Action>();
+
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
@@ -106,4 +106,3 @@ namespace Improbable.Gdk.Core
         }
     }
 }
-

@@ -10,10 +10,10 @@ namespace Playground
         private readonly World world;
         private readonly Dictionary<string, GameObject> cachedPrefabs;
 
-        public EntityGameObjectCreator(World world, Dictionary<string, GameObject> initialCachedPrefabs)
+        public EntityGameObjectCreator(World world, Dictionary<string, GameObject> initialCachedPrefabs = null)
         {
             this.world = world;
-            cachedPrefabs = initialCachedPrefabs;
+            cachedPrefabs = initialCachedPrefabs ?? new Dictionary<string, GameObject>();
         }
 
         public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,

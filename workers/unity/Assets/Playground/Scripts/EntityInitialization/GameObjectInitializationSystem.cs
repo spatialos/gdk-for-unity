@@ -50,7 +50,7 @@ namespace Playground
             worker = WorkerRegistry.GetWorkerForWorld(World);
             view = worker.View;
             origin = worker.Origin;
-            entityGameObjectCreator = new EntityGameObjectCreator(World, new Dictionary<string, GameObject>());
+            entityGameObjectCreator = new EntityGameObjectCreator(World);
         }
 
         protected override void OnUpdate()
@@ -64,7 +64,10 @@ namespace Playground
 
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
-                    Debug.LogErrorFormat(Errors.UnknownWorkerType, World.Name);
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Worker type isn't supported by the GameObjectInitializationSystem.")
+                        .WithField("WorldName", World.Name)
+                        .WithField("WorkerType", worker));
                     continue;
                 }
 
@@ -96,7 +99,9 @@ namespace Playground
                 GameObject gameObject;
                 if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
                 {
-                    Debug.LogErrorFormat(Errors.GameObjectNotFound, entityIndex);
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "GameObject corresponding to removed entity not found.")
+                        .WithField("EntityIndex", entityIndex));
                     continue;
                 }
 
@@ -107,14 +112,6 @@ namespace Playground
             }
 
             viewCommandBuffer.FlushBuffer(view);
-        }
-
-        internal static class Errors
-        {
-            public const string UnknownWorkerType =
-                "Unknown workerType for world name {0}.";
-
-            public const string GameObjectNotFound = "EntityGameObject with handle {0} not found.";
         }
     }
 }

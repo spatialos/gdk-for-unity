@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             entityManager = world.GetOrCreateManager<EntityManager>();
-            entityGameObjectLinker = new EntityGameObjectLinker(world);
+            entityGameObjectLinker = new EntityGameObjectLinker(world, new MutableView(world, new LoggingDispatcher()));
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
         }

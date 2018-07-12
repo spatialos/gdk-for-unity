@@ -8,11 +8,13 @@ namespace Improbable.Gdk.Core
     public class EntityGameObjectLinker
     {
         private readonly World world;
+        private MutableView view;
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
 
-        public EntityGameObjectLinker(World world)
+        public EntityGameObjectLinker(World world, MutableView view)
         {
             this.world = world;
+            this.view = view;
         }
 
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, long spatialEntityId,
@@ -24,7 +26,10 @@ namespace Improbable.Gdk.Core
                 var componentType = component.GetType();
                 if (gameObjectComponentTypes.Contains(componentType))
                 {
-                    Debug.LogWarningFormat(Messages.ComponentTypeDuplicated, componentType);
+                    view.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                            "GameObject contains multiple instances of the same component type. Only one instance of each component type will be added to the corresponding ECS entity.")
+                        .WithField("EntityId", spatialEntityId)
+                        .WithField("ComponentType", componentType));
                     continue;
                 }
 
@@ -36,12 +41,6 @@ namespace Improbable.Gdk.Core
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
             spatialOSComponent.World = world;
-        }
-
-        internal static class Messages
-        {
-            public const string ComponentTypeDuplicated =
-                "GameObject contains multiple instances of {0}. Only one instance of each component type will be added to the corresponding ECS entity.";
         }
     }
 }
