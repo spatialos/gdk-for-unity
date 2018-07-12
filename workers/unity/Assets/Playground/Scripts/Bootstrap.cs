@@ -59,6 +59,8 @@ namespace Playground
             {
                 var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
                 Workers.Add(worker);
+
+                // TODO: UTY-555 logic for when device is not an emulator
                 if (DeviceInfo.IsEmulator())
                 {
                     connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
