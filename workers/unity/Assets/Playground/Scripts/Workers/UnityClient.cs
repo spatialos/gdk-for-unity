@@ -42,6 +42,9 @@ namespace Playground
 
             // Client player commands system
             World.GetOrCreateManager<PlayerCommandsSystem>();
+
+            // Metric sending system
+            World.GetOrCreateManager<MetricSendSystem>();
         }
     }
 }

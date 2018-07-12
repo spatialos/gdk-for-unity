@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
-using Improbable.Gdk.Core.Config;
+using Improbable.Gdk.Core;
 
-namespace Improbable.Gdk.Core
+namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
@@ -17,6 +17,31 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
             worker = WorkerRegistry.GetWorkerForWorld(World);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (worker.Connection == null)
+            {
+                return;
+            }
+
+            var connection = worker.Connection;
+
+            timeElapsedSinceUpdate += Time.deltaTime;
+            AddFpsSample();
+            if (timeElapsedSinceUpdate >= MetricConfig.TimeBetweenMetricUpdatesSecs)
+            {
+                timeElapsedSinceUpdate = 0;
+                float fps = CalculateFps();
+                var load = MetricConfig.CalculateLoad == null ?
+                    DefaultLoadCalculation(fps) : MetricConfig.CalculateLoad(fps);
+                Worker.Metrics metrics = new Worker.Metrics
+                {
+                    Load = load
+                };
+                connection.SendMetrics(metrics);
+            }
         }
 
         private float DefaultLoadCalculation(float fps)
@@ -43,31 +68,6 @@ namespace Improbable.Gdk.Core
             }
             fps /= fpsMeasurements.Count;
             return fps;
-        }
-
-        protected override void OnUpdate()
-        {
-            if (worker.Connection == null)
-            {
-                return;
-            }
-
-            var connection = worker.Connection;
-
-            timeElapsedSinceUpdate += Time.deltaTime;
-            AddFpsSample();
-            if (timeElapsedSinceUpdate >= MetricConfig.TimeBetweenMetricUpdatesSecs)
-            {
-                timeElapsedSinceUpdate = 0;
-                float fps = CalculateFps();
-                var load = MetricConfig.CalculateLoad == null ?
-                    DefaultLoadCalculation(fps) : MetricConfig.CalculateLoad(fps);
-                Worker.Metrics metrics = new Worker.Metrics
-                {
-                    Load = load
-                };
-                connection.SendMetrics(metrics);
-            }
         }
     }
 }

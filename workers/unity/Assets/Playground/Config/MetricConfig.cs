@@ -1,6 +1,5 @@
-namespace Improbable.Gdk.Core.Config
+namespace Playground
 {
-
     public delegate float CalculateLoadDelegate(float fps);
 
     public static class MetricConfig
