@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core.Config;
 using Unity.Entities;
 using UnityEngine;
 using Improbable.Gdk.Core;
@@ -12,7 +13,7 @@ namespace Playground
         private float timeElapsedSinceUpdate = 0.0f;
 
         private List<float> fpsMeasurements = new List<float>();
-        
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
@@ -56,6 +57,7 @@ namespace Playground
             {
                 fpsMeasurements.RemoveAt(0);
             }
+
             fpsMeasurements.Add(1.0f / Time.deltaTime);
         }
 
@@ -66,6 +68,7 @@ namespace Playground
             {
                 fps += measurement;
             }
+
             fps /= fpsMeasurements.Count;
             return fps;
         }
