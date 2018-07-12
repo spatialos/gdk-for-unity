@@ -6,6 +6,7 @@
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Android",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Generated.NetworkTypes",

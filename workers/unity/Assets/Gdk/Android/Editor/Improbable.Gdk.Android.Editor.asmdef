@@ -1,0 +1,10 @@
+{
+    "name": "Improbable.Gdk.Android.Editor",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
