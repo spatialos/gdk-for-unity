@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core.Config;
 using Unity.Entities;
 using UnityEngine;
-using Improbable.Gdk.Core.Config;
 
 namespace Improbable.Gdk.Core
 {
@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
         private float timeElapsedSinceUpdate = 0.0f;
 
         private List<float> fpsMeasurements = new List<float>();
-        
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
@@ -31,6 +31,7 @@ namespace Improbable.Gdk.Core
             {
                 fpsMeasurements.RemoveAt(0);
             }
+
             fpsMeasurements.Add(1.0f / Time.deltaTime);
         }
 
@@ -41,6 +42,7 @@ namespace Improbable.Gdk.Core
             {
                 fps += measurement;
             }
+
             fps /= fpsMeasurements.Count;
             return fps;
         }
@@ -60,8 +62,9 @@ namespace Improbable.Gdk.Core
             {
                 timeElapsedSinceUpdate = 0;
                 float fps = CalculateFps();
-                var load = MetricConfig.CalculateLoad == null ?
-                    DefaultLoadCalculation(fps) : MetricConfig.CalculateLoad(fps);
+                var load = MetricConfig.CalculateLoad == null
+                    ? DefaultLoadCalculation(fps)
+                    : MetricConfig.CalculateLoad(fps);
                 Worker.Metrics metrics = new Worker.Metrics
                 {
                     Load = load
