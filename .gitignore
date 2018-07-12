@@ -1,4 +1,6 @@
-/build/
+/build/assembly/
+/build/descriptor/
+/build/build_logs/
 workers/unity/build/
 /logs/
 .spatialos/
