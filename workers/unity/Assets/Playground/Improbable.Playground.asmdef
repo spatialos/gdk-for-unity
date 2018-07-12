@@ -7,7 +7,6 @@
         "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Android",
-        "Improbable.CSharp",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Generated.NetworkTypes",
