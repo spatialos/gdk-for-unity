@@ -61,7 +61,7 @@ namespace Playground
                 Workers.Add(worker);
 
                 // TODO: UTY-555 logic for when device is not an emulator
-                if (DeviceInfo.IsEmulator())
+                if (DeviceInfo.IsAndroidStudioEmulator())
                 {
                     connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
                 }
