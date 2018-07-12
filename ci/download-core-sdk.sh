@@ -47,7 +47,9 @@ cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/core-bundle-x86_64-macos"       "${
 cleanAndUnpackTo "${CORE_SDK_DIR}/worker_sdk/csharp"                         "${MANAGED_DEPENDENCIES_PATH}"
 cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "tools/schema_compiler/win"
 cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-macos"        "tools/schema_compiler/macos"
-cleanAndUnpackTo "${CORE_SDK_DIR}/schema/standard_library"                   "schema_standard_library"
+
+# `spatial local launch` and `spatial upload` require these to be here, until the new project structure is applied.
+cleanAndUnpackTo "${CORE_SDK_DIR}/build/schema/standard_library"             "build/dependencies/schema/standard_library"
 
 # Remove unused tools and files.
 rm tools/schema_compiler/win/protoc.exe
