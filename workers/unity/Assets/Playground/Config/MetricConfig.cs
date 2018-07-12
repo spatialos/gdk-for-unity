@@ -7,6 +7,6 @@ namespace Playground
         public static CalculateLoadDelegate CalculateLoad;
 
         public static int MaxFpsSamples = 50;
-        public static int TimeBetweenMetricUpdatesSecs = 2;
+        public static float TimeBetweenMetricUpdatesSecs = 2.0f;
     }
 }

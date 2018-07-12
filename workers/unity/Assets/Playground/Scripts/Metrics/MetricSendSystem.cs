@@ -11,7 +11,7 @@ namespace Playground
 
         private float timeElapsedSinceUpdate = 0.0f;
 
-        private List<float> fpsMeasurements = new List<float>();
+        private readonly List<float> fpsMeasurements = new List<float>();
 
         protected override void OnCreateManager(int capacity)
         {
