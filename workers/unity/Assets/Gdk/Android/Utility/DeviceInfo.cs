@@ -12,12 +12,12 @@ namespace Improbable.Gdk.Android
         private static readonly string Device = GetValue("DEVICE");
         private static readonly string Product = GetValue("PRODUCT");
 
-        public static bool IsEmulator()
+        public static bool IsAndroidStudioEmulator()
         {
             return Fingerprint.StartsWith("generic") || Fingerprint.StartsWith("unknown") ||
                 Model.Contains("google_sdk") || Model.Contains("Emulator") ||
-                Model.Contains("Android SDK built for x86") || Manufacturer.Contains("Genymotion") ||
-                (Brand.StartsWith("generic") && Device.StartsWith("generic")) ||
+                Model.Contains("Android SDK built for x86") ||
+                Brand.StartsWith("generic") && Device.StartsWith("generic") ||
                 "google_sdk".Equals(Product);
         }
 
