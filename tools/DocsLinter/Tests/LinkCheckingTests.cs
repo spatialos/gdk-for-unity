@@ -20,6 +20,12 @@ namespace DocsLinter.Tests
             return new RemoteLink(new LinkInline(url, ""));
         }
 
+        [OneTimeSetUp]
+        public void IgnoreSslErrors() {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += 
+                (sender, cert, chain, sslPolicyErrors) => true;
+        }
+
         [Test]
         public void CheckRemoteLink_returns_true_for_200_status_code()
         {
