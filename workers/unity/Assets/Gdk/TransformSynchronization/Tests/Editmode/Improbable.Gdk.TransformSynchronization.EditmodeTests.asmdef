@@ -1,7 +1,7 @@
 {
-    "name": "Improbable.Gdk.Physics.EditmodeTests",
+    "name": "Improbable.Gdk.TransformSynchronization.EditmodeTests",
     "references": [
-        "Improbable.Gdk.Physics",
+        "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities"
     ],
     "optionalUnityReferences": [
