@@ -4,6 +4,9 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -51,6 +54,19 @@ namespace Playground
                 connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
 #endif
             }
+#if UNITY_ANDROID
+            else if (Application.isMobilePlatform)
+            {
+                var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
+                Workers.Add(worker);
+
+                // TODO: UTY-555 logic for when device is not an emulator
+                if (DeviceInfo.IsAndroidStudioEmulator())
+                {
+                    connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
+                }
+            }
+#endif
             else
             {
                 var commandLineArguments = System.Environment.GetCommandLineArgs();
