@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Improbable.Gdk.Core.Config;
 using Unity.Entities;
 using UnityEngine;
 using Improbable.Gdk.Core;
@@ -37,7 +36,7 @@ namespace Playground
                 float fps = CalculateFps();
                 var load = MetricConfig.CalculateLoad == null ?
                     DefaultLoadCalculation(fps) : MetricConfig.CalculateLoad(fps);
-                Worker.Metrics metrics = new Worker.Metrics
+                Improbable.Worker.Metrics metrics = new Improbable.Worker.Metrics
                 {
                     Load = load
                 };
