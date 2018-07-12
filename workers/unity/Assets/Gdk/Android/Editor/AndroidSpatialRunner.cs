@@ -20,6 +20,7 @@ namespace Improbable.Gdk.Android.Editor
         [MenuItem("Improbable/Run Spatial for Android")]
         public static void RunAndroidSpatial()
         {
+            Debug.Log($"Connect phone to IP: {GetLocalIpAddress()}");
             Process.Start(GetProcessStartInfo());
         }
 
@@ -33,7 +34,6 @@ namespace Improbable.Gdk.Android.Editor
                     "Could not find local IP Address. Make sure you are connected to the Internet.");
             }
 
-            Debug.Log($"Runtime IP: {ipAddress}");
             return ipAddress;
         }
 
