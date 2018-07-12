@@ -21,7 +21,8 @@ namespace Improbable.Gdk.Core
 
         private float DefaultLoadCalculation(float fps)
         {
-            return Mathf.Max(0.0f, 1.5f - 0.025f * fps);
+            float targetFps = Application.targetFrameRate;
+            return Mathf.Max(0.0f, (targetFps - fps) / (targetFps - 20.0f));
         }
 
         private void AddFpsSample()
