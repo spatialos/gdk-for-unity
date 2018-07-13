@@ -1,7 +1,6 @@
 using Generated.Improbable;
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
