@@ -56,7 +56,6 @@ namespace Playground
 #if UNITY_ANDROID
             else if (Application.isMobilePlatform)
             {
-                Debug.Log("I'm in the mobile code");
                 var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
                 Workers.Add(worker);
 

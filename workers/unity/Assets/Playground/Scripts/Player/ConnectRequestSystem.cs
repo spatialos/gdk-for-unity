@@ -1,4 +1,7 @@
 using Improbable.Gdk.Core;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,7 +53,10 @@ namespace Playground
         private void IsClicked()
         {
             clicked = true;
-            SetConnectionParameters(GetInputString());
+            if (!DeviceInfo.IsAndroidStudioEmulator())
+            {
+                SetConnectionParameters(GetInputString());
+            }
         }
 
         private string GetInputString()
@@ -68,7 +74,7 @@ namespace Playground
             // TODO: else -> cloud connection
         }
 
-        private bool IsIpAddress(string param)
+        private static bool IsIpAddress(string param)
         {
             return param.Split('.').Length == 4;
         }

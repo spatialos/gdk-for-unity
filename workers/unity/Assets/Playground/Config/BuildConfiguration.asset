@@ -16,7 +16,6 @@ MonoBehaviour:
   - WorkerPlatform:
       name: UnityClient
     ScenesForWorker:
-    - {fileID: 102900000, guid: e6a91ff0ba9ee3e41b44383aa9f814bb, type: 3}
     - {fileID: 102900000, guid: 06c1d5e7dfa38fa418d90aa8345ce9fc, type: 3}
     LocalBuildConfig:
       BuildPlatforms: 1
@@ -27,7 +26,6 @@ MonoBehaviour:
   - WorkerPlatform:
       name: UnityGameLogic
     ScenesForWorker:
-    - {fileID: 102900000, guid: e6a91ff0ba9ee3e41b44383aa9f814bb, type: 3}
     - {fileID: 102900000, guid: 06c1d5e7dfa38fa418d90aa8345ce9fc, type: 3}
     LocalBuildConfig:
       BuildPlatforms: 1
