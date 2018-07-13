@@ -1,10 +1,10 @@
 using Improbable.Gdk.Core;
-#if UNITY_ANDROID
-using Improbable.Gdk.Android;
-#endif
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 
 namespace Playground
 {
