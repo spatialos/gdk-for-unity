@@ -16,8 +16,8 @@ namespace Playground
     {
         public struct AddedEntitiesData
         {
-            public int Length;
-            public readonly EntityArray Entities;
+            public readonly int Length;
+            public EntityArray Entities;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
@@ -26,7 +26,7 @@ namespace Playground
 
         public struct RemovedEntitiesData
         {
-            public int Length;
+            public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
@@ -107,7 +107,7 @@ namespace Playground
 
                 entityGameObjectCache.Remove(entityIndex);
                 UnityObjectDestroyer.Destroy(gameObject);
-                PostUpdateCommands.RemoveSystemStateComponent<GameObjectReferenceHandle>(
+                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(
                     removedEntitiesData.Entities[i]);
             }
 
