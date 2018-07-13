@@ -18,20 +18,19 @@ fi
 
 markStartOfBlock "$0"
 
-pushd "workers/unity"
-  FOUND_PATH=$(dotnet run -p ../../tools/FindUnity/FindUnity.csproj) && true
-  if [ $? -eq 0 ]; then
-    echo "Unity is already installed in:" $FOUND_PATH
-    exit 0
-  else
-    echo "Could not find Unity installation."
-  fi
-popd
-
-UNITY_PACKAGE="github.com/improbable/unity_downloader"
-IMPROBABLE_UNITY_ROOT="C:/Unity"
 UNITY_PINNED_VERSION=$(grep "m_EditorVersion" "workers/unity/ProjectSettings/ProjectVersion.txt" | cut -d ' ' -f2)
 UNITY_PINNED_HASH=$(cat "workers/unity/ProjectSettings/ProjectVersionHash.txt")
+IMPROBABLE_UNITY_ROOT="C:/Unity"
+IMPROBABLE_UNITY_VERSIONED="$IMPROBABLE_UNITY_ROOT/$UNITY_PINNED_VERSION"
+
+if [ -d "$IMPROBABLE_UNITY_VERSIONED" ]; then
+  echo "Unity is already installed in:" $IMPROBABLE_UNITY_VERSIONED
+  exit 0
+else
+  echo "Could not find Unity installation."
+fi
+
+UNITY_PACKAGE="github.com/improbable/unity_downloader"
 GOPATH="$(pwd)/go"
 export GOPATH
 
