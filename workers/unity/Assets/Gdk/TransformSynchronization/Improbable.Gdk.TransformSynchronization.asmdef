@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.Physics",
+    "name": "Improbable.Gdk.TransformSynchronization",
     "references": [
         "Improbable.Gdk.Core",
         "Improbable.Gdk.Generated",

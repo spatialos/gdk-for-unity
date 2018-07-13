@@ -1,9 +1,12 @@
-/build/
+/build/assembly/
+/build/descriptor/
+/build/build_logs/
 workers/unity/build/
 /logs/
 .spatialos/
 .idea/
 .vs/
+.DS_Store
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/

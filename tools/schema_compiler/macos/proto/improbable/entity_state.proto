@@ -1,0 +1,107 @@
+// Copyright (c) 2015 Improbable Worlds Ltd. All Rights Reserved.
+syntax = "proto2";
+
+// NOTE(dino): Should probably be just "improbable", but needs to stay as-is because
+// this is part of the public api.
+package schema.improbable;
+
+option java_outer_classname = "EntityStateProtos";
+option go_package = "improbable";
+import "google/protobuf/descriptor.proto";
+
+// Extended to define component data (both at-rest and for updates).
+message EntityState {
+  reserved 1;
+  // Extension numbers 50-99 are reserved for well-known-components (see http://brevi.link/wkcs).
+  // Extension number 100 to 189999 are intended for use in user schemas.
+  // Extension numbers 190000 to 199999 are reserved for internal improbable use.
+  extensions 50 to max;
+}
+
+// Extended to define events associated with a particular component.
+message EntityEvent {
+  // Exactly the same extension numbers as in EntityState. See notes above.
+  extensions 50 to max;
+}
+
+// Extended to define commands associated with a particular component.
+message EntityCommand {
+  // Exactly the same extension numbers as in EntityState. See notes above.
+  extensions 50 to max;
+}
+
+// The algorithm for applying a component update u to an at-rest entity state e is:
+//
+// 1: Identify the component being updated by u. To do this, look at u.entity_state. It should
+//    have exactly one field set -- if it does not, the update is malformed and should be rejected
+//    without updating e. Otherwise, the field that is set is the component being updated. Call this
+//    component c.
+// 2: for each field_number in u.fields_to_clear, clear e.c.field where field's number is
+//    field_number.
+// 3: for each optional field that is set in u.entity_state.c, clear e.c.field.
+// 4: for each repeated field that is non-empty in u.entity_state.c, clear e.c.field.
+// 5: for each map field that is non-empty in u.entity_state.c, clear e.c.field.
+// 6: merge u.entity_state.c into e.entity_state.c using the normal protobuf "mergeFrom" function.
+message EntityComponentUpdate {
+  // The list of field IDs inside the specific EntityState extension field to clear before merging
+  // the state data as a component update.
+  repeated uint32 fields_to_clear = 1;
+  // Persistent state data for this update.
+  optional EntityState entity_state = 2;
+  // Transient event data for this update.
+  optional EntityEvent entity_event = 3;
+}
+
+extend google.protobuf.FieldOptions {
+  // The original (as defined in schemalang) name of this field. (The schemalang compiler transforms
+  // field names to work around bugs and ambiguities across all supported languages and tools.)
+  optional string schemalang_field_name = 51000;
+}
+
+extend google.protobuf.EnumValueOptions {
+  // Similarly to above, the original (as defined in schemalang) name of this enum value.
+  optional string schemalang_enum_value_name = 51000;
+}
+
+message ComponentInfo {
+  // The fully-qualified (i.e. with package) name of the component as defined in schemalang.
+  optional string component_name = 1;
+  // The ID of the component.
+  optional uint32 component_id = 2;
+
+  reserved 3;
+  reserved 4;
+}
+
+extend google.protobuf.MessageOptions {
+  // Annotation used to look up information about components.
+  // This is mostly used by fabric to map between user-supplied component names and component IDs.
+  // Since once we map to protobuf there isn't really a single concept of a "component" any more
+  // (they've been broken down into state data, commands, etc), it's irrelevant / unspecified which
+  // message is actually annotated with this option.
+  optional ComponentInfo component_info = 51000;
+}
+
+// This option indicates that the annotated field is truly optional in the SpatialOS schema (rather
+// than simply optional at the protobuf level).
+extend google.protobuf.FieldOptions {
+  optional bool option = 51004 [default = false];
+}
+
+// This extension indicates that the annotated int64 field represents an entity ID.
+extend google.protobuf.FieldOptions {
+  optional bool entity_id = 51005 [default = false];
+}
+
+// This extension indicates that the key or value (respectively) of the annotated map field
+// represents an entity ID. Should only be used on int64 keys/values.
+extend google.protobuf.FieldOptions {
+  optional bool entity_id_key = 51006 [default = false];
+  optional bool entity_id_value = 51007 [default = false];
+}
+// This option indicates that the annotated field is marked transient in the schema.
+// Should only be used on non-singular fields.
+// Note we can't call it 'transient' since that is a keyword in Java.
+extend google.protobuf.FieldOptions {
+  optional bool transient_field = 51008 [default = false];
+}

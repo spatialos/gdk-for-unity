@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Improbable.CodeGeneration.FileHandling;
+using System.Runtime.InteropServices;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -10,6 +11,10 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private readonly CodeGeneratorOptions options;
         private readonly IFileSystem fileSystem;
+
+        private readonly string schemaCompilerPath = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            ? @"tools/schema_compiler/macos/schema_compiler"
+            : @"tools\schema_compiler\win\schema_compiler.exe";
 
         public static int Main(string[] args)
         {
@@ -87,7 +92,7 @@ namespace Improbable.Gdk.CodeGenerator
                 $@"--ast_json_out={options.JsonDirectory}"
             }.Union(inputPaths).Union(files).ToList();
 
-            SystemTools.RunRedirected(@"tools\schema_compiler\win\schema_compiler.exe", arguments);
+            SystemTools.RunRedirected(schemaCompilerPath, arguments);
         }
 
         private HashSet<string> ExtractEnums(ICollection<UnitySchemaFile> schemas)

@@ -2,7 +2,7 @@
     "name": "Improbable.Playground",
     "references": [
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.Physics",
+        "Improbable.Gdk.TransformSynchronization",
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
