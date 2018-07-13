@@ -17,7 +17,7 @@ namespace Playground
         public struct AddedEntitiesData
         {
             public int Length;
-            public EntityArray Entities;
+            public readonly EntityArray Entities;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;

@@ -9,7 +9,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
 
             public ComponentArray<CommandRequests<PlayerHeartbeatClient.PlayerHeartbeat.Request>>
                 PlayerHeartbeatRequests;

@@ -11,7 +11,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
             public ComponentArray<CommandRequests<PlayerCreator.CreatePlayer.Request>> CreatePlayerRequests;
             [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
         }

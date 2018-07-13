@@ -1,9 +1,10 @@
 {
   "dependencies": {
     "com.unity.burst": "0.2.4-preview.18",
-    "com.unity.entities": "0.0.12-preview.4",
+    "com.unity.entities": "0.0.12-preview.8",
+    "com.unity.incrementalcompiler": "0.0.42-preview.14",
     "com.unity.package-manager-ui": "1.9.9",
-    "com.unity.postprocessing": "2.0.7-preview",
+    "com.unity.postprocessing": "2.0.8-preview",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0",
@@ -11,6 +12,7 @@
   },
   "testables": [
     "com.unity.collections",
+    "com.unity.entities",
     "com.unity.jobs"
   ],
   "registry": "https://staging-packages.unity.com"
