@@ -41,7 +41,7 @@ namespace UnityPaths
             var projectVersion = File.ReadAllText(Path.Combine("ProjectSettings", "ProjectVersion.txt"))
                 .Remove(0, "m_EditorVersion:".Length).Trim();
 
-            var improbableUnityPath = Path.Combine(ImprobableUnityRootPath, $"Unity-{projectVersion}");
+            var improbableUnityPath = Path.Combine(ImprobableUnityRootPath, $"{projectVersion}");
             if (Directory.Exists(improbableUnityPath))
             {
                 return improbableUnityPath;
