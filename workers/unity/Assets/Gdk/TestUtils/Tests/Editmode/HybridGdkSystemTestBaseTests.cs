@@ -18,9 +18,9 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         {
             private struct PreparationData
             {
-                public int Length;
+                public readonly int Length;
 
-                /* 
+                /*
                 The ComponentArray<> here makes this a hybrid system.
                 For this test, the GameObjectRigidBody[i] will always be null,
                 but we are only testing that this struct can be injected even if

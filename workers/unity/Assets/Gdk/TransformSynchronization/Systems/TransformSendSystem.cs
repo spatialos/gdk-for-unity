@@ -9,7 +9,7 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         public struct TransformData
         {
-            public int Length;
+            public readonly int Length;
             public ComponentDataArray<SpatialOSTransform> Transforms;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
