@@ -12,7 +12,7 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         public struct TransformData
         {
-            public int Length;
+            public readonly int Length;
             public ComponentDataArray<SpatialOSTransform> Transform;
             public ComponentDataArray<SpatialOSPosition> Position;
             public ComponentArray<Rigidbody> GameObjectRigidBody;

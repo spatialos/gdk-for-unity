@@ -19,7 +19,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         public struct TransformData
         {
-            public int Length;
+            public readonly int Length;
             public ComponentArray<BufferedTransform> BufferedTransform;
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> transformAuthority;

@@ -11,7 +11,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSPlayerHeartbeatClient>> RequestSenders;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerHeartbeatServer>> AuthorityMarkers;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;

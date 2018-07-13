@@ -10,7 +10,7 @@ namespace Playground
     {
         public struct DisconnectData
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
 
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;

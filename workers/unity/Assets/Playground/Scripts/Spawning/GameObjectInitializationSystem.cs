@@ -18,7 +18,7 @@ namespace Playground
 
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public EntityArray Entities;
