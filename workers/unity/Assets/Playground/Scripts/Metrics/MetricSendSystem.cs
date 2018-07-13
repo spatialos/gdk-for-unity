@@ -11,7 +11,7 @@ namespace Playground
 
         private float timeElapsedSinceUpdate = 0.0f;
 
-        private readonly List<float> fpsMeasurements = new List<float>();
+        private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
 
@@ -55,10 +55,10 @@ namespace Playground
         {
             if (fpsMeasurements.Count == MaxFpsSamples)
             {
-                fpsMeasurements.RemoveAt(0);
+                fpsMeasurements.Dequeue();
             }
 
-            fpsMeasurements.Add(1.0f / Time.deltaTime);
+            fpsMeasurements.Enqueue(1.0f / Time.deltaTime);
         }
 
         private float CalculateFps()
