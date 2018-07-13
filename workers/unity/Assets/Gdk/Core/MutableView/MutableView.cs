@@ -24,7 +24,6 @@ namespace Improbable.Gdk.Core
         private readonly EntityManager entityManager;
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
-        private readonly GameObjectManager gameObjectManager;
 
         // Reflection magic to get the internal method "SetComponentObject" on the specific EntityManager instance. This is required to add Components to Entities at runtime
         private static readonly MethodInfo setComponentObjectMethodInfo =
@@ -40,7 +39,6 @@ namespace Improbable.Gdk.Core
         {
             entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
-            gameObjectManager = new GameObjectManager();
             LogDispatcher = logDispatcher;
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
@@ -208,11 +206,6 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public void AddGameObjectEntity(Entity entity, GameObject gameObject)
-        {
-            gameObjectManager.AddGameObjectEntity(entity, gameObject);
-        }
-
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
@@ -322,7 +315,6 @@ namespace Improbable.Gdk.Core
             }
 
             entityManager.DestroyEntity(entityMapping[entityId]);
-            gameObjectManager.TryRemoveGameObjectEntity(entity);
             entityMapping.Remove(entityId);
         }
 

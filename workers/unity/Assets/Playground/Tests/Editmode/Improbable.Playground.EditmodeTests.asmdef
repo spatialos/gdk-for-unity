@@ -1,0 +1,16 @@
+{
+    "name": "Improbable.Playground.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Playground",
+        "Unity.Entities"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
