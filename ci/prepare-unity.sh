@@ -18,9 +18,19 @@ fi
 
 markStartOfBlock "$0"
 
+if isWindows; then
+  MODULES="linux,mac-mono,ios,android"
+  IMPROBABLE_UNITY_ROOT="C:/Unity"
+elif isMacOS; then
+  MODULES="linux,windows-mono,ios,android"
+  IMPROBABLE_UNITY_ROOT="/Applications/Unity"
+elif isLinux; then
+  echo "Building is not supported on linux."
+  exit 1
+fi
+
 UNITY_PINNED_VERSION=$(grep "m_EditorVersion" "workers/unity/ProjectSettings/ProjectVersion.txt" | cut -d ' ' -f2)
 UNITY_PINNED_HASH=$(cat "workers/unity/ProjectSettings/ProjectVersionHash.txt")
-IMPROBABLE_UNITY_ROOT="C:/Unity"
 IMPROBABLE_UNITY_VERSIONED="$IMPROBABLE_UNITY_ROOT/$UNITY_PINNED_VERSION"
 
 if [ -d "$IMPROBABLE_UNITY_VERSIONED" ]; then
@@ -34,14 +44,6 @@ UNITY_PACKAGE="github.com/improbable/unity_downloader"
 GOPATH="$(pwd)/go"
 export GOPATH
 
-if isWindows; then
-  MODULES="linux,mac-mono,ios,android"
-elif isMacOS; then
-  MODULES="linux,windows-mono,ios,android"
-elif isLinux; then
-  echo "Building is not supported on linux."
-  exit 1
-fi
 
 markStartOfBlock "Installing unity_downloader"
 
