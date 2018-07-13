@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using Improbable.Gdk.Core;
 
 namespace Playground
 {
@@ -12,6 +12,8 @@ namespace Playground
         private float timeElapsedSinceUpdate = 0.0f;
 
         private readonly List<float> fpsMeasurements = new List<float>();
+        private const int MaxFpsSamples = 50;
+        private const float TimeBetweenMetricUpdatesSecs = 2.0f;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -30,12 +32,11 @@ namespace Playground
 
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();
-            if (timeElapsedSinceUpdate >= MetricConfig.TimeBetweenMetricUpdatesSecs)
+            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
                 timeElapsedSinceUpdate = 0;
                 float fps = CalculateFps();
-                var load = MetricConfig.CalculateLoad == null ?
-                    DefaultLoadCalculation(fps) : MetricConfig.CalculateLoad(fps);
+                var load = DefaultLoadCalculation(fps);
                 Improbable.Worker.Metrics metrics = new Improbable.Worker.Metrics
                 {
                     Load = load
@@ -52,7 +53,7 @@ namespace Playground
 
         private void AddFpsSample()
         {
-            if (fpsMeasurements.Count == MetricConfig.MaxFpsSamples)
+            if (fpsMeasurements.Count == MaxFpsSamples)
             {
                 fpsMeasurements.RemoveAt(0);
             }
