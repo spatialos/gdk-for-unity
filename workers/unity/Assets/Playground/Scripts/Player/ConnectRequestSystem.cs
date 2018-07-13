@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,10 +26,10 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
+            worker = WorkerRegistry.GetWorkerForWorld(World);
             connectParam = GameObject.Find("ConnectParam").GetComponent<InputField>();
             connectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
             connectButton.onClick.AddListener(IsClicked);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
         }
 
         protected override void OnUpdate()
@@ -51,10 +50,7 @@ namespace Playground
         private void IsClicked()
         {
             clicked = true;
-            // if (!DeviceInfo.IsEmulator())
-            // {
-            //     SetConnectionParameters(GetInputString());
-            // }
+            SetConnectionParameters(GetInputString());
         }
 
         private string GetInputString()
