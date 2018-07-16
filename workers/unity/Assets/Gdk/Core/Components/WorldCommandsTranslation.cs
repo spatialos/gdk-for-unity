@@ -313,6 +313,7 @@ namespace Improbable.Gdk.Core
             {
                 return;
             }
+            
             var response =
                 new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id, request);
 
@@ -329,6 +330,7 @@ namespace Improbable.Gdk.Core
             {
                 return;
             }
+
             var response =
                 new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id, request);
 
@@ -345,6 +347,7 @@ namespace Improbable.Gdk.Core
             {
                 return;
             }
+
             var response = new ReserveEntityIdsResponse((CommandStatusCode) op.StatusCode, op.Message,
                 op.FirstEntityId.Value.Id, op.NumberOfEntityIds, request);
 
@@ -367,6 +370,7 @@ namespace Improbable.Gdk.Core
             {
                 return;
             }
+
             var response =
                 new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result, request);
 
