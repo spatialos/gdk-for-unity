@@ -14,7 +14,7 @@ namespace Playground
     {
         private struct Data
         {
-            public int Length;
+            public readonly int Length;
             public EntityArray Entity;
             public ComponentDataArray<Recharging> Reloading;
             public ComponentDataArray<SpatialOSLauncher> Launcher;

@@ -3,7 +3,7 @@
 -----
 
 
-## Receiving updates from SpatialOS: reactive components
+## Receiving entity updates from SpatialOS: reactive components
 
 To represent state changes or messages from SpatialOS, the Unity GDK uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
@@ -23,7 +23,14 @@ These are the types of reactive component available:
 4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) requests. See [Commands](commands.md) for information on how this works.
 5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/13.0/shared/design/commands) responses. See [Commands](commands.md) for information on how this works.
 
-Here's an example of a system using a reactive component:
+### Component Lifecycle tags
+
+There are tags for handling the addition and removal of components:
+
+1. `ComponentAdded`: SpatialOS component has been added to the local view of a SpatialOS entity due to checkout of an entity or a change in interest.
+2. `ComponentRemoved`: SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
+
+### Example of a system using a reactive component
 
 ```csharp
 public class ReactiveSystem : ComponentSystem

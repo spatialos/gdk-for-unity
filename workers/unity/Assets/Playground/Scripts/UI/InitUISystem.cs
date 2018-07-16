@@ -12,7 +12,7 @@ namespace Playground
     {
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
             public EntityArray Entites;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;

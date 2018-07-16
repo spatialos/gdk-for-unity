@@ -57,8 +57,9 @@ namespace Improbable.Gdk.Core
                             bufferedCommand.ComponentType);
                         break;
                     default:
-                        Debug.LogErrorFormat("ViewCommandBuffer encountered unknown command type: {0}",
-                            bufferedCommand.CommandType);
+                        view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                                "ViewCommandBuffer encountered unknown command type during buffer flush.")
+                            .WithField("CommandType", bufferedCommand.CommandType));
                         break;
                 }
             }

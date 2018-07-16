@@ -12,7 +12,7 @@ namespace Playground
     {
         public struct CubeColorData
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public ComponentDataArray<EventSender<SpatialOSCubeColor>> EventSenders;
         }
 

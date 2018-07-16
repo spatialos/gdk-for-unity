@@ -11,7 +11,7 @@ namespace Playground
     {
         public struct PlayerData
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSLauncher.Update>> Updates;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using Unity.Entities;
 
@@ -40,6 +42,20 @@ namespace Improbable.Gdk.TestUtils
             InjectionHookSupport.UnregisterHook(gameobjectArrayInjectionHook);
             InjectionHookSupport.UnregisterHook(transformAccessArrayInjectionHook);
             InjectionHookSupport.UnregisterHook(componentArrayInjectionHook);
+        }
+
+        public static void CleanupAllInjectionHooks()
+        {
+            var hooksFieldInfo = typeof(InjectionHookSupport).GetField("k_Hooks", BindingFlags.Static | BindingFlags.NonPublic);
+
+            var staticValue = hooksFieldInfo.GetValue(null);
+
+            var hooks = ((List<InjectionHook>) staticValue).ToArray();
+
+            foreach (var injectionHook in hooks)
+            {
+                InjectionHookSupport.UnregisterHook(injectionHook);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
-        "Improbable.CSharp"
+        "Improbable.Generated.NetworkTypes"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

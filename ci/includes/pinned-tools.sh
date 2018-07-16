@@ -1,33 +1,31 @@
 #!/usr/bin/env bash
-
-UNITY_VERSION=$(cat "workers/unity/ProjectSettings/ProjectVersion.txt" | grep "m_EditorVersion" | cut -d ' ' -f2)
-
-function isUnityHomeSet() {
-  UNITY_HOME=${UNITY_HOME:-}
-  [ -n "$UNITY_HOME" ]
+error() {
+   local SOURCE_FILE=$1
+   local LINE_NO=$2
+   echo "ERROR: ${SOURCE_FILE}(${LINE_NO}):"
 }
 
-function isUnityImprobablePathPresent() {
-  UNITY_DIR="C:/Unity/Unity-${UNITY_VERSION}/"
-  [ -d "$UNITY_DIR" ]
+function isLinux() {
+  [[ "$(uname -s)" == "Linux" ]];
 }
 
-function getUnityDir() {
-  if isUnityHomeSet; then
-    echo "${UNITY_HOME}"
-  elif isUnityImprobablePathPresent; then
-    echo "${UNITY_DIR}"
-  else
-    echo "ERROR: Unity was not found in the default location. Please set the UNITY_HOME environment variable to where Unity ${UNITY_VERSION} is installed." >&2
-    exit 1
-  fi
+function isMacOS() {
+  [[ "$(uname -s)" == "Darwin" ]];
 }
 
-UNITY_DIR="$(getUnityDir)"
-export UNITY_EXE="${UNITY_DIR}/Editor/Unity.exe"
+function isWindows() {
+  ! ( isLinux || isMacOS );
+}
+
+
+# Print the .NETCore version to aid debugging,
+# as well as ensuring that later calls to the tool don't print the welcome message on first run.
+dotnet --version
 
 export LINTER="cleanupcode.exe"
 
-export MSBUILD="$(powershell  –ExecutionPolicy Bypass ./ci/find-msbuild.ps1)"
+DOTNET_VERSION="$(dotnet --version)"
 
-export NUNIT3_CONSOLE="code_generator/packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe"
+if isWindows; then
+  export MSBuildSDKsPath="${PROGRAMFILES}/dotnet/sdk/${DOTNET_VERSION}/Sdks"
+fi

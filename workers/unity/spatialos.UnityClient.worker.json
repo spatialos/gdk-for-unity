@@ -1,6 +1,19 @@
 {
   "build": {
-    "tasks_filename": "spatialos.unity.client.build.json"
+    "tasks": [
+      {
+        "name": "Codegen",
+        "steps": [{"name": "** Run ci/codegen.sh instead **", "command": "echo", "arguments": ["No-op."]}]
+      },
+      {
+        "name": "build",
+        "steps": [{"name": "** Run ci/build-client.sh instead **", "command": "echo", "arguments": ["No-op."]}]
+      },
+      {
+        "name": "clean",
+        "steps": [{"name": "No-op", "command": "echo", "arguments": ["No-op."]}]
+      }
+    ]
   },
   "bridge": {
     "worker_attribute_set": {

@@ -195,10 +195,17 @@ namespace DocsLinter
 
             try
             {
-                var request = WebRequest.CreateHttp(remoteLink.Url);
-                request.Method = WebRequestMethods.Http.Get;
-                response = request.GetResponse() as HttpWebResponse;
+                var strippedUrl = remoteLink.Url;
+                // anchors break the link check, need to remove them from the link before creating the web request.
+                if (strippedUrl.Contains("#"))
+                {
+                    strippedUrl = remoteLink.Url.Substring(0, strippedUrl.IndexOf("#", StringComparison.Ordinal));
+                }
 
+                var request = WebRequest.CreateHttp(strippedUrl);
+                request.Method = WebRequestMethods.Http.Get;
+                request.AllowAutoRedirect = true;
+                response = request.GetResponse() as HttpWebResponse;
 
                 // Check for non-200 error codes.
                 if (response.StatusCode != HttpStatusCode.OK)
