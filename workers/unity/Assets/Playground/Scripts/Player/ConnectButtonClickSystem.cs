@@ -62,9 +62,16 @@ namespace Playground
         {
             clicked = true;
 #if UNITY_ANDROID
-            if (Application.isMobilePlatform && !DeviceInfo.IsAndroidStudioEmulator())
+            if (Application.isMobilePlatform)
             {
-                SetConnectionParameters(GetInputString());
+                if (DeviceInfo.IsAndroidStudioEmulator() && GetInputString().Equals(""))
+                {
+                    worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
+                }
+                else
+                {
+                    SetConnectionParameters(GetInputString());
+                }
             }
 #endif
         }
@@ -81,7 +88,7 @@ namespace Playground
                 worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForPhysicalAndroid(param);
             }
 
-            // TODO: else -> cloud connection
+            // TODO: UTY-558 else -> cloud connection
         }
 
         private static bool IsIpAddress(string param)
