@@ -13,6 +13,7 @@ source ci/includes/profiling.sh
 
 # Only run inside TeamCity
 if [ -z "${TEAMCITY_CAPTURE_ENV+x}" ]; then
+  echo "This script is only to be run on Improbable CI."
   exit 0
 fi
 
@@ -30,20 +31,18 @@ elif isLinux; then
 fi
 
 UNITY_PINNED_VERSION=$(grep "m_EditorVersion" "workers/unity/ProjectSettings/ProjectVersion.txt" | cut -d ' ' -f2)
-UNITY_PINNED_HASH=$(cat "workers/unity/ProjectSettings/ProjectVersionHash.txt")
+UNITY_PINNED_HASH=$(cat "ci/UnityEditorHash.txt")
 IMPROBABLE_UNITY_VERSIONED="$IMPROBABLE_UNITY_ROOT/$UNITY_PINNED_VERSION"
+UNITY_PACKAGE="github.com/improbable/unity_downloader"
+GOPATH="$(pwd)/go"
+export GOPATH
 
 if [ -d "$IMPROBABLE_UNITY_VERSIONED" ]; then
   echo "Unity is already installed in:" $IMPROBABLE_UNITY_VERSIONED
   exit 0
 else
-  echo "Could not find Unity installation."
+  echo "Could not find a Unity $UNITY_PINNED_VERSION installation."
 fi
-
-UNITY_PACKAGE="github.com/improbable/unity_downloader"
-GOPATH="$(pwd)/go"
-export GOPATH
-
 
 markStartOfBlock "Installing unity_downloader"
 
