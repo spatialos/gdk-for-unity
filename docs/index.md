@@ -1,7 +1,7 @@
 # SpatialOS Unity GDK documentation
 
 #### Warning
-<%(Include file="header-warning.md")%>
+**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK#recommended-use).
 
 #### How to get started
 We recommend you start by following the [Installation and setup guide]({{urlRoot}}/setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
