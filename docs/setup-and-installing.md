@@ -4,8 +4,6 @@
 
 # Set up and get started with the SpatialOS Unity GDK
 
-**Note:** The Unity GDK currently runs on Windows only but a MacOS version is to come.
-
 ## Short version (for SpatialOS local deployment only)
 
 1. Set up your machine by installing: 
