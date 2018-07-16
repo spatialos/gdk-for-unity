@@ -48,6 +48,11 @@
             Implicit conversion from <c>null</c> to an empty <c>Option</c> (for value types).
             </summary>
         </member>
+        <member name="M:Improbable.Collections.Option`1.op_Explicit(Improbable.Collections.Option{`0})~`0">
+            <summary>
+            Explicit conversion from an <c>Option</c> to a value.
+            </summary>
+        </member>
         <member name="M:Improbable.Collections.Option`1.DeepCopy">
              <summary>
              Returns a deep copy of this option. Checks if the type in the option is either
@@ -398,52 +403,6 @@
             Once the size of a log file reaches this size, a new log file is created.
             </summary>
         </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.WorkerType">
-            <summary>
-            Worker type (platform).
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.Network">
-            <summary>
-            Parameters controlling the network connection to SpatialOS.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.SendQueueCapacity">
-            <summary>
-            Number of messages that can be stored on the send queue. When the send queue is full,
-            calls to Connection.Send functions can block.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.ReceiveQueueCapacity">
-            <summary>
-            Number of messages that can be stored on the receive queue. When the receive queue is
-            full, SpatialOS can apply QoS and drop messages to the worker.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.LogMessageQueueCapacity">
-            <summary>
-            Number of messages logged by the SDK that can be stored in the log message queue. When
-            the log message queue is full, messages logged by the SDK can be dropped.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.BuiltInMetricsReportPeriodMillis">
-            <summary>
-            The Connection tracks several internal metrics, such as send and receive queue
-            statistics. This parameter controls how frequently the Connection will return a
-            MetricsOp reporting its built-in metrics. If set to zero, this functionality is
-            disabled.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.ProtocolLogging">
-            <summary>
-            Parameters for configuring protocol logging.
-            </summary>
-        </member>
-        <member name="F:Improbable.Worker.ConnectionParameters.EnableProtocolLoggingAtStartup">
-            <summary>
-            Whether to enable protocol logging at startup.
-            </summary>
-        </member>
         <member name="F:Improbable.Worker.LoginTokenCredentials.Token">
             <summary>
             The token would typically be provided on the command-line by the SpatialOS
@@ -598,7 +557,7 @@
             This object should not be used concurrently by multiple threads.
             </remarks>
         </member>
-        <member name="M:Improbable.Worker.Core.Connection.ConnectAsync(System.String,System.UInt16,System.String,Improbable.Worker.ConnectionParameters)">
+        <member name="M:Improbable.Worker.Core.Connection.ConnectAsync(System.String,System.UInt16,System.String,Improbable.Worker.Core.ConnectionParameters)">
             <summary>
             Connects to a SpatialOS deployment via a receptionist. This is the flow used to connect
             a managed worker running in the cloud alongside the deployment, and also to connect any
@@ -1291,9 +1250,9 @@
             synchronously or asyncronously.
             </summary>
             <returns>A future object for the list of deployments.</returns>
-            <seealso cref="M:Improbable.Worker.Core.Locator.ConnectAsync(System.String,Improbable.Worker.ConnectionParameters,System.Func{Improbable.Worker.Core.QueueStatus,System.Boolean})"/>
+            <seealso cref="M:Improbable.Worker.Core.Locator.ConnectAsync(System.String,Improbable.Worker.Core.ConnectionParameters,System.Func{Improbable.Worker.Core.QueueStatus,System.Boolean})"/>
         </member>
-        <member name="M:Improbable.Worker.Core.Locator.ConnectAsync(System.String,Improbable.Worker.ConnectionParameters,System.Func{Improbable.Worker.Core.QueueStatus,System.Boolean})">
+        <member name="M:Improbable.Worker.Core.Locator.ConnectAsync(System.String,Improbable.Worker.Core.ConnectionParameters,System.Func{Improbable.Worker.Core.QueueStatus,System.Boolean})">
             <summary>
             Connects to a specific deployment. The resulting future can be used to make this
             connection either synchronously or asyncronously.
@@ -1305,6 +1264,52 @@
             queuing, or true to continue queueing.</param>
             <returns>A future object for the connection.</returns>
             <seealso cref="M:Improbable.Worker.Core.Locator.GetDeploymentListAsync"/>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.WorkerType">
+            <summary>
+            Worker type (platform).
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.Network">
+            <summary>
+            Parameters controlling the network connection to SpatialOS.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.SendQueueCapacity">
+            <summary>
+            Number of messages that can be stored on the send queue. When the send queue is full,
+            calls to Connection.Send functions can block.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.ReceiveQueueCapacity">
+            <summary>
+            Number of messages that can be stored on the receive queue. When the receive queue is
+            full, SpatialOS can apply QoS and drop messages to the worker.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.LogMessageQueueCapacity">
+            <summary>
+            Number of messages logged by the SDK that can be stored in the log message queue. When
+            the log message queue is full, messages logged by the SDK can be dropped.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.BuiltInMetricsReportPeriodMillis">
+            <summary>
+            The Connection tracks several internal metrics, such as send and receive queue
+            statistics. This parameter controls how frequently the Connection will return a
+            MetricsOp reporting its built-in metrics. If set to zero, this functionality is
+            disabled.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.ProtocolLogging">
+            <summary>
+            Parameters for configuring protocol logging.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.EnableProtocolLoggingAtStartup">
+            <summary>
+            Whether to enable protocol logging at startup.
+            </summary>
         </member>
         <member name="T:Improbable.Worker.Core.ReserveEntityIdsRequest">
             <summary>Type parameter for multiple entity ID reservation request IDs.</summary>
@@ -1335,6 +1340,55 @@
             The underlying raw ID of the request. Only use this if you know what you
             are doing; prefer to use the RequestId object instead.
             </summary>
+        </member>
+        <member name="T:Improbable.Worker.Core.SnapshotInputStream">
+            <summary>
+            A stream for reading snapshot one Entity at a time.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotInputStream.#ctor(System.String,Improbable.Worker.Core.SnapshotParameters)">
+            <summary>
+            Creates a SnapshotInputStream to read the Snapshot at the given string path.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotInputStream.Dispose">
+            <summary>
+            Releases the resources of the SnapshotInputStream.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotInputStream.ReadEntity(Improbable.Worker.EntityId@,Improbable.Worker.Core.Entity@)">
+            <summary>
+            Reads the next EntityId entityId, Entity entity pair from the Snapshot.
+            </summary>
+            <remarks> Returns an optional string error message if an error occurs during reading.
+            </remarks>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotInputStream.HasNext">
+            <summary>
+            Returns true if the SnapshotInputStream has not reached the end of the Snapshot.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Core.SnapshotOutputStream">
+            <summary>
+            A stream for outputting entities to a Snapshot one at a time.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotOutputStream.#ctor(System.String,Improbable.Worker.Core.SnapshotParameters)">
+            <summary>
+            Creates a SnapshotOutputStream to write a Snapshot at the given string path.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotOutputStream.Dispose">
+            <summary>
+            Writes the end of Snapshot header and releases the resources of the SnapshotOutputStream.
+            </summary>
+        </member>
+        <member name="M:Improbable.Worker.Core.SnapshotOutputStream.WriteEntity(Improbable.Worker.EntityId,Improbable.Worker.Core.Entity)">
+            <summary>
+            Writes the EntityId entityId, Entity entity pair to the Snapshot.
+            </summary>
+            <remarks> Returns an Optional string error message if an error occurs during writing.
+            </remarks>
         </member>
         <member name="M:Improbable.Worker.Internal.Callbacks`1.UpdateCallbacks">
             <summary>
