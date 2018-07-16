@@ -1,4 +1,5 @@
-<%(Include file="../header-warning.md")%>
+**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK#recommended-use).
+
 
 -----
 
@@ -60,4 +61,4 @@ public class ReactiveSystem : ComponentSystem
 The Unity GDK automatically removes reactive components from the ECS entity as soon as `CleanReactiveComponentsSystem` is run. This means that you must run any logic processing that reactive component _before_ `CleanReactiveComponentsSystem`. (This system is run at the end of each frame.)
 
 ----
-<%(Include file="../footer-feedback.md")%>
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

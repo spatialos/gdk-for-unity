@@ -1,4 +1,5 @@
-<%(Include file="../header-warning.md")%>
+**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK#recommended-use).
+
 
 -----
 
@@ -83,4 +84,4 @@ Upon checking out an entity that has both a `Prefab` and a `Transform` component
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
 
 ----
-<%(Include file="../footer-feedback.md")%>
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).

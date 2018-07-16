@@ -1,4 +1,5 @@
-<%(Include file="../header-warning.md")%>
+**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK#recommended-use).
+
 
 -----
 
@@ -116,4 +117,4 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 ```
 
 ----
-<%(Include file="../footer-feedback.md")%>
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK#give-us-feedback).
