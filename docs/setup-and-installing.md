@@ -12,7 +12,9 @@
 
 1. Clone the repository: `git clone git@github.com:spatialos/UnityGDK.git`  or `git clone  https://github.com/spatialos/UnityGDK.git`
 
-2. Run `bash prepare-workspace.sh`.
+1. Run `bash prepare-workspace.sh`.
+
+1. Run `spatial build build-config`.
 
 1. Run `spatial local launch`.
 
@@ -68,6 +70,8 @@ Currently, you can try this out using the `Playground`.
 1. Open a terminal and navigate to the `UnityGDK` directory (the repository you’ve just cloned).
 1. Run `bash prepare-workspace.sh`.
 <br>This fetches additional packages and generates the code for the SpatialOS workers.
+1. Run `spatial build build-config`.
+<br>This [command](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-worker-build-build-config) builds the worker bridge configuration and launch configuration.
 
 #### 2. Run the `Playground` locally using SpatialOS
 
