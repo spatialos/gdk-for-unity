@@ -11,7 +11,7 @@ namespace Playground
 {
     [UpdateBefore(typeof(ConnectClientSystem))]
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
-    internal class ConnectRequestSystem : ComponentSystem
+    internal class ConnectButtonClickSystem : ComponentSystem
     {
         private struct Data
         {
