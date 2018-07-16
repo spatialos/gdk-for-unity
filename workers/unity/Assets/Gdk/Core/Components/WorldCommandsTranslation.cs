@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
@@ -126,10 +125,11 @@ namespace Improbable.Gdk.Core
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
-
-            var entityIdOption = entityId != 0
-                ? new Collections.Option<EntityId>(new EntityId(entityId))
-                : new Collections.Option<EntityId>();
+            var entityIdOption = new EntityId?();
+            if (entityId != 0)
+            {
+                entityIdOption = new EntityId(entityId);
+            }
 
             translation.CreateEntityRequests.Add(new CreateEntityRequest
             {
@@ -254,7 +254,7 @@ namespace Improbable.Gdk.Core
                 {
                     id = request.EntityId.Value;
                 }
-                
+
                 var requestId = connection.SendCreateEntityRequest(request.Entity, id,
                     new TimeoutOption(request.TimeoutMillis));
 
