@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,21 +11,20 @@ using Improbable.Gdk.Android;
 namespace Playground
 {
     [UpdateBefore(typeof(ConnectClientSystem))]
-    [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     internal class ConnectButtonClickSystem : ComponentSystem
     {
         private struct Data
         {
             public readonly int Length;
-            public EntityArray Entity;
-            public ComponentDataArray<WorkerEntityTag> DenotesWorker;
+            [ReadOnly] public EntityArray Entity;
+            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorker;
         }
 
-        private InputField connectParam;
+        private InputField connectParamInputField;
         private Button connectButton;
         private bool clicked;
         private WorkerBase worker;
-        private Text error;
+        private Text errorField;
 
         [Inject] private Data data;
 
@@ -32,29 +32,27 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            connectParam = GameObject.Find("ConnectParam").GetComponent<InputField>();
+            connectParamInputField = GameObject.Find("ConnectParam").GetComponent<InputField>();
             connectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
             connectButton.onClick.AddListener(IsClicked);
-            error = GameObject.Find("ConnectionError").GetComponent<Text>();
+            errorField = GameObject.Find("ConnectionError").GetComponent<Text>();
             if (!Application.isMobilePlatform)
             {
-                connectParam.gameObject.SetActive(false);
+                connectParamInputField.gameObject.SetActive(false);
             }
         }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            if (clicked)
             {
-                if (!clicked)
+                for (var i = 0; i < data.Length; i++)
                 {
-                    continue;
+                    PostUpdateCommands.AddComponent(data.Entity[i], new ConnectButtonClicked());
+                    connectButton.gameObject.SetActive(false);
+                    errorField.text = "";
+                    clicked = false;
                 }
-
-                PostUpdateCommands.AddComponent(data.Entity[i], new ConnectButtonClicked());
-                connectButton.gameObject.SetActive(false);
-                error.text = "";
-                clicked = false;
             }
         }
 
@@ -64,22 +62,18 @@ namespace Playground
 #if UNITY_ANDROID
             if (Application.isMobilePlatform)
             {
-                if (DeviceInfo.IsAndroidStudioEmulator() && GetInputString().Equals(""))
+                if (DeviceInfo.IsAndroidStudioEmulator() && connectParamInputField.text.Equals(""))
                 {
                     worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
                 }
                 else
                 {
-                    SetConnectionParameters(GetInputString());
+                    SetConnectionParameters(connectParamInputField.text);
                 }
             }
 #endif
         }
 
-        private string GetInputString()
-        {
-            return connectParam.text;
-        }
 
         private void SetConnectionParameters(string param)
         {

@@ -100,7 +100,7 @@ namespace Playground
             {
                 LoadLevel(worker);
 
-                if (worker.GetWorkerType.Equals("UnityClient"))
+                if (worker is UnityClient)
                 {
                     continue;
                 }

@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +12,9 @@ namespace Playground
         private struct Data
         {
             public readonly int Length;
-            public EntityArray Entity;
-            public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-            public ComponentDataArray<ConnectButtonClicked> DenotesClickedConnectButton;
+            [ReadOnly] public EntityArray Entity;
+            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+            [ReadOnly] public ComponentDataArray<ConnectButtonClicked> DenotesClickedConnectButton;
         }
 
         [Inject] private Data data;
