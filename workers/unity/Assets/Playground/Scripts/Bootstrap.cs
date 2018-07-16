@@ -19,8 +19,6 @@ namespace Playground
 
         private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
 
-        // private static ConnectionConfig connectionConfig;
-
         public void Awake()
         {
             InitializeWorkerTypes();
