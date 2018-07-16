@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_ANDROID
 using Improbable.Gdk.Android;
+
 #endif
 
 namespace Playground
@@ -23,6 +24,7 @@ namespace Playground
         private Button connectButton;
         private bool clicked;
         private WorkerBase worker;
+        private Text error;
 
         [Inject] private Data data;
 
@@ -33,6 +35,11 @@ namespace Playground
             connectParam = GameObject.Find("ConnectParam").GetComponent<InputField>();
             connectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
             connectButton.onClick.AddListener(IsClicked);
+            error = GameObject.Find("ConnectionError").GetComponent<Text>();
+            if (!Application.isMobilePlatform)
+            {
+                connectParam.gameObject.SetActive(false);
+            }
         }
 
         protected override void OnUpdate()
@@ -46,6 +53,7 @@ namespace Playground
 
                 PostUpdateCommands.AddComponent(data.Entity[i], new ConnectButtonClicked());
                 connectButton.gameObject.SetActive(false);
+                error.text = "";
                 clicked = false;
             }
         }
@@ -53,10 +61,12 @@ namespace Playground
         private void IsClicked()
         {
             clicked = true;
-            if (!DeviceInfo.IsAndroidStudioEmulator())
+#if UNITY_ANDROID
+            if (Application.isMobilePlatform && !DeviceInfo.IsAndroidStudioEmulator())
             {
                 SetConnectionParameters(GetInputString());
             }
+#endif
         }
 
         private string GetInputString()

@@ -21,6 +21,7 @@ namespace Playground
         private WorkerBase worker;
         private GameObject panel;
         private Button button;
+        private Text error;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -28,6 +29,7 @@ namespace Playground
             worker = WorkerRegistry.GetWorkerForWorld(World);
             panel = GameObject.Find("ConnectionPanel");
             button = GameObject.Find("ConnectButton").GetComponent<Button>();
+            error = GameObject.Find("ConnectionError").GetComponent<Text>();
         }
 
         protected override void OnUpdate()
@@ -42,7 +44,8 @@ namespace Playground
                 }
                 else
                 {
-                    // TODO: add a text on screen that config is wrong
+                    error.text = "Connection attempt failed. Please check the IP address is correct";
+                    error.gameObject.SetActive(true);
                     button.gameObject.SetActive(true);
                 }
 
