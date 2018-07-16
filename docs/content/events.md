@@ -3,11 +3,11 @@
 -----
 
 # Sending and receiving events
-Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
+Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
 Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event.
 
-> For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/object-interaction#events) in the SpatialOS documentation.
+> For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/13.0/shared/design/object-interaction#events) in the SpatialOS documentation.
 
 ## Sending events
 A worker instance can send an event using a `EventSender<T>` ECS component (where `T` is the SpatialOS component that the event is defined in).

@@ -3,7 +3,7 @@
 -----
 
 # Components and component updates
-SpatialOS components are generated from `.schema` files into components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+SpatialOS components are generated from `.schema` files into components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/13.0/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
 ## Overview
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,

@@ -5,7 +5,7 @@
 # Sending and receiving commands
 Commands are SpatialOS's equivalent of remote procedure calls.
 
-> For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/commands#component-commands) in the SpatialOS documentation.
+> For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/13.0/shared/design/commands#component-commands) in the SpatialOS documentation.
 
 ## Sending command requests
 A worker instance can send a command using a `CommandRequestSender<T>` ECS component, where `T` is the SpatialOS component the command is defined in.
@@ -183,7 +183,7 @@ public class BuildWallResponseHandler : ComponentSystem
 ## World commands
 World commands are RPCs to request specific things from the SpatialOS. 
 
-> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/design/commands#world-commands) in the SpatialOS documentation.
+> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/13.0/shared/design/commands#world-commands) in the SpatialOS documentation.
 
 Every ECS entity has a `WorldCommandSender` ECS component for sending world commands. For each world command, there is a corresponding method to send the command and response object.
 
@@ -208,7 +208,7 @@ Every ECS entity has a `WorldCommandSender` ECS component for sending world comm
 * EntityQueryRequest
     * Method - `SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint timeoutMillis = 0)`
 
-        For more information, see [entity queries](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#queries) in the SpatialOS documentation.
+        For more information, see [entity queries](https://docs.improbable.io/reference/13.0/shared/glossary#queries) in the SpatialOS documentation.
 
         `timeoutMillis` is optional. 
     * Response - `EntityQueryResponse`

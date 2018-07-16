@@ -3,23 +3,23 @@
 -----
 
 # Creating entities
-To create an [entity](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#entity) in SpatialOS, you need to:
+To create an [entity](https://docs.improbable.io/reference/13.0/shared/glossary#entity) in SpatialOS, you need to:
 
 1. Create an entity definition using the `EntityBuilder`.
 2. Send a `CreateEntity` world command.
 
 ## 1. Create an entity definition using the `EntityBuilder`
-The `EntityBuilder` class is part of the `Improbable.Gdk.Legacy` assembly. It's a convenient way to create entity definitions, and allows you to specify [authority]({{urlRoot}}/content/authority.md) on a per-[component](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#component) basis.
+The `EntityBuilder` class is part of the `Improbable.Gdk.Legacy` assembly. It's a convenient way to create entity definitions, and allows you to specify [authority]({{urlRoot}}/content/authority.md) on a per-[component](https://docs.improbable.io/reference/13.0/shared/glossary#component) basis.
 
 The `EntityBuilder` class has the following public methods:
 
 | Public method  | Description |
 | :------------- | :------------- |
 | `Begin()`  | Create a new `EntityBuilder` instance for creating an entity definition. |
-| `AddPositionComponent(Coordinates position, WorkerRequirementSet writeAcl)`  | Add a [`Position`](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/schema/standard-schema-library#position-required) component to your entity and specify which worker type(s) can have authority over it. |
-| `SetPersistence(bool persistence)` | Specify whether your entity should be saved in snapshots. For more information, see the documentation on [persistence](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#persistence). |
-| `SetReadAcl(WorkerRequirementSet readAcl)` | Specify which worker type(s) can have [read access](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/glossary#read-and-write-access-authority) to the entity. |
-| `SetEntityAclComponentWriteAccess(WorkerRequirementSet writeAcl)` | Specify which worker type(s) can have authority over the [`EntityAcl`](https://docs.improbable.io/reference/<%(Var key="pinned_core_docs_version")%>/shared/schema/standard-schema-library#entityacl-required) component of your entity. This is useful if, while the game is running, you want to change which worker type(s) can have authority over the entity's other components. |
+| `AddPositionComponent(Coordinates position, WorkerRequirementSet writeAcl)`  | Add a [`Position`](https://docs.improbable.io/reference/13.0/shared/schema/standard-schema-library#position-required) component to your entity and specify which worker type(s) can have authority over it. |
+| `SetPersistence(bool persistence)` | Specify whether your entity should be saved in snapshots. For more information, see the documentation on [persistence](https://docs.improbable.io/reference/13.0/shared/glossary#persistence). |
+| `SetReadAcl(WorkerRequirementSet readAcl)` | Specify which worker type(s) can have [read access](https://docs.improbable.io/reference/13.0/shared/glossary#read-and-write-access-authority) to the entity. |
+| `SetEntityAclComponentWriteAccess(WorkerRequirementSet writeAcl)` | Specify which worker type(s) can have authority over the [`EntityAcl`](https://docs.improbable.io/reference/13.0/shared/schema/standard-schema-library#entityacl-required) component of your entity. This is useful if, while the game is running, you want to change which worker type(s) can have authority over the entity's other components. |
 | `AddComponent<T>(IComponentData<T> data, WorkerRequirementSet writeAcl)` | Add a user-defined component `T` to your entity and specify which worker type(s) can have authority over it. |
 | `Build()` | Create a finished entity definition. |
 
