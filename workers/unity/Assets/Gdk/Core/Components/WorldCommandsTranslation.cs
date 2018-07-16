@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
@@ -11,7 +12,7 @@ namespace Improbable.Gdk.Core
     public struct CreateEntityRequest
     {
         public Worker.Entity Entity;
-        public Collections.Option<EntityId> EntityId;
+        public EntityId? EntityId;
         public uint TimeoutMillis;
         public long SenderEntityId;
     }
@@ -248,7 +249,13 @@ namespace Improbable.Gdk.Core
         {
             foreach (var request in CreateEntityRequests)
             {
-                var requestId = connection.SendCreateEntityRequest(request.Entity, request.EntityId,
+                Collections.Option<EntityId> id;
+                if (request.EntityId.HasValue)
+                {
+                    id = request.EntityId.Value;
+                }
+                
+                var requestId = connection.SendCreateEntityRequest(request.Entity, id,
                     new TimeoutOption(request.TimeoutMillis));
 
                 requestIdToCreateEntityRequest.Add(requestId.Id, request);
