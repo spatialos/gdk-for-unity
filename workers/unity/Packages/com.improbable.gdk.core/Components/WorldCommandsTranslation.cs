@@ -211,6 +211,14 @@ namespace Improbable.Gdk.Core
                 () => new CommandResponses<EntityQueryResponse>(),
                 component => component.Buffer.Clear());
 
+        private const string LoggerName = "WorldCommandsTranslation";
+
+        private const string EntityNotFoundForRequestId =
+            "Entity not found when attempting to get EntityId from RequestId.";
+
+        private const string EntityNotFoundForEntityId =
+            "Entity not found when attempting to get Entity from EntityId.";
+
         public WorldCommandsTranslation(MutableView view) : base(view)
         {
         }
@@ -352,10 +360,10 @@ namespace Improbable.Gdk.Core
             long entityId;
             if (!RequestIdToEntityId.TryGetValue(requestId, out entityId))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        "Entity not found when attempting to get EntityId from RequestId.")
-                    .WithField(IdType.RequestId.ToString(), requestId)
-                    .WithField("OpName", responseName));
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForRequestId)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("RequestId", requestId)
+                    .WithField("ResponseName", responseName));
                 return false;
             }
 
@@ -367,10 +375,10 @@ namespace Improbable.Gdk.Core
             }
             else if (!view.TryGetEntity(entityId, out entity))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        "Entity not found when attempting to get Entity from EntityId.")
-                    .WithField(IdType.EntityId.ToString(), entityId)
-                    .WithField("OpName", responseName));
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId)
+                    .WithField("ResponseName", responseName));
                 return false;
             }
 
