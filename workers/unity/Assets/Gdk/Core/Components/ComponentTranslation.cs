@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -7,121 +8,54 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.Components
 {
-    public abstract class ComponentTranslation : IDisposable
+    public struct RequestContext
     {
-        protected struct RequestContext
+        public long EntityId;
+        public IOutgoingCommandRequest Request;
+
+        public RequestContext(long entityId, IOutgoingCommandRequest request)
         {
-            public long EntityId;
-            public IOutgoingCommandRequest Request;
-
-            public RequestContext(long entityId, IOutgoingCommandRequest request)
-            {
-                EntityId = entityId;
-                Request = request;
-            }
+            EntityId = entityId;
+            Request = request;
         }
+    }
 
-        public abstract ComponentType TargetComponentType { get; }
-        protected readonly MutableView view;
+    public abstract class ComponentDispatcher
+    {
+        public abstract uint ComponentId { get; }
 
-        protected ComponentTranslation(MutableView view)
-        {
-            this.view = view;
-            translationHandle = GetNextHandle();
-            HandleToTranslation.Add(translationHandle, this);
-        }
+        public abstract void OnAddComponent(MutableView view, AddComponentOp op);
+        public abstract void OnRemoveComponent(MutableView view, RemoveComponentOp op);
 
-        public void Dispose()
-        {
-            ComponentTranslation translationForHandle;
-            if (HandleToTranslation.TryGetValue(translationHandle, out translationForHandle) &&
-                translationForHandle == this)
-            {
-                HandleToTranslation.Remove(translationHandle);
-            }
-        }
+        public abstract void OnComponentUpdate(MutableView view, ComponentUpdateOp op);
+        public abstract void OnAuthorityChange(MutableView view, AuthorityChangeOp op);
 
-        protected static class TranslationErrors
-        {
-            public const string OpReceivedButNoEntity =
-                "Received {0} with EntityId {1}, but there is no entity associated with that EntityId.";
+        public abstract void AddCommandCallbacks(Dictionary<SpecificCommandReference, Action<MutableView, CommandRequestOp>> commandCallbacks,
+            Dictionary<SpecificCommandReference, Action<MutableView, CommandResponseOp>> commandResponseCallbacks);
+    }
 
-            public const string CannotFindEntityForCommandRequest =
-                "Cannot find entity {0} locally to receive command request {1}.";
+    public abstract class ComponentReplication
+    {
+        public abstract uint ComponentId { get; }
+        public abstract ComponentType[] BasicReplicationComponentTypes { get; }
+        public abstract ComponentType[] CommandTypes { get; }
+        public abstract void ExecuteReplication(EntityManager manager, ComponentGroup replicationGroup, Connection connection);
+        public abstract void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection);
+    }
 
-            public const string CannotFindEntityForCommandResponse =
-                "Cannot find entity {0} locally to receive command response for {1}.";
-
-            public const string CannotFindEntityForWorldCommandResponse =
-                "Cannot find entity {0} locally to receive world command response for {1}.";
-
-            public const string RequestDoesNotExist =
-                "Cannot find request with ID {0}, response type {1}.";
-
-            public const string ComponentAlreadyAdded =
-                "Received ComponentAdded op for {0} on entity {1}, but have already received one.";
-
-            public const string ComponentAlreadyRemoved =
-                "Received ComponentRemoved op for {0} on entity {1}, but have already received one.";
-        }
-
-        public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =
-            new Dictionary<uint, ComponentTranslation>();
-
-        private static uint GetNextHandle() => (uint) HandleToTranslation.Count;
-
-        protected uint translationHandle { get; }
-
-        public abstract void RegisterWithDispatcher(Dispatcher dispatcher);
-
-        public abstract ComponentType[] ReplicationComponentTypes { get; }
-        public ComponentGroup ReplicationComponentGroup { get; set; }
-        public abstract void ExecuteReplication(Connection connection);
-
+    public abstract class ComponentCleanup
+    {
         public abstract ComponentType[] CleanUpComponentTypes { get; }
-        public List<ComponentGroup> CleanUpComponentGroups { get; set; }
-        public abstract void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer);
+        public abstract void CleanupComponents(List<ComponentGroup> componentGroups,
+            ref EntityCommandBuffer entityCommandBuffer);
 
-        public abstract void AddCommandRequestSender(Entity entity, long entityId);
-        public abstract void SendCommands(Connection connection);
-
-        protected void RemoveComponents<T>(ref EntityCommandBuffer entityCommandBuffer, int groupIndex)
+        protected void RemoveComponent<T>(ref EntityCommandBuffer entityCommandBuffer, EntityArray entityArray)
         {
-            var entityArray = CleanUpComponentGroups[groupIndex].GetEntityArray();
-
             for (var i = 0; i < entityArray.Length; i++)
             {
-                var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
-                {
-                    entityCommandBuffer.RemoveComponent<T>(entity);
-                }
-            }
-        }
-
-        protected void RemoveComponents<T>(ref EntityCommandBuffer entityCommandBuffer, ComponentPool<T> pool,
-            int groupIndex)
-            where T : Component
-        {
-            var entityArray = CleanUpComponentGroups[groupIndex].GetEntityArray();
-
-            for (var i = 0; i < entityArray.Length; i++)
-            {
-                var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
-                {
-                    pool.PutComponent(view.GetComponentObject<T>(entity));
-                    entityCommandBuffer.RemoveComponent<T>(entity);
-                }
+                entityCommandBuffer.RemoveComponent<T>(entityArray[i]);
             }
         }
     }
 
-    public interface IDispatcherCallbacks<T> where T : IComponentMetaclass
-    {
-        void OnAddComponent(AddComponentOp<T> op);
-        void OnComponentUpdate(ComponentUpdateOp<T> op);
-        void OnRemoveComponent(RemoveComponentOp op);
-        void OnAuthorityChange(AuthorityChangeOp op);
-    }
 }
