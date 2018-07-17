@@ -4,11 +4,12 @@
 
 # Set up and get started with the SpatialOS Unity GDK
 
-**Note:** The Unity GDK currently runs on Windows only but a MacOS version is to come.
-
 ## Short version (for SpatialOS local deployment only)
 
-1. Set up your machine by installing: [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional).
+1. Set up your machine by installing: 
+* (For Windows) [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [.NET Core 2.1](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional)
+* (For Mac) [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Rider](https://www.jetbrains.com/rider/) (optional; alternatively [Visual Studio 2017](https://www.visualstudio.com/downloads/)), [.NET Core 2.1](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win)
+
 
 1. Clone the repository: `git clone git@github.com:spatialos/UnityGDK.git`  or `git clone  https://github.com/spatialos/UnityGDK.git`
 
@@ -25,11 +26,13 @@
 ### Setting up your machine
 
 1. Install prerequisites:
+
+    #### Windows
+
 	- [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download)
 	- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
 	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity** and **.NET Core cross-platform development**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS Unity GDK requires Unity 2018.2.0b10). Make sure **Visual Studio Tools for Unity** is selected.
-    - [.NET Core 2.x](https://www.microsoft.com/net/download/)
-        > If you installed the **.NET Core cross-platform development** Workload with Visual Studio, you should have this installed already.
+    - [.NET Core 2.1](https://www.microsoft.com/net/download/)
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win)
 	<br>This installs:
 		- the [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
@@ -40,6 +43,18 @@
 		> We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy.
     - (Optional) [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt)
     <br> You'll need this if you want to lint your code. Add it to your `PATH` environment variable.
+
+    #### Mac
+
+	- [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download)
+    - [Rider](https://www.jetbrains.com/rider/) (optional)
+      <br>You can also use [Visual Studio 2017](https://www.visualstudio.com/downloads/) for development, however to lint your code according to our linting rules, you need to use Rider.
+    - [.NET Core 2.1](https://www.microsoft.com/net/download/)
+	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac)
+	<br>This installs:
+		- the [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
+		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
+		- the 32-bit and 64-bit Visual C++ Redistributables
 
 1. Clone the SpatialOS Unity GDK repository:
 
