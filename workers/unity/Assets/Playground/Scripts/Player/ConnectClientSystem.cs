@@ -20,17 +20,17 @@ namespace Playground
         [Inject] private Data data;
 
         private WorkerBase worker;
-        private GameObject panel;
-        private Button button;
-        private Text error;
+        private GameObject connectionPanel;
+        private Button connectButton;
+        private Text errorField;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            panel = GameObject.Find("ConnectionPanel");
-            button = GameObject.Find("ConnectButton").GetComponent<Button>();
-            error = GameObject.Find("ConnectionError").GetComponent<Text>();
+            connectionPanel = GameObject.FindWithTag("ConnectionPanel");
+            connectButton = connectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
+            errorField = connectionPanel.transform.Find("ConnectionError").GetComponent<Text>();
         }
 
         protected override void OnUpdate()
@@ -41,13 +41,13 @@ namespace Playground
                 var isConnected = worker.Connect(worker.ConnectionConfig);
                 if (isConnected)
                 {
-                    panel.SetActive(false);
+                    connectionPanel.SetActive(false);
                 }
                 else
                 {
-                    error.text = "Connection attempt failed. Please check the IP address is correct";
-                    error.gameObject.SetActive(true);
-                    button.gameObject.SetActive(true);
+                    errorField.text = "Connection attempt failed. Please check the IP address is correct";
+                    errorField.gameObject.SetActive(true);
+                    connectButton.gameObject.SetActive(true);
                 }
 
                 PostUpdateCommands.RemoveComponent<ConnectButtonClicked>(entity);

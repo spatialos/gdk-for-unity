@@ -1,3 +1,5 @@
+using System;
+using System.Text.RegularExpressions;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -20,6 +22,9 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorker;
         }
 
+        private static string ipRegEx =
+            @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+
         private InputField connectParamInputField;
         private Button connectButton;
         private bool clicked;
@@ -32,10 +37,11 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            connectParamInputField = GameObject.Find("ConnectParam").GetComponent<InputField>();
-            connectButton = GameObject.Find("ConnectButton").GetComponent<Button>();
+            var connectionPanel = GameObject.FindGameObjectWithTag("ConnectionPanel");
+            connectParamInputField = connectionPanel.transform.Find("ConnectParam").GetComponent<InputField>();
+            connectButton = connectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
             connectButton.onClick.AddListener(IsClicked);
-            errorField = GameObject.Find("ConnectionError").GetComponent<Text>();
+            errorField = connectionPanel.transform.Find("ConnectionError").GetComponent<Text>();
             if (!Application.isMobilePlatform)
             {
                 connectParamInputField.gameObject.SetActive(false);
@@ -62,7 +68,7 @@ namespace Playground
 #if UNITY_ANDROID
             if (Application.isMobilePlatform)
             {
-                if (DeviceInfo.IsAndroidStudioEmulator() && connectParamInputField.text.Equals(""))
+                if (DeviceInfo.IsAndroidStudioEmulator() && connectParamInputField.text.Equals(string.Empty))
                 {
                     worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
                 }
@@ -87,7 +93,7 @@ namespace Playground
 
         private static bool IsIpAddress(string param)
         {
-            return param.Split('.').Length == 4;
+            return Regex.Match(param, ipRegEx).Success;
         }
     }
 }
