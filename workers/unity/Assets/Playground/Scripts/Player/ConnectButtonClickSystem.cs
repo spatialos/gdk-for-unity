@@ -1,4 +1,3 @@
-using System;
 using System.Text.RegularExpressions;
 using Improbable.Gdk.Core;
 using Unity.Collections;
