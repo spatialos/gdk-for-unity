@@ -8,7 +8,7 @@
 
 1. Set up your machine by installing: 
 * (For Windows) [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [.NET Core 2.1](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional)
-* (For Mac) [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Rider](https://www.jetbrains.com/rider/), [.NET Core 2.1](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win)
+* (For Mac) [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download), [Rider](https://www.jetbrains.com/rider/) (optional; alternatively [Visual Studio 2017](https://www.visualstudio.com/downloads/)), [.NET Core 2.1](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win)
 
 
 1. Clone the repository: `git clone git@github.com:spatialos/UnityGDK.git`  or `git clone  https://github.com/spatialos/UnityGDK.git`
@@ -47,8 +47,8 @@
     #### Mac
 
 	- [Unity 2018.2.0b10](https://unity3d.com/unity/beta-download)
-    - [Rider](https://www.jetbrains.com/rider/)
-        > You can also use [Visual Studio 2017](https://www.visualstudio.com/downloads/) for development, however to lint your code according to our linting rules, you need to use Rider.
+    - [Rider](https://www.jetbrains.com/rider/) (optional)
+      <br>You can also use [Visual Studio 2017](https://www.visualstudio.com/downloads/) for development, however to lint your code according to our linting rules, you need to use Rider.
     - [.NET Core 2.1](https://www.microsoft.com/net/download/)
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac)
 	<br>This installs:
