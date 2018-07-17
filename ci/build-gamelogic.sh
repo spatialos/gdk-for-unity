@@ -32,3 +32,6 @@ popd
 markEndOfBlock "Building UnityGameLogic"
 
 markEndOfBlock "$0"
+
+rm -rf "${PROJECT_DIR}/workers/unity/Library/"  
+rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
