@@ -31,7 +31,9 @@ pushd "workers/unity"
   dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -batchmode \
-    -quit
+    -quit \
+    -logfile "$(pwd)/../../logs/UnityLint.log" 
+
 popd
 
 markEndOfBlock "Generating Solution Files"
