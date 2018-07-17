@@ -22,8 +22,7 @@ PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 
 markEndOfBlock "Setup variables"
 
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"  
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
+cleanUnity
 
 markStartOfBlock "Tools Testing"
 
@@ -56,8 +55,7 @@ EDITMODE_TEST_RESULT=$?
 
 markEndOfBlock "Editmode Testing"
 
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"  
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
+cleanUnity
 
 markStartOfBlock "Playmode Testing"
 
@@ -94,8 +92,7 @@ fi
 
 markEndOfBlock "$0"
 
-rm -rf "${PROJECT_DIR}/workers/unity/Library/"  
-rm -rf "${PROJECT_DIR}/workers/unity/Temp/"
+cleanUnity
 
 if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
