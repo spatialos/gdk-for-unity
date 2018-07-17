@@ -24,7 +24,7 @@ If some ECS components need more complex replication logic, you can create custo
 
 * Handle replication of properties:
 
-    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because standard replication won't happen. This means that you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../workers/unity/Assets/Gdk/TransformSynchronization/Systems/TransformSendSystem.cs) for an example.
+    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because standard replication won't happen. This means that you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../workers/unity/Packages/com.improbable.gdk.transformsynchronization/Systems/TransformSendSystem.cs) for an example.
 
 * Handle replication of events:
 
