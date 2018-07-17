@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core
             World.Dispose();
         }
 
-        public void Connect(ConnectionConfig config)
+        public virtual void Connect(ConnectionConfig config)
         {
             if (config is ReceptionistConfig)
             {
