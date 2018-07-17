@@ -20,10 +20,10 @@ ci/codegen.sh
 
 pushd "${UNITY_PROJECT_DIR}"
     dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -projectPath "${UNITY_PROJECT_DIR}" \
+        -projectPath "${UNITY_PROJECT_DIR}" \
         -batchmode \
         -quit \
-        -logfile "$(pwd)/../../build/build_logs/UnityClientBuild.log" \
+        -logfile "$(pwd)/../../logs/UnityClientBuild.log" \
         -executeMethod "Improbable.Gdk.Legacy.BuildSystem.WorkerBuilder.Build" \
         +buildWorkerTypes "UnityClient" \
         +buildTarget "${TARGET}"

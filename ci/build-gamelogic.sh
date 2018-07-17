@@ -23,7 +23,7 @@ pushd "${UNITY_PROJECT_DIR}"
         -projectPath "${UNITY_PROJECT_DIR}" \
         -batchmode \
         -quit \
-        -logfile "$(pwd)/../../build/build_logs/UnityGameLogicBuild.log" \
+        -logfile "$(pwd)/../../logs/UnityGameLogicBuild.log" \
         -executeMethod "Improbable.Gdk.Legacy.BuildSystem.WorkerBuilder.Build" \
         +buildWorkerTypes "UnityGameLogic" \
         +buildTarget "${TARGET}"
