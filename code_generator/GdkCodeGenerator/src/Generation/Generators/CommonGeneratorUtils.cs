@@ -4,12 +4,12 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public static string GetGeneratedHeader()
         {
-            return "// ===========\r\n// DO NOT EDIT - this file is automatically regenerated.\r\n// ===========";
+            return "// ===========\n// DO NOT EDIT - this file is automatically regenerated.\n// ===========";
         }
 
         public static string IndentEveryNewline(string input)
         {
-            return input.Replace("\r\n", "\r\n    ");
+            return input.Replace("\n", "\n    ");
         }
     }
 }
