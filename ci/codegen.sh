@@ -25,7 +25,7 @@ elif isLinux;
 fi
 
 dotnet run -p code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj -- \
-  --schema-compiler="$SCHEMA_COMPILER" \
+  --schema-compiler-path="$SCHEMA_COMPILER" \
   --schema-path="schema" \
   --schema-path="build/dependencies/schema/standard_library" \
   --json-dir="workers/unity/Temp/ImprobableJson" \

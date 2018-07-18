@@ -36,7 +36,7 @@ namespace Improbable.Gdk.CodeGenerator
                     u => options.NetworkTypesOutputDirectory = u
                 },
                 {
-                    "schema-compiler=", "REQUIRED: the schema compiler executable to use",
+                    "schema-compiler-path=", "REQUIRED: the schema compiler executable to use",
                     s => options.SchemaCompiler = s
                 },
                 {
