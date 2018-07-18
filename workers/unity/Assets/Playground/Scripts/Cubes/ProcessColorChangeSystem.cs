@@ -10,7 +10,7 @@ namespace Playground
     {
         public struct Data
         {
-            public int Length;
+            public readonly int Length;
             public ComponentArray<EventsReceived<ChangeColorEvent>> EventUpdate;
             public ComponentArray<MeshRenderer> Renderers;
         }

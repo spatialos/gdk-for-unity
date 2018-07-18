@@ -10,9 +10,11 @@ namespace Improbable.Gdk.CodeGenerator
     public class CodeGeneratorOptions
     {
         public string JsonDirectory { get; private set; }
-        public string OutputDirectory { get; private set; }
+        public string NativeOutputDirectory { get; private set; }
+        public string NetworkTypesOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
         public string HelpText { get; private set; }
+        public List<string> SchemaInputDirs { get; } = new List<string>();
 
         public static CodeGeneratorOptions ParseArguments(ICollection<string> args)
         {
@@ -20,12 +22,21 @@ namespace Improbable.Gdk.CodeGenerator
             var optionSet = new OptionSet
             {
                 {
-                    "json-dir=", "REQUIRED: the directory containing the json representation of your schema",
+                    "json-dir=", "REQUIRED: the directory that will contain the json representation of your schema",
                     j => options.JsonDirectory = j
                 },
                 {
-                    "output-dir=", "REQUIRED: the directory to output generated components and structs to",
-                    u => options.OutputDirectory = u
+                    "native-output-dir=", "REQUIRED: the directory to output generated components and structs to",
+                    u => options.NativeOutputDirectory = u
+                },
+                {
+                    "network-types-output-dir=",
+                    "REQUIRED: the directory to output the network types and serialization code to",
+                    u => options.NetworkTypesOutputDirectory = u
+                },
+                {
+                    "schema-path=", "REQUIRED: a comma-separated list of directories that contain schema files",
+                    u => options.SchemaInputDirs.Add(u)
                 },
                 {
                     "h|help", "show help",

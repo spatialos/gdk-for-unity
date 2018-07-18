@@ -20,14 +20,14 @@ The parsing stage, shown in the code snippet below, is in [CodeGenerator.cs](../
     var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
 ```
 
-The code generator then does post-processing on the collection of C# objects that represent the schema. 
+The code generator then does post-processing on the collection of C# objects that represent the schema.
 
 1. It flags each type and component as [blittable or not blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types). This information is required as blittable and non-blittable components need to be generated in a different manner. You can find the source for this in [BlittableFlagger.cs](../../code_generator/GdkCodeGenerator/src/Generation/SchemaProcessing/BlittableFlagger.cs).
 2. It marks data types that are used as event, command request, and/or command response payloads. You can find the source for this in [PayloadMarker.cs](../../code_generator/GdkCodeGenerator/src/Generation/SchemaProcessing/PayloadMarker.cs).
 
 #### T4 templates
 
-The code generation is done with [T4 templates](https://msdn.microsoft.com/en-us/library/bb126445.aspx). All the templates used in code generation are located in [the Templates directory](../../code_generator/GdkCodeGenerator/Templates/). 
+The code generation is done with [T4 templates](https://msdn.microsoft.com/en-us/library/bb126445.aspx). All the templates used in code generation are located in [the Templates directory](../../code_generator/GdkCodeGenerator/Templates/).
 
 Note: the transformation of T4 to C# is in a pre-build step which is defined in [GdkCodeGenerator.csproj](../../code_generator/GDKCodeGenerator/GdkCodeGenerator.csproj). The relevant section is reproduced below:
 
@@ -43,7 +43,7 @@ Note: the transformation of T4 to C# is in a pre-build step which is defined in 
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
   </ItemGroup>
-  
+
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
 
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">
@@ -58,7 +58,7 @@ Note: the transformation of T4 to C# is in a pre-build step which is defined in 
 
 Each T4 template is paired with a hand-written partial class that defines the data used in the template. These partial classes can be found [here](../../code_generator/GDKCodeGenerator/src/Generation/Generators/Parts/).
 
-  
+
 #### Code generation jobs
 
 After post processing, a code generation job is run on each C# object that represents a single schema file. This job is defined in [SingleGenerationJob.cs](../../code_generator/GDKCodeGenerator/src/Generation/SingleGenerationJob.cs). This job enumerates all the enums, types, and components in a single schema file and runs the correct generator for each.
@@ -69,25 +69,12 @@ After post processing, a code generation job is run on each C# object that repre
 The process of editing the code generator is simple:
 
 1. Make the code and/or template changes.
-2. Run `spatial codegen` to see your changes in action! The code generator will automatically be rebuilt.
+2. Run `ci/codegen.sh` to see your changes in action! The code generator will automatically be rebuilt.
 
 
 #### Spatial Codegen configuration
 
-`spatial codegen` uses the [worker build configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-build#using-custom-build-scripts) to determine what to run. In both `spatialos.unity.client.build.json` and `spatialos.unity.gamelogic.build.json` there is a step that runs the custom code generator described above.
-
-```json
-{
-  "name": "GDK Codegen",
-  "command": "../../bin/code_generator/GdkCodeGenerator.exe",
-  "arguments": [
-      "--json-dir=./improbable/json/usr",
-      "--output-dir=./Assets/Generated/"
-  ]
-}
-```
-
-If any changes you make change the input parameters or add new ones, you should add them to those two json files to ensure that `spatial codegen` runs correctly!
+If any changes you make change the input parameters or add new ones, you should add them to `ci/codegen.sh` so it runs correctly!
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
