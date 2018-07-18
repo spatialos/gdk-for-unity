@@ -14,7 +14,7 @@ namespace Playground
 
         private struct LaunchCommandData
         {
-            public int Length;
+            public readonly int Length;
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
 
@@ -26,7 +26,7 @@ namespace Playground
 
         private struct LaunchableData
         {
-            public int Length;
+            public readonly int Length;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
 
             [ReadOnly]

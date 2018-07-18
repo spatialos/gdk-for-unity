@@ -1,0 +1,10 @@
+{
+    "name": "Improbable.Gdk.Legacy",
+    "references": [
+        "Improbable.Gdk.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

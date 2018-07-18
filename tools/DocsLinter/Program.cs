@@ -201,6 +201,7 @@ namespace DocsLinter
                 {
                     strippedUrl = remoteLink.Url.Substring(0, strippedUrl.IndexOf("#", StringComparison.Ordinal));
                 }
+
                 var request = WebRequest.CreateHttp(strippedUrl);
                 request.Method = WebRequestMethods.Http.Get;
                 request.AllowAutoRedirect = true;

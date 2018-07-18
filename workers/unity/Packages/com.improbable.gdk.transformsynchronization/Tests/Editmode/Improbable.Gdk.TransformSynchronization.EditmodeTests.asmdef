@@ -1,0 +1,15 @@
+{
+    "name": "Improbable.Gdk.TransformSynchronization.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.TransformSynchronization",
+        "Unity.Entities"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

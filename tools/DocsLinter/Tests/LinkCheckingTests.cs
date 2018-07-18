@@ -16,8 +16,14 @@ namespace DocsLinter.Tests
 
         private static RemoteLink GetUrlForStatusCode(int statusCode)
         {
-            var url = $"https://httpstat.us/{statusCode}";
+            var url = $"http://httpstat.us/{statusCode}";
             return new RemoteLink(new LinkInline(url, ""));
+        }
+
+        [OneTimeSetUp]
+        public void IgnoreSslErrors() {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += 
+                (sender, cert, chain, sslPolicyErrors) => true;
         }
 
         [Test]
