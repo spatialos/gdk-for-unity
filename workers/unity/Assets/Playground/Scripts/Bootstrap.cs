@@ -100,6 +100,7 @@ namespace Playground
             {
                 LoadLevel(worker);
 
+                // Don't connect the client when the game starts as we want that to happen on a button click
                 if (worker is UnityClient)
                 {
                     continue;

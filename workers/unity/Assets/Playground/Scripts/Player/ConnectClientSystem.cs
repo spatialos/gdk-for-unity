@@ -38,19 +38,21 @@ namespace Playground
             for (var i = 0; i < data.Length; i++)
             {
                 var entity = data.Entity[i];
-                var isConnected = worker.Connect(worker.ConnectionConfig);
-                if (isConnected)
+                try
                 {
+                    worker.Connect(worker.ConnectionConfig);
                     connectionPanel.SetActive(false);
                 }
-                else
+                catch (ConnectionFailedException)
                 {
                     errorField.text = "Connection attempt failed. Please check the IP address is correct";
                     errorField.gameObject.SetActive(true);
                     connectButton.gameObject.SetActive(true);
                 }
-
-                PostUpdateCommands.RemoveComponent<ConnectButtonClicked>(entity);
+                finally
+                {
+                    PostUpdateCommands.RemoveComponent<ConnectButtonClicked>(entity);
+                }
             }
         }
     }
