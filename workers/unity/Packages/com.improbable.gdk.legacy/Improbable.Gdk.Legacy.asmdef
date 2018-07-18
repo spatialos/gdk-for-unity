@@ -1,0 +1,11 @@
+{
+    "name": "Improbable.Gdk.Legacy",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Generated.NetworkTypes"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

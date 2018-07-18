@@ -2,14 +2,14 @@
     "name": "Improbable.Playground",
     "references": [
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.Physics",
+        "Improbable.Gdk.TransformSynchronization",
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Android",
-        "Improbable.CSharp",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
+        "Improbable.Generated.NetworkTypes",
         "Unity.Mathematics"
     ],
     "optionalUnityReferences": [],

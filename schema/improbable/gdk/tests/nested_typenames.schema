@@ -1,0 +1,24 @@
+package improbable.gdk.tests;
+
+type TypeName {
+    type Other {
+        type NestedTypeName {
+            type Other0 {
+                int32 foo = 1;
+            }
+            enum NestedEnum {
+                enum_value = 1;
+            }
+            Other0 other_zero = 1;
+            NestedEnum enum_field = 2;
+        }
+        NestedTypeName same_name = 1;
+    }
+    Other other_type = 1;
+}
+
+component NestedComponent {
+    id = 20152;
+    TypeName nested_type = 1;
+}
+
