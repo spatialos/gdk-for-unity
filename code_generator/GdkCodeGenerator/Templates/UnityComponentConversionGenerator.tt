@@ -125,11 +125,14 @@ namespace <#= qualifiedNamespace #>
                 }
 <# if(fieldDetailsList.Count > 0) { #>
                 var data = op.Data.Get().Value;
+                var <#= componentDetails.CamelCaseTypeName#>Update = new <#= componentDetails.TypeName #>.Update();
 <# } #>
 
                 var <#= componentDetails.CamelCaseTypeName #> = new <#= componentDetails.TypeName#>();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>;
+                <#= componentDetails.CamelCaseTypeName#>Update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>);
+
 <# } #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
 
@@ -147,6 +150,9 @@ namespace <#= qualifiedNamespace #>
                 else if (!view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
                     view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+<# if(fieldDetailsList.Count > 0) { #>
+                    view.AddComponentsUpdated(entity, <#= componentDetails.CamelCaseTypeName#>Update, UpdatesPool);
+<# } #>
                 }
                 else
                 {
