@@ -18,7 +18,7 @@ namespace UnityPaths
 
         // Adjust the root based on Windows or MacOS. Linux is currently unsupported.
         public static string ImprobableUnityRootPath =>
-            RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "/Applications" : Path.Combine(@"c:\", "Unity");
+            RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "/Applications/Unity" : Path.Combine(@"c:\", "Unity");
 
         public static string TryGetUnityPath()
         {
@@ -41,7 +41,7 @@ namespace UnityPaths
             var projectVersion = File.ReadAllText(Path.Combine("ProjectSettings", "ProjectVersion.txt"))
                 .Remove(0, "m_EditorVersion:".Length).Trim();
 
-            var improbableUnityPath = Path.Combine(ImprobableUnityRootPath, $"Unity-{projectVersion}");
+            var improbableUnityPath = Path.Combine(ImprobableUnityRootPath, $"{projectVersion}");
             if (Directory.Exists(improbableUnityPath))
             {
                 return improbableUnityPath;

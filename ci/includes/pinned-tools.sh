@@ -17,6 +17,11 @@ function isWindows() {
   ! ( isLinux || isMacOS );
 }
 
+function cleanUnity() {
+  rm -rf "$(pwd)/workers/unity/Library/"  
+  rm -rf "$(pwd)/workers/unity/Temp/"
+}
+
 
 # Print the .NETCore version to aid debugging,
 # as well as ensuring that later calls to the tool don't print the welcome message on first run.

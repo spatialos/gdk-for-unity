@@ -6,6 +6,14 @@ cd "$(dirname "$0")/../"
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 
+markStartOfBlock "Copying Packages Schema"
+
+dotnet run -p tools/CopySchema/CopySchema.csproj -- \
+  "workers/unity/Packages/manifest.json" \
+  "schema"
+
+markEndOfBlock "Copying Packages Schema"
+
 markStartOfBlock "Generating code"
 
 dotnet run -p code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj -- \
