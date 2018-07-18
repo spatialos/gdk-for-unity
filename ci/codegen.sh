@@ -20,8 +20,6 @@ if isWindows;
   then SCHEMA_COMPILER="tools/schema_compiler/win/schema_compiler.exe"
 elif isMacOS;
   then SCHEMA_COMPILER="tools/schema_compiler/macos/schema_compiler"
-elif isLinux;
-  then SCHEMA_COMPILER="tools/schema_compiler/linux/schema_compiler"
 fi
 
 dotnet run -p code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj -- \
