@@ -4,9 +4,6 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-#if UNITY_ANDROID
-using Improbable.Gdk.Android;
-#endif
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -23,8 +20,6 @@ namespace Playground
         public const string LoggerName = "Bootstrap";
 
         private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
-
-        private static ConnectionConfig connectionConfig;
 
         public void Awake()
         {
@@ -50,10 +45,9 @@ namespace Playground
                     var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
                         workerConfig.Origin);
                     Workers.Add(worker);
+                    worker.ConnectionConfig = new ReceptionistConfig();
+                    worker.ConnectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
                 }
-
-                connectionConfig = new ReceptionistConfig();
-                connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
 #endif
             }
 #if UNITY_ANDROID
@@ -61,12 +55,6 @@ namespace Playground
             {
                 var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
                 Workers.Add(worker);
-
-                // TODO: UTY-555 logic for when device is not an emulator
-                if (DeviceInfo.IsAndroidStudioEmulator())
-                {
-                    connectionConfig = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
-                }
             }
 #endif
             else
@@ -86,9 +74,10 @@ namespace Playground
                     ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
+
                 Workers.Add(worker);
 
-                connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                worker.ConnectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
             }
 
             if (World.AllWorlds.Count <= 0)
@@ -110,9 +99,15 @@ namespace Playground
             {
                 LoadLevel(worker);
 
+                // Don't connect the client when the game starts as we want that to happen on a button click
+                if (worker is UnityClient)
+                {
+                    continue;
+                }
+
                 try
                 {
-                    worker.Connect(connectionConfig);
+                    worker.Connect(worker.ConnectionConfig);
                 }
                 catch (ConnectionFailedException exception)
                 {
