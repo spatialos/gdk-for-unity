@@ -80,7 +80,9 @@ namespace Playground
 
             if (World.AllWorlds.Count <= 0)
             {
-                throw new InvalidConfigurationException("No worlds have been created, due to invalid worker types being specified. Check the config in" + "Improbable -> Configure editor workers.");
+                throw new InvalidConfigurationException(
+                    "No worlds have been created, due to invalid worker types being specified. Check the config in" +
+                    "Improbable -> Configure editor workers.");
             }
 
             var worlds = World.AllWorlds.ToArray();
