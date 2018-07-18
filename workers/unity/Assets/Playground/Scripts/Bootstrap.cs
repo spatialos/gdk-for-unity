@@ -17,6 +17,8 @@ namespace Playground
 
         private const int TargetFrameRate = -1; // Turns off VSync
 
+        public const string LoggerName = "Bootstrap";
+
         private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
 
         private static ConnectionConfig connectionConfig;
@@ -99,6 +101,7 @@ namespace Playground
                 catch (ConnectionFailedException exception)
                 {
                     worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Reason", exception.Reason));
                 }
             }
