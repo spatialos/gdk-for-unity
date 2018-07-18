@@ -143,6 +143,12 @@ namespace Improbable.Gdk.CodeGenerator
                 return false;
             }
 
+            if (options.SchemaCompiler == null)
+            {
+                Console.WriteLine("Schema compiler path not specified");
+                return false;
+            }
+
             if (options.SchemaInputDirs == null || options.SchemaInputDirs.Count == 0)
             {
                 Console.WriteLine("Schema input directories not specified");
