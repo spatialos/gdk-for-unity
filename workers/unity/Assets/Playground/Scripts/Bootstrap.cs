@@ -103,7 +103,15 @@ namespace Playground
                     continue;
                 }
 
-                worker.Connect(worker.ConnectionConfig);
+                try
+                {
+                    worker.Connect(worker.ConnectionConfig);
+                }
+                catch (ConnectionFailedException exception)
+                {
+                    worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
+                        .WithField("Reason", exception.Reason));
+                }
             }
         }
 
