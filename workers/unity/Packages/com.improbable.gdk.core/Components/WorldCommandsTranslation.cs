@@ -8,29 +8,29 @@ using TimeoutOption = Improbable.Collections.Option<uint>;
 
 namespace Improbable.Gdk.Core
 {
-    internal struct CreateEntityRequest
+    public struct CreateEntityRequest
     {
         public Worker.Entity Entity;
-        public Collections.Option<EntityId> EntityId;
+        public EntityId? EntityId;
         public uint TimeoutMillis;
         public long SenderEntityId;
     }
 
-    internal struct DeleteEntityRequest
+    public struct DeleteEntityRequest
     {
         public long EntityId;
         public uint TimeoutMillis;
         public long SenderEntityId;
     }
 
-    internal struct ReserveEntityIdsRequest
+    public struct ReserveEntityIdsRequest
     {
         public uint NumberOfEntityIds;
         public uint TimeoutMillis;
         public long SenderEntityId;
     }
 
-    internal struct EntityQueryRequest
+    public struct EntityQueryRequest
     {
         public Worker.Query.EntityQuery EntityQuery;
         public uint TimeoutMillis;
@@ -42,12 +42,15 @@ namespace Improbable.Gdk.Core
         public CommandStatusCode StatusCode { get; }
         public string Message { get; }
         public long EntityId { get; }
+        public CreateEntityRequest RawRequest { get; }
 
-        internal CreateEntityResponse(CommandStatusCode statusCode, string message, long entityId)
+        internal CreateEntityResponse(CommandStatusCode statusCode, string message, long entityId,
+            CreateEntityRequest req)
         {
             StatusCode = statusCode;
             Message = message;
             EntityId = entityId;
+            RawRequest = req;
         }
     }
 
@@ -56,12 +59,15 @@ namespace Improbable.Gdk.Core
         public CommandStatusCode StatusCode { get; }
         public string Message { get; }
         public long EntityId { get; }
+        public DeleteEntityRequest RawRequest { get; }
 
-        internal DeleteEntityResponse(CommandStatusCode statusCode, string message, long entityId)
+        internal DeleteEntityResponse(CommandStatusCode statusCode, string message, long entityId,
+            DeleteEntityRequest req)
         {
             StatusCode = statusCode;
             Message = message;
             EntityId = entityId;
+            RawRequest = req;
         }
     }
 
@@ -71,14 +77,16 @@ namespace Improbable.Gdk.Core
         public string Message { get; }
         public long FirstEntityId { get; }
         public int NumberOfEntityIds { get; }
+        public ReserveEntityIdsRequest RawRequest { get; }
 
         internal ReserveEntityIdsResponse(CommandStatusCode statusCode, string message, long firstEntityId,
-            int numberOfEntityIds)
+            int numberOfEntityIds, ReserveEntityIdsRequest req)
         {
             StatusCode = statusCode;
             Message = message;
             FirstEntityId = firstEntityId;
             NumberOfEntityIds = numberOfEntityIds;
+            RawRequest = req;
         }
     }
 
@@ -88,14 +96,16 @@ namespace Improbable.Gdk.Core
         public string Message { get; }
         public int ResultCount { get; }
         public Dictionary<long, Worker.Entity> Result { get; }
+        public EntityQueryRequest RawRequest { get; }
 
         internal EntityQueryResponse(CommandStatusCode statusCode, string message, int resultCount,
-            Dictionary<long, Worker.Entity> result)
+            Dictionary<long, Worker.Entity> result, EntityQueryRequest req)
         {
             StatusCode = statusCode;
             Message = message;
             ResultCount = resultCount;
             Result = result;
+            RawRequest = req;
         }
     }
 
@@ -115,10 +125,11 @@ namespace Improbable.Gdk.Core
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
-
-            var entityIdOption = entityId != 0
-                ? new Collections.Option<EntityId>(new EntityId(entityId))
-                : new Collections.Option<EntityId>();
+            var entityIdOption = new EntityId?();
+            if (entityId != 0)
+            {
+                entityIdOption = new EntityId(entityId);
+            }
 
             translation.CreateEntityRequests.Add(new CreateEntityRequest
             {
@@ -184,7 +195,17 @@ namespace Improbable.Gdk.Core
             typeof(CommandResponses<EntityQueryResponse>),
         };
 
-        private Dictionary<uint, long> RequestIdToEntityId = new Dictionary<uint, long>();
+        private readonly Dictionary<uint, CreateEntityRequest> requestIdToCreateEntityRequest
+            = new Dictionary<uint, CreateEntityRequest>();
+
+        private Dictionary<uint, DeleteEntityRequest> requestIdToDeleteEntityRequest
+            = new Dictionary<uint, DeleteEntityRequest>();
+
+        private Dictionary<uint, ReserveEntityIdsRequest> requestIdToReserveEntityIdsRequest
+            = new Dictionary<uint, ReserveEntityIdsRequest>();
+
+        private Dictionary<uint, EntityQueryRequest> requestIdToEntityQueryRequest
+            = new Dictionary<uint, EntityQueryRequest>();
 
         internal List<CreateEntityRequest> CreateEntityRequests = new List<CreateEntityRequest>();
         internal List<DeleteEntityRequest> DeleteEntityRequests = new List<DeleteEntityRequest>();
@@ -236,10 +257,16 @@ namespace Improbable.Gdk.Core
         {
             foreach (var request in CreateEntityRequests)
             {
-                var requestId = connection.SendCreateEntityRequest(request.Entity, request.EntityId,
+                Collections.Option<EntityId> id;
+                if (request.EntityId.HasValue)
+                {
+                    id = request.EntityId.Value;
+                }
+
+                var requestId = connection.SendCreateEntityRequest(request.Entity, id,
                     new TimeoutOption(request.TimeoutMillis));
 
-                RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
+                requestIdToCreateEntityRequest.Add(requestId.Id, request);
             }
 
             CreateEntityRequests.Clear();
@@ -249,7 +276,7 @@ namespace Improbable.Gdk.Core
                 var requestId = connection.SendDeleteEntityRequest(new EntityId(request.EntityId),
                     new TimeoutOption(request.TimeoutMillis));
 
-                RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
+                requestIdToDeleteEntityRequest.Add(requestId.Id, request);
             }
 
             DeleteEntityRequests.Clear();
@@ -259,7 +286,7 @@ namespace Improbable.Gdk.Core
                 var requestId = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds,
                     new TimeoutOption(request.TimeoutMillis));
 
-                RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
+                requestIdToReserveEntityIdsRequest.Add(requestId.Id, request);
             }
 
             ReserveEntityIdsRequests.Clear();
@@ -269,7 +296,7 @@ namespace Improbable.Gdk.Core
                 var requestId = connection.SendEntityQueryRequest(request.EntityQuery,
                     new TimeoutOption(request.TimeoutMillis));
 
-                RequestIdToEntityId.Add(requestId.Id, request.SenderEntityId);
+                requestIdToEntityQueryRequest.Add(requestId.Id, request);
             }
 
             EntityQueryRequests.Clear();
@@ -293,53 +320,59 @@ namespace Improbable.Gdk.Core
 
         public void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
+            CreateEntityRequest request = requestIdToCreateEntityRequest[op.RequestId.Id];
+            requestIdToCreateEntityRequest.Remove(op.RequestId.Id);
+
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "CreateEntity", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "CreateEntity", out entity))
             {
                 return;
             }
 
             var response =
-                new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id);
+                new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id, request);
 
             view.AddCommandResponse(entity, response, createEntityResponsePool);
         }
 
         public void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
+            DeleteEntityRequest request = requestIdToDeleteEntityRequest[op.RequestId.Id];
+            requestIdToDeleteEntityRequest.Remove(op.RequestId.Id);
+
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "DeleteEntity", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "DeleteEntity", out entity))
             {
                 return;
             }
 
             var response =
-                new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id);
+                new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id, request);
 
             view.AddCommandResponse(entity, response, deleteEntityResponsePool);
         }
 
         public void OnReserveEntityIdResponse(ReserveEntityIdsResponseOp op)
         {
+            ReserveEntityIdsRequest request = requestIdToReserveEntityIdsRequest[op.RequestId.Id];
+            requestIdToReserveEntityIdsRequest.Remove(op.RequestId.Id);
+
             Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "ReserveEntityIds", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "ReserveEntityIds", out entity))
             {
                 return;
             }
 
             var response = new ReserveEntityIdsResponse((CommandStatusCode) op.StatusCode, op.Message,
-                op.FirstEntityId.Value.Id, op.NumberOfEntityIds);
+                op.FirstEntityId.Value.Id, op.NumberOfEntityIds, request);
 
             view.AddCommandResponse(entity, response, reserveEntityIdsResponsesPool);
         }
 
         public void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
-            Entity entity;
-            if (!TryGetEntityFromRequestId(op.RequestId.Id, "EntityQuery", out entity))
-            {
-                return;
-            }
+            EntityQueryRequest request = requestIdToEntityQueryRequest[op.RequestId.Id];
+            requestIdToEntityQueryRequest.Remove(op.RequestId.Id);
 
             var result = new Dictionary<long, Worker.Entity>();
             foreach (var pair in op.Result)
@@ -347,28 +380,21 @@ namespace Improbable.Gdk.Core
                 result.Add(pair.Key.Id, pair.Value);
             }
 
+            Entity entity;
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "EntityQuery", out entity))
+            {
+                return;
+            }
+
             var response =
-                new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result);
+                new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result, request);
 
             view.AddCommandResponse(entity, response, entityQueryResponsePool);
         }
 
-        private bool TryGetEntityFromRequestId(uint requestId, string responseName, out Entity entity)
+        private bool TryGetEntityFromEntityId(long entityId, string responseName, out Entity entity)
         {
             entity = Entity.Null;
-
-            long entityId;
-            if (!RequestIdToEntityId.TryGetValue(requestId, out entityId))
-            {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForRequestId)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", requestId)
-                    .WithField("ResponseName", responseName));
-                return false;
-            }
-
-            RequestIdToEntityId.Remove(requestId);
-
             if (entityId == MutableView.WorkerEntityId)
             {
                 entity = view.WorkerEntity;
