@@ -1,0 +1,15 @@
+{
+    "name": "Improbable.Gdk.PlayerLifecycle",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Mathematics",
+        "Improbable.Generated.NetworkTypes"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

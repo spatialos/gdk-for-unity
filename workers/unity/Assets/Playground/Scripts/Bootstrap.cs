@@ -84,11 +84,6 @@ namespace Playground
                     ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
-                if (worker == null)
-                {
-                    return;
-                }
-
                 Workers.Add(worker);
 
                 connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
@@ -96,8 +91,9 @@ namespace Playground
 
             if (World.AllWorlds.Count <= 0)
             {
-                Debug.LogError(
-                    "No worlds have been created, due to invalid worker types being specified.");
+                throw new InvalidConfigurationException(
+                    "No worlds have been created, due to invalid worker types being specified. Check the config in" +
+                    "Improbable -> Configure editor workers.");
             }
 
             var worlds = World.AllWorlds.ToArray();
@@ -111,7 +107,16 @@ namespace Playground
             foreach (var worker in Workers)
             {
                 LoadLevel(worker);
-                worker.Connect(connectionConfig);
+
+                try
+                {
+                    worker.Connect(connectionConfig);
+                }
+                catch (ConnectionFailedException exception)
+                {
+                    worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
+                        .WithField("Reason", exception.Reason));
+                }
             }
         }
 

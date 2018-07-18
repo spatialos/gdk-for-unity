@@ -2,7 +2,7 @@
     "name": "Improbable.Playground.Editor",
     "references": [
         "Improbable.Playground",
-        "Improbable.CSharp",
+        "Improbable.Generated.NetworkTypes",
         "Improbable.Gdk.Legacy"
     ],
     "optionalUnityReferences": [],

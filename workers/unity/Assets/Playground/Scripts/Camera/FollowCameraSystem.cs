@@ -30,7 +30,7 @@ namespace Playground
 
         private struct Data
         {
-            public int Length;
+            public readonly int Length;
             public ComponentDataArray<CameraInput> CameraInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             [ReadOnly] public ComponentArray<Rigidbody> RigidBody;

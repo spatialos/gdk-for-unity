@@ -1,7 +1,7 @@
 
 {
     "name": "Improbable.Gdk.Generated",
-    "references": [ "Unity.Entities", "Unity.Mathematics", "Unity.Entities.Hybrid", "Improbable.CSharp", "Improbable.Gdk.Core" ],
+    "references": [ "Unity.Entities", "Unity.Mathematics", "Unity.Entities.Hybrid", "Improbable.Generated.NetworkTypes", "Improbable.Gdk.Core" ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false

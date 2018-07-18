@@ -10,7 +10,7 @@ namespace Playground
     {
         public struct PlayerInputData
         {
-            public int Length;
+            public readonly int Length;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
