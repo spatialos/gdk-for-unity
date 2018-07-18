@@ -11,6 +11,8 @@ namespace Improbable.Gdk.Core
 
         public MutableView View { get; private set; }
 
+        public ConnectionConfig ConnectionConfig { get; set; }
+
         public Connection Connection { get; private set; }
 
         public Vector3 Origin { get; private set; }

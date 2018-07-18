@@ -26,6 +26,8 @@ namespace Playground
             World.GetOrCreateManager<ArchetypeInitializationSystem>();
 
             // SpatailOS systems
+            World.GetOrCreateManager<ConnectButtonClickSystem>();
+            World.GetOrCreateManager<ConnectClientSystem>();
             World.GetOrCreateManager<DisconnectSystem>();
 
             // Client test event systems
