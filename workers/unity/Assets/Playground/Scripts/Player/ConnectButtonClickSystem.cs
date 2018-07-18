@@ -26,7 +26,7 @@ namespace Playground
 
         private InputField connectParamInputField;
         private Button connectButton;
-        private bool clicked;
+        private bool connectionRequested;
         private WorkerBase worker;
         private Text errorField;
 
@@ -49,21 +49,21 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (clicked)
+            if (connectionRequested)
             {
                 for (var i = 0; i < data.Length; i++)
                 {
                     PostUpdateCommands.AddComponent(data.Entity[i], new ConnectButtonClicked());
                     connectButton.gameObject.SetActive(false);
                     errorField.text = "";
-                    clicked = false;
+                    connectionRequested = false;
                 }
             }
         }
 
         private void IsClicked()
         {
-            clicked = true;
+            connectionRequested = true;
 #if UNITY_ANDROID
             if (Application.isMobilePlatform)
             {
@@ -85,6 +85,11 @@ namespace Playground
             if (IsIpAddress(param))
             {
                 worker.ConnectionConfig = ReceptionistConfig.CreateConnectionConfigForPhysicalAndroid(param);
+            }
+            else
+            {
+                connectionRequested = false;
+                errorField.text = "Entered text is not a valid IP address.";
             }
 
             // TODO: UTY-558 else -> cloud connection
