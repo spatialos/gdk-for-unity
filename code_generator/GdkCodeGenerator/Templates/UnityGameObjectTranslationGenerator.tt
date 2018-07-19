@@ -41,14 +41,14 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-            public override List<ComponentType[]> EventsReceivedComponentTypeArrays => new List<ComponentType[]>
+            public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var eventDetails in eventDetailsList) { #>
                 new ComponentType[] { typeof(EventsReceived<<#= eventDetails.EventName #>Event>), typeof(GameObjectReference) },
 <# } #>
             };
 
-            public override List<ComponentType[]> CommandRequestsComponentTypeArrays => new List<ComponentType[]>
+            public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var commandDetails in commandDetailsList) { #>
                 new ComponentType[] { typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(GameObjectReference) },

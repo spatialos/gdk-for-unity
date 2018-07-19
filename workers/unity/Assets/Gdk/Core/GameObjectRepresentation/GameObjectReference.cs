@@ -26,12 +26,12 @@ namespace Improbable.Gdk.Core
 
         public void OnComponentUpdate(uint componentId, object update)
         {
-            Debug.Log(spatialId + " recevied OnComponentUpdate: " + componentId);
+            //Debug.Log(spatialId + " recevied OnComponentUpdate: " + componentId);
         }
 
         public void OnEvent(uint componentId, int eventIndex, object evt)
         {
-            Debug.Log(spatialId + " recevied OnEvent: " + componentId);
+            //Debug.Log(spatialId + " recevied OnEvent: " + componentId);
         }
 
         public void OnCommandRequest(uint componentId, int commandIndex, object commandRequest)

@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            foreach (var monoBehaviourTranslation in view.MonoBehaviourTranslations)
+            foreach (var monoBehaviourTranslation in view.GameObjectTranslations)
             {
                 monoBehaviourTranslation.ComponentAddedComponentGroup =
                     GetComponentGroup(monoBehaviourTranslation.ComponentAddedComponentTypes);
@@ -37,23 +37,25 @@ namespace Improbable.Gdk.Core
                         GetComponentGroup(monoBehaviourTranslation.ComponentsUpdatedComponentTypes);
                 }
 
-                monoBehaviourTranslation.EventsReceivedComponentGroups = new List<ComponentGroup>();
-                foreach (var eventsReceivedComponentTypes in monoBehaviourTranslation.EventsReceivedComponentTypeArrays)
+                monoBehaviourTranslation.EventsReceivedComponentGroups = new ComponentGroup[monoBehaviourTranslation.EventsReceivedComponentTypeArrays.Length];
+                for (var i = 0; i < monoBehaviourTranslation.EventsReceivedComponentTypeArrays.Length; i++)
                 {
-                    monoBehaviourTranslation.EventsReceivedComponentGroups.Add(GetComponentGroup(eventsReceivedComponentTypes));
+                    monoBehaviourTranslation.EventsReceivedComponentGroups[i] =
+                        GetComponentGroup(monoBehaviourTranslation.EventsReceivedComponentTypeArrays[i]);
                 }
 
-                monoBehaviourTranslation.CommandRequestsComponentGroups = new List<ComponentGroup>();
-                foreach (var commandRequestsComponentTypes in monoBehaviourTranslation.CommandRequestsComponentTypeArrays)
+                monoBehaviourTranslation.CommandRequestsComponentGroups = new ComponentGroup[monoBehaviourTranslation.CommandRequestsComponentTypeArrays.Length];
+                for (var i = 0; i < monoBehaviourTranslation.CommandRequestsComponentTypeArrays.Length; i++)
                 {
-                    monoBehaviourTranslation.CommandRequestsComponentGroups.Add(GetComponentGroup(commandRequestsComponentTypes));
+                    monoBehaviourTranslation.CommandRequestsComponentGroups[i] =
+                        GetComponentGroup(monoBehaviourTranslation.CommandRequestsComponentTypeArrays[i]);
                 }
             }
         }
 
         protected override void OnUpdate()
         {
-            foreach (var monoBehaviourTranslation in view.MonoBehaviourTranslations)
+            foreach (var monoBehaviourTranslation in view.GameObjectTranslations)
             {
                 monoBehaviourTranslation.InvokeOnAddComponentCallbacks();
                 monoBehaviourTranslation.InvokeOnRemoveComponentCallbacks();

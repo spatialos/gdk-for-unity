@@ -14,10 +14,10 @@ namespace Improbable.Gdk.Core
 
         public abstract ComponentType[] ComponentsUpdatedComponentTypes { get; }
         public ComponentGroup ComponentsUpdatedComponentGroup { get; set; }
-        public abstract List<ComponentType[]> EventsReceivedComponentTypeArrays { get; }
-        public List<ComponentGroup> EventsReceivedComponentGroups { get; set; }
-        public abstract List<ComponentType[]> CommandRequestsComponentTypeArrays { get; }
-        public List<ComponentGroup> CommandRequestsComponentGroups { get; set; }
+        public abstract ComponentType[][] EventsReceivedComponentTypeArrays { get; }
+        public ComponentGroup[] EventsReceivedComponentGroups { get; set; }
+        public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
+        public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
         public abstract void InvokeOnAddComponentCallbacks();
         public abstract void InvokeOnRemoveComponentCallbacks();
