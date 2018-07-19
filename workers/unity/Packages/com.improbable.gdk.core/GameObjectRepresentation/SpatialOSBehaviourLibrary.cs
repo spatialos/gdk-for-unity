@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 
@@ -9,28 +10,26 @@ namespace Improbable.Gdk.Core
     /// Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
     public class SpatialOSBehaviourLibrary {
-        // Stores maps from Spatial component IDs to MemberAdapters to reflectively set Readers/Writers for each SpatialOSBehaviour.
         private readonly Dictionary<Type, Dictionary<uint, IMemberAdapter>> adapterCache
             = new Dictionary<Type, Dictionary<uint, IMemberAdapter>>();
 
-        // List of component IDs for which a reader/writer is required for each SpatialOSBehaviour
-        private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, List<uint>>();
-        private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, List<uint>>();
+        private readonly Dictionary<Type, HashSet<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, HashSet<uint>>();
+        private readonly Dictionary<Type, HashSet<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, HashSet<uint>>();
 
-        // Helper objects for querying members with the [Require] attribute
-        private readonly MemberReflectionUtil reflectionUtil = new MemberReflectionUtil(typeof(RequireAttribute));
-
-        private readonly HashSet<Type> badTypes = new HashSet<Type>();
+        private readonly HashSet<Type> invalidMonoBehaviourTypes = new HashSet<Type>();
 
         private readonly ILogDispatcher logger;
         private const string LoggerName = "SpatialOSBehaviourLibrary";
 
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Reader or Writer or incorrectly generated, ignoring!";
+            = "[Require] attribute found on member that is not Reader or Writer or incorrectly generated, ignoring this member!";
 
         private const string MultipleReadersWritersRequiredError
-            = "MonoBehaviour found requesting more than one view (Reader or Writer) to the same component, " +
+            = "MonoBehaviour found requesting more than one Reader or Writer for the same component, " +
             "this is invalid and will not be enabled!";
+
+        private const string MalformedReaderOrWriter
+            = "Reader or Writer found without a Component ID attribute, this is invalid!";
 
         public SpatialOSBehaviourLibrary(ILogDispatcher logger)
         {
@@ -40,7 +39,7 @@ namespace Improbable.Gdk.Core
         public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
             EnsureLoaded(spatialOSBehaviour.GetType());
-            if (badTypes.Contains(spatialOSBehaviour.GetType()))
+            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviour.GetType()))
             {
                 return;
             }
@@ -59,7 +58,7 @@ namespace Improbable.Gdk.Core
         public void DeInjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
             EnsureLoaded(spatialOSBehaviour.GetType());
-            if (badTypes.Contains(spatialOSBehaviour.GetType()))
+            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviour.GetType()))
             {
                 return;
             }
@@ -75,13 +74,13 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public IEnumerable<uint> GetRequiredReaderComponentIds(Type behaviourType)
+        public HashSet<uint> GetRequiredReaderComponentIds(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
             return componentReaderIdsForBehaviours[behaviourType];
         }
 
-        public IEnumerable<uint> GetRequiredWriterComponentIds(Type behaviourType)
+        public HashSet<uint> GetRequiredWriterComponentIds(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
             return componentWriterIdsForBehaviours[behaviourType];
@@ -107,10 +106,10 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            var adapters = reflectionUtil.GetMembersWithMatchingAttributes(behaviourType);
+            var adapters = GetMembersWithMatchingAttributes(behaviourType);
             var componentIdsToAdapters = new Dictionary<uint, IMemberAdapter>();
-            var readerIds = new List<uint>();
-            var writerIds = new List<uint>();
+            var readerIds = new HashSet<uint>();
+            var writerIds = new HashSet<uint>();
             adapterCache[behaviourType] = componentIdsToAdapters;
             componentReaderIdsForBehaviours[behaviourType] = readerIds;
             componentWriterIdsForBehaviours[behaviourType] = writerIds;
@@ -120,11 +119,22 @@ namespace Improbable.Gdk.Core
                 // Get component ID
                 // Store in data structures
                 Type requiredType = adapter.TypeOfMember;
+                var isReader = Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false);
+                var isWriter = Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false);
+                if (!isReader && !isWriter)
+                {
+                    logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("MonoBehaviour", behaviourType.Name)
+                        .WithField("RequiredType", requiredType.Name));
+                    continue;
+                }
+
                 var componentIdAttribute =
                     (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute), false);
                 if (componentIdAttribute == null)
                 {
-                    logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
+                    logger.HandleLog(LogType.Error, new LogEvent(MalformedReaderOrWriter)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("MonoBehaviour", behaviourType.Name)
                         .WithField("RequiredType", requiredType.Name));
@@ -139,26 +149,48 @@ namespace Improbable.Gdk.Core
                         .WithField("MonoBehaviour", behaviourType.Name)
                         .WithField("ComponentID", componentId)
                         .WithField("RequiredType", requiredType.Name));
-                    badTypes.Add(behaviourType);
+                    invalidMonoBehaviourTypes.Add(behaviourType);
+                    break;
                 }
 
                 componentIdsToAdapters[componentId] = adapter;
-                if (Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false))
+                if (isReader)
                 {
                     readerIds.Add(componentId);
                 }
-                else if (Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false))
+                else
                 {
                     writerIds.Add(componentId);
                 }
-                else
+            }
+        }
+
+        private const BindingFlags FieldFlags = BindingFlags.Instance | BindingFlags.NonPublic |
+            BindingFlags.Public | BindingFlags.DeclaredOnly;
+
+        private const BindingFlags PropertyFlags =
+            FieldFlags | BindingFlags.SetProperty | BindingFlags.GetProperty;
+
+        private List<IMemberAdapter> GetMembersWithMatchingAttributes(Type targetType)
+        {
+            List<IMemberAdapter> adapters = new List<IMemberAdapter>();
+            foreach (var property in targetType.GetProperties(PropertyFlags))
+            {
+                if (Attribute.IsDefined(property, typeof(RequireAttribute), false))
                 {
-                    logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("MonoBehaviour", behaviourType.Name)
-                        .WithField("RequiredType", requiredType.Name));
+                    adapters.Add(new PropertyInfoAdapter(property));
                 }
             }
+
+            foreach (var field in targetType.GetProperties(FieldFlags))
+            {
+                if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
+                {
+                    adapters.Add(new PropertyInfoAdapter(field));
+                }
+            }
+
+            return adapters;
         }
     }
 }

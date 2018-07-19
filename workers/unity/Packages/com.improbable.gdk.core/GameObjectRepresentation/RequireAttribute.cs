@@ -2,9 +2,9 @@
 
 namespace Improbable.Gdk.Core
 {
-    /// <returns>
+    /// <summary>
     ///     Marks fields/properties of MonoBehaviours that require a Reader or Writer to be injected into them.
-    /// </returns>
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class RequireAttribute : Attribute
     {

@@ -3,7 +3,10 @@ using System.Reflection;
 
 namespace Improbable.Gdk.Core
 {
-    public class PropertyInfoAdapter : IMemberAdapter
+    /// <summary>
+    ///     A handle on a property of a type obtained through reflection, for getting/setting it on instances conveniently.
+    /// </summary>
+    internal class PropertyInfoAdapter : IMemberAdapter
     {
         private readonly PropertyInfo member;
 

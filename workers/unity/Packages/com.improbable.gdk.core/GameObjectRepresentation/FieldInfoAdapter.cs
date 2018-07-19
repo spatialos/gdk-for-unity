@@ -3,7 +3,10 @@ using System.Reflection;
 
 namespace Improbable.Gdk.Core
 {
-    public class FieldInfoAdapter : IMemberAdapter
+    /// <summary>
+    ///     A handle on a field of a type obtained through reflection, for getting/setting it on instances conveniently.
+    /// </summary>
+    internal class FieldInfoAdapter : IMemberAdapter
     {
         private readonly FieldInfo member;
 
