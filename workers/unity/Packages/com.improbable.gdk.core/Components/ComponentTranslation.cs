@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.Components
 
         public abstract ComponentType TargetComponentType { get; }
         protected readonly MutableView view;
-        protected readonly ILogDispatcher LogDispatcher;
+        public readonly ILogDispatcher LogDispatcher;
 
         protected ComponentTranslation(MutableView view)
         {

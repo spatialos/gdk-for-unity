@@ -25,7 +25,7 @@ namespace <#= qualifiedNamespace #>
     {
         public class Translation : ComponentTranslation, IDispatcherCallbacks<<#= componentDetails.FullyQualifiedSpatialTypeName #>>
         {
-            private const string LoggerName = "<#= componentDetails.ComponentName #>.Translation";
+            internal const string LoggerName = "<#= componentDetails.ComponentName #>.Translation";
         
             public override ComponentType TargetComponentType => targetComponentType;
             private static readonly ComponentType targetComponentType = typeof(<#= componentDetails.TypeName #>);
@@ -56,6 +56,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var commandDetails in commandDetailsList) { #>
             internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
             internal List<<#= commandDetails.CommandName #>.OutgoingResponse> <#= commandDetails.CommandName #>Responses = new List<<#= commandDetails.CommandName #>.OutgoingResponse>();
+            internal HashSet<uint> <#= commandDetails.CommandName #>ResponsesToSend = new HashSet<uint>();
             private static readonly ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>> <#= commandDetails.CommandName #>RequestPool =
                 new ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>>(
                     () => new CommandRequests<<#= commandDetails.CommandName #>.Request>(),
@@ -348,6 +349,7 @@ namespace <#= qualifiedNamespace #>
 <# for(var i = 0; i < commandDetailsList.Count; i++) { #>
                 RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
                 RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 4 : 5) #>);
+                <#= commandDetailsList[i].CommandName #>ResponsesToSend.Clear();
 <# } #>
 <# for(var i = 0; i < eventDetailsList.Count; i++) { #>
                 RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
