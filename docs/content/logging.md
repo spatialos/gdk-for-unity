@@ -6,8 +6,8 @@
 
 The Unity GDK uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface: 
 
-*  `LoggingDispatcher`, which simply logs to the Unity console
-*  `ForwardingDispatcher`, which logs to the Unity console and forwards it to the SpatialOS Console
+*  `LoggingDispatcher`, which simply logs to the Unity console.
+*  `ForwardingDispatcher`, which logs to the Unity console and forwards it to the SpatialOS Console.
 
 All workers use the `ForwardingDispatcher` by default. To replace it with the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
 
@@ -15,13 +15,13 @@ All workers use the `ForwardingDispatcher` by default. To replace it with the `L
 
 You can access the dispatcher through the `MutableView`. The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
-* `LogType` (e.g. `UnityEngine.LogType.Error`)
-* `LogEvent`, which stores the message and other context variables in the Data dictionary
+* `LogType` (e.g. `UnityEngine.LogType.Error`).
+* `LogEvent`, which stores the message and other context variables in the Data dictionary.
 
 There are two log context variables: 
 
-* `LoggingUtils.LoggerName`, which specifies where the log was sent from
-* `LoggingUtils.EntityId`, which links the log to a specific entity
+* `LoggingUtils.LoggerName`, which specifies where the log was sent from.
+* `LoggingUtils.EntityId`, which links the log to a specific entity.
 
 These are automatically picked up by the `ForwardingDispatcher` if provided. Other context variables are formatted in a string and sent with the log message.
 
