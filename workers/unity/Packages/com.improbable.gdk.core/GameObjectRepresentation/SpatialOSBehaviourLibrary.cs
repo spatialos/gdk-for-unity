@@ -20,20 +20,31 @@ namespace Improbable.Gdk.Core
         // Helper objects for querying members with the [Require] attribute
         private readonly MemberReflectionUtil reflectionUtil = new MemberReflectionUtil(typeof(RequireAttribute));
 
+        private readonly HashSet<Type> badTypes = new HashSet<Type>();
+
         private readonly ILogDispatcher logger;
         private const string LoggerName = "SpatialOSBehaviourLibrary";
 
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Reader or Writer, ignoring!";
+            = "[Require] attribute found on member that is not Reader or Writer or incorrectly generated, ignoring!";
 
-        public SpatialOSBehaviourLibrary(World world)
+        private const string MultipleReadersWritersRequiredError
+            = "MonoBehaviour found requesting more than one view (Reader or Writer) to the same component, " +
+            "this is invalid and will not be enabled!";
+
+        public SpatialOSBehaviourLibrary(ILogDispatcher logger)
         {
-            logger = WorkerRegistry.GetWorkerForWorld(world).View.LogDispatcher;
+            this.logger = logger;
         }
 
         public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
             EnsureLoaded(spatialOSBehaviour.GetType());
+            if (badTypes.Contains(spatialOSBehaviour.GetType()))
+            {
+                return;
+            }
+
             foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviour.GetType()])
             {
                 Inject(spatialOSBehaviour, readerWriterComponentId);
@@ -48,6 +59,11 @@ namespace Improbable.Gdk.Core
         public void DeInjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
             EnsureLoaded(spatialOSBehaviour.GetType());
+            if (badTypes.Contains(spatialOSBehaviour.GetType()))
+            {
+                return;
+            }
+
             foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviour.GetType()])
             {
                 DeInject(spatialOSBehaviour, readerWriterComponentId);
@@ -104,9 +120,28 @@ namespace Improbable.Gdk.Core
                 // Get component ID
                 // Store in data structures
                 Type requiredType = adapter.TypeOfMember;
-                var componentId =
-                    ((ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute),
-                        false)).Id;
+                var componentIdAttribute =
+                    (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute), false);
+                if (componentIdAttribute == null)
+                {
+                    logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("MonoBehaviour", behaviourType.Name)
+                        .WithField("RequiredType", requiredType.Name));
+                    continue;
+                }
+
+                var componentId = componentIdAttribute.Id;
+                if (componentIdsToAdapters.ContainsKey(componentId))
+                {
+                    logger.HandleLog(LogType.Error, new LogEvent(MultipleReadersWritersRequiredError)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("MonoBehaviour", behaviourType.Name)
+                        .WithField("ComponentID", componentId)
+                        .WithField("RequiredType", requiredType.Name));
+                    badTypes.Add(behaviourType);
+                }
+
                 componentIdsToAdapters[componentId] = adapter;
                 if (Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false))
                 {
@@ -120,7 +155,7 @@ namespace Improbable.Gdk.Core
                 {
                     logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("SpatialOSBehaviour", behaviourType.Name)
+                        .WithField("MonoBehaviour", behaviourType.Name)
                         .WithField("RequiredType", requiredType.Name));
                 }
             }
