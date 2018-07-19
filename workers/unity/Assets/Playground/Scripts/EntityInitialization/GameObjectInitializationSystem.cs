@@ -83,6 +83,8 @@ namespace Playground
                     entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
                         spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
+                //
+                gameObjectReference.spatialId = spatialEntityId;
 
                 entityGameObjectCache[entity.Index] = gameObject;
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();

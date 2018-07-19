@@ -71,6 +71,7 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var nonBlittableComponentGenerator = new UnityComponentGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var monoBehaviourTranslationGenerator = new UnityGameObjectTranslationGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -113,6 +114,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
+
+                var monoBehaviourTranslationFileName = Path.ChangeExtension($"{component.Name}GameObjectTranslation", fileExtension);
+                var monoBehaviourTranslationCode = monoBehaviourTranslationGenerator.Generate(component, package);
+                Content.Add(Path.Combine(relativeOutputPath, monoBehaviourTranslationFileName), monoBehaviourTranslationCode);
             }
         }
     }
