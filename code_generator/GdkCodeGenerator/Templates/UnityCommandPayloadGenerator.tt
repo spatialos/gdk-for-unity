@@ -9,6 +9,7 @@
 
 using Improbable.Gdk.Core;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -44,6 +45,17 @@ namespace <#= qualifiedNamespace #>
 
                 public void Send<#= commandDetails.CommandName #>Response(<#= commandDetails.ResponseType #> response)
                 {
+                    if (Translation.<#= commandDetails.CommandName #>ResponsesToSend.Contains(RequestId))
+                    {
+                        Translation.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                                "Attempting to send a duplicate response.")
+                            .WithField(LoggingUtils.LoggerName, Translation.LoggerName)
+                            .WithField("CommandName", "<#= commandDetails.CommandName #>")
+                            .WithField("RequestId", RequestId));
+                        return;
+                    }
+                
+                    Translation.<#= commandDetails.CommandName #>ResponsesToSend.Add(RequestId);
                     Translation.<#= commandDetails.CommandName #>Responses.Add(
                         new OutgoingResponse(RequestId, response));
                 }
