@@ -131,7 +131,7 @@ namespace <#= qualifiedNamespace #>
                 var <#= componentDetails.CamelCaseTypeName #> = new <#= componentDetails.TypeName#>();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>;
-                <#= componentDetails.CamelCaseTypeName#>Update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>);
+                <#= componentDetails.CamelCaseTypeName#>Update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #>);
 
 <# } #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
