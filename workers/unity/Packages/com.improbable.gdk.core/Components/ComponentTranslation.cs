@@ -54,6 +54,7 @@ namespace Improbable.Gdk.Core.Components
 
         public abstract ComponentType[] ReplicationComponentTypes { get; }
         public ComponentGroup ReplicationComponentGroup { get; set; }
+        public abstract void PostReceive();
         public abstract void ExecuteReplication(Connection connection);
 
         public abstract ComponentType[] CleanUpComponentTypes { get; }

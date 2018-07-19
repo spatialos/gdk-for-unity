@@ -205,19 +205,9 @@ namespace Improbable.Gdk.Core
             return entityMapping.TryGetValue(entityId, out entity);
         }
 
-        public void HandleAuthorityChange<T>(long entityId, Authority authority,
+        public void HandleAuthorityChange<T>(Entity entity, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
-                return;
-            }
-
             switch (authority)
             {
                 case Authority.Authoritative:
@@ -362,8 +352,6 @@ namespace Improbable.Gdk.Core
 
             public const string EntityNotFoundOnSetComponentObject =
                 "Entity not found when attempting to set component object.";
-
-            public const string EntityNotFoundOnAuthotityChange = "Entity not found during authority change.";
 
             public const string DuplicateAdditionOfEntity =
                 "Tried to add an entity but there is already an entity associated with that EntityId.";

@@ -86,6 +86,8 @@ namespace <#= qualifiedNamespace #>
                 new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>(
                     () => new ComponentsUpdated<<#= componentDetails.TypeName #>.Update>(),
                     (component) => component.Buffer.Clear());
+                    
+            private readonly Dictionary<Unity.Entities.Entity, <#= componentDetails.TypeName #>.Update> possibleUpdates = new Dictionary<Unity.Entities.Entity, <#= componentDetails.TypeName #>.Update>();
 <# } #>
 
             public Translation(MutableView view) : base(view)
@@ -151,7 +153,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
 <# if(fieldDetailsList.Count > 0) { #>
-                    view.AddComponentsUpdated(entity, <#= componentDetails.CamelCaseTypeName#>Update, UpdatesPool);
+                    possibleUpdates.Add(entity, <#= componentDetails.CamelCaseTypeName#>Update);
 <# } #>
                 }
                 else
@@ -270,13 +272,23 @@ namespace <#= qualifiedNamespace #>
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during authority change.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, entityId)
+                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
+                    return;
+                }
+            
 <# if(eventDetailsList.Count > 0) { #>
                 if (op.Authority == Authority.Authoritative)
                 {
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
 <# } #>
-                    view.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                    view.AddComponent(entity, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
@@ -286,9 +298,28 @@ namespace <#= qualifiedNamespace #>
                     view.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
                 }
 <# } #>
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                view.HandleAuthorityChange(entity, op.Authority, AuthsPool);
+
+<# if (fieldDetailsList.Count > 0) { #>                
+                if (op.Authority == Authority.Authoritative)
+                {
+                    possibleUpdates.Remove(entity);
+                }
+<# } #>
             }
 
+            public override void PostReceive()
+            {
+<# if (fieldDetailsList.Count > 0) { #> 
+                foreach (var update in possibleUpdates)
+                {
+                    view.AddComponentsUpdated(update.Key, update.Value, UpdatesPool);
+                }
+
+                possibleUpdates.Clear();
+<# } #>
+            }
+            
             public override void ExecuteReplication(Connection connection)
             {
 <# if (componentDetails.IsBlittable) { #>
