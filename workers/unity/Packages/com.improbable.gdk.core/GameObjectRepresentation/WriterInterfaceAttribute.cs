@@ -3,7 +3,7 @@
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    /// Marks an interface as the Writer Interface for use by visualizers.
+    /// Marks an interface as a SpatialOS Component Writer interface.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface)]
     public class WriterInterfaceAttribute : Attribute

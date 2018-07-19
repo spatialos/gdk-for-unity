@@ -4,7 +4,10 @@ using System.Reflection;
 
 namespace Improbable.Gdk.Core
 {
-    class MemberReflectionUtil
+    /// <returns>
+    ///     Helper class to list members/properties with a given attribute.
+    /// </returns>
+    public class MemberReflectionUtil
     {
         private readonly Type attributeType;
 

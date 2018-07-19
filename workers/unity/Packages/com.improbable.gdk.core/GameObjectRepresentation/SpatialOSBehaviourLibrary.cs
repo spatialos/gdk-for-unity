@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
     /// Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
     public class SpatialOSBehaviourLibrary {
-        // Stores maps from Spatial component IDs to MemberAdapters to reflectively set Readers/Writers for each SpatialOSBehaviour
+        // Stores maps from Spatial component IDs to MemberAdapters to reflectively set Readers/Writers for each SpatialOSBehaviour.
         private readonly Dictionary<Type, Dictionary<uint, IMemberAdapter>> adapterCache
             = new Dictionary<Type, Dictionary<uint, IMemberAdapter>>();
 

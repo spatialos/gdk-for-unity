@@ -3,7 +3,7 @@
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    /// Marks an interface as the Reader Interface for use by visualizers.
+    /// Marks an interface as a SpatialOS Component Reader Interface.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface)]
     public class ReaderInterfaceAttribute : Attribute
