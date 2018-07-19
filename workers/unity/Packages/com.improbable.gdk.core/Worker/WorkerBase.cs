@@ -49,11 +49,25 @@ namespace Improbable.Gdk.Core
             World.Dispose();
         }
 
+        public bool RequiresUniqueWorkerIdPerConnection = false;
+
         public virtual void Connect(ConnectionConfig config)
         {
             if (config is ReceptionistConfig)
             {
-                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType, WorkerId);
+                string workerIdForConnection;
+
+                if (RequiresUniqueWorkerIdPerConnection)
+                {
+                    workerIdForConnection = $"{WorkerId}-{Guid.NewGuid()}";
+                }
+                else
+                {
+                    workerIdForConnection = WorkerId;
+                }
+
+                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType,
+                    workerIdForConnection);
             }
             else if (config is LocatorConfig)
             {

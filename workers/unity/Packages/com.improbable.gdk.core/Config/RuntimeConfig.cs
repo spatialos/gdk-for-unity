@@ -23,5 +23,6 @@ namespace Improbable.Gdk.Core
         public const string ReceptionistPort = "receptionistPort";
         public const string WorkerId = "workerId";
         public const string WorkerType = "workerType";
+        public const string UseUniqueConnectionId = "useUniqueConnectionId";
     }
 }

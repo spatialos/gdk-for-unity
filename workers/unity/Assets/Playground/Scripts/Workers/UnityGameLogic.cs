@@ -17,6 +17,10 @@ namespace Playground
         {
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
+
+#if UNITY_EDITOR
+            RequiresUniqueWorkerIdPerConnection = true;
+#endif
         }
 
         public override void Connect(ConnectionConfig config)
