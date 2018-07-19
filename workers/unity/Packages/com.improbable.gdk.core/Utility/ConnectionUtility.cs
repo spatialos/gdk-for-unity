@@ -74,7 +74,7 @@ namespace Improbable.Gdk.Core
         {
             var connection = connectionFuture.Get(RuntimeConfigDefaults.ConnectionTimeout);
 
-            if (!connection.HasValue || !connection.Value.IsConnected)
+            if (connection == null)
             {
                 throw new ConnectionFailedException("Failed to connect to SpatialOS.",
                     ConnectionErrorReason.CannotEstablishConnection);
@@ -82,7 +82,7 @@ namespace Improbable.Gdk.Core
 
             Debug.Log("Successfully connected to SpatialOS!");
 
-            return connection.Value;
+            return connection;
         }
 
         private static string GetDeploymentName(Locator locator)
@@ -91,26 +91,20 @@ namespace Improbable.Gdk.Core
             {
                 var deployments = deploymentsFuture.Get(RuntimeConfigDefaults.ConnectionTimeout);
 
-                if (!deployments.HasValue)
-                {
-                    throw new ConnectionFailedException("Failed to retrieve deployment.",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                if (deployments.Value.Error != null)
+                if (deployments.Error != null)
                 {
                     throw new ConnectionFailedException(
-                        $"Failed to obtain deployment name with error: {deployments.Value.Error}.",
+                        $"Failed to obtain deployment list with error: {deployments.Error}.",
                         ConnectionErrorReason.DeploymentNotFound);
                 }
 
-                if (deployments.Value.Deployments.Count == 0)
+                if (deployments.Deployments.Count == 0)
                 {
                     throw new ConnectionFailedException("Received an empty list of deployments.",
                         ConnectionErrorReason.DeploymentNotFound);
                 }
 
-                return deployments.Value.Deployments[0].DeploymentName;
+                return deployments.Deployments[0].DeploymentName;
             }
         }
 
