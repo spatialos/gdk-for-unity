@@ -42,7 +42,6 @@ markStartOfBlock "Editmode Testing"
 
 pushd "workers/unity"
   dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
@@ -61,7 +60,6 @@ markStartOfBlock "Playmode Testing"
 
 pushd "workers/unity"
   dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
