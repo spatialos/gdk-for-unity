@@ -39,7 +39,7 @@
         "arguments": [
           "+workerType",
           "UnityGameLogic",
-          "+useUniqueConnectionId",
+          "+useDynamicWorkerId",
           "true",
           "+workerId",
           "UnityGameLogic",

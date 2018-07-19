@@ -21,6 +21,8 @@ namespace Improbable.Gdk.Core
 
         public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
 
+        public bool AllowDynamicId = false;
+
         protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
         {
         }
@@ -49,25 +51,19 @@ namespace Improbable.Gdk.Core
             World.Dispose();
         }
 
-        public bool RequiresUniqueWorkerIdPerConnection = false;
-
         public virtual void Connect(ConnectionConfig config)
         {
             if (config is ReceptionistConfig)
             {
                 string workerIdForConnection;
 
-                if (RequiresUniqueWorkerIdPerConnection)
+                if (AllowDynamicId)
                 {
-                    workerIdForConnection = $"{WorkerId}-{Guid.NewGuid()}";
-                }
-                else
-                {
-                    workerIdForConnection = WorkerId;
+                    WorkerId = $"{GetWorkerType}-{Guid.NewGuid()}";
                 }
 
                 Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType,
-                    workerIdForConnection);
+                    WorkerId);
             }
             else if (config is LocatorConfig)
             {

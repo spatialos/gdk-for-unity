@@ -64,8 +64,8 @@ namespace Playground
                 var workerId =
                     CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerId,
                         string.Empty);
-                var useUniqueConnectionId = CommandLineUtility.GetCommandLineValue(commandLineArgs,
-                    RuntimeConfigNames.UseUniqueConnectionId,
+                var useDynamicWorkerId = CommandLineUtility.GetCommandLineValue(commandLineArgs,
+                    RuntimeConfigNames.UseDynamicWorkerId,
                     "false") == "true";
 
                 // because the launcher does not pass in the worker type as an argument
@@ -73,9 +73,9 @@ namespace Playground
                     ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
-                if (useUniqueConnectionId)
+                if (useDynamicWorkerId)
                 {
-                    worker.RequiresUniqueWorkerIdPerConnection = true;
+                    worker.AllowDynamicId = true;
                 }
 
                 Workers.Add(worker);
