@@ -1009,7 +1009,8 @@
         </member>
         <member name="F:Improbable.Worker.Core.CommandResponseOp.Response">
             <summary>
-            The command response data. Present exactly when the status code is StatusCode.Success.
+            The command response data. SchemaData and/or UserData will be set when the status code is
+            StatusCode.Success.
             </summary>
         </member>
         <member name="T:Improbable.Worker.Core.Dispatcher">

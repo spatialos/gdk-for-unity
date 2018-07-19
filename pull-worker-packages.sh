@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 source ci/includes/pinned-tools.sh
 
-WORKER_BUILD_SNAPSHOT="14.0-b5217-646c3-WORKER-SNAPSHOT"
+WORKER_BUILD_SNAPSHOT="14.0-b5282-2f740-WORKER-SNAPSHOT"
 
 CORE_API_DIR="$(pwd)/workers/unity/Assets/Plugins/Improbable/Core"
 SDK_DIR="$(pwd)/workers/unity/Assets/Plugins/Improbable/Sdk"
