@@ -19,7 +19,7 @@ namespace Playground
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
 
 #if UNITY_EDITOR
-            RequiresUniqueWorkerIdPerConnection = true;
+            AllowDynamicId = true;
 #endif
         }
 

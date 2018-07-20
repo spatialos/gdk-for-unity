@@ -17,7 +17,7 @@ namespace Playground
         {
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
 
-            RequiresUniqueWorkerIdPerConnection = true;
+            AllowDynamicId = true;
         }
 
         public override void Connect(ConnectionConfig config)
