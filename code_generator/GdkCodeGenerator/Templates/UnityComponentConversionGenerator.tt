@@ -56,6 +56,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var commandDetails in commandDetailsList) { #>
             internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
             internal List<<#= commandDetails.CommandName #>.OutgoingResponse> <#= commandDetails.CommandName #>Responses = new List<<#= commandDetails.CommandName #>.OutgoingResponse>();
+            internal List<CommandFailure> <#= commandDetails.CommandName #>Failure = new List<CommandFailure>();
             private static readonly ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>> <#= commandDetails.CommandName #>RequestPool =
                 new ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>>(
                     () => new CommandRequests<<#= commandDetails.CommandName #>.Request>(),
@@ -429,6 +430,12 @@ namespace <#= qualifiedNamespace #>
                 connection.SendCommandResponse(requestId, response);
             }
 
+            private void Send<#= commandDetails.CommandName #>Failure(Connection connection, CommandFailure failure) {
+                var requestId = new RequestId<IncomingCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>>(
+                    failure.RequestId);
+
+                connection.SendCommandFailure(requestId, failure.Message);
+            }
 <# } #>
             public override void SendCommands(Connection connection)
             {
@@ -445,6 +452,11 @@ namespace <#= qualifiedNamespace #>
                 }
                 <#= commandDetails.CommandName #>Responses.Clear();
 
+                foreach (var failure in <#= commandDetails.CommandName #>Failure)
+                {
+                    Send<#= commandDetails.CommandName #>Failure(connection, failure);
+                }
+                <#= commandDetails.CommandName #>Failure.Clear();
 <# } #>
             }
 

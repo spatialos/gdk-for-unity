@@ -109,6 +109,18 @@ namespace Improbable.Gdk.Core
         }
     }
 
+    public struct CommandFailure
+    {
+        public uint RequestId { get; }
+        public string Message { get; }
+
+        public CommandFailure(uint requestId, string message)
+        {
+            RequestId = requestId;
+            Message = message;
+        }
+    }
+
     public struct WorldCommandSender : IComponentData
     {
         private long EntityId { get; }
