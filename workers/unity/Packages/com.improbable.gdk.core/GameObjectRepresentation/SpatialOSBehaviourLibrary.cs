@@ -13,8 +13,8 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, Dictionary<uint, IMemberAdapter>> adapterCache
             = new Dictionary<Type, Dictionary<uint, IMemberAdapter>>();
 
-        private readonly Dictionary<Type, HashSet<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, HashSet<uint>>();
-        private readonly Dictionary<Type, HashSet<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, HashSet<uint>>();
+        private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, List<uint>>();
+        private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, List<uint>>();
 
         private readonly HashSet<Type> invalidMonoBehaviourTypes = new HashSet<Type>();
 
@@ -74,13 +74,13 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public HashSet<uint> GetRequiredReaderComponentIds(Type behaviourType)
+        public List<uint> GetRequiredReaderComponentIds(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
             return componentReaderIdsForBehaviours[behaviourType];
         }
 
-        public HashSet<uint> GetRequiredWriterComponentIds(Type behaviourType)
+        public List<uint> GetRequiredWriterComponentIds(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
             return componentWriterIdsForBehaviours[behaviourType];
@@ -108,8 +108,8 @@ namespace Improbable.Gdk.Core
 
             var adapters = GetMembersWithMatchingAttributes(behaviourType);
             var componentIdsToAdapters = new Dictionary<uint, IMemberAdapter>();
-            var readerIds = new HashSet<uint>();
-            var writerIds = new HashSet<uint>();
+            var readerIds = new List<uint>();
+            var writerIds = new List<uint>();
             adapterCache[behaviourType] = componentIdsToAdapters;
             componentReaderIdsForBehaviours[behaviourType] = readerIds;
             componentWriterIdsForBehaviours[behaviourType] = writerIds;
@@ -165,24 +165,21 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private const BindingFlags FieldFlags = BindingFlags.Instance | BindingFlags.NonPublic |
-            BindingFlags.Public | BindingFlags.DeclaredOnly;
-
-        private const BindingFlags PropertyFlags =
-            FieldFlags | BindingFlags.SetProperty | BindingFlags.GetProperty;
+        private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
+            BindingFlags.Public;
 
         private List<IMemberAdapter> GetMembersWithMatchingAttributes(Type targetType)
         {
             List<IMemberAdapter> adapters = new List<IMemberAdapter>();
-            foreach (var property in targetType.GetProperties(PropertyFlags))
+            foreach (var field in targetType.GetFields(MemberFlags))
             {
-                if (Attribute.IsDefined(property, typeof(RequireAttribute), false))
+                if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
                 {
-                    adapters.Add(new PropertyInfoAdapter(property));
+                    adapters.Add(new FieldInfoAdapter(field));
                 }
             }
 
-            foreach (var field in targetType.GetProperties(FieldFlags))
+            foreach (var field in targetType.GetProperties(MemberFlags))
             {
                 if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
                 {

@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
@@ -13,6 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
     {
         private const uint ComponentId1 = 1337;
         private const uint ComponentId2 = 1338;
+        private const uint ComponentId3 = 1339;
 
         [ReaderInterface]
         [ComponentId(ComponentId1)]
@@ -21,13 +23,13 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [WriterInterface]
-        [ComponentId(ComponentId1)]
+        [ComponentId(ComponentId2)]
         private interface DummyWriter1
         {
         }
 
         [WriterInterface]
-        [ComponentId(ComponentId2)]
+        [ComponentId(ComponentId3)]
         private interface DummyWriter2
         {
         }
@@ -54,6 +56,13 @@ namespace Improbable.Gdk.Core.EditmodeTests
             [Require] public int Bad;
         }
 
+        private class ThreePropertiesBehaviour : MonoBehaviour
+        {
+            [Require] public DummyReader Reader { get; set; }
+            [Require] public DummyWriter1 Writer1 { get; set; }
+            [Require] public DummyWriter2 Writer2 { get; set; }
+        }
+
         private SpatialOSBehaviourLibrary library;
         private GameObject testGameObject;
 
@@ -76,22 +85,30 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void SpatialOSBehaviourLibrary_injects_Reader()
         {
-            // TODO - Needs ReaderWriterFactory implemented first!
-            Assert.Pass();
+            // TODO - Needs ReaderWriterFactory implemented to pass!
+            var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
+            library.InjectAllReadersWriters(behaviour);
+            Assert.NotNull(behaviour.Reader);
         }
 
         [Test]
         public void SpatialOSBehaviourLibrary_injects_two_Writers()
         {
-            // TODO - Needs ReaderWriterFactory implemented first!
-            Assert.Pass();
+            // TODO - Needs ReaderWriterFactory implemented to pass!
+            var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
+            library.InjectAllReadersWriters(behaviour);
+            Assert.NotNull(behaviour.Writer1);
+            Assert.NotNull(behaviour.Writer2);
         }
 
         [Test]
         public void SpatialOSBehaviourLibrary_deinjects_Reader()
         {
-            // TODO - Needs ReaderWriterFactory implemented first!
-            Assert.Pass();
+            // TODO - Needs ReaderWriterFactory implemented to pass!
+            var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
+            library.InjectAllReadersWriters(behaviour);
+            library.DeInjectAllReadersWriters(behaviour);
+            Assert.IsNull(behaviour.Reader);
         }
 
         [Test]
@@ -108,7 +125,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
             var foundIds = library.GetRequiredWriterComponentIds(behaviour.GetType());
-            Assert.AreEqual(2, foundIds.Count());
+            Assert.AreEqual(2, foundIds.Count);
         }
 
         [Test]
@@ -127,6 +144,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
             LogAssert.Expect(LogType.Error, new Regex(".*", RegexOptions.Singleline));
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);
+        }
+
+        [Test]
+        public void SpatialOSBehaviourLibrary_finds_three_properties()
+        {
+            var behaviour = testGameObject.AddComponent<ThreePropertiesBehaviour>();
+            var foundReaders = library.GetRequiredReaderComponentIds(behaviour.GetType());
+            Assert.AreEqual(1, foundReaders.Count);
+            var foundWriters = library.GetRequiredWriterComponentIds(behaviour.GetType());
+            Assert.AreEqual(2, foundWriters.Count);
         }
     }
 }
