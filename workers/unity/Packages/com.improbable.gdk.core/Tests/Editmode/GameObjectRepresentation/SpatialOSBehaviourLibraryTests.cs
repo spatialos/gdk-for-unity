@@ -86,32 +86,32 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SpatialOSBehaviourLibrary_injects_Reader()
         {
             // TODO - Needs ReaderWriterFactory implemented to pass properly!
-            Assert.Pass();
-            var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
+            /*var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             library.InjectAllReadersWriters(behaviour);
-            Assert.NotNull(behaviour.Reader);
+            Assert.NotNull(behaviour.Reader);*/
+            Assert.IsTrue(true);
         }
 
         [Test]
         public void SpatialOSBehaviourLibrary_injects_two_Writers()
         {
             // TODO - Needs ReaderWriterFactory implemented to pass properly!
-            Assert.Pass();
-            var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
+            /*var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
             library.InjectAllReadersWriters(behaviour);
             Assert.NotNull(behaviour.Writer1);
-            Assert.NotNull(behaviour.Writer2);
+            Assert.NotNull(behaviour.Writer2);*/
+            Assert.IsTrue(true);
         }
 
         [Test]
         public void SpatialOSBehaviourLibrary_deinjects_Reader()
         {
             // TODO - Needs ReaderWriterFactory implemented to pass properly!
-            Assert.Pass();
-            var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
+            /*var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             library.InjectAllReadersWriters(behaviour);
             library.DeInjectAllReadersWriters(behaviour);
-            Assert.IsNull(behaviour.Reader);
+            Assert.IsNull(behaviour.Reader);*/
+            Assert.IsTrue(true);
         }
 
         [Test]
