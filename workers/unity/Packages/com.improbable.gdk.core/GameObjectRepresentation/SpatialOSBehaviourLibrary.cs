@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class SpatialOSBehaviourLibrary
     {
-        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldHandleCache
+        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
 
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
@@ -26,14 +26,14 @@ namespace Improbable.Gdk.Core
         private const string LoggerName = "SpatialOSBehaviourLibrary";
 
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Reader or Writer or incorrectly generated, ignoring this member!";
+            = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
 
         private const string MultipleReadersWritersRequiredError
-            = "MonoBehaviour found requesting more than one Reader or Writer for the same component, " +
-            "this is invalid and will not be enabled!";
+            = "MonoBehaviour found requesting more than one Reader or Writer for the same component. " +
+            "This MonoBehaviour will not be enabled.";
 
         private const string MalformedReaderOrWriter
-            = "Reader or Writer found without a Component ID attribute, this is invalid!";
+            = "Reader or Writer found without a Component ID attribute, this is invalid.";
 
         public SpatialOSBehaviourLibrary(ILogDispatcher logger)
         {
@@ -42,18 +42,19 @@ namespace Improbable.Gdk.Core
 
         public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
-            EnsureLoaded(spatialOSBehaviour.GetType());
-            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviour.GetType()))
+            var spatialOSBehaviourType = spatialOSBehaviour.GetType();
+            EnsureLoaded(spatialOSBehaviourType);
+            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
             {
                 return;
             }
 
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviour.GetType()])
+            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
             {
                 Inject(spatialOSBehaviour, readerWriterComponentId);
             }
 
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviour.GetType()])
+            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
             {
                 Inject(spatialOSBehaviour, readerWriterComponentId);
             }
@@ -61,18 +62,19 @@ namespace Improbable.Gdk.Core
 
         public void DeInjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
         {
-            EnsureLoaded(spatialOSBehaviour.GetType());
-            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviour.GetType()))
+            var spatialOSBehaviourType = spatialOSBehaviour.GetType();
+            EnsureLoaded(spatialOSBehaviourType);
+            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
             {
                 return;
             }
 
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviour.GetType()])
+            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
             {
                 DeInject(spatialOSBehaviour, readerWriterComponentId);
             }
 
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviour.GetType()])
+            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
             {
                 DeInject(spatialOSBehaviour, readerWriterComponentId);
             }
@@ -93,32 +95,30 @@ namespace Improbable.Gdk.Core
         private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId)
         {
             var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId);
-            var field = fieldHandleCache[spatialOSBehaviour.GetType()][componentId];
+            var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
             field.SetValue(spatialOSBehaviour, readerWriter);
         }
 
         private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
         {
-            var field = fieldHandleCache[spatialOSBehaviour.GetType()][componentId];
+            var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
             field.SetValue(spatialOSBehaviour, null);
         }
 
         private void EnsureLoaded(Type behaviourType)
         {
-            if (fieldHandleCache.ContainsKey(behaviourType))
+            if (fieldInfoCache.ContainsKey(behaviourType))
             {
                 return;
             }
 
-            var fieldHandles = GetFieldsWithMatchingAttributes(behaviourType);
-            var componentIdsToFieldHandles = new Dictionary<uint, FieldInfo>();
+            var fieldInfos = GetFieldsWithRequireAttribute(behaviourType);
+            var componentIdsToFieldInfos = new Dictionary<uint, FieldInfo>();
             var readerComponentIds = new List<uint>();
             var writerComponentIds = new List<uint>();
-            foreach (var field in fieldHandles)
+            foreach (var field in fieldInfos)
             {
                 // Figure out if reader or writer
-                // Get component ID
-                // Store in data structures
                 Type requiredType = field.FieldType;
                 var isReader = Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false);
                 var isWriter = Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false);
@@ -131,6 +131,7 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
+                // Get component ID
                 var componentIdAttribute =
                     (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute),
                         false);
@@ -144,7 +145,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var componentId = componentIdAttribute.Id;
-                if (componentIdsToFieldHandles.ContainsKey(componentId))
+                if (componentIdsToFieldInfos.ContainsKey(componentId))
                 {
                     logger.HandleLog(LogType.Error, new LogEvent(MultipleReadersWritersRequiredError)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -155,7 +156,8 @@ namespace Improbable.Gdk.Core
                     break;
                 }
 
-                componentIdsToFieldHandles[componentId] = field;
+                // Store in data structures
+                componentIdsToFieldInfos[componentId] = field;
                 if (isReader)
                 {
                     readerComponentIds.Add(componentId);
@@ -166,7 +168,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            fieldHandleCache[behaviourType] = componentIdsToFieldHandles;
+            fieldInfoCache[behaviourType] = componentIdsToFieldInfos;
             componentReaderIdsForBehaviours[behaviourType] = readerComponentIds;
             componentWriterIdsForBehaviours[behaviourType] = writerComponentIds;
         }
@@ -174,7 +176,7 @@ namespace Improbable.Gdk.Core
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
             BindingFlags.Public;
 
-        private List<FieldInfo> GetFieldsWithMatchingAttributes(Type targetType)
+        private List<FieldInfo> GetFieldsWithRequireAttribute(Type targetType)
         {
             List<FieldInfo> fields = new List<FieldInfo>();
             foreach (var field in targetType.GetFields(MemberFlags))
@@ -184,7 +186,7 @@ namespace Improbable.Gdk.Core
                     fields.Add(field);
                 }
             }
-
+            
             return fields;
         }
     }
