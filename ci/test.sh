@@ -22,6 +22,8 @@ PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 
 markEndOfBlock "Setup variables"
 
+cleanUnity
+
 markStartOfBlock "Tools Testing"
 
 dotnet test --logger:"nunit;LogFilePath=${TOOLS_TEST_RESULTS_FILES}" tools/DocsLinter/DocsLinter.csproj
@@ -40,7 +42,6 @@ markStartOfBlock "Editmode Testing"
 
 pushd "workers/unity"
   dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
@@ -53,11 +54,12 @@ EDITMODE_TEST_RESULT=$?
 
 markEndOfBlock "Editmode Testing"
 
+cleanUnity
+
 markStartOfBlock "Playmode Testing"
 
 pushd "workers/unity"
   dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
@@ -87,6 +89,8 @@ if [ $PLAYMODE_TEST_RESULT -ne 0 ]; then
 fi
 
 markEndOfBlock "$0"
+
+cleanUnity
 
 if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
