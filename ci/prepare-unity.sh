@@ -60,4 +60,8 @@ popd
 
 markEndOfBlock "Download Unity"
 
+markStartOfBlock "Cleanup Go Files"
+rm -rf ./go
+markEndOfBlock "Cleanup Go Files"
+
 markEndOfBlock "$0"

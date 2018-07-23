@@ -47,6 +47,12 @@ namespace <#= qualifiedNamespace #>
                     Translation.<#= commandDetails.CommandName #>Responses.Add(
                         new OutgoingResponse(RequestId, response));
                 }
+                
+                public void Send<#= commandDetails.CommandName #>Failure(string message)
+                {
+                    Translation.<#= commandDetails.CommandName #>Failure.Add(
+                        new CommandFailure(RequestId, message));
+                }
             }
 
             internal struct OutgoingRequest : IOutgoingCommandRequest

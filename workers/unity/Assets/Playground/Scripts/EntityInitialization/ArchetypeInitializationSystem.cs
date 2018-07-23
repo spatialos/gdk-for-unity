@@ -26,6 +26,12 @@ namespace Playground
 
         [Inject] private Data data;
 
+        private const string LoggerName = "ArchetypeInitializationSystem";
+        private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
+
+        private const string UnsupportedArchetype =
+            "Worker type isn't supported by the ArchetypeInitializationSystem.";
+
         private MutableView view;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
 
@@ -48,8 +54,8 @@ namespace Playground
 
             if (!(worker is UnityClient) && !(worker is UnityGameLogic))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        "Worker type isn't supported by the ArchetypeInitializationSystem.")
+                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
@@ -68,8 +74,8 @@ namespace Playground
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
                     .TryGetValue(archetypeName, out componentTypesToAdd))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "No corresponding archetype mapping found.")
+                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("ArchetypeName", archetypeName)
                         .WithField("WorkerType", workerType));
                     continue;

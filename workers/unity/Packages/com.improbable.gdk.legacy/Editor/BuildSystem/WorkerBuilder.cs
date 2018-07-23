@@ -7,6 +7,7 @@ using Improbable.Gdk.Legacy.BuildSystem.Configuration;
 using Improbable.Gdk.Legacy.BuildSystem.Util;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace Improbable.Gdk.Legacy.BuildSystem
@@ -188,7 +189,11 @@ namespace Improbable.Gdk.Legacy.BuildSystem
                     locationPathName = workerBuildData.BuildScratchDirectory
                 };
 
-                BuildPipeline.BuildPlayer(buildPlayerOptions);
+                var result = BuildPipeline.BuildPlayer(buildPlayerOptions);
+                if (result.summary.result != BuildResult.Succeeded)
+                {
+                    throw new BuildFailedException($"Build failed for {workerPlatform}");
+                }
 
                 var zipPath = Path.GetFullPath(Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName));
 

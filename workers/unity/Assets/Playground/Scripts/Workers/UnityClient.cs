@@ -11,8 +11,17 @@ namespace Playground
 
         public override string GetWorkerType => WorkerType;
 
-        public UnityClient(string workerId, Vector3 origin) : base(workerId, origin)
+        private readonly ForwardingDispatcher forwardingDispatcher;
+
+        public UnityClient(string workerId, Vector3 origin) : base(workerId, origin, new ForwardingDispatcher())
         {
+            forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
+        }
+
+        public override void Connect(ConnectionConfig config)
+        {
+            base.Connect(config);
+            forwardingDispatcher.SetConnection(Connection);
         }
 
         public override void RegisterSystems()

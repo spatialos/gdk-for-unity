@@ -12,10 +12,6 @@ namespace Improbable.Gdk.CodeGenerator
         private readonly CodeGeneratorOptions options;
         private readonly IFileSystem fileSystem;
 
-        private readonly string schemaCompilerPath = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-            ? @"tools/schema_compiler/macos/schema_compiler"
-            : @"tools\schema_compiler\win\schema_compiler.exe";
-
         public static int Main(string[] args)
         {
             try
@@ -92,7 +88,7 @@ namespace Improbable.Gdk.CodeGenerator
                 $@"--ast_json_out={options.JsonDirectory}"
             }.Union(inputPaths).Union(files).ToList();
 
-            SystemTools.RunRedirected(schemaCompilerPath, arguments);
+            SystemTools.RunRedirected(options.SchemaCompiler, arguments);
         }
 
         private HashSet<string> ExtractEnums(ICollection<UnitySchemaFile> schemas)
@@ -144,6 +140,12 @@ namespace Improbable.Gdk.CodeGenerator
             if (options.NetworkTypesOutputDirectory == null)
             {
                 Console.WriteLine("Network types output directory not specified");
+                return false;
+            }
+
+            if (options.SchemaCompiler == null)
+            {
+                Console.WriteLine("Schema compiler path not specified");
                 return false;
             }
 

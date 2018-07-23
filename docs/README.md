@@ -42,5 +42,6 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Entity checkout process](content/entity-checkout-process.md)
 * [The code generator](content/code-generator.md)
 * [Temporary components](content/temporary-components.md)
+* [Logging](content/logging.md)
 
 &copy; 2018 Improbable
