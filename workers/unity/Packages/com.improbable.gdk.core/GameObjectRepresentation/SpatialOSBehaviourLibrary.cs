@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class SpatialOSBehaviourLibrary
     {
-        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> adapterCache
+        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldHandleCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
 
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
@@ -93,36 +93,33 @@ namespace Improbable.Gdk.Core
         private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId)
         {
             var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId);
-            var memberAdapter = adapterCache[spatialOSBehaviour.GetType()][componentId];
-            memberAdapter.SetValue(spatialOSBehaviour, readerWriter);
+            var field = fieldHandleCache[spatialOSBehaviour.GetType()][componentId];
+            field.SetValue(spatialOSBehaviour, readerWriter);
         }
 
         private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
         {
-            var memberAdapter = adapterCache[spatialOSBehaviour.GetType()][componentId];
-            memberAdapter.SetValue(spatialOSBehaviour, null);
+            var field = fieldHandleCache[spatialOSBehaviour.GetType()][componentId];
+            field.SetValue(spatialOSBehaviour, null);
         }
 
         private void EnsureLoaded(Type behaviourType)
         {
-            if (adapterCache.ContainsKey(behaviourType))
+            if (fieldHandleCache.ContainsKey(behaviourType))
             {
                 return;
             }
 
-            var adapters = GetMembersWithMatchingAttributes(behaviourType);
-            var componentIdsToAdapters = new Dictionary<uint, FieldInfo>();
-            var readerIds = new List<uint>();
-            var writerIds = new List<uint>();
-            adapterCache[behaviourType] = componentIdsToAdapters;
-            componentReaderIdsForBehaviours[behaviourType] = readerIds;
-            componentWriterIdsForBehaviours[behaviourType] = writerIds;
-            foreach (var adapter in adapters)
+            var fieldHandles = GetFieldsWithMatchingAttributes(behaviourType);
+            var componentIdsToFieldHandles = new Dictionary<uint, FieldInfo>();
+            var readerComponentIds = new List<uint>();
+            var writerComponentIds = new List<uint>();
+            foreach (var field in fieldHandles)
             {
                 // Figure out if reader or writer
                 // Get component ID
                 // Store in data structures
-                Type requiredType = adapter.FieldType;
+                Type requiredType = field.FieldType;
                 var isReader = Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false);
                 var isWriter = Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false);
                 if (!isReader && !isWriter)
@@ -147,7 +144,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var componentId = componentIdAttribute.Id;
-                if (componentIdsToAdapters.ContainsKey(componentId))
+                if (componentIdsToFieldHandles.ContainsKey(componentId))
                 {
                     logger.HandleLog(LogType.Error, new LogEvent(MultipleReadersWritersRequiredError)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -158,33 +155,37 @@ namespace Improbable.Gdk.Core
                     break;
                 }
 
-                componentIdsToAdapters[componentId] = adapter;
+                componentIdsToFieldHandles[componentId] = field;
                 if (isReader)
                 {
-                    readerIds.Add(componentId);
+                    readerComponentIds.Add(componentId);
                 }
                 else
                 {
-                    writerIds.Add(componentId);
+                    writerComponentIds.Add(componentId);
                 }
             }
+
+            fieldHandleCache[behaviourType] = componentIdsToFieldHandles;
+            componentReaderIdsForBehaviours[behaviourType] = readerComponentIds;
+            componentWriterIdsForBehaviours[behaviourType] = writerComponentIds;
         }
 
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
             BindingFlags.Public;
 
-        private List<FieldInfo> GetMembersWithMatchingAttributes(Type targetType)
+        private List<FieldInfo> GetFieldsWithMatchingAttributes(Type targetType)
         {
-            List<FieldInfo> adapters = new List<FieldInfo>();
+            List<FieldInfo> fields = new List<FieldInfo>();
             foreach (var field in targetType.GetFields(MemberFlags))
             {
                 if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
                 {
-                    adapters.Add(field);
+                    fields.Add(field);
                 }
             }
 
-            return adapters;
+            return fields;
         }
     }
 }
