@@ -94,7 +94,9 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnEventCallbacks()
             {
+<# if (eventDetailsList.Count > 0) { #>
                 ComponentArray<GameObjectReference> gameObjectReferences;
+<# } #>
 <# for (var n = 0; n < eventDetailsList.Count; n++) { #>
                 gameObjectReferences = EventsReceivedComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
                 for (var i = 0; i < gameObjectReferences.Length; i++)
@@ -107,7 +109,9 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnCommandRequestCallbacks()
             {
+<# if (commandDetailsList.Count > 0) { #>
                 ComponentArray<GameObjectReference> gameObjectReferences;
+<# } #>
 <# for (var n = 0; n < commandDetailsList.Count; n++) { #>
                 gameObjectReferences = CommandRequestsComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
                 for (var i = 0; i < gameObjectReferences.Length; i++)
