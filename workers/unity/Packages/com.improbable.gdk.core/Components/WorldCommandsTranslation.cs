@@ -197,6 +197,9 @@ namespace Improbable.Gdk.Core
         public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
         private static readonly ComponentType[] replicationComponentTypes = { };
 
+        public override ComponentType[] AuthorityLossComponentTypes => authorityLossComponentTypes;
+        private static readonly ComponentType[] authorityLossComponentTypes = { };
+
         public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
 
         private static readonly ComponentType[] cleanUpComponentTypes =

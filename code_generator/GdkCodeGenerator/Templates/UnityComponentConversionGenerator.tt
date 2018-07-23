@@ -31,7 +31,12 @@ namespace <#= qualifiedNamespace #>
             private static readonly ComponentType targetComponentType = typeof(<#= componentDetails.TypeName #>);
 
             public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId)};
+            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), 
+                typeof(SpatialEntityId) };
+                
+            public override ComponentType[] AuthorityLossComponentTypes => authorityLossComponentTypes;
+            private static readonly ComponentType[] authorityLossComponentTypes = { typeof(AuthorityLossImminent<<#= componentDetails.TypeName #>>),
+                typeof(SpatialEntityId) };
 
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
@@ -437,6 +442,24 @@ namespace <#= qualifiedNamespace #>
                 connection.SendCommandFailure(requestId, failure.Message);
             }
 <# } #>
+
+            private void SendAuthorityLossImminentAcknowledgement(Connection connection)
+            {
+                var componentDataArray = AuthorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<<#= componentDetails.TypeName #>>>();
+                var spatialEntityIdData = AuthorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(new global::Improbable.EntityId(spatialEntityIdData[i].EntityId));
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
+                    }
+                }
+            }
+                
             public override void SendCommands(Connection connection)
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -458,6 +481,8 @@ namespace <#= qualifiedNamespace #>
                 }
                 <#= commandDetails.CommandName #>Failure.Clear();
 <# } #>
+
+                SendAuthorityLossImminentAcknowledgement(connection);
             }
 
             public static <#= componentDetails.ComponentName #>.Translation GetTranslation(uint internalHandleToTranslation)

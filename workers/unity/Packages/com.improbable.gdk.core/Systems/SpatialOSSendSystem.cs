@@ -32,6 +32,9 @@ namespace Improbable.Gdk.Core
                 var replicationComponentGroup = GetComponentGroup(componentTranslator.ReplicationComponentTypes);
                 componentTranslator.ReplicationComponentGroup = replicationComponentGroup;
 
+                var authorityLossComponentGroup = GetComponentGroup(componentTranslator.AuthorityLossComponentTypes);
+                componentTranslator.AuthorityLossComponentGroup = authorityLossComponentGroup;
+
                 registeredReplicators.Add(componentIndex);
                 commandSenders.Add(componentIndex);
             }
