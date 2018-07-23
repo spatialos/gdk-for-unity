@@ -153,8 +153,8 @@ namespace Improbable.Gdk.Core
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
                 var componentDispatcher =
-                    Activator.CreateInstance(componentDispatcherType, new { EntityManager }) as
-                        ComponentDispatcherHandler;
+                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
+                        new { EntityManager });
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
             }
 

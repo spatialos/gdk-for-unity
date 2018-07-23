@@ -12,8 +12,8 @@ namespace Improbable.Gdk.Core
     {
         private WorkerBase worker;
 
-        private readonly List<SpecificComponentReplicator> specificComponentReplicators =
-            new List<SpecificComponentReplicator>();
+        private readonly List<ComponentReplicator> componentReplicators =
+            new List<ComponentReplicator>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -34,10 +34,10 @@ namespace Improbable.Gdk.Core
             foreach (var componentReplicationType in componentReplicationTypes)
             {
                 var componentReplicationHandler =
-                    Activator.CreateInstance(componentReplicationType, new { EntityManager }) as
-                        ComponentReplicationHandler;
+                    (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
+                        new { EntityManager });
 
-                specificComponentReplicators.Add(new SpecificComponentReplicator
+                componentReplicators.Add(new ComponentReplicator
                 {
                     ComponentId = componentReplicationHandler.ComponentId,
                     Handler = componentReplicationHandler,
@@ -51,13 +51,13 @@ namespace Improbable.Gdk.Core
 
         public bool TryRegisterCustomReplicationSystem(uint componentId)
         {
-            if (specificComponentReplicators.All(componentReplicator => componentReplicator.ComponentId != componentId))
+            if (componentReplicators.All(componentReplicator => componentReplicator.ComponentId != componentId))
             {
                 return false;
             }
 
             // The default replication system is removed, instead the custom one is responsible for replication.
-            return specificComponentReplicators.Remove(specificComponentReplicators.First(
+            return componentReplicators.Remove(componentReplicators.First(
                 componentReplicator => componentReplicator.ComponentId == componentId));
         }
 
@@ -68,13 +68,13 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            foreach (var replicator in specificComponentReplicators)
+            foreach (var replicator in componentReplicators)
             {
                 replicator.Execute(worker.Connection);
             }
         }
 
-        private struct SpecificComponentReplicator
+        private struct ComponentReplicator
         {
             public uint ComponentId;
             public ComponentReplicationHandler Handler;

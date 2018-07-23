@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core
                 {
                     if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
                     {
-                        var componentCleanupHandler = Activator.CreateInstance(type) as ComponentCleanupHandler;
+                        var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
                             typesToRemove.Add(componentType.GetManagedType());
