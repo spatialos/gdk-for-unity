@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
 
         public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
 
-        public bool AllowDynamicId = false;
+        public bool UseDynamicId = false;
 
         protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
         {
@@ -55,9 +55,7 @@ namespace Improbable.Gdk.Core
         {
             if (config is ReceptionistConfig)
             {
-                string workerIdForConnection;
-
-                if (AllowDynamicId)
+                if (UseDynamicId)
                 {
                     WorkerId = $"{GetWorkerType}-{Guid.NewGuid()}";
                 }

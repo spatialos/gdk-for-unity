@@ -66,7 +66,7 @@ namespace Playground
                         string.Empty);
                 var useDynamicWorkerId = CommandLineUtility.GetCommandLineValue(commandLineArgs,
                     RuntimeConfigNames.UseDynamicWorkerId,
-                    "false") == "true";
+                    false);
 
                 // because the launcher does not pass in the worker type as an argument
                 var worker = workerType.Equals(string.Empty)
@@ -75,7 +75,7 @@ namespace Playground
 
                 if (useDynamicWorkerId)
                 {
-                    worker.AllowDynamicId = true;
+                    worker.UseDynamicId = true;
                 }
 
                 Workers.Add(worker);
