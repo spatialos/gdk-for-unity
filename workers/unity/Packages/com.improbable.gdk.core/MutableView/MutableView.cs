@@ -17,9 +17,6 @@ namespace Improbable.Gdk.Core
         public Entity WorkerEntity { get; }
         public ILogDispatcher LogDispatcher { get; }
 
-        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
-            new Dictionary<int, ComponentTranslation>();
-
         private Action<Entity, long> addAllCommandRequestSenders;
 
         private readonly EntityManager entityManager;
@@ -43,8 +40,6 @@ namespace Improbable.Gdk.Core
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
 
-            FindTranslationUnits();
-
             // Create the worker entity
             WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
             addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
@@ -53,11 +48,6 @@ namespace Improbable.Gdk.Core
         public void Dispose()
         {
             entityManager.DestroyEntity(WorkerEntity);
-
-            foreach (var translation in TranslationUnits.Values)
-            {
-                translation.Dispose();
-            }
         }
 
         public void AddComponent<T>(Entity entity, T component) where T : struct, IComponentData
@@ -319,20 +309,6 @@ namespace Improbable.Gdk.Core
 
             entityManager.DestroyEntity(entityMapping[entityId]);
             entityMapping.Remove(entityId);
-        }
-
-        private void FindTranslationUnits()
-        {
-            var translationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
-
-            foreach (var translationType in translationTypes)
-            {
-                var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
-                TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
-
-                addAllCommandRequestSenders += translator.AddCommandRequestSender;
-            }
         }
 
         private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component

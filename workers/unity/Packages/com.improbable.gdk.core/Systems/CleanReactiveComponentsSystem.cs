@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -30,22 +31,14 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            foreach (var translationUnit in view.TranslationUnits.Values)
-            {
-                translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
-                foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
-                {
-                    translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
-                }
-            }
-
-            MethodInfo addRemoveComponentActionMethod =
+            var addRemoveComponentActionMethod =
                 typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
                     BindingFlags.NonPublic | BindingFlags.Instance);
 
-            // Find all components with the RemoveAtEndOfTick attribute
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
+                // Find all components with the RemoveAtEndOfTick attribute
                 foreach (var type in assembly.GetTypes())
                 {
                     if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
@@ -66,6 +59,20 @@ namespace Improbable.Gdk.Core
 
                     typesToRemove.Add(type);
                     addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                }
+
+                // Find all ComponentCleanupHandlers
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
+                        foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
+                        {
+                            typesToRemove.Add(componentType.GetManagedType());
+                            addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
+                        }
+                    }
                 }
             }
         }
@@ -90,15 +97,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var commandBuffer = PostUpdateCommands;
-
-            // Clean generated components
-            foreach (var translationUnit in view.TranslationUnits.Values)
-            {
-                translationUnit.CleanUpComponents(ref commandBuffer);
-            }
-
-            // Clean components with RemoveAtEndOfTick attribute
             foreach (var removeComponentAction in removeComponentActions)
             {
                 removeComponentAction();
