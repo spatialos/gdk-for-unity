@@ -56,13 +56,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
             [Require] public int Bad;
         }
 
-        private class ThreePropertiesBehaviour : MonoBehaviour
-        {
-            [Require] public DummyReader Reader { get; set; }
-            [Require] public DummyWriter1 Writer1 { get; set; }
-            [Require] public DummyWriter2 Writer2 { get; set; }
-        }
-
         private SpatialOSBehaviourLibrary library;
         private GameObject testGameObject;
 
@@ -147,16 +140,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
             LogAssert.Expect(LogType.Error, new Regex(".*", RegexOptions.Singleline));
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);
-        }
-
-        [Test]
-        public void SpatialOSBehaviourLibrary_finds_three_properties()
-        {
-            var behaviour = testGameObject.AddComponent<ThreePropertiesBehaviour>();
-            var foundReaders = library.GetRequiredReaderComponentIds(behaviour.GetType());
-            Assert.AreEqual(1, foundReaders.Count);
-            var foundWriters = library.GetRequiredWriterComponentIds(behaviour.GetType());
-            Assert.AreEqual(2, foundWriters.Count);
         }
     }
 }

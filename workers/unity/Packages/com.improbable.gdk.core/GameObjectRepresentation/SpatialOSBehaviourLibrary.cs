@@ -10,8 +10,8 @@ namespace Improbable.Gdk.Core
     /// Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
     public class SpatialOSBehaviourLibrary {
-        private readonly Dictionary<Type, Dictionary<uint, IMemberAdapter>> adapterCache
-            = new Dictionary<Type, Dictionary<uint, IMemberAdapter>>();
+        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> adapterCache
+            = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
 
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, List<uint>>();
         private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, List<uint>>();
@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Core
             }
 
             var adapters = GetMembersWithMatchingAttributes(behaviourType);
-            var componentIdsToAdapters = new Dictionary<uint, IMemberAdapter>();
+            var componentIdsToAdapters = new Dictionary<uint, FieldInfo>();
             var readerIds = new List<uint>();
             var writerIds = new List<uint>();
             adapterCache[behaviourType] = componentIdsToAdapters;
@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Core
                 // Figure out if reader or writer
                 // Get component ID
                 // Store in data structures
-                Type requiredType = adapter.TypeOfMember;
+                Type requiredType = adapter.FieldType;
                 var isReader = Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false);
                 var isWriter = Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false);
                 if (!isReader && !isWriter)
@@ -168,22 +168,14 @@ namespace Improbable.Gdk.Core
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
             BindingFlags.Public;
 
-        private List<IMemberAdapter> GetMembersWithMatchingAttributes(Type targetType)
+        private List<FieldInfo> GetMembersWithMatchingAttributes(Type targetType)
         {
-            List<IMemberAdapter> adapters = new List<IMemberAdapter>();
+            List<FieldInfo> adapters = new List<FieldInfo>();
             foreach (var field in targetType.GetFields(MemberFlags))
             {
                 if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
                 {
-                    adapters.Add(new FieldInfoAdapter(field));
-                }
-            }
-
-            foreach (var field in targetType.GetProperties(MemberFlags))
-            {
-                if (Attribute.IsDefined(field, typeof(RequireAttribute), false))
-                {
-                    adapters.Add(new PropertyInfoAdapter(field));
+                    adapters.Add(field);
                 }
             }
 
