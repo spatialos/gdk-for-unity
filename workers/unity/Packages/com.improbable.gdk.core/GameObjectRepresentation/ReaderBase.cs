@@ -5,7 +5,8 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public abstract class ReaderBase<TComponent, TComponentUpdate>
-        : IReader<TComponent, TComponentUpdate>, IReaderInternal
+        : IReader<TComponent, TComponentUpdate>,
+            IReaderInternal<TComponent, TComponentUpdate>
         where TComponent : ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TComponent>
     {
@@ -38,6 +39,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     return Authority.AuthorityLossImminent;
                 }
 
+                // TODO reviewers: should this throw an error instead? If no comments, I'll assume no.
                 return Authority.NotAuthoritative;
             }
         }
@@ -54,7 +56,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             remove => componentUpdateDelegates.Remove(value);
         }
 
-        void IReaderInternal.OnAuthorityChange(Authority authority)
+        void IReaderInternal<TComponent, TComponentUpdate>.OnAuthorityChange(Authority authority)
         {
             foreach (var authorityChangedDelegate in authorityChangedDelegates)
             {
@@ -63,24 +65,21 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        void IReaderInternal.OnComponentUpdate(object update)
+        void IReaderInternal<TComponent, TComponentUpdate>.OnComponentUpdate(TComponentUpdate update)
         {
-            // TODO catch invalid cast here?
-            // Better to catch it higher up though
-            TComponentUpdate componentUpdate = (TComponentUpdate) update;
             foreach (var componentUpdateDelegate in componentUpdateDelegates)
             {
                 // TODO catch errors here?
-                componentUpdateDelegate(componentUpdate);
+                componentUpdateDelegate(update);
             }
         }
 
-        void IReaderInternal.OnEvent(int eventIndex, object payload)
+        void IReaderInternal<TComponent, TComponentUpdate>.OnEvent<TEvent>(int eventIndex, TEvent payload)
         {
             // TODO
         }
 
-        void IReaderInternal.OnCommandRequest(int commandIndex, object commandRequest)
+        void IReaderInternal<TComponent, TComponentUpdate>.OnCommandRequest<TCommandRequest>(int commandIndex, TCommandRequest commandRequest)
         {
             // TODO
         }
