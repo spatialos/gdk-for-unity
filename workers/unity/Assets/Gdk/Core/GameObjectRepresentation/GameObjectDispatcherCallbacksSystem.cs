@@ -1,12 +1,11 @@
-using System.Collections.Generic;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Lorem ipsum
+    ///     Gathers incoming dispatcher ops and invokes callbacks on relevant GameObjects.
     /// </summary>
-    // [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
+    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class GameObjectDispatcherCallbacksSystem : ComponentSystem
     {
         private MutableView view;
@@ -23,46 +22,48 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            foreach (var monoBehaviourTranslation in view.GameObjectTranslations)
+            foreach (var gameObjectTranslation in view.GameObjectTranslations)
             {
-                monoBehaviourTranslation.ComponentAddedComponentGroup =
-                    GetComponentGroup(monoBehaviourTranslation.ComponentAddedComponentTypes);
-                monoBehaviourTranslation.ComponentRemovedComponentGroup =
-                    GetComponentGroup(monoBehaviourTranslation.ComponentRemovedComponentTypes);
-                monoBehaviourTranslation.AuthoritiesChangedComponentGroup =
-                    GetComponentGroup(monoBehaviourTranslation.AuthoritiesChangedComponentTypes);
-                if (monoBehaviourTranslation.ComponentsUpdatedComponentTypes.Length > 0)
+                gameObjectTranslation.ComponentAddedComponentGroup =
+                    GetComponentGroup(gameObjectTranslation.ComponentAddedComponentTypes);
+                gameObjectTranslation.ComponentRemovedComponentGroup =
+                    GetComponentGroup(gameObjectTranslation.ComponentRemovedComponentTypes);
+                gameObjectTranslation.AuthoritiesChangedComponentGroup =
+                    GetComponentGroup(gameObjectTranslation.AuthoritiesChangedComponentTypes);
+                if (gameObjectTranslation.ComponentsUpdatedComponentTypes.Length > 0)
                 {
-                    monoBehaviourTranslation.ComponentsUpdatedComponentGroup =
-                        GetComponentGroup(monoBehaviourTranslation.ComponentsUpdatedComponentTypes);
+                    gameObjectTranslation.ComponentsUpdatedComponentGroup =
+                        GetComponentGroup(gameObjectTranslation.ComponentsUpdatedComponentTypes);
                 }
 
-                monoBehaviourTranslation.EventsReceivedComponentGroups = new ComponentGroup[monoBehaviourTranslation.EventsReceivedComponentTypeArrays.Length];
-                for (var i = 0; i < monoBehaviourTranslation.EventsReceivedComponentTypeArrays.Length; i++)
+                gameObjectTranslation.EventsReceivedComponentGroups =
+                    new ComponentGroup[gameObjectTranslation.EventsReceivedComponentTypeArrays.Length];
+                for (var i = 0; i < gameObjectTranslation.EventsReceivedComponentTypeArrays.Length; i++)
                 {
-                    monoBehaviourTranslation.EventsReceivedComponentGroups[i] =
-                        GetComponentGroup(monoBehaviourTranslation.EventsReceivedComponentTypeArrays[i]);
+                    gameObjectTranslation.EventsReceivedComponentGroups[i] =
+                        GetComponentGroup(gameObjectTranslation.EventsReceivedComponentTypeArrays[i]);
                 }
 
-                monoBehaviourTranslation.CommandRequestsComponentGroups = new ComponentGroup[monoBehaviourTranslation.CommandRequestsComponentTypeArrays.Length];
-                for (var i = 0; i < monoBehaviourTranslation.CommandRequestsComponentTypeArrays.Length; i++)
+                gameObjectTranslation.CommandRequestsComponentGroups =
+                    new ComponentGroup[gameObjectTranslation.CommandRequestsComponentTypeArrays.Length];
+                for (var i = 0; i < gameObjectTranslation.CommandRequestsComponentTypeArrays.Length; i++)
                 {
-                    monoBehaviourTranslation.CommandRequestsComponentGroups[i] =
-                        GetComponentGroup(monoBehaviourTranslation.CommandRequestsComponentTypeArrays[i]);
+                    gameObjectTranslation.CommandRequestsComponentGroups[i] =
+                        GetComponentGroup(gameObjectTranslation.CommandRequestsComponentTypeArrays[i]);
                 }
             }
         }
 
         protected override void OnUpdate()
         {
-            foreach (var monoBehaviourTranslation in view.GameObjectTranslations)
+            foreach (var gameObjectTranslation in view.GameObjectTranslations)
             {
-                monoBehaviourTranslation.InvokeOnAddComponentCallbacks();
-                monoBehaviourTranslation.InvokeOnRemoveComponentCallbacks();
-                monoBehaviourTranslation.InvokeOnAuthorityChangeCallbacks();
-                monoBehaviourTranslation.InvokeOnComponentUpdateCallbacks();
-                monoBehaviourTranslation.InvokeOnEventCallbacks();
-                monoBehaviourTranslation.InvokeOnCommandRequestCallbacks();
+                gameObjectTranslation.InvokeOnAddComponentCallbacks();
+                gameObjectTranslation.InvokeOnRemoveComponentCallbacks();
+                gameObjectTranslation.InvokeOnAuthorityChangeCallbacks();
+                gameObjectTranslation.InvokeOnComponentUpdateCallbacks();
+                gameObjectTranslation.InvokeOnEventCallbacks();
+                gameObjectTranslation.InvokeOnCommandRequestCallbacks();
             }
         }
     }

@@ -46,7 +46,8 @@ namespace Improbable.Gdk.TestUtils
 
         public static void CleanupAllInjectionHooks()
         {
-            var hooksFieldInfo = typeof(InjectionHookSupport).GetField("k_Hooks", BindingFlags.Static | BindingFlags.NonPublic);
+            var hooksFieldInfo =
+                typeof(InjectionHookSupport).GetField("k_Hooks", BindingFlags.Static | BindingFlags.NonPublic);
 
             var staticValue = hooksFieldInfo.GetValue(null);
 

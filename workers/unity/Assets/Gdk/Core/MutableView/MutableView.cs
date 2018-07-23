@@ -19,7 +19,8 @@ namespace Improbable.Gdk.Core
         public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
             new Dictionary<int, ComponentTranslation>();
 
-        public readonly HashSet<GameObjectTranslationBase> GameObjectTranslations = new HashSet<GameObjectTranslationBase>();
+        public readonly HashSet<GameObjectTranslationBase> GameObjectTranslations =
+            new HashSet<GameObjectTranslationBase>();
 
         private Action<Entity, long> addAllCommandRequestSenders;
 
@@ -337,12 +338,14 @@ namespace Improbable.Gdk.Core
 
         private void FindGameObjectTranslations()
         {
-            var gameObjectTranslationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+            var gameObjectTranslationTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(GameObjectTranslationBase).IsAssignableFrom(type) && !type.IsAbstract).ToList();
 
             foreach (var gameObjectTranslationType in gameObjectTranslationTypes)
             {
-                var gameObjectTranslation = (GameObjectTranslationBase)Activator.CreateInstance(gameObjectTranslationType);
+                var gameObjectTranslation =
+                    (GameObjectTranslationBase) Activator.CreateInstance(gameObjectTranslationType);
                 GameObjectTranslations.Add(gameObjectTranslation);
             }
         }

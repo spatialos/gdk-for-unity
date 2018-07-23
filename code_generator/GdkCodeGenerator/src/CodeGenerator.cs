@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Improbable.CodeGeneration.FileHandling;
 using System.Runtime.InteropServices;
+using Improbable.CodeGeneration.FileHandling;
 
 namespace Improbable.Gdk.CodeGenerator
 {

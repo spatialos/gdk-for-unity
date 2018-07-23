@@ -9,7 +9,6 @@
 #>
 <#= generatedHeader #>
 
-using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 

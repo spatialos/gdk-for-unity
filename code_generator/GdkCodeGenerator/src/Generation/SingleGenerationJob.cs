@@ -115,7 +115,8 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
-                var gameObjectTranslationFileName = Path.ChangeExtension($"{component.Name}GameObjectTranslation", fileExtension);
+                var gameObjectTranslationFileName =
+                    Path.ChangeExtension($"{component.Name}GameObjectTranslation", fileExtension);
                 var gameObjectTranslationCode = gameObjectTranslationGenerator.Generate(component, package);
                 Content.Add(Path.Combine(relativeOutputPath, gameObjectTranslationFileName), gameObjectTranslationCode);
             }
