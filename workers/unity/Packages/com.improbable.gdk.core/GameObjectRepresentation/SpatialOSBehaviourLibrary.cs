@@ -7,14 +7,18 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    /// Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
+    ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
-    public class SpatialOSBehaviourLibrary {
+    public class SpatialOSBehaviourLibrary
+    {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> adapterCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
 
-        private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours = new Dictionary<Type, List<uint>>();
-        private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours = new Dictionary<Type, List<uint>>();
+        private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
+            new Dictionary<Type, List<uint>>();
+
+        private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours =
+            new Dictionary<Type, List<uint>>();
 
         private readonly HashSet<Type> invalidMonoBehaviourTypes = new HashSet<Type>();
 
@@ -131,7 +135,8 @@ namespace Improbable.Gdk.Core
                 }
 
                 var componentIdAttribute =
-                    (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute), false);
+                    (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute),
+                        false);
                 if (componentIdAttribute == null)
                 {
                     logger.HandleLog(LogType.Error, new LogEvent(MalformedReaderOrWriter)
@@ -183,5 +188,3 @@ namespace Improbable.Gdk.Core
         }
     }
 }
-
-
