@@ -16,10 +16,10 @@ namespace Improbable.Gdk.Core.Collections
             return handle;
         }
 
-        public static uint AllocateMapHandle<TValue, TKey>()
+        public static uint AllocateMapHandle<TValue, TKey>(Dictionary<TKey, TValue> data = null)
         {
             var handle = GetHandle();
-            CollectionProvider<Dictionary<TKey, TValue>, KeyValuePair<TKey, TValue>>.AllocateHandle(handle);
+            CollectionProvider<Dictionary<TKey, TValue>, KeyValuePair<TKey, TValue>>.AllocateHandle(handle, data);
             FreeActions.Add(handle,
                 CollectionProvider<Dictionary<TKey, TValue>, KeyValuePair<TKey, TValue>>.FreeHandle);
             return handle;

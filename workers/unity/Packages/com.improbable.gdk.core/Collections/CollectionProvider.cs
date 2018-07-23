@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.Collections
 {
-    internal static class CollectionProvider<TProvider, TValue> where TProvider : ICollection<TValue>, new()
+    internal static class CollectionProvider<TProvider, TValue> where TProvider : class, ICollection<TValue>, new()
     {
         private static readonly Dictionary<uint, TProvider> Storage = new Dictionary<uint, TProvider>();
 
-        internal static void AllocateHandle(uint handle)
+        internal static void AllocateHandle(uint handle, TProvider initialValue = default(TProvider))
         {
             if (Storage.ContainsKey(handle))
             {
@@ -15,8 +15,7 @@ namespace Improbable.Gdk.Core.Collections
                     $"CollectionProvider<{typeof(TProvider)}> already contains handle `{handle}`");
             }
 
-            var item = new TProvider();
-            Storage.Add(handle, item);
+            Storage.Add(handle, initialValue ?? new TProvider());
         }
 
         internal static TProvider Get(uint handle)

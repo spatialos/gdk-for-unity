@@ -7,15 +7,14 @@ namespace Improbable.Gdk.Core.Collections
     {
         private static readonly Dictionary<uint, string> Storage = new Dictionary<uint, string>();
 
-        internal static void AllocateHandle(uint handle)
+        internal static void AllocateHandle(uint handle, string initialValue = default(string))
         {
             if (Storage.ContainsKey(handle))
             {
                 throw new InvalidOperationException($"StringProvider already contains handle `{handle}`");
             }
 
-            var item = string.Empty;
-            Storage.Add(handle, item);
+            Storage.Add(handle, initialValue);
         }
 
         internal static string Get(uint handle)
