@@ -4,10 +4,10 @@ using System.Linq;
 namespace Improbable.Gdk.CodeGenerator
 {
     /// <summary>
-    ///     This class contains the data required to fill out the "UnityGameObjectTranslationGenerator.tt" templates.
-    ///     This template generates the GameObjectTranslation implementation for Components.
+    ///     This class contains the data required to fill out the "UnityGameObjectComponentDispatcherGenerator.tt" templates.
+    ///     This template generates the GameObjectComponentDispatcher implementation for Components.
     /// </summary>
-    public partial class UnityGameObjectTranslationGenerator
+    public partial class UnityGameObjectComponentDispatcherGenerator
     {
         private string qualifiedNamespace;
         private UnityComponentDefinition unityComponentDefinition;

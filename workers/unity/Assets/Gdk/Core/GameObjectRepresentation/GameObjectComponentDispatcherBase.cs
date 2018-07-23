@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public abstract class GameObjectTranslationBase
+    public abstract class GameObjectComponentDispatcherBase
     {
         public abstract ComponentType[] ComponentAddedComponentTypes { get; }
         public ComponentGroup ComponentAddedComponentGroup { get; set; }

@@ -1,4 +1,3 @@
-using Improbable.Worker;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -18,19 +17,19 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        public void OnAuthorityChange(uint componentId, Authority authority)
+        public void OnAuthorityChange(uint componentId)
         {
         }
 
-        public void OnComponentUpdate(uint componentId, object update)
+        public void OnComponentUpdate(uint componentId)
         {
         }
 
-        public void OnEvent(uint componentId, int eventIndex, object evt)
+        public void OnEvent(uint componentId, int eventIndex)
         {
         }
 
-        public void OnCommandRequest(uint componentId, int commandIndex, object commandRequest)
+        public void OnCommandRequest(uint componentId, int commandIndex)
         {
         }
     }

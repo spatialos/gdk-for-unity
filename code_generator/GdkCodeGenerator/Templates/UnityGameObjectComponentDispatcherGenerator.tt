@@ -16,7 +16,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class GameObjectTranslation : GameObjectTranslationBase
+        public class GameObjectComponentDispatcher : GameObjectComponentDispatcherBase
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
@@ -74,43 +74,32 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnAuthorityChangeCallbacks()
             {
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 var gameObjectReferences = AuthoritiesChangedComponentGroup.GetComponentArray<GameObjectReference>();
                 for (var i = 0; i < gameObjectReferences.Length; i++)
                 {
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
-                    {
-                        gameObjectReferences[i].OnAuthorityChange(<#= unityComponentDefinition.Id #>, authoritiesChangedTags[i].Buffer[j]);
-                    }
+                    gameObjectReferences[i].OnAuthorityChange(<#= unityComponentDefinition.Id #>);
                 }
             }
 
             public override void InvokeOnComponentUpdateCallbacks()
             {
 <# if (fieldDetailsList.Count > 0) { #>
-                var componentUpdates = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
                 var gameObjectReferences = ComponentsUpdatedComponentGroup.GetComponentArray<GameObjectReference>();
                 for (var i = 0; i < gameObjectReferences.Length; i++)
                 {
-                    for (var j = 0; j < componentUpdates[i].Buffer.Count; j++)
-                    {
-                        gameObjectReferences[i].OnComponentUpdate(<#= unityComponentDefinition.Id #>, componentUpdates[i].Buffer[j]);
-                    }
+                    gameObjectReferences[i].OnComponentUpdate(<#= unityComponentDefinition.Id #>);
                 }
 <# } #>
             }
 
             public override void InvokeOnEventCallbacks()
             {
+                ComponentArray<GameObjectReference> gameObjectReferences;
 <# for (var n = 0; n < eventDetailsList.Count; n++) { #>
-                var <#= eventDetailsList[n].EventName #>Events = EventsReceivedComponentGroups[<#= n #>].GetComponentArray<EventsReceived<<#= eventDetailsList[n].EventName #>Event>>();
-                var <#= eventDetailsList[n].EventName #>EventGameObjectReferences = EventsReceivedComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
-                for (var i = 0; i < <#= eventDetailsList[n].EventName #>EventGameObjectReferences.Length; i++)
+                gameObjectReferences = EventsReceivedComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
+                for (var i = 0; i < gameObjectReferences.Length; i++)
                 {
-                    for (var j = 0; j < <#= eventDetailsList[n].EventName #>Events[i].Buffer.Count; j++)
-                    {
-                        <#= eventDetailsList[n].EventName #>EventGameObjectReferences[i].OnEvent(<#= unityComponentDefinition.Id #>, <#= n #>, <#= eventDetailsList[n].EventName #>Events[i].Buffer[j]);
-                    }
+                    gameObjectReferences[i].OnEvent(<#= unityComponentDefinition.Id #>, <#= n #>);
                 }
 
 <# } #>
@@ -118,15 +107,12 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnCommandRequestCallbacks()
             {
+                ComponentArray<GameObjectReference> gameObjectReferences;
 <# for (var n = 0; n < commandDetailsList.Count; n++) { #>
-                var <#= commandDetailsList[n].CommandName #>CommandRequests = CommandRequestsComponentGroups[<#= n #>].GetComponentArray<CommandRequests<<#= commandDetailsList[n].CommandName #>.Request>>();
-                var <#= commandDetailsList[n].CommandName #>CommandRequestGameObjectReferences = CommandRequestsComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
-                for (var i = 0; i < <#= commandDetailsList[n].CommandName #>CommandRequestGameObjectReferences.Length; i++)
+                gameObjectReferences = CommandRequestsComponentGroups[<#= n #>].GetComponentArray<GameObjectReference>();
+                for (var i = 0; i < gameObjectReferences.Length; i++)
                 {
-                    for (var j = 0; j < <#= commandDetailsList[n].CommandName #>CommandRequests[i].Buffer.Count; j++)
-                    {
-                        <#= commandDetailsList[n].CommandName #>CommandRequestGameObjectReferences[i].OnCommandRequest(<#= unityComponentDefinition.Id #>, <#= n #>, <#= commandDetailsList[n].CommandName #>CommandRequests[i].Buffer[j]);
-                    }
+                    gameObjectReferences[i].OnCommandRequest(<#= unityComponentDefinition.Id #>, <#= n #>);
                 }
 
 <# } #>

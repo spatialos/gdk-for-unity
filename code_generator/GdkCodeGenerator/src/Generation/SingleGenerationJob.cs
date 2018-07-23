@@ -71,7 +71,7 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var nonBlittableComponentGenerator = new UnityComponentGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
-            var gameObjectTranslationGenerator = new UnityGameObjectTranslationGenerator();
+            var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -115,10 +115,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
-                var gameObjectTranslationFileName =
-                    Path.ChangeExtension($"{component.Name}GameObjectTranslation", fileExtension);
-                var gameObjectTranslationCode = gameObjectTranslationGenerator.Generate(component, package);
-                Content.Add(Path.Combine(relativeOutputPath, gameObjectTranslationFileName), gameObjectTranslationCode);
+                var gameObjectComponentDispatcherFileName =
+                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension);
+                var gameObjectComponentDispatcherCode = gameObjectComponentDispatcherGenerator.Generate(component, package);
+                Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName), gameObjectComponentDispatcherCode);
             }
         }
     }
