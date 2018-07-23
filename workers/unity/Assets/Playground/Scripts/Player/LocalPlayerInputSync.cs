@@ -2,6 +2,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Playground
 {
@@ -16,7 +17,15 @@ namespace Playground
             public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
 
+        public VirtualJoystick VirtualJoystick;
+
         [Inject] private PlayerInputData playerInputData;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+            VirtualJoystick = GameObject.FindGameObjectWithTag("GameController").GetComponent<VirtualJoystick>();
+        }
 
         protected override void OnUpdate()
         {
@@ -25,7 +34,11 @@ namespace Playground
                 var cameraTransform = playerInputData.CameraTransform[i];
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
-                var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
+                var input = Vector3.zero;
+                if (VirtualJoystick.InputDirection != Vector3.zero)
+                {
+                    input = VirtualJoystick.InputDirection.x * forward + VirtualJoystick.InputDirection.z * right;
+                }
 
                 var newPlayerInput = new SpatialOSPlayerInput
                 {
