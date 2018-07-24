@@ -39,10 +39,6 @@
         "arguments": [
           "+workerType",
           "UnityGameLogic",
-          "+forceDynamicWorkerId",
-          "true",
-          "+workerId",
-          "UnityGameLogic",
           "+infraServicesUrl",
           "http://127.0.0.1:21000",
           "+projectName",

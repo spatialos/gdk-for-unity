@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
 
         public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
 
-        public bool UseDynamicId = false;
+        public bool UseDynamicId { get; protected set; }
 
         protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
         {
@@ -31,10 +31,15 @@ namespace Improbable.Gdk.Core
         {
             if (string.IsNullOrEmpty(workerId))
             {
-                throw new ArgumentException("WorkerId is null or empty.", nameof(workerId));
+                WorkerId = GenerateDynamicWorkerId();
+
+                UseDynamicId = true;
+            }
+            else
+            {
+                WorkerId = workerId;
             }
 
-            WorkerId = workerId;
             World = new World(WorkerId);
             WorkerRegistry.SetWorkerForWorld(this);
 
@@ -57,7 +62,7 @@ namespace Improbable.Gdk.Core
             {
                 if (UseDynamicId)
                 {
-                    WorkerId = $"{GetWorkerType}-{Guid.NewGuid()}";
+                    WorkerId = GenerateDynamicWorkerId();
                 }
 
                 Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType,
@@ -80,6 +85,11 @@ namespace Improbable.Gdk.Core
             };
 
             View.Connect();
+        }
+
+        private string GenerateDynamicWorkerId()
+        {
+            return $"{GetWorkerType}-{Guid.NewGuid()}";
         }
 
         public virtual void RegisterSystems()
