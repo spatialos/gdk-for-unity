@@ -60,17 +60,29 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Authority_returns_NotAuthoritative_when_no_authority_components_are_present()
         {
+            // entity is fresh so no components on it
             Assert.AreEqual(Authority.NotAuthoritative, reader.Authority);
         }
 
         [Test]
-        [TestCase(typeof(Authoritative<SomeOtherComponent>), Authority.NotAuthoritative)]
-        [TestCase(typeof(Authoritative<TestComponentData>), Authority.Authoritative)]
-        [TestCase(typeof(AuthorityLossImminent<TestComponentData>), Authority.AuthorityLossImminent)]
-        public void Authority_returns_value_when_components_are_added(Type componentToAdd, Authority authority)
+        public void Authority_returns_Authoritative_when_Authuritative_component_is_present()
         {
-            entityManager.AddComponent(entity, componentToAdd);
-            Assert.AreEqual(authority, reader.Authority);
+            entityManager.AddComponent(entity, typeof(Authoritative<TestComponentData>));
+            Assert.AreEqual(Authority.Authoritative, reader.Authority);
+        }
+
+        [Test]
+        public void Authority_returns_AuthorityLossImminent_when_Authuritative_component_is_present()
+        {
+            entityManager.AddComponent(entity, typeof(AuthorityLossImminent<TestComponentData>));
+            Assert.AreEqual(Authority.AuthorityLossImminent, reader.Authority);
+        }
+
+        [Test]
+        public void Authority_can_be_NotAuthoritative_if_another_component_is_authoritative()
+        {
+            entityManager.AddComponent(entity, typeof(Authoritative<SomeOtherComponent>));
+            Assert.AreEqual(Authority.NotAuthoritative, reader.Authority);
         }
 
         [Test]
@@ -119,11 +131,11 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             entityManager.AddComponent(entity, typeof(ComponentsUpdated<TestComponentData.Update>));
 
-            var compUpdated = new ComponentsUpdated<TestComponentData.Update>();
+            var componentsUpdated = new ComponentsUpdated<TestComponentData.Update>();
 
-            compUpdated.Buffer.Add(updateToSend);
+            componentsUpdated.Buffer.Add(updateToSend);
 
-            entityManager.SetComponentObject(entity, compUpdated);
+            entityManager.SetComponentObject(entity, componentsUpdated);
 
             internalReader.OnComponentUpdate();
 

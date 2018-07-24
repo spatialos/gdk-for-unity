@@ -5,7 +5,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public abstract class ReaderBase<TComponent, TComponentUpdate>
-        : IReader<TComponent, TComponentUpdate>,
+        : IReader<TComponent>,
             IReaderInternal
         where TComponent : ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TComponent>
@@ -13,11 +13,11 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         private readonly Unity.Entities.Entity entity;
         private readonly EntityManager manager;
 
-        private readonly List<AuthorityChangedDelegate> authorityChangedDelegates
-            = new List<AuthorityChangedDelegate>();
+        private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
+            = new List<GameObjectDelegates.AuthorityChanged>();
 
-        private readonly List<ComponentUpdateDelegate<TComponentUpdate>> componentUpdateDelegates
-            = new List<ComponentUpdateDelegate<TComponentUpdate>>();
+        private readonly List<GameObjectDelegates.ComponentUpdated<TComponent>> componentUpdateDelegates
+            = new List<GameObjectDelegates.ComponentUpdated<TComponent>>();
 
         protected ReaderBase(Unity.Entities.Entity entity, EntityManager manager)
         {
@@ -39,18 +39,18 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     return Authority.AuthorityLossImminent;
                 }
 
-                // TODO reviewers: should this throw an error instead? If no comments, I'll assume no.
+                // TODO reviewers: should this throw an error instead?
                 return Authority.NotAuthoritative;
             }
         }
 
-        public event AuthorityChangedDelegate AuthorityChanged
+        public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
             add => authorityChangedDelegates.Add(value);
             remove => authorityChangedDelegates.Remove(value);
         }
 
-        public event ComponentUpdateDelegate<TComponentUpdate> ComponentUpdated
+        public event GameObjectDelegates.ComponentUpdated<TComponent> ComponentUpdated
         {
             add => componentUpdateDelegates.Add(value);
             remove => componentUpdateDelegates.Remove(value);
