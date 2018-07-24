@@ -15,10 +15,20 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void OnCommandResponse(CommandResponseOp op);
 
         protected MutableView MutableView;
+        protected ILogDispatcher LogDispatcher;
+
+        protected const string ReceivedDuplicateComponentAdded =
+            "Received ComponentAdded, but already received one for this entity.";
+        protected const string ReceivedDuplicateComponentRemoved =
+            "Received ComponentAdded, but already received one for this entity.";
+        protected const string EntityNotFound = "No entity found for entity specified in op.";
+        protected const string CommandIndexNotFound = "Command index not found.";
+        protected const string InvalidAuthorityChange = "Invalid authority state change received.";
 
         protected ComponentDispatcherHandler(MutableView mutableView)
         {
             MutableView = mutableView;
+            LogDispatcher = mutableView.LogDispatcher;
         }
     }
 }
