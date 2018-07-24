@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public abstract class ReaderBase<TComponent, TComponentUpdate>
         : IReader<TComponent, TComponentUpdate>,
-            IReaderInternal<TComponent, TComponentUpdate>
+            IReaderInternal
         where TComponent : ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TComponent>
     {
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             remove => componentUpdateDelegates.Remove(value);
         }
 
-        void IReaderInternal<TComponent, TComponentUpdate>.OnAuthorityChange(Authority authority)
+        void IReaderInternal.OnAuthorityChange(Authority authority)
         {
             foreach (var authorityChangedDelegate in authorityChangedDelegates)
             {
@@ -65,21 +65,24 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        void IReaderInternal<TComponent, TComponentUpdate>.OnComponentUpdate(TComponentUpdate update)
+        void IReaderInternal.OnComponentUpdate()
         {
-            foreach (var componentUpdateDelegate in componentUpdateDelegates)
+            foreach (var update in manager.GetComponentObject<ComponentsUpdated<TComponentUpdate>>(entity).Buffer)
             {
-                // TODO catch errors here?
-                componentUpdateDelegate(update);
+                foreach (var componentUpdateDelegate in componentUpdateDelegates)
+                {
+                    // TODO catch errors here?
+                    componentUpdateDelegate(update);
+                }
             }
         }
 
-        void IReaderInternal<TComponent, TComponentUpdate>.OnEvent<TEvent>(int eventIndex, TEvent payload)
+        void IReaderInternal.OnEvent(int eventIndex)
         {
             // TODO
         }
 
-        void IReaderInternal<TComponent, TComponentUpdate>.OnCommandRequest<TCommandRequest>(int commandIndex, TCommandRequest commandRequest)
+        void IReaderInternal.OnCommandRequest(int commandIndex)
         {
             // TODO
         }

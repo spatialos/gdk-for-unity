@@ -87,7 +87,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             Assert.AreEqual(false, authorityChangedCalled, "Adding an event should not fire it immediately");
 
-            var internalReader = (IReaderInternal<TestComponentData, TestComponentData.Update>) reader;
+            var internalReader = (IReaderInternal) reader;
 
             internalReader.OnAuthorityChange(Authority.Authoritative);
 
@@ -115,9 +115,17 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             Assert.AreEqual(false, componentUpdated, "Adding an event should not fire it immediately");
 
-            var internalReader = (IReaderInternal<TestComponentData, TestComponentData.Update>) reader;
+            var internalReader = (IReaderInternal) reader;
 
-            internalReader.OnComponentUpdate(updateToSend);
+            entityManager.AddComponent(entity, typeof(ComponentsUpdated<TestComponentData.Update>));
+
+            var compUpdated = new ComponentsUpdated<TestComponentData.Update>();
+
+            compUpdated.Buffer.Add(updateToSend);
+
+            entityManager.SetComponentObject(entity, compUpdated);
+
+            internalReader.OnComponentUpdate();
 
             Assert.AreEqual(true, componentUpdated);
         }

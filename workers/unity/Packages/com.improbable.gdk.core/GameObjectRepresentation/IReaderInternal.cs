@@ -2,17 +2,15 @@
 using Improbable.Worker;
 using Unity.Entities;
 
-[assembly:InternalsVisibleTo("Improbable.Gdk.Core.EditmodeTests")]
+[assembly: InternalsVisibleTo("Improbable.Gdk.Core.EditmodeTests")]
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    internal interface IReaderInternal<TComponent, in TComponentUpdate>
-        where TComponent : ISpatialComponentData, IComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TComponent>
+    internal interface IReaderInternal
     {
         void OnAuthorityChange(Authority authority);
-        void OnComponentUpdate(TComponentUpdate update);
-        void OnEvent<TEvent>(int eventIndex, TEvent payload);
-        void OnCommandRequest<TCommandRequest>(int commandIndex, TCommandRequest commandRequest);
+        void OnComponentUpdate();
+        void OnEvent(int eventIndex);
+        void OnCommandRequest(int commandIndex);
     }
 }
