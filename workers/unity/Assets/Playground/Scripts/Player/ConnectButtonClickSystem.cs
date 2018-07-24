@@ -38,6 +38,7 @@ namespace Playground
             worker = WorkerRegistry.GetWorkerForWorld(World);
             var connectionPanel = GameObject.FindGameObjectWithTag("ConnectionPanel");
             connectParamInputField = connectionPanel.transform.Find("ConnectParam").GetComponent<InputField>();
+            connectParamInputField.text = PlayerPrefs.GetString("cachedIp");
             connectButton = connectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
             connectButton.onClick.AddListener(IsClicked);
             errorField = connectionPanel.transform.Find("ConnectionError").GetComponent<Text>();
@@ -74,6 +75,8 @@ namespace Playground
                 else
                 {
                     SetConnectionParameters(connectParamInputField.text);
+                    PlayerPrefs.SetString("cachedIp", connectParamInputField.text);
+                    PlayerPrefs.Save();
                 }
             }
 #endif
