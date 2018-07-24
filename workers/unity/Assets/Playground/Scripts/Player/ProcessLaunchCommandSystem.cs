@@ -33,6 +33,8 @@ namespace Playground
             public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
 
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
+
+            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -62,7 +64,8 @@ namespace Playground
                     {
                         ImpactPoint = info.ImpactPoint,
                         LaunchDirection = info.LaunchDirection,
-                        LaunchEnergy = energy
+                        LaunchEnergy = energy,
+                        Launcher = info.Launcher
                     });
                     energyLeft -= energy;
                     j++;
@@ -88,6 +91,8 @@ namespace Playground
             {
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
+                var sender = launchableData.Sender[i];
+                var launcher = 0L;
                 foreach (var request in launchableData.CommandRequests[i].Buffer)
                 {
                     var info = request.RawRequest;
@@ -96,7 +101,15 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
+                    launcher = info.Launcher;
+                    launchable.MostRecentLauncher = launcher;
                 }
+                sender.SendScoreIncreaseRequest(launchable.MostRecentLauncher, new Generated.Playground.ScoreIncreaseRequest
+                {
+                    LauncherToScore = launchable.MostRecentLauncher,
+                    AmountIncrease = 1.0f,
+                });
+                launchableData.Launchable[i] = launchable;
             }
         }
     }

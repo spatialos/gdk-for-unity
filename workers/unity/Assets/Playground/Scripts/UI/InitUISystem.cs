@@ -30,6 +30,7 @@ namespace Playground
                 var uiComponent = inst.GetComponent<UIComponent>();
                 UIComponent.Main = uiComponent;
                 uiComponent.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
+                uiComponent.ScoreText.text = $"Score: {data.Launcher[i].Score}";
             }
 
             // Disable system after first run.
