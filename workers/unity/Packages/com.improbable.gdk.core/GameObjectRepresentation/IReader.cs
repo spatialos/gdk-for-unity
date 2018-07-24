@@ -8,14 +8,12 @@ namespace Improbable.Gdk.Core.MonoBehaviours
     ///     callbacks for updates, events and commands for component instances.
     /// </summary>
     /// <typeparam name="TComponent">The data type for the SpatialOS component.</typeparam>
-    /// <typeparam name="TComponentUpdate">The data type for the SpatialOS component's update.</typeparam>
-    public interface IReader<TComponent, TComponentUpdate>
+    public interface IReader<TComponent>
         where TComponent : ISpatialComponentData, IComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TComponent>
     {
         Authority Authority { get; }
 
-        event AuthorityChangedDelegate AuthorityChanged;
-        event ComponentUpdateDelegate<TComponentUpdate> ComponentUpdated;
+        event GameObjectDelegates.AuthorityChanged AuthorityChanged;
+        event GameObjectDelegates.ComponentUpdated<TComponent> ComponentUpdated;
     }
 }

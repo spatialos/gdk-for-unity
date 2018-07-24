@@ -1,10 +1,13 @@
 ﻿using Improbable.Worker;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    // TODO reviewers: shall we put these delegates into their own class/namespace?
-    public delegate void AuthorityChangedDelegate(Authority newAuthority);
+    public static class GameObjectDelegates
+    {
+        public delegate void AuthorityChanged(Authority newAuthority);
 
-    public delegate void ComponentUpdateDelegate<TComponentUpdate>(TComponentUpdate updateData)
-        where TComponentUpdate : ISpatialComponentUpdate;
+        public delegate void ComponentUpdated<TComponent>(ISpatialComponentUpdate<TComponent> updateData)
+            where TComponent : ISpatialComponentData, IComponentData;
+    }
 }
