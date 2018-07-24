@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Improbable.Worker;
-using Unity.Entities;
-using Entity = Improbable.Worker.Entity;
+﻿using Improbable.Worker;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
