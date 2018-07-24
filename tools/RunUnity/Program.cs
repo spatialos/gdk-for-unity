@@ -34,6 +34,7 @@ namespace RunUnity
                 }
 
                 var path = Path.Combine(Paths.TryGetUnityPath(), location);
+                Console.WriteLine($"Found Unity in {path}");
                 var arguments = string.Join(' ', args);
                 using (var process = Process.Start(path, arguments))
                 {
