@@ -18,6 +18,8 @@ namespace Generated.Improbable.Gdk.Tests
     {
         public class Translation : ComponentTranslation, IDispatcherCallbacks<global::Improbable.Gdk.Tests.ExhaustiveMapValue>
         {
+            private const string LoggerName = "ExhaustiveMapValue.Translation";
+        
             public override ComponentType TargetComponentType => targetComponentType;
             private static readonly ComponentType targetComponentType = typeof(SpatialOSExhaustiveMapValue);
 
@@ -67,8 +69,9 @@ namespace Generated.Improbable.Gdk.Tests
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
-                        .WithField("OpName", op.GetType().Name));
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -106,8 +109,9 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
-                        .WithField("OpName", typeof(SpatialOSExhaustiveMapValue).Name));
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
                 }
             }
 
@@ -117,8 +121,9 @@ namespace Generated.Improbable.Gdk.Tests
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
-                        .WithField("OpName", op.GetType().Name));
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
                     return;
                 }
 
@@ -283,8 +288,9 @@ namespace Generated.Improbable.Gdk.Tests
                 if (!view.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
-                        .WithField("OpName", op.GetType().Name));
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
                     return;
                 }
 
@@ -302,8 +308,9 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(IdType.EntityId.ToString(), op.EntityId.Id)
-                        .WithField("OpName", typeof(SpatialOSExhaustiveMapValue).Name));
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
                 }
             }
 
