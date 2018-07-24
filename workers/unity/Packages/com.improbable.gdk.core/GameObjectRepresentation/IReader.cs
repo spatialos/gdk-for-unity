@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
     /// </summary>
     /// <typeparam name="TComponent">The data type for the SpatialOS component.</typeparam>
     /// <typeparam name="TComponentUpdate">The data type for the SpatialOS component's update.</typeparam>
-    public interface IReader<TComponent, out TComponentUpdate>
+    public interface IReader<TComponent, TComponentUpdate>
         where TComponent : ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TComponent>
     {
