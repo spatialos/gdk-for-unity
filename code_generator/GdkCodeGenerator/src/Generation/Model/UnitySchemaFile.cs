@@ -163,6 +163,7 @@ namespace Improbable.Gdk.CodeGenerator
             internal readonly TypeReferenceRaw RawResponseType;
             public UnityTypeReference RequestType;
             public UnityTypeReference ResponseType;
+            public uint CommandIndex;
 
             internal UnityCommandDefinition(ComponentDefinitionRaw.CommandDefinitionRaw rawCommandDefinition)
             {
@@ -179,6 +180,8 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     ResponseType = new UnityTypeReference(RawResponseType.TypeName, null, null);
                 }
+
+                CommandIndex = rawCommandDefinition.commandIndex;
             }
         }
 
