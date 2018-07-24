@@ -1,23 +1,38 @@
-﻿using System;
-using Improbable.Gdk.Core.MonoBehaviours;
+﻿using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Entities;
+using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.EditmodeTests
 {
-    [TestFixture]
     public class ReaderBaseTests
     {
-        private struct SomeOtherComponent : IComponentData
-        {
-        }
-
-        private struct TestComponentData : IComponentData, ISpatialComponentData
+        [UsedImplicitly]
+        public class TestComponent : Component, ISpatialComponentData
         {
             public BlittableBool DirtyBit { get; set; }
 
+            public struct Update : ISpatialComponentUpdate<TestComponent>
+            {
+                public Option<float> Horizontal;
+                public Option<float> Vertical;
+                public Option<BlittableBool> Running;
+            }
+
+            public class Reader : NonBlittableReaderBase<TestComponent, Update>
+            {
+                public Reader(Entity entity, EntityManager entityManager) : base(entity, entityManager)
+                {
+                }
+            }
+        }
+
+        public struct TestComponentData : IComponentData, ISpatialComponentData
+        {
+            public BlittableBool DirtyBit { get; set; }
 
             public struct Update : ISpatialComponentUpdate<TestComponentData>
             {
@@ -26,18 +41,78 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 public Option<BlittableBool> Running;
             }
 
-            public class Reader : ReaderBase<TestComponentData, Update>
+            public class Reader : BlittableReaderBase<TestComponentData, Update>
             {
-                public Reader(Entity entity, EntityManager manager) : base(entity, manager)
+                public Reader(Entity entity, EntityManager entityManager) : base(entity, entityManager)
                 {
                 }
             }
         }
 
+        [TestFixture]
+        public class Blittable : ReaderBaseTestsBase<
+            TestComponentData,
+            TestComponentData.Update,
+            TestComponentData.Reader>
+        {
+            protected override TestComponentData.Reader CreateReader(Entity entity, EntityManager entityManager)
+            {
+                return new TestComponentData.Reader(entity, entityManager);
+            }
+
+            protected override TestComponentData CreateDataForEntity(Entity entity, EntityManager entityManager)
+            {
+                entityManager.SetComponentData(entity, new TestComponentData());
+
+                return entityManager.GetComponentData<TestComponentData>(entity);
+            }
+
+            protected override TestComponentData.Update CreateUpdate()
+            {
+                return new TestComponentData.Update
+                {
+                    Horizontal = new Option<float>(4)
+                };
+            }
+        }
+
+        [TestFixture]
+        public class NonBlittable : ReaderBaseTestsBase<
+            TestComponent,
+            TestComponent.Update,
+            TestComponent.Reader>
+        {
+            protected override TestComponent.Reader CreateReader(Entity entity, EntityManager entityManager)
+            {
+                return new TestComponent.Reader(entity, entityManager);
+            }
+
+            protected override TestComponent CreateDataForEntity(Entity entity, EntityManager entityManager)
+            {
+                entityManager.SetComponentObject(entity, new TestComponent());
+
+                return entityManager.GetComponentObject<TestComponent>(entity);
+            }
+
+            protected override TestComponent.Update CreateUpdate()
+            {
+                return new TestComponent.Update()
+                {
+                    Vertical = new Option<float>(20)
+                };
+            }
+        }
+    }
+
+    public abstract class ReaderBaseTestsBase<TComponent, TUpdate, TReader>
+        where TReader : IReader<TComponent>
+        where TComponent : ISpatialComponentData
+        where TUpdate : ISpatialComponentUpdate
+    {
         private World world;
         private EntityManager entityManager;
         private Entity entity;
-        private TestComponentData.Reader reader;
+        private TReader reader;
 
         [SetUp]
         public void SetUp()
@@ -46,10 +121,14 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             entityManager = world.GetOrCreateManager<EntityManager>();
 
-            entity = entityManager.CreateEntity(typeof(TestComponentData));
+            entity = entityManager.CreateEntity(typeof(TComponent));
 
-            reader = new TestComponentData.Reader(entity, entityManager);
+            reader = CreateReader(entity, entityManager);
         }
+
+        protected abstract TComponent CreateDataForEntity(Entity entity, EntityManager entityManager);
+        protected abstract TUpdate CreateUpdate();
+        protected abstract TReader CreateReader(Entity entity, EntityManager entityManager);
 
         [TearDown]
         public void TearDown()
@@ -67,15 +146,19 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Authority_returns_Authoritative_when_Authuritative_component_is_present()
         {
-            entityManager.AddComponent(entity, typeof(Authoritative<TestComponentData>));
+            entityManager.AddComponent(entity, typeof(Authoritative<TComponent>));
             Assert.AreEqual(Authority.Authoritative, reader.Authority);
         }
 
         [Test]
         public void Authority_returns_AuthorityLossImminent_when_Authuritative_component_is_present()
         {
-            entityManager.AddComponent(entity, typeof(AuthorityLossImminent<TestComponentData>));
+            entityManager.AddComponent(entity, typeof(AuthorityLossImminent<TComponent>));
             Assert.AreEqual(Authority.AuthorityLossImminent, reader.Authority);
+        }
+
+        private struct SomeOtherComponent : IComponentData
+        {
         }
 
         [Test]
@@ -111,12 +194,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var componentUpdated = false;
 
-            var updateToSend = new TestComponentData.Update
-            {
-                Horizontal = new Option<float>(5.0f),
-                Running = new Option<BlittableBool>(),
-                Vertical = new Option<float>()
-            };
+            var updateToSend = CreateUpdate();
 
             reader.ComponentUpdated += update =>
             {
@@ -129,9 +207,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             var internalReader = (IReaderInternal) reader;
 
-            entityManager.AddComponent(entity, typeof(ComponentsUpdated<TestComponentData.Update>));
+            entityManager.AddComponent(entity, typeof(ComponentsUpdated<TUpdate>));
 
-            var componentsUpdated = new ComponentsUpdated<TestComponentData.Update>();
+            var componentsUpdated = new ComponentsUpdated<TUpdate>();
 
             componentsUpdated.Buffer.Add(updateToSend);
 
@@ -140,6 +218,14 @@ namespace Improbable.Gdk.Core.EditmodeTests
             internalReader.OnComponentUpdate();
 
             Assert.AreEqual(true, componentUpdated);
+        }
+
+        [Test]
+        public void Data_returns_data_component()
+        {
+            var data = CreateDataForEntity(entity, entityManager);
+
+            Assert.AreEqual(data, reader.Data);
         }
     }
 }

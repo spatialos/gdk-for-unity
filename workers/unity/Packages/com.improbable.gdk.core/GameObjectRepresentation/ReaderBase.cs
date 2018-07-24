@@ -7,11 +7,11 @@ namespace Improbable.Gdk.Core.MonoBehaviours
     public abstract class ReaderBase<TComponent, TComponentUpdate>
         : IReader<TComponent>,
             IReaderInternal
-        where TComponent : ISpatialComponentData, IComponentData
+        where TComponent : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TComponent>
     {
-        private readonly Unity.Entities.Entity entity;
-        private readonly EntityManager manager;
+        protected readonly Unity.Entities.Entity Entity;
+        protected readonly EntityManager EntityManager;
 
         private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
             = new List<GameObjectDelegates.AuthorityChanged>();
@@ -19,22 +19,22 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         private readonly List<GameObjectDelegates.ComponentUpdated<TComponent>> componentUpdateDelegates
             = new List<GameObjectDelegates.ComponentUpdated<TComponent>>();
 
-        protected ReaderBase(Unity.Entities.Entity entity, EntityManager manager)
+        protected ReaderBase(Unity.Entities.Entity entity, EntityManager entityManager)
         {
-            this.entity = entity;
-            this.manager = manager;
+            this.Entity = entity;
+            EntityManager = entityManager;
         }
 
         public Authority Authority
         {
             get
             {
-                if (manager.HasComponent<Authoritative<TComponent>>(entity))
+                if (EntityManager.HasComponent<Authoritative<TComponent>>(Entity))
                 {
                     return Authority.Authoritative;
                 }
 
-                if (manager.HasComponent<AuthorityLossImminent<TComponent>>(entity))
+                if (EntityManager.HasComponent<AuthorityLossImminent<TComponent>>(Entity))
                 {
                     return Authority.AuthorityLossImminent;
                 }
@@ -43,6 +43,8 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                 return Authority.NotAuthoritative;
             }
         }
+
+        public abstract TComponent Data { get; }
 
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
@@ -67,7 +69,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
 
         void IReaderInternal.OnComponentUpdate()
         {
-            foreach (var update in manager.GetComponentObject<ComponentsUpdated<TComponentUpdate>>(entity).Buffer)
+            foreach (var update in EntityManager.GetComponentObject<ComponentsUpdated<TComponentUpdate>>(Entity).Buffer)
             {
                 foreach (var componentUpdateDelegate in componentUpdateDelegates)
                 {

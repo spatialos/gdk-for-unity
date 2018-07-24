@@ -3,6 +3,7 @@
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
+        "Unity.Entities.Hybrid",
         "Improbable.Gdk.TestUtils",
         "Improbable.Gdk.Generated"
     ],
