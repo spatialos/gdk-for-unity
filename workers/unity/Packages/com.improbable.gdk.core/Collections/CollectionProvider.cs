@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.Collections
 {
-    internal static class CollectionProvider<TProvider, TValue> where TProvider : class, ICollection<TValue>, new()
+    internal static class CollectionProvider<TCollection, TValue> where TCollection : class, ICollection<TValue>, new()
     {
-        private static readonly Dictionary<uint, TProvider> Storage = new Dictionary<uint, TProvider>();
+        private static readonly Dictionary<uint, TCollection> Storage = new Dictionary<uint, TCollection>();
 
-        internal static void AllocateHandle(uint handle, TProvider initialValue = default(TProvider))
+        internal static void AllocateHandle(uint handle, TCollection initialValue = default(TCollection))
         {
             if (Storage.ContainsKey(handle))
             {
                 throw new InvalidOperationException(
-                    $"CollectionProvider<{typeof(TProvider)}> already contains handle `{handle}`");
+                    $"CollectionProvider<{typeof(TCollection)}> already contains handle `{handle}`");
             }
 
-            Storage.Add(handle, initialValue ?? new TProvider());
+            Storage.Add(handle, initialValue ?? new TCollection());
         }
 
-        internal static TProvider Get(uint handle)
+        internal static TCollection Get(uint handle)
         {
             if (!Storage.TryGetValue(handle, out var item))
             {
                 throw new ArgumentException(
-                    $"CollectionProvider<{typeof(TProvider)}> does not contain handle `{handle}`");
+                    $"CollectionProvider<{typeof(TCollection)}> does not contain handle `{handle}`");
             }
 
             return item;
@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Core.Collections
             if (!Storage.TryGetValue(handle, out var item))
             {
                 throw new ArgumentException(
-                    $"CollectionProvider<{typeof(TProvider)}> does not contain handle `{handle}`");
+                    $"CollectionProvider<{typeof(TCollection)}> does not contain handle `{handle}`");
             }
 
             item.Clear();
