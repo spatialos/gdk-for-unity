@@ -11,6 +11,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.PostEntityInitialisationGroup))]
     public class GameObjectDispatcherSystem : ComponentSystem
     {
+        public readonly Dictionary<int, SpatialOSBehaviourManager> EntityIndexToSpatialOSBehaviourManager = new Dictionary<int, SpatialOSBehaviourManager>();
+
         public readonly HashSet<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new HashSet<GameObjectComponentDispatcherBase>();
 
@@ -80,12 +82,12 @@ namespace Improbable.Gdk.Core
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentCallbacks();
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentCallbacks();
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeCallbacks();
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks();
-                gameObjectComponentDispatcher.InvokeOnEventCallbacks();
-                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks();
+                gameObjectComponentDispatcher.InvokeOnAddComponentCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnRemoveComponentCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnEventCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(this);
             }
         }
     }
