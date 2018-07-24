@@ -197,6 +197,13 @@ namespace Improbable.Gdk.Core
         public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
         private static readonly ComponentType[] replicationComponentTypes = { };
 
+        public override ComponentType[] NewEntityComponentTypes => newEntityComponentTypes;
+        private static readonly ComponentType[] newEntityComponentTypes = { };
+
+        public override void PostReceive(ref ViewCommandBuffer viewCommandBuffer)
+        {
+        }
+
         public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
 
         private static readonly ComponentType[] cleanUpComponentTypes =

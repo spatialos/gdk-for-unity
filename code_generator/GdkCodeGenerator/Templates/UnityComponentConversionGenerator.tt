@@ -33,6 +33,10 @@ namespace <#= qualifiedNamespace #>
             public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
             private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId)};
 
+            public override ComponentType[] NewEntityComponentTypes => newEntityComponentTypes;
+            private static readonly ComponentType[] newEntityComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(NewlyAddedSpatialOSEntity), 
+                typeof(NotAuthoritative<<#= componentDetails.TypeName #>>) };
+            
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
             { 
@@ -457,6 +461,33 @@ namespace <#= qualifiedNamespace #>
                     Send<#= commandDetails.CommandName #>Failure(connection, failure);
                 }
                 <#= commandDetails.CommandName #>Failure.Clear();
+<# } #>
+            }
+            
+            public override void PostReceive(ref ViewCommandBuffer viewCommandBuffer)
+            {
+<# if (fieldDetailsList.Count > 0) { #>
+<# if (componentDetails.IsBlittable) { #>
+                var componentDataArray = NewEntityComponentGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
+<# } else { #>
+                var componentDataArray = NewEntityComponentGroup.GetComponentArray<<#= componentDetails.TypeName #>>();
+<# } #>
+                var spatialEntityData = NewEntityComponentGroup.GetEntityArray();
+                
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var update = new <#= componentDetails.TypeName #>.Update();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                    update.<#= fieldDetails.PascalCaseName#> = componentDataArray[i].<#= fieldDetails.PascalCaseName#>;
+<# } #>
+                    
+                    var entity = spatialEntityData[i];
+
+                    var componentsUpdated = view.GetOrCreateComponent(entity, UpdatesPool);
+                    componentsUpdated.Buffer.Add(update);
+                    viewCommandBuffer.AddComponent(entity,
+                        typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), componentsUpdated);
+                }
 <# } #>
             }
 
