@@ -14,11 +14,11 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void OnCommandRequest(CommandRequestOp op);
         public abstract void OnCommandResponse(CommandResponseOp op);
 
-        protected EntityManager EntityManager;
+        protected MutableView MutableView;
 
-        protected ComponentDispatcherHandler(EntityManager entityManager)
+        protected ComponentDispatcherHandler(MutableView mutableView)
         {
-            EntityManager = entityManager;
+            MutableView = mutableView;
         }
     }
 }
