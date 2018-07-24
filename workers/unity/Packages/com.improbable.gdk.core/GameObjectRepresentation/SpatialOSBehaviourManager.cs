@@ -32,9 +32,13 @@ namespace Improbable.Gdk.Core
             return null;
         }
 
-        public void Tick()
+        public void EnableSpatialOSBehaviours()
         {
             // inject + enable all spatialOsBehavioursToEnable
+        }
+
+        public void DisableSpatialOSBehaviours()
+        {
             // disable + deinject all spatialOsBehavioursToDisable
         }
 

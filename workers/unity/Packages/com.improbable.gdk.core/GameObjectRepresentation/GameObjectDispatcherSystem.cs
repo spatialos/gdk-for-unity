@@ -82,12 +82,24 @@ namespace Improbable.Gdk.Core
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnEventCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(this);
+
+                foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+                {
+                    spatialOSBehaviourManager.EnableSpatialOSBehaviours();
+                }
+
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(this);
+
+                foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+                {
+                    spatialOSBehaviourManager.DisableSpatialOSBehaviours();
+                }
             }
         }
     }

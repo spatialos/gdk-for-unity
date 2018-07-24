@@ -54,7 +54,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-            public override void InvokeOnAddComponentCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -64,7 +64,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            public override void InvokeOnRemoveComponentCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -74,7 +74,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
@@ -88,15 +88,19 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
             }
 
-            public override void InvokeOnEventCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
             }
 
-            public override void InvokeOnCommandRequestCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            {
+            }
+
+            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
             }
         }
