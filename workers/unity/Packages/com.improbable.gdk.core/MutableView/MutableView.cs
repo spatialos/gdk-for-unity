@@ -24,14 +24,6 @@ namespace Improbable.Gdk.Core
 
         private readonly EntityManager entityManager;
 
-        private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
-
-        // Reflection magic to get the internal method "SetComponentObject" on the specific EntityManager instance. This is required to add Components to Entities at runtime
-        private static readonly MethodInfo setComponentObjectMethodInfo =
-            typeof(EntityManager).GetMethod("SetComponentObject", BindingFlags.Instance | BindingFlags.NonPublic, null,
-                new Type[] { typeof(Entity), typeof(ComponentType), typeof(object) },
-                new ParameterModifier[] { });
-
         private readonly Dictionary<long, Entity> entityMapping;
 
         public MutableView(World world, ILogDispatcher logDispatcher)
@@ -40,8 +32,6 @@ namespace Improbable.Gdk.Core
             entityMapping = new Dictionary<long, Entity>();
             LogDispatcher = logDispatcher;
 
-            setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
-                typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
 
             FindTranslationUnits();
 
@@ -121,7 +111,7 @@ namespace Improbable.Gdk.Core
                 entityManager.AddComponent(entity, typeof(T));
             }
 
-            setComponentObjectAction(entity, typeof(T), component);
+            entityManager.SetComponentObject(entity, component);
         }
 
         public void SetComponentData<T>(Entity entity, T componentData) where T : struct, IComponentData
@@ -143,7 +133,7 @@ namespace Improbable.Gdk.Core
                 entityManager.AddComponent(entity, componentType);
             }
 
-            setComponentObjectAction(entity, componentType, component);
+            entityManager.SetComponentObject(entity, componentType, component);
         }
 
         public void SetComponentObject<T>(long entityId, T component) where T : Component
@@ -163,7 +153,7 @@ namespace Improbable.Gdk.Core
                 entityManager.AddComponent(entity, typeof(T));
             }
 
-            setComponentObjectAction(entity, typeof(T), component);
+            entityManager.SetComponentObject(entity, typeof(T), component);
         }
 
         public void AddComponentsUpdated<T>(Entity entity, T update, ComponentPool<ComponentsUpdated<T>> pool)

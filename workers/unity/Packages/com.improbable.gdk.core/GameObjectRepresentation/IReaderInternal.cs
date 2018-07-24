@@ -1,4 +1,7 @@
-﻿using Improbable.Worker;
+﻿using System.Runtime.CompilerServices;
+using Improbable.Worker;
+
+[assembly: InternalsVisibleTo("Improbable.Gdk.Core.EditmodeTests")]
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
