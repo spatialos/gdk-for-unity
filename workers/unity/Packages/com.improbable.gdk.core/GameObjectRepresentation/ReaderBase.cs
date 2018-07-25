@@ -97,7 +97,17 @@ namespace Improbable.Gdk.Core
                         Debug.LogException(e);
                     }
                 }
+
+                HandleFieldUpdates(update);
             }
+        }
+
+        /// <summary>
+        ///     Reader implementations will override this if their components have fields.
+        /// </summary>
+        /// <param name="update"></param>
+        protected virtual void HandleFieldUpdates(TComponentUpdate update)
+        {
         }
 
         void IReaderInternal.OnEvent(int eventIndex)

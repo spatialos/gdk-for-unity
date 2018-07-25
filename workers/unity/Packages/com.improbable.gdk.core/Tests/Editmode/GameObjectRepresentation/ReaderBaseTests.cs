@@ -11,18 +11,18 @@ namespace Improbable.Gdk.Core.EditmodeTests
     public class ReaderBaseTests
     {
         [UsedImplicitly]
-        public class TestComponent : Component, ISpatialComponentData
+        public class NonBlittableTestComponent : Component, ISpatialComponentData
         {
             public BlittableBool DirtyBit { get; set; }
 
-            public struct Update : ISpatialComponentUpdate<TestComponent>
+            public struct Update : ISpatialComponentUpdate<NonBlittableTestComponent>
             {
                 public Option<float> Horizontal;
                 public Option<float> Vertical;
                 public Option<BlittableBool> Running;
             }
 
-            public class Reader : NonBlittableReaderBase<TestComponent, Update>
+            public class Reader : NonBlittableReaderBase<NonBlittableTestComponent, Update>
             {
                 public Reader(Entity entity, EntityManager entityManager) : base(entity, entityManager)
                 {
@@ -30,46 +30,104 @@ namespace Improbable.Gdk.Core.EditmodeTests
             }
         }
 
-        public struct TestComponentData : IComponentData, ISpatialComponentData
+        public struct BlittableTestComponent : IComponentData, ISpatialComponentData
         {
             public BlittableBool DirtyBit { get; set; }
 
-            public struct Update : ISpatialComponentUpdate<TestComponentData>
+            private float horizontal;
+
+            public float Horizontal
+            {
+                get { return horizontal; }
+                set
+                {
+                    DirtyBit = true;
+                    horizontal = value;
+                }
+            }
+
+            private float vertical;
+
+            public float Vertical
+            {
+                get { return vertical; }
+                set
+                {
+                    DirtyBit = true;
+                    vertical = value;
+                }
+            }
+
+            private BlittableBool running;
+
+            public BlittableBool Running
+            {
+                get { return running; }
+                set
+                {
+                    DirtyBit = true;
+                    running = value;
+                }
+            }
+
+            public struct Update : ISpatialComponentUpdate<BlittableTestComponent>
             {
                 public Option<float> Horizontal;
                 public Option<float> Vertical;
                 public Option<BlittableBool> Running;
             }
 
-            public class Reader : BlittableReaderBase<TestComponentData, Update>
+            public class Reader : BlittableReaderBase<BlittableTestComponent, Update>
             {
                 public Reader(Entity entity, EntityManager entityManager) : base(entity, entityManager)
                 {
+                }
+
+                private event Action<float> HorizontalUpdated;
+                private event Action<float> VerticalUpdated;
+                private event Action<BlittableBool> RunningUpdated;
+
+                protected override void HandleFieldUpdates(Update update)
+                {
+                    if (update.Horizontal.HasValue)
+                    {
+                        HorizontalUpdated?.Invoke(update.Horizontal.Value);
+                    }
+
+                    if (update.Vertical.HasValue)
+                    {
+                        VerticalUpdated?.Invoke(update.Vertical.Value);
+                    }
+
+                    if (update.Running.HasValue)
+                    {
+                        RunningUpdated?.Invoke(update.Running.Value);
+                    }
                 }
             }
         }
 
         [TestFixture]
         public class Blittable : ReaderBaseTestsBase<
-            TestComponentData,
-            TestComponentData.Update,
-            TestComponentData.Reader>
+            BlittableTestComponent,
+            BlittableTestComponent.Update,
+            BlittableTestComponent.Reader>
         {
-            protected override TestComponentData.Reader CreateReader(Entity entity, EntityManager entityManager)
+            protected override BlittableTestComponent.Reader CreateReader(Entity entity, EntityManager entityManager)
             {
-                return new TestComponentData.Reader(entity, entityManager);
+                return new BlittableTestComponent.Reader(entity, entityManager);
             }
 
-            protected override TestComponentData CreateDataForEntity(Entity entity, EntityManager entityManager)
+            protected override BlittableTestComponent CreateDataForEntity(Entity entity, EntityManager entityManager)
             {
-                entityManager.SetComponentData(entity, new TestComponentData());
+                entityManager.SetComponentData(entity, new BlittableTestComponent());
 
-                return entityManager.GetComponentData<TestComponentData>(entity);
+                return entityManager.GetComponentData<BlittableTestComponent>(entity);
             }
 
-            protected override TestComponentData.Update CreateUpdate()
+            protected override BlittableTestComponent.Update CreateUpdate()
             {
-                return new TestComponentData.Update
+                return new BlittableTestComponent.Update
                 {
                     Horizontal = new Option<float>(4)
                 };
@@ -78,31 +136,33 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
         [TestFixture]
         public class NonBlittable : ReaderBaseTestsBase<
-            TestComponent,
-            TestComponent.Update,
-            TestComponent.Reader>
+            NonBlittableTestComponent,
+            NonBlittableTestComponent.Update,
+            NonBlittableTestComponent.Reader>
         {
-            protected override TestComponent.Reader CreateReader(Entity entity, EntityManager entityManager)
+            protected override NonBlittableTestComponent.Reader CreateReader(Entity entity, EntityManager entityManager)
             {
-                return new TestComponent.Reader(entity, entityManager);
+                return new NonBlittableTestComponent.Reader(entity, entityManager);
             }
 
-            protected override TestComponent CreateDataForEntity(Entity entity, EntityManager entityManager)
+            protected override NonBlittableTestComponent CreateDataForEntity(Entity entity, EntityManager entityManager)
             {
-                entityManager.SetComponentObject(entity, new TestComponent());
+                entityManager.SetComponentObject(entity, new NonBlittableTestComponent());
 
-                return entityManager.GetComponentObject<TestComponent>(entity);
+                return entityManager.GetComponentObject<NonBlittableTestComponent>(entity);
             }
 
-            protected override TestComponent.Update CreateUpdate()
+            protected override NonBlittableTestComponent.Update CreateUpdate()
             {
-                return new TestComponent.Update()
+                return new NonBlittableTestComponent.Update()
                 {
                     Vertical = new Option<float>(20)
                 };
             }
         }
     }
+
+    // TODO split the tests to different parts, most things don't care if comp is blittable or not
 
     public abstract class ReaderBaseTestsBase<TComponent, TUpdate, TReader>
         where TReader : IReader<TComponent>
