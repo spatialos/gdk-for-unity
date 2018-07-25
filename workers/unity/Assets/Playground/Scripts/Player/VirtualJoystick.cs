@@ -22,11 +22,10 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgImg.rectTransform, eventData.position,
             eventData.pressEventCamera, out pos))
         {
-            pos.x = pos.x / bgImg.rectTransform.sizeDelta.x;
-            pos.y = pos.y / bgImg.rectTransform.sizeDelta.y;
+            pos = pos / bgImg.rectTransform.sizeDelta;
 
-            float x = bgImg.rectTransform.pivot.x == 1 ? pos.x * 2 + 1 : pos.x * 2 - 1;
-            float y = bgImg.rectTransform.pivot.y == 1 ? pos.y * 2 + 1 : pos.y * 2 - 1;
+            var x = bgImg.rectTransform.pivot.x == 1 ? pos.x * 2 + 1 : pos.x * 2 - 1;
+            var y = bgImg.rectTransform.pivot.y == 1 ? pos.y * 2 + 1 : pos.y * 2 - 1;
 
             InputDirection = new Vector3(x, y, 0);
             InputDirection = InputDirection.magnitude > 1 ? InputDirection.normalized : InputDirection;
