@@ -4,11 +4,11 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public abstract class ReaderBase<TComponent, TComponentUpdate>
-        : IReader<TComponent>,
+    public abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
+        : IReader<TSpatialComponentData>,
             IReaderInternal
-        where TComponent : ISpatialComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TComponent>
+        where TSpatialComponentData : ISpatialComponentData
+        where TComponentUpdate : ISpatialComponentUpdate<TSpatialComponentData>
     {
         protected readonly Unity.Entities.Entity Entity;
         protected readonly EntityManager EntityManager;
@@ -16,8 +16,8 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
             = new List<GameObjectDelegates.AuthorityChanged>();
 
-        private readonly List<GameObjectDelegates.ComponentUpdated<TComponent>> componentUpdateDelegates
-            = new List<GameObjectDelegates.ComponentUpdated<TComponent>>();
+        private readonly List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>> componentUpdateDelegates
+            = new List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>>();
 
         protected ReaderBase(Unity.Entities.Entity entity, EntityManager entityManager)
         {
@@ -29,12 +29,12 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         {
             get
             {
-                if (EntityManager.HasComponent<Authoritative<TComponent>>(Entity))
+                if (EntityManager.HasComponent<Authoritative<TSpatialComponentData>>(Entity))
                 {
                     return Authority.Authoritative;
                 }
 
-                if (EntityManager.HasComponent<AuthorityLossImminent<TComponent>>(Entity))
+                if (EntityManager.HasComponent<AuthorityLossImminent<TSpatialComponentData>>(Entity))
                 {
                     return Authority.AuthorityLossImminent;
                 }
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        public abstract TComponent Data { get; }
+        public abstract TSpatialComponentData Data { get; }
 
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             remove => authorityChangedDelegates.Remove(value);
         }
 
-        public event GameObjectDelegates.ComponentUpdated<TComponent> ComponentUpdated
+        public event GameObjectDelegates.ComponentUpdated<TSpatialComponentData> ComponentUpdated
         {
             add => componentUpdateDelegates.Add(value);
             remove => componentUpdateDelegates.Remove(value);

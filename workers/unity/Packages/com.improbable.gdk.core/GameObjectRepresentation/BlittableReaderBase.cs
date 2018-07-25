@@ -2,15 +2,15 @@
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public abstract class BlittableReaderBase<TComponent, TComponentUpdate>
-        : ReaderBase<TComponent, TComponentUpdate>
-        where TComponent : struct, ISpatialComponentData, IComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TComponent>
+    public abstract class BlittableReaderBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderBase<TSpatialComponentData, TComponentUpdate>
+        where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
+        where TComponentUpdate : ISpatialComponentUpdate<TSpatialComponentData>
     {
         protected BlittableReaderBase(Entity entity, EntityManager entityManager) : base(entity, entityManager)
         {
         }
 
-        public override TComponent Data => EntityManager.GetComponentData<TComponent>(Entity);
+        public override TSpatialComponentData Data => EntityManager.GetComponentData<TSpatialComponentData>(Entity);
     }
 }

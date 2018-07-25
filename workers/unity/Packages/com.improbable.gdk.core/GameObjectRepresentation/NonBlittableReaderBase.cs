@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public abstract class NonBlittableReaderBase<TComponent, TComponentUpdate>
-        : ReaderBase<TComponent, TComponentUpdate>
-        where TComponent : Component, ISpatialComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TComponent>
+    public abstract class NonBlittableReaderBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderBase<TSpatialComponentData, TComponentUpdate>
+        where TSpatialComponentData : Component, ISpatialComponentData
+        where TComponentUpdate : ISpatialComponentUpdate<TSpatialComponentData>
     {
         protected NonBlittableReaderBase(Entity entity, EntityManager entityManager) : base(entity, entityManager)
         {
         }
 
-        public override TComponent Data => EntityManager.GetComponentObject<TComponent>(Entity);
+        public override TSpatialComponentData Data => EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
     }
 }
