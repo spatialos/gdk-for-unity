@@ -1,3 +1,4 @@
+using System;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.
     /// </summary>
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.PostEntityInitialisationGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitializationGroup))]
     public class SpatialOSBehaviourManagerInitializationSystem : ComponentSystem
     {
         public struct AddedEntitiesData
@@ -37,7 +38,12 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
+            gameObjectDispatcherSystem = World.GetExistingManager<GameObjectDispatcherSystem>();
+            if (gameObjectDispatcherSystem == null)
+            {
+                throw new GameObjectDispatcherSystemNotFoundException("GameObjectDispatcherSystem not found.");
+            }
+
             logDispatcher = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
         }
 
@@ -70,6 +76,13 @@ namespace Improbable.Gdk.Core
                 }
 
                 gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager.Remove(entityIndex);
+            }
+        }
+
+        public class GameObjectDispatcherSystemNotFoundException : Exception
+        {
+            public GameObjectDispatcherSystemNotFoundException(string message) : base(message)
+            {
             }
         }
     }

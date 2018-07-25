@@ -13,7 +13,7 @@ namespace Playground
     /// <summary>
     ///     Adds a list of components to newly spawned entities according to an archetype definition.
     /// </summary>
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitializationGroup))]
     public class ArchetypeInitializationSystem : ComponentSystem
     {
         public struct Data

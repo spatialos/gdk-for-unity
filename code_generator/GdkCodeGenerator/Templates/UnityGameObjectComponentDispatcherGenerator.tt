@@ -66,7 +66,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-                var entities = ComponentAddedComponentGroup.GetEntityArray();
+                var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var spatialOSBehaviourManager = gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entities[i].Index];
@@ -77,7 +77,7 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
-                var entities = ComponentAddedComponentGroup.GetEntityArray();
+                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var spatialOSBehaviourManager = gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entities[i].Index];

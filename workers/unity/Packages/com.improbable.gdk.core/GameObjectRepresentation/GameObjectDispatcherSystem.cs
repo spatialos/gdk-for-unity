@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Gathers incoming dispatcher ops and invokes callbacks on relevant GameObjects.
     /// </summary>
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.PostEntityInitialisationGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     public class GameObjectDispatcherSystem : ComponentSystem
     {
         public readonly Dictionary<int, SpatialOSBehaviourManager> EntityIndexToSpatialOSBehaviourManager = new Dictionary<int, SpatialOSBehaviourManager>();
