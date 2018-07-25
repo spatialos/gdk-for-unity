@@ -40,10 +40,7 @@ namespace Playground
                 var right = cameraTransform.Rotation * Vector3.right;
 #if UNITY_ANDROID || UNITY_IOS
                 var input = Vector3.zero;
-                if (VirtualJoystick.InputDirection != Vector3.zero)
-                {
-                    input = VirtualJoystick.InputDirection.x * right + VirtualJoystick.InputDirection.y * forward;
-                }
+                input = VirtualJoystick.InputDirection.x * right + VirtualJoystick.InputDirection.y * forward;
 #else
                 var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
 #endif
