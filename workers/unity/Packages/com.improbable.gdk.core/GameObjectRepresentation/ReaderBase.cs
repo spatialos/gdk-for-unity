@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Improbable.Worker;
 using Unity.Entities;
+using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -10,18 +13,12 @@ namespace Improbable.Gdk.Core
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate<TSpatialComponentData>
     {
-        protected readonly Unity.Entities.Entity Entity;
+        protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
 
-        private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
-            = new List<GameObjectDelegates.AuthorityChanged>();
-
-        private readonly List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>> componentUpdateDelegates
-            = new List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>>();
-
-        protected ReaderBase(Unity.Entities.Entity entity, EntityManager entityManager)
+        protected ReaderBase(Entity entity, EntityManager entityManager)
         {
-            this.Entity = entity;
+            Entity = entity;
             EntityManager = entityManager;
         }
 
@@ -39,18 +36,28 @@ namespace Improbable.Gdk.Core
                     return Authority.AuthorityLossImminent;
                 }
 
-                // TODO reviewers: should this throw an error instead?
-                return Authority.NotAuthoritative;
+                if (EntityManager.HasComponent<NotAuthoritative<TSpatialComponentData>>(Entity))
+                {
+                    return Authority.NotAuthoritative;
+                }
+
+                throw new Exception("No authority component found for this entity.");
             }
         }
 
         public abstract TSpatialComponentData Data { get; }
+
+        private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
+            = new List<GameObjectDelegates.AuthorityChanged>();
 
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
             add => authorityChangedDelegates.Add(value);
             remove => authorityChangedDelegates.Remove(value);
         }
+
+        private readonly List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>> componentUpdateDelegates
+            = new List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>>();
 
         public event GameObjectDelegates.ComponentUpdated<TSpatialComponentData> ComponentUpdated
         {
@@ -62,8 +69,15 @@ namespace Improbable.Gdk.Core
         {
             foreach (var authorityChangedDelegate in authorityChangedDelegates)
             {
-                // TODO catch errors here?
-                authorityChangedDelegate(authority);
+                try
+                {
+                    authorityChangedDelegate(authority);
+                }
+                catch (Exception e)
+                {
+                    // Log the exception but do not rethrow it, as other delegates should still get called
+                    Debug.LogException(e);
+                }
             }
         }
 
@@ -73,8 +87,15 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var componentUpdateDelegate in componentUpdateDelegates)
                 {
-                    // TODO catch errors here?
-                    componentUpdateDelegate(update);
+                    try
+                    {
+                        componentUpdateDelegate(update);
+                    }
+                    catch (Exception e)
+                    {
+                        // Log the exception but do not rethrow it, as other delegates should still get called
+                        Debug.LogException(e);
+                    }
                 }
             }
         }
