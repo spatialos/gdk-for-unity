@@ -7,13 +7,14 @@ using Unity.Mathematics;
 [RemoveAtEndOfTick]
 public struct CollisionComponent : IComponentData
 {
+    public SpatialOSLaunchable own;
     public SpatialOSLaunchable other;
 }
 
 public class ScoreCollision : MonoBehaviour
 {
     private MutableView view;
-    private SpatialOSLaunchable ownLaunchable;
+    private EntityManager entityManager;
 
     public void Start()
     {
@@ -21,7 +22,7 @@ public class ScoreCollision : MonoBehaviour
         if (component)
         {
             view = WorkerRegistry.GetWorkerForWorld(component.World).View;
-            ownLaunchable = view.GetComponent<SpatialOSLaunchable>(component.Entity);
+            entityManager = component.World.GetExistingManager<EntityManager>();
         }
         else
         {
@@ -31,18 +32,23 @@ public class ScoreCollision : MonoBehaviour
 
     public void OnCollisionEnter(Collision col)
     {
+        Debug.Log(WorkerRegistry.GetWorkerForWorld(GetComponent<SpatialOSComponent>().World).WorkerId);
+        if (entityManager == null)
+        {
+            return;
+        }
         if (col.gameObject && col.gameObject.tag == "Cube")
         {
             var component = col.gameObject.GetComponent<SpatialOSComponent>();
             if (component != null && view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
                 SpatialOSLaunchable otherEntity = view.GetComponent<SpatialOSLaunchable>(component.Entity);
-                var entityManager = World.Active.GetExistingManager<EntityManager>();
                 Entity collisionEventEntity = entityManager.CreateEntity(typeof(SpatialOSLaunchable), typeof(CollisionComponent),
                     typeof(CommandRequestSender<SpatialOSLauncher>));
                 entityManager.SetComponentData(collisionEventEntity, otherEntity);
                 entityManager.SetComponentData(collisionEventEntity, new CollisionComponent
                 {
+                    own = view.GetComponent<SpatialOSLaunchable>(component.Entity),
                     other = otherEntity
                 });
                 entityManager.SetComponentData(collisionEventEntity, new CommandRequestSender<SpatialOSLauncher>());

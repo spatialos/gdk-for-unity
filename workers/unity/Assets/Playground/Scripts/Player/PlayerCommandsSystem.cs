@@ -93,7 +93,6 @@ namespace Playground
                     LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
                     Launcher = playerId
                 });
-                
             }
         }
     }

@@ -45,10 +45,6 @@ namespace Playground
 
             // Metric sending system
             World.GetOrCreateManager<MetricSendSystem>();
-
-            // Score update systems
-            World.GetOrCreateManager<ProcessScoresSystem>();
-            World.GetOrCreateManager<CollisionProcessSystem>();
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Playground
         private struct LaunchableData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
             public ComponentDataArray<CollisionComponent> Collision;
+            public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
         }
 
@@ -23,8 +23,9 @@ namespace Playground
         {
             for (var i = 0; i < launchableData.Length; i++)
             {
+                Debug.Log("there are collisions");
                 var collision = launchableData.Collision[i];
-                var first = launchableData.Launchable[i];
+                var first = collision.own;
                 var second = collision.other;
                 var first_launcher = first.MostRecentLauncher;
                 var second_launcher = second.MostRecentLauncher;
@@ -36,7 +37,7 @@ namespace Playground
                 {
                     first.MostRecentLauncher = 0;
                     second.MostRecentLauncher = 0;
-                    launchableData.Launchable[i] = first;
+                    collision.own = first;
                     collision.other = second;
                     launchableData.Collision[i] = collision;
                     continue;
@@ -44,7 +45,8 @@ namespace Playground
                 if (first_launcher == 0 && second_launcher != 0)
                 {
                     first.MostRecentLauncher = second_launcher;
-                    launchableData.Launchable[i] = first;
+                    collision.own = first;
+                    launchableData.Collision[i] = collision;
                     continue;
                 }
                 if (first_launcher != 0 && second_launcher == 0)
@@ -62,6 +64,7 @@ namespace Playground
                         AmountIncrease = 1,
                     });
                 }
+                PostUpdateCommands.DestroyEntity(launchableData.Entities[i]);
             }
         }
     }
