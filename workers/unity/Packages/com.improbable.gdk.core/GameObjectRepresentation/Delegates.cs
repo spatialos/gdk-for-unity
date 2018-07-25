@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     {
         public delegate void AuthorityChanged(Authority newAuthority);
 
-        public delegate void ComponentUpdated<TComponent>(ISpatialComponentUpdate<TComponent> updateData)
-            where TComponent : ISpatialComponentData, IComponentData;
+        public delegate void ComponentUpdated<TSpatialComponentData>(ISpatialComponentUpdate<TSpatialComponentData> updateData)
+            where TSpatialComponentData : ISpatialComponentData;
     }
 }

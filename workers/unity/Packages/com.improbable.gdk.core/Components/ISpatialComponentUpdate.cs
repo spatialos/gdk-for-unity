@@ -6,8 +6,8 @@ namespace Improbable.Gdk.Core
     {
     }
 
-    public interface ISpatialComponentUpdate<TComponent> : ISpatialComponentUpdate
-        where TComponent : ISpatialComponentData, IComponentData
+    public interface ISpatialComponentUpdate<TSpatialComponentData> : ISpatialComponentUpdate
+        where TSpatialComponentData : ISpatialComponentData
     {
     }
 }
