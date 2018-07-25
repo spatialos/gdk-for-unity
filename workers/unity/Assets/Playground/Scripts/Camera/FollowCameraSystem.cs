@@ -28,6 +28,8 @@ namespace Playground
         // Origin offset to make camera orbit character's head rather than their feet.
         private static readonly Vector3 TargetOffset = new Vector3(0, 1, 0);
 
+        public static VirtualJoystick VirtualJoystick;
+
         private struct Data
         {
             public readonly int Length;
@@ -37,6 +39,16 @@ namespace Playground
         }
 
         [Inject] private Data data;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+            GameObject cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
+            VirtualJoystick = cameraJoystick.GetComponent<VirtualJoystick>();
+#if !(UNITY_ANDROID || UNITY_IOS)
+            cameraJoystick.SetActive(false);
+#endif
+        }
 
         protected override void OnUpdate()
         {
@@ -54,8 +66,13 @@ namespace Playground
 
         private static CameraInput UpdateCameraInput(CameraInput input)
         {
+#if UNITY_ANDROID || UNITY_IOS
+            var x = input.X + VirtualJoystick.InputDirection.x;
+            var y = input.Y - VirtualJoystick.InputDirection.y;
+#else
             var x = input.X + Input.GetAxis("Mouse X");
             var y = input.Y - Input.GetAxis("Mouse Y");
+#endif
             var distance = input.Distance + Input.GetAxis("Mouse ScrollWheel") * ZoomScale;
 
             x %= 360;

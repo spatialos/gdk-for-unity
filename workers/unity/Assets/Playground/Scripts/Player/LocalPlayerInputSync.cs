@@ -24,7 +24,11 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            VirtualJoystick = GameObject.FindGameObjectWithTag("GameController").GetComponent<VirtualJoystick>();
+            GameObject controllerJoystick = GameObject.FindGameObjectWithTag("GameController");
+            VirtualJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+#if !(UNITY_ANDROID || UNITY_IOS)
+            controllerJoystick.setActive(false);
+#endif
         }
 
         protected override void OnUpdate()
@@ -34,12 +38,15 @@ namespace Playground
                 var cameraTransform = playerInputData.CameraTransform[i];
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
+#if UNITY_ANDROID || UNITY_IOS
                 var input = Vector3.zero;
                 if (VirtualJoystick.InputDirection != Vector3.zero)
                 {
-                    input = VirtualJoystick.InputDirection.x * forward + VirtualJoystick.InputDirection.z * right;
+                    input = VirtualJoystick.InputDirection.x * right + VirtualJoystick.InputDirection.y * forward;
                 }
-
+#else
+                var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
+#endif
                 var newPlayerInput = new SpatialOSPlayerInput
                 {
                     Horizontal = input.x,
