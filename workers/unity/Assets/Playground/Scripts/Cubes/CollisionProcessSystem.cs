@@ -31,32 +31,28 @@ namespace Playground
                 var second_launcher = second.MostRecentLauncher;
                 if (first_launcher == 0 && second_launcher == 0)
                 {
-                    continue;
                 }
-                if (first_launcher != 0 && second_launcher != 0 && first_launcher != second_launcher)
+                else if (first_launcher != 0 && second_launcher != 0 && first_launcher != second_launcher)
                 {
                     first.MostRecentLauncher = 0;
                     second.MostRecentLauncher = 0;
                     collision.own = first;
                     collision.other = second;
                     launchableData.Collision[i] = collision;
-                    continue;
                 }
-                if (first_launcher == 0 && second_launcher != 0)
+                else if (first_launcher == 0 && second_launcher != 0)
                 {
                     first.MostRecentLauncher = second_launcher;
                     collision.own = first;
                     launchableData.Collision[i] = collision;
-                    continue;
                 }
-                if (first_launcher != 0 && second_launcher == 0)
+                else if (first_launcher != 0 && second_launcher == 0)
                 {
                     second.MostRecentLauncher = first_launcher;
                     collision.other = second;
                     launchableData.Collision[i] = collision;
-                    continue;
                 }
-                if (first_launcher == second_launcher)
+                else if (first_launcher == second_launcher)
                 {
                     launchableData.Sender[i].SendScoreIncreaseRequest(first_launcher, new Generated.Playground.ScoreIncreaseRequest()
                     {
