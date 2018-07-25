@@ -64,6 +64,7 @@ namespace Improbable.Gdk.Core.Components
         public abstract void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer);
 
         public abstract void AddCommandRequestSender(Entity entity, long entityId);
+        public abstract void SendAuthorityLossImminentAcknowledgement(Connection connection);
         public abstract void SendCommands(Connection connection);
 
         protected void RemoveComponents<T>(ref EntityCommandBuffer entityCommandBuffer, int groupIndex)

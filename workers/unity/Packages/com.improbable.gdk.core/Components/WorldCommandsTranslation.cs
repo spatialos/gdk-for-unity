@@ -264,6 +264,10 @@ namespace Improbable.Gdk.Core
             view.AddComponent(entity, new WorldCommandSender(EntityId, translationHandle));
         }
 
+        public override void SendAuthorityLossImminentAcknowledgement(Connection connection)
+        {
+        }
+
         public override void ExecuteReplication(Connection connection)
         {
         }

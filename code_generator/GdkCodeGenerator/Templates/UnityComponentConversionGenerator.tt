@@ -443,7 +443,7 @@ namespace <#= qualifiedNamespace #>
             }
 <# } #>
 
-            private void SendAuthorityLossImminentAcknowledgement(Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(Connection connection)
             {
                 var componentDataArray = AuthorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<<#= componentDetails.TypeName #>>>();
                 var spatialEntityIdData = AuthorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
@@ -481,8 +481,6 @@ namespace <#= qualifiedNamespace #>
                 }
                 <#= commandDetails.CommandName #>Failure.Clear();
 <# } #>
-
-                SendAuthorityLossImminentAcknowledgement(connection);
             }
 
             public static <#= componentDetails.ComponentName #>.Translation GetTranslation(uint internalHandleToTranslation)

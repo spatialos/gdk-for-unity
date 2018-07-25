@@ -368,7 +368,7 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
 
-            private void SendAuthorityLossImminentAcknowledgement(Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(Connection connection)
             {
                 var componentDataArray = AuthorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSExhaustiveOptional>>();
                 var spatialEntityIdData = AuthorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
@@ -387,8 +387,6 @@ namespace Generated.Improbable.Gdk.Tests
                 
             public override void SendCommands(Connection connection)
             {
-
-                SendAuthorityLossImminentAcknowledgement(connection);
             }
 
             public static ExhaustiveOptional.Translation GetTranslation(uint internalHandleToTranslation)

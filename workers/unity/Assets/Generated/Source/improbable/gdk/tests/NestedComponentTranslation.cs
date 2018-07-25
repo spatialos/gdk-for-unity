@@ -225,7 +225,7 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
 
-            private void SendAuthorityLossImminentAcknowledgement(Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(Connection connection)
             {
                 var componentDataArray = AuthorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSNestedComponent>>();
                 var spatialEntityIdData = AuthorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
@@ -244,8 +244,6 @@ namespace Generated.Improbable.Gdk.Tests
                 
             public override void SendCommands(Connection connection)
             {
-
-                SendAuthorityLossImminentAcknowledgement(connection);
             }
 
             public static NestedComponent.Translation GetTranslation(uint internalHandleToTranslation)

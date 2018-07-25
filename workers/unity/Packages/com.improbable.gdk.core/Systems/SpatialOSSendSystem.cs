@@ -68,6 +68,7 @@ namespace Improbable.Gdk.Core
             foreach (var componentTypeIndex in commandSenders)
             {
                 view.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                view.TranslationUnits[componentTypeIndex].SendAuthorityLossImminentAcknowledgement(connection);
             }
         }
     }
