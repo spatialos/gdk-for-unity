@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.MonoBehaviours
+namespace Improbable.Gdk.Core
 {
     public abstract class NonBlittableReaderBase<TSpatialComponentData, TComponentUpdate>
         : ReaderBase<TSpatialComponentData, TComponentUpdate>

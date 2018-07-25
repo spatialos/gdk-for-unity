@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace Improbable.Gdk.Core.MonoBehaviours
+namespace Improbable.Gdk.Core
 {
     public abstract class BlittableReaderBase<TSpatialComponentData, TComponentUpdate>
         : ReaderBase<TSpatialComponentData, TComponentUpdate>

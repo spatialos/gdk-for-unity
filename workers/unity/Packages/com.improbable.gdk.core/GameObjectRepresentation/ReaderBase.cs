@@ -2,7 +2,7 @@
 using Improbable.Worker;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.MonoBehaviours
+namespace Improbable.Gdk.Core
 {
     public abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
         : IReader<TSpatialComponentData>,

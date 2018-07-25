@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core.MonoBehaviours;
+﻿using System;
 using Improbable.Worker;
 using JetBrains.Annotations;
 using NUnit.Framework;
