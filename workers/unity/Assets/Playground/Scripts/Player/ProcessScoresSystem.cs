@@ -28,6 +28,7 @@ namespace Playground
                 {
                     launcher.Score += request.RawRequest.AmountIncrease;
                 }
+
                 scoringData.Launcher[i] = launcher;
             }
         }

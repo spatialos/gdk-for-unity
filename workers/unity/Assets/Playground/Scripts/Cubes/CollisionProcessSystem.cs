@@ -54,12 +54,14 @@ namespace Playground
                 }
                 else if (first_launcher == second_launcher)
                 {
-                    launchableData.Sender[i].SendScoreIncreaseRequest(first_launcher, new Generated.Playground.ScoreIncreaseRequest()
-                    {
-                        LauncherToScore = first_launcher,
-                        AmountIncrease = 1,
-                    });
+                    launchableData.Sender[i].SendScoreIncreaseRequest(first_launcher,
+                        new Generated.Playground.ScoreIncreaseRequest()
+                        {
+                            LauncherToScore = first_launcher,
+                            AmountIncrease = 1,
+                        });
                 }
+
                 PostUpdateCommands.DestroyEntity(launchableData.Entities[i]);
             }
         }

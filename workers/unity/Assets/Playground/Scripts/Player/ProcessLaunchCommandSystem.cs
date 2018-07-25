@@ -104,11 +104,13 @@ namespace Playground
                     launcher = info.Launcher;
                     launchable.MostRecentLauncher = launcher;
                 }
-                sender.SendScoreIncreaseRequest(launchable.MostRecentLauncher, new Generated.Playground.ScoreIncreaseRequest
-                {
-                    LauncherToScore = launchable.MostRecentLauncher,
-                    AmountIncrease = 1.0f,
-                });
+
+                sender.SendScoreIncreaseRequest(launchable.MostRecentLauncher,
+                    new Generated.Playground.ScoreIncreaseRequest
+                    {
+                        LauncherToScore = launchable.MostRecentLauncher,
+                        AmountIncrease = 1.0f,
+                    });
                 launchableData.Launchable[i] = launchable;
             }
         }

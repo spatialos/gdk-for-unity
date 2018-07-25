@@ -31,6 +31,7 @@ namespace Playground
             {
                 UIComponent.Main.TestText.text = $"Energy: {launcher.EnergyLeft}";
             }
+
             UIComponent.Main.ScoreText.text = $"Score: {launcher.Score}";
         }
     }
