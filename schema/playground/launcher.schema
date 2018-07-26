@@ -27,8 +27,7 @@ type LaunchMeCommandRequest {
 type LaunchMeCommandResponse {}
 
 type ScoreIncreaseRequest {
-    int64 launcher_to_score = 1;
-    float amount_increase = 2;
+    float amount = 1; 
 }
 
 type ScoreIncreaseResponse {}
@@ -39,7 +38,7 @@ component Launcher {
     float recharge_time_left = 3;
     float score = 4;
     command LaunchCommandResponse launch_entity(LaunchCommandRequest);
-    command ScoreIncreaseResponse score_increase(ScoreIncreaseRequest);
+    command ScoreIncreaseResponse increase_score(ScoreIncreaseRequest);
 }
 
 component Launchable {

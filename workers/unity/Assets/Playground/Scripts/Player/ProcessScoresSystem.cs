@@ -14,7 +14,7 @@ namespace Playground
             public ComponentDataArray<SpatialOSLauncher> Launcher;
 
             [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.ScoreIncrease.Request>> CommandRequests;
+            public ComponentArray<CommandRequests<Generated.Playground.Launcher.IncreaseScore.Request>> CommandRequests;
         }
 
         [Inject] private ScoringData scoringData;
@@ -26,7 +26,7 @@ namespace Playground
                 var launcher = scoringData.Launcher[i];
                 foreach (var request in scoringData.CommandRequests[i].Buffer)
                 {
-                    launcher.Score += request.RawRequest.AmountIncrease;
+                    launcher.Score += request.RawRequest.Amount;
                 }
 
                 scoringData.Launcher[i] = launcher;

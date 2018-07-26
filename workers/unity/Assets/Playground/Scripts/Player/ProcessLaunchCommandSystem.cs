@@ -105,11 +105,10 @@ namespace Playground
                     launchable.MostRecentLauncher = launcher;
                 }
 
-                sender.SendScoreIncreaseRequest(launchable.MostRecentLauncher,
+                sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,
                     new Generated.Playground.ScoreIncreaseRequest
                     {
-                        LauncherToScore = launchable.MostRecentLauncher,
-                        AmountIncrease = 1.0f,
+                        Amount = 1.0f,
                     });
                 launchableData.Launchable[i] = launchable;
             }
