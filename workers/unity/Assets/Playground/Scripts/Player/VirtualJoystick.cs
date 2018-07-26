@@ -4,16 +4,14 @@ using UnityEngine.UI;
 
 public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
-    private Image bgImg;
-    private Image joystickImg;
+    [SerializeField] private Image bgImg;
+    [SerializeField] private Image joystickImg;
 
     public Vector2 InputDirection;
 
     public void Start()
     {
-        bgImg = GetComponent<Image>();
-        joystickImg = transform.GetChild(0).GetComponent<Image>();
-        InputDirection = Vector3.zero;
+        InputDirection = Vector2.zero;
     }
 
     public void OnDrag(PointerEventData eventData)

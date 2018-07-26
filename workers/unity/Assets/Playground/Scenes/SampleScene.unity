@@ -401,7 +401,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 318b9e78d2f4e894aaf25cad9e0433f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputDirection: {x: 0, y: 0, z: 0}
+  bgImg: {fileID: 391327149}
+  joystickImg: {fileID: 317484966}
+  InputDirection: {x: 0, y: 0}
 --- !u!1 &520910403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,7 +1017,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 318b9e78d2f4e894aaf25cad9e0433f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputDirection: {x: 0, y: 0, z: 0}
+  bgImg: {fileID: 1742419481}
+  joystickImg: {fileID: 2121542031}
+  InputDirection: {x: 0, y: 0}
 --- !u!114 &1742419481
 MonoBehaviour:
   m_ObjectHideFlags: 0
