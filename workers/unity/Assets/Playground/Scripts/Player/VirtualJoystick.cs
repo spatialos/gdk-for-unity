@@ -8,6 +8,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     [SerializeField] private Image joystickImg;
 
     public Vector2 InputDirection;
+    private int? lastTouch;
 
     public void Start()
     {
@@ -27,20 +28,26 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             InputDirection = new Vector2(x, y);
             InputDirection = InputDirection.sqrMagnitude > 1 ? InputDirection.normalized : InputDirection;
 
-            joystickImg.rectTransform.anchoredPosition =
-                new Vector3(InputDirection.x * (bgImg.rectTransform.sizeDelta.x / 3),
-                    InputDirection.y * (bgImg.rectTransform.sizeDelta.y / 3));
+            joystickImg.rectTransform.anchoredPosition = InputDirection * bgImg.rectTransform.sizeDelta / 3;
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        InputDirection = Vector3.zero;
-        joystickImg.rectTransform.anchoredPosition = Vector3.zero;
+        if (lastTouch.HasValue && eventData.pointerId == lastTouch.Value)
+        {
+            InputDirection = Vector3.zero;
+            joystickImg.rectTransform.anchoredPosition = Vector3.zero;
+            lastTouch = null;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        OnDrag(eventData);
+        if (!lastTouch.HasValue)
+        {
+            lastTouch = eventData.pointerId;
+            OnDrag(eventData);
+        }
     }
 }

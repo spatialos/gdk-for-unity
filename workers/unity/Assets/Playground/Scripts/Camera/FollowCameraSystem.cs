@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -54,7 +55,8 @@ namespace Playground
             }
             catch (NullReferenceException)
             {
-                Debug.Log("Could not find virtual camera joystick. Camera movement is now disabled on mobile");
+                WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
+                    new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
 #if (UNITY_ANDROID || UNITY_IOS)
                 Enabled = false;
 #endif

@@ -18,7 +18,6 @@ namespace Playground
         }
 
         public VirtualJoystick VirtualJoystick;
-
         [Inject] private PlayerInputData playerInputData;
 
         protected override void OnCreateManager(int capacity)
@@ -34,7 +33,9 @@ namespace Playground
             }
             catch (NullReferenceException)
             {
-                Debug.Log("Could not find movement virtual stick. Movement is now disabled on mobile");
+                WorkerRegistry.GetWorkerForWorld(World)
+                    .View.LogDispatcher.HandleLog(LogType.Error,
+                        new LogEvent("Could not find movement virtual stick. Movement is now disabled on mobile"));
 #if (UNITY_ANDROID || UNITY_IOS)
                 Enabled = false;
 #endif
@@ -59,7 +60,6 @@ namespace Playground
                     Vertical = input.z,
                     Running = Input.GetKey(KeyCode.LeftShift)
                 };
-
                 playerInputData.PlayerInput[i] = newPlayerInput;
             }
         }
