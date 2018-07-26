@@ -6,17 +6,18 @@ using UnityEngine;
 public class ScoreCollision : MonoBehaviour
 {
     private EntityManager entityManager;
+    private SpatialOSComponent component;
 
     public void OnCollisionEnter(Collision col)
     {
-        var component = GetComponent<SpatialOSComponent>();
-        if (!component)
-        {
-            Debug.LogError("Could not get SpatialOSComponent.");
-            return;
-        }
         if (entityManager == null)
         {
+            component = GetComponent<SpatialOSComponent>();
+            if (!component)
+            {
+                Debug.LogError("Could not get SpatialOSComponent.");
+                return;
+            }
             entityManager = component.World.GetExistingManager<EntityManager>();
         }
         if (col.gameObject && col.gameObject.tag == "Cube")
