@@ -6,7 +6,7 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public class SchemaFunctionMappings
     {
-        public static Dictionary<string, string> PrimitiveTypeToAddSchemaFunction = new Dictionary<string, string>
+        public static Dictionary<string, string> BuiltInTypeToAddSchemaFunction = new Dictionary<string, string>
         {
             { BuiltInTypeConstants.builtInBool, "AddBool"},
             { BuiltInTypeConstants.builtInBytes, "AddBytes" },
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.CodeGenerator
             { BuiltInTypeConstants.builtInString, "AddString" }
         };
 
-        public static Dictionary<string, string> PrimitiveTypeToGetSchemaFunction = new Dictionary<string, string>
+        public static Dictionary<string, string> BuiltInTypeToGetSchemaFunction = new Dictionary<string, string>
         {
             { BuiltInTypeConstants.builtInBool, "GetBool"},
             { BuiltInTypeConstants.builtInBytes, "GetBytes" },
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.CodeGenerator
             { BuiltInTypeConstants.builtInString, "GetString" }
         };
 
-        public static Dictionary<string, string> PrimitiveTypeToGetCountSchemaFunction = new Dictionary<string, string>
+        public static Dictionary<string, string> BuiltInTypeToGetCountSchemaFunction = new Dictionary<string, string>
         {
             { BuiltInTypeConstants.builtInBool, "GetBoolCount"},
             { BuiltInTypeConstants.builtInBytes, "GetBytesCount" },

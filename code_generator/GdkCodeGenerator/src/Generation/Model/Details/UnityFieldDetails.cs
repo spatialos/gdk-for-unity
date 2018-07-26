@@ -50,58 +50,61 @@ namespace Improbable.Gdk.CodeGenerator
 
             if (rawFieldDefinition.IsOption())
             {
-                var containedType = GetTypeFromTypeReference(rawFieldDefinition.optionType.valueType, packagePrefix);
+                var valueType = rawFieldDefinition.optionType.valueType;
+                var containedType = GetTypeFromTypeReference(valueType, packagePrefix);
                 Type = string.Format("global::System.Nullable<{0}>", containedType);
                 SchemaTypeInfo = new FieldTypeInfo
                 {
                     OptionTypeInfo = new TypeInfo
                     {
                         IsPrimitive =
-                            SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
-                                .optionType.valueType.TypeName),
-                        IsEnum = enumSet.Contains(rawFieldDefinition.optionType.valueType.TypeName),
+                            SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(valueType.TypeName),
+                        IsEnum = enumSet.Contains(valueType.TypeName),
                         Type = containedType,
                         SerializationFunctions = new SerializationFunctionStrings
                         {
-                            Serialize = GetSerializationFunctionFromType(rawFieldDefinition.optionType.valueType,
+                            Serialize = GetSerializationFunctionFromType(valueType,
                                 packagePrefix),
                             Deserialize =
-                                GetDeserializationFunctionFromType(rawFieldDefinition.optionType.valueType,
+                                GetDeserializationFunctionFromType(valueType,
                                     packagePrefix),
-                            GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.optionType.valueType)
+                            GetCount = GetSchemaCountFunctionFromType(valueType)
                         }
                     }
                 };
             }
             else if (rawFieldDefinition.IsList())
             {
-                var containedType = GetTypeFromTypeReference(rawFieldDefinition.listType.valueType, packagePrefix);
+                var valueType = rawFieldDefinition.listType.valueType;
+                var containedType = GetTypeFromTypeReference(valueType, packagePrefix);
                 Type = string.Format("global::System.Collections.Generic.List<{0}>", containedType);
                 SchemaTypeInfo = new FieldTypeInfo
                 {
                     ListTypeInfo = new TypeInfo
                     {
                         IsPrimitive =
-                            SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
-                                .listType.valueType.TypeName),
-                        IsEnum = enumSet.Contains(rawFieldDefinition.listType.valueType.TypeName),
+                            SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(valueType.TypeName),
+                        IsEnum = enumSet.Contains(valueType.TypeName),
                         Type = containedType,
                         SerializationFunctions = new SerializationFunctionStrings
                         {
-                            Serialize = GetSerializationFunctionFromType(rawFieldDefinition.listType.valueType,
+                            Serialize = GetSerializationFunctionFromType(valueType,
                                 packagePrefix),
                             Deserialize =
-                                GetDeserializationFunctionFromType(rawFieldDefinition.listType.valueType,
+                                GetDeserializationFunctionFromType(valueType,
                                     packagePrefix),
-                            GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.listType.valueType)
+                            GetCount = GetSchemaCountFunctionFromType(valueType)
                         }
                     }
                 };
             }
             else if (rawFieldDefinition.IsMap())
             {
-                var containedKeyType = GetTypeFromTypeReference(rawFieldDefinition.mapType.keyType, packagePrefix);
-                var containedValueType = GetTypeFromTypeReference(rawFieldDefinition.mapType.valueType, packagePrefix);
+                var keyType = rawFieldDefinition.mapType.keyType;
+                var valueType = rawFieldDefinition.mapType.valueType;
+
+                var containedKeyType = GetTypeFromTypeReference(keyType, packagePrefix);
+                var containedValueType = GetTypeFromTypeReference(valueType, packagePrefix);
                 Type = string.Format("global::System.Collections.Generic.Dictionary<{0}, {1}>", containedKeyType,
                     containedValueType);
                 SchemaTypeInfo = new FieldTypeInfo
@@ -110,35 +113,33 @@ namespace Improbable.Gdk.CodeGenerator
                         new TypeInfo
                         {
                             IsPrimitive =
-                                SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
-                                    .mapType.keyType.TypeName),
-                            IsEnum = enumSet.Contains(rawFieldDefinition.mapType.keyType.TypeName),
+                                SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(keyType.TypeName),
+                            IsEnum = enumSet.Contains(keyType.TypeName),
                             Type = containedKeyType,
                             SerializationFunctions = new SerializationFunctionStrings
                             {
-                                Serialize = GetSerializationFunctionFromType(rawFieldDefinition.mapType.keyType,
+                                Serialize = GetSerializationFunctionFromType(keyType,
                                     packagePrefix),
                                 Deserialize =
-                                    GetDeserializationFunctionFromType(rawFieldDefinition.mapType.keyType,
+                                    GetDeserializationFunctionFromType(keyType,
                                         packagePrefix),
-                                GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.mapType.keyType)
+                                GetCount = GetSchemaCountFunctionFromType(keyType)
                             }
                         },
                         new TypeInfo
                         {
                             IsPrimitive =
-                                SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
-                                    .mapType.valueType.TypeName),
-                            IsEnum = enumSet.Contains(rawFieldDefinition.mapType.valueType.TypeName),
+                                SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(valueType.TypeName),
+                            IsEnum = enumSet.Contains(valueType.TypeName),
                             Type = containedValueType,
                             SerializationFunctions = new SerializationFunctionStrings
                             {
-                                Serialize = GetSerializationFunctionFromType(rawFieldDefinition.mapType.valueType,
+                                Serialize = GetSerializationFunctionFromType(valueType,
                                     packagePrefix),
                                 Deserialize =
-                                    GetDeserializationFunctionFromType(rawFieldDefinition.mapType.valueType,
+                                    GetDeserializationFunctionFromType(valueType,
                                         packagePrefix),
-                                GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.mapType.valueType)
+                                GetCount = GetSchemaCountFunctionFromType(valueType)
                             }
                         }
                     )
@@ -152,7 +153,7 @@ namespace Improbable.Gdk.CodeGenerator
                     SingularTypeInfo = new TypeInfo
                     {
                         IsPrimitive =
-                            SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
+                            SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(rawFieldDefinition
                                 .singularType.TypeName),
                         IsEnum = enumSet.Contains(rawFieldDefinition.singularType.TypeName),
                         Type = Type,
@@ -179,23 +180,23 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static string GetSerializationFunctionFromType(TypeReferenceRaw typeReference, string packagePrefix)
         {
-            return SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction.ContainsKey(typeReference.TypeName)
-                ? SchemaFunctionMappings.PrimitiveTypeToAddSchemaFunction[typeReference.TypeName]
+            return SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction.ContainsKey(typeReference.TypeName)
+                ? SchemaFunctionMappings.BuiltInTypeToAddSchemaFunction[typeReference.TypeName]
                 : string.Format("{0}.Serialization.Serialize", GetTypeFromTypeReference(typeReference, packagePrefix));
         }
 
         private static string GetDeserializationFunctionFromType(TypeReferenceRaw typeReference, string packagePrefix)
         {
-            return SchemaFunctionMappings.PrimitiveTypeToGetSchemaFunction.ContainsKey(typeReference.TypeName)
-                ? SchemaFunctionMappings.PrimitiveTypeToGetSchemaFunction[typeReference.TypeName]
+            return SchemaFunctionMappings.BuiltInTypeToGetSchemaFunction.ContainsKey(typeReference.TypeName)
+                ? SchemaFunctionMappings.BuiltInTypeToGetSchemaFunction[typeReference.TypeName]
                 : string.Format("{0}.Serialization.Deserialize",
                     GetTypeFromTypeReference(typeReference, packagePrefix));
         }
 
         private static string GetSchemaCountFunctionFromType(TypeReferenceRaw typeReference)
         {
-            return SchemaFunctionMappings.PrimitiveTypeToGetCountSchemaFunction.ContainsKey(typeReference.TypeName)
-                ? SchemaFunctionMappings.PrimitiveTypeToGetCountSchemaFunction[typeReference.TypeName]
+            return SchemaFunctionMappings.BuiltInTypeToGetCountSchemaFunction.ContainsKey(typeReference.TypeName)
+                ? SchemaFunctionMappings.BuiltInTypeToGetCountSchemaFunction[typeReference.TypeName]
                 : "GetObjectCount";
         }
     }
