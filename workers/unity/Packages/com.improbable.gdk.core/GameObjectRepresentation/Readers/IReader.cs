@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     callbacks for updates, events and commands for component instances.
     /// </summary>
     /// <typeparam name="TSpatialComponentData">The data type for the SpatialOS component.</typeparam>
-    /// <typeparam name="TComponentUpdate">The update data type for the SpatialOS component.</typeparam>
+    /// <typeparam name="TComponentUpdate">The update type for the SpatialOS component.</typeparam>
     public interface IReader<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate

@@ -7,6 +7,5 @@
     {
         void Send(TComponentUpdate update);
         void SendAuthorityLossImminentAcknowledgement();
-        void CopyAndSend(TComponentUpdate update);
     }
 }
