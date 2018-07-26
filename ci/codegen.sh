@@ -20,7 +20,6 @@ dotnet run -p code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj -- \
   --schema-path="schema" \
   --schema-path="build/dependencies/schema/standard_library" \
   --json-dir="workers/unity/Temp/ImprobableJson" \
-  --native-output-dir="workers/unity/Assets/Generated/Source" \
-  --network-types-output-dir="workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated"
+  --native-output-dir="workers/unity/Assets/Generated/Source" 
 
 markEndOfBlock "Generating code"

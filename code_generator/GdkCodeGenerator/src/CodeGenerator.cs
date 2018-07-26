@@ -82,13 +82,10 @@ namespace Improbable.Gdk.CodeGenerator
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path={dir}");
 
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
-            SystemTools.EnsureDirectoryEmpty(options.NetworkTypesOutputDirectory);
             SystemTools.EnsureDirectoryEmpty(options.NativeOutputDirectory);
 
-            // Add all of the files we found to the command line.
             var arguments = new[]
             {
-                $@"--csharp_out={options.NetworkTypesOutputDirectory}",
                 $@"--ast_json_out={options.JsonDirectory}"
             }.Union(inputPaths).Union(files).ToList();
 
@@ -138,12 +135,6 @@ namespace Improbable.Gdk.CodeGenerator
             if (options.NativeOutputDirectory == null)
             {
                 Console.WriteLine("Native output directory not specified");
-                return false;
-            }
-
-            if (options.NetworkTypesOutputDirectory == null)
-            {
-                Console.WriteLine("Network types output directory not specified");
                 return false;
             }
 
