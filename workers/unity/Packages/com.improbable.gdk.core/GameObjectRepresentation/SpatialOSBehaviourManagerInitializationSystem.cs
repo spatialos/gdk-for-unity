@@ -15,9 +15,7 @@ namespace Improbable.Gdk.Core
             public EntityArray Entities;
             public ComponentArray<GameObjectReference> GameObjectReferences;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
-
-            [ReadOnly]
-            public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
+            [ReadOnly] public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
         }
 
         public struct RemovedEntitiesData
