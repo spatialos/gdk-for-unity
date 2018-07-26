@@ -7,7 +7,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     private Image bgImg;
     private Image joystickImg;
 
-    public Vector3 InputDirection;
+    public Vector2 InputDirection;
 
     public void Start()
     {
@@ -18,17 +18,16 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 pos = Vector2.zero;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgImg.rectTransform, eventData.position,
-            eventData.pressEventCamera, out pos))
+            eventData.pressEventCamera, out var pos))
         {
-            pos = pos / bgImg.rectTransform.sizeDelta;
+            pos /= bgImg.rectTransform.sizeDelta;
 
             var x = bgImg.rectTransform.pivot.x == 1 ? pos.x * 2 + 1 : pos.x * 2 - 1;
             var y = bgImg.rectTransform.pivot.y == 1 ? pos.y * 2 + 1 : pos.y * 2 - 1;
 
-            InputDirection = new Vector3(x, y, 0);
-            InputDirection = InputDirection.magnitude > 1 ? InputDirection.normalized : InputDirection;
+            InputDirection = new Vector2(x, y);
+            InputDirection = InputDirection.sqrMagnitude > 1 ? InputDirection.normalized : InputDirection;
 
             joystickImg.rectTransform.anchoredPosition =
                 new Vector3(InputDirection.x * (bgImg.rectTransform.sizeDelta.x / 3),
