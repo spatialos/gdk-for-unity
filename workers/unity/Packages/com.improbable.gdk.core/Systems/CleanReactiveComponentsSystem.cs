@@ -93,6 +93,18 @@ namespace Improbable.Gdk.Core
                 }
             });
         }
+        
+        private void UsedOnlyForAotCodeGeneration()
+        {
+            // IL2CPP needs those lines for AOT instantiation of methods
+            AddRemoveComponentAction<OnConnected>();
+            AddRemoveComponentAction<OnDisconnected>();
+            AddRemoveComponentAction<NewlyAddedSpatialOSEntity>();
+
+            // Include an exception so we can be sure to know if this method is ever called.
+            throw new InvalidOperationException(
+                "This method is used for AOT code generation only. Do not call it at runtime.");
+        }
 
         protected override void OnUpdate()
         {
