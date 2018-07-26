@@ -31,12 +31,10 @@ namespace <#= qualifiedNamespace #>
             private static readonly ComponentType targetComponentType = typeof(<#= componentDetails.TypeName #>);
 
             public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), 
-                typeof(SpatialEntityId) };
+            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId) };
                 
             public override ComponentType[] AuthorityLossComponentTypes => authorityLossComponentTypes;
-            private static readonly ComponentType[] authorityLossComponentTypes = { typeof(AuthorityLossImminent<<#= componentDetails.TypeName #>>),
-                typeof(SpatialEntityId) };
+            private static readonly ComponentType[] authorityLossComponentTypes = { typeof(AuthorityLossImminent<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId) };
 
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
