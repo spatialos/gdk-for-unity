@@ -20,7 +20,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
             }
 
 
-            EntityManager.GetComponentObject<ComponentsUpdated<ReaderTestComponent.Update>>(Entity).Buffer
+            EntityManager.GetComponentObject<ComponentsUpdated<ReaderTestComponent.Update>>(Entity)
+                .Buffer
                 .AddRange(updatesToSend);
         }
 
@@ -46,9 +47,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
 
             Assert.AreEqual(false, componentUpdated, "Adding an event callback should not fire it immediately");
 
-            var internalReader = (IReaderInternal) Reader;
-
             QueueUpdatesToEntity(updateToSend);
+
+            var internalReader = (IReaderInternal) Reader;
 
             internalReader.OnComponentUpdate();
 
@@ -134,7 +135,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
             Assert.IsFalse(intValueUpdated);
 
             floatValueUpdated = false;
-            
+
             ClearUpdatesInEntity();
 
             QueueUpdatesToEntity(new ReaderTestComponent.Update
