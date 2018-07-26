@@ -28,7 +28,7 @@ namespace Playground
                 GameObject controllerJoystick = GameObject.FindGameObjectWithTag("GameController");
                 VirtualJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
 #if !(UNITY_ANDROID || UNITY_IOS)
-                controllerJoystick.setActive(false);
+                controllerJoystick.SetActive(false);
 #endif
             }
             catch (NullReferenceException)
