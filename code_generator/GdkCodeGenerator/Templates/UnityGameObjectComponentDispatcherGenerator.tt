@@ -59,7 +59,7 @@ namespace <#= qualifiedNamespace #>
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entities[i].Index];
+                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
                     spatialOSBehaviourManager.OnAddComponent(<#= unityComponentDefinition.Id #>);
                 }
             }
@@ -69,7 +69,7 @@ namespace <#= qualifiedNamespace #>
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entities[i].Index];
+                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
                     spatialOSBehaviourManager.OnRemoveComponent(<#= unityComponentDefinition.Id #>);
                 }
             }
@@ -80,7 +80,7 @@ namespace <#= qualifiedNamespace #>
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entities[i].Index];
+                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
                     for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
                     {
                         spatialOSBehaviourManager.OnAuthorityChange(<#= unityComponentDefinition.Id #>, authoritiesChangedTags[i].Buffer[j]);

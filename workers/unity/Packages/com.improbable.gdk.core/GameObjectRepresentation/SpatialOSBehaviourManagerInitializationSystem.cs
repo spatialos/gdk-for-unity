@@ -1,7 +1,5 @@
-using System;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -34,14 +32,12 @@ namespace Improbable.Gdk.Core
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         private GameObjectDispatcherSystem gameObjectDispatcherSystem;
-        private ILogDispatcher logDispatcher;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
             gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            logDispatcher = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
         }
 
         protected override void OnUpdate()
@@ -49,37 +45,14 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var entityIndex = addedEntitiesData.Entities[i].Index;
-                if (gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
-                {
-                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Entity already has a SpatialOSBehaviourManager.")
-                        .WithField("EntityIndex", entityIndex));
-                    continue;
-                }
-
-                gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entityIndex] =
-                    new SpatialOSBehaviourManager(addedEntitiesData.GameObjectReferences[i].GameObject);
+                var spatialOSBehaviourManager = new SpatialOSBehaviourManager(addedEntitiesData.GameObjectReferences[i].GameObject);
+                gameObjectDispatcherSystem.AddSpatialOSBehaviourManager(entityIndex, spatialOSBehaviourManager);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                if (!gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
-                {
-                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "SpatialOSBehaviourManager corresponding to removed entity not found.")
-                        .WithField("EntityIndex", entityIndex));
-                    continue;
-                }
-
-                gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager.Remove(entityIndex);
-            }
-        }
-
-        public class GameObjectDispatcherSystemNotFoundException : Exception
-        {
-            public GameObjectDispatcherSystemNotFoundException(string message) : base(message)
-            {
+                gameObjectDispatcherSystem.RemoveSpatialOSBehaviourManager(entityIndex);
             }
         }
     }

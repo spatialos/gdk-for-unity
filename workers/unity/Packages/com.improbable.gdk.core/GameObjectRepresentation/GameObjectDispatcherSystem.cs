@@ -11,11 +11,51 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     public class GameObjectDispatcherSystem : ComponentSystem
     {
-        public readonly Dictionary<int, SpatialOSBehaviourManager> EntityIndexToSpatialOSBehaviourManager =
+        private readonly Dictionary<int, SpatialOSBehaviourManager> entityIndexToSpatialOSBehaviourManager =
             new Dictionary<int, SpatialOSBehaviourManager>();
+        private List<SpatialOSBehaviourManager> spatialOSBehaviourManagers =
+            new Collections.List<SpatialOSBehaviourManager>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
+
+        public void AddSpatialOSBehaviourManager(int entityIndex, SpatialOSBehaviourManager spatialOSBehaviourManager)
+        {
+            if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            {
+                throw new SpatialOSBehaviourManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entityIndex}.");
+            }
+
+            entityIndexToSpatialOSBehaviourManager[entityIndex] = spatialOSBehaviourManager;
+            spatialOSBehaviourManagers.Add(spatialOSBehaviourManager);
+        }
+
+        public void RemoveSpatialOSBehaviourManager(int entityIndex)
+        {
+            if (!entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            {
+                throw new SpatialOSBehaviourManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
+            }
+
+            var spatialOSBehaviourManager = entityIndexToSpatialOSBehaviourManager[entityIndex];
+            entityIndexToSpatialOSBehaviourManager.Remove(entityIndex);
+            spatialOSBehaviourManagers.Remove(spatialOSBehaviourManager);
+        }
+
+        public bool HasSpatialOSBehaviourManager(int entityId)
+        {
+            return entityIndexToSpatialOSBehaviourManager.ContainsKey(entityId);
+        }
+
+        public SpatialOSBehaviourManager GetSpatialOSBehaviourManager(int entityIndex)
+        {
+            if (!entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            {
+                throw new SpatialOSBehaviourManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
+            }
+
+            return entityIndexToSpatialOSBehaviourManager[entityIndex];
+        }
 
         protected override void OnCreateManager(int capacity)
         {
@@ -32,7 +72,8 @@ namespace Improbable.Gdk.Core
                 .Where(type => typeof(GameObjectComponentDispatcherBase).IsAssignableFrom(type) && !type.IsAbstract)
                 .ToList();
 
-            GameObjectComponentDispatchers.AddRange(gameObjectComponentDispatcherTypes.Select(type => (GameObjectComponentDispatcherBase) Activator.CreateInstance(type)));
+            GameObjectComponentDispatchers.AddRange(gameObjectComponentDispatcherTypes.Select(type =>
+                (GameObjectComponentDispatcherBase) Activator.CreateInstance(type)));
         }
 
         private void GenerateComponentGroups()
@@ -84,7 +125,7 @@ namespace Improbable.Gdk.Core
                 gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(this);
             }
 
-            foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+            foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
             {
                     spatialOSBehaviourManager.EnableSpatialOSBehaviours();
             }
@@ -97,9 +138,23 @@ namespace Improbable.Gdk.Core
                 gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(this);
             }
 
-            foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+            foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
             {
                 spatialOSBehaviourManager.DisableSpatialOSBehaviours();
+            }
+        }
+
+        public class SpatialOSBehaviourManagerAlreadyExistsException : Exception
+        {
+            public SpatialOSBehaviourManagerAlreadyExistsException(string message) : base(message)
+            {
+            }
+        }
+
+        public class SpatialOSBehaviourManagerNotFoundException : Exception
+        {
+            public SpatialOSBehaviourManagerNotFoundException(string message) : base(message)
+            {
             }
         }
     }
