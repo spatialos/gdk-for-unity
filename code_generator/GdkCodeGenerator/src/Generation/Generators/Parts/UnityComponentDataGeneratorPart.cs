@@ -9,11 +9,11 @@ namespace Improbable.Gdk.CodeGenerator
         private UnityComponentDefinition unityComponentDefinition;
         private HashSet<string> enumSet;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package, HashSet<string> e)
+        public string Generate(UnityComponentDefinition unityComponentDefinition, string package, HashSet<string> enumSet)
         {
             qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
             this.unityComponentDefinition = unityComponentDefinition;
-            this.enumSet = e;
+            this.enumSet = enumSet;
 
             return TransformText();
         }
