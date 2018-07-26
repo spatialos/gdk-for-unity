@@ -33,7 +33,6 @@ namespace Playground
             public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
 
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
         }
 
@@ -65,7 +64,7 @@ namespace Playground
                         ImpactPoint = info.ImpactPoint,
                         LaunchDirection = info.LaunchDirection,
                         LaunchEnergy = energy,
-                        Launcher = info.Launcher
+                        LauncherResponsible = info.LauncherResponsible
                     });
                     energyLeft -= energy;
                     j++;
@@ -101,7 +100,7 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    launcher = info.Launcher;
+                    launcher = info.LauncherResponsible;
                     launchable.MostRecentLauncher = launcher;
                 }
 

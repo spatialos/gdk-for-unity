@@ -91,7 +91,7 @@ namespace Playground
                     ImpactPoint = impactPoint,
                     LaunchDirection = launchDirection,
                     LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
-                    Launcher = playerId
+                    LauncherResponsible = playerId
                 });
             }
         }
