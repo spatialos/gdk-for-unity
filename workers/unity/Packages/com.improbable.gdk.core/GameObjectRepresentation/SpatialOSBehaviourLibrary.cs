@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Entities;
 using UnityEngine;
 
@@ -186,7 +187,7 @@ namespace Improbable.Gdk.Core
                     fields.Add(field);
                 }
             }
-            
+
             return fields;
         }
     }
