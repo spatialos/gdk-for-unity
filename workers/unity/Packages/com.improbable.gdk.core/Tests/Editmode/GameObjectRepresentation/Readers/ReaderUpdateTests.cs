@@ -1,4 +1,6 @@
 ﻿using System;
+using Generated.Improbable.Gdk.Tests.BlittableTypes;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -7,27 +9,26 @@ using UnityEngine.TestTools;
 namespace Improbable.Gdk.Core.EditmodeTests.Readers
 {
     [TestFixture]
-    public class ReaderUpdateTests : ReaderTestsBase
+    public class ReaderUpdateTests : ReaderWriterTestsBase
     {
-        private void QueueUpdatesToEntity(params ReaderTestComponent.Update[] updatesToSend)
+        private void QueueUpdatesToEntity(params SpatialOSBlittableComponent.Update[] updatesToSend)
         {
-            if (!EntityManager.HasComponent<ComponentsUpdated<ReaderTestComponent.Update>>(Entity))
+            if (!EntityManager.HasComponent<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity))
             {
-                EntityManager.AddComponent(Entity, typeof(ComponentsUpdated<ReaderTestComponent.Update>));
+                EntityManager.AddComponent(Entity, typeof(ComponentsUpdated<SpatialOSBlittableComponent.Update>));
 
-                var componentsUpdated = new ComponentsUpdated<ReaderTestComponent.Update>();
+                var componentsUpdated = new ComponentsUpdated<SpatialOSBlittableComponent.Update>();
                 EntityManager.SetComponentObject(Entity, componentsUpdated);
             }
 
-
-            EntityManager.GetComponentObject<ComponentsUpdated<ReaderTestComponent.Update>>(Entity)
+            EntityManager.GetComponentObject<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity)
                 .Buffer
                 .AddRange(updatesToSend);
         }
 
         private void ClearUpdatesInEntity()
         {
-            EntityManager.GetComponentObject<ComponentsUpdated<ReaderTestComponent.Update>>(Entity).Buffer
+            EntityManager.GetComponentObject<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity).Buffer
                 .Clear();
         }
 
@@ -35,8 +36,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
         public void ComponentUpdated_gets_triggered_when_the_reader_receives_an_update()
         {
             var componentUpdated = false;
-
-            var updateToSend = new ReaderTestComponent.Update();
+            var updateToSend = new SpatialOSBlittableComponent.Update();
 
             Reader.ComponentUpdated += update =>
             {
@@ -59,9 +59,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
         [Test]
         public void ComponentUpdated_gets_triggered_for_multiple_updates()
         {
-            var firstUpdate = new ReaderTestComponent.Update();
-            var secondUpdate = new ReaderTestComponent.Update();
-            var thirdUpdate = new ReaderTestComponent.Update();
+            var firstUpdate = new SpatialOSBlittableComponent.Update();
+            var secondUpdate = new SpatialOSBlittableComponent.Update();
+            var thirdUpdate = new SpatialOSBlittableComponent.Update();
 
             var updatesToSend = new[]
             {
@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
             Reader.ComponentUpdated += update => { secondUpdateCalled = true; };
             Reader.ComponentUpdated += update => throw new Exception("this statement is false");
 
-            QueueUpdatesToEntity(new ReaderTestComponent.Update());
+            QueueUpdatesToEntity(new SpatialOSBlittableComponent.Update());
 
             var internalReader = (IReaderInternal) Reader;
 
@@ -115,39 +115,39 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
         [Test]
         public void FieldUpdates_get_called_if_property_changes()
         {
-            bool floatValueUpdated = false;
-            bool intValueUpdated = false;
+            bool floatFieldUpdated = false;
+            bool intFieldUpdated = false;
 
-            Reader.FloatValueUpdated += newValue => { floatValueUpdated = true; };
-            Reader.IntValueUpdated += newValue => { intValueUpdated = true; };
+            Reader.FloatFieldUpdated += newValue => { floatFieldUpdated = true; };
+            Reader.IntFieldUpdated += newValue => { intFieldUpdated = true; };
 
-            QueueUpdatesToEntity(new ReaderTestComponent.Update
+            QueueUpdatesToEntity(new SpatialOSBlittableComponent.Update
             {
-                FloatValue = new Option<float>(10),
-                IntValue = new Option<int>(),
+                FloatField = new Option<float>(10.0f),
+                IntField = new Option<int>(),
             });
 
             var internalReader = (IReaderInternal) Reader;
 
             internalReader.OnComponentUpdate();
 
-            Assert.IsTrue(floatValueUpdated);
-            Assert.IsFalse(intValueUpdated);
+            Assert.IsTrue(floatFieldUpdated);
+            Assert.IsFalse(intFieldUpdated);
 
-            floatValueUpdated = false;
+            floatFieldUpdated = false;
 
             ClearUpdatesInEntity();
 
-            QueueUpdatesToEntity(new ReaderTestComponent.Update
+            QueueUpdatesToEntity(new SpatialOSBlittableComponent.Update
             {
-                FloatValue = new Option<float>(),
-                IntValue = new Option<int>(20),
+                FloatField = new Option<float>(),
+                IntField = new Option<int>(20),
             });
 
             internalReader.OnComponentUpdate();
 
-            Assert.IsFalse(floatValueUpdated);
-            Assert.IsTrue(intValueUpdated);
+            Assert.IsFalse(floatFieldUpdated);
+            Assert.IsTrue(intFieldUpdated);
         }
     }
 }

@@ -1,5 +1,7 @@
+using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.EditmodeTests;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -9,22 +11,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
     [TestFixture]
     public class NonBlittableReaderTests
     {
-        private class NonBlittableTestComponent : Component, ISpatialComponentData
+        private class SpatialOSNonBlittableComponentReader :
+            NonBlittableReaderBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
-            public BlittableBool DirtyBit { get; set; }
-
-            public string StringValue;
-
-            public struct Update : ISpatialComponentUpdate<NonBlittableTestComponent>
+            public SpatialOSNonBlittableComponentReader(Entity entity, EntityManager entityManager) : base(entity,
+                entityManager)
             {
-                public Option<string> StringValue;
-            }
-
-            public class Reader : NonBlittableReaderBase<NonBlittableTestComponent, Update>
-            {
-                public Reader(Entity entity, EntityManager entityManager) : base(entity, entityManager)
-                {
-                }
             }
         }
 
@@ -34,20 +26,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
             using (var world = new World("test-world"))
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
+                var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
+                var reader = new SpatialOSNonBlittableComponentReader(entity, entityManager);
 
-                var entity = entityManager.CreateEntity(typeof(NonBlittableTestComponent));
-
-                var reader = new NonBlittableTestComponent.Reader(entity, entityManager);
-
-                entityManager.SetComponentObject(entity, new NonBlittableTestComponent
+                entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent
                 {
-                    StringValue = "test string"
+                    StringField = "test string"
                 });
 
-                var data = entityManager.GetComponentObject<NonBlittableTestComponent>(entity);
+                var data = entityManager.GetComponentObject<SpatialOSNonBlittableComponent>(entity);
 
                 Assert.AreEqual(data, reader.Data);
-                Assert.AreEqual("test string", reader.Data.StringValue);
+                Assert.AreEqual("test string", reader.Data.StringField);
             }
         }
     }

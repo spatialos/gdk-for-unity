@@ -1,4 +1,6 @@
 ﻿using System;
+using Generated.Improbable.Gdk.Tests.BlittableTypes;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using NUnit.Framework;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine.TestTools;
 namespace Improbable.Gdk.Core.EditmodeTests.Readers
 {
     [TestFixture]
-    public class ReaderAuthorityTests : ReaderTestsBase
+    public class ReaderAuthorityTests : ReaderWriterTestsBase
     {
         [Test]
         public void Authority_throws_if_the_entity_has_no_authority_components()
@@ -19,28 +21,29 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
         [Test]
         public void Authority_returns_NotAuthoritative_when_no_authority_components_are_present()
         {
-            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<ReaderTestComponent>));
+            // TODO, do we need to clean up the components here and in other functions?
+            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
             Assert.AreEqual(Authority.NotAuthoritative, Reader.Authority);
         }
 
         [Test]
         public void Authority_returns_Authoritative_when_Authuritative_component_is_present()
         {
-            EntityManager.AddComponent(Entity, typeof(Authoritative<ReaderTestComponent>));
+            EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
             Assert.AreEqual(Authority.Authoritative, Reader.Authority);
         }
 
         [Test]
         public void Authority_returns_AuthorityLossImminent_when_Authuritative_component_is_present()
         {
-            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<ReaderTestComponent>));
+            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
             Assert.AreEqual(Authority.AuthorityLossImminent, Reader.Authority);
         }
 
         [Test]
         public void Authority_can_be_NotAuthoritative_if_another_component_is_authoritative()
         {
-            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<ReaderTestComponent>));
+            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
             EntityManager.AddComponent(Entity, typeof(Authoritative<SomeOtherComponent>));
             Assert.AreEqual(Authority.NotAuthoritative, Reader.Authority);
         }

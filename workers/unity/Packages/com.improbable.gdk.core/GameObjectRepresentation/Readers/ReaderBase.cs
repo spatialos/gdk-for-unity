@@ -5,13 +5,13 @@ using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
-        : IReader<TSpatialComponentData>,
+        : IReader<TSpatialComponentData, TComponentUpdate>,
             IReaderInternal
         where TSpatialComponentData : ISpatialComponentData
-        where TComponentUpdate : ISpatialComponentUpdate<TSpatialComponentData>
+        where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
@@ -26,14 +26,14 @@ namespace Improbable.Gdk.Core
         {
             get
             {
-                if (EntityManager.HasComponent<Authoritative<TSpatialComponentData>>(Entity))
-                {
-                    return Authority.Authoritative;
-                }
-
                 if (EntityManager.HasComponent<AuthorityLossImminent<TSpatialComponentData>>(Entity))
                 {
                     return Authority.AuthorityLossImminent;
+                }
+
+                if (EntityManager.HasComponent<Authoritative<TSpatialComponentData>>(Entity))
+                {
+                    return Authority.Authoritative;
                 }
 
                 if (EntityManager.HasComponent<NotAuthoritative<TSpatialComponentData>>(Entity))
@@ -56,10 +56,10 @@ namespace Improbable.Gdk.Core
             remove => authorityChangedDelegates.Remove(value);
         }
 
-        private readonly List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>> componentUpdateDelegates
-            = new List<GameObjectDelegates.ComponentUpdated<TSpatialComponentData>>();
+        private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
+            = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
 
-        public event GameObjectDelegates.ComponentUpdated<TSpatialComponentData> ComponentUpdated
+        public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
         {
             add => componentUpdateDelegates.Add(value);
             remove => componentUpdateDelegates.Remove(value);
@@ -76,6 +76,7 @@ namespace Improbable.Gdk.Core
                 catch (Exception e)
                 {
                     // Log the exception but do not rethrow it, as other delegates should still get called
+                    // TODO use LoggingDispatcher?
                     Debug.LogException(e);
                 }
             }
