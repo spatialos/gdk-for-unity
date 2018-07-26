@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cube
   - ConnectionPanel
+  - CameraJoystick
   layers:
   - Default
   - TransparentFX
