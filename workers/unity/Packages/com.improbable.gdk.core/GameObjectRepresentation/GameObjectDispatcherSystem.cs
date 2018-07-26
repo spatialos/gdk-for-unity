@@ -11,10 +11,11 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     public class GameObjectDispatcherSystem : ComponentSystem
     {
-        public readonly Dictionary<int, SpatialOSBehaviourManager> EntityIndexToSpatialOSBehaviourManager = new Dictionary<int, SpatialOSBehaviourManager>();
+        public readonly Dictionary<int, SpatialOSBehaviourManager> EntityIndexToSpatialOSBehaviourManager =
+            new Dictionary<int, SpatialOSBehaviourManager>();
 
-        public readonly HashSet<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
-            new HashSet<GameObjectComponentDispatcherBase>();
+        public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
+            new List<GameObjectComponentDispatcherBase>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -28,14 +29,10 @@ namespace Improbable.Gdk.Core
         {
             var gameObjectComponentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(GameObjectComponentDispatcherBase).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+                .Where(type => typeof(GameObjectComponentDispatcherBase).IsAssignableFrom(type) && !type.IsAbstract)
+                .ToList();
 
-            foreach (var gameObjectComponentDispatcherType in gameObjectComponentDispatcherTypes)
-            {
-                var gameObjectComponentDispatcher =
-                    (GameObjectComponentDispatcherBase)Activator.CreateInstance(gameObjectComponentDispatcherType);
-                GameObjectComponentDispatchers.Add(gameObjectComponentDispatcher);
-            }
+            GameObjectComponentDispatchers.AddRange(gameObjectComponentDispatcherTypes.Select(type => (GameObjectComponentDispatcherBase) Activator.CreateInstance(type)));
         }
 
         private void GenerateComponentGroups()
@@ -85,21 +82,24 @@ namespace Improbable.Gdk.Core
                 gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(this);
                 gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(this);
                 gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(this);
+            }
 
-                foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
-                {
+            foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+            {
                     spatialOSBehaviourManager.EnableSpatialOSBehaviours();
-                }
+            }
 
+            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
+            {
                 gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(this);
                 gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(this);
                 gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(this);
                 gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(this);
+            }
 
-                foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
-                {
-                    spatialOSBehaviourManager.DisableSpatialOSBehaviours();
-                }
+            foreach (var spatialOSBehaviourManager in EntityIndexToSpatialOSBehaviourManager.Values)
+            {
+                spatialOSBehaviourManager.DisableSpatialOSBehaviours();
             }
         }
     }

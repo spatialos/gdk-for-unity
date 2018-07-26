@@ -39,6 +39,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 {
                     Assert.IsNull(gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup);
                 }
+
                 if (gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays.Length > 0)
                 {
                     Assert.IsNotNull(gameObjectComponentDispatcher.EventsReceivedComponentGroups);
@@ -47,6 +48,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 {
                     Assert.IsNull(gameObjectComponentDispatcher.EventsReceivedComponentGroups);
                 }
+
                 if (gameObjectComponentDispatcher.CommandRequestsComponentTypeArrays.Length > 0)
                 {
                     Assert.IsNotNull(gameObjectComponentDispatcher.CommandRequestsComponentGroups);

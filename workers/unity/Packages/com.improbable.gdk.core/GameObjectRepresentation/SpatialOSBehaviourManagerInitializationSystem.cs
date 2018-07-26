@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.
     /// </summary>
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitializationGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitialisationGroup))]
     public class SpatialOSBehaviourManagerInitializationSystem : ComponentSystem
     {
         public struct AddedEntitiesData
@@ -17,7 +17,9 @@ namespace Improbable.Gdk.Core
             public EntityArray Entities;
             public ComponentArray<GameObjectReference> GameObjectReferences;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
-            [ReadOnly] public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
+
+            [ReadOnly]
+            public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
         }
 
         public struct RemovedEntitiesData
@@ -38,12 +40,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            gameObjectDispatcherSystem = World.GetExistingManager<GameObjectDispatcherSystem>();
-            if (gameObjectDispatcherSystem == null)
-            {
-                throw new GameObjectDispatcherSystemNotFoundException("GameObjectDispatcherSystem not found.");
-            }
-
+            gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
             logDispatcher = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
         }
 
@@ -60,13 +57,13 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
-                var gameObject = addedEntitiesData.GameObjectReferences[i].GameObject;
-                gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entityIndex] = new SpatialOSBehaviourManager(gameObject);
+                gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager[entityIndex] =
+                    new SpatialOSBehaviourManager(addedEntitiesData.GameObjectReferences[i].GameObject);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
-                var entityIndex = addedEntitiesData.Entities[i].Index;
+                var entityIndex = removedEntitiesData.Entities[i].Index;
                 if (!gameObjectDispatcherSystem.EntityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
                 {
                     logDispatcher.HandleLog(LogType.Error, new LogEvent(

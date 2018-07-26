@@ -21,9 +21,8 @@ namespace DocsLinter.Tests
         }
 
         [OneTimeSetUp]
-        public void IgnoreSslErrors()
-        {
-            System.Net.ServicePointManager.ServerCertificateValidationCallback +=
+        public void IgnoreSslErrors() {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += 
                 (sender, cert, chain, sslPolicyErrors) => true;
         }
 

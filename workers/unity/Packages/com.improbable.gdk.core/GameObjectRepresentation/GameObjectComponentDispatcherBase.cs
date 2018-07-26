@@ -18,12 +18,21 @@ namespace Improbable.Gdk.Core
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
-        public abstract void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
-        public abstract void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
-        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        public abstract void InvokeOnAddComponentLifecycleCallbacks(
+            GameObjectDispatcherSystem gameObjectDispatcherSystem);
 
-        public abstract void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
-        public abstract void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        public abstract void InvokeOnRemoveComponentLifecycleCallbacks(
+            GameObjectDispatcherSystem gameObjectDispatcherSystem);
+
+        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(
+            GameObjectDispatcherSystem gameObjectDispatcherSystem);
+
+        public abstract void
+            InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+
+        public abstract void
+            InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+
         public abstract void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
         public abstract void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
     }

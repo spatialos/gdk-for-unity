@@ -13,18 +13,18 @@ namespace Improbable.Gdk.Core
 
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
         [UpdateAfter(typeof(InternalSpatialOSReceiveGroup))]
-        public class EntityInitializationGroup
+        public class EntityInitialisationGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        [UpdateAfter(typeof(EntityInitializationGroup))]
-        public class GameObjectInitializationGroup
+        [UpdateAfter(typeof(EntityInitialisationGroup))]
+        public class GameObjectInitialisationGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        [UpdateAfter(typeof(GameObjectInitializationGroup))]
+        [UpdateAfter(typeof(GameObjectInitialisationGroup))]
         public class GameObjectReceiveGroup
         {
         }

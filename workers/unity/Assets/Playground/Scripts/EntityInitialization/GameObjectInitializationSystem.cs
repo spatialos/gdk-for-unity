@@ -11,7 +11,7 @@ namespace Playground
     /// <summary>
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
     /// </summary>
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitializationGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
         public struct AddedEntitiesData
@@ -90,7 +90,8 @@ namespace Playground
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], requiresSpatialOSBehaviourManagerComponent);
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
+                    requiresSpatialOSBehaviourManagerComponent);
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);

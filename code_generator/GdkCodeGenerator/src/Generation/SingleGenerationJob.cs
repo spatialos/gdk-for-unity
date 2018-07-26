@@ -117,8 +117,10 @@ namespace Improbable.Gdk.CodeGenerator
 
                 var gameObjectComponentDispatcherFileName =
                     Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension);
-                var gameObjectComponentDispatcherCode = gameObjectComponentDispatcherGenerator.Generate(component, package);
-                Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName), gameObjectComponentDispatcherCode);
+                var gameObjectComponentDispatcherCode =
+                    gameObjectComponentDispatcherGenerator.Generate(component, package);
+                Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName),
+                    gameObjectComponentDispatcherCode);
             }
         }
     }
