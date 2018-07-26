@@ -1,3 +1,4 @@
+using System;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -43,11 +44,21 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            GameObject cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-            VirtualJoystick = cameraJoystick.GetComponent<VirtualJoystick>();
+            try
+            {
+                GameObject cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
+                VirtualJoystick = cameraJoystick.GetComponent<VirtualJoystick>();
 #if !(UNITY_ANDROID || UNITY_IOS)
-            cameraJoystick.SetActive(false);
+                cameraJoystick.SetActive(false);
 #endif
+            }
+            catch (NullReferenceException)
+            {
+                Debug.Log("Could not find virtual camera joystick. Camera movement is now disabled on mobile");
+#if (UNITY_ANDROID || UNITY_IOS)
+                Enabled = false;
+#endif
+            }
         }
 
         protected override void OnUpdate()

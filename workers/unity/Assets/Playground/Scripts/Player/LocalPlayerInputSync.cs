@@ -1,8 +1,8 @@
+using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Playground
 {
@@ -24,11 +24,21 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            GameObject controllerJoystick = GameObject.FindGameObjectWithTag("GameController");
-            VirtualJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+            try
+            {
+                GameObject controllerJoystick = GameObject.FindGameObjectWithTag("GameController");
+                VirtualJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
 #if !(UNITY_ANDROID || UNITY_IOS)
-            controllerJoystick.setActive(false);
+                controllerJoystick.setActive(false);
 #endif
+            }
+            catch (NullReferenceException)
+            {
+                Debug.Log("Could not find movement virtual stick. Movement is now disabled on mobile");
+#if (UNITY_ANDROID || UNITY_IOS)
+                Enabled = false;
+#endif
+            }
         }
 
         protected override void OnUpdate()
