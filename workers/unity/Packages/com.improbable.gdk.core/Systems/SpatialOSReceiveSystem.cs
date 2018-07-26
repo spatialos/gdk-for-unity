@@ -38,6 +38,11 @@ namespace Improbable.Gdk.Core
                 }
             }
             while (inCriticalSection);
+
+            foreach (var translationUnit in view.TranslationUnits.Values)
+            {
+                translationUnit.PostReceive();
+            }
         }
 
         private void OnAddEntity(AddEntityOp op)
