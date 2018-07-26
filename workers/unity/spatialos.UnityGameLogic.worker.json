@@ -53,6 +53,29 @@
         "${IMPROBABLE_LOG_FILE}"
       ]
     },
+    "macos": {
+      "artifact_name": "UnityGameLogic@Mac.zip",
+      "command": "open",
+      "arguments": [
+        "UnityGameLogic@Mac.app",
+        "--args",
+        "+workerType",
+        "UnityGameLogic",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+projectName",
+        "${IMPROBABLE_PROJECT_NAME}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "RakNet",
+        "-batchmode",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    },
     "linux": {
       "artifact_name": "UnityGameLogic@Linux.zip",
       "command": "UnityGameLogic@Linux",
