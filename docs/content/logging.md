@@ -34,7 +34,7 @@ worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
         "Custom error message.")
     .WithField(LoggingUtils.LoggerName, LoggerName)
     .WithField(LoggingUtils.EntityId, entityId)
-    .WithField("CustomKey", "CustomValue")
+    .WithField("CustomKey", "CustomValue"));
 ```
 
 ### Creating and using your own dispatcher
