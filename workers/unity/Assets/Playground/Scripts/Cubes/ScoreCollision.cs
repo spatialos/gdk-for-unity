@@ -25,8 +25,7 @@ public class ScoreCollision : MonoBehaviour
             if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
                 && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent)))
             {
-                entityManager.AddComponent(component.Entity, typeof(Playground.CollisionComponent));
-                entityManager.SetComponentData(component.Entity, new Playground.CollisionComponent
+                entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
                 {
                     ownEntity = component.Entity,
                     otherEntity = col.gameObject.GetComponent<SpatialOSComponent>().Entity,
