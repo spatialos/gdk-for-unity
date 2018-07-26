@@ -11,7 +11,6 @@ namespace Improbable.Gdk.Core
         private Dispatcher dispatcher;
 
         private bool inCriticalSection = false;
-        ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -21,17 +20,7 @@ namespace Improbable.Gdk.Core
             view = worker.View;
 
             dispatcher = new Dispatcher();
-            GenerateComponentGroups();
             SetupDispatcherHandlers();
-        }
-
-        private void GenerateComponentGroups()
-        {
-            foreach (var componentTranslator in view.TranslationUnits.Values)
-            {
-                var newEntityComponentGroup = GetComponentGroup(componentTranslator.NewEntityComponentTypes);
-                componentTranslator.NewEntityComponentGroup = newEntityComponentGroup;
-            }
         }
 
         protected override void OnUpdate()
@@ -49,13 +38,6 @@ namespace Improbable.Gdk.Core
                 }
             }
             while (inCriticalSection);
-
-            foreach (var translationUnit in view.TranslationUnits.Values)
-            {
-                translationUnit.PostReceive(ref viewCommandBuffer);
-            }
-
-            viewCommandBuffer.FlushBuffer(view);
         }
 
         private void OnAddEntity(AddEntityOp op)

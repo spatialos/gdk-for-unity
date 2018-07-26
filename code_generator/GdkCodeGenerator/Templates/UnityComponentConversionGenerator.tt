@@ -484,9 +484,13 @@ namespace <#= qualifiedNamespace #>
                     var entity = spatialEntityData[i];
 
                     var componentsUpdated = view.GetOrCreateComponent(entity, UpdatesPool);
-                    componentsUpdated.Buffer.Add(update);
-                    viewCommandBuffer.AddComponent(entity,
-                        typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), componentsUpdated);
+                    
+                    if (!componentsUpdated.Buffer.Any())
+                    {
+                        componentsUpdated.Buffer.Add(update);
+                        viewCommandBuffer.AddComponent(entity,
+                            typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), componentsUpdated);
+                    }
                 }
 <# } #>
             }
