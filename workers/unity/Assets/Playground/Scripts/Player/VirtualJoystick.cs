@@ -17,6 +17,11 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!lastTouch.HasValue || eventData.pointerId != lastTouch)
+        {
+            return;
+        }
+
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgImg.rectTransform, eventData.position,
             eventData.pressEventCamera, out var pos))
         {
