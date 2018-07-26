@@ -37,7 +37,7 @@ public class AuthoritativePositionSystem : ComponentSystem
     {
         // This system will only run where the worker instance has authority over the SpatialOS component Position.
 
-        public int Length;
+        public readonly int Length;
         // An ECS component representing the SpatialOS component Position.
         public ComponentDataArray<SpatialOSPosition> Position; 
         // An ECS component tag representing the worker instance's authority over the SpatialOS component Position.
@@ -85,7 +85,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
         public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
         

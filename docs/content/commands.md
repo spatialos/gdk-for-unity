@@ -58,7 +58,7 @@ public class BuildSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSBuilder> Builders;
         public ComponentDataArray<CommandRequestSender<SpatialOSBuilder>> BuilderRequestSender;
         public ComponentDataArray<SpatialEntityId> EntityIds;
@@ -106,7 +106,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentArray<CommandRequests<BuildWallRequest>> BuildWallRequests;
     }
 
@@ -152,7 +152,7 @@ public class BuildWallResponseHandler : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentArray<CommandResponses<BuildWallResponse>> BuildWallResponses;
     }
 
@@ -227,7 +227,7 @@ public class CreateEntitySystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<Foo> Foo;
         public ComponentDataArray<WorldCommandSender> WorldCommandSender;
     }
