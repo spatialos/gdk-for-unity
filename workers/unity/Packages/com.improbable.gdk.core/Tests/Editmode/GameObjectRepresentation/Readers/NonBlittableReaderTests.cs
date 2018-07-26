@@ -13,8 +13,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
         {
             public BlittableBool DirtyBit { get; set; }
 
+            public string StringValue;
+
             public struct Update : ISpatialComponentUpdate<NonBlittableTestComponent>
             {
+                public Option<string> StringValue;
             }
 
             public class Reader : NonBlittableReaderBase<NonBlittableTestComponent, Update>
@@ -36,11 +39,15 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
 
                 var reader = new NonBlittableTestComponent.Reader(entity, entityManager);
 
-                entityManager.SetComponentObject(entity, new NonBlittableTestComponent());
+                entityManager.SetComponentObject(entity, new NonBlittableTestComponent
+                {
+                    StringValue = "test string"
+                });
 
                 var data = entityManager.GetComponentObject<NonBlittableTestComponent>(entity);
 
                 Assert.AreEqual(data, reader.Data);
+                Assert.AreEqual("test string", reader.Data.StringValue);
             }
         }
     }
