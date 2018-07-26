@@ -110,5 +110,43 @@ namespace Improbable.Gdk.Core.EditmodeTests.Readers
 
             Assert.IsTrue(secondUpdateCalled);
         }
+
+        [Test]
+        public void FieldUpdates_get_called_if_property_changes()
+        {
+            bool floatValueUpdated = false;
+            bool intValueUpdated = false;
+
+            Reader.FloatValueUpdated += newValue => { floatValueUpdated = true; };
+            Reader.IntValueUpdated += newValue => { intValueUpdated = true; };
+
+            QueueUpdatesToEntity(new ReaderTestComponent.Update
+            {
+                FloatValue = new Option<float>(10),
+                IntValue = new Option<int>(),
+            });
+
+            var internalReader = (IReaderInternal) Reader;
+
+            internalReader.OnComponentUpdate();
+
+            Assert.IsTrue(floatValueUpdated);
+            Assert.IsFalse(intValueUpdated);
+
+            floatValueUpdated = false;
+            
+            ClearUpdatesInEntity();
+
+            QueueUpdatesToEntity(new ReaderTestComponent.Update
+            {
+                FloatValue = new Option<float>(),
+                IntValue = new Option<int>(20),
+            });
+
+            internalReader.OnComponentUpdate();
+
+            Assert.IsFalse(floatValueUpdated);
+            Assert.IsTrue(intValueUpdated);
+        }
     }
 }
