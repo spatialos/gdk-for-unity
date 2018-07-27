@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         public override bool Equals(object other)
         {
-            return other is Option<T> && this.Equals((Option<T>) other);
+            return other is Option<T> option && this.Equals(option);
         }
 
         public bool Equals(Option<T> other)

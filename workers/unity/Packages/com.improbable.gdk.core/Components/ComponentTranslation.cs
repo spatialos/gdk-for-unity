@@ -23,20 +23,19 @@ namespace Improbable.Gdk.Core.Components
 
         public abstract ComponentType TargetComponentType { get; }
         protected readonly MutableView view;
-        protected readonly ILogDispatcher LogDispatcher;
+        protected readonly ILogger Logger;
 
-        protected ComponentTranslation(MutableView view)
+        protected ComponentTranslation(MutableView view, ILogger logger)
         {
             this.view = view;
-            LogDispatcher = view.LogDispatcher;
+            this.Logger = logger;
             translationHandle = GetNextHandle();
             HandleToTranslation.Add(translationHandle, this);
         }
 
         public void Dispose()
         {
-            ComponentTranslation translationForHandle;
-            if (HandleToTranslation.TryGetValue(translationHandle, out translationForHandle) &&
+            if (HandleToTranslation.TryGetValue(translationHandle, out var translationForHandle) &&
                 translationForHandle == this)
             {
                 HandleToTranslation.Remove(translationHandle);

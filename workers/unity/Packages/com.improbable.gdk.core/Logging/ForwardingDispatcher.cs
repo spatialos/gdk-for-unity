@@ -43,6 +43,11 @@ namespace Improbable.Gdk.Core
             this.connection = connection;
         }
 
+        public ILogger GetLogger(string loggerName)
+        {
+            return new Logger(this, loggerName);
+        }
+
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             Debug.unityLogger.Log(type, logEvent);

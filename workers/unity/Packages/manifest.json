@@ -5,10 +5,10 @@
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",
-    "com.unity.burst": "0.2.4-preview.18",
+    "com.unity.burst": "0.2.4-preview.21",
     "com.unity.entities": "0.0.12-preview.8",
-    "com.unity.incrementalcompiler": "0.0.42-preview.14",
-    "com.unity.package-manager-ui": "1.9.9",
+    "com.unity.incrementalcompiler": "0.0.42-preview.16",
+    "com.unity.package-manager-ui": "1.9.11",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0"
   },

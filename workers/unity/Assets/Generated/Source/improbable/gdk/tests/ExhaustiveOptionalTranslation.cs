@@ -10,6 +10,7 @@ using Unity.Entities;
 using Improbable.Worker;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Components;
+using ILogger = Improbable.Gdk.Core.ILogger;
 using Improbable.Gdk.Tests;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -46,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSExhaustiveOptional.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(MutableView view) : base(view)
+            public Translation(MutableView view, ILogger logger) : base(view, logger)
             {
             }
 
@@ -65,13 +66,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveOptional> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveOptional"));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -106,23 +105,20 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveOptional"));
                 }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveOptional> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveOptional"));
                     return;
                 }
 
@@ -274,13 +270,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveOptional"));
                     return;
                 }
 
@@ -296,11 +290,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveOptional"));
                 }
             }
 
@@ -321,29 +314,31 @@ namespace Generated.Improbable.Gdk.Tests
                     var entityId = spatialEntityIdData[i].EntityId;
                     var hasPendingEvents = false;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (!componentData.DirtyBit && !hasPendingEvents)
                     {
-                        var update = new global::Improbable.Gdk.Tests.ExhaustiveOptional.Update();
-                        update.SetField2(componentData.Field2.HasValue ? new global::Improbable.Collections.Option<float>(componentData.Field2.Value) : new global::Improbable.Collections.Option<float>());
-                        update.SetField4(componentData.Field4.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field4.Value) : new global::Improbable.Collections.Option<int>());
-                        update.SetField5(componentData.Field5.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field5.Value) : new global::Improbable.Collections.Option<long>());
-                        update.SetField6(componentData.Field6.HasValue ? new global::Improbable.Collections.Option<double>(componentData.Field6.Value) : new global::Improbable.Collections.Option<double>());
-                        update.SetField8(componentData.Field8.HasValue ? new global::Improbable.Collections.Option<uint>(componentData.Field8.Value) : new global::Improbable.Collections.Option<uint>());
-                        update.SetField9(componentData.Field9.HasValue ? new global::Improbable.Collections.Option<ulong>(componentData.Field9.Value) : new global::Improbable.Collections.Option<ulong>());
-                        update.SetField10(componentData.Field10.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field10.Value) : new global::Improbable.Collections.Option<int>());
-                        update.SetField11(componentData.Field11.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field11.Value) : new global::Improbable.Collections.Option<long>());
-                        update.SetField12(componentData.Field12.HasValue ? new global::Improbable.Collections.Option<uint>(componentData.Field12.Value) : new global::Improbable.Collections.Option<uint>());
-                        update.SetField13(componentData.Field13.HasValue ? new global::Improbable.Collections.Option<ulong>(componentData.Field13.Value) : new global::Improbable.Collections.Option<ulong>());
-                        update.SetField14(componentData.Field14.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field14.Value) : new global::Improbable.Collections.Option<int>());
-                        update.SetField15(componentData.Field15.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field15.Value) : new global::Improbable.Collections.Option<long>());
-                        update.SetField16(componentData.Field16.HasValue ? new global::Improbable.Collections.Option<global::Improbable.EntityId>(new global::Improbable.EntityId(componentData.Field16.Value)) : new global::Improbable.Collections.Option<global::Improbable.EntityId>());
-                        update.SetField17(componentData.Field17.HasValue ? new global::Improbable.Collections.Option<global::Improbable.Gdk.Tests.SomeType>(global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(componentData.Field17.Value)) : new global::Improbable.Collections.Option<global::Improbable.Gdk.Tests.SomeType>());
-                        SendComponentUpdate(connection, entityId, update);
-
-                        componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
-
+                        continue;
                     }
+
+                    var update = new global::Improbable.Gdk.Tests.ExhaustiveOptional.Update();
+                    update.SetField2(componentData.Field2.HasValue ? new global::Improbable.Collections.Option<float>(componentData.Field2.Value) : new global::Improbable.Collections.Option<float>());
+                    update.SetField4(componentData.Field4.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field4.Value) : new global::Improbable.Collections.Option<int>());
+                    update.SetField5(componentData.Field5.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field5.Value) : new global::Improbable.Collections.Option<long>());
+                    update.SetField6(componentData.Field6.HasValue ? new global::Improbable.Collections.Option<double>(componentData.Field6.Value) : new global::Improbable.Collections.Option<double>());
+                    update.SetField8(componentData.Field8.HasValue ? new global::Improbable.Collections.Option<uint>(componentData.Field8.Value) : new global::Improbable.Collections.Option<uint>());
+                    update.SetField9(componentData.Field9.HasValue ? new global::Improbable.Collections.Option<ulong>(componentData.Field9.Value) : new global::Improbable.Collections.Option<ulong>());
+                    update.SetField10(componentData.Field10.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field10.Value) : new global::Improbable.Collections.Option<int>());
+                    update.SetField11(componentData.Field11.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field11.Value) : new global::Improbable.Collections.Option<long>());
+                    update.SetField12(componentData.Field12.HasValue ? new global::Improbable.Collections.Option<uint>(componentData.Field12.Value) : new global::Improbable.Collections.Option<uint>());
+                    update.SetField13(componentData.Field13.HasValue ? new global::Improbable.Collections.Option<ulong>(componentData.Field13.Value) : new global::Improbable.Collections.Option<ulong>());
+                    update.SetField14(componentData.Field14.HasValue ? new global::Improbable.Collections.Option<int>(componentData.Field14.Value) : new global::Improbable.Collections.Option<int>());
+                    update.SetField15(componentData.Field15.HasValue ? new global::Improbable.Collections.Option<long>(componentData.Field15.Value) : new global::Improbable.Collections.Option<long>());
+                    update.SetField16(componentData.Field16.HasValue ? new global::Improbable.Collections.Option<global::Improbable.EntityId>(new global::Improbable.EntityId(componentData.Field16.Value)) : new global::Improbable.Collections.Option<global::Improbable.EntityId>());
+                    update.SetField17(componentData.Field17.HasValue ? new global::Improbable.Collections.Option<global::Improbable.Gdk.Tests.SomeType>(global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(componentData.Field17.Value)) : new global::Improbable.Collections.Option<global::Improbable.Gdk.Tests.SomeType>());
+                    SendComponentUpdate(connection, entityId, update);
+
+                    componentData.DirtyBit = false;
+                    view.SetComponentObject(entityId, componentData);
+
                 }
             }
 

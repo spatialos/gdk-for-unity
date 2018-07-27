@@ -10,6 +10,7 @@ using Unity.Entities;
 using Improbable.Worker;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Components;
+using ILogger = Improbable.Gdk.Core.ILogger;
 using Improbable.Gdk.Tests;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -46,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSExhaustiveSingular.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(MutableView view) : base(view)
+            public Translation(MutableView view, ILogger logger) : base(view, logger)
             {
             }
 
@@ -65,13 +66,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveSingular> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveSingular"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveSingular"));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -108,23 +107,20 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveSingular"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveSingular"));
                 }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveSingular> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveSingular"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveSingular"));
                     return;
                 }
 
@@ -294,13 +290,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveSingular"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveSingular"));
                     return;
                 }
 
@@ -316,11 +310,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveSingular"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveSingular"));
                 }
             }
 
@@ -341,31 +334,33 @@ namespace Generated.Improbable.Gdk.Tests
                     var entityId = spatialEntityIdData[i].EntityId;
                     var hasPendingEvents = false;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (!componentData.DirtyBit && !hasPendingEvents)
                     {
-                        var update = new global::Improbable.Gdk.Tests.ExhaustiveSingular.Update();
-                        update.SetField1(componentData.Field1);
-                        update.SetField2(componentData.Field2);
-                        update.SetField4(componentData.Field4);
-                        update.SetField5(componentData.Field5);
-                        update.SetField6(componentData.Field6);
-                        update.SetField7(componentData.Field7);
-                        update.SetField8(componentData.Field8);
-                        update.SetField9(componentData.Field9);
-                        update.SetField10(componentData.Field10);
-                        update.SetField11(componentData.Field11);
-                        update.SetField12(componentData.Field12);
-                        update.SetField13(componentData.Field13);
-                        update.SetField14(componentData.Field14);
-                        update.SetField15(componentData.Field15);
-                        update.SetField16(new global::Improbable.EntityId(componentData.Field16));
-                        update.SetField17(global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(componentData.Field17));
-                        SendComponentUpdate(connection, entityId, update);
-
-                        componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
-
+                        continue;
                     }
+
+                    var update = new global::Improbable.Gdk.Tests.ExhaustiveSingular.Update();
+                    update.SetField1(componentData.Field1);
+                    update.SetField2(componentData.Field2);
+                    update.SetField4(componentData.Field4);
+                    update.SetField5(componentData.Field5);
+                    update.SetField6(componentData.Field6);
+                    update.SetField7(componentData.Field7);
+                    update.SetField8(componentData.Field8);
+                    update.SetField9(componentData.Field9);
+                    update.SetField10(componentData.Field10);
+                    update.SetField11(componentData.Field11);
+                    update.SetField12(componentData.Field12);
+                    update.SetField13(componentData.Field13);
+                    update.SetField14(componentData.Field14);
+                    update.SetField15(componentData.Field15);
+                    update.SetField16(new global::Improbable.EntityId(componentData.Field16));
+                    update.SetField17(global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(componentData.Field17));
+                    SendComponentUpdate(connection, entityId, update);
+
+                    componentData.DirtyBit = false;
+                    view.SetComponentObject(entityId, componentData);
+
                 }
             }
 

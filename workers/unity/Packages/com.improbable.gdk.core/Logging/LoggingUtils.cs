@@ -7,20 +7,18 @@ namespace Improbable.Gdk.Core
         public const string UnknownLogger = "UnknownLogger";
         public const string EntityId = "EntityId";
         public const string LoggerName = "LoggerName";
+        public const string Component = "Component";
 
         public static Collections.Option<EntityId> ExtractEntityId(Dictionary<string, object> data)
         {
-            object dataEntityId;
-            if (data.TryGetValue(EntityId, out dataEntityId))
+            if (data.TryGetValue(EntityId, out var dataEntityId))
             {
-                if (dataEntityId is EntityId)
+                switch (dataEntityId)
                 {
-                    return (EntityId)dataEntityId;
-                }
-
-                if (dataEntityId is long)
-                {
-                    return new EntityId((long)dataEntityId);
+                    case EntityId entityId:
+                        return entityId;
+                    case long id:
+                        return new EntityId(id);
                 }
             }
 
@@ -32,8 +30,7 @@ namespace Improbable.Gdk.Core
             if (data.ContainsKey(LoggerName))
             {
                 var loggerName = data[LoggerName];
-                var name = loggerName as string;
-                if (name != null)
+                if (loggerName is string name)
                 {
                     return name;
                 }

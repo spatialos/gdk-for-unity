@@ -51,18 +51,17 @@ namespace Improbable.Gdk.Core
 
         public virtual void Connect(ConnectionConfig config)
         {
-            if (config is ReceptionistConfig)
+            switch (config)
             {
-                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType, WorkerId);
-            }
-            else if (config is LocatorConfig)
-            {
-                Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig) config, GetWorkerType);
-            }
-            else
-            {
-                throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
-                    "ReceptionistConfig and LocatorConfig are supported.");
+                case ReceptionistConfig receptionistConfig:
+                    Connection = ConnectionUtility.ConnectToSpatial(receptionistConfig, GetWorkerType, WorkerId);
+                    break;
+                case LocatorConfig locatorConfig:
+                    Connection = ConnectionUtility.LocatorConnectToSpatial(locatorConfig, GetWorkerType);
+                    break;
+                default:
+                    throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
+                        "ReceptionistConfig and LocatorConfig are supported.");
             }
 
             Application.quitting += () =>
