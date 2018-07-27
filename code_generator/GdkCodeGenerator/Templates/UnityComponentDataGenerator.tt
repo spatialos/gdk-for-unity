@@ -14,6 +14,8 @@ namespace <#= qualifiedNamespace #>
 { 
     public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
     {
+        public uint ComponentId => <#= componentDetails.ComponentId #>;
+
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
