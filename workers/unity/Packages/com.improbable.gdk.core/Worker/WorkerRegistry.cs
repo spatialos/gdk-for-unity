@@ -27,9 +27,7 @@ namespace Improbable.Gdk.Core
 
         public static void UnsetWorkerForWorld(WorkerBase worker)
         {
-            WorkerBase workerForWorld;
-
-            if (WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
+            if (WorldToWorker.TryGetValue(worker.World, out var workerForWorld) && workerForWorld == worker)
             {
                 WorldToWorker.Remove(worker.World);
             }
@@ -37,14 +35,13 @@ namespace Improbable.Gdk.Core
 
         public static WorkerBase GetWorkerForWorld(World world)
         {
-            WorkerBase worker;
-            WorldToWorker.TryGetValue(world, out worker);
+            WorldToWorker.TryGetValue(world, out var worker);
             return worker;
         }
 
         public static void RegisterWorkerType<T>() where T : WorkerBase
         {
-            string workerType = (string) typeof(T).GetField("WorkerType").GetValue(null);
+            var workerType = (string) typeof(T).GetField("WorkerType").GetValue(null);
             WorkerTypeToAttributeSet.Add(
                 typeof(T),
                 new WorkerAttributeSet(new Improbable.Collections.List<string> { workerType })
@@ -62,8 +59,7 @@ namespace Improbable.Gdk.Core
 
         public static WorkerBase CreateWorker(string workerType, string workerId, Vector3 origin)
         {
-            Func<string, Vector3, WorkerBase> createWorker;
-            if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out createWorker))
+            if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out var createWorker))
             {
                 throw new ArgumentException("No worker found for worker type '{0}'", workerType);
             }

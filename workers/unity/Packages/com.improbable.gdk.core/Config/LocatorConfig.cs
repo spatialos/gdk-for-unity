@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         public override void Validate()
         {
             ValidateConfig(LocatorHost, RuntimeConfigNames.LocatorHost);
-            if (LocatorParameters.CredentialsType.Equals(LocatorCredentialsType.LoginToken))
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
                 ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
                 ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
