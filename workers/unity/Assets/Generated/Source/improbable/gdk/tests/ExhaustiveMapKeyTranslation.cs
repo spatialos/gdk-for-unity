@@ -10,6 +10,7 @@ using Unity.Entities;
 using Improbable.Worker;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Components;
+using ILogger = Improbable.Gdk.Core.ILogger;
 using Improbable.Gdk.Tests;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -46,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSExhaustiveMapKey.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(MutableView view) : base(view)
+            public Translation(MutableView view, ILogger logger) : base(view, logger)
             {
             }
 
@@ -65,13 +66,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveMapKey> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveMapKey"));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -107,23 +106,20 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveMapKey"));
                 }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveMapKey> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveMapKey"));
                     return;
                 }
 
@@ -284,13 +280,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveMapKey"));
                     return;
                 }
 
@@ -306,11 +300,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                        .WithField(LoggingUtils.Component, "SpatialOSExhaustiveMapKey"));
                 }
             }
 
@@ -331,30 +324,32 @@ namespace Generated.Improbable.Gdk.Tests
                     var entityId = spatialEntityIdData[i].EntityId;
                     var hasPendingEvents = false;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (!componentData.DirtyBit && !hasPendingEvents)
                     {
-                        var update = new global::Improbable.Gdk.Tests.ExhaustiveMapKey.Update();
-                        update.SetField2(new global::Improbable.Collections.Map<float,string>(componentData.Field2.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField4(new global::Improbable.Collections.Map<int,string>(componentData.Field4.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField5(new global::Improbable.Collections.Map<long,string>(componentData.Field5.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField6(new global::Improbable.Collections.Map<double,string>(componentData.Field6.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField7(new global::Improbable.Collections.Map<string,string>(componentData.Field7.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField8(new global::Improbable.Collections.Map<uint,string>(componentData.Field8.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField9(new global::Improbable.Collections.Map<ulong,string>(componentData.Field9.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField10(new global::Improbable.Collections.Map<int,string>(componentData.Field10.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField11(new global::Improbable.Collections.Map<long,string>(componentData.Field11.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField12(new global::Improbable.Collections.Map<uint,string>(componentData.Field12.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField13(new global::Improbable.Collections.Map<ulong,string>(componentData.Field13.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField14(new global::Improbable.Collections.Map<int,string>(componentData.Field14.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField15(new global::Improbable.Collections.Map<long,string>(componentData.Field15.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField16(new global::Improbable.Collections.Map<global::Improbable.EntityId,string>(componentData.Field16.ToDictionary(entry => new global::Improbable.EntityId(entry.Key), entry => entry.Value)));
-                        update.SetField17(new global::Improbable.Collections.Map<global::Improbable.Gdk.Tests.SomeType,string>(componentData.Field17.ToDictionary(entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(entry.Key), entry => entry.Value)));
-                        SendComponentUpdate(connection, entityId, update);
-
-                        componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
-
+                        continue;
                     }
+
+                    var update = new global::Improbable.Gdk.Tests.ExhaustiveMapKey.Update();
+                    update.SetField2(new global::Improbable.Collections.Map<float,string>(componentData.Field2.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField4(new global::Improbable.Collections.Map<int,string>(componentData.Field4.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField5(new global::Improbable.Collections.Map<long,string>(componentData.Field5.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField6(new global::Improbable.Collections.Map<double,string>(componentData.Field6.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField7(new global::Improbable.Collections.Map<string,string>(componentData.Field7.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField8(new global::Improbable.Collections.Map<uint,string>(componentData.Field8.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField9(new global::Improbable.Collections.Map<ulong,string>(componentData.Field9.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField10(new global::Improbable.Collections.Map<int,string>(componentData.Field10.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField11(new global::Improbable.Collections.Map<long,string>(componentData.Field11.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField12(new global::Improbable.Collections.Map<uint,string>(componentData.Field12.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField13(new global::Improbable.Collections.Map<ulong,string>(componentData.Field13.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField14(new global::Improbable.Collections.Map<int,string>(componentData.Field14.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField15(new global::Improbable.Collections.Map<long,string>(componentData.Field15.ToDictionary(entry => entry.Key, entry => entry.Value)));
+                    update.SetField16(new global::Improbable.Collections.Map<global::Improbable.EntityId,string>(componentData.Field16.ToDictionary(entry => new global::Improbable.EntityId(entry.Key), entry => entry.Value)));
+                    update.SetField17(new global::Improbable.Collections.Map<global::Improbable.Gdk.Tests.SomeType,string>(componentData.Field17.ToDictionary(entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(entry.Key), entry => entry.Value)));
+                    SendComponentUpdate(connection, entityId, update);
+
+                    componentData.DirtyBit = false;
+                    view.SetComponentObject(entityId, componentData);
+
                 }
             }
 

@@ -61,7 +61,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     var rotationDifference = UnityEngine.Quaternion.Angle(rigidbody.rotation, nativeRotation);
                     if (rotationDifference <= ToleranceAngle)
                     {
-                        var differencesGreaterThanZero = (positionDifference == 0.0f && rotationDifference == 0.0f);
+                        var differencesGreaterThanZero = positionDifference == 0.0f && rotationDifference == 0.0f;
                         if (differencesGreaterThanZero || tickSystem.GlobalTick - transform.Tick < MaxTicksUntilSync)
                         {
                             continue;

@@ -35,9 +35,9 @@ namespace Playground
             if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
                 timeElapsedSinceUpdate = 0;
-                float fps = CalculateFps();
-                var load = DefaultLoadCalculation(fps);
-                Improbable.Worker.Metrics metrics = new Improbable.Worker.Metrics
+                var framesPerSecond = CalculateFps();
+                var load = DefaultLoadCalculation(framesPerSecond);
+                var metrics = new Improbable.Worker.Metrics
                 {
                     Load = load
                 };
@@ -45,10 +45,10 @@ namespace Playground
             }
         }
 
-        private float DefaultLoadCalculation(float fps)
+        private float DefaultLoadCalculation(float framesPerSecond)
         {
             float targetFps = Application.targetFrameRate;
-            return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
+            return Mathf.Max(0.0f, (targetFps - framesPerSecond) / (0.5f * targetFps));
         }
 
         private void AddFpsSample()
@@ -63,14 +63,14 @@ namespace Playground
 
         private float CalculateFps()
         {
-            float fps = 0.0f;
+            var framesPerSecond = 0.0f;
             foreach (var measurement in fpsMeasurements)
             {
-                fps += measurement;
+                framesPerSecond += measurement;
             }
 
-            fps /= fpsMeasurements.Count;
-            return fps;
+            framesPerSecond /= fpsMeasurements.Count;
+            return framesPerSecond;
         }
     }
 }

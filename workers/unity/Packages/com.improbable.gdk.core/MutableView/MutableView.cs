@@ -17,6 +17,8 @@ namespace Improbable.Gdk.Core
         public Entity WorkerEntity { get; }
         public ILogDispatcher LogDispatcher { get; }
 
+        private readonly ILogger logger;
+
         public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
             new Dictionary<int, ComponentTranslation>();
 
@@ -39,6 +41,7 @@ namespace Improbable.Gdk.Core
             entityManager = world.GetOrCreateManager<EntityManager>();
             entityMapping = new Dictionary<long, Entity>();
             LogDispatcher = logDispatcher;
+            logger = logDispatcher.GetLogger(nameof(MutableView));
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
@@ -67,13 +70,11 @@ namespace Improbable.Gdk.Core
 
         public void AddComponent<T>(long entityId, T component) where T : struct, IComponentData
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAdd)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAdd)
                     .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
+                    .WithField(LoggingUtils.Component, typeof(T).Name));
                 return;
             }
 
@@ -92,13 +93,11 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent<T>(long entityId)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnRemove)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.EntityNotFoundOnRemove)
                     .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
+                    .WithField(LoggingUtils.Component, typeof(T).Name));
             }
 
             RemoveComponent<T>(entity);
@@ -148,13 +147,11 @@ namespace Improbable.Gdk.Core
 
         public void SetComponentObject<T>(long entityId, T component) where T : Component
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnSetComponentObject)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.EntityNotFoundOnSetComponentObject)
                     .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
+                    .WithField(LoggingUtils.Component, typeof(T).Name));
                 return;
             }
 
@@ -192,7 +189,7 @@ namespace Improbable.Gdk.Core
 
         public bool HasComponent<T>(Entity entity)
         {
-            return HasComponent(entity, typeof(T));
+            return HasComponent(entity, ComponentType.Create<T>());
         }
 
         public bool HasComponent(Entity entity, ComponentType componentType)
@@ -208,13 +205,11 @@ namespace Improbable.Gdk.Core
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
                     .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
+                    .WithField(LoggingUtils.Component, typeof(T).Name));
                 return;
             }
 
@@ -223,8 +218,7 @@ namespace Improbable.Gdk.Core
                 case Authority.Authoritative:
                     if (!HasComponent<NotAuthoritative<T>>(entity))
                     {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                        logger.Log(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(Type, typeof(Authority))
                             .WithField(NewState, Authority.Authoritative)
                             .WithField(OldState, Authority.NotAuthoritative));
@@ -237,8 +231,7 @@ namespace Improbable.Gdk.Core
                 case Authority.AuthorityLossImminent:
                     if (!HasComponent<Authoritative<T>>(entity))
                     {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                        logger.Log(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(Type, typeof(Authority))
                             .WithField(NewState, Authority.AuthorityLossImminent)
                             .WithField(OldState, Authority.Authoritative));
@@ -250,8 +243,7 @@ namespace Improbable.Gdk.Core
                 case Authority.NotAuthoritative:
                     if (!HasComponent<Authoritative<T>>(entity))
                     {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                        logger.Log(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(Type, typeof(Authority))
                             .WithField(NewState, Authority.NotAuthoritative)
                             .WithField(OldState, Authority.Authoritative));
@@ -289,8 +281,7 @@ namespace Improbable.Gdk.Core
         {
             if (entityMapping.ContainsKey(entityId))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.DuplicateAdditionOfEntity)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.DuplicateAdditionOfEntity)
                     .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
@@ -308,11 +299,9 @@ namespace Improbable.Gdk.Core
 
         internal void RemoveEntity(long entityId)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                logger.Log(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
                     .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
@@ -328,7 +317,8 @@ namespace Improbable.Gdk.Core
 
             foreach (var translationType in translationTypes)
             {
-                var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this);
+                var translator = (ComponentTranslation) Activator.CreateInstance(translationType, this,
+                    LogDispatcher.GetLogger(translationType.Name));
                 TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
 
                 addAllCommandRequestSenders += translator.AddCommandRequestSender;
@@ -375,6 +365,5 @@ namespace Improbable.Gdk.Core
         public const string Type = "Type";
         public const string OldState = "OldState";
         public const string NewState = "NewState";
-        public const string Component = "Component";
     }
 }

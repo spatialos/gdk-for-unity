@@ -26,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < (1.0f / SendRateHz))
+            if (timeSinceLastSend < 1.0f / SendRateHz)
             {
                 return;
             }

@@ -19,8 +19,7 @@ namespace Playground
         public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,
             Quaternion rotation, long spatialEntityId)
         {
-            GameObject prefab;
-            if (!cachedPrefabs.TryGetValue(prefabPath, out prefab))
+            if (!cachedPrefabs.TryGetValue(prefabPath, out var prefab))
             {
                 prefab = Resources.Load<GameObject>(prefabPath);
                 if (prefab == null)

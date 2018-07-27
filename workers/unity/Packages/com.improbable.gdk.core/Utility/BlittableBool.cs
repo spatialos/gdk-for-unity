@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            return obj is BlittableBool && Equals((BlittableBool) obj);
+            return obj is BlittableBool b && Equals(b);
         }
 
         public override int GetHashCode()

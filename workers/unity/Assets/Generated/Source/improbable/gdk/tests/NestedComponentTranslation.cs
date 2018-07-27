@@ -10,6 +10,7 @@ using Unity.Entities;
 using Improbable.Worker;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Components;
+using ILogger = Improbable.Gdk.Core.ILogger;
 using Improbable.Gdk.Tests;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -46,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSNestedComponent.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(MutableView view) : base(view)
+            public Translation(MutableView view, ILogger logger) : base(view, logger)
             {
             }
 
@@ -65,13 +66,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.NestedComponent> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                        .WithField(LoggingUtils.Component, "SpatialOSNestedComponent"));
                     return;
                 }
                 var data = op.Data.Get().Value;
@@ -93,23 +92,20 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                        .WithField(LoggingUtils.Component, "SpatialOSNestedComponent"));
                 }
             }
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.NestedComponent> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                        .WithField(LoggingUtils.Component, "SpatialOSNestedComponent"));
                     return;
                 }
 
@@ -144,13 +140,11 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!view.TryGetEntity(op.EntityId.Id, out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    Logger.Log(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                        .WithField(LoggingUtils.Component, "SpatialOSNestedComponent"));
                     return;
                 }
 
@@ -166,11 +160,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    Logger.Log(LogType.Error, new LogEvent(
                             "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                        .WithField(LoggingUtils.Component, "SpatialOSNestedComponent"));
                 }
             }
 
@@ -191,16 +184,18 @@ namespace Generated.Improbable.Gdk.Tests
                     var entityId = spatialEntityIdData[i].EntityId;
                     var hasPendingEvents = false;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (!componentData.DirtyBit && !hasPendingEvents)
                     {
-                        var update = new global::Improbable.Gdk.Tests.NestedComponent.Update();
-                        update.SetNestedType(global::Generated.Improbable.Gdk.Tests.TypeName.ToSpatial(componentData.NestedType));
-                        SendComponentUpdate(connection, entityId, update);
-
-                        componentData.DirtyBit = false;
-                        componentDataArray[i] = componentData;
-
+                        continue;
                     }
+
+                    var update = new global::Improbable.Gdk.Tests.NestedComponent.Update();
+                    update.SetNestedType(global::Generated.Improbable.Gdk.Tests.TypeName.ToSpatial(componentData.NestedType));
+                    SendComponentUpdate(connection, entityId, update);
+
+                    componentData.DirtyBit = false;
+                    componentDataArray[i] = componentData;
+
                 }
             }
 

@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                connection.SendLogMessage(LogLevel.Error, connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                connection?.SendLogMessage(LogLevel.Error, connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
         }
 
@@ -43,10 +43,15 @@ namespace Improbable.Gdk.Core
             this.connection = connection;
         }
 
+        public ILogger GetLogger(string loggerName)
+        {
+            return new Logger(this, loggerName);
+        }
+
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             Debug.unityLogger.Log(type, logEvent);
-            LogLevel logLevel = LogTypeMapping[type];
+            var logLevel = LogTypeMapping[type];
 
             if (connection == null || logLevel < minimumLogLevel)
             {

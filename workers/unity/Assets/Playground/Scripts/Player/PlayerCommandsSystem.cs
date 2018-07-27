@@ -69,8 +69,7 @@ namespace Playground
             }
 
             var ray = Camera.main.ScreenPointToRay(UIComponent.Main.Reticle.transform.position);
-            RaycastHit info;
-            if (!Physics.Raycast(ray, out info) || info.rigidbody == null)
+            if (!Physics.Raycast(ray, out var info) || info.rigidbody == null)
             {
                 return;
             }

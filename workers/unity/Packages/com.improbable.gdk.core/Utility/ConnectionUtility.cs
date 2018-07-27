@@ -48,10 +48,8 @@ namespace Improbable.Gdk.Core
             {
                 return LocatorConfig.CreateConnectionConfigFromCommandLine(parsedArgs);
             }
-            else
-            {
-                return ReceptionistConfig.CreateConnectionConfigFromCommandLine(parsedArgs);
-            }
+
+            return ReceptionistConfig.CreateConnectionConfigFromCommandLine(parsedArgs);
         }
 
         private static ConnectionParameters CreateConnectionParameters(ConnectionConfig config, string workerType)

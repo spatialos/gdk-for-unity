@@ -12,7 +12,6 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
         }
 

@@ -11,5 +11,10 @@ namespace Improbable.Gdk.Core
         {
             Debug.unityLogger.Log(type, logEvent);
         }
+
+        public ILogger GetLogger(string loggerName)
+        {
+            return new Logger(this, loggerName);
+        }
     }
 }

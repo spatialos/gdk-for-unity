@@ -33,13 +33,14 @@ namespace Improbable.Gdk.Core
             foreach (var translationUnit in view.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
-                foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
+                foreach (var componentType in translationUnit.CleanUpComponentTypes)
                 {
-                    translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
+                    var componentGroup = GetComponentGroup(componentType);
+                    translationUnit.CleanUpComponentGroups.Add(componentGroup);
                 }
             }
 
-            MethodInfo addRemoveComponentActionMethod =
+            var addRemoveComponentActionMethod =
                 typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
                     BindingFlags.NonPublic | BindingFlags.Instance);
 

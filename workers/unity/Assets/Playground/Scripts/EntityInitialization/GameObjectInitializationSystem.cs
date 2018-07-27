@@ -96,8 +96,7 @@ namespace Playground
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
