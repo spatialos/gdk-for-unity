@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using Unity.Entities;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
 
 namespace Improbable.Gdk.Core
 {
 #if UNITY_EDITOR
     // Attempt to validate the method as soon as possible when in the editor.
-    [InitializeOnLoad]
+    [UnityEditor.InitializeOnLoad]
 #endif
     internal static class EntityManagerExtensions
     {
