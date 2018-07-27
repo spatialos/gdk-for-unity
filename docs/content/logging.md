@@ -37,9 +37,9 @@ worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
     .WithField("CustomKey", "CustomValue"));
 ```
 
-For exception messages, please pass in the exception to the `LogEvent` class using the `WithException` method.
+For `LogType.Exception`, add the exception to the `LogEvent` class using the `WithException(Exception)` method.
 
-You can additionally add a context object to be passed into the Unity console using the `WithContext` method. 
+You can add a context object to be passed into the Unity console using the `WithContext(UnityEngine.Object)` method. 
 
 ### Creating and using your own dispatcher
 
