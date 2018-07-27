@@ -64,7 +64,7 @@ namespace Playground
                         ImpactPoint = info.ImpactPoint,
                         LaunchDirection = info.LaunchDirection,
                         LaunchEnergy = energy,
-                        LauncherResponsible = info.LauncherResponsible
+                        Player = info.Player
                     });
                     energyLeft -= energy;
                     j++;
@@ -91,7 +91,7 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
-                var launcher = 0L;
+                var player = 0L;
                 foreach (var request in launchableData.CommandRequests[i].Buffer)
                 {
                     var info = request.RawRequest;
@@ -100,8 +100,8 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    launcher = info.LauncherResponsible;
-                    launchable.MostRecentLauncher = launcher;
+                    player = info.Player;
+                    launchable.MostRecentLauncher = player;
                 }
 
                 sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,

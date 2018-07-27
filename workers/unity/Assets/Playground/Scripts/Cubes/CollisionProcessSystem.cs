@@ -18,9 +18,9 @@ namespace Playground
         private struct Data
         {
             public readonly int Length;
-            public readonly ComponentDataArray<CollisionComponent> Collision;
             public EntityArray Entities;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
         }

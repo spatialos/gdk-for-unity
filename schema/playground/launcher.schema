@@ -11,7 +11,7 @@ type LaunchCommandRequest {
     improbable.Vector3f impact_point = 2;
     improbable.Vector3f launch_direction = 3;
     float launch_energy = 4;
-    EntityId launcher_responsible = 5;
+    EntityId player = 5;
 }
 
 type LaunchCommandResponse {}
@@ -21,7 +21,7 @@ type LaunchMeCommandRequest {
     improbable.Vector3f impact_point = 1;
     improbable.Vector3f launch_direction = 2;
     float launch_energy = 3;
-    EntityId launcher_responsible = 4;
+    EntityId player = 4;
 }
 
 type LaunchMeCommandResponse {}
@@ -36,7 +36,6 @@ component Launcher {
     id = 12005;
     float energy_left = 1;
     float recharge_time_left = 3;
-    float score = 4;
     command LaunchCommandResponse launch_entity(LaunchCommandRequest);
     command ScoreIncreaseResponse increase_score(ScoreIncreaseRequest);
 }

@@ -18,17 +18,21 @@ public class ScoreCollision : MonoBehaviour
                 Debug.LogError("Could not get SpatialOSComponent.");
                 return;
             }
+
             entityManager = component.World.GetExistingManager<EntityManager>();
         }
+
         if (col.gameObject && col.gameObject.tag == "Cube")
         {
+            var otherComponent = col.gameObject.GetComponent<SpatialOSComponent>();
             if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
-                && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent)))
+                && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent))
+                && otherComponent)
             {
                 entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
                 {
                     ownEntity = component.Entity,
-                    otherEntity = col.gameObject.GetComponent<SpatialOSComponent>().Entity,
+                    otherEntity = otherComponent.Entity,
                 });
             }
         }

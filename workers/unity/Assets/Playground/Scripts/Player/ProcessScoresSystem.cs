@@ -11,7 +11,7 @@ namespace Playground
         private struct ScoringData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSLauncher> Launcher;
+            public ComponentDataArray<SpatialOSScore> Score;
 
             [ReadOnly]
             public ComponentArray<CommandRequests<Generated.Playground.Launcher.IncreaseScore.Request>> CommandRequests;
@@ -23,13 +23,13 @@ namespace Playground
         {
             for (int i = 0; i < scoringData.Length; i++)
             {
-                var launcher = scoringData.Launcher[i];
+                var playerScore = scoringData.Score[i];
                 foreach (var request in scoringData.CommandRequests[i].Buffer)
                 {
-                    launcher.Score += request.RawRequest.Amount;
+                    playerScore.Score += request.RawRequest.Amount;
                 }
 
-                scoringData.Launcher[i] = launcher;
+                scoringData.Score[i] = playerScore;
             }
         }
     }
