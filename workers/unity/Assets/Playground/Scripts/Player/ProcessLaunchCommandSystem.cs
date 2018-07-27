@@ -53,7 +53,7 @@ namespace Playground
 
                 var requests = launchCommandData.CommandRequests[i].Buffer;
                 var energyLeft = launcher.EnergyLeft;
-                for (var j=0; j < requests.Count && energyLeft > 0f; j++)
+                for (var j = 0; j < requests.Count && energyLeft > 0f; j++)
                 {
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);

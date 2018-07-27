@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    class Logger : ILogger
+    public class Logger : ILogger
     {
         private readonly ILogDispatcher dispatcher;
         private readonly string loggerName;

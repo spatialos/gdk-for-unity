@@ -45,7 +45,10 @@ namespace Improbable.Gdk.Core.Components
         public static readonly Dictionary<uint, ComponentTranslation> HandleToTranslation =
             new Dictionary<uint, ComponentTranslation>();
 
-        private static uint GetNextHandle() => (uint) HandleToTranslation.Count;
+        private static uint GetNextHandle()
+        {
+            return (uint) HandleToTranslation.Count;
+        }
 
         protected uint translationHandle { get; }
 

@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Core
         public WorldCommandSender(long entityId, uint handleToTranslation)
         {
             EntityId = entityId;
-            translation = (WorldCommandsTranslation)ComponentTranslation.HandleToTranslation[handleToTranslation];
+            translation = (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[handleToTranslation];
         }
 
         public void SendCreateEntityRequest(Worker.Entity entity, long entityId = 0, uint timeoutMillis = 0)
@@ -244,7 +244,8 @@ namespace Improbable.Gdk.Core
         private const string EntityNotFoundForEntityId =
             "Entity not found when attempting to get Entity from EntityId.";
 
-        public WorldCommandsTranslation(MutableView view) : base(view, view.LogDispatcher.GetLogger(nameof(WorldCommandsTranslation)))
+        public WorldCommandsTranslation(MutableView view) : base(view,
+            view.LogDispatcher.GetLogger(nameof(WorldCommandsTranslation)))
         {
         }
 

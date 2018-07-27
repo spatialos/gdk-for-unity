@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             Debug.unityLogger.Log(type, logEvent);
-            LogLevel logLevel = LogTypeMapping[type];
+            var logLevel = LogTypeMapping[type];
 
             if (connection == null || logLevel < minimumLogLevel)
             {

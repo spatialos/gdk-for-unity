@@ -87,10 +87,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void CreateConnectionConfigFromCommandLine_should_parse_correctly()
         {
-            string loginToken = "myToken";
-            string projectName = "myproject";
-            string host = "myhost";
-            string networkType = NetworkConnectionType.Tcp.ToString();
+            var loginToken = "myToken";
+            var projectName = "myproject";
+            var host = "myhost";
+            var networkType = NetworkConnectionType.Tcp.ToString();
 
             var parsedArgs = new Dictionary<string, string>
             {

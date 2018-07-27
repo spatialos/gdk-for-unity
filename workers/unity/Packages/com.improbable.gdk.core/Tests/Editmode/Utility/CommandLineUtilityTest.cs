@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class CommandLineUtilityTest
     {
-        enum TestEnum
+        private enum TestEnum
         {
             Zero = 0,
             ValueOne,
