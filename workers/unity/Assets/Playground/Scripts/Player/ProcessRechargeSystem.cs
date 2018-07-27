@@ -24,11 +24,10 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var dt = Time.deltaTime;
             for (var i = 0; i < data.Length; i++)
             {
                 var launcher = data.Launcher[i];
-                launcher.RechargeTimeLeft -= dt;
+                launcher.RechargeTimeLeft -= Time.deltaTime;
                 if (launcher.RechargeTimeLeft < 0.0f)
                 {
                     launcher.RechargeTimeLeft = 0.0f;

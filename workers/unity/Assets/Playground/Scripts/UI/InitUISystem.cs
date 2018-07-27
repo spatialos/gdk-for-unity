@@ -25,11 +25,10 @@ namespace Playground
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var ui = Resources.Load("Prefabs/UIGameObject");
-                var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
-                var uiComponent = inst.GetComponent<UIComponent>();
-                UIComponent.Main = uiComponent;
-                uiComponent.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
+                var prefab = Resources.Load<GameObject>("Prefabs/UIGameObject");
+                var instance = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
+                UIComponent.Main = instance.GetComponent<UIComponent>();
+                UIComponent.Main.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
             }
 
             // Disable system after first run.

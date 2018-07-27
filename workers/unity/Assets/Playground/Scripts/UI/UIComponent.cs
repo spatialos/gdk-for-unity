@@ -12,7 +12,6 @@ namespace Playground.Scripts.UI
         public Text TestText;
         public RawImage Reticle;
 
-
         public static Rect ToScreenRect(RectTransform transform)
         {
             var size = Vector2.Scale(transform.rect.size, transform.lossyScale);

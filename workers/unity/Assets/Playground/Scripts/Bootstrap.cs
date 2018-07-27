@@ -14,13 +14,10 @@ namespace Playground
     public class Bootstrap : MonoBehaviour
     {
         public GameObject Level;
-
-        private const int TargetFrameRate = -1; // Turns off VSync
-
         public const string LoggerName = "Bootstrap";
 
+        private const int TargetFrameRate = -1; // Turns off VSync
         private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
-
         private static ConnectionConfig connectionConfig;
 
         public void Awake()
@@ -31,9 +28,9 @@ namespace Playground
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
             Application.targetFrameRate = TargetFrameRate;
+#if UNITY_EDITOR
             if (Application.isEditor)
             {
-#if UNITY_EDITOR
                 var workerConfigurations =
                     AssetDatabase.LoadAssetAtPath<ScriptableWorkerConfiguration>(ScriptableWorkerConfiguration
                         .AssetPath);
@@ -49,11 +46,13 @@ namespace Playground
                     Workers.Add(worker);
                 }
 
-                connectionConfig = new ReceptionistConfig();
-                connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
-#endif
+                connectionConfig = new ReceptionistConfig
+                {
+                    UseExternalIp = workerConfigurations.UseExternalIp
+                };
             }
             else
+#endif
             {
                 var commandLineArguments = System.Environment.GetCommandLineArgs();
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
@@ -65,7 +64,7 @@ namespace Playground
                     CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerId,
                         string.Empty);
 
-                // because the launcher does not pass in the worker type as an argument
+                // Because the launcher does not pass in the worker type as an argument
                 var worker = workerType.Equals(string.Empty)
                     ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));

@@ -70,9 +70,8 @@ namespace Playground
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
-                ComponentType[] componentTypesToAdd;
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
-                    .TryGetValue(archetypeName, out componentTypesToAdd))
+                    .TryGetValue(archetypeName, out var componentTypesToAdd))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -86,8 +85,7 @@ namespace Playground
                     var type = componentType.GetManagedType();
                     var componentInstance = Activator.CreateInstance(type);
 
-                    bool isComponentData;
-                    if (!typeToIsComponentData.TryGetValue(type, out isComponentData))
+                    if (!typeToIsComponentData.TryGetValue(type, out var isComponentData))
                     {
                         isComponentData = type.GetInterfaces().Contains(typeof(IComponentData));
                         typeToIsComponentData[type] = isComponentData;
@@ -95,15 +93,14 @@ namespace Playground
 
                     if (isComponentData)
                     {
-                        MethodInfo addComponentMethodGeneric;
-                        if (!typeToAddComponentGenericMethodInfo.TryGetValue(type, out addComponentMethodGeneric))
+                        if (!typeToAddComponentGenericMethodInfo.TryGetValue(type, out var addComponentMethodGeneric))
                         {
                             addComponentMethodGeneric = addComponentMethod.MakeGenericMethod(type);
                             typeToAddComponentGenericMethodInfo[type] = addComponentMethodGeneric;
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new object[] { entity, componentInstance });
+                            new[] { entity, componentInstance });
                     }
                     else
                     {
