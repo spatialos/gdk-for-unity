@@ -84,11 +84,15 @@ namespace Playground
                         spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
+                var requiresSpatialOSBehaviourManagerComponent = new RequiresSpatialOSBehaviourManager();
+
                 entityGameObjectCache[entity.Index] = gameObject;
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
+                    requiresSpatialOSBehaviourManagerComponent);
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
