@@ -1,7 +1,7 @@
 ﻿using Improbable.Worker;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public static class GameObjectDelegates
     {

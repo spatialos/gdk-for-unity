@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Improbable.Gdk.Core.MonoBehaviours;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;

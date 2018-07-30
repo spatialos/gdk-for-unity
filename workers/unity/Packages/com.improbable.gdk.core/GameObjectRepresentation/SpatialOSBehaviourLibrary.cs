@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 using UnityEngine;
 
