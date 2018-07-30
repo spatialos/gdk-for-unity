@@ -60,7 +60,7 @@ namespace <#= qualifiedNamespace #>
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.OnAddComponent(<#= unityComponentDefinition.Id #>);
+                    spatialOSBehaviourManager.AddComponent(<#= unityComponentDefinition.Id #>);
                 }
             }
 
@@ -70,7 +70,7 @@ namespace <#= qualifiedNamespace #>
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.OnRemoveComponent(<#= unityComponentDefinition.Id #>);
+                    spatialOSBehaviourManager.RemoveComponent(<#= unityComponentDefinition.Id #>);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace <#= qualifiedNamespace #>
                     var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
                     for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
                     {
-                        spatialOSBehaviourManager.OnAuthorityChange(<#= unityComponentDefinition.Id #>, authoritiesChangedTags[i].Buffer[j]);
+                        spatialOSBehaviourManager.ChangeAuthority(<#= unityComponentDefinition.Id #>, authoritiesChangedTags[i].Buffer[j]);
                     }
                 }
             }

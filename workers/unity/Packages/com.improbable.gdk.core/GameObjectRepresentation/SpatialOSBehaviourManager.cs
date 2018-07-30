@@ -18,8 +18,8 @@ namespace Improbable.Gdk.Core
         private Dictionary<uint, List<MonoBehaviour>> componentIdToReaderSpatialOSBehaviours;
         private Dictionary<uint, List<MonoBehaviour>> componentIdToWriterSpatialOSBehaviours;
         private Dictionary<MonoBehaviour, int> numUnsatisfiedComponents;
-        private List<MonoBehaviour> spatialOsBehavioursToEnable;
-        private List<MonoBehaviour> spatialOsBehavioursToDisable;
+        private List<MonoBehaviour> spatialOSBehavioursToEnable;
+        private List<MonoBehaviour> spatialOSBehavioursToDisable;
         private Dictionary<uint, Dictionary<MonoBehaviour, ReaderWriterImpl>> readersWriters;
 
         public SpatialOSBehaviourManager(GameObject gameObject)
@@ -34,25 +34,25 @@ namespace Improbable.Gdk.Core
 
         public void EnableSpatialOSBehaviours()
         {
-            // inject + enable all spatialOsBehavioursToEnable
+            // inject + enable all spatialOSBehavioursToEnable
         }
 
         public void DisableSpatialOSBehaviours()
         {
-            // disable + deinject all spatialOsBehavioursToDisable
+            // disable + deinject all spatialOSBehavioursToDisable
         }
 
-        public void OnAddComponent(uint componentId)
+        public void AddComponent(uint componentId)
         {
             // Mark readers as to be enabled
         }
 
-        public void OnRemoveComponent(uint componentId)
+        public void RemoveComponent(uint componentId)
         {
             // Mark readers as to be disabled
         }
 
-        public void OnAuthorityChange(uint componentId, Authority authority)
+        public void ChangeAuthority(uint componentId, Authority authority)
         {
             // Mark writers as to be enabled/disabled
         }

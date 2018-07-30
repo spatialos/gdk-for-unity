@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly Dictionary<int, SpatialOSBehaviourManager> entityIndexToSpatialOSBehaviourManager =
             new Dictionary<int, SpatialOSBehaviourManager>();
-        private List<SpatialOSBehaviourManager> spatialOSBehaviourManagers =
+        private readonly List<SpatialOSBehaviourManager> spatialOSBehaviourManagers =
             new Collections.List<SpatialOSBehaviourManager>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
