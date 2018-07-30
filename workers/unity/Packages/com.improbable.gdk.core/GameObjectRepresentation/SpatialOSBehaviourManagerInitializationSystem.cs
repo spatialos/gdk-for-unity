@@ -1,7 +1,7 @@
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     /// <summary>
     ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.

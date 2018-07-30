@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     /// <summary>
     ///     Tag component for marking entities that require a RequiresSpatialOSBehaviourManager.

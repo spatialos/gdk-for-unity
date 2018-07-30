@@ -2,17 +2,13 @@ using System.Collections.Generic;
 using Improbable.Worker;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public class ReaderWriterImpl
-    {
-        // This is placeholder code.
-    }
 
     /// <summary>
     ///     Invokes dispatcher callbacks on GameObjects that represent entities.
     /// </summary>
-    public class SpatialOSBehaviourManager
+    internal class SpatialOSBehaviourManager
     {
         public GameObject GameObject;
         private Dictionary<uint, List<MonoBehaviour>> componentIdToReaderSpatialOSBehaviours;
@@ -20,14 +16,14 @@ namespace Improbable.Gdk.Core
         private Dictionary<MonoBehaviour, int> numUnsatisfiedComponents;
         private List<MonoBehaviour> spatialOSBehavioursToEnable;
         private List<MonoBehaviour> spatialOSBehavioursToDisable;
-        private Dictionary<uint, Dictionary<MonoBehaviour, ReaderWriterImpl>> readersWriters;
+        private Dictionary<uint, Dictionary<MonoBehaviour, IReaderInternal>> readersWriters;
 
         public SpatialOSBehaviourManager(GameObject gameObject)
         {
             // Setup caches
         }
 
-        public List<ReaderWriterImpl> GetReadersWriters(uint componentId)
+        public List<IReaderInternal> GetReadersWriters(uint componentId)
         {
             return null;
         }

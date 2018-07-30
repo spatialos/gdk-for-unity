@@ -4,7 +4,7 @@ using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     /// <summary>
     ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
@@ -186,7 +186,7 @@ namespace Improbable.Gdk.Core
                     fields.Add(field);
                 }
             }
-            
+
             return fields;
         }
     }

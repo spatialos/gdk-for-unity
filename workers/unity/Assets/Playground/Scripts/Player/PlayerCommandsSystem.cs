@@ -2,6 +2,7 @@ using System;
 using Generated.Improbable;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.MonoBehaviours;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
