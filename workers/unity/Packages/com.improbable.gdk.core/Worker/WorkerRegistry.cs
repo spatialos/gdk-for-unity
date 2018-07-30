@@ -65,7 +65,7 @@ namespace Improbable.Gdk.Core
             Func<string, Vector3, WorkerBase> createWorker;
             if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out createWorker))
             {
-                throw new ArgumentException("No worker found for worker type '{0}'", workerType);
+                throw new ArgumentException($"No worker found for worker type '{workerType}'", nameof(workerType));
             }
 
             return createWorker(workerId, origin);

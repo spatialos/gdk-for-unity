@@ -17,6 +17,8 @@ namespace Playground
         {
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
+
+            UseDynamicId = Application.isEditor;
         }
 
         public override void Connect(ConnectionConfig config)
