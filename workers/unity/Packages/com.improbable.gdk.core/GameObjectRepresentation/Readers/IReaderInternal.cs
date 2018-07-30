@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Improbable.Worker;
+﻿using Improbable.Worker;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
