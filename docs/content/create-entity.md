@@ -55,14 +55,14 @@ public class CreateEntitySystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<Foo> Foo;
         public ComponentDataArray<SystemCommandSender> SystemCommandSender;
     }
 
     [Inject] Data data;
 
-    protected void OnUpdate()
+    protected override void OnUpdate()
     {
         for(var i = 0; i < data.Length; i++)
         {

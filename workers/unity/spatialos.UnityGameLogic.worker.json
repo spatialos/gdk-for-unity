@@ -31,6 +31,24 @@
       "checkoutAllInitially": true
     }
   },
+  "external": {
+    "default": {
+      "run_type": "EXECUTABLE",
+      "windows": {
+        "command": "build/worker/UnityGameLogic@Windows/UnityGameLogic@Windows.exe",
+        "arguments": [
+          "+workerType",
+          "UnityGameLogic",
+          "+infraServicesUrl",
+          "http://127.0.0.1:21000",
+          "+projectName",
+          "${IMPROBABLE_PROJECT_NAME}",
+          "-logfile",
+          "../../logs/external-default-unitygamelogic.log"
+        ]
+      }
+    }
+  },
   "managed": {
     "windows": {
       "artifact_name": "UnityGameLogic@Windows.zip",

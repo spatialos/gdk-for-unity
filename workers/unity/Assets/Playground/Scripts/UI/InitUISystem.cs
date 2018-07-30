@@ -13,8 +13,9 @@ namespace Playground
         public struct Data
         {
             public readonly int Length;
-            public EntityArray Entites;
+            public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
+            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
             [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
@@ -30,6 +31,7 @@ namespace Playground
                 var uiComponent = inst.GetComponent<UIComponent>();
                 UIComponent.Main = uiComponent;
                 uiComponent.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
+                uiComponent.ScoreText.text = $"Score: {data.Score[i].Score}";
             }
 
             // Disable system after first run.

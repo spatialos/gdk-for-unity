@@ -17,7 +17,7 @@
 
 1. Run `spatial local launch`.
 
-1. Open the `unity` project in your Unity Editor.
+1. Open the `workers/unity` project in your Unity Editor.
 
 1. In the Editor, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
 

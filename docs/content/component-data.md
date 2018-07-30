@@ -69,7 +69,7 @@ public class ChangeComponentFieldSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSBlittable> BlittableComponents;
         public ComponentArray<SpatialOSNonBlittable> NonBlittableComponents;
     }
