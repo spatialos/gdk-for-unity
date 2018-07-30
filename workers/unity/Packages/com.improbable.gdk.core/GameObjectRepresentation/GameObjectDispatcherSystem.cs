@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
 
-        public void AddSpatialOSBehaviourManager(int entityIndex, SpatialOSBehaviourManager spatialOSBehaviourManager)
+        internal void AddSpatialOSBehaviourManager(int entityIndex, SpatialOSBehaviourManager spatialOSBehaviourManager)
         {
             if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
             {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
             spatialOSBehaviourManagers.Add(spatialOSBehaviourManager);
         }
 
-        public void RemoveSpatialOSBehaviourManager(int entityIndex)
+        internal void RemoveSpatialOSBehaviourManager(int entityIndex)
         {
             if (!entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
             {
