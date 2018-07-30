@@ -85,7 +85,7 @@ namespace Playground.Editor.SnapshotGenerator
                     var transform = new Transform.Data(new Location(i, 1, j), new Quaternion(1, 0, 0, 0), 0);
                     var cubeColor = new CubeColor.Data();
                     var prefab = new Prefab.Data("Cube");
-                    var launchable = new Launchable.Data();
+                    var launchable = new Launchable.Data(new EntityId(0));
                     var archetypeComponent = new ArchetypeComponent.Data("Cube");
 
                     var entity = EntityBuilder.Begin()

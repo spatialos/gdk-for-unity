@@ -90,7 +90,8 @@ namespace Playground
                     EntityToLaunch = component.SpatialEntityId,
                     ImpactPoint = impactPoint,
                     LaunchDirection = launchDirection,
-                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
+                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
+                    Player = playerId
                 });
             }
         }
