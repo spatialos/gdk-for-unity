@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public class EntityGameObjectLinker
     {

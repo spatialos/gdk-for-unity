@@ -1,7 +1,7 @@
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     public class SpatialOSComponent : MonoBehaviour
     {

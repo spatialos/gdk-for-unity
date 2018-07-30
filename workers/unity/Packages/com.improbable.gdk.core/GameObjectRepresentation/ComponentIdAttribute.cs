@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
     /// <summary>
     ///     Associates a unique component Id with a specific interface.

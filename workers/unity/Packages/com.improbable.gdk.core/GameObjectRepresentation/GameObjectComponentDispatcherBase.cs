@@ -1,8 +1,8 @@
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public abstract class GameObjectComponentDispatcherBase
+    internal abstract class GameObjectComponentDispatcherBase
     {
         public abstract ComponentType[] ComponentAddedComponentTypes { get; }
         public ComponentGroup ComponentAddedComponentGroup { get; set; }

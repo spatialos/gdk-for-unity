@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
