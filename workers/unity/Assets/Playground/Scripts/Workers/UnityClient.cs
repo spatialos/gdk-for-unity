@@ -16,6 +16,7 @@ namespace Playground
         public UnityClient(string workerId, Vector3 origin) : base(workerId, origin, new ForwardingDispatcher())
         {
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
+            UseDynamicId = true;
         }
 
         public override void Connect(ConnectionConfig config)

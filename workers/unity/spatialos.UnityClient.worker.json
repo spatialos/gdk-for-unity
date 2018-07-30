@@ -46,7 +46,7 @@
           "+projectName",
           "${IMPROBABLE_PROJECT_NAME}",
           "-logfile",
-          "external-default-unityclient.log"
+          "../../logs/external-default-unityclient.log"
         ]
       }
     }

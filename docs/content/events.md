@@ -55,7 +55,7 @@ public class SendChangeColorEvent : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<CubeColor> Color;
         public ComponentDataArray<EventSender<CubeColor>> CubeColorEventSender;
     }
@@ -98,7 +98,7 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentArray<EventsReceived<ChangeColorEvent>> ChangeColorEvents;
     }
 
