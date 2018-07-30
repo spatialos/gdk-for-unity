@@ -1,3 +1,4 @@
+using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
@@ -12,6 +13,11 @@ namespace Playground
         public override string GetWorkerType => WorkerType;
 
         private readonly ForwardingDispatcher forwardingDispatcher;
+
+        public static readonly WorkerAttributeSet WorkerAttributeSet = new WorkerAttributeSet
+        {
+            Attribute = { "UnityClient" }
+        };
 
         public UnityClient(string workerId, Vector3 origin) : base(workerId, origin, new ForwardingDispatcher())
         {

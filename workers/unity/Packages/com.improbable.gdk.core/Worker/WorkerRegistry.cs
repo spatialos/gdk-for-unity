@@ -12,9 +12,6 @@ namespace Improbable.Gdk.Core
         private static readonly Dictionary<string, Func<string, Vector3, WorkerBase>> WorkerTypeToInitializationFunction
             = new Dictionary<string, Func<string, Vector3, WorkerBase>>();
 
-        private static readonly Dictionary<Type, WorkerAttributeSet> WorkerTypeToAttributeSet =
-            new Dictionary<Type, WorkerAttributeSet>();
-
         public static void SetWorkerForWorld(WorkerBase worker)
         {
             if (WorldToWorker.ContainsKey(worker.World))
@@ -45,10 +42,6 @@ namespace Improbable.Gdk.Core
         public static void RegisterWorkerType<T>() where T : WorkerBase
         {
             string workerType = (string) typeof(T).GetField("WorkerType").GetValue(null);
-            WorkerTypeToAttributeSet.Add(
-                typeof(T),
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { workerType })
-            );
 
             WorkerTypeToInitializationFunction.Add(workerType, CreateWorker<T>);
         }
@@ -69,18 +62,6 @@ namespace Improbable.Gdk.Core
             }
 
             return createWorker(workerId, origin);
-        }
-
-        public static WorkerRequirementSet GetWorkerRequirementSet(Type workerType, params Type[] workerTypes)
-        {
-            var workerAttributes = new Improbable.Collections.List<WorkerAttributeSet>();
-            workerAttributes.Add(WorkerTypeToAttributeSet[workerType]);
-            foreach (var nextType in workerTypes)
-            {
-                workerAttributes.Add(WorkerTypeToAttributeSet[nextType]);
-            }
-
-            return new WorkerRequirementSet(workerAttributes);
         }
     }
 }

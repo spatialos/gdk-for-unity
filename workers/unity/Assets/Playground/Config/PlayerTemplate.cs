@@ -1,18 +1,20 @@
 using System.Collections.Generic;
-using Improbable;
+using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Legacy;
-using Improbable.Worker;
 
 namespace Playground
 {
     public static class PlayerTemplate
     {
-        private static readonly WorkerRequirementSet GameLogicSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityGameLogic));
+        private static readonly WorkerRequirementSet GameLogicSet = new WorkerRequirementSet
+        {
+              AttributeSet  = {UnityGameLogic.WorkerAttributeSet}
+        };
 
-        private static readonly WorkerRequirementSet AllWorkersSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityClient), typeof(UnityGameLogic));
+        private static readonly WorkerRequirementSet AllWorkerSet = new WorkerRequirementSet {
+            AttributeSet = { UnityGameLogic.WorkerAttributeSet, UnityClient.WorkerAttributeSet }
+        };
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)
