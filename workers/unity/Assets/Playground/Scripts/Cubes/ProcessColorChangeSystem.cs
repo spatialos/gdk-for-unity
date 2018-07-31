@@ -25,8 +25,8 @@ namespace Playground
             public ComponentArray<MeshRenderer> Renderers;
         }
 
-        private Dictionary<Generated.Playground.Color, MaterialPropertyBlock> materialPropertyBlocks;
         [Inject] private Data data;
+        private Dictionary<Generated.Playground.Color, MaterialPropertyBlock> materialPropertyBlocks;
 
         protected override void OnCreateManager(int capacity)
         {
