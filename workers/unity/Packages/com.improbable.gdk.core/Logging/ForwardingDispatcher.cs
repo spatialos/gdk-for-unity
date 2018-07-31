@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core
 
         private readonly LogLevel minimumLogLevel;
 
+        private bool inHandleLog;
+
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
             { LogType.Exception, LogLevel.Error },
@@ -29,8 +31,15 @@ namespace Improbable.Gdk.Core
             Application.logMessageReceived += LogCallback;
         }
 
+        // This method catches exceptions coming from the engine, or third party code.
         private void LogCallback(string message, string stackTrace, LogType type)
         {
+            if (inHandleLog)
+            {
+                // HandleLog will do its own message sending.
+                return;
+            }
+
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
@@ -45,17 +54,48 @@ namespace Improbable.Gdk.Core
 
         public void HandleLog(LogType type, LogEvent logEvent)
         {
-            Debug.unityLogger.Log(type, logEvent);
-            LogLevel logLevel = LogTypeMapping[type];
-
-            if (connection == null || logLevel < minimumLogLevel)
+            inHandleLog = true;
+            try
             {
-                return;
-            }
+                if (type == LogType.Exception)
+                {
+                    // For exception types, Unity expects an exception object to be passed.
+                    // Otherwise, it will not be displayed.
+                    Exception exception = logEvent.Exception ?? new Exception(logEvent.ToString());
 
-            var message = logEvent.ToString();
-            var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
-            connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+                    Debug.unityLogger.LogException(exception, logEvent.Context);
+                }
+                else
+                {
+                    Debug.unityLogger.Log(
+                        logType: type,
+                        message: logEvent,
+                        context: logEvent.Context);
+                }
+
+                LogLevel logLevel = LogTypeMapping[type];
+
+                if (connection == null || logLevel < minimumLogLevel)
+                {
+                    return;
+                }
+
+                var message = logEvent.ToString();
+
+                if (type == LogType.Exception && logEvent.Exception != null)
+                {
+                    // Append the stack trace of the exception to the message.
+                    message += $"\n{logEvent.Exception.StackTrace}";
+                }
+
+                var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
+
+                connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+            }
+            finally
+            {
+                inHandleLog = false;
+            }
         }
 
         public void Dispose()
