@@ -29,29 +29,11 @@ namespace <#= qualifiedNamespace #>
 
             private readonly EntityManager entityManager;
 
-            private readonly Dictionary<uint, Action<CommandRequestOp>> CommandRequests;
-
-            private readonly Dictionary<uint, Action<CommandResponseOp>> CommandResponses;
-
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
             public DispatcherHandler(MutableView mutableView) : base(mutableView)
             {
                 entityManager = mutableView.EntityManager;
-
-                CommandRequests = new Dictionary<uint, Action<CommandRequestOp>>
-                {
-<# foreach (var command in commandDetailsList) { #>
-                    { <#= command.CommandIndex #>, On<#= command.CommandName #>Request },
-<# } #>
-                };
-
-                CommandResponses = new Dictionary<uint, Action<CommandResponseOp>>
-                {
-<# foreach (var command in commandDetailsList) { #>
-                    { <#= command.CommandIndex #>, On<#= command.CommandName #>Response },
-<# } #>
-                };
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -61,8 +43,7 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "AddComponentOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "AddComponentOp")
                     );
                     return;
                 }
@@ -92,8 +73,7 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "RemoveComponentOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "RemoveComponentOp")
                     );
                     return;
                 }
@@ -123,14 +103,13 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "ComponentUpdateOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "ComponentUpdateOp")
                     );
                     return;
                 }
                 var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
 
-                var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.ApplyUpdate(ref data, op.Update.SchemaData.Value.GetFields());
+                var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
 
                 // TODO: Events?
 
@@ -145,8 +124,7 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "AuthorityChangeOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "AuthorityChangeOp")
                     );
                     return;
                 }
@@ -160,25 +138,27 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "CommandRequestOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "CommandRequestOp")
                     );
                     return;
                 }
 
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                if (!CommandRequests.ContainsKey(commandIndex))
+                switch (commandIndex)
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Command Index", commandIndex)
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
-                    );
-                    return;
+<# foreach(var commandDetails in commandDetailsList) { #>
+                    case <#= commandDetails.CommandIndex #>:
+                        On<#= commandDetails.CommandName #>Request(op);
+                        break;
+<# } #>
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                        );
+                        break;
                 }
-
-                CommandRequests[commandIndex](op);
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
@@ -188,25 +168,27 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op Type", "CommandResponseOp")
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
+                        .WithField("Op", "CommandResponseOp")
                     );
                     return;
                 }
 
                 var commandIndex = op.Response.SchemaData.Value.GetCommandIndex();
-                if (!CommandResponses.ContainsKey(commandIndex))
+                switch (commandIndex)
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Command Index", commandIndex)
-                        .WithField("Component Type", "<#= componentDetails.TypeName #>")
-                    );
-                    return;
+<# foreach(var commandDetails in commandDetailsList) { #>
+                    case <#= commandDetails.CommandIndex #>:
+                        On<#= commandDetails.CommandName #>Response(op);
+                        break;
+<# } #>
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                        );
+                        break;
                 }
-
-                CommandResponses[commandIndex](op);
             }
 
             private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, long entityId)
@@ -219,8 +201,7 @@ namespace <#= qualifiedNamespace #>
                             LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
                                 .WithField(LoggingUtils.LoggerName, LoggerName)
                                 .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("New State", Authority.Authoritative)
-                                .WithField("Expected Old State", Authority.NotAuthoritative)
+                                .WithField("Authority", Authority.Authoritative)
                             );
                             return;
                         }
@@ -234,8 +215,7 @@ namespace <#= qualifiedNamespace #>
                             LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
                                 .WithField(LoggingUtils.LoggerName, LoggerName)
                                 .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("New State", Authority.AuthorityLossImminent)
-                                .WithField("Expected Old State", Authority.Authoritative)
+                                .WithField("Authority", Authority.AuthorityLossImminent)
                             );
                             return;
                         }
@@ -247,8 +227,7 @@ namespace <#= qualifiedNamespace #>
                             LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
                                 .WithField(LoggingUtils.LoggerName, LoggerName)
                                 .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("New State", Authority.NotAuthoritative)
-                                .WithField("Expected Old State", Authority.Authoritative)
+                                .WithField("Authority", Authority.NotAuthoritative)
                             );
                             return;
                         }
