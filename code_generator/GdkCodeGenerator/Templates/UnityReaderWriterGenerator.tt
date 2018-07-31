@@ -1,0 +1,71 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
+    var fieldDetailsList = GetFieldDetailsList();
+    var eventDetailsList = GetEventDetailsList();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using Unity.Entities;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.MonoBehaviours;
+using Improbable.Worker;
+using Entity = Unity.Entities.Entity;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        public class ReaderWriterCreator : IReaderWriterCreator
+        {
+            public object CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+            }
+        }
+
+        [ReaderInterface]
+        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        public interface Reader : IReader<<#= componentDetails.TypeName #>>
+        {
+        }
+
+        public class ReaderWriterImpl : Reader, IReaderInternal
+        {
+            public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+            }
+
+            // IReader methods
+            public Authority Authority { get; }
+            public <#= componentDetails.TypeName #> Data { get; }
+            public event GameObjectDelegates.AuthorityChanged AuthorityChanged;
+            public event GameObjectDelegates.ComponentUpdated<<#= componentDetails.TypeName #>> ComponentUpdated;
+
+            // IReaderInternal methods
+            void IReaderInternal.OnAuthorityChange(Authority authority)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            void IReaderInternal.OnComponentUpdate()
+            {
+                throw new System.NotImplementedException();
+            }
+            
+            void IReaderInternal.OnEvent(int eventIndex)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            void IReaderInternal.OnCommandRequest(int commandIndex)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+    }
+}

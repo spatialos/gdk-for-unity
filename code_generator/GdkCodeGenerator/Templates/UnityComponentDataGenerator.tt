@@ -41,32 +41,5 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 <# } #>
-
-        public class Reader : IReaderInternal
-        {
-            public Reader(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-            {
-            }
-
-            void IReaderInternal.OnAuthorityChange(Authority authority)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnComponentUpdate()
-            {
-                throw new System.NotImplementedException();
-            }
-            
-            void IReaderInternal.OnEvent(int eventIndex)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnCommandRequest(int commandIndex)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
     }
 }

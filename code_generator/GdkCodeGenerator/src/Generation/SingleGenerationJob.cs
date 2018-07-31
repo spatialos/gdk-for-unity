@@ -72,6 +72,7 @@ namespace Improbable.Gdk.CodeGenerator
             var nonBlittableComponentGenerator = new UnityComponentGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
+            var readerWriterGenerator = new UnityReaderWriterGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -121,6 +122,12 @@ namespace Improbable.Gdk.CodeGenerator
                     gameObjectComponentDispatcherGenerator.Generate(component, package);
                 Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName),
                     gameObjectComponentDispatcherCode);
+
+                var readerWriterFileName =
+                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension);
+                var readerWriterCode =
+                    readerWriterGenerator.Generate(component, package);
+                Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
             }
         }
     }

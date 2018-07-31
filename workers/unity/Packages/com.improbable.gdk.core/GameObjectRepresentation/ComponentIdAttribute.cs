@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace Improbable.Gdk.Core
 {
     /// <summary>
     ///     Associates a unique component Id with a specific interface.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class ComponentIdAttribute : Attribute
     {
         /// <summary>The unique identifier.</summary>

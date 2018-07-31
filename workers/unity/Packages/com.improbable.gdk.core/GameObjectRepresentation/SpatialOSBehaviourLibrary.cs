@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.Entities;
@@ -13,34 +13,31 @@ namespace Improbable.Gdk.Core
     {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
-
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
-
         private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
-
         private readonly HashSet<Type> invalidMonoBehaviourTypes = new HashSet<Type>();
 
         private readonly ILogDispatcher logger;
-        private const string LoggerName = "SpatialOSBehaviourLibrary";
+        private readonly ReaderWriterFactory readerWriterFactory;
 
+        private const string LoggerName = "SpatialOSBehaviourLibrary";
         private const string BadRequiredMemberWarning
             = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
-
         private const string MultipleReadersWritersRequiredError
             = "MonoBehaviour found requesting more than one Reader or Writer for the same component. " +
             "This MonoBehaviour will not be enabled.";
-
         private const string MalformedReaderOrWriter
             = "Reader or Writer found without a Component ID attribute, this is invalid.";
 
-        public SpatialOSBehaviourLibrary(ILogDispatcher logger)
+        public SpatialOSBehaviourLibrary(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
+            this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);
         }
 
-        public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
+        public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour, Entity entity)
         {
             var spatialOSBehaviourType = spatialOSBehaviour.GetType();
             EnsureLoaded(spatialOSBehaviourType);
@@ -51,12 +48,12 @@ namespace Improbable.Gdk.Core
 
             foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
             {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
+                Inject(spatialOSBehaviour, readerWriterComponentId, entity);
             }
 
             foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
             {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
+                Inject(spatialOSBehaviour, readerWriterComponentId, entity);
             }
         }
 
@@ -92,9 +89,9 @@ namespace Improbable.Gdk.Core
             return componentWriterIdsForBehaviours[behaviourType];
         }
 
-        private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId)
+        private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId, Entity entity)
         {
-            var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId);
+            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
             var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
             field.SetValue(spatialOSBehaviour, readerWriter);
         }
