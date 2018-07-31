@@ -6,9 +6,9 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
-
     /// <summary>
-    ///     Invokes dispatcher callbacks on GameObjects that represent entities.
+    ///     Keeps track of Reader/Writer availability for SpatialOSBehaviours on a particular GameObject and decides when
+    ///     a SpatialOSBehaviour should be enabled, calling into the SpatialOSBehaviourLibrary for injection.
     /// </summary>
     internal class SpatialOSBehaviourManager
     {
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Core
         private readonly ILogDispatcher logger;
 
         private const string NotInterestedInComponent =
-            "GameObjectReference received update on component it is not interested in!";
+            "SpatialOSBehaviourManager received update on component it is not interested in!";
 
         private const string LoggerName = "GameObjectReference";
 
