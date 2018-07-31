@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Worker.Core;
 
 namespace Improbable.Gdk.Core
@@ -117,7 +116,8 @@ namespace Improbable.Gdk.Core
             {
                 if (!componentsAdded.Contains(requiredComponent.ComponentId))
                 {
-                    throw new InvalidEntityException($"Entity is invalid. Missing required component: {requiredComponent.ComponentId}");
+                    throw new InvalidEntityException(
+                        $"Entity is invalid. Missing required component: {requiredComponent.ComponentId}");
                 }
             }
         }
@@ -161,12 +161,12 @@ namespace Improbable.Gdk.Core
                 Name = "Metadata"
             };
 
-            public static readonly List<WellKnownComponent> RequiredComponents = new List<WellKnownComponent>{Position, EntityAcl};
+            public static readonly List<WellKnownComponent> RequiredComponents =
+                new List<WellKnownComponent> { Position, EntityAcl };
         }
 
         private struct Acl
         {
-
             private Dictionary<uint, string> writePermissions;
             private List<string> readPermissions;
 
@@ -202,7 +202,6 @@ namespace Improbable.Gdk.Core
                     var containedRequirementSet = keyValuePair.AddObject(2);
                     var containedAttributeSet = containedRequirementSet.AddObject(1);
                     containedAttributeSet.AddString(1, writePermission.Value);
-
                 }
 
                 return new ComponentData(schemaComponentData);
