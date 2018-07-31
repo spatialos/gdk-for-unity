@@ -35,8 +35,6 @@ namespace Improbable.Gdk.Core
 
         private readonly SpatialOSBehaviourLibrary behaviourLibrary;
 
-        private const string LoggerName = "SpatialOSBehaviourManager";
-
         public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library)
         {
             behaviourLibrary = library;
