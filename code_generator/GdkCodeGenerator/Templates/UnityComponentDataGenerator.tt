@@ -30,6 +30,81 @@ namespace <#= qualifiedNamespace #>
         }
 <# } #>
 
+
+<# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
+        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+<# foreach(var fieldDetails in fieldDetailsList) { 
+    var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
+#>
+            <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #> = default(<#= fieldDetails.Type #>)<#= lastItem != fieldDetails ? "," : "" #>
+<# } #>
+        )
+        {
+            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
+            var obj = schemaComponentData.GetFields();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
+<# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
+<# if (singularTypeInfo.IsEnum) { #>
+            obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) <#= fieldDetails.CamelCaseName #>);
+<# } else if (singularTypeInfo.IsPrimitive) { #>
+            obj.<#= singularTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, <#= fieldDetails.CamelCaseName #>);
+<# } else { #>
+            <#= singularTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.CamelCaseName #>, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+<# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
+<# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+            foreach (var value in <#= fieldDetails.CamelCaseName #>) 
+            {
+<# if (listTypeInfo.IsEnum) { #>   
+                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);             
+<# } else if (listTypeInfo.IsPrimitive) { #>
+                obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
+<# } else { #>
+                <#= listTypeInfo.SerializationFunctions.Serialize #>(value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+            }
+<# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
+<# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
+            if (<#= fieldDetails.CamelCaseName #>.HasValue)
+            {
+<# if (optionTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.CamelCaseName #>, (uint) <#= fieldDetails.CamelCaseName #>.Value);
+<# } else if (optionTypeInfo.IsPrimitive) { #>
+                obj.<#= optionTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, <#= fieldDetails.CamelCaseName #>.Value);
+<# } else { #>
+                <#= optionTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.CamelCaseName #>.Value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+            }
+<# } else { #>
+<# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
+            foreach (var keyValuePair in <#= fieldDetails.CamelCaseName #>)
+            {
+                var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
+<# if (mapTypeInfo.Key.IsEnum) { #>
+                mapObj.AddEnum(1, (uint) keyValuePair.Key);                    
+<# } else if (mapTypeInfo.Key.IsPrimitive) { #>
+                mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
+<# } else { #>
+                <#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(keyValuePair.Key, mapObj.AddObject(1));
+<# } #>
+<# if (mapTypeInfo.Value.IsEnum) { #>
+                mapObj.AddEnum(2, (uint) keyValuePair.Value);
+<# } else if (mapTypeInfo.Value.IsPrimitive) { #>
+                mapObj.<#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(2, keyValuePair.Value);
+<# } else { #>
+                <#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(keyValuePair.Value, mapObj.AddObject(2));
+<# } #>
+            }
+<# } #>
+<# } #>
+
+            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+        }
+<# } #>
+
+
         public static class Serialization 
         {
             public static void Serialize(<#= componentDetails.TypeName #> component, global::Improbable.Worker.Core.SchemaObject obj)

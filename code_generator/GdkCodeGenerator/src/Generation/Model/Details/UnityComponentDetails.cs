@@ -9,6 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseTypeName;
         public string FullyQualifiedSpatialTypeName;
         public bool IsBlittable;
+        public int ComponentId;
 
         public UnityComponentDetails(UnityComponentDefinition componentDefinition)
         {
@@ -18,6 +19,7 @@ namespace Improbable.Gdk.CodeGenerator
             FullyQualifiedSpatialTypeName =
                 "global::" + Formatting.CapitaliseQualifiedNameParts(componentDefinition.QualifiedName);
             IsBlittable = componentDefinition.IsBlittable;
+            ComponentId = componentDefinition.Id;
         }
     }
 }
