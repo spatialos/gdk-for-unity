@@ -1,10 +1,12 @@
 ﻿using System;
+using Improbable.Gdk.Core.MonoBehaviours;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public static class ReaderWriterFactory
+    internal static class ReaderWriterFactory
     {
-        public static object CreateReaderWriter(uint componentId)
+        public static IReaderInternal CreateReaderWriter(uint componentId, Entity entity)
         {
             throw new NotImplementedException();
         }

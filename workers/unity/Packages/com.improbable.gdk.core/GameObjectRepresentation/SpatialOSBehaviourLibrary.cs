@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
-    public class SpatialOSBehaviourLibrary
+    internal class SpatialOSBehaviourLibrary
     {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
@@ -40,24 +41,29 @@ namespace Improbable.Gdk.Core
             this.logger = logger;
         }
 
-        public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
+        public Dictionary<uint, IReaderInternal> InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour, Entity entity)
         {
             var spatialOSBehaviourType = spatialOSBehaviour.GetType();
             EnsureLoaded(spatialOSBehaviourType);
+            var createdReaderWriters = new Dictionary<uint, IReaderInternal>();
             if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
             {
-                return;
+                return null;
             }
 
             foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
             {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
+                var readerWriter = Inject(spatialOSBehaviour, readerWriterComponentId, entity);
+                createdReaderWriters[readerWriterComponentId] = readerWriter;
             }
 
             foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
             {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
+                var readerWriter = Inject(spatialOSBehaviour, readerWriterComponentId, entity);
+                createdReaderWriters[readerWriterComponentId] = readerWriter;
             }
+
+            return createdReaderWriters;
         }
 
         public void DeInjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
@@ -92,11 +98,12 @@ namespace Improbable.Gdk.Core
             return componentWriterIdsForBehaviours[behaviourType];
         }
 
-        private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId)
+        private IReaderInternal Inject(MonoBehaviour spatialOSBehaviour, uint componentId, Entity entity)
         {
-            var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId);
+            var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId, entity);
             var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
             field.SetValue(spatialOSBehaviour, readerWriter);
+            return readerWriter;
         }
 
         private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
@@ -186,7 +193,7 @@ namespace Improbable.Gdk.Core
                     fields.Add(field);
                 }
             }
-            
+
             return fields;
         }
     }
