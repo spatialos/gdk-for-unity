@@ -42,10 +42,8 @@ namespace Playground
                 var renderer = data.Renderers[i];
                 foreach (var colorEvent in component.Buffer)
                 {
-                    if (materialPropertyBlocks.TryGetValue(colorEvent.Payload.Color, out var materialPropertyBlock))
-                    {
-                        renderer.SetPropertyBlock(materialPropertyBlock);
-                    }
+                    var materialPropertyBlock = materialPropertyBlocks[colorEvent.Payload.Color];
+                    renderer.SetPropertyBlock(materialPropertyBlock);
                 }
             }
         }
