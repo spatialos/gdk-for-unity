@@ -81,8 +81,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SpatialOSBehaviourLibrary_injects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
+            Assert.IsNull(behaviour.Reader);
             library.InjectAllReadersWriters(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
+            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader.GetType());
         }
 
         [Test]

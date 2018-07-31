@@ -23,10 +23,10 @@ namespace Improbable.Gdk.Core
             this.entityManager = entityManager;
             this.logger = logger;
 
-            FindReaderWriterTypes();
+            FindReaderWriterCreators();
         }
 
-        private void FindReaderWriterTypes()
+        private void FindReaderWriterCreators()
         {
             var readerWriterCreatorTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
