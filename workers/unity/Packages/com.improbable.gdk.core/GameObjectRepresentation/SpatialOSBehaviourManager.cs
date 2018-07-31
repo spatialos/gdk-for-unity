@@ -15,13 +15,13 @@ namespace Improbable.Gdk.Core
         private readonly Entity entity;
         private readonly long spatialId;
 
-        private readonly Dictionary<uint, HashSet<MonoBehaviour>> componentIdToReaderOrWriterSpatialOSBehaviours
+        private readonly Dictionary<uint, HashSet<MonoBehaviour>> componentIdToReaderSpatialOSBehaviours
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
 
         private readonly Dictionary<uint, HashSet<MonoBehaviour>> componentIdToWriterSpatialOSBehaviours
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
 
-        private readonly Dictionary<MonoBehaviour, int> numUnSatisfiedReadersWriters
+        private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
             = new Dictionary<MonoBehaviour, int>();
 
         private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal>> behaviourToCreatedReadersWriters
@@ -35,32 +35,27 @@ namespace Improbable.Gdk.Core
 
         private readonly SpatialOSBehaviourLibrary behaviourLibrary;
 
-        private readonly ILogDispatcher logger;
+        private const string LoggerName = "SpatialOSBehaviourManager";
 
-        private const string NotInterestedInComponent =
-            "SpatialOSBehaviourManager received update on component it is not interested in!";
-
-        private const string LoggerName = "GameObjectReference";
-
-        public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library, ILogDispatcher logger)
+        public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library)
         {
-            this.logger = logger;
-
             behaviourLibrary = library;
+
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
             entity = spatialComponent.Entity;
             spatialId = spatialComponent.SpatialEntityId;
+
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 var readerIds = library.GetRequiredReaderComponentIds(behaviour.GetType());
                 foreach (var id in readerIds)
                 {
-                    if (!componentIdToReaderOrWriterSpatialOSBehaviours.ContainsKey(id))
+                    if (!componentIdToReaderSpatialOSBehaviours.ContainsKey(id))
                     {
-                        componentIdToReaderOrWriterSpatialOSBehaviours.Add(id, new HashSet<MonoBehaviour>());
+                        componentIdToReaderSpatialOSBehaviours.Add(id, new HashSet<MonoBehaviour>());
                     }
 
-                    componentIdToReaderOrWriterSpatialOSBehaviours[id].Add(behaviour);
+                    componentIdToReaderSpatialOSBehaviours[id].Add(behaviour);
                 }
 
                 var writerIds = library.GetRequiredWriterComponentIds(behaviour.GetType());
@@ -74,7 +69,7 @@ namespace Improbable.Gdk.Core
                     componentIdToWriterSpatialOSBehaviours[id].Add(behaviour);
                 }
 
-                numUnSatisfiedReadersWriters[behaviour] = readerIds.Count + writerIds.Count;
+                numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
             }
         }
 
@@ -129,16 +124,8 @@ namespace Improbable.Gdk.Core
 
         public void AddComponent(uint componentId)
         {
-            var writerWanted = componentIdToWriterSpatialOSBehaviours.ContainsKey(componentId);
-            var readerWanted = !writerWanted && componentIdToReaderOrWriterSpatialOSBehaviours.ContainsKey(componentId);
-            if (!readerWanted && !writerWanted)
-            {
-                LogNotInterestedError(componentId);
-                return;
-            }
-
             // Mark reader components ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = componentIdToReaderOrWriterSpatialOSBehaviours[componentId];
+            var relevantReaderSpatialOSBehaviours = componentIdToReaderSpatialOSBehaviours[componentId];
             foreach (var spatialOSBehaviour in relevantReaderSpatialOSBehaviours)
             {
                 MarkComponentReady(spatialOSBehaviour);
@@ -147,16 +134,8 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent(uint componentId)
         {
-            var writerWanted = componentIdToWriterSpatialOSBehaviours.ContainsKey(componentId);
-            var readerWanted = !writerWanted && componentIdToReaderOrWriterSpatialOSBehaviours.ContainsKey(componentId);
-            if (!readerWanted && !writerWanted)
-            {
-                LogNotInterestedError(componentId);
-                return;
-            }
-
             // Mark reader components not ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = componentIdToReaderOrWriterSpatialOSBehaviours[componentId];
+            var relevantReaderSpatialOSBehaviours = componentIdToReaderSpatialOSBehaviours[componentId];
             foreach (var spatialOSBehaviour in relevantReaderSpatialOSBehaviours)
             {
                 MarkComponentNotReady(spatialOSBehaviour);
@@ -165,14 +144,6 @@ namespace Improbable.Gdk.Core
 
         public void ChangeAuthority(uint componentId, Authority authority)
         {
-            var writerWanted = componentIdToWriterSpatialOSBehaviours.ContainsKey(componentId);
-            var readerWanted = !writerWanted && componentIdToReaderOrWriterSpatialOSBehaviours.ContainsKey(componentId);
-            if (!readerWanted && !writerWanted)
-            {
-                LogNotInterestedError(componentId);
-                return;
-            }
-
             if (authority == Authority.Authoritative)
             {
                 // Mark writer components ready in relevant SpatialOSBehaviours
@@ -196,7 +167,8 @@ namespace Improbable.Gdk.Core
         private void MarkComponentReady(MonoBehaviour spatialOSBehaviour)
         {
             // Inject all Readers/Writers at once when all requirements are met
-            if (--numUnSatisfiedReadersWriters[spatialOSBehaviour] == 0)
+            numUnsatisfiedReadersOrWriters[spatialOSBehaviour]--;
+            if (numUnsatisfiedReadersOrWriters[spatialOSBehaviour] == 0)
             {
                 // Schedule activation
                 if (!spatialOSBehaviour.enabled)
@@ -213,7 +185,7 @@ namespace Improbable.Gdk.Core
         private void MarkComponentNotReady(MonoBehaviour spatialOSBehaviour)
         {
             // De-inject all Readers/Writers at once when a single requirement is not met
-            if (numUnSatisfiedReadersWriters[spatialOSBehaviour]++ == 0)
+            if (numUnsatisfiedReadersOrWriters[spatialOSBehaviour] == 0)
             {
                 // Schedule deactivation
                 if (spatialOSBehaviour.enabled)
@@ -225,14 +197,8 @@ namespace Improbable.Gdk.Core
                     spatialOSBehavioursToEnable.Remove(spatialOSBehaviour);
                 }
             }
-        }
 
-        private void LogNotInterestedError(uint componentId)
-        {
-            logger.HandleLog(LogType.Error, new LogEvent(NotInterestedInComponent)
-                .WithField(LoggingUtils.LoggerName, LoggerName)
-                .WithField(LoggingUtils.EntityId, spatialId)
-                .WithField("ComponentId", componentId));
+            numUnsatisfiedReadersOrWriters[spatialOSBehaviour]++;
         }
     }
 }

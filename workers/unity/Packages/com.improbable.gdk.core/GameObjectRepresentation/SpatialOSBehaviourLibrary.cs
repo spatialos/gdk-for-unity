@@ -48,7 +48,7 @@ namespace Improbable.Gdk.Core
             var createdReaderWriters = new Dictionary<uint, IReaderInternal>();
             if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
             {
-                return null;
+                return createdReaderWriters;
             }
 
             foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
