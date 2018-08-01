@@ -3,7 +3,7 @@ using System;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Associates a unique component Id with a specific interface.
+    ///     Associates a unique component Id with a specific interface or class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class ComponentIdAttribute : Attribute

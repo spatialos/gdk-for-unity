@@ -28,24 +28,24 @@ namespace Improbable.Gdk.Core
 
         private void FindReaderWriterCreators()
         {
-            var readerWriterCreatorTypes = AppDomain.CurrentDomain.GetAssemblies()
+            var creatorTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(IReaderWriterCreator).IsAssignableFrom(type) && type.IsClass)
+                .Where(type => typeof(IReaderWriterCreator).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                 .ToList();
 
-            foreach (var readerWriterCreatorType in readerWriterCreatorTypes)
+            foreach (var creatorType in creatorTypes)
             {
                 var componentIdAttribute =
-                    (ComponentIdAttribute)Attribute.GetCustomAttribute(readerWriterCreatorType, typeof(ComponentIdAttribute), false);
+                    (ComponentIdAttribute)Attribute.GetCustomAttribute(creatorType, typeof(ComponentIdAttribute), false);
                 if (componentIdAttribute == null)
                 {
                     logger.HandleLog(LogType.Error, new LogEvent(ComponentIdAttributeNotFoundError)
                         .WithField(LoggingUtils.LoggerName, GetType())
-                        .WithField("ReaderWriterCreatorType", readerWriterCreatorType));
+                        .WithField("ReaderWriterCreatorType", creatorType));
                     continue;
                 }
                 var componentId = componentIdAttribute.Id;
-                var readerWriterCreator = (IReaderWriterCreator)Activator.CreateInstance(readerWriterCreatorType);
+                var readerWriterCreator = (IReaderWriterCreator)Activator.CreateInstance(creatorType);
                 componentIdToReaderWriterCreator[componentId] = readerWriterCreator;
             }
         }
