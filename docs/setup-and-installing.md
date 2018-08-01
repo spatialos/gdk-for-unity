@@ -4,7 +4,7 @@
 
 # Set up and get started with the SpatialOS Unity GDK
 
-## Short version (for SpatialOS local deployment only)
+## Short version
 
 1. Set up your machine by installing: 
 * (For Windows) [Unity 2018.2.0f2](https://unity3d.com/get-unity/download/archive), [Visual Studio 2017](https://www.visualstudio.com/downloads/), [.NET Core 2.1.302 (x64)](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional)
