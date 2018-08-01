@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Worker.Core;
 
 namespace Improbable.Gdk.Core
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core
     public class EntityBuilder
     {
         private readonly Entity entity;
-        private Acl acl;
+        private Acl acl = new Acl();
         private bool hasBuiltOnce;
 
         private readonly HashSet<uint> componentsAdded = new HashSet<uint>();
@@ -112,13 +113,10 @@ namespace Improbable.Gdk.Core
 
         private void CheckRequiredComponents()
         {
-            foreach (var requiredComponent in WellKnownComponents.RequiredComponents)
+            if (!WellKnownComponents.RequiredComponents.All(c => componentsAdded.Contains(c.ComponentId)))
             {
-                if (!componentsAdded.Contains(requiredComponent.ComponentId))
-                {
-                    throw new InvalidEntityException(
-                        $"Entity is invalid. Missing required component: {requiredComponent.ComponentId}");
-                }
+                throw new InvalidEntityException(
+                    $"Entity is invalid. Missing one of required component: {string.Join(",", WellKnownComponents.RequiredComponents.Select(c => c.Name))}");
             }
         }
 
@@ -137,27 +135,33 @@ namespace Improbable.Gdk.Core
 
         private static class WellKnownComponents
         {
+            private const int EntityAclComponentId = 50;
+            private const int MetadataComponentId = 53;
+            private const int PositionComponentId = 54;
+            private const int PersistenceComponentId = 55;
+
+
             public static readonly WellKnownComponent Position = new WellKnownComponent
             {
-                ComponentId = 54,
+                ComponentId = PositionComponentId,
                 Name = "Position"
             };
 
             public static readonly WellKnownComponent EntityAcl = new WellKnownComponent
             {
-                ComponentId = 50,
+                ComponentId = EntityAclComponentId,
                 Name = "EntityAcl"
             };
 
             public static readonly WellKnownComponent Persistence = new WellKnownComponent
             {
-                ComponentId = 55,
+                ComponentId = PersistenceComponentId,
                 Name = "Persistence"
             };
 
             public static readonly WellKnownComponent Metadata = new WellKnownComponent
             {
-                ComponentId = 53,
+                ComponentId = MetadataComponentId,
                 Name = "Metadata"
             };
 
@@ -165,10 +169,10 @@ namespace Improbable.Gdk.Core
                 new List<WellKnownComponent> { Position, EntityAcl };
         }
 
-        private struct Acl
+        private class Acl
         {
-            private Dictionary<uint, string> writePermissions;
-            private List<string> readPermissions;
+            private Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
+            private List<string> readPermissions = new List<string>();
 
             public void SetComponentWriteAccess(uint componentId, string attribute)
             {

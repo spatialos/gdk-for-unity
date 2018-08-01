@@ -8,7 +8,18 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public const string PackagePrefix = "Generated.";
 
-        public static readonly HashSet<int> WellKnownComponents = new HashSet<int> {50, 53, 54, 55};
+        private const int EntityAclComponentId = 50;
+        private const int MetadataComponentId = 53;
+        private const int PositionComponentId = 54;
+        private const int PersistenceComponentId = 55;
+
+        public static readonly HashSet<int> WellKnownComponents = new HashSet<int>
+        {
+            EntityAclComponentId,
+            MetadataComponentId,
+            PositionComponentId,
+            PersistenceComponentId
+        };
 
         public static readonly Dictionary<string, string> BuiltInSchemaTypeToUnityNativeType =
             new Dictionary<string, string>
