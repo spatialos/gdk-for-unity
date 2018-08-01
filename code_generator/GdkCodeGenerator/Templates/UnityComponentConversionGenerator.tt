@@ -38,15 +38,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "AddComponentOp")
-                    );
                     return;
                 }
+
                 entityManager.AddComponentData(entity, global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields()));
 
                 if (entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
@@ -68,15 +64,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "RemoveComponentOp")
-                    );
                     return;
                 }
+
                 entityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
                 if (entityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
@@ -98,15 +90,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "ComponentUpdateOp")
-                    );
                     return;
                 }
+
                 var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
 
                 var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
@@ -119,27 +107,18 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "AuthorityChangeOp")
-                    );
                     return;
                 }
-                ApplyAuthorityChange(entity, op.Authority, op.EntityId.Id);
+
+                ApplyAuthorityChange(entity, op.Authority, op.EntityId);
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "CommandRequestOp")
-                    );
                     return;
                 }
 
@@ -163,13 +142,8 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!IsValidEntityId(op.EntityId, "CommandResponseOp", out var entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Op", "CommandResponseOp")
-                    );
                     return;
                 }
 
@@ -191,18 +165,14 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, long entityId)
+            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
             {
                 switch (authority)
                 {
                     case Authority.Authoritative:
                         if (!entityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity)) 
                         {
-                            LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
-                                .WithField(LoggingUtils.LoggerName, LoggerName)
-                                .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("Authority", Authority.Authoritative)
-                            );
+                            LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
@@ -212,23 +182,16 @@ namespace <#= qualifiedNamespace #>
                     case Authority.AuthorityLossImminent:
                         if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity)) 
                         {
-                            LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
-                                .WithField(LoggingUtils.LoggerName, LoggerName)
-                                .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("Authority", Authority.AuthorityLossImminent)
-                            );
+                            LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
+
                         entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentDetails.TypeName #>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
                         {
-                            LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
-                                .WithField(LoggingUtils.LoggerName, LoggerName)
-                                .WithField(LoggingUtils.EntityId, entityId)
-                                .WithField("Authority", Authority.NotAuthoritative)
-                            );
+                            LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
@@ -244,6 +207,32 @@ namespace <#= qualifiedNamespace #>
 
                 // TODO: Add to authorities changed list
             }
+
+            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
+            {
+                if (!MutableView.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, entityId.Id)
+                        .WithField("Op", opType)
+                    );
+                    return false;
+                }
+
+                return true;
+            }
+
+            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId.Id)
+                    .WithField("New Authority", newAuthority)
+                    .WithField("Expected Old Authority", expectedOldAuthority)
+                );
+            }
+
 <# foreach (var command in commandDetailsList) { #>
             private void On<#= command.CommandName #>Request(CommandRequestOp op)
             {
