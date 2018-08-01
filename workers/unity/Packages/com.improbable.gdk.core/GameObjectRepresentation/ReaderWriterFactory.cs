@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
         private const string ComponentIdAttributeNotFoundError
             = "ReaderWriterCreator found with no Component ID attribute.";
         private const string NoReaderWriterCreatorFoundForComponentIdError
-            = "No ReaderWriterCreator found for componentId.";
+            = "No ReaderWriterCreator found for given ComponentId.";
 
         private readonly EntityManager entityManager;
         private readonly ILogDispatcher logger;
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core
             {
                 logger.HandleLog(LogType.Error, new LogEvent(NoReaderWriterCreatorFoundForComponentIdError)
                     .WithField(LoggingUtils.LoggerName, GetType())
-                    .WithField("componentId", componentId));
+                    .WithField("ComponentId", componentId));
                 return null;
             }
 

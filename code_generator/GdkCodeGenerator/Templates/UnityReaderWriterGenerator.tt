@@ -20,9 +20,9 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-        public class ReaderWriterCreator : IReaderWriterCreator
+        internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public object CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IReaderInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
