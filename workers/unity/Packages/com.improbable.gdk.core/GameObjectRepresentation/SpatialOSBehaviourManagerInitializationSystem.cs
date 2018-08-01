@@ -32,12 +32,14 @@ namespace Improbable.Gdk.Core
         private GameObjectDispatcherSystem gameObjectDispatcherSystem;
         private SpatialOSBehaviourLibrary behaviourLibrary;
 
+        private ILogDispatcher logger;
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
             gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            var logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
+            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
             behaviourLibrary = new SpatialOSBehaviourLibrary(logger);
         }
 
@@ -47,7 +49,7 @@ namespace Improbable.Gdk.Core
             {
                 var entityIndex = addedEntitiesData.Entities[i].Index;
                 var spatialOSBehaviourManager = new SpatialOSBehaviourManager(
-                    addedEntitiesData.GameObjectReferences[i].GameObject, behaviourLibrary);
+                    addedEntitiesData.GameObjectReferences[i].GameObject, behaviourLibrary, logger);
                 gameObjectDispatcherSystem.AddSpatialOSBehaviourManager(entityIndex, spatialOSBehaviourManager);
             }
 
