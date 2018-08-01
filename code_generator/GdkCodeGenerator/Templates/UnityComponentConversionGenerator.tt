@@ -38,7 +38,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -68,7 +68,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -98,7 +98,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -119,7 +119,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -133,7 +133,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -163,7 +163,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                if (MutableView.TryGetEntity(op.EntityId, out var entity))
+                if (!MutableView.TryGetEntity(op.EntityId, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
