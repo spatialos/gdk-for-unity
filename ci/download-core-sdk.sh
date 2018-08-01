@@ -54,3 +54,10 @@ rm tools/schema_compiler/win/protoc.exe
 rm tools/schema_compiler/macos/protoc
 rm -rf tools/schema_compiler/win/proto
 rm -rf tools/schema_compiler/macos/proto
+
+# Remove header files in C API
+rm -rf "${NATIVE_DEPENDENCIES_PATH}/Windows/x86_64/include"
+rm -rf "${NATIVE_DEPENDENCIES_PATH}/Linux/x86_64/include"
+rm -rf "${NATIVE_DEPENDENCIES_PATH}/OSX/include"
+
+rm -rf "${CORE_SDK_DIR}"
