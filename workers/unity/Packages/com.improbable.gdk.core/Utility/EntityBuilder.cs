@@ -13,12 +13,20 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<uint> componentsAdded = new HashSet<uint>();
 
+        private const uint EntityAclComponentId = 50;
+        private const uint MetadataComponentId = 53;
+        private const uint PositionComponentId = 54;
+        private const uint PersistenceComponentId = 55;
+
+        private static readonly HashSet<uint> requiredComponents = new HashSet<uint>{ EntityAclComponentId, PositionComponentId};
+
+
         public static EntityBuilder Begin()
         {
             return new EntityBuilder();
         }
 
-        protected EntityBuilder()
+        private EntityBuilder()
         {
             entity = new Entity();
         }
@@ -40,7 +48,7 @@ namespace Improbable.Gdk.Core
 
         public EntityBuilder AddPosition(double x, double y, double z, string writeAccess)
         {
-            var schemaData = new SchemaComponentData(WellKnownComponents.Position.ComponentId);
+            var schemaData = new SchemaComponentData(PositionComponentId);
             var fields = schemaData.GetFields();
             fields.AddDouble(1, x);
             fields.AddDouble(2, y);
@@ -53,14 +61,14 @@ namespace Improbable.Gdk.Core
         {
             if (persistence)
             {
-                var schemaData = new SchemaComponentData(WellKnownComponents.Persistence.ComponentId);
+                var schemaData = new SchemaComponentData(PersistenceComponentId);
                 entity.Add(new ComponentData(schemaData));
             }
             else
             {
-                if (entity.Get(WellKnownComponents.Persistence.ComponentId).HasValue)
+                if (entity.Get(PersistenceComponentId).HasValue)
                 {
-                    entity.Remove(WellKnownComponents.Persistence.ComponentId);
+                    entity.Remove(PersistenceComponentId);
                 }
             }
 
@@ -69,7 +77,7 @@ namespace Improbable.Gdk.Core
 
         public EntityBuilder AddMetadata(string metadata, string writeAccess)
         {
-            var schemaData = new SchemaComponentData(WellKnownComponents.Metadata.ComponentId);
+            var schemaData = new SchemaComponentData(MetadataComponentId);
             var fields = schemaData.GetFields();
             fields.AddString(1, metadata);
 
@@ -99,13 +107,12 @@ namespace Improbable.Gdk.Core
 
         public EntityBuilder SetEntityAclComponentWriteAccess(string attribute)
         {
-            acl.SetComponentWriteAccess(WellKnownComponents.EntityAcl.ComponentId, attribute);
+            acl.SetComponentWriteAccess(EntityAclComponentId, attribute);
             return this;
         }
 
         public Entity Build()
         {
-            // Build and add the entity acl
             entity.Add(acl.Build());
             CheckRequiredComponents();
             return entity;
@@ -113,10 +120,10 @@ namespace Improbable.Gdk.Core
 
         private void CheckRequiredComponents()
         {
-            if (!WellKnownComponents.RequiredComponents.All(c => componentsAdded.Contains(c.ComponentId)))
+            if (!requiredComponents.All(c => componentsAdded.Contains(c)))
             {
                 throw new InvalidEntityException(
-                    $"Entity is invalid. Missing one of required component: {string.Join(",", WellKnownComponents.RequiredComponents.Select(c => c.Name))}");
+                    "Entity is invalid. Missing one of required component: Position and EntityAcl");
             }
         }
 
@@ -125,48 +132,6 @@ namespace Improbable.Gdk.Core
             public InvalidEntityException(string message) : base(message)
             {
             }
-        }
-
-        private struct WellKnownComponent
-        {
-            public uint ComponentId;
-            public string Name;
-        }
-
-        private static class WellKnownComponents
-        {
-            private const int EntityAclComponentId = 50;
-            private const int MetadataComponentId = 53;
-            private const int PositionComponentId = 54;
-            private const int PersistenceComponentId = 55;
-
-
-            public static readonly WellKnownComponent Position = new WellKnownComponent
-            {
-                ComponentId = PositionComponentId,
-                Name = "Position"
-            };
-
-            public static readonly WellKnownComponent EntityAcl = new WellKnownComponent
-            {
-                ComponentId = EntityAclComponentId,
-                Name = "EntityAcl"
-            };
-
-            public static readonly WellKnownComponent Persistence = new WellKnownComponent
-            {
-                ComponentId = PersistenceComponentId,
-                Name = "Persistence"
-            };
-
-            public static readonly WellKnownComponent Metadata = new WellKnownComponent
-            {
-                ComponentId = MetadataComponentId,
-                Name = "Metadata"
-            };
-
-            public static readonly List<WellKnownComponent> RequiredComponents =
-                new List<WellKnownComponent> { Position, EntityAcl };
         }
 
         private class Acl
@@ -186,7 +151,7 @@ namespace Improbable.Gdk.Core
 
             public ComponentData Build()
             {
-                var schemaComponentData = new SchemaComponentData(WellKnownComponents.EntityAcl.ComponentId);
+                var schemaComponentData = new SchemaComponentData(EntityAclComponentId);
                 var fields = schemaComponentData.GetFields();
 
                 // Write the read acl
