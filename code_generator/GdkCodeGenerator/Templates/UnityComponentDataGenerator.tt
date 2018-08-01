@@ -36,7 +36,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var fieldDetails in fieldDetailsList) { 
     var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
 #>
-            <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #> = default(<#= fieldDetails.Type #>)<#= lastItem != fieldDetails ? "," : "" #>
+            <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
 <# } #>
         )
         {

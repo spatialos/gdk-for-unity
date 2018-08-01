@@ -23,15 +23,17 @@ namespace Playground
 
             if (clientAttribute == null)
             {
-                throw new InvalidOperationException("Expected an attribute that is not \"UnityClient\" but none was found.");
+                throw new InvalidOperationException(
+                    "Expected an attribute thatYe is not \"UnityClient\" but none was found.");
             }
 
             var transform =
-                SpatialOSTransform.CreateSchemaComponentData(rotation: new Quaternion { W = 1, X = 0, Y = 0, Z = 0 });
-            var playerInput = SpatialOSPlayerInput.CreateSchemaComponentData();
+                SpatialOSTransform.CreateSchemaComponentData(new Location(),
+                    new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, 0);
+            var playerInput = SpatialOSPlayerInput.CreateSchemaComponentData(0, 0, false);
             var prefab = SpatialOSPrefab.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var archetype = SpatialOSArchetypeComponent.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
-            var launcher = SpatialOSLauncher.CreateSchemaComponentData(energyLeft: 100);
+            var launcher = SpatialOSLauncher.CreateSchemaComponentData(100, 0);
             var clientHeartbeat = SpatialOSPlayerHeartbeatClient.CreateSchemaComponentData();
             var serverHeartbeat = SpatialOSPlayerHeartbeatServer.CreateSchemaComponentData();
 
@@ -49,7 +51,6 @@ namespace Playground
                 .AddComponent(serverHeartbeat, GameLogicAttribute);
 
             return entityBuilder.Build();
-
         }
     }
 }
