@@ -95,12 +95,13 @@ namespace Improbable.Gdk.Core
                 {
                     var id = idToReaderWriter.Key;
                     var reader = idToReaderWriter.Value;
-                    if (!compIdToReadersWriters.ContainsKey(id))
+                    if (!compIdToReadersWriters.TryGetValue(id, out var readersWriters))
                     {
-                        compIdToReadersWriters[id] = new HashSet<IReaderInternal>();
+                        readersWriters = new HashSet<IReaderInternal>();
+                        compIdToReadersWriters[id] = readersWriters;
                     }
 
-                    compIdToReadersWriters[id].Add(reader);
+                    readersWriters.Add(reader);
                 }
 
                 try
@@ -109,11 +110,11 @@ namespace Improbable.Gdk.Core
                 }
                 catch (Exception e)
                 {
-                    logger.HandleLog(LogType.Error,
+                    logger.HandleLog(LogType.Exception,
                         new LogEvent("Exception thrown in OnEnable() method of MonoBehaviour.")
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, spatialId)
-                            .WithField("Exception", e.ToString()));
+                            .WithException(e));
                 }
             }
 
@@ -134,7 +135,7 @@ namespace Improbable.Gdk.Core
                         new LogEvent("Exception thrown in OnDisable() method of MonoBehaviour.")
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, spatialId)
-                            .WithField("Exception", e.ToString()));
+                            .WithException(e));
                 }
 
                 behaviourLibrary.DeInjectAllReadersWriters(behaviour);
