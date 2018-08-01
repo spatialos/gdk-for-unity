@@ -54,25 +54,13 @@ namespace Improbable.Gdk.Core
                 var readerIds = library.GetRequiredReaderComponentIds(behaviour.GetType());
                 foreach (var id in readerIds)
                 {
-                    if (!behavioursRequiringReaderTypes.TryGetValue(id, out var behavioursForReader))
-                    {
-                        behavioursForReader = new HashSet<MonoBehaviour>();
-                        behavioursRequiringReaderTypes[id] = behavioursForReader;
-                    }
-
-                    behavioursForReader.Add(behaviour);
+                    GetOrCreateValue(behavioursRequiringReaderTypes, id).Add(behaviour);
                 }
 
                 var writerIds = library.GetRequiredWriterComponentIds(behaviour.GetType());
                 foreach (var id in writerIds)
                 {
-                    if (!behavioursRequiringWriterTypes.TryGetValue(id, out var behavioursForWriter))
-                    {
-                        behavioursForWriter = new HashSet<MonoBehaviour>();
-                        behavioursRequiringWriterTypes[id] = behavioursForWriter;
-                    }
-
-                    behavioursForWriter.Add(behaviour);
+                    GetOrCreateValue(behavioursRequiringWriterTypes, id).Add(behaviour);
                 }
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
@@ -95,13 +83,7 @@ namespace Improbable.Gdk.Core
                 {
                     var id = idToReaderWriter.Key;
                     var reader = idToReaderWriter.Value;
-                    if (!compIdToReadersWriters.TryGetValue(id, out var readersWriters))
-                    {
-                        readersWriters = new HashSet<IReaderInternal>();
-                        compIdToReadersWriters[id] = readersWriters;
-                    }
-
-                    readersWriters.Add(reader);
+                    GetOrCreateValue(compIdToReadersWriters, id).Add(reader);
                 }
 
                 try
@@ -223,6 +205,17 @@ namespace Improbable.Gdk.Core
 
                 numUnsatisfiedReadersOrWriters[behaviour]++;
             }
+        }
+
+        private TValue GetOrCreateValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
+        {
+            if (!dictionary.TryGetValue(key, out var value))
+            {
+                value = new TValue();
+                dictionary[key] = value;
+            }
+
+            return value;
         }
     }
 }
