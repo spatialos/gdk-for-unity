@@ -52,12 +52,12 @@ namespace Improbable.Gdk.Core
 
         private void OnAddEntity(AddEntityOp op)
         {
-            view.CreateEntity(op.EntityId.Id);
+            view.CreateEntity(op.EntityId);
         }
 
         private void OnRemoveEntity(RemoveEntityOp op)
         {
-            view.RemoveEntity(op.EntityId.Id);
+            view.RemoveEntity(op.EntityId);
         }
 
         private void OnDisconnect(DisconnectOp op)
@@ -154,7 +154,7 @@ namespace Improbable.Gdk.Core
             {
                 var componentDispatcher =
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
-                        new { EntityManager });
+                        new { view });
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
             }
 

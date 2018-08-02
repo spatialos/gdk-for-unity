@@ -8,6 +8,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseTypeName;
         public string RequestType;
         public string ResponseType;
+        public uint CommandIndex;
 
         public UnityCommandDetails(UnityComponentDefinition.UnityCommandDefinition commandDefinition)
         {
@@ -17,6 +18,7 @@ namespace Improbable.Gdk.CodeGenerator
                 Formatting.CapitaliseQualifiedNameParts(commandDefinition.RequestType.typeDefinition.QualifiedName);
             ResponseType = "global::" + UnityTypeMappings.PackagePrefix +
                 Formatting.CapitaliseQualifiedNameParts(commandDefinition.ResponseType.typeDefinition.QualifiedName);
+            CommandIndex = commandDefinition.CommandIndex;
         }
     }
 }

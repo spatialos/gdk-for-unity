@@ -14,11 +14,21 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void OnCommandRequest(CommandRequestOp op);
         public abstract void OnCommandResponse(CommandResponseOp op);
 
-        protected EntityManager EntityManager;
+        protected MutableView MutableView;
+        protected ILogDispatcher LogDispatcher;
 
-        protected ComponentDispatcherHandler(EntityManager entityManager)
+        protected const string ReceivedDuplicateComponentAdded =
+            "Received ComponentAdded, but already received one for this entity.";
+        protected const string ReceivedDuplicateComponentRemoved =
+            "Received ComponentRemoved, but already received one for this entity.";
+        protected const string EntityNotFound = "No entity found for entity specified in op.";
+        protected const string CommandIndexNotFound = "Command index not found.";
+        protected const string InvalidAuthorityChange = "Invalid authority state change received.";
+
+        protected ComponentDispatcherHandler(MutableView mutableView)
         {
-            EntityManager = entityManager;
+            MutableView = mutableView;
+            LogDispatcher = mutableView.LogDispatcher;
         }
     }
 }

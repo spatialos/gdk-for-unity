@@ -14,6 +14,8 @@ namespace <#= qualifiedNamespace #>
 { 
     public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
     {
+        public uint ComponentId => <#= componentDetails.ComponentId #>;
+
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
@@ -246,7 +248,7 @@ namespace <#= qualifiedNamespace #>
                 return component;
             }
 
-            public static <#= componentDetails.TypeName #>.Update ApplyUpdate(ref <#= componentDetails.TypeName #> component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static <#= componentDetails.TypeName #>.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref <#= componentDetails.TypeName #> component)
             {
                 var update = new <#= componentDetails.TypeName #>.Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
