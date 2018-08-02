@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,29 +15,27 @@ namespace Improbable.Gdk.Core
     {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
-
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
-
         private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
 
         private readonly ILogDispatcher logger;
-        private const string LoggerName = "SpatialOSBehaviourLibrary";
+        private readonly ReaderWriterFactory readerWriterFactory;
 
+        private const string LoggerName = "SpatialOSBehaviourLibrary";
         private const string BadRequiredMemberWarning
             = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
-
         private const string MultipleReadersWritersRequiredError
             = "MonoBehaviour found requesting more than one Reader or Writer for the same component. " +
             "This MonoBehaviour will not be enabled.";
-
         private const string MalformedReaderOrWriter
             = "Reader or Writer found without a Component ID attribute, this is invalid.";
 
-        public SpatialOSBehaviourLibrary(ILogDispatcher logger)
+        public SpatialOSBehaviourLibrary(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
+            this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);
         }
 
         public Dictionary<uint, IReaderInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
@@ -99,7 +97,7 @@ namespace Improbable.Gdk.Core
         {
             foreach (var field in fieldInfoCache[behaviour.GetType()][componentId])
             {
-                var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId, entity);
+                var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
                 field.SetValue(behaviour, readerWriter);
                 store.Add(readerWriter);
             }
