@@ -33,7 +33,7 @@ We are currently not accepting public contributions. However, we are accepting i
 
 ##### Frequently asked questions (FAQs)
 * [FAQs](content/faqs/faqs.md)
-* [Summary of key features](content/faqs/key-feautures.md)
+* [Summary of key features](content/faqs/key-features.md)
 
 ##### Contents
 * [Components and component updates](content/component-data.md)
