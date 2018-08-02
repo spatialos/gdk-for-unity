@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public object CreateReaderWriter(uint componentId, Entity entity)
+        internal IReaderInternal CreateReaderWriter(uint componentId, Entity entity)
         {
             if (!componentIdToReaderWriterCreator.ContainsKey(componentId))
             {
