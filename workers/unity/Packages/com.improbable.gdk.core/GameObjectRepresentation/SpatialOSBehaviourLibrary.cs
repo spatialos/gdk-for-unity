@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
@@ -12,8 +13,8 @@ namespace Improbable.Gdk.Core
     /// </summary>
     internal class SpatialOSBehaviourLibrary
     {
-        private readonly Dictionary<Type, Dictionary<uint, List<FieldInfo>>> fieldInfoCache
-            = new Dictionary<Type, Dictionary<uint, List<FieldInfo>>>();
+        private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
+            = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
 
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
@@ -39,7 +40,7 @@ namespace Improbable.Gdk.Core
             this.logger = logger;
         }
 
-        public Dictionary<uint, List<IReaderInternal>> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
+        public Dictionary<uint, IReaderInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
@@ -62,7 +63,7 @@ namespace Improbable.Gdk.Core
                 Inject(behaviour, componentId, entity, readerWritersForComp);
             }
 
-            return createdReaderWriters;
+            return createdReaderWriters.ToDictionary(kp => kp.Key, kp => kp.Value.ToArray());
         }
 
         public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
@@ -172,7 +173,8 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            fieldInfoCache[behaviourType] = componentIdsToFieldInfos;
+            fieldInfoCache[behaviourType] = componentIdsToFieldInfos.ToDictionary
+                (kp => kp.Key, kp => kp.Value.ToArray());
             componentReaderIdsForBehaviours[behaviourType] = readerComponentIds;
             componentWriterIdsForBehaviours[behaviourType] = writerComponentIds;
         }

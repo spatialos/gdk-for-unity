@@ -26,8 +26,8 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
             = new Dictionary<MonoBehaviour, int>();
 
-        private readonly Dictionary<MonoBehaviour, Dictionary<uint, List<IReaderInternal>>> behaviourToReadersWriters
-            = new Dictionary<MonoBehaviour, Dictionary<uint, List<IReaderInternal>>>();
+        private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal[]>> behaviourToReadersWriters
+            = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal[]>>();
 
         private readonly Dictionary<uint, HashSet<IReaderInternal>> compIdToReadersWriters =
             new Dictionary<uint, HashSet<IReaderInternal>>();
