@@ -39,6 +39,7 @@ namespace Playground
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, GameLogicAttribute)
+                .AddMetadata(ArchetypeConfig.CharacterArchetype, GameLogicAttribute)
                 .SetPersistence(false)
                 .SetReadAcl(AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(GameLogicAttribute)
