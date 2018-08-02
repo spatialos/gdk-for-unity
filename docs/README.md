@@ -8,7 +8,7 @@ Note that the Unity GDK documentation assumes that you are familiar with Spatial
 We want your feedback on the Unity GDK, its documentation and its [roadmap (Trello board)](https://trello.com/b/29tMKyQC) - see [Give us feedback](../README.md#give-us-feedback).
 
 ## Questions? 
-Check out our [FAQs](contents/faqs/faqs.md) or head over to our [discussion forums](../README.md#give-us-feedback).
+Check out our [FAQs](content/faqs/faqs.md) or head over to our [discussion forums](../README.md#give-us-feedback).
 
 ## Documentation 
 
@@ -32,8 +32,8 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
 ##### Frequently asked questions (FAQs)
-* [FAQs](contents/faqs/faqs.md)
-* [Summary of key features](contents/faqs/key-feautures.md)
+* [FAQs](content/faqs/faqs.md)
+* [Summary of key features](content/faqs/key-feautures.md)
 
 ##### Contents
 * [Components and component updates](content/component-data.md)
