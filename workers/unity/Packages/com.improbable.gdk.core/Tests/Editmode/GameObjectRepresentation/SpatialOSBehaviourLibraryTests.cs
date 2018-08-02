@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Improbable.Gdk.Core.MonoBehaviours;
 using NUnit.Framework;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
@@ -59,12 +60,17 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
         private SpatialOSBehaviourLibrary library;
         private GameObject testGameObject;
+        private Entity testEntity;
+        private World world;
 
         [SetUp]
         public void Setup()
         {
             library = new SpatialOSBehaviourLibrary(new LoggingDispatcher());
             testGameObject = new GameObject();
+            world = new World("Test World");
+            var entityManager = world.GetOrCreateManager<EntityManager>();
+            testEntity = entityManager.CreateEntity();
         }
 
         [TearDown]
@@ -74,13 +80,15 @@ namespace Improbable.Gdk.Core.EditmodeTests
             {
                 Object.DestroyImmediate(testGameObject);
             }
+
+            world.Dispose();
         }
 
         [Test]
         public void SpatialOSBehaviourLibrary_injects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
-            library.InjectAllReadersWriters(behaviour);
+            library.InjectAllReadersWriters(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
             Assert.IsTrue(true);
         }
@@ -89,7 +97,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SpatialOSBehaviourLibrary_injects_two_Writers()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
-            library.InjectAllReadersWriters(behaviour);
+            library.InjectAllReadersWriters(behaviour, testEntity);
             Assert.NotNull(behaviour.Writer1);
             Assert.NotNull(behaviour.Writer2);
         }
@@ -98,7 +106,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SpatialOSBehaviourLibrary_deinjects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
-            library.InjectAllReadersWriters(behaviour);
+            library.InjectAllReadersWriters(behaviour, testEntity);
             library.DeInjectAllReadersWriters(behaviour);
             Assert.IsNull(behaviour.Reader);
         }
@@ -132,7 +140,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SpatialOSBehaviourLibrary_refuses_to_inject_multiple_Readers()
         {
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
-            library.InjectAllReadersWriters(behaviour);
+            library.InjectAllReadersWriters(behaviour, testEntity);
             LogAssert.Expect(LogType.Error, new Regex(".*", RegexOptions.Singleline));
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);

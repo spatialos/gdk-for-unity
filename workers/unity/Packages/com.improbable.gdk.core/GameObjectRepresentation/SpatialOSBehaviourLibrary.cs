@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
@@ -10,18 +11,16 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
-    public class SpatialOSBehaviourLibrary
+    internal class SpatialOSBehaviourLibrary
     {
-        private readonly Dictionary<Type, Dictionary<uint, FieldInfo>> fieldInfoCache
-            = new Dictionary<Type, Dictionary<uint, FieldInfo>>();
+        private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
+            = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
 
         private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
 
         private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours =
             new Dictionary<Type, List<uint>>();
-
-        private readonly HashSet<Type> invalidMonoBehaviourTypes = new HashSet<Type>();
 
         private readonly ILogDispatcher logger;
         private const string LoggerName = "SpatialOSBehaviourLibrary";
@@ -41,43 +40,45 @@ namespace Improbable.Gdk.Core
             this.logger = logger;
         }
 
-        public void InjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
+        public Dictionary<uint, IReaderInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
         {
-            var spatialOSBehaviourType = spatialOSBehaviour.GetType();
-            EnsureLoaded(spatialOSBehaviourType);
-            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
+            var behaviourType = behaviour.GetType();
+            EnsureLoaded(behaviourType);
+            var createdReaderWriters = new Dictionary<uint, List<IReaderInternal>>();
+
+            foreach (var componentId in componentReaderIdsForBehaviours[behaviourType])
             {
-                return;
+                List<IReaderInternal> readerWritersForComp = new List<IReaderInternal>();
+                createdReaderWriters[componentId] = readerWritersForComp;
+                Inject(behaviour, componentId, entity, readerWritersForComp);
             }
 
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
+            foreach (var componentId in componentWriterIdsForBehaviours[behaviourType])
             {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
+                if (!createdReaderWriters.TryGetValue(componentId, out var readerWritersForComp))
+                {
+                    readerWritersForComp = new List<IReaderInternal>();
+                }
+
+                Inject(behaviour, componentId, entity, readerWritersForComp);
             }
 
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
-            {
-                Inject(spatialOSBehaviour, readerWriterComponentId);
-            }
+            return createdReaderWriters.ToDictionary(kp => kp.Key, kp => kp.Value.ToArray());
         }
 
-        public void DeInjectAllReadersWriters(MonoBehaviour spatialOSBehaviour)
+        public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
         {
-            var spatialOSBehaviourType = spatialOSBehaviour.GetType();
-            EnsureLoaded(spatialOSBehaviourType);
-            if (invalidMonoBehaviourTypes.Contains(spatialOSBehaviourType))
+            var behaviourType = behaviour.GetType();
+            EnsureLoaded(behaviourType);
+
+            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[behaviourType])
             {
-                return;
+                DeInject(behaviour, readerWriterComponentId);
             }
 
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[spatialOSBehaviourType])
+            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[behaviourType])
             {
-                DeInject(spatialOSBehaviour, readerWriterComponentId);
-            }
-
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[spatialOSBehaviourType])
-            {
-                DeInject(spatialOSBehaviour, readerWriterComponentId);
+                DeInject(behaviour, readerWriterComponentId);
             }
         }
 
@@ -93,17 +94,23 @@ namespace Improbable.Gdk.Core
             return componentWriterIdsForBehaviours[behaviourType];
         }
 
-        private void Inject(MonoBehaviour spatialOSBehaviour, uint componentId)
+        private void Inject(MonoBehaviour behaviour, uint componentId, Entity entity,
+            IList<IReaderInternal> store)
         {
-            var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId);
-            var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
-            field.SetValue(spatialOSBehaviour, readerWriter);
+            foreach (var field in fieldInfoCache[behaviour.GetType()][componentId])
+            {
+                var readerWriter = ReaderWriterFactory.CreateReaderWriter(componentId, entity);
+                field.SetValue(behaviour, readerWriter);
+                store.Add(readerWriter);
+            }
         }
 
         private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
         {
-            var field = fieldInfoCache[spatialOSBehaviour.GetType()][componentId];
-            field.SetValue(spatialOSBehaviour, null);
+            foreach (var field in fieldInfoCache[spatialOSBehaviour.GetType()][componentId])
+            {
+                field.SetValue(spatialOSBehaviour, null);
+            }
         }
 
         private void EnsureLoaded(Type behaviourType)
@@ -114,7 +121,7 @@ namespace Improbable.Gdk.Core
             }
 
             var fieldInfos = GetFieldsWithRequireAttribute(behaviourType);
-            var componentIdsToFieldInfos = new Dictionary<uint, FieldInfo>();
+            var componentIdsToFieldInfos = new Dictionary<uint, List<FieldInfo>>();
             var readerComponentIds = new List<uint>();
             var writerComponentIds = new List<uint>();
             foreach (var field in fieldInfos)
@@ -146,19 +153,16 @@ namespace Improbable.Gdk.Core
                 }
 
                 var componentId = componentIdAttribute.Id;
-                if (componentIdsToFieldInfos.ContainsKey(componentId))
-                {
-                    logger.HandleLog(LogType.Error, new LogEvent(MultipleReadersWritersRequiredError)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("MonoBehaviour", behaviourType.Name)
-                        .WithField("ComponentID", componentId)
-                        .WithField("RequiredType", requiredType.Name));
-                    invalidMonoBehaviourTypes.Add(behaviourType);
-                    break;
-                }
 
                 // Store in data structures
-                componentIdsToFieldInfos[componentId] = field;
+                if (!componentIdsToFieldInfos.TryGetValue(componentId, out var fieldInfosForType))
+                {
+                    fieldInfosForType = new List<FieldInfo>();
+                    componentIdsToFieldInfos[componentId] = fieldInfosForType;
+                }
+
+                fieldInfosForType.Add(field);
+
                 if (isReader)
                 {
                     readerComponentIds.Add(componentId);
@@ -169,7 +173,8 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            fieldInfoCache[behaviourType] = componentIdsToFieldInfos;
+            fieldInfoCache[behaviourType] = componentIdsToFieldInfos.ToDictionary
+                (kp => kp.Key, kp => kp.Value.ToArray());
             componentReaderIdsForBehaviours[behaviourType] = readerComponentIds;
             componentWriterIdsForBehaviours[behaviourType] = writerComponentIds;
         }
@@ -187,7 +192,7 @@ namespace Improbable.Gdk.Core
                     fields.Add(field);
                 }
             }
-            
+
             return fields;
         }
     }

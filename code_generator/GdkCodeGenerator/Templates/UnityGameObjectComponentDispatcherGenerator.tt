@@ -16,7 +16,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class GameObjectComponentDispatcher : GameObjectComponentDispatcherBase
+        internal class GameObjectComponentDispatcher : GameObjectComponentDispatcherBase
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
