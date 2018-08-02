@@ -1,14 +1,14 @@
 # SpatialOS Unity GDK documentation
 
-#### Warning
-This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
-
 #### How to get started
-We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
+We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works. 
 
 Note that the Unity GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
 
 We want your feedback on the Unity GDK, its documentation and its [roadmap (Trello board)](https://trello.com/b/29tMKyQC) - see [Give us feedback](../README.md#give-us-feedback).
+
+## Questions? 
+Check out our [FAQs](content/faqs/faqs.md) or head over to our [discussion forums](../README.md#give-us-feedback).
 
 ## Documentation 
 
@@ -31,6 +31,10 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Contributions policy](../.github/CONTRIBUTING.md)
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
+##### Frequently asked questions (FAQs)
+* [FAQs](content/faqs/faqs.md)
+* [Summary of key features](content/faqs/key-features.md)
+
 ##### Contents
 * [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
@@ -44,4 +48,10 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Temporary components](content/temporary-components.md)
 * [Logging](content/logging.md)
 
+
+---
+#### Warning
+This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+
+----
 &copy; 2018 Improbable
