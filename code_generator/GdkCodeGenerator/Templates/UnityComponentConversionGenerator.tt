@@ -58,6 +58,7 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
                     );
                 }
             }
@@ -84,6 +85,7 @@ namespace <#= qualifiedNamespace #>
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
                     );
                 }
             }
@@ -135,6 +137,7 @@ namespace <#= qualifiedNamespace #>
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "<#= componentDetails.TypeName #>")
                         );
                         break;
                 }
@@ -160,6 +163,7 @@ namespace <#= qualifiedNamespace #>
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "<#= componentDetails.TypeName #>")
                         );
                         break;
                 }
@@ -216,6 +220,7 @@ namespace <#= qualifiedNamespace #>
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, entityId.Id)
                         .WithField("Op", opType)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
                     );
                     return false;
                 }
@@ -230,6 +235,7 @@ namespace <#= qualifiedNamespace #>
                     .WithField(LoggingUtils.EntityId, entityId.Id)
                     .WithField("New Authority", newAuthority)
                     .WithField("Expected Old Authority", expectedOldAuthority)
+                    .WithField("Component", "<#= componentDetails.TypeName #>")
                 );
             }
 
