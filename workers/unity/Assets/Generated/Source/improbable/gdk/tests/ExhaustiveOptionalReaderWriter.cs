@@ -1,14 +1,7 @@
 
-<#@ template language="C#" #>
-<#@ output extension=".cs" #>
-<#
-    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
-    var componentDetails = GetComponentDetails();
-    var fieldDetailsList = GetFieldDetailsList();
-    var eventDetailsList = GetEventDetailsList();
-    var commandDetailsList = GetCommandDetailsList();
-#>
-<#= generatedHeader #>
+// ===========
+// DO NOT EDIT - this file is automatically regenerated.
+// ===========
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
@@ -16,11 +9,11 @@ using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
 using Entity = Unity.Entities.Entity;
 
-namespace <#= qualifiedNamespace #>
+namespace Generated.Improbable.Gdk.Tests
 {
-    public partial class <#= componentDetails.ComponentName #>
+    public partial class ExhaustiveOptional
     {
-        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        [ComponentId(197716)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
             public IReaderInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -30,7 +23,7 @@ namespace <#= qualifiedNamespace #>
         }
 
         [ReaderInterface]
-        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        [ComponentId(197716)]
         public interface Reader
         {
         }

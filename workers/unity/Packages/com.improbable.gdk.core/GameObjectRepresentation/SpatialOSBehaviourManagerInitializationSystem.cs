@@ -40,7 +40,8 @@ namespace Improbable.Gdk.Core
 
             gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
             logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            behaviourLibrary = new SpatialOSBehaviourLibrary(logger);
+            var entityManager = World.GetOrCreateManager<EntityManager>();
+            behaviourLibrary = new SpatialOSBehaviourLibrary(entityManager, logger);
         }
 
         protected override void OnUpdate()

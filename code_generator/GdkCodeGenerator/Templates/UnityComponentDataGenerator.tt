@@ -9,9 +9,6 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
-using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
 { 
