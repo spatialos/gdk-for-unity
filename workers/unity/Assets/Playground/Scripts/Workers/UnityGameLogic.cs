@@ -17,6 +17,8 @@ namespace Playground
         {
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             forwardingDispatcher = (ForwardingDispatcher) View.LogDispatcher;
+
+            UseDynamicId = Application.isEditor;
         }
 
         public override void Connect(ConnectionConfig config)
@@ -53,6 +55,10 @@ namespace Playground
 
             // Metric sending system
             World.GetOrCreateManager<MetricSendSystem>();
+
+            // Score update systems
+            World.GetOrCreateManager<ProcessScoresSystem>();
+            World.GetOrCreateManager<CollisionProcessSystem>();
         }
     }
 }

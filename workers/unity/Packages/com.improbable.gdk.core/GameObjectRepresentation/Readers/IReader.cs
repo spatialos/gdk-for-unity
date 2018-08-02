@@ -1,5 +1,4 @@
 ﻿using Improbable.Worker;
-using Unity.Entities;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
@@ -8,13 +7,15 @@ namespace Improbable.Gdk.Core.MonoBehaviours
     ///     callbacks for updates, events and commands for component instances.
     /// </summary>
     /// <typeparam name="TSpatialComponentData">The data type for the SpatialOS component.</typeparam>
-    public interface IReader<TSpatialComponentData>
+    /// <typeparam name="TComponentUpdate">The update type for the SpatialOS component.</typeparam>
+    public interface IReader<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : ISpatialComponentData
+        where TComponentUpdate : ISpatialComponentUpdate
     {
         Authority Authority { get; }
         TSpatialComponentData Data { get; }
 
         event GameObjectDelegates.AuthorityChanged AuthorityChanged;
-        event GameObjectDelegates.ComponentUpdated<TSpatialComponentData> ComponentUpdated;
+        event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated;
     }
 }

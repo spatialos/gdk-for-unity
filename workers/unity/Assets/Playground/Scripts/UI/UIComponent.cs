@@ -10,6 +10,7 @@ namespace Playground.Scripts.UI
         public GameObject CanvasGameObject;
         public Canvas Canvas;
         public Text TestText;
+        public Text ScoreText;
         public RawImage Reticle;
 
 

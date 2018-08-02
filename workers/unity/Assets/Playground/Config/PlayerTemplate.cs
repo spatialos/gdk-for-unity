@@ -33,6 +33,7 @@ namespace Playground
             var prefab = new Playground.Prefab.Data(ArchetypeConfig.CharacterArchetype);
             var archetype = new Playground.ArchetypeComponent.Data(ArchetypeConfig.CharacterArchetype);
             var launcher = new Playground.Launcher.Data(100, 0);
+            var score = new Playground.Score.Data(0);
 
             return EntityBuilder.Begin()
                 .AddPositionComponent(coordinates, GameLogicSet)
@@ -46,6 +47,7 @@ namespace Playground
                 .AddComponent(prefab, GameLogicSet)
                 .AddComponent(archetype, GameLogicSet)
                 .AddComponent(launcher, GameLogicSet)
+                .AddComponent(score, GameLogicSet)
                 .Build();
         }
     }

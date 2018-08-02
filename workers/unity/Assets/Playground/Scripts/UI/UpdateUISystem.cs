@@ -9,7 +9,7 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class UpdateUISystem : ComponentSystem
     {
-        public struct PlayerData
+        public struct PlayerDataLauncher
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
@@ -17,19 +17,37 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
         }
 
-        [Inject] private PlayerData playerData;
+        public struct PlayerDataScore
+        {
+            public readonly int Length;
+            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
+            [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSScore.Update>> Updates;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
+        }
+
+        [Inject] private PlayerDataLauncher playerDataLauncher;
+        [Inject] private PlayerDataScore playerDataScore;
 
         protected override void OnUpdate()
         {
-            var launcher = playerData.Launcher[0];
+            for (int i = 0; i < playerDataLauncher.Length; i++)
+            {
+                var launcher = playerDataLauncher.Launcher[i];
 
-            if (launcher.RechargeTimeLeft > 0.0f)
-            {
-                UIComponent.Main.TestText.text = "Recharging";
+                if (launcher.RechargeTimeLeft > 0.0f)
+                {
+                    UIComponent.Main.TestText.text = "Recharging";
+                }
+                else
+                {
+                    UIComponent.Main.TestText.text = $"Energy: {launcher.EnergyLeft}";
+                }
             }
-            else
+
+            for (int i = 0; i < playerDataScore.Length; i++)
             {
-                UIComponent.Main.TestText.text = $"Energy: {launcher.EnergyLeft}";
+                var score = playerDataScore.Score[i];
+                UIComponent.Main.ScoreText.text = $"Score: {score.Score}";
             }
         }
     }

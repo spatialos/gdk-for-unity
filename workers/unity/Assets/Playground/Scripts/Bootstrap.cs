@@ -67,7 +67,9 @@ namespace Playground
 
                 // because the launcher does not pass in the worker type as an argument
                 var worker = workerType.Equals(string.Empty)
-                    ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
+                    ? WorkerRegistry.CreateWorker<UnityClient>(
+                        workerId: null, // The worker id for the UnityClient will be auto-generated.
+                        origin: new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
                 Workers.Add(worker);

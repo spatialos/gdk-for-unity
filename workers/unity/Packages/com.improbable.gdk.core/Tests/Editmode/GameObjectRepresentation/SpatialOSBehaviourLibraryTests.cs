@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Generated.Improbable;
+using Improbable.Gdk.Core.MonoBehaviours;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -55,6 +56,8 @@ namespace Improbable.Gdk.Core.EditmodeTests
         private SpatialOSBehaviourLibrary library;
         private Entity testEntity;
         private GameObject testGameObject;
+        private Entity testEntity;
+        private World world;
 
         [SetUp]
         public void Setup()
@@ -64,6 +67,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
             library = new SpatialOSBehaviourLibrary(entityManager, new LoggingDispatcher());
             testEntity = entityManager.CreateEntity();
             testGameObject = new GameObject();
+            world = new World("Test World");
+            var entityManager = world.GetOrCreateManager<EntityManager>();
+            testEntity = entityManager.CreateEntity();
         }
 
         [TearDown]
