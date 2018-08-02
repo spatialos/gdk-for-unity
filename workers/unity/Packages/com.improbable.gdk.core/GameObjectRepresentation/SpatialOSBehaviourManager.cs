@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
 using UnityEngine;
@@ -85,19 +86,11 @@ namespace Improbable.Gdk.Core
                     var reader = idToReaderWriter.Value;
                     GetOrCreateValue(compIdToReadersWriters, id).Add(reader);
                 }
+            }
 
-                try
-                {
-                    behaviour.enabled = true;
-                }
-                catch (Exception e)
-                {
-                    logger.HandleLog(LogType.Exception,
-                        new LogEvent("Exception thrown in OnEnable() method of MonoBehaviour.")
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, spatialId)
-                            .WithException(e));
-                }
+            foreach (var behaviour in behavioursToDisable)
+            {
+                behaviour.enabled = true;
             }
 
             behavioursToEnable.Clear();
@@ -107,19 +100,11 @@ namespace Improbable.Gdk.Core
         {
             foreach (var behaviour in behavioursToDisable)
             {
-                try
-                {
-                    behaviour.enabled = false;
-                }
-                catch (Exception e)
-                {
-                    logger.HandleLog(LogType.Error,
-                        new LogEvent("Exception thrown in OnDisable() method of MonoBehaviour.")
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, spatialId)
-                            .WithException(e));
-                }
+                behaviour.enabled = false;
+            }
 
+            foreach (var behaviour in behavioursToDisable)
+            {
                 behaviourLibrary.DeInjectAllReadersWriters(behaviour);
                 foreach (var idToReaderWriter in behaviourToReadersWriters[behaviour])
                 {
@@ -138,14 +123,14 @@ namespace Improbable.Gdk.Core
         {
             // Mark reader components ready in relevant SpatialOSBehaviours
             var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
-            MarkComponentsReady(relevantReaderSpatialOSBehaviours);
+            MarkComponentRequirementSatisfied(relevantReaderSpatialOSBehaviours);
         }
 
         public void RemoveComponent(uint componentId)
         {
             // Mark reader components not ready in relevant SpatialOSBehaviours
             var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
-            MarkComponentsNotReady(relevantReaderSpatialOSBehaviours);
+            MarkComponentRequirementUnsatisfied(relevantReaderSpatialOSBehaviours);
         }
 
         public void ChangeAuthority(uint componentId, Authority authority)
@@ -154,17 +139,17 @@ namespace Improbable.Gdk.Core
             {
                 // Mark writer components ready in relevant SpatialOSBehaviours
                 var relevantWriterSpatialOSBehaviours = behavioursRequiringWriterTypes[componentId];
-                MarkComponentsReady(relevantWriterSpatialOSBehaviours);
+                MarkComponentRequirementSatisfied(relevantWriterSpatialOSBehaviours);
             }
             else if (authority == Authority.NotAuthoritative)
             {
                 // Mark writer components not ready in relevant SpatialOSBehaviours
                 var relevantWriterSpatialOSBehaviours = behavioursRequiringWriterTypes[componentId];
-                MarkComponentsNotReady(relevantWriterSpatialOSBehaviours);
+                MarkComponentRequirementUnsatisfied(relevantWriterSpatialOSBehaviours);
             }
         }
 
-        private void MarkComponentsReady(IEnumerable<MonoBehaviour> behaviours)
+        private void MarkComponentRequirementSatisfied(IEnumerable<MonoBehaviour> behaviours)
         {
             // Inject all Readers/Writers at once when all requirements are met
             foreach (var behaviour in behaviours)
@@ -172,33 +157,35 @@ namespace Improbable.Gdk.Core
                 numUnsatisfiedReadersOrWriters[behaviour]--;
                 if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
                 {
-                    // Schedule activation
-                    if (!behaviour.enabled)
+                    if (!behavioursToEnable.Contains(behaviour))
                     {
+                        // Schedule activation
                         behavioursToEnable.Add(behaviour);
                     }
                     else
                     {
+                        // Must be enabled already, so we were going to disable it - let's not
                         behavioursToDisable.Remove(behaviour);
                     }
                 }
             }
         }
 
-        private void MarkComponentsNotReady(IEnumerable<MonoBehaviour> behaviours)
+        private void MarkComponentRequirementUnsatisfied(IEnumerable<MonoBehaviour> behaviours)
         {
             foreach (var behaviour in behaviours)
             {
                 // De-inject all Readers/Writers at once when a single requirement is not met
                 if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
                 {
-                    // Schedule deactivation
-                    if (behaviour.enabled)
+                    if (!behavioursToDisable.Contains(behaviour))
                     {
+                        // Schedule deactivation
                         behavioursToDisable.Add(behaviour);
                     }
                     else
                     {
+                        // Must be disabled already, so we were going to enable it - let's not
                         behavioursToEnable.Remove(behaviour);
                     }
                 }
