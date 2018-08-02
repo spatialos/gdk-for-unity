@@ -34,6 +34,9 @@ This pre-alpha release is for experienced Unity developers who have some underst
 ## Installation and setup 
 For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation. 
 
+## Questions? 
+Check out our [FAQs](docs/content/faqs/faqs.md) or head over to our discussion forums, listed below.
+
 ## Give us feedback
 
 We have released the Unity GDK this early in development because we want your feedback. Please come and talk to us about the software and the documentation via:
