@@ -68,11 +68,11 @@ You only use GameObjects when you want to. You have the option to do computation
 
 #### Full source access
 
-At Improbable, we’ve always believed that everyone benefits from open development and that code gets better, faster, when it’s public. We’re developing the SpatialOS GDK for Unity in the open so that you can better understand it, and directly impact its development. We welcome [issue reports](https://github.com/spatialos/UnityGDK/issues) and [feature requests](https://github.com/spatialos/UnityGDK#give-us-feedback) right now, and when we enter alpha, we’ll being accepting pull requests directly from the community.
+At Improbable, we’ve always believed that everyone benefits from open development and that code gets better, faster, when it’s public. We’re developing the SpatialOS GDK for Unity in the open so that you can better understand it, and directly impact its development. We welcome [issue reports](https://github.com/spatialos/UnityGDK/issues) and [feature requests](https://github.com/spatialos/UnityGDK#give-us-feedback) right now, and at later releases we’ll be accepting pull requests directly from the community.
 
 ## Publicly-available experimental features
 
 #### Mobile game development
 
-To enable mobile game development support for SpatialOS, we have an [experimental branch](https://github.com/spatialos/UnityGDK/tree/experimental/android-support) for Android on the SpatialOS GDK. We plan to have iOS support for the GDK soon.
+To enable mobile game development support for SpatialOS, we have an [experimental branch](https://github.com/spatialos/UnityGDK/tree/experimental/mobile-support) for Android on the SpatialOS GDK. We plan to have iOS support for the GDK soon.
 

@@ -52,11 +52,11 @@ With our GDK for Unity, you have two workflow options to build your gameplay fea
 
 2. An ECS workflow: takes advantage of the ECS development paradigm and associated performance improvements.
 
-Planned for our alpha release, our MonoBehaviour workflow supports an API similar to the [Readers and Writers API](https://github.com/spatialos/UnitySDK/blob/master/docs/interact-with-world/interact-components.md#example-of-monobehaviours-component-readers-and-writers) in the [SpatialOS SDK for Unity](https://github.com/spatialos/UnitySDK/blob/master/docs/interact-with-world/interact-components.md#example-of-monobehaviours-component-readers-and-writers). Follow [this Trello card](https://trello.com/c/ytJ6fZZT/10-monobehaviour-workflow) to keep track of our development progress. 
+Planned for our alpha release, our MonoBehaviour workflow supports an API similar to the [Readers and Writers API](https://github.com/spatialos/UnitySDK/blob/master/docs/interact-with-world/interact-components.md#example-of-monobehaviours-component-readers-and-writers) in the [SpatialOS SDK for Unity](https://github.com/spatialos/UnitySDK). Follow [this Trello card](https://trello.com/c/ytJ6fZZT/10-monobehaviour-workflow) to keep track of our development progress. 
 
  
 
-If you are interested in finding out more about our ECS workflow, these topics in our documentation are a good place to start: [Component updates](../component-data.md), [Events](../content/events.md), [Commands](../commands.md) and [Reactive components](../reactive-components.md).
+If you are interested in finding out more about our ECS workflow, these topics in our documentation are a good place to start: [Component updates](../component-data.md), [Events](../events.md), [Commands](../commands.md) and [Reactive components](../reactive-components.md).
 
 For more information on Unity ECS, see Unity’s page on the [Unity ECS](https://unity3d.com/unity/features/job-system-ECS) and their [vision](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_principles_and_vision.md) for it going forward.
 
