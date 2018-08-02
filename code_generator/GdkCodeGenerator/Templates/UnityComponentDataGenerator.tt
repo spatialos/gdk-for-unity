@@ -216,7 +216,7 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
                 if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1) 
                 {
-                    component.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
+                    component.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
                 }
 <# } #>
 <# } else { #>
