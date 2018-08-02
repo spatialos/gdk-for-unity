@@ -1,4 +1,4 @@
-# GDK for Unity FAQs
+# SpatialOS GDK for Unity FAQs
 
 [2018-Aug-02]
 
