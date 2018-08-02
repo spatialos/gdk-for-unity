@@ -26,8 +26,8 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
             = new Dictionary<MonoBehaviour, int>();
 
-        private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal>> behaviourToReadersWriters
-            = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal>>();
+        private readonly Dictionary<MonoBehaviour, Dictionary<uint, List<IReaderInternal>>> behaviourToReadersWriters
+            = new Dictionary<MonoBehaviour, Dictionary<uint, List<IReaderInternal>>>();
 
         private readonly Dictionary<uint, HashSet<IReaderInternal>> compIdToReadersWriters =
             new Dictionary<uint, HashSet<IReaderInternal>>();
@@ -80,11 +80,14 @@ namespace Improbable.Gdk.Core
             {
                 var dict = behaviourLibrary.InjectAllReadersWriters(behaviour, entity);
                 behaviourToReadersWriters[behaviour] = dict;
-                foreach (var idToReaderWriter in dict)
+                foreach (var idToReaderWriterList in dict)
                 {
-                    var id = idToReaderWriter.Key;
-                    var reader = idToReaderWriter.Value;
-                    GetOrCreateValue(compIdToReadersWriters, id).Add(reader);
+                    var id = idToReaderWriterList.Key;
+                    var readerWriterList = idToReaderWriterList.Value;
+                    foreach (var readerWriter in readerWriterList)
+                    {
+                        GetOrCreateValue(compIdToReadersWriters, id).Add(readerWriter);
+                    }
                 }
             }
 
@@ -106,11 +109,14 @@ namespace Improbable.Gdk.Core
             foreach (var behaviour in behavioursToDisable)
             {
                 behaviourLibrary.DeInjectAllReadersWriters(behaviour);
-                foreach (var idToReaderWriter in behaviourToReadersWriters[behaviour])
+                foreach (var idToReaderWriterList in behaviourToReadersWriters[behaviour])
                 {
-                    var id = idToReaderWriter.Key;
-                    var reader = idToReaderWriter.Value;
-                    compIdToReadersWriters[id].Remove(reader);
+                    var id = idToReaderWriterList.Key;
+                    var readerWriterList = idToReaderWriterList.Value;
+                    foreach (var readerWriter in readerWriterList)
+                    {
+                        compIdToReadersWriters[id].Remove(readerWriter);
+                    }
                 }
 
                 behaviourToReadersWriters.Remove(behaviour);
