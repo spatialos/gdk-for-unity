@@ -132,13 +132,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_refuses_to_inject_multiple_Readers()
+        public void SpatialOSBehaviourLibrary_injects_multiple_Readers()
         {
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
-            library.InjectAllReadersWriters(behaviour, testEntity);
-            LogAssert.Expect(LogType.Error, new Regex(".*", RegexOptions.Singleline));
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);
+            library.InjectAllReadersWriters(behaviour, testEntity);
+            Assert.NotNull(behaviour.Reader1);
+            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader1.GetType());
+            Assert.NotNull(behaviour.Reader2);
+            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader2.GetType());
         }
     }
 }
