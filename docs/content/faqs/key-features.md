@@ -74,5 +74,5 @@ At Improbable, we’ve always believed that everyone benefits from open developm
 
 #### Mobile game development
 
-To enable mobile game development support for SpatialOS, we have an [experimental branch](https://github.com/spatialos/UnityGDK/tree/experimental/mobile-support) for Android on the SpatialOS GDK. We plan to have iOS support for the GDK soon.
+To enable mobile game development support for SpatialOS, we have an [experimental branch](../../../tree/experimental/mobile-support) for Android on the SpatialOS GDK. We plan to have iOS support for the GDK soon.
 
