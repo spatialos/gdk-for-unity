@@ -19,7 +19,7 @@ Because of this, the Unity GDK attaches a `CommandRequestSender<T>` (where `T` i
 Given this schema:
 
 ```
-package demogame;
+package playground;
 import "improbable/transform.transform.schema"
 
 type BuildRequest
