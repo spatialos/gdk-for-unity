@@ -163,12 +163,13 @@ namespace Improbable.Gdk.Core
                 numUnsatisfiedReadersOrWriters[behaviour]--;
                 if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
                 {
-                    if (!behavioursToEnable.Contains(behaviour))
+                    if (!behaviour.enabled)
                     {
                         // Schedule activation
                         behavioursToEnable.Add(behaviour);
                     }
-                    else
+
+                    if (behavioursToDisable.Contains(behaviour))
                     {
                         // Must be enabled already, so we were going to disable it - let's not
                         behavioursToDisable.Remove(behaviour);
@@ -184,12 +185,13 @@ namespace Improbable.Gdk.Core
                 // De-inject all Readers/Writers at once when a single requirement is not met
                 if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
                 {
-                    if (!behavioursToDisable.Contains(behaviour))
+                    if (behaviour.enabled)
                     {
                         // Schedule deactivation
                         behavioursToDisable.Add(behaviour);
                     }
-                    else
+
+                    if (behavioursToEnable.Contains(behaviour))
                     {
                         // Must be disabled already, so we were going to enable it - let's not
                         behavioursToEnable.Remove(behaviour);
