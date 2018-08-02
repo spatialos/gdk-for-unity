@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
     public abstract class ReaderWriterTestsBase
     {
-        public class SpatialOSBlittableComponentReader : BlittableReaderBase<SpatialOSBlittableComponent,
+        internal class SpatialOSBlittableComponentReader : BlittableReaderBase<SpatialOSBlittableComponent,
             SpatialOSBlittableComponent.Update>
         {
             internal SpatialOSBlittableComponentReader(Entity entity,
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         private World world;
         protected EntityManager EntityManager;
         protected Entity Entity;
-        protected SpatialOSBlittableComponentReader Reader;
+        internal SpatialOSBlittableComponentReader Reader;
 
         [SetUp]
         public void SetUp()

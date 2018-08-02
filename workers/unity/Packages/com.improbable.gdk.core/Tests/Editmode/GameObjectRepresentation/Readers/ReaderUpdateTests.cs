@@ -49,9 +49,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             QueueUpdatesToEntity(updateToSend);
 
-            var internalReader = (IReaderInternal) Reader;
-
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.AreEqual(true, componentUpdated);
         }
@@ -82,11 +80,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             Assert.AreEqual(0, nextUpdateIndex, "Adding an event callback should not fire it immediately");
 
-            var internalReader = (IReaderInternal) Reader;
-
             QueueUpdatesToEntity(updatesToSend);
 
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.AreEqual(3, nextUpdateIndex);
         }
@@ -102,12 +98,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             QueueUpdatesToEntity(new SpatialOSBlittableComponent.Update());
 
-            var internalReader = (IReaderInternal) Reader;
-
             LogAssert.Expect(LogType.Exception, "Exception: Update Exception: divide by zero");
             LogAssert.Expect(LogType.Exception, "Exception: Update Exception: this statement is false");
 
-            Assert.DoesNotThrow(() => { internalReader.OnComponentUpdate(); },
+            Assert.DoesNotThrow(() => { Reader.OnComponentUpdate(); },
                 "Exceptions that happen within component update callbacks should not propagate to callers.");
 
             Assert.IsTrue(secondUpdateCalled);
@@ -131,9 +125,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 FloatField = new Option<float>(10.0f),
             });
 
-            var internalReader = (IReaderInternal) Reader;
-
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.IsTrue(floatFieldUpdated,
                 "The update contains a float field but the callback for the float field was not called.");
@@ -165,9 +157,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 FloatField = new Option<float>(10.0f),
             });
 
-            var internalReader = (IReaderInternal) Reader;
-
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.IsTrue(floatFieldUpdated,
                 "The update contains a float field but the callback for the float field was not called.");
@@ -184,7 +174,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 IntField = new Option<int>(20),
             });
 
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.IsFalse(floatFieldUpdated,
                 "The second update does not contain a float field but the callback was called.");
@@ -214,15 +204,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 receivedIntValue = newValue;
             };
 
-            var internalReader = (IReaderInternal) Reader;
-
             QueueUpdatesToEntity(new SpatialOSBlittableComponent.Update
             {
                 IntField = new Option<int>(30),
                 FloatField = new Option<float>(40.0f)
             });
 
-            internalReader.OnComponentUpdate();
+            Reader.OnComponentUpdate();
 
             Assert.IsTrue(intFieldUpdated,
                 "THe update contains an int field but the callback for the int field was not called.");
@@ -252,14 +240,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 FloatField = new Option<float>(20.05f)
             });
 
-            var internalReader = (IReaderInternal) Reader;
-
             LogAssert.Expect(LogType.Exception, "Exception: Int Update Exception: 10");
             LogAssert.Expect(LogType.Exception, "Exception: Int Update Exception 2: 10");
             LogAssert.Expect(LogType.Exception, "Exception: Float Update Exception: 20.05");
             LogAssert.Expect(LogType.Exception, "Exception: Float Update Exception 2: 20.05");
 
-            Assert.DoesNotThrow(() => { internalReader.OnComponentUpdate(); },
+            Assert.DoesNotThrow(() => { Reader.OnComponentUpdate(); },
                 "Exceptions that happen within component update callbacks should not propagate to callers.");
 
             Assert.IsTrue(intUpdateCalled);

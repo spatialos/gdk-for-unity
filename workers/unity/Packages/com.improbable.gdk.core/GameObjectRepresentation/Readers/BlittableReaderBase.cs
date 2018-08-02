@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    public abstract class BlittableReaderBase<TSpatialComponentData, TComponentUpdate>
+    internal abstract class BlittableReaderBase<TSpatialComponentData, TComponentUpdate>
         : ReaderBase<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate

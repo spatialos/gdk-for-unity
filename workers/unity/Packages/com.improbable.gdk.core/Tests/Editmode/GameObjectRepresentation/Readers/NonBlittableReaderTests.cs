@@ -115,8 +115,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                     })
                 });
 
-                IReaderInternal internalReader = reader;
-                internalReader.OnComponentUpdate();
+                reader.OnComponentUpdate();
 
                 Assert.AreEqual("new string", stringValue);
                 Assert.AreEqual(new List<int> { 5, 6, 7 }, listValue);

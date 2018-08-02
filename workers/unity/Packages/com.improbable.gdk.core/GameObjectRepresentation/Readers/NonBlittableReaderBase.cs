@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    public abstract class NonBlittableReaderBase<TSpatialComponentData, TComponentUpdate>
+    internal abstract class NonBlittableReaderBase<TSpatialComponentData, TComponentUpdate>
         : ReaderBase<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : Component, ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate

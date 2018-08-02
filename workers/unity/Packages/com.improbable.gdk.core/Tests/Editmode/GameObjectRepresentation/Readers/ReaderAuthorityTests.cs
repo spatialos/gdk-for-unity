@@ -71,9 +71,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             Assert.AreEqual(false, authorityChangedCalled, "Adding an event should not fire it immediately");
 
-            var internalReader = (IReaderInternal) Reader;
-
-            internalReader.OnAuthorityChange(Authority.Authoritative);
+            Reader.OnAuthorityChange(Authority.Authoritative);
 
             Assert.AreEqual(true, authorityChangedCalled);
         }

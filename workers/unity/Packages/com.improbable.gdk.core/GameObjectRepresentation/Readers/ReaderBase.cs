@@ -8,7 +8,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    public abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
+    internal abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
         : IReader<TSpatialComponentData, TComponentUpdate>,
             IReaderInternal
         where TSpatialComponentData : ISpatialComponentData
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        void IReaderInternal.OnAuthorityChange(Authority authority)
+        public void OnAuthorityChange(Authority authority)
         {
             foreach (var callback in authorityChangedDelegates)
             {
@@ -112,7 +112,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        void IReaderInternal.OnComponentUpdate()
+        public void OnComponentUpdate()
         {
             foreach (var update in EntityManager.GetComponentObject<ComponentsUpdated<TComponentUpdate>>(Entity).Buffer)
             {
@@ -141,12 +141,12 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         {
         }
 
-        void IReaderInternal.OnEvent(int eventIndex)
+        public void OnEvent(int eventIndex)
         {
             // TODO
         }
 
-        void IReaderInternal.OnCommandRequest(int commandIndex)
+        public void OnCommandRequest(int commandIndex)
         {
             // TODO
         }
