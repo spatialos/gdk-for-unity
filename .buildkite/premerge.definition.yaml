@@ -1,0 +1,12 @@
+agent_queue_id: Configure me
+description: Add a description...
+github:
+  branch_configuration:
+  - master
+  - buildkite/*
+  default_branch: master
+  pull_request_branch_filter_configuration:
+  - buildkite/*
+teams:
+- name: exampleTeam
+  permission: MANAGE_BUILD_AND_READ
