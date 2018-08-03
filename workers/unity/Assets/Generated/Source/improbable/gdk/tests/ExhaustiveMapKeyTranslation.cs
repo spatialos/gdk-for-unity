@@ -95,15 +95,15 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveMapKey.DirtyBit = false;
 
                 view.SetComponentObject(entity, spatialOSExhaustiveMapKey);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveMapKey>());
+                view.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveMapKey>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
+                if (view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveMapKey>());
+                    view.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveMapKey>());
                 }
                 else
                 {
@@ -127,10 +127,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponentObject<SpatialOSExhaustiveMapKey>(entity);
+                var componentData = view.EntityManager.GetComponentObject<SpatialOSExhaustiveMapKey>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapKey>>(entity))
+                if (view.EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapKey>>(entity))
                 {
                     if (update.field2.HasValue)
                     {
@@ -294,15 +294,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSExhaustiveMapKey>(entity);
+                view.EntityManager.RemoveComponent<SpatialOSExhaustiveMapKey>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
+                if (view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveMapKey>());
+                    view.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveMapKey>());
                 }
                 else
                 {
@@ -317,6 +317,15 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapKey"));
+                    return;
+                }
                 view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 

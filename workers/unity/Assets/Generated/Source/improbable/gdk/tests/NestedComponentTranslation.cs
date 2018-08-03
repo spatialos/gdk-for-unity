@@ -80,16 +80,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSNestedComponent.NestedType = global::Generated.Improbable.Gdk.Tests.TypeName.ToNative(data.nestedType);
                 spatialOSNestedComponent.DirtyBit = false;
 
-                view.AddComponent(entity, spatialOSNestedComponent);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSNestedComponent>());
+                view.EntityManager.AddComponentData(entity, spatialOSNestedComponent);
+                view.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSNestedComponent>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
+                if (view.EntityManager.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSNestedComponent>());
+                    view.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSNestedComponent>());
                 }
                 else
                 {
@@ -113,10 +113,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponent<SpatialOSNestedComponent>(entity);
+                var componentData = view.EntityManager.GetComponentData<SpatialOSNestedComponent>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSNestedComponent>>(entity))
+                if (view.EntityManager.HasComponent<NotAuthoritative<SpatialOSNestedComponent>>(entity))
                 {
                     if (update.nestedType.HasValue)
                     {
@@ -154,15 +154,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSNestedComponent>(entity);
+                view.EntityManager.RemoveComponent<SpatialOSNestedComponent>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
+                if (view.EntityManager.HasComponent<ComponentAdded<SpatialOSNestedComponent>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSNestedComponent>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentAdded<SpatialOSNestedComponent>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSNestedComponent>());
+                    view.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSNestedComponent>());
                 }
                 else
                 {
@@ -177,6 +177,15 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSNestedComponent"));
+                    return;
+                }
                 view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
