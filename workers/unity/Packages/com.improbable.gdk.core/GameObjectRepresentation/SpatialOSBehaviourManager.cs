@@ -26,11 +26,11 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
             = new Dictionary<MonoBehaviour, int>();
 
-        private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal[]>> behaviourToReadersWriters
-            = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderInternal[]>>();
+        private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>> behaviourToReadersWriters
+            = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>>();
 
-        private readonly Dictionary<uint, HashSet<IReaderInternal>> compIdToReadersWriters =
-            new Dictionary<uint, HashSet<IReaderInternal>>();
+        private readonly Dictionary<uint, HashSet<IReaderWriterInternal>> compIdToReadersWriters =
+            new Dictionary<uint, HashSet<IReaderWriterInternal>>();
 
         private readonly HashSet<MonoBehaviour> behavioursToEnable = new HashSet<MonoBehaviour>();
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core
         }
 
 
-        public HashSet<IReaderInternal> GetReadersWriters(uint componentId)
+        public HashSet<IReaderWriterInternal> GetReadersWriters(uint componentId)
         {
             return compIdToReadersWriters[componentId];
         }

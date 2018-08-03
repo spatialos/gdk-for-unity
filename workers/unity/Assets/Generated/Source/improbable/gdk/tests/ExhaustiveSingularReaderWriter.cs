@@ -16,7 +16,7 @@ namespace Generated.Improbable.Gdk.Tests
         [ComponentId(197715)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
@@ -24,35 +24,36 @@ namespace Generated.Improbable.Gdk.Tests
 
         [ReaderInterface]
         [ComponentId(197715)]
-        public interface Reader
+        public interface Reader : IReader<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>
         {
         }
 
-        public class ReaderWriterImpl : Reader, IReaderInternal
+        [WriterInterface]
+        [ComponentId(197715)]
+        public interface Writer 
+        {
+        }
+
+        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
             }
-
-            // IReaderInternal methods
-            void IReaderInternal.OnAuthorityChange(Authority authority)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnComponentUpdate()
-            {
-                throw new System.NotImplementedException();
-            }
             
-            void IReaderInternal.OnEvent(int eventIndex)
+            public Authority Authority => throw new System.NotImplementedException();
+
+            public SpatialOSExhaustiveSingular Data => throw new System.NotImplementedException();
+
+            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
             {
-                throw new System.NotImplementedException();
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
             }
 
-            void IReaderInternal.OnCommandRequest(int commandIndex)
+            public event GameObjectDelegates.ComponentUpdated<SpatialOSExhaustiveSingular.Update> ComponentUpdated
             {
-                throw new System.NotImplementedException();
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
             }
         }
     }
