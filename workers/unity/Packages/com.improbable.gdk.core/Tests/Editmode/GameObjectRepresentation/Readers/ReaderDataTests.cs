@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
     [TestFixture]
-    public class ReaderDataTests : ReaderWriterTestsBase
+    internal class ReaderDataTests : ReaderWriterTestsBase
     {
         [Test]
         public void Data_returns_component_instance()
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             var data = EntityManager.GetComponentData<SpatialOSBlittableComponent>(Entity);
 
             Assert.AreEqual(data, Reader.Data);
-            Assert.AreEqual(5, Reader.Data.FloatField);
+            Assert.AreEqual(data.FloatField, Reader.Data.FloatField);
         }
     }
 }

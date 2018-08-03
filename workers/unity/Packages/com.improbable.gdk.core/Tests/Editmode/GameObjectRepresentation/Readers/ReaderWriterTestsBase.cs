@@ -11,81 +11,12 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
-    public abstract class ReaderWriterTestsBase
+    internal abstract class ReaderWriterTestsBase
     {
-        internal class SpatialOSBlittableComponentReader : BlittableReaderBase<SpatialOSBlittableComponent,
-            SpatialOSBlittableComponent.Update>
-        {
-            internal SpatialOSBlittableComponentReader(Entity entity,
-                EntityManager entityManager,
-                ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
-            {
-            }
-
-            private readonly List<Action<BlittableBool>> boolFieldDelegates = new List<Action<BlittableBool>>();
-
-            [UsedImplicitly]
-            public event Action<BlittableBool> BoolFieldUpdated
-            {
-                add => boolFieldDelegates.Add(value);
-                remove => boolFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
-
-            [UsedImplicitly]
-            public event Action<int> IntFieldUpdated
-            {
-                add => intFieldDelegates.Add(value);
-                remove => intFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
-
-            [UsedImplicitly]
-            public event Action<long> LongFieldUpdated
-            {
-                add => longFieldDelegates.Add(value);
-                remove => longFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
-
-            [UsedImplicitly]
-            public event Action<float> FloatFieldUpdated
-            {
-                add => floatFieldDelegates.Add(value);
-                remove => floatFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
-
-            [UsedImplicitly]
-            public event Action<double> DoubleFieldUpdated
-            {
-                add => doubleFieldDelegates.Add(value);
-                remove => doubleFieldDelegates.Remove(value);
-            }
-
-            protected override void HandleFieldUpdates(SpatialOSBlittableComponent.Update update)
-            {
-                DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
-                DispatchWithErrorHandling(update.IntField, intFieldDelegates);
-                DispatchWithErrorHandling(update.LongField, longFieldDelegates);
-                DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
-                DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
-            }
-        }
-
-        protected struct SomeOtherComponent : IComponentData
-        {
-        }
-
-        private World world;
+        protected SpatialOSBlittableComponentReader Reader;
         protected EntityManager EntityManager;
         protected Entity Entity;
-        internal SpatialOSBlittableComponentReader Reader;
+        private World world;
 
         [SetUp]
         public void SetUp()
@@ -103,6 +34,89 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void TearDown()
         {
             world.Dispose();
+        }
+
+        internal static void QueueUpdatesToEntity<TUpdate>(
+            EntityManager entityManager,
+            Entity entity,
+            params TUpdate[] updatesToQueue)
+            where TUpdate : ISpatialComponentUpdate
+        {
+            if (!entityManager.HasComponent<ComponentsUpdated<TUpdate>>(entity))
+            {
+                entityManager.AddComponent(entity, typeof(ComponentsUpdated<TUpdate>));
+
+                var componentsUpdated = new ComponentsUpdated<TUpdate>();
+                entityManager.SetComponentObject(entity, componentsUpdated);
+            }
+
+            entityManager.GetComponentObject<ComponentsUpdated<TUpdate>>(entity)
+                .Buffer
+                .AddRange(updatesToQueue);
+        }
+
+        internal class SpatialOSBlittableComponentReader : BlittableReaderBase<SpatialOSBlittableComponent,
+            SpatialOSBlittableComponent.Update>
+        {
+            internal SpatialOSBlittableComponentReader(Entity entity,
+                EntityManager entityManager,
+                ILogDispatcher logDispatcher)
+                : base(entity, entityManager, logDispatcher)
+            {
+            }
+
+            private readonly List<Action<BlittableBool>> boolFieldDelegates = new List<Action<BlittableBool>>();
+
+            public event Action<BlittableBool> BoolFieldUpdated
+            {
+                add => boolFieldDelegates.Add(value);
+                remove => boolFieldDelegates.Remove(value);
+            }
+
+            private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
+
+            public event Action<int> IntFieldUpdated
+            {
+                add => intFieldDelegates.Add(value);
+                remove => intFieldDelegates.Remove(value);
+            }
+
+            private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
+
+            public event Action<long> LongFieldUpdated
+            {
+                add => longFieldDelegates.Add(value);
+                remove => longFieldDelegates.Remove(value);
+            }
+
+            private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
+
+            public event Action<float> FloatFieldUpdated
+            {
+                add => floatFieldDelegates.Add(value);
+                remove => floatFieldDelegates.Remove(value);
+            }
+
+            private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
+
+            public event Action<double> DoubleFieldUpdated
+            {
+                add => doubleFieldDelegates.Add(value);
+                remove => doubleFieldDelegates.Remove(value);
+            }
+
+            protected override void TriggerFieldCallbacks(SpatialOSBlittableComponent.Update update)
+            {
+                DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
+                DispatchWithErrorHandling(update.IntField, intFieldDelegates);
+                DispatchWithErrorHandling(update.LongField, longFieldDelegates);
+                DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
+                DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
+            }
+        }
+
+        protected struct SomeOtherComponent : IComponentData
+        {
         }
     }
 }

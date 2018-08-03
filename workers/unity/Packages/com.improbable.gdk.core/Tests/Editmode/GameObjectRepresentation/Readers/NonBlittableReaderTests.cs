@@ -28,7 +28,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             private readonly List<Action<string>> stringFieldDelegates = new List<Action<string>>();
 
-            [UsedImplicitly]
             public event Action<string> StringFieldUpdated
             {
                 add => stringFieldDelegates.Add(value);
@@ -37,14 +36,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             private readonly List<Action<List<int>>> listFieldDelegates = new List<Action<List<int>>>();
 
-            [UsedImplicitly]
             public event Action<List<int>> ListFieldUpdates
             {
                 add => listFieldDelegates.Add(value);
                 remove => listFieldDelegates.Remove(value);
             }
 
-            protected override void HandleFieldUpdates(SpatialOSNonBlittableComponent.Update update)
+            protected override void TriggerFieldCallbacks(SpatialOSNonBlittableComponent.Update update)
             {
                 DispatchWithErrorHandling(update.StringField, stringFieldDelegates);
                 DispatchWithErrorHandling(update.ListField, listFieldDelegates);
@@ -72,23 +70,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             }
         }
 
-        private void QueueUpdatesToEntity(EntityManager entityManager,
-            Entity entity,
-            params SpatialOSNonBlittableComponent.Update[] updatesToSend)
-        {
-            if (!entityManager.HasComponent<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>>(entity))
-            {
-                entityManager.AddComponent(entity, typeof(ComponentsUpdated<SpatialOSNonBlittableComponent.Update>));
-
-                var componentsUpdated = new ComponentsUpdated<SpatialOSNonBlittableComponent.Update>();
-                entityManager.SetComponentObject(entity, componentsUpdated);
-            }
-
-            entityManager.GetComponentObject<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>>(entity)
-                .Buffer
-                .AddRange(updatesToSend);
-        }
-
         [Test]
         public void Field_updates_get_called_for_non_blittable_fields()
         {
@@ -104,7 +85,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 reader.StringFieldUpdated += newValue => { stringValue = newValue; };
                 reader.ListFieldUpdates += newValue => { listValue = newValue; };
 
-                QueueUpdatesToEntity(entityManager, entity, new SpatialOSNonBlittableComponent.Update
+                ReaderWriterTestsBase.QueueUpdatesToEntity(entityManager, entity, new SpatialOSNonBlittableComponent.Update
                 {
                     StringField = new Option<string>("new string"),
                     ListField = new Option<List<int>>(new List<int>

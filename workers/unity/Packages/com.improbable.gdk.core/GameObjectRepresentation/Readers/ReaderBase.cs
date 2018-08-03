@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     return Authority.NotAuthoritative;
                 }
 
-                throw new ReaderAuthorityGetFailedException("No authority component found for this entity.");
+                throw new AuthorityComponentNotFoundException($"No authority component found for the entity with index {Entity.Index}.");
             }
         }
 
@@ -129,7 +129,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     }
                 }
 
-                HandleFieldUpdates(update);
+                TriggerFieldCallbacks(update);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         ///     Reader implementations will override this if their components have fields.
         /// </summary>
         /// <param name="update"></param>
-        protected virtual void HandleFieldUpdates(TComponentUpdate update)
+        protected virtual void TriggerFieldCallbacks(TComponentUpdate update)
         {
         }
 

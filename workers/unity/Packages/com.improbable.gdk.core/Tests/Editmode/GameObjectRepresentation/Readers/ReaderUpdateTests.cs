@@ -9,82 +9,62 @@ using UnityEngine.TestTools;
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
     [TestFixture]
-    public class ReaderUpdateTests : ReaderWriterTestsBase
+    internal class ReaderUpdateTests : ReaderWriterTestsBase
     {
-        private void QueueUpdatesToEntity(params SpatialOSBlittableComponent.Update[] updatesToSend)
-        {
-            if (!EntityManager.HasComponent<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity))
-            {
-                EntityManager.AddComponent(Entity, typeof(ComponentsUpdated<SpatialOSBlittableComponent.Update>));
-
-                var componentsUpdated = new ComponentsUpdated<SpatialOSBlittableComponent.Update>();
-                EntityManager.SetComponentObject(Entity, componentsUpdated);
-            }
-
-            EntityManager.GetComponentObject<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity)
-                .Buffer
-                .AddRange(updatesToSend);
-        }
-
         private void ClearUpdatesInEntity()
         {
             EntityManager.GetComponentObject<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(Entity).Buffer
                 .Clear();
         }
 
+        private void QueueUpdatesToEntity<TUpdate>(params TUpdate[] updatesToQueue)
+            where TUpdate : ISpatialComponentUpdate
+        {
+            QueueUpdatesToEntity(EntityManager, Entity, updatesToQueue);
+        }
+
         [Test]
         public void ComponentUpdated_gets_triggered_when_the_reader_receives_an_update()
         {
             var componentUpdated = false;
-            var updateToSend = new SpatialOSBlittableComponent.Update();
+            var updateToQueue = new SpatialOSBlittableComponent.Update();
 
             Reader.ComponentUpdated += update =>
             {
-                Assert.AreEqual(updateToSend, update);
-
+                Assert.AreEqual(updateToQueue, update);
                 componentUpdated = true;
             };
 
-            Assert.AreEqual(false, componentUpdated, "Adding an event callback should not fire it immediately");
-
-            QueueUpdatesToEntity(updateToSend);
-
+            Assert.IsFalse(componentUpdated, "Adding an event callback should not fire it immediately");
+            QueueUpdatesToEntity(updateToQueue);
             Reader.OnComponentUpdate();
-
-            Assert.AreEqual(true, componentUpdated);
+            Assert.IsTrue(componentUpdated);
         }
 
         [Test]
         public void ComponentUpdated_gets_triggered_for_multiple_updates()
         {
-            var firstUpdate = new SpatialOSBlittableComponent.Update();
-            var secondUpdate = new SpatialOSBlittableComponent.Update();
-            var thirdUpdate = new SpatialOSBlittableComponent.Update();
-
-            var updatesToSend = new[]
+            var updatesToQueue = new[]
             {
-                firstUpdate,
-                secondUpdate,
-                thirdUpdate
+                new SpatialOSBlittableComponent.Update(),
+                new SpatialOSBlittableComponent.Update(),
+                new SpatialOSBlittableComponent.Update()
             };
 
-            var nextUpdateIndex = 0;
+            var updatesReceived = 0;
 
             Reader.ComponentUpdated += update =>
             {
-                Assert.AreEqual(updatesToSend[nextUpdateIndex], update,
-                    $"The update at index {nextUpdateIndex} did not match the received update.");
+                Assert.AreEqual(updatesToQueue[updatesReceived], update,
+                    $"The update at index {updatesReceived} did not match the received update.");
 
-                nextUpdateIndex++;
+                updatesReceived++;
             };
 
-            Assert.AreEqual(0, nextUpdateIndex, "Adding an event callback should not fire it immediately");
-
-            QueueUpdatesToEntity(updatesToSend);
-
+            Assert.AreEqual(0, updatesReceived, "Adding an event callback should not fire it immediately");
+            QueueUpdatesToEntity(updatesToQueue);
             Reader.OnComponentUpdate();
-
-            Assert.AreEqual(3, nextUpdateIndex);
+            Assert.AreEqual(3, updatesReceived);
         }
 
         [Test]

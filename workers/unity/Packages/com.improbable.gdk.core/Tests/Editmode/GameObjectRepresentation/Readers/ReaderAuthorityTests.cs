@@ -10,25 +10,24 @@ using UnityEngine.TestTools;
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
     [TestFixture]
-    public class ReaderAuthorityTests : ReaderWriterTestsBase
+    internal class ReaderAuthorityTests : ReaderWriterTestsBase
     {
         [Test]
         public void Authority_throws_if_the_entity_has_no_authority_components()
         {
             // entity is fresh so no components on it
-            Assert.Throws<ReaderAuthorityGetFailedException>(() => { Debug.Log(Reader.Authority); });
+            Assert.Throws<AuthorityComponentNotFoundException>(() => { Debug.Log(Reader.Authority); });
         }
 
         [Test]
-        public void Authority_returns_NotAuthoritative_when_no_authority_components_are_present()
+        public void Authority_returns_NotAuthoritative_when_NotAuthoritative_component_is_present()
         {
-            // TODO, do we need to clean up the components here and in other functions?
             EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
             Assert.AreEqual(Authority.NotAuthoritative, Reader.Authority);
         }
 
         [Test]
-        public void Authority_returns_Authoritative_when_Authuritative_component_is_present()
+        public void Authority_returns_Authoritative_when_Authoritative_component_is_present()
         {
             EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
             Assert.AreEqual(Authority.Authoritative, Reader.Authority);
@@ -42,7 +41,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         }
 
         [Test]
-        public void Authority_returns_AuthorityLossImminent_when_Authuritative_component_is_present()
+        public void Authority_returns_AuthorityLossImminent_when_Authoritative_And_AuthorityLossImminent_components_are_present()
         {
             EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
             EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
