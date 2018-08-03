@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
-        protected abstract uint getComponentId();
+        protected abstract uint GetComponentId();
 
         public void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
         {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < entities.Length; i++)
             {
                 var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                spatialOSBehaviourManager.AddComponent(getComponentId());
+                spatialOSBehaviourManager.AddComponent(GetComponentId());
             }
         }
 
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < entities.Length; i++)
             {
                 var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                spatialOSBehaviourManager.RemoveComponent(getComponentId());
+                spatialOSBehaviourManager.RemoveComponent(GetComponentId());
             }
         }
 

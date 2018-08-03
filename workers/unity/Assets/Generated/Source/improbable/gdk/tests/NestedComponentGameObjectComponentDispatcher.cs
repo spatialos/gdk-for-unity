@@ -39,7 +39,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
             };
 
-            protected override uint getComponentId()
+            protected override uint GetComponentId()
             {
                 return 20152;
             }
@@ -47,11 +47,11 @@ namespace Generated.Improbable.Gdk.Tests
             public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSNestedComponent.Update>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSNestedComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(getComponentId());
+                        .GetReadersWriters(20152);
                     var updateList = updateLists[i];
                     foreach (var reader in readers)
                     {
@@ -92,7 +92,7 @@ namespace Generated.Improbable.Gdk.Tests
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(getComponentId());
+                        .GetReadersWriters(20152);
                     var authChanges = authChangeLists[i];
                     foreach (var reader in readers)
                     {
