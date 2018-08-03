@@ -109,7 +109,7 @@ namespace <#= qualifiedNamespace #>
             public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
             {
 <# if(commandDetailsList.Count > 0) { #>
-                view.AddComponent(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                view.EntityManager.AddComponentData(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
 <# } #>
             }
 
@@ -135,19 +135,19 @@ namespace <#= qualifiedNamespace #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
 
 <# if (componentDetails.IsBlittable) { #>
-                view.AddComponent(entity, <#= componentDetails.CamelCaseTypeName#>);
+                view.EntityManager.AddComponentData(entity, <#= componentDetails.CamelCaseTypeName#>);
 <# } else { #>
                 view.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
 <# } #>
-                view.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+                view.EntityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
 
-                if (view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                if (view.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                    view.EntityManager.AddComponentData(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -172,16 +172,16 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# if (componentDetails.IsBlittable) { #>
-                var componentData = view.GetComponent<<#= componentDetails.TypeName #>>(entity);
+                var componentData = view.EntityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
 <# } else { #>
-                var componentData = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+                var componentData = view.EntityManager.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
 <# } #>
 <# if(fieldDetailsList.Count > 0 || eventDetailsList.Count > 0) { #>
                 var update = op.Update.Get();
 <# } #>
 
 <# if(fieldDetailsList.Count > 0) { #>
-                if (view.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
+                if (view.EntityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
@@ -242,15 +242,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                view.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+                view.EntityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
-                if (view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                if (view.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                    view.EntityManager.AddComponentData(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -265,20 +265,29 @@ namespace <#= qualifiedNamespace #>
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
+                    return;
+                }
 <# if(eventDetailsList.Count > 0) { #>
                 if (op.Authority == Authority.Authoritative)
                 {
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
 <# } #>
-                    view.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                    view.EntityManager.AddComponentData(entity, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events.Remove(entityId);
 <# } #>
-                    view.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
+                    view.EntityManager.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entity);
                 }
 <# } #>
                 view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
