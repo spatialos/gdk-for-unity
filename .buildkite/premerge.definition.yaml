@@ -1,12 +1,11 @@
-agent_queue_id: Configure me
-description: Add a description...
+agent_queue_id: "v-81e791d9b1a186e5-------1531323149"
+description: spatialos/UnityGDK
 github:
   branch_configuration:
-  - master
-  - buildkite/*
+  - buildkite
   default_branch: master
   pull_request_branch_filter_configuration:
-  - buildkite/*
+  - buildkite
 teams:
-- name: exampleTeam
+- name: spatialos/develop/unity
   permission: MANAGE_BUILD_AND_READ
