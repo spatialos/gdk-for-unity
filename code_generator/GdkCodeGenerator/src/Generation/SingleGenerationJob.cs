@@ -49,6 +49,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                 fileName = Path.ChangeExtension(unityComponentDefinition.Name + "Translation", fileExtension);
                 OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                if (!unityComponentDefinition.IsBlittable)
+                {
+                    fileName = Path.ChangeExtension($"{unityComponentDefinition.Name}Providers", fileExtension);
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                }
             }
 
             enumsToGenerate = new List<EnumDefinitionRaw>();
@@ -70,6 +76,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -110,6 +117,14 @@ namespace Improbable.Gdk.CodeGenerator
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
+
+                if (!component.IsBlittable)
+                {
+                    var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
+                    var referenceProviderTranslationCode =
+                        referenceTypeProviderGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName), referenceProviderTranslationCode);
+                }
             }
         }
     }
