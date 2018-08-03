@@ -13,13 +13,14 @@
 
 # https://chocolatey.org/docs/how-to-setup-offline-installation
 $CHOCOLATEY_VERSION="0.10.11"
+$DOTNETCORE_SDK_VERSION="2.1.302"
 $GIT_VERSION="2.18.0"
 $RESHARPER_CLI_VERSION="2018.1.2"
 $SPATIAL_VERSION="1.1.9"
 
 # From https://public-cdn.cloud.unity3d.com/hub/prod/releases-win32.json
-$UNITY_VERSION="2018.2.0b10"
-$UNITY_RELEASE_HASH="4bc57476174c"
+$UNITY_VERSION="2018.2.1f1"
+$UNITY_RELEASE_HASH="1a9968d9f99c"
 
 # Direct link to installer at https://my.visualstudio.com/Downloads?q=Visual%20Studio%202017
 # VS Professional 15.7
@@ -41,14 +42,17 @@ Write-Host "Installing Chocolatey..."
 $env:chocolateyVersion = "$CHOCOLATEY_VERSION"
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-Write-Host "Installing git..."
-Start-Process -Wait -NoNewWindow -FilePath "choco" -ArgumentList "install", "git", "--yes", "--version=$GIT_VERSION"
+Write-Host "Installing dotnetcore-sdk $DOTNETCORE_SDK_VERSION ..."
+& choco install --yes dotnetcore-sdk --version="$DOTNETCORE_SDK_VERSION"
 
-Write-Host "Installing Resharper CLI tools..."
-Start-Process -Wait -NoNewWindow -FilePath "choco" -ArgumentList "install", "resharper-clt.portable", "--yes", "--version=$RESHARPER_CLI_VERSION"
+Write-Host "Installing git $GIT_VERSION ..."
+& choco install --yes git --version="$GIT_VERSION"
 
-Write-Host "Installing Spatial CLI..."
-Start-Process -Wait -NoNewWindow -FilePath "choco" -ArgumentList "install", "spatial", "--yes", "--version=$SPATIAL_VERSION"
+Write-Host "Installing Resharper CLI tools $RESHARPER_CLI_VERSION ..."
+& choco install resharper-clt.portable --yes --version="$RESHARPER_CLI_VERSION"
+
+Write-Host "Installing Spatial CLI $SPATIAL_VERSION..."
+& choco install spatial --yes --version="$SPATIAL_VERSION"
 
 Start-BitsTransfer -Source "https://download.unity3d.com/download_unity/$UNITY_RELEASE_HASH/Windows64EditorInstaller/UnitySetup64-$UNITY_VERSION.exe" -Destination "c:\build\unity-installer.exe"
 Start-BitsTransfer -Source "https://download.unity3d.com/download_unity/$UNITY_RELEASE_HASH/TargetSupportInstaller/UnitySetup-Linux-Support-for-Editor-$UNITY_VERSION.exe" -Destination "c:\build\unity-linux-installer.exe"
