@@ -94,16 +94,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveBlittableSingular.Field17 = global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(data.field17);
                 spatialOSExhaustiveBlittableSingular.DirtyBit = false;
 
-                view.AddComponent(entity, spatialOSExhaustiveBlittableSingular);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveBlittableSingular>());
+                view.EntityManager.AddComponentData(entity, spatialOSExhaustiveBlittableSingular);
+                view.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveBlittableSingular>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveBlittableSingular>());
+                    view.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveBlittableSingular>());
                 }
                 else
                 {
@@ -127,10 +127,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponent<SpatialOSExhaustiveBlittableSingular>(entity);
+                var componentData = view.EntityManager.GetComponentData<SpatialOSExhaustiveBlittableSingular>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (view.EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
                     if (update.field1.HasValue)
                     {
@@ -294,15 +294,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSExhaustiveBlittableSingular>(entity);
+                view.EntityManager.RemoveComponent<SpatialOSExhaustiveBlittableSingular>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveBlittableSingular>());
+                    view.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveBlittableSingular>());
                 }
                 else
                 {
@@ -317,6 +317,15 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveBlittableSingular"));
+                    return;
+                }
                 view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 

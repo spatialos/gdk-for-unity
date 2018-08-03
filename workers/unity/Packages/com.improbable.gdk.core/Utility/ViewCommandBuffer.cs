@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Core
                             bufferedCommand.ComponentObj);
                         break;
                     case CommandType.RemoveComponent:
-                        view.RemoveComponent(bufferedCommand.Entity,
+                        view.EntityManager.RemoveComponent(bufferedCommand.Entity,
                             bufferedCommand.ComponentType);
                         break;
                     default:

@@ -94,15 +94,15 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveOptional.DirtyBit = false;
 
                 view.SetComponentObject(entity, spatialOSExhaustiveOptional);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
+                view.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                if (view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
+                    view.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
                 }
                 else
                 {
@@ -126,10 +126,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponentObject<SpatialOSExhaustiveOptional>(entity);
+                var componentData = view.EntityManager.GetComponentObject<SpatialOSExhaustiveOptional>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
+                if (view.EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
                 {
                     if (update.field2.HasValue)
                     {
@@ -284,15 +284,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
+                view.EntityManager.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                if (view.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
+                    view.EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                else if (!view.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
+                    view.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
                 }
                 else
                 {
@@ -307,6 +307,15 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
+                Unity.Entities.Entity entity;
+                if (!view.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(MutableView.Component, "SpatialOSExhaustiveOptional"));
+                    return;
+                }
                 view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 

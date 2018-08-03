@@ -80,7 +80,7 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            if (component != null && view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component != null && EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
                 var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
                 var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
