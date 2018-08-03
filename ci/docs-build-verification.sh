@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-set -e -u -x -o pipefail
+set -e -u -o pipefail
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 cd "$(dirname "$0")/../"
 
@@ -13,19 +16,19 @@ function isDocsFile() {
     if echo ${FILE_PATH} | grep ".*.md" ; then
         return 0
     fi
-    
+
     return 1
 }
 
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
-    cd ${CURRENT_DIR} 
+    cd ${CURRENT_DIR}
     rm -rf ${TMP_DIR}
 }
 
 function fetchCloneUrl() {
     export $(cat .env | xargs)
-    
+
     echo "git@${GITHUB_URL/.com\//.com:}"
     return 0
 }
@@ -48,7 +51,7 @@ git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
 CHANGED_FILES=$(git diff HEAD --name-only)
 
 NON_DOCS_FILES=()
-for file_path in ${CHANGED_FILES} 
+for file_path in ${CHANGED_FILES}
 do
     if ! isDocsFile ${file_path} ; then
         NON_DOCS_FILES+=(${file_path})
