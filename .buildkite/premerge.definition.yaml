@@ -6,7 +6,6 @@ github:
   - buildkite/*
   default_branch: master
   pull_request_branch_filter_configuration:
-  - master
   - buildkite/*
 teams:
 - name: spatialos/develop/unity
