@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
+                if (view.EntityManager.HasComponent<T>(entity))
                 {
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
@@ -86,9 +86,9 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
+                if (view.EntityManager.HasComponent<T>(entity))
                 {
-                    pool.PutComponent(view.GetComponentObject<T>(entity));
+                    pool.PutComponent(view.EntityManager.GetComponentObject<T>(entity));
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
             }

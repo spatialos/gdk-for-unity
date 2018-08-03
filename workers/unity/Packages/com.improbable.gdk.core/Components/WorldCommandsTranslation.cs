@@ -258,7 +258,7 @@ namespace Improbable.Gdk.Core
 
         public override void AddCommandRequestSender(Entity entity, long EntityId)
         {
-            view.AddComponent(entity, new WorldCommandSender(EntityId, translationHandle));
+            view.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
         }
 
         public override void ExecuteReplication(Connection connection)
