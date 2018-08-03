@@ -20,58 +20,106 @@ namespace <#= qualifiedNamespace #>
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                typeof(ComponentAdded<<#= componentDetails.TypeName #>>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentAdded<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentRemoved<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
 <# if (fieldDetailsList.Count > 0) { #>
-                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
 <# } #>
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var eventDetails in eventDetailsList) { #>
-                new ComponentType[] { typeof(EventsReceived<<#= eventDetails.EventName #>Event>), typeof(GameObjectReference) },
+                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<<#= eventDetails.EventName #>Event>>(), ComponentType.ReadOnly<GameObjectReference>() },
 <# } #>
             };
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var commandDetails in commandDetailsList) { #>
-                new ComponentType[] { typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(GameObjectReference) },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<<#= commandDetails.CommandName #>.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
 <# } #>
             };
 
-            public override void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            protected override uint getComponentId()
             {
-                var entities = ComponentAddedComponentGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.AddComponent(<#= unityComponentDefinition.Id #>);
-                }
+                return <#= unityComponentDefinition.Id #>;
             }
 
-            public override void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-                var entities = ComponentRemovedComponentGroup.GetEntityArray();
+<# if (fieldDetailsList.Count > 0) { #>
+                var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.RemoveComponent(<#= unityComponentDefinition.Id #>);
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var updateList = updateLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var update in updateList.Buffer)
+                        {
+                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                        }
+                    }
                 }
+<# } #>
+            }
+
+            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            {
+<# for (var i = 0; i < eventDetailsList.Count; i++) { #>
+                var entities = EventsReceivedComponentGroups[<#= i #>].GetEntityArray();
+                var eventLists = EventsReceivedComponentGroups[<#= i #>].GetComponentArray<EventsReceived<<#= eventDetailsList[i].EventName #>Event>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var eventList = eventLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var e in eventList.Buffer)
+                        {
+                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnEvent(<#= i #>, e);
+                        }
+                    }
+                }
+<# } #>
+            }
+
+            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            {
+<# for (var i = 0; i < commandDetailsList.Count; i++) { #>
+                var entities = CommandRequestsComponentGroups[<#= i #>].GetEntityArray();
+                var commandLists = CommandRequestsComponentGroups[<#= i #>].GetComponentArray<CommandRequests<<#= commandDetailsList[i].CommandName #>.Request>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var commandList = commandLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var req in commandList.Buffer)
+                        {
+                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnCommandRequest(<#= i #>, req);
+                        }
+                    }
+                }
+<# } #>
             }
 
             public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
@@ -90,18 +138,21 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-            }
-
-            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
-            }
-
-            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
-            }
-
-            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
+                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var authChanges = authChangeLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var auth in authChanges.Buffer)
+                        {
+                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                        }
+                    }
+                }
             }
         }
     }

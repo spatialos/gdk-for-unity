@@ -13,22 +13,22 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                typeof(ComponentAdded<SpatialOSExhaustiveRepeated>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSExhaustiveRepeated>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                typeof(ComponentRemoved<SpatialOSExhaustiveRepeated>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSExhaustiveRepeated>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                typeof(AuthoritiesChanged<SpatialOSExhaustiveRepeated>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSExhaustiveRepeated>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                typeof(ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>), typeof(GameObjectReference)
+                ComponentType.ReadOnly<ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
@@ -39,24 +39,36 @@ namespace Generated.Improbable.Gdk.Tests
             {
             };
 
-            public override void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            protected override uint getComponentId()
             {
-                var entities = ComponentAddedComponentGroup.GetEntityArray();
+                return 197717;
+            }
+
+            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            {
+                var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.AddComponent(197717);
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var updateList = updateLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var update in updateList.Buffer)
+                        {
+                            ((SpatialOSExhaustiveRepeated.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                        }
+                    }
                 }
             }
 
-            public override void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-                var entities = ComponentRemovedComponentGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    spatialOSBehaviourManager.RemoveComponent(197717);
-                }
+            }
+
+            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            {
             }
 
             public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
@@ -75,18 +87,21 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-            }
-
-            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
-            }
-
-            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
-            }
-
-            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
+                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveRepeated>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                        .GetReadersWriters(getComponentId());
+                    var authChanges = authChangeLists[i];
+                    foreach (var reader in readers)
+                    {
+                        foreach (var auth in authChanges.Buffer)
+                        {
+                            ((SpatialOSExhaustiveRepeated.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -18,13 +22,32 @@ namespace Improbable.Gdk.Core
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
-        public abstract void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
-        public abstract void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
-        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        protected abstract uint getComponentId();
 
-        public abstract void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        public void InvokeOnAddComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+        {
+            var entities = ComponentAddedComponentGroup.GetEntityArray();
+            for (var i = 0; i < entities.Length; i++)
+            {
+                var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                spatialOSBehaviourManager.AddComponent(getComponentId());
+            }
+        }
+
+        public void InvokeOnRemoveComponentLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+        {
+            var entities = ComponentRemovedComponentGroup.GetEntityArray();
+            for (var i = 0; i < entities.Length; i++)
+            {
+                var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                spatialOSBehaviourManager.RemoveComponent(getComponentId());
+            }
+        }
+
         public abstract void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
         public abstract void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
         public abstract void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
+        public abstract void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem);
     }
 }
