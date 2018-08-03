@@ -9,7 +9,7 @@
 #
 common: &common
   agents:
-    - "queue=Configure me"
+    - "queue=unity-good-luck-guys"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -22,5 +22,5 @@ common: &common
 
 steps:
   - label: "build-test"
-    command: "bash -c ./ci/build-test.sh"
+    command: "./ci/build-test.sh"
     <<: *common
