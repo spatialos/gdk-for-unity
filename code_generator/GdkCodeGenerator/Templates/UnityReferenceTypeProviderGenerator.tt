@@ -26,11 +26,11 @@ namespace <#= qualifiedNamespace #>
 
                 private static uint nextHandle = 0;
 
-                public static uint Allocate(global::Unity.Entities.World world, <#= fieldDetails.Type #> value)
+                public static uint Allocate(global::Unity.Entities.World world)
                 {
                     var handle = GetNextHandle();
 
-                    Storage.Add(handle, value);
+                    Storage.Add(handle, default(<#= fieldDetails.Type #>));
                     WorldMapping.Add(handle, world);
 
                     return handle;

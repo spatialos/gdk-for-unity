@@ -18,20 +18,33 @@ namespace <#= qualifiedNamespace #>
 
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
-
+<# if (fieldDetails.IsBlittable) { #>
         private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
 
         public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
         {
-            get { return <#= fieldDetails.CamelCaseName #>; }
+            get => <#= fieldDetails.CamelCaseName #>;
             set
             {
                 DirtyBit = true;
                 <#= fieldDetails.CamelCaseName #> = value;
             }
         }
-<# } #>
+<# } else { #>
 
+        internal uint <#= fieldDetails.CamelCaseName #>Handle;
+
+        public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
+        {
+            get => <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
+            set
+            {
+                DirtyBit = true;
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+            }
+        }
+<# } #>
+<# } #>
 
 <# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
         public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
@@ -169,10 +182,15 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public static <#= componentDetails.TypeName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static <#= componentDetails.TypeName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentDetails.TypeName #>();
+                
 <# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                component.<#= fieldDetails.CamelCaseName#>Handle = <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
+<# } #>
+
 <# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
 <# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
 <# if (singularTypeInfo.IsEnum) { #>

@@ -28,12 +28,23 @@ namespace <#= qualifiedNamespace #>
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
             private readonly EntityManager entityManager;
+            private readonly global::Unity.Entities.World world;
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
-            public DispatcherHandler(MutableView mutableView) : base(mutableView)
+            public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView)
             {
                 entityManager = mutableView.EntityManager;
+                this.world = world;
+            }
+
+            public override void Dispose() 
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(world);
+<# } #>
+<# } #>
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -43,7 +54,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                entityManager.AddComponentData(entity, global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields()));
+                entityManager.AddComponentData(entity, global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world));
 
                 if (entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
