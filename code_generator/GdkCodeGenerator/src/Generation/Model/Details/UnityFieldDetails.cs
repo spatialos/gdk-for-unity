@@ -39,14 +39,16 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseName;
         public FieldDefinitionRaw RawFieldDefinition;
         public int FieldNumber;
+        public bool IsBlittable;
 
-        public UnityFieldDetails(FieldDefinitionRaw rawFieldDefinition, HashSet<string> enumSet)
+        public UnityFieldDetails(FieldDefinitionRaw rawFieldDefinition, bool isBlittable, HashSet<string> enumSet)
         {
             PascalCaseName = Formatting.SnakeCaseToCapitalisedCamelCase(rawFieldDefinition.name);
             CamelCaseName = Formatting.SnakeCaseToCamelCase(rawFieldDefinition.name);
             var packagePrefix = UnityTypeMappings.PackagePrefix;
             RawFieldDefinition = rawFieldDefinition;
             FieldNumber = rawFieldDefinition.Number;
+            IsBlittable = isBlittable;
 
             if (rawFieldDefinition.IsOption())
             {

@@ -87,6 +87,8 @@ namespace Improbable.Gdk.CodeGenerator
         public UnityTypeReference KeyType;
         public UnityTypeReference ValueType;
 
+        public bool IsBlittable;
+
         public readonly FieldDefinitionRaw RawFieldDefinition;
 
         internal UnityFieldDefinition(FieldDefinitionRaw rawFieldDefinition)
@@ -200,7 +202,6 @@ namespace Improbable.Gdk.CodeGenerator
             QualifiedName = rawComponentDefinition.qualifiedName;
             Id = rawComponentDefinition.Id;
             RawDataDefinition = rawComponentDefinition.dataDefinition;
-            IsBlittable = false;
             if (RawDataDefinition != null && RawDataDefinition.IsBuiltInType)
             {
                 DataDefinition = new UnityTypeReference(RawDataDefinition.TypeName, null, null);
