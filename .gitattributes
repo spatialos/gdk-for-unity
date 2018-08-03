@@ -4,3 +4,5 @@
 *.asset text eol=lf
 *.asmdef text eol=lf
 *.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
