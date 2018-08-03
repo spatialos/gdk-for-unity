@@ -22,5 +22,5 @@ common: &common
 
 steps:
   - label: "build-test"
-    command: "./ci/build-test.sh"
+    command: "ci\\build-test.cmd"
     <<: *common
