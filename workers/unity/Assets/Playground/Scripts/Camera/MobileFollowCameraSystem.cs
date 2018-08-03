@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -16,7 +16,7 @@ namespace Playground
     ///     ScrollWheel: controls the orbit radius, moving the camera closer to or
     ///     farther from the player.
     /// </remarks>
-    public class FollowCameraSystem : ComponentSystem
+    public class MobileFollowCameraSystem : ComponentSystem
     {
         // The min/max distance from camera to the player.
         private const float MinCameraDistance = 2.0f;
@@ -45,15 +45,17 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
+            Cursor.lockState = CursorLockMode.None;
             try
             {
                 var cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-                cameraJoystick.SetActive(false);
+                VirtualJoystick = cameraJoystick.GetComponent<VirtualJoystick>();
             }
             catch (NullReferenceException)
             {
                 WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
+                Enabled = false;
             }
         }
 
@@ -73,8 +75,8 @@ namespace Playground
 
         private static CameraInput UpdateCameraInput(CameraInput input)
         {
-            var x = input.X + Input.GetAxis("Mouse X");
-            var y = input.Y - Input.GetAxis("Mouse Y");
+            var x = input.X + VirtualJoystick.InputDirection.x;
+            var y = input.Y - VirtualJoystick.InputDirection.y;
             var distance = input.Distance + Input.GetAxis("Mouse ScrollWheel") * ZoomScale;
 
             x %= 360;

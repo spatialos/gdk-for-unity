@@ -26,10 +26,7 @@ namespace Playground
                 var camera = Camera.main;
                 PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Input);
                 PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Transform);
-
-#if !(UNITY_ANDROID || UNITY_IOS)
                 Cursor.lockState = CursorLockMode.Locked;
-#endif
             }
         }
     }

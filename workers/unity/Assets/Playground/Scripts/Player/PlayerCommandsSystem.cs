@@ -30,6 +30,7 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            [ReadOnly] public ComponentDataArray<LocalInput> ShootInput;
         }
 
         [Inject] private PlayerData playerData;
@@ -43,11 +44,6 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (playerData.Length == 0)
-            {
-                return;
-            }
-
             if (playerData.Length > 1)
             {
                 throw new ArgumentOutOfRangeException("playerData",
@@ -55,11 +51,12 @@ namespace Playground
             }
 
             PlayerCommand command;
-            if (Input.GetMouseButtonDown(0))
+            var input = playerData.ShootInput[0];
+            if (input.ShootSmall)
             {
                 command = PlayerCommand.LaunchSmall;
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (input.ShootLarge)
             {
                 command = PlayerCommand.LaunchLarge;
             }

@@ -44,7 +44,15 @@ namespace Playground
             World.GetOrCreateManager<ProcessColorChangeSystem>();
 
             // Client player movement systems
-            World.GetOrCreateManager<LocalPlayerInputSync>();
+            if (Application.isMobilePlatform)
+            {
+                World.GetOrCreateManager<MobileLocalPlayerInputSync>();
+            }
+            else
+            {
+                World.GetOrCreateManager<LocalPlayerInputSync>();
+            }
+
             World.GetOrCreateManager<InitCameraSystem>();
             World.GetOrCreateManager<FollowCameraSystem>();
 
