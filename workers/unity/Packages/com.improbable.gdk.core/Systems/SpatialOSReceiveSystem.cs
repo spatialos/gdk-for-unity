@@ -33,6 +33,14 @@ namespace Improbable.Gdk.Core
             SetupDispatcherHandlers();
         }
 
+        protected override void OnDestroyManager()
+        {
+            foreach (var pair in componentSpecificDispatchers)
+            {
+                pair.Value.Dispose();
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (worker.Connection == null)

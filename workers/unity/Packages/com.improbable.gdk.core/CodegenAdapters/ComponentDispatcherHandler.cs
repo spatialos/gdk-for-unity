@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void OnCommandRequest(CommandRequestOp op);
         public abstract void OnCommandResponse(CommandResponseOp op);
 
+        public abstract void Dispose();
+
         protected MutableView MutableView;
         protected ILogDispatcher LogDispatcher;
 
