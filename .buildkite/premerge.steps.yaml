@@ -23,4 +23,6 @@ common: &common
 steps:
   - label: "build-test"
     command: "ci\\build-test.cmd"
+    artifact_paths:
+      - "logs/**/*"
     <<: *common
