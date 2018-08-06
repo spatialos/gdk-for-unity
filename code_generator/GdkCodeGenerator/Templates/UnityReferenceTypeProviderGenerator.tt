@@ -4,6 +4,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var generator = new UnityReferenceTypeProviderContent();
 #>
 <#= generatedHeader #>
 
@@ -17,70 +18,12 @@ namespace <#= qualifiedNamespace #>
     {
         internal class ReferenceTypeProviders 
         {
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentDetails.TypeName}.Update>"), 3) #>
+
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-            public class <#= fieldDetails.PascalCaseName #>Provider 
-            {
-                private static readonly Dictionary<uint, <#= fieldDetails.Type #>> Storage = new Dictionary<uint, <#= fieldDetails.Type#>>();
-                private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(fieldDetails.PascalCaseName, fieldDetails.Type), 3) #>
 
-                private static uint nextHandle = 0;
-
-                public static uint Allocate(global::Unity.Entities.World world)
-                {
-                    var handle = GetNextHandle();
-
-                    Storage.Add(handle, default(<#= fieldDetails.Type #>));
-                    WorldMapping.Add(handle, world);
-
-                    return handle;
-                }
-
-                public static <#= fieldDetails.Type #> Get(uint handle)
-                {
-                    if (!Storage.TryGetValue(handle, out var value))
-                    {
-                        throw new ArgumentException($"<#= fieldDetails.PascalCaseName #>Provider does not contain handle {handle}"); 
-                    }
-
-                    return value;
-                }
-
-                public static void Set(uint handle, <#= fieldDetails.Type #> value)
-                {
-                    if (!Storage.ContainsKey(handle))
-                    {
-                        throw new ArgumentException($"<#= fieldDetails.PascalCaseName #>Provider does not contain handle {handle}"); 
-                    }
-
-                    Storage[handle] = value;
-                }
-
-                public static void Free(uint handle)
-                {
-                    Storage.Remove(handle);
-                    WorldMapping.Remove(handle);
-                }
-
-                public static void CleanDataInWorld(global::Unity.Entities.World world)
-                {
-                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key);
-
-                    foreach (var handle in handles)
-                    {
-                        Free(handle);
-                    }
-                }
-
-                private static uint GetNextHandle() 
-                {
-                    while (Storage.ContainsKey(++nextHandle))
-                    {
-                    }
-
-                    return nextHandle;
-                }
-            }
 <# } #>
 <# } #>
         }

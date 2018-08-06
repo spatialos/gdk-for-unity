@@ -40,9 +40,24 @@
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
     <T4Files Include="Templates\UnityReferenceTypeProviderGenerator.tt" />
+    <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Templates\UnityReferenceTypeProviderContent.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnityReferenceTypeProviderContent.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Templates\UnityReferenceTypeProviderContent.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnityReferenceTypeProviderContent.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />

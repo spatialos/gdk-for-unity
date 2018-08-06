@@ -396,5 +396,14 @@ namespace <#= qualifiedNamespace #>
             public Option<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>;
 <# } #>
         }
+
+        public struct ReceivedUpdates : IComponentData 
+        {
+            internal uint handle;
+            public global::System.Collections.Generic.List<Update> Updates 
+            {
+                get => <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+            }
+        }
     }
 }

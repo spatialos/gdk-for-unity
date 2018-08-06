@@ -11,5 +11,15 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return input.Replace("\r\n", "\r\n    ");
         }
+
+        public static string IndentEveryNewline(string input, int numIndents)
+        {
+            for (var i = 0; i < numIndents; i++)
+            {
+                input = IndentEveryNewline(input);
+            }
+
+            return input;
+        }
     }
 }
