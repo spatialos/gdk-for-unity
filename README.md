@@ -32,7 +32,10 @@ This release is for evaluation and feedback only, with limited documentation; we
 This pre-alpha release is for experienced Unity developers who have some understanding of [SpatialOS concepts](https://docs.improbable.io/reference/13.0/shared/concepts/spatialos), are interested in Unity's [Entity Component System](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md), and want to give early feedback.
 
 ## Installation and setup 
-For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation. 
+For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation.
+
+## Known Issues
+See the [Known issues](docs/known-issues.md) documentation.
 
 ## Questions? 
 Check out our [FAQs](docs/content/faqs/faqs.md) or head over to our discussion forums, listed below.
