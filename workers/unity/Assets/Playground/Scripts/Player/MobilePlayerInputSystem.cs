@@ -23,7 +23,8 @@ namespace Playground
         private static GameObject cameraControllerJoystick;
         private static VirtualJoystick movementJoystick;
         private static VirtualJoystick cameraJoystick;
-        private static HashSet<int> controllerTouches;
+        private static HashSet<int> oldTouchSet;
+        private static HashSet<int> newTouchSet;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -51,7 +52,8 @@ namespace Playground
                     new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
             }
 
-            controllerTouches = new HashSet<int>();
+            oldTouchSet = new HashSet<int>();
+            newTouchSet = new HashSet<int>();
         }
 
         protected override void OnUpdate()
@@ -76,27 +78,30 @@ namespace Playground
         private static int GetNonJoystickTouches()
         {
             var count = 0;
-            var tempTouchSet = new HashSet<int>();
+            newTouchSet.Clear();
             foreach (var touch in Input.touches)
             {
-                if (controllerTouches.Contains(touch.fingerId))
+                if (oldTouchSet.Contains(touch.fingerId))
                 {
-                    tempTouchSet.Add(touch.fingerId);
+                    newTouchSet.Add(touch.fingerId);
                 }
             }
 
-            controllerTouches = tempTouchSet;
+            var temp = newTouchSet;
+            newTouchSet = oldTouchSet;
+            oldTouchSet = temp;
+
             foreach (var touch in Input.touches)
             {
                 if (!(RectTransformUtility.RectangleContainsScreenPoint(
                         controllerJoystick.GetComponent<Image>().rectTransform, touch.position, null) ||
                     RectTransformUtility.RectangleContainsScreenPoint(
-                        cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) && !controllerTouches.Contains(touch.fingerId))
+                        cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) && !oldTouchSet.Contains(touch.fingerId))
                 {
                     count++;
                 }
 
-                controllerTouches.Add(touch.fingerId);
+                oldTouchSet.Add(touch.fingerId);
             }
 
             return count;
