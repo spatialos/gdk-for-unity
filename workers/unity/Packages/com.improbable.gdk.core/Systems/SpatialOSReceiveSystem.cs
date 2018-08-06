@@ -162,7 +162,7 @@ namespace Improbable.Gdk.Core
             {
                 var componentDispatcher =
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
-                        new { view });
+                        new object[]{ view , World} );
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
             }
 
