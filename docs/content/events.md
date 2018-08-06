@@ -22,7 +22,7 @@ For each event in the SpatialOS component, there will be a corresponding method 
 Example schema:
 
 ```
-package demogame;
+package playground;
 
 enum Color {
     YELLOW = 0;
