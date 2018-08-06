@@ -141,7 +141,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             Assert.IsFalse(floatFieldUpdated,
                 "The second update does not contain a float field but the callback was called.");
             Assert.IsTrue(intFieldUpdated,
-                "THe second update contains an int field but the callback for the int field was not called.");
+                "The second update contains an int field but the callback for the int field was not called.");
             Assert.AreEqual(20, receivedIntValue);
         }
 
@@ -170,10 +170,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             Reader.OnComponentUpdate();
 
             Assert.IsTrue(intFieldUpdated,
-                "THe update contains an int field but the callback for the int field was not called.");
+                "The update contains an int field but the callback for the int field was not called.");
             Assert.AreEqual(30, receivedIntValue);
             Assert.IsTrue(floatFieldUpdated,
-                "THe update contains an float field but the callback for the float field was not called.");
+                "The update contains an float field but the callback for the float field was not called.");
             Assert.AreEqual(40.0f, receivedFloatValue);
         }
 
