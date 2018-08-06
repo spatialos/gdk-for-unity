@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 namespace Playground
 {
+    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [UpdateBefore(typeof(LocalPlayerInputSync))]
     public class MobilePlayerInputSystem : ComponentSystem
     {
         private struct InputData
@@ -19,8 +21,9 @@ namespace Playground
 
         private static GameObject controllerJoystick;
         private static GameObject cameraControllerJoystick;
-        private static VirtualJoystick MovementJoystick;
-        private static VirtualJoystick CameraJoystick;
+        private static VirtualJoystick movementJoystick;
+        private static VirtualJoystick cameraJoystick;
+        private static HashSet<int> controllerTouches;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -28,7 +31,7 @@ namespace Playground
             try
             {
                 controllerJoystick = GameObject.FindGameObjectWithTag("MovementJoystick");
-                MovementJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+                movementJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
             }
             catch (NullReferenceException)
             {
@@ -40,13 +43,15 @@ namespace Playground
             try
             {
                 cameraControllerJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-                CameraJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+                cameraJoystick = cameraControllerJoystick.GetComponent<VirtualJoystick>();
             }
             catch (NullReferenceException)
             {
                 WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
             }
+
+            controllerTouches = new HashSet<int>();
         }
 
         protected override void OnUpdate()
@@ -54,44 +59,47 @@ namespace Playground
             for (var i = 0; i < inputData.Length; i++)
             {
                 var input = inputData.PlayerInput[i];
-                input.Horizontal = MovementJoystick.InputDirection.x;
-                input.Vertical = MovementJoystick.InputDirection.y;
-                input.RightStickHorizontal = CameraJoystick.InputDirection.x;
-                input.RightStickVertical = CameraJoystick.InputDirection.y;
+                var touches = GetNonJoystickTouches();
+                input.Horizontal = movementJoystick.InputDirection.x;
+                input.Vertical = movementJoystick.InputDirection.y;
+                input.RightStickHorizontal = cameraJoystick.InputDirection.x;
+                input.RightStickVertical = cameraJoystick.InputDirection.y;
                 // input.CameraDistance = Input.GetAxis("Mouse ScrollWheel");
                 // input.Running = Input.GetKey(KeyCode.LeftShift);
-                input.ShootSmall = isSmallShot();
-                input.ShootLarge = isLargeShot();
+                input.ShootSmall = touches == 1;
+                input.ShootLarge = touches >= 2;
                 inputData.PlayerInput[i] = input;
             }
         }
 
-        private bool isSmallShot()
+
+        private static int GetNonJoystickTouches()
         {
-            if (Input.touches.Length <= 0)
+            var count = 0;
+            var tempTouchSet = new HashSet<int>();
+            foreach (var touch in Input.touches)
             {
-                return false;
+                if (controllerTouches.Contains(touch.fingerId))
+                {
+                    tempTouchSet.Add(touch.fingerId);
+                }
             }
 
-            var touchNum = Input.touches.Count(touch =>
-                !(controllerJoystick.GetComponent<Image>().rectTransform.rect.Contains(touch.position) &&
-                    cameraControllerJoystick.GetComponent<Image>().rectTransform.rect.Contains(touch.position)));
-
-            return touchNum == 1;
-        }
-
-        private bool isLargeShot()
-        {
-            if (Input.touches.Length <= 0)
+            controllerTouches = tempTouchSet;
+            foreach (var touch in Input.touches)
             {
-                return false;
+                if (!(RectTransformUtility.RectangleContainsScreenPoint(
+                        controllerJoystick.GetComponent<Image>().rectTransform, touch.position, null) ||
+                    RectTransformUtility.RectangleContainsScreenPoint(
+                        cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) && !controllerTouches.Contains(touch.fingerId))
+                {
+                    count++;
+                }
+
+                controllerTouches.Add(touch.fingerId);
             }
 
-            var touchNum = Input.touches.Count(touch =>
-                !(controllerJoystick.GetComponent<Image>().rectTransform.rect.Contains(touch.position) &&
-                    cameraControllerJoystick.GetComponent<Image>().rectTransform.rect.Contains(touch.position)));
-
-            return touchNum > 1;
+            return count;
         }
     }
 }
