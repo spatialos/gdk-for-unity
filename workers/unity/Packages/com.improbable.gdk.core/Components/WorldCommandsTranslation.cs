@@ -252,13 +252,13 @@ namespace Improbable.Gdk.Core
         private const string EntityNotFoundForEntityId =
             "Entity not found when attempting to get Entity from EntityId.";
 
-        public WorldCommandsTranslation(MutableView view) : base(view)
+        public WorldCommandsTranslation(WorkerBase worker) : base(worker)
         {
         }
 
         public override void AddCommandRequestSender(Entity entity, long EntityId)
         {
-            view.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
+            worker.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
         }
 
         public override void ExecuteReplication(Connection connection)
@@ -344,7 +344,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id, request);
 
-            view.AddCommandResponse(entity, response, createEntityResponsePool);
+            AddCommandResponse(entity, response, createEntityResponsePool);
         }
 
         public void OnDeleteEntityResponse(DeleteEntityResponseOp op)
@@ -361,7 +361,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id, request);
 
-            view.AddCommandResponse(entity, response, deleteEntityResponsePool);
+            AddCommandResponse(entity, response, deleteEntityResponsePool);
         }
 
         public void OnReserveEntityIdResponse(ReserveEntityIdsResponseOp op)
@@ -378,7 +378,7 @@ namespace Improbable.Gdk.Core
             var response = new ReserveEntityIdsResponse((CommandStatusCode) op.StatusCode, op.Message,
                 op.FirstEntityId.Value.Id, op.NumberOfEntityIds, request);
 
-            view.AddCommandResponse(entity, response, reserveEntityIdsResponsesPool);
+            AddCommandResponse(entity, response, reserveEntityIdsResponsesPool);
         }
 
         public void OnEntityQueryResponse(EntityQueryResponseOp op)
@@ -401,19 +401,19 @@ namespace Improbable.Gdk.Core
             var response =
                 new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result, request);
 
-            view.AddCommandResponse(entity, response, entityQueryResponsePool);
+            AddCommandResponse(entity, response, entityQueryResponsePool);
         }
 
         private bool TryGetEntityFromEntityId(long entityId, string responseName, out Entity entity)
         {
             entity = Entity.Null;
-            if (entityId == MutableView.WorkerEntityId)
+            if (entityId == WorkerBase.WorkerEntityId)
             {
-                entity = view.WorkerEntity;
+                entity = worker.WorkerEntity;
             }
-            else if (!view.TryGetEntity(entityId, out entity))
+            else if (!worker.TryGetEntity(entityId, out entity))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, entityId)
                     .WithField("ResponseName", responseName));
