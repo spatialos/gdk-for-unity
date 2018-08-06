@@ -46,23 +46,23 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void FlushBuffer(MutableView view)
+        public void FlushBuffer(WorkerBase worker)
         {
             foreach (var bufferedCommand in bufferedCommands)
             {
                 switch (bufferedCommand.CommandType)
                 {
                     case CommandType.AddComponent:
-                        view.SetComponentObject(bufferedCommand.Entity,
+                        worker.EntityManager.SetComponentObject(bufferedCommand.Entity,
                             bufferedCommand.ComponentType,
                             bufferedCommand.ComponentObj);
                         break;
                     case CommandType.RemoveComponent:
-                        view.EntityManager.RemoveComponent(bufferedCommand.Entity,
+                        worker.EntityManager.RemoveComponent(bufferedCommand.Entity,
                             bufferedCommand.ComponentType);
                         break;
                     default:
-                        view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
+                        worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField("CommandType", bufferedCommand.CommandType));
                         break;

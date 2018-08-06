@@ -15,23 +15,23 @@ namespace Improbable.Gdk.Core
         private static readonly Dictionary<Type, WorkerAttributeSet> WorkerTypeToAttributeSet =
             new Dictionary<Type, WorkerAttributeSet>();
 
-        public static void SetWorkerForWorld(WorkerBase worker)
+        public static void SetWorkerForWorld(WorkerBase worker, World world)
         {
-            if (WorldToWorker.ContainsKey(worker.World))
+            if (WorldToWorker.ContainsKey(world))
             {
-                throw new ArgumentException($"A worker is already stored for world '{worker.World.Name}'");
+                throw new ArgumentException($"A worker is already stored for world '{world.Name}'");
             }
 
-            WorldToWorker[worker.World] = worker;
+            WorldToWorker[world] = worker;
         }
 
-        public static void UnsetWorkerForWorld(WorkerBase worker)
+        public static void UnsetWorkerForWorld(WorkerBase worker, World world)
         {
             WorkerBase workerForWorld;
 
-            if (WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
+            if (WorldToWorker.TryGetValue(world, out workerForWorld) && workerForWorld == worker)
             {
-                WorldToWorker.Remove(worker.World);
+                WorldToWorker.Remove(world);
             }
         }
 
@@ -56,19 +56,18 @@ namespace Improbable.Gdk.Core
         public static T CreateWorker<T>(string workerId, Vector3 origin) where T : WorkerBase
         {
             var worker = (T) Activator.CreateInstance(typeof(T), workerId, origin);
-            worker.RegisterSystems();
             return worker;
         }
 
-        public static WorkerBase CreateWorker(string workerType, string workerId, Vector3 origin)
+        public static WorkerBase CreateWorker(ConnectionConfig config, Vector3 origin)
         {
             Func<string, Vector3, WorkerBase> createWorker;
-            if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out createWorker))
+            if (!WorkerTypeToInitializationFunction.TryGetValue(config.WorkerType, out createWorker))
             {
-                throw new ArgumentException($"No worker found for worker type '{workerType}'", nameof(workerType));
+                throw new ArgumentException($"No worker found for worker type '{config.WorkerType}'", nameof(config.WorkerType));
             }
 
-            return createWorker(workerId, origin);
+            return createWorker(config.WorkerId, origin);
         }
 
         public static WorkerRequirementSet GetWorkerRequirementSet(Type workerType, params Type[] workerTypes)

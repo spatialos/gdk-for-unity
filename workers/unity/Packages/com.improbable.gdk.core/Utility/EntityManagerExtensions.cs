@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Unity.Entities;
 
@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     // Attempt to validate the method as soon as possible when in the editor.
     [UnityEditor.InitializeOnLoad]
 #endif
-    internal static class EntityManagerExtensions
+    public static class EntityManagerExtensions
     {
         private delegate void SetComponentObjectDelegate(EntityManager entityManager,
             Entity entity, ComponentType componentType, object componentObject);
@@ -37,12 +37,21 @@ namespace Improbable.Gdk.Core
 
         public static void SetComponentObject<T>(this EntityManager entityManager, Entity entity, T component)
         {
+            if (!entityManager.HasComponent<T>(entity))
+            {
+                entityManager.AddComponent(entity, typeof(T));
+            }
             SetComponentObjectAction(entityManager, entity, ComponentType.Create<T>(), component);
         }
 
         public static void SetComponentObject(this EntityManager entityManager, Entity entity,
             ComponentType componentType, object component)
         {
+            if (!entityManager.HasComponent(entity, componentType))
+            {
+                entityManager.AddComponent(entity, componentType);
+            }
+
             SetComponentObjectAction(entityManager, entity, componentType, component);
         }
     }

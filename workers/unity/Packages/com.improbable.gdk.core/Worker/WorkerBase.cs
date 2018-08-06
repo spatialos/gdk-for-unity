@@ -1,76 +1,62 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
     public abstract class WorkerBase : IDisposable
     {
-        public World World { get; private set; }
-
-        public MutableView View { get; private set; }
-
         public Connection Connection { get; private set; }
 
-        public Vector3 Origin { get; private set; }
+        public Vector3 Origin { get; }
 
-        public string WorkerId { get; private set; }
+        public string WorkerId { get; }
 
         public abstract string GetWorkerType { get; }
 
-        public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
-
         public bool UseDynamicId { get; protected set; }
 
-        protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
+        public readonly EntityManager EntityManager;
+        public const long WorkerEntityId = -1337;
+        public readonly Entity WorkerEntity;
+
+        public readonly ILogDispatcher LogDispatcher;
+
+        public readonly Type[] RequiredSpatialSystems = new[]
         {
-        }
+            typeof(SpatialOSReceiveSystem),
+            typeof(SpatialOSSendSystem),
+            typeof(CleanReactiveComponentsSystem)
+        };
 
-        protected WorkerBase(string workerId, Vector3 origin, ILogDispatcher loggingDispatcher)
+        private readonly Dictionary<long, Entity> entityMapping = new Dictionary<long, Entity>();
+
+        protected WorkerBase(string workerId, ConnectionConfig config, Vector3 origin, EntityManager entityManager)
         {
-            if (string.IsNullOrEmpty(workerId))
-            {
-                WorkerId = GenerateDynamicWorkerId();
+            FindTranslationUnits();
+            // TODO addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
 
-                UseDynamicId = true;
-            }
-            else
-            {
-                WorkerId = workerId;
-            }
-
-            World = new World(WorkerId);
-            WorkerRegistry.SetWorkerForWorld(this);
-
-            View = new MutableView(World, loggingDispatcher);
-            Origin = origin;
-
-            EntityGameObjectLinker = new EntityGameObjectLinker(World, View);
-        }
-
-        public void Dispose()
-        {
-            WorkerRegistry.UnsetWorkerForWorld(this);
-            View.Dispose();
-            World.Dispose();
-        }
-
-        public virtual void Connect(ConnectionConfig config)
-        {
+            LogDispatcher = new ForwardingDispatcher();
+            EntityManager = entityManager;
+            WorkerId = workerId;
             if (config is ReceptionistConfig)
             {
                 if (UseDynamicId)
                 {
-                    WorkerId = GenerateDynamicWorkerId();
+                    WorkerId = $"{GetWorkerType}-{Guid.NewGuid()}";
                 }
 
-                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType,
+                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig)config, GetWorkerType,
                     WorkerId);
             }
             else if (config is LocatorConfig)
             {
-                Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig) config, GetWorkerType);
+                Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig)config, GetWorkerType);
             }
             else
             {
@@ -78,31 +64,91 @@ namespace Improbable.Gdk.Core
                     "ReceptionistConfig and LocatorConfig are supported.");
             }
 
+            WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
+
             Application.quitting += () =>
             {
                 ConnectionUtility.Disconnect(Connection);
                 Connection = null;
             };
 
-            View.Connect();
+            entityManager.AddComponent(WorkerEntity, typeof(IsConnected));
+            entityManager.AddComponent(WorkerEntity, typeof(OnConnected));
+
+            Origin = origin;
         }
 
-        private string GenerateDynamicWorkerId()
+        public void Dispose()
         {
-            return $"{GetWorkerType}-{Guid.NewGuid()}";
+            ConnectionUtility.Disconnect(Connection);
+            EntityManager.DestroyEntity(WorkerEntity);
+            // todo destroy all spatial entities
+            foreach (var translation in TranslationUnits.Values)
+            {
+                translation.Dispose();
+            }
         }
 
-        public virtual void RegisterSystems()
+        internal void CreateEntity(long entityId)
         {
-            RegisterCoreSystems();
+            if (entityMapping.ContainsKey(entityId))
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to add an entity but there is already an entity associated with that EntityId.")
+                    .WithField(LoggingUtils.LoggerName, GetWorkerType)
+                    .WithField(LoggingUtils.EntityId, entityId));
+                return;
+            }
+
+            var entity = EntityManager.CreateEntity();
+            EntityManager.AddComponentData(entity, new SpatialEntityId
+            {
+                EntityId = entityId
+            });
+            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
+
+            // TODO addAllCommandRequestSenders(entity, entityId);
+            entityMapping.Add(entityId, entity);
         }
 
-        protected void RegisterCoreSystems()
+        public bool TryGetEntity(long entityId, out Entity entity)
         {
-            World.GetOrCreateManager<EntityManager>();
-            World.GetOrCreateManager<SpatialOSReceiveSystem>();
-            World.GetOrCreateManager<SpatialOSSendSystem>();
-            World.GetOrCreateManager<CleanReactiveComponentsSystem>();
+            return entityMapping.TryGetValue(entityId, out entity);
+        }
+
+        internal void RemoveEntity(long entityId)
+        {
+            Entity entity;
+            if (!TryGetEntity(entityId, out entity))
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                    .WithField(LoggingUtils.LoggerName, GetWorkerType)
+                    .WithField(LoggingUtils.EntityId, entityId));
+                return;
+            }
+
+            EntityManager.DestroyEntity(entityMapping[entityId]);
+            entityMapping.Remove(entityId);
+        }
+
+        // section of stuff that will hopefully be removed soonish
+
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
+            new Dictionary<int, ComponentTranslation>();
+
+        private Action<Entity, long> addAllCommandRequestSenders;
+
+        private void FindTranslationUnits()
+        {
+            var translationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+            foreach (var translationType in translationTypes)
+            {
+                var translator = (ComponentTranslation)Activator.CreateInstance(translationType, this);
+                TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
+
+                //TODO addAllCommandRequestSenders += translator.AddCommandRequestSender;
+            }
         }
     }
 }
