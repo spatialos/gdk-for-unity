@@ -60,12 +60,36 @@ namespace <#= qualifiedNamespace #>
                 add => throw new System.NotImplementedException();
                 remove => throw new System.NotImplementedException();
             }
+
+            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
+            {
+                throw new System.NotImplementedException();
+            }
 <# if (fieldDetailsList.Count > 0) { #>
+
+            public void OnComponentUpdate(<#= componentDetails.TypeName #>.Update update)
+            {
+                throw new System.NotImplementedException();
+            }
 
             public event GameObjectDelegates.ComponentUpdated<<#= componentDetails.TypeName #>.Update> ComponentUpdated
             {
                 add => throw new System.NotImplementedException();
                 remove => throw new System.NotImplementedException();
+            }
+<# } #>
+<# for (var j = 0; j < eventDetailsList.Count; j++) { #>
+
+            public void On<#= eventDetailsList[j].EventName #>Event(<#= eventDetailsList[j].EventName #>Event payload)
+            {
+                throw new System.NotImplementedException();
+            }
+<# } #>
+<# for (var j = 0; j < commandDetailsList.Count; j++) { #>
+
+            public void On<#= commandDetailsList[j].CommandName #>CommandRequest(<#= commandDetailsList[j].CommandName #>.Request request)
+            {
+                throw new System.NotImplementedException();
             }
 <# } #>
         }

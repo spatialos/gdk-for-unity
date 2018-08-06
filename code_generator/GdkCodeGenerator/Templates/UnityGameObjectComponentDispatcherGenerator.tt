@@ -73,7 +73,7 @@ namespace <#= qualifiedNamespace #>
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).OnComponentUpdate(update);
                         }
                     }
                 }
@@ -83,18 +83,20 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
 <# for (var j = 0; j < eventDetailsList.Count; j++) { #>
-                var entities = EventsReceivedComponentGroups[<#= j #>].GetEntityArray();
-                var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(<#= unityComponentDefinition.Id #>);
-                    var eventList = eventLists[i];
-                    foreach (var reader in readers)
+                    var entities = EventsReceivedComponentGroups[<#= j #>].GetEntityArray();
+                    var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var e in eventList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                        var eventList = eventLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).On<#= eventDetailsList[j].EventName #>Event(e);
+                            foreach (var e in eventList.Buffer)
+                            {
+                                ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).On<#= eventDetailsList[j].EventName #>Event(e);
+                            }
                         }
                     }
                 }
@@ -104,18 +106,20 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
-                var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
-                var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(<#= unityComponentDefinition.Id #>);
-                    var commandList = commandLists[i];
-                    foreach (var reader in readers)
+                    var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
+                    var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var req in commandList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                        var commandList = commandLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
+                            foreach (var req in commandList.Buffer)
+                            {
+                                ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
+                            }
                         }
                     }
                 }
@@ -149,7 +153,7 @@ namespace <#= qualifiedNamespace #>
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((<#= componentDetails.TypeName #>.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).OnAuthorityChange(auth);
                         }
                     }
                 }

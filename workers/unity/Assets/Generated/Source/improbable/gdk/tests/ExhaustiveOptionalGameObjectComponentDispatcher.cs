@@ -57,7 +57,7 @@ namespace Generated.Improbable.Gdk.Tests
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((SpatialOSExhaustiveOptional.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            ((ExhaustiveOptional.ReaderWriterImpl) reader).OnComponentUpdate(update);
                         }
                     }
                 }
@@ -98,7 +98,7 @@ namespace Generated.Improbable.Gdk.Tests
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((SpatialOSExhaustiveOptional.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            ((ExhaustiveOptional.ReaderWriterImpl) reader).OnAuthorityChange(auth);
                         }
                     }
                 }

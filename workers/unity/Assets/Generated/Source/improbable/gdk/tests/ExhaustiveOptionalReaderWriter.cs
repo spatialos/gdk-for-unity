@@ -50,6 +50,16 @@ namespace Generated.Improbable.Gdk.Tests
                 remove => throw new System.NotImplementedException();
             }
 
+            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnComponentUpdate(SpatialOSExhaustiveOptional.Update update)
+            {
+                throw new System.NotImplementedException();
+            }
+
             public event GameObjectDelegates.ComponentUpdated<SpatialOSExhaustiveOptional.Update> ComponentUpdated
             {
                 add => throw new System.NotImplementedException();

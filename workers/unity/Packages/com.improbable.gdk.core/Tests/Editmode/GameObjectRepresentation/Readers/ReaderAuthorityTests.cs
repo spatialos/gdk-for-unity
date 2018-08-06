@@ -86,12 +86,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             Reader.AuthorityChanged += authority =>
                 throw new Exception("Authority failure: help I'm stuck in an exception factory");
 
-            var internalReader = (IReaderInternal) Reader;
-
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: backwards time travel");
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: help I'm stuck in an exception factory");
 
-            Assert.DoesNotThrow(() => { internalReader.OnAuthorityChange(Authority.NotAuthoritative); },
+            Assert.DoesNotThrow(() => { Reader.OnAuthorityChange(Authority.NotAuthoritative); },
                 "Exceptions that happen within authority change callbacks should not propagate to callers.");
 
             Assert.IsTrue(secondAuthorityChangeCalled);

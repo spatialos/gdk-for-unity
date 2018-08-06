@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
 {
     internal abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
         : IReader<TSpatialComponentData, TComponentUpdate>,
-            IReaderInternal
+            IReaderWriterInternal
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
