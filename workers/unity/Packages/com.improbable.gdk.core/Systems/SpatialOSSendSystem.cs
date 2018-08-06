@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -7,7 +10,6 @@ namespace Improbable.Gdk.Core
     public class SpatialOSSendSystem : ComponentSystem
     {
         private WorkerBase worker;
-        private MutableView view;
 
         private readonly List<int> registeredReplicators = new List<int>();
         private readonly List<int> commandSenders = new List<int>();
@@ -17,14 +19,12 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager(capacity);
 
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var componentTranslatorPair in view.TranslationUnits)
+            foreach (var componentTranslatorPair in worker.TranslationUnits)
             {
                 var componentIndex = componentTranslatorPair.Key;
                 var componentTranslator = componentTranslatorPair.Value;
@@ -59,12 +59,12 @@ namespace Improbable.Gdk.Core
 
             foreach (var componentTypeIndex in registeredReplicators)
             {
-                view.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
+                worker.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
             }
 
             foreach (var componentTypeIndex in commandSenders)
             {
-                view.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                worker.TranslationUnits[componentTypeIndex].SendCommands(connection);
             }
         }
     }

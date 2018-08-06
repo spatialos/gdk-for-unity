@@ -7,7 +7,6 @@ namespace Improbable.Gdk.Core
     public class SpatialOSReceiveSystem : ComponentSystem
     {
         private WorkerBase worker;
-        private MutableView view;
         private Dispatcher dispatcher;
 
         private bool inCriticalSection = false;
@@ -17,7 +16,6 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager(capacity);
 
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
 
             dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
@@ -42,17 +40,18 @@ namespace Improbable.Gdk.Core
 
         private void OnAddEntity(AddEntityOp op)
         {
-            view.CreateEntity(op.EntityId.Id);
+            worker.CreateEntity(op.EntityId.Id);
         }
 
         private void OnRemoveEntity(RemoveEntityOp op)
         {
-            view.RemoveEntity(op.EntityId.Id);
+            worker.RemoveEntity(op.EntityId.Id);
         }
 
         private void OnDisconnect(DisconnectOp op)
         {
-            view.Disconnect(op.Reason);
+            EntityManager.RemoveComponent<IsConnected>(worker.WorkerEntity);
+            EntityManager.AddSharedComponentData(worker.WorkerEntity, new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
         private void SetupDispatcherHandlers()
@@ -62,7 +61,7 @@ namespace Improbable.Gdk.Core
             dispatcher.OnDisconnect(OnDisconnect);
             dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
 
-            foreach (var translationUnit in view.TranslationUnits.Values)
+            foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.RegisterWithDispatcher(dispatcher);
             }

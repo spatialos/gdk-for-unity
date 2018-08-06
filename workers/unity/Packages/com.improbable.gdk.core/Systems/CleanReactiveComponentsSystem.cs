@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -11,26 +13,26 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
-        private MutableView view;
-
         private readonly List<Action> removeComponentActions = new List<Action>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
+            new Dictionary<int, ComponentTranslation>();
+
+        private WorkerBase worker;
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
+            worker = WorkerRegistry.GetWorkerForWorld(World);
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var translationUnit in view.TranslationUnits.Values)
+            foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
                 foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
@@ -93,7 +95,7 @@ namespace Improbable.Gdk.Core
             var commandBuffer = PostUpdateCommands;
 
             // Clean generated components
-            foreach (var translationUnit in view.TranslationUnits.Values)
+            foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
