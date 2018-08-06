@@ -38,15 +38,15 @@ namespace Improbable.Gdk.Core
             this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);
         }
 
-        public Dictionary<uint, IReaderInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
+        public Dictionary<uint, IReaderWriterInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-            var createdReaderWriters = new Dictionary<uint, List<IReaderInternal>>();
+            var createdReaderWriters = new Dictionary<uint, List<IReaderWriterInternal>>();
 
             foreach (var componentId in componentReaderIdsForBehaviours[behaviourType])
             {
-                List<IReaderInternal> readerWritersForComp = new List<IReaderInternal>();
+                List<IReaderWriterInternal> readerWritersForComp = new List<IReaderWriterInternal>();
                 createdReaderWriters[componentId] = readerWritersForComp;
                 Inject(behaviour, componentId, entity, readerWritersForComp);
             }
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Core
             {
                 if (!createdReaderWriters.TryGetValue(componentId, out var readerWritersForComp))
                 {
-                    readerWritersForComp = new List<IReaderInternal>();
+                    readerWritersForComp = new List<IReaderWriterInternal>();
                 }
 
                 Inject(behaviour, componentId, entity, readerWritersForComp);
@@ -93,7 +93,7 @@ namespace Improbable.Gdk.Core
         }
 
         private void Inject(MonoBehaviour behaviour, uint componentId, Entity entity,
-            IList<IReaderInternal> store)
+            IList<IReaderWriterInternal> store)
         {
             foreach (var field in fieldInfoCache[behaviour.GetType()][componentId])
             {

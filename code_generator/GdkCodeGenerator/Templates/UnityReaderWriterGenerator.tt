@@ -23,7 +23,7 @@ namespace <#= qualifiedNamespace #>
         [ComponentId(<#= unityComponentDefinition.Id #>)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
@@ -31,36 +31,43 @@ namespace <#= qualifiedNamespace #>
 
         [ReaderInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-        public interface Reader
+<# if(fieldDetailsList.Count > 0) { #>
+        public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+<# } else { #>
+        public interface Reader : IReader<<#= componentDetails.TypeName #>>
+<# } #>
         {
         }
 
-        public class ReaderWriterImpl : Reader, IReaderInternal
+        [WriterInterface]
+        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        public interface Writer 
+        {
+        }
+
+        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
             }
-
-            // IReaderInternal methods
-            void IReaderInternal.OnAuthorityChange(Authority authority)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnComponentUpdate()
-            {
-                throw new System.NotImplementedException();
-            }
             
-            void IReaderInternal.OnEvent(int eventIndex)
-            {
-                throw new System.NotImplementedException();
-            }
+            public Authority Authority => throw new System.NotImplementedException();
 
-            void IReaderInternal.OnCommandRequest(int commandIndex)
+            public <#= componentDetails.TypeName #> Data => throw new System.NotImplementedException();
+
+            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
             {
-                throw new System.NotImplementedException();
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
             }
+<# if (fieldDetailsList.Count > 0) { #>
+
+            public event GameObjectDelegates.ComponentUpdated<<#= componentDetails.TypeName #>.Update> ComponentUpdated
+            {
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
+            }
+<# } #>
         }
     }
 }
