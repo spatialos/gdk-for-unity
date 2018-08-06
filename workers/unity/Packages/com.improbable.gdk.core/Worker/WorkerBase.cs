@@ -19,8 +19,6 @@ namespace Improbable.Gdk.Core
 
         public abstract string GetWorkerType { get; }
 
-        
-
         public bool UseDynamicId { get; protected set; }
 
         public readonly EntityManager EntityManager;
@@ -29,23 +27,22 @@ namespace Improbable.Gdk.Core
 
         public readonly ILogDispatcher LogDispatcher;
 
-        public readonly Type[] Systems = new[]
+        public readonly Type[] RequiredSpatialSystems = new[]
         {
             typeof(SpatialOSReceiveSystem),
             typeof(SpatialOSSendSystem),
             typeof(CleanReactiveComponentsSystem)
         };
 
-        private readonly Dictionary<long, Entity> entityMapping;
+        private readonly Dictionary<long, Entity> entityMapping = new Dictionary<long, Entity>();
 
         protected WorkerBase(string workerId, ConnectionConfig config, Vector3 origin, EntityManager entityManager)
         {
             FindTranslationUnits();
             // TODO addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
-            entityMapping = new Dictionary<long, Entity>();
 
             LogDispatcher = new ForwardingDispatcher();
-            this.EntityManager = entityManager;
+            EntityManager = entityManager;
             WorkerId = workerId;
             if (config is ReceptionistConfig)
             {
@@ -66,6 +63,7 @@ namespace Improbable.Gdk.Core
                 throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
                     "ReceptionistConfig and LocatorConfig are supported.");
             }
+
             WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
 
             Application.quitting += () =>
@@ -131,8 +129,6 @@ namespace Improbable.Gdk.Core
             EntityManager.DestroyEntity(entityMapping[entityId]);
             entityMapping.Remove(entityId);
         }
-
-
 
         // section of stuff that will hopefully be removed soonish
 

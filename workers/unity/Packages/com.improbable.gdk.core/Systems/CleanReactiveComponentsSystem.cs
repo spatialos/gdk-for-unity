@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Core.Components;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -17,9 +15,6 @@ namespace Improbable.Gdk.Core
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
-
-        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
-            new Dictionary<int, ComponentTranslation>();
 
         private WorkerBase worker;
 

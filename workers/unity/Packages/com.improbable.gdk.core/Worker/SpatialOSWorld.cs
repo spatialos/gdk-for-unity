@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
         {
             // Create worker, connect to fabric and register worker-specific systems
             worker = WorkerRegistry.CreateWorker(config, origin);
-            foreach (Type type in worker.Systems)
+            foreach (var type in worker.RequiredSpatialSystems)
             {
                 var manager = GetOrCreateManager(type);
                 spatialOSSystemManagers.Add(manager);
@@ -30,11 +30,11 @@ namespace Improbable.Gdk.Core
 
         public void Disconnect(string reason)
         {
-            foreach (ScriptBehaviourManager manager in spatialOSSystemManagers)
+            foreach (var manager in spatialOSSystemManagers)
             {
                 DestroyManager(manager);
-                WorkerRegistry.UnsetWorkerForWorld(worker, this);
             }
+            WorkerRegistry.UnsetWorkerForWorld(worker, this);
             Dispose();
         }
 
