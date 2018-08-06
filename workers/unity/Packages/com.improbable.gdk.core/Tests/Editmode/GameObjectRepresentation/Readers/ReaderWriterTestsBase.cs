@@ -22,11 +22,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void SetUp()
         {
             world = new World("test-world");
-
             EntityManager = world.GetOrCreateManager<EntityManager>();
-
             Entity = EntityManager.CreateEntity(typeof(SpatialOSBlittableComponent));
-
             Reader = new SpatialOSBlittableComponentReader(Entity, EntityManager, new LoggingDispatcher());
         }
 
@@ -45,7 +42,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             if (!entityManager.HasComponent<ComponentsUpdated<TUpdate>>(entity))
             {
                 entityManager.AddComponent(entity, typeof(ComponentsUpdated<TUpdate>));
-
                 var componentsUpdated = new ComponentsUpdated<TUpdate>();
                 entityManager.SetComponentObject(entity, componentsUpdated);
             }
