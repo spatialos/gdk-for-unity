@@ -45,7 +45,8 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     return Authority.NotAuthoritative;
                 }
 
-                throw new AuthorityComponentNotFoundException($"No authority component found for the entity with index {Entity.Index}.");
+                throw new AuthorityComponentNotFoundException(
+                    $"No authority component found for the entity with index {Entity.Index}.");
             }
         }
 
@@ -112,25 +113,22 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        public void OnComponentUpdate()
+        public void OnComponentUpdate(TComponentUpdate update)
         {
-            foreach (var update in EntityManager.GetComponentObject<ComponentsUpdated<TComponentUpdate>>(Entity).Buffer)
+            foreach (var callback in componentUpdateDelegates)
             {
-                foreach (var callback in componentUpdateDelegates)
+                try
                 {
-                    try
-                    {
-                        callback(update);
-                    }
-                    catch (Exception e)
-                    {
-                        // Log the exception but do not rethrow it, as other delegates should still get called
-                        logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                    }
+                    callback(update);
                 }
-
-                TriggerFieldCallbacks(update);
+                catch (Exception e)
+                {
+                    // Log the exception but do not rethrow it, as other delegates should still get called
+                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                }
             }
+
+            TriggerFieldCallbacks(update);
         }
 
         /// <summary>

@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Generated.Improbable.Gdk.Tests.NonblittableTypes;
-using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.EditmodeTests;
 using Improbable.Gdk.Core.GameObjectRepresentation;
-using Improbable.Gdk.Core.MonoBehaviours;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
@@ -85,7 +79,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 reader.StringFieldUpdated += newValue => { stringValue = newValue; };
                 reader.ListFieldUpdates += newValue => { listValue = newValue; };
 
-                ReaderWriterTestsBase.QueueUpdatesToEntity(entityManager, entity, new SpatialOSNonBlittableComponent.Update
+                reader.OnComponentUpdate(new SpatialOSNonBlittableComponent.Update
                 {
                     StringField = new Option<string>("new string"),
                     ListField = new Option<List<int>>(new List<int>
@@ -95,8 +89,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                         7
                     })
                 });
-
-                reader.OnComponentUpdate();
 
                 Assert.AreEqual("new string", stringValue);
                 Assert.AreEqual(new List<int> { 5, 6, 7 }, listValue);

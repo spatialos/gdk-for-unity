@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core.GameObjectRepresentation;
-using Improbable.Gdk.Core.MonoBehaviours;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Entities;
-using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
@@ -31,24 +28,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void TearDown()
         {
             world.Dispose();
-        }
-
-        internal static void QueueUpdatesToEntity<TUpdate>(
-            EntityManager entityManager,
-            Entity entity,
-            params TUpdate[] updatesToQueue)
-            where TUpdate : ISpatialComponentUpdate
-        {
-            if (!entityManager.HasComponent<ComponentsUpdated<TUpdate>>(entity))
-            {
-                entityManager.AddComponent(entity, typeof(ComponentsUpdated<TUpdate>));
-                var componentsUpdated = new ComponentsUpdated<TUpdate>();
-                entityManager.SetComponentObject(entity, componentsUpdated);
-            }
-
-            entityManager.GetComponentObject<ComponentsUpdated<TUpdate>>(entity)
-                .Buffer
-                .AddRange(updatesToQueue);
         }
 
         internal class SpatialOSBlittableComponentReader : BlittableReaderBase<SpatialOSBlittableComponent,
