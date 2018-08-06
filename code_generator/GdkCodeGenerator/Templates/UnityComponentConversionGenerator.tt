@@ -32,7 +32,7 @@ namespace <#= qualifiedNamespace #>
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
-            public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView)
+            public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView, world)
             {
                 entityManager = mutableView.EntityManager;
                 this.world = world;
@@ -80,6 +80,15 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
+<# if (!componentDetails.IsBlittable) { #>
+
+                var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
+<# } #>
+<# } #>
+<# } #>
 
                 entityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
