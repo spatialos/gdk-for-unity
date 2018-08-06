@@ -26,7 +26,10 @@ namespace Playground
                 var camera = Camera.main;
                 PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Input);
                 PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Transform);
-                Cursor.lockState = CursorLockMode.Locked;
+                if (!Application.isMobilePlatform)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
             }
         }
     }

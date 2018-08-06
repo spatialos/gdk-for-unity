@@ -30,11 +30,10 @@ namespace Playground
         // Origin offset to make camera orbit character's head rather than their feet.
         private static readonly Vector3 TargetOffset = new Vector3(0, 1, 0);
 
-        public static VirtualJoystick VirtualJoystick;
-
         private struct Data
         {
             public readonly int Length;
+            [ReadOnly] public ComponentDataArray<LocalInput> LocalInput;
             public ComponentDataArray<CameraInput> CameraInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             [ReadOnly] public ComponentArray<Rigidbody> RigidBody;
@@ -42,26 +41,11 @@ namespace Playground
 
         [Inject] private Data data;
 
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-            try
-            {
-                var cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-                cameraJoystick.SetActive(false);
-            }
-            catch (NullReferenceException)
-            {
-                WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
-            }
-        }
-
         protected override void OnUpdate()
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var input = UpdateCameraInput(data.CameraInput[i]);
+                var input = UpdateCameraInput(data.CameraInput[i], data.LocalInput[i]);
                 var transform = UpdateCameraTransform(input, data.RigidBody[i].position);
 
                 UpdateCamera(transform);
@@ -71,11 +55,11 @@ namespace Playground
             }
         }
 
-        private static CameraInput UpdateCameraInput(CameraInput input)
+        private static CameraInput UpdateCameraInput(CameraInput cameraInput, LocalInput localInput)
         {
-            var x = input.X + Input.GetAxis("Mouse X");
-            var y = input.Y - Input.GetAxis("Mouse Y");
-            var distance = input.Distance + Input.GetAxis("Mouse ScrollWheel") * ZoomScale;
+            var x = cameraInput.X + localInput.RightStickHorizontal;
+            var y = cameraInput.Y - localInput.RightStickVertical;
+            var distance = cameraInput.Distance + localInput.CameraDistance * ZoomScale;
 
             x %= 360;
             y = Mathf.Clamp(y, MinYAngle, MaxYAngle);
