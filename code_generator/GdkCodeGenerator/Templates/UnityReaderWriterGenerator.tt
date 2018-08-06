@@ -31,7 +31,11 @@ namespace <#= qualifiedNamespace #>
 
         [ReaderInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-        public interface Reader : IReader<<#= componentDetails.TypeName #><# if(fieldDetailsList.Count > 0){ #>, <#= componentDetails.TypeName #>.Update<# } #>>
+<# if(fieldDetailsList.Count > 0) { #>
+        public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+<# } else { #>
+        public interface Reader : IReader<<#= componentDetails.TypeName #>>
+<# } #>
         {
         }
 
@@ -56,8 +60,7 @@ namespace <#= qualifiedNamespace #>
                 add => throw new System.NotImplementedException();
                 remove => throw new System.NotImplementedException();
             }
-<# if (fieldDetailsList.Count > 0) #>
-<# { #>
+<# if (fieldDetailsList.Count > 0) { #>
 
             public event GameObjectDelegates.ComponentUpdated<<#= componentDetails.TypeName #>.Update> ComponentUpdated
             {
