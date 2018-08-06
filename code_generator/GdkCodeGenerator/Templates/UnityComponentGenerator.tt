@@ -8,11 +8,7 @@
 <#= generatedHeader #>
 
 using UnityEngine;
-using Unity.Entities;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
-using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
 { 
@@ -42,32 +38,5 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 <# } #>
-
-        public class Reader : IReaderInternal
-        {
-            public Reader(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-            {
-            }
-
-            void IReaderInternal.OnAuthorityChange(Authority authority)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnComponentUpdate()
-            {
-                throw new System.NotImplementedException();
-            }
-            
-            void IReaderInternal.OnEvent(int eventIndex)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnCommandRequest(int commandIndex)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
     }
 }

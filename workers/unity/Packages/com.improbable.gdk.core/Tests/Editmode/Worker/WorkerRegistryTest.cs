@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core.EditmodeTests
 {
     [TestFixture]
-    public class WorkerRegistryTest
+    public class WorkerRegistryTest : HybridGdkSystemTestBase
     {
         [OneTimeTearDown]
         public void OneTimeTearDown()
