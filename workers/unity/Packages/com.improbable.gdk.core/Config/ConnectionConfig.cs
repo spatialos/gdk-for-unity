@@ -11,16 +11,6 @@ namespace Improbable.Gdk.Core
         public string WorkerType;
         public string WorkerId;
 
-        public string GetWorkerId()
-        {
-            if (string.IsNullOrEmpty(WorkerId))
-            {
-                WorkerId = $"{WorkerType}-{Guid.NewGuid()}";
-            }
-
-            return WorkerId;
-        }
-
         public abstract void Validate();
 
         protected void ValidateConfig(string configValue, string configName)
