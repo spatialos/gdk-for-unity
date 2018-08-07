@@ -98,6 +98,7 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentCode = blittableComponentGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
+                 
                 if (component.CommandDefinitions.Count > 0)
                 {
                     var commandPayloadsFileName =
@@ -113,18 +114,16 @@ namespace Improbable.Gdk.CodeGenerator
                     var eventsCode = eventGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
+                
 
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
-                if (!component.IsBlittable)
-                {
-                    var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
-                    var referenceProviderTranslationCode =
-                        referenceTypeProviderGenerator.Generate(component, package, enumSet);
-                    Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName), referenceProviderTranslationCode);
-                }
+                var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
+                var referenceProviderTranslationCode =
+                    referenceTypeProviderGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName), referenceProviderTranslationCode);
             }
         }
     }
