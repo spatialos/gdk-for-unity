@@ -9,6 +9,8 @@ using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
+using Improbable.Worker;
+using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -247,23 +249,6 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            // TODO move into readerwriterbase
-            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
-            {
-                foreach (var callback in callbacks)
-                {
-                    try
-                    {
-                        callback(payload);
-                    }
-                    catch (Exception e)
-                    {
-                        // Log the exception but do not rethrow it, as other delegates should still get called
-                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        Debug.LogException(e);
-                    }
-                }
-            }
         }
     }
 }
