@@ -1,5 +1,3 @@
-using System;
-using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
