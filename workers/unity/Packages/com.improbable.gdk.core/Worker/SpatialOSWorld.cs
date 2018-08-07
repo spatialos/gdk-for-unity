@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
 {
     public class SpatialOSWorld : World
     {
-        private Vector3 origin;
+        public Vector3 Origin { get; }
         private WorkerBase worker;
         private HashSet<ScriptBehaviourManager> spatialOSSystemManagers = new HashSet<ScriptBehaviourManager>();
         private EntityManager entityManager;
@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Core
         public SpatialOSWorld(string name, Vector3 origin) : base(name)
         {
             entityManager = GetOrCreateManager<EntityManager>();
+            Origin = origin;
         }
 
         public void Connect(ConnectionConfig config, ILogDispatcher logDispatcher)
@@ -24,7 +25,7 @@ namespace Improbable.Gdk.Core
                 throw new NullReferenceException("Called connect while having a Worker already connected to SpatialOS.");
             }
 
-            worker = WorkerRegistry.CreateWorker(config, entityManager, logDispatcher, origin);
+            worker = WorkerRegistry.CreateWorker(config, entityManager, logDispatcher, Origin);
             WorkerRegistry.SetWorkerForWorld(worker, this);
             foreach (var type in worker.RequiredSpatialSystems)
             {

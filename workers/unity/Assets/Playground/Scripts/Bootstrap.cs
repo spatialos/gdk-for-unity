@@ -45,7 +45,7 @@ namespace Playground
                     config.UseExternalIp = workerConfigurations.UseExternalIp;
                     config.WorkerType = workerConfig.Type;
                     config.WorkerId = $"{config.WorkerType}-{Guid.NewGuid()}";
-                    WorldToConfig.Add(new SpatialOSWorld(config.WorkerId), config);
+                    WorldToConfig.Add(new SpatialOSWorld(config.WorkerId, workerConfig.Origin), config);
                 } 
 #endif
             }
@@ -62,7 +62,7 @@ namespace Playground
                     // because the launcher does not pass in the worker type...
                     connectionConfig.WorkerType = nameof(UnityClient);
                 }
-                WorldToConfig.Add(new SpatialOSWorld(connectionConfig.WorkerId), connectionConfig);
+                WorldToConfig.Add(new SpatialOSWorld(connectionConfig.WorkerId, Vector3.zero), connectionConfig);
             }
 
             if (World.AllWorlds.Count <= 0)
@@ -86,7 +86,7 @@ namespace Playground
 
                 try
                 {
-                    worldConfigPair.Key.Connect(worldConfigPair.Value, new ForwardingDispatcher(), Vector3.zero);
+                    worldConfigPair.Key.Connect(worldConfigPair.Value, new ForwardingDispatcher());
 
                 }
                 catch (ConnectionFailedException exception)

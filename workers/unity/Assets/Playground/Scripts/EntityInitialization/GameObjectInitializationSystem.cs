@@ -48,7 +48,7 @@ namespace Playground
             base.OnCreateManager(capacity);
 
             worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            origin = SpatialWorld.Origin;
             entityGameObjectCreator = new EntityGameObjectCreator(World);
             entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
         }

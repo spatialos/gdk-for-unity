@@ -36,8 +36,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            origin = SpatialWorld.Origin;
 
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }

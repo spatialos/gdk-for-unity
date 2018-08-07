@@ -34,7 +34,6 @@ namespace Improbable.Gdk.Core
 
         private void OnAddEntity(AddEntityOp op)
         {
-            Debug.Log("adding entity");
             var entityId = op.EntityId.Id;
             if (Worker.EntityMapping.ContainsKey(entityId))
             {

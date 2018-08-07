@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [SetUp]
         public void Setup()
         {
-            world = new SpatialOSWorld("test");
+            world = new SpatialOSWorld("test", Vector3.zero);
         }
 
         [TearDown]

@@ -27,8 +27,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            origin = SpatialWorld.Origin;
         }
 
         protected override void OnUpdate()
