@@ -1,7 +1,6 @@
 ﻿using System;
 using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core.GameObjectRepresentation;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
 using NUnit.Framework;
 using UnityEngine;
@@ -70,7 +69,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             Assert.AreEqual(false, authorityChangedCalled, "Adding an event should not fire it immediately");
 
-            ReaderInternal.OnAuthorityChange(Authority.Authoritative);
+            ReaderWriterInternal.OnAuthorityChange(Authority.Authoritative);
 
             Assert.AreEqual(true, authorityChangedCalled);
         }
@@ -89,7 +88,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: backwards time travel");
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: help I'm stuck in an exception factory");
 
-            Assert.DoesNotThrow(() => { ReaderInternal.OnAuthorityChange(Authority.NotAuthoritative); },
+            Assert.DoesNotThrow(() => { ReaderWriterInternal.OnAuthorityChange(Authority.NotAuthoritative); },
                 "Exceptions that happen within authority change callbacks should not propagate to callers.");
 
             Assert.IsTrue(secondAuthorityChangeCalled);

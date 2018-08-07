@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
-using Improbable.Gdk.Core.GameObjectRepresentation;
-using Improbable.Gdk.Core.MonoBehaviours;
+﻿using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
@@ -12,7 +8,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
     internal abstract class ReaderWriterTestsBase
     {
         protected BlittableComponent.Reader ReaderPublic;
-        protected BlittableComponent.ReaderWriterImpl ReaderInternal;
+        protected BlittableComponent.Writer WriterPublic;
+        protected BlittableComponent.ReaderWriterImpl ReaderWriterInternal;
         protected EntityManager EntityManager;
         protected Entity Entity;
         private World world;
@@ -23,8 +20,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             world = new World("test-world");
             EntityManager = world.GetOrCreateManager<EntityManager>();
             Entity = EntityManager.CreateEntity(typeof(SpatialOSBlittableComponent));
-            ReaderPublic = new BlittableComponent.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
-            ReaderInternal = (BlittableComponent.ReaderWriterImpl) ReaderPublic;
+            ReaderWriterInternal = new BlittableComponent.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
+            ReaderPublic = ReaderWriterInternal;
+            WriterPublic = ReaderWriterInternal;
         }
 
         [TearDown]
