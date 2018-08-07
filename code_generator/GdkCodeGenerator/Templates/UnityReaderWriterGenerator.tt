@@ -52,12 +52,12 @@ namespace <#= qualifiedNamespace #>
 
 <# if (fieldDetailsList.Count > 0 && componentDetails.IsBlittable) { #>
         internal class ReaderWriterImpl :
-            BlittableReaderBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+            BlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
 <# } else if (fieldDetailsList.Count > 0 && !componentDetails.IsBlittable) { #>
         internal class ReaderWriterImpl :
-            NonBlittableReaderBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+            NonBlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
 <# } else /* fieldDetailsList.Count == 0 */ { #>
-        internal class ReaderWriterImpl : ReaderBase<<#= componentDetails.TypeName #>>, Reader, Writer
+        internal class ReaderWriterImpl : ReaderWriterBase<<#= componentDetails.TypeName #>>, Reader, Writer
 <# } #>
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
