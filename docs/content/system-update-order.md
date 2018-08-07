@@ -4,7 +4,8 @@
 
 ## System update order in the Unity GDK
 
-Unity provides attributes to define the  update order of systems. These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`. Note: You can only have one attribute of each type assigned to a system. If multiple are assigned they might override each other.
+Unity provides attributes to define the [update order of systems](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
+> Note: You can only have one attribute of each type assigned to a system. If multiple are assigned they might override each other.
 
 Here’s an example of how to assign an attribute to a system:
 
