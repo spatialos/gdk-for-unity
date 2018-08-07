@@ -16,6 +16,8 @@ namespace Improbable.Gdk.Core
 
         private readonly List<Action> removeComponentActions = new List<Action>();
 
+        private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
+
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
@@ -72,6 +74,12 @@ namespace Improbable.Gdk.Core
                             typesToRemove.Add(componentType.GetManagedType());
                             addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
                         }
+
+                        componentCleanups.Add(new ComponentCleanup
+                        {
+                            Handler = componentCleanupHandler,
+                            UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType)
+                        });
                     }
                 }
             }
@@ -97,10 +105,22 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
+            var buffer = PostUpdateCommands;
             foreach (var removeComponentAction in removeComponentActions)
             {
                 removeComponentAction();
             }
+
+            foreach (var componentCleanup in componentCleanups)
+            {
+                componentCleanup.Handler.CleanupUpdates(componentCleanup.UpdateGroup, ref buffer);
+            }
+        }
+
+        private struct ComponentCleanup
+        {
+            public ComponentCleanupHandler Handler;
+            public ComponentGroup UpdateGroup;
         }
     }
 }
