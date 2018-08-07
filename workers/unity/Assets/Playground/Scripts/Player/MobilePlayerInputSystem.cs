@@ -19,10 +19,10 @@ namespace Playground
 
         [Inject] private InputData inputData;
 
-        private static GameObject controllerJoystick;
-        private static GameObject cameraControllerJoystick;
         private static VirtualJoystick movementJoystick;
         private static VirtualJoystick cameraJoystick;
+        private static RectTransform movementJoystickBoundaries;
+        private static RectTransform cameraJoystickBoundaries;
         private static HashSet<int> oldTouchSet = new HashSet<int>();
         private static HashSet<int> newTouchSet = new HashSet<int>();
 
@@ -31,8 +31,9 @@ namespace Playground
             base.OnCreateManager(capacity);
             try
             {
-                controllerJoystick = GameObject.FindGameObjectWithTag("MovementJoystick");
+                var controllerJoystick = GameObject.FindGameObjectWithTag("MovementJoystick");
                 movementJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+                movementJoystickBoundaries = controllerJoystick.GetComponent<Image>().rectTransform;
             }
             catch (NullReferenceException)
             {
@@ -43,8 +44,9 @@ namespace Playground
 
             try
             {
-                cameraControllerJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-                cameraJoystick = cameraControllerJoystick.GetComponent<VirtualJoystick>();
+                var controllerJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
+                cameraJoystick = controllerJoystick.GetComponent<VirtualJoystick>();
+                cameraJoystickBoundaries = controllerJoystick.GetComponent<Image>().rectTransform;
             }
             catch (NullReferenceException)
             {
@@ -59,13 +61,9 @@ namespace Playground
             {
                 var input = inputData.PlayerInput[i];
                 var touches = GetNonJoystickTouches();
-                input.Horizontal = movementJoystick.InputDirection.x;
-                input.Vertical = movementJoystick.InputDirection.y;
-                input.RightStickHorizontal = cameraJoystick.InputDirection.x;
-                input.RightStickVertical = cameraJoystick.InputDirection.y;
+                input.LeftStick = movementJoystick.InputDirection;
+                input.RightStick = cameraJoystick.InputDirection;
                 // Camera zoom and running are not implemented for mobile
-                // input.CameraDistance = Input.GetAxis("Mouse ScrollWheel");
-                // input.Running = Input.GetKey(KeyCode.LeftShift);
                 input.ShootSmall = touches == 1;
                 input.ShootLarge = touches >= 2;
                 inputData.PlayerInput[i] = input;
@@ -75,7 +73,6 @@ namespace Playground
 
         private static int GetNonJoystickTouches()
         {
-            var count = 0;
             newTouchSet.Clear();
             foreach (var touch in Input.touches)
             {
@@ -89,21 +86,22 @@ namespace Playground
             newTouchSet = oldTouchSet;
             oldTouchSet = temp;
 
+            var nonJoystickTouches = 0;
             foreach (var touch in Input.touches)
             {
-                if (!(RectTransformUtility.RectangleContainsScreenPoint(
-                            controllerJoystick.GetComponent<Image>().rectTransform, touch.position, null) ||
-                        RectTransformUtility.RectangleContainsScreenPoint(
-                            cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) &&
-                    !oldTouchSet.Contains(touch.fingerId))
+                if (!oldTouchSet.Contains(touch.fingerId) && !(RectTransformUtility.RectangleContainsScreenPoint(
+                        movementJoystickBoundaries, touch.position,
+                        null) ||
+                    RectTransformUtility.RectangleContainsScreenPoint(cameraJoystickBoundaries, touch.position,
+                        null)))
                 {
-                    count++;
+                    nonJoystickTouches++;
                 }
 
                 oldTouchSet.Add(touch.fingerId);
             }
 
-            return count;
+            return nonJoystickTouches;
         }
     }
 }

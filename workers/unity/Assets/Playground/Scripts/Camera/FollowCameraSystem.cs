@@ -57,8 +57,8 @@ namespace Playground
 
         private static CameraInput UpdateCameraInput(CameraInput cameraInput, LocalInput localInput)
         {
-            var x = cameraInput.X + localInput.RightStickHorizontal;
-            var y = cameraInput.Y - localInput.RightStickVertical;
+            var x = cameraInput.X + localInput.RightStick.x;
+            var y = cameraInput.Y - localInput.RightStick.y;
             var distance = cameraInput.Distance + localInput.CameraDistance * ZoomScale;
 
             x %= 360;

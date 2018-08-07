@@ -15,8 +15,8 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<LocalInput> LocalInput;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            public ComponentDataArray<CameraTransform> CameraTransform;
-            public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<CameraTransform> CameraTransform;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
 
         [Inject] private PlayerInputData playerInputData;
@@ -29,7 +29,7 @@ namespace Playground
                 var cameraTransform = playerInputData.CameraTransform[i];
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
-                var input = localInput.Horizontal * right + localInput.Vertical * forward;
+                var input = localInput.LeftStick.x * right + localInput.LeftStick.y * forward;
                 var newPlayerInput = new SpatialOSPlayerInput
                 {
                     Horizontal = input.x,
