@@ -21,7 +21,7 @@ public class <#= Name #>Provider
     {
         if (!Storage.TryGetValue(handle, out var value))
         {
-            throw new ArgumentException($"<#= Name #>Provider does not contain handle {handle}"); 
+            throw new ArgumentException($"<#= Name #>Provider does not contain handle {handle}");
         }
 
         return value;
@@ -31,7 +31,7 @@ public class <#= Name #>Provider
     {
         if (!Storage.ContainsKey(handle))
         {
-            throw new ArgumentException($"<#= Name #>Provider does not contain handle {handle}"); 
+            throw new ArgumentException($"<#= Name #>Provider does not contain handle {handle}");
         }
 
         Storage[handle] = value;
