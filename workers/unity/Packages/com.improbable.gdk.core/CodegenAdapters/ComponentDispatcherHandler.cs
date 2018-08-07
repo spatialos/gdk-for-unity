@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         protected const string CommandIndexNotFound = "Command index not found.";
         protected const string InvalidAuthorityChange = "Invalid authority state change received.";
 
-        protected ComponentDispatcherHandler(MutableView mutableView)
+        protected ComponentDispatcherHandler(MutableView mutableView, World world)
         {
             MutableView = mutableView;
             LogDispatcher = mutableView.LogDispatcher;
