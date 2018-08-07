@@ -3,14 +3,11 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
-using System;
-using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
-using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
@@ -180,7 +177,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             }
 
             // TODO move into readerwriterbase
-            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
+            private void DispatchEventWithErrorHandling<T>(T payload, System.Collections.Generic.IEnumerable<System.Action<T>> callbacks)
             {
                 foreach (var callback in callbacks)
                 {
@@ -188,19 +185,18 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         callback(payload);
                     }
-                    catch (Exception e)
+                    catch (System.Exception e)
                     {
                         // Log the exception but do not rethrow it, as other delegates should still get called
                         // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        Debug.LogException(e);
+                        UnityEngine.Debug.LogException(e);
                     }
                 }
             }
 
-            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new List<Action<FirstEventEvent>>();
+            private readonly System.Collections.Generic.List<System.Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
 
-            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
-            public event Action<FirstEventEvent> FirstEventTriggered
+            public event System.Action<FirstEventEvent> OnFirstEvent
             {
                 add => firstEventDelegates.Add(value);
                 remove => firstEventDelegates.Remove(value);
@@ -211,10 +207,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 DispatchEventWithErrorHandling(payload, firstEventDelegates);
             }
 
-            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new List<Action<SecondEventEvent>>();
+            private readonly System.Collections.Generic.List<System.Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
 
-            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
-            public event Action<SecondEventEvent> SecondEventTriggered
+            public event System.Action<SecondEventEvent> OnSecondEvent
             {
                 add => secondEventDelegates.Add(value);
                 remove => secondEventDelegates.Remove(value);

@@ -10,14 +10,11 @@
 #>
 <#= generatedHeader #>
 
-using System;
-using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
-using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
@@ -105,7 +102,7 @@ namespace <#= qualifiedNamespace #>
 
 <# if (eventDetailsList.Count > 0) { #>
             // TODO move into readerwriterbase
-            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
+            private void DispatchEventWithErrorHandling<T>(T payload, System.Collections.Generic.IEnumerable<System.Action<T>> callbacks)
             {
                 foreach (var callback in callbacks)
                 {
@@ -113,11 +110,11 @@ namespace <#= qualifiedNamespace #>
                     {
                         callback(payload);
                     }
-                    catch (Exception e)
+                    catch (System.Exception e)
                     {
                         // Log the exception but do not rethrow it, as other delegates should still get called
                         // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        Debug.LogException(e);
+                        UnityEngine.Debug.LogException(e);
                     }
                 }
             }
@@ -127,10 +124,9 @@ namespace <#= qualifiedNamespace #>
             var eventType = eventDetails.EventName + "Event";
 #>
 
-            private readonly List<Action<<#= eventType #>>> <#= delegateList #> = new List<Action<<#= eventType #>>>();
+            private readonly System.Collections.Generic.List<System.Action<<#= eventType #>>> <#= delegateList #> = new System.Collections.Generic.List<System.Action<<#= eventType #>>>();
 
-            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
-            public event Action<<#= eventType #>> <#= eventDetails.EventName #>Triggered
+            public event System.Action<<#= eventType #>> On<#= eventDetails.EventName #>
             {
                 add => <#= delegateList #>.Add(value);
                 remove => <#= delegateList #>.Remove(value);
