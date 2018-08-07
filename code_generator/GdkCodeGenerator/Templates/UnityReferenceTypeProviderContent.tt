@@ -55,8 +55,9 @@ public class <#= Name #>Provider
 
     private static uint GetNextHandle() 
     {
-        while (Storage.ContainsKey(++nextHandle))
+        while (Storage.ContainsKey(nextHandle))
         {
+            nextHandle++;
         }
 
         return nextHandle;

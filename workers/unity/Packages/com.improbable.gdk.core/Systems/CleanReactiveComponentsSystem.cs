@@ -105,12 +105,12 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var buffer = PostUpdateCommands;
             foreach (var removeComponentAction in removeComponentActions)
             {
                 removeComponentAction();
             }
 
+            var buffer = PostUpdateCommands;
             foreach (var componentCleanup in componentCleanups)
             {
                 componentCleanup.Handler.CleanupUpdates(componentCleanup.UpdateGroup, ref buffer);

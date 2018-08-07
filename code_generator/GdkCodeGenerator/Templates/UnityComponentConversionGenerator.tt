@@ -28,21 +28,19 @@ namespace <#= qualifiedNamespace #>
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
             private readonly EntityManager entityManager;
-            private readonly global::Unity.Entities.World world;
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
             public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView, world)
             {
                 entityManager = mutableView.EntityManager;
-                this.world = world;
             }
 
             public override void Dispose() 
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(world);
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
 <# } #>
 <# } #>
             }
@@ -53,7 +51,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
-                var data =  global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world);
+                var data =  global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
@@ -132,7 +130,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     var updates = new <#= componentDetails.TypeName #>.ReceivedUpdates
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(world)
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
                     ReferenceTypeProviders.UpdatesProvider.Set(updates.handle, new List<<#= componentDetails.TypeName #>.Update>());
                     entityManager.AddComponentData(entity, updates);
@@ -347,7 +345,7 @@ namespace <#= qualifiedNamespace #>
                 // TODO: More to come potentially
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.Create<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+            public override ComponentType ComponentUpdateType => ComponentType.CreateReadonly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {

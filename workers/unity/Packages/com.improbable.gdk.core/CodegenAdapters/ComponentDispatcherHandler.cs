@@ -18,6 +18,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         protected MutableView MutableView;
         protected ILogDispatcher LogDispatcher;
+        protected World World;
 
         protected const string ReceivedDuplicateComponentAdded =
             "Received ComponentAdded, but already received one for this entity.";
@@ -31,6 +32,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         {
             MutableView = mutableView;
             LogDispatcher = mutableView.LogDispatcher;
+            World = world;
         }
     }
 }

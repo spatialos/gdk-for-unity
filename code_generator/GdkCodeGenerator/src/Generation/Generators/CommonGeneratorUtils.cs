@@ -1,7 +1,11 @@
+using System; 
+
 namespace Improbable.Gdk.CodeGenerator
 {
     public static class CommonGeneratorUtils
     {
+        private const int SpacesPerIndent = 4;
+
         public static string GetGeneratedHeader()
         {
             return "// ===========\r\n// DO NOT EDIT - this file is automatically regenerated.\r\n// ===========";
@@ -9,17 +13,13 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static string IndentEveryNewline(string input)
         {
-            return input.Replace("\r\n", "\r\n    ");
+            return IndentEveryNewline(input, 1);
         }
 
         public static string IndentEveryNewline(string input, int numIndents)
         {
-            for (var i = 0; i < numIndents; i++)
-            {
-                input = IndentEveryNewline(input);
-            }
-
-            return input;
+            var spaces = new String(' ', numIndents * SpacesPerIndent);
+            return input.Replace("\r\n", $"\r\n{spaces}");
         }
     }
 }
