@@ -78,16 +78,16 @@ namespace <#= qualifiedNamespace #>
                 remove => throw new System.NotImplementedException();
             }
 <# } #>
-<# for (var j = 0; j < eventDetailsList.Count; j++) { #>
+<# foreach (var eventDetails in eventDetailsList) { #>
 
-            public void On<#= eventDetailsList[j].EventName #>Event(<#= eventDetailsList[j].EventName #>Event payload)
+            public void On<#= eventDetails.EventName #>Event(<#= eventDetails.EventName #>Event payload)
             {
                 throw new System.NotImplementedException();
             }
 <# } #>
-<# for (var j = 0; j < commandDetailsList.Count; j++) { #>
+<# foreach (var command in commandDetailsList) { #>
 
-            public void On<#= commandDetailsList[j].CommandName #>CommandRequest(<#= commandDetailsList[j].CommandName #>.Request request)
+            public void On<#= command.CommandName #>CommandRequest(<#= command.CommandName #>.Request request)
             {
                 throw new System.NotImplementedException();
             }
