@@ -16,7 +16,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         [ComponentId(1002)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
@@ -24,33 +24,64 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
         [ReaderInterface]
         [ComponentId(1002)]
-        public interface Reader
+        public interface Reader : IReader<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
         }
 
-        public class ReaderWriterImpl : Reader, IReaderInternal
+        [WriterInterface]
+        [ComponentId(1002)]
+        public interface Writer 
+        {
+        }
+
+        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
             }
-
-            // IReaderInternal methods
-            void IReaderInternal.OnAuthorityChange(Authority authority)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void IReaderInternal.OnComponentUpdate()
-            {
-                throw new System.NotImplementedException();
-            }
             
-            void IReaderInternal.OnEvent(int eventIndex)
+            public Authority Authority => throw new System.NotImplementedException();
+
+            public SpatialOSNonBlittableComponent Data => throw new System.NotImplementedException();
+
+            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
+            {
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
+            }
+
+            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
             {
                 throw new System.NotImplementedException();
             }
 
-            void IReaderInternal.OnCommandRequest(int commandIndex)
+            public void OnComponentUpdate(SpatialOSNonBlittableComponent.Update update)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public event GameObjectDelegates.ComponentUpdated<SpatialOSNonBlittableComponent.Update> ComponentUpdated
+            {
+                add => throw new System.NotImplementedException();
+                remove => throw new System.NotImplementedException();
+            }
+
+            public void OnFirstEventEvent(FirstEventEvent payload)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnSecondEventEvent(SecondEventEvent payload)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnFirstCommandCommandRequest(FirstCommand.Request request)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnSecondCommandCommandRequest(SecondCommand.Request request)
             {
                 throw new System.NotImplementedException();
             }

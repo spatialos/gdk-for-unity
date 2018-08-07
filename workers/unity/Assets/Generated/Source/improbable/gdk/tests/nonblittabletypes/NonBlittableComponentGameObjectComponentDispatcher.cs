@@ -61,7 +61,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            ((NonBlittableComponent.ReaderWriterImpl) reader).OnComponentUpdate(update);
                         }
                     }
                 }
@@ -69,33 +69,37 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-                var entities = EventsReceivedComponentGroups[0].GetEntityArray();
-                var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1002);
-                    var eventList = eventLists[i];
-                    foreach (var reader in readers)
+                    var entities = EventsReceivedComponentGroups[0].GetEntityArray();
+                    var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var e in eventList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(1002);
+                        var eventList = eventLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnFirstEventEvent(e);
+                            foreach (var e in eventList.Buffer)
+                            {
+                                ((NonBlittableComponent.ReaderWriterImpl) reader).OnFirstEventEvent(e);
+                            }
                         }
                     }
                 }
-                var entities = EventsReceivedComponentGroups[1].GetEntityArray();
-                var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1002);
-                    var eventList = eventLists[i];
-                    foreach (var reader in readers)
+                    var entities = EventsReceivedComponentGroups[1].GetEntityArray();
+                    var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var e in eventList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(1002);
+                        var eventList = eventLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnSecondEventEvent(e);
+                            foreach (var e in eventList.Buffer)
+                            {
+                                ((NonBlittableComponent.ReaderWriterImpl) reader).OnSecondEventEvent(e);
+                            }
                         }
                     }
                 }
@@ -103,33 +107,37 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
             {
-                var entities = CommandRequestsComponentGroups[0].GetEntityArray();
-                var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1002);
-                    var commandList = commandLists[i];
-                    foreach (var reader in readers)
+                    var entities = CommandRequestsComponentGroups[0].GetEntityArray();
+                    var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var req in commandList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(1002);
+                        var commandList = commandLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnFirstCommandCommandRequest(req);
+                            foreach (var req in commandList.Buffer)
+                            {
+                                ((NonBlittableComponent.ReaderWriterImpl) reader).OnFirstCommandCommandRequest(req);
+                            }
                         }
                     }
                 }
-                var entities = CommandRequestsComponentGroups[1].GetEntityArray();
-                var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>();
-                for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1002);
-                    var commandList = commandLists[i];
-                    foreach (var reader in readers)
+                    var entities = CommandRequestsComponentGroups[1].GetEntityArray();
+                    var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
+                    for (var i = 0; i < entities.Length; i++)
                     {
-                        foreach (var req in commandList.Buffer)
+                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
+                            .GetReadersWriters(1002);
+                        var commandList = commandLists[i];
+                        foreach (var reader in readers)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnSecondCommandCommandRequest(req);
+                            foreach (var req in commandList.Buffer)
+                            {
+                                ((NonBlittableComponent.ReaderWriterImpl) reader).OnSecondCommandCommandRequest(req);
+                            }
                         }
                     }
                 }
@@ -162,7 +170,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((SpatialOSNonBlittableComponent.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            ((NonBlittableComponent.ReaderWriterImpl) reader).OnAuthorityChange(auth);
                         }
                     }
                 }
