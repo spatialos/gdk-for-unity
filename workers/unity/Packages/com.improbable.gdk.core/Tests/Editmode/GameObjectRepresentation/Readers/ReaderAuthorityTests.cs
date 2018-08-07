@@ -16,28 +16,28 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void Authority_throws_if_the_entity_has_no_authority_components()
         {
             // entity is fresh so no components on it
-            Assert.Throws<AuthorityComponentNotFoundException>(() => { Debug.Log(Reader.Authority); });
+            Assert.Throws<AuthorityComponentNotFoundException>(() => { Debug.Log(ReaderPublic.Authority); });
         }
 
         [Test]
         public void Authority_returns_NotAuthoritative_when_NotAuthoritative_component_is_present()
         {
             EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
-            Assert.AreEqual(Authority.NotAuthoritative, Reader.Authority);
+            Assert.AreEqual(Authority.NotAuthoritative, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_returns_Authoritative_when_Authoritative_component_is_present()
         {
             EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
-            Assert.AreEqual(Authority.Authoritative, Reader.Authority);
+            Assert.AreEqual(Authority.Authoritative, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_returns_AuthorityLossImminent_when_AuthorityLossImminent_component_is_present()
         {
             EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
-            Assert.AreEqual(Authority.AuthorityLossImminent, Reader.Authority);
+            Assert.AreEqual(Authority.AuthorityLossImminent, ReaderPublic.Authority);
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
             EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
-            Assert.AreEqual(Authority.AuthorityLossImminent, Reader.Authority);
+            Assert.AreEqual(Authority.AuthorityLossImminent, ReaderPublic.Authority);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
             EntityManager.AddComponent(Entity, typeof(Authoritative<SomeOtherComponent>));
-            Assert.AreEqual(Authority.NotAuthoritative, Reader.Authority);
+            Assert.AreEqual(Authority.NotAuthoritative, ReaderPublic.Authority);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             var authorityChangedCalled = false;
 
-            Reader.AuthorityChanged += authority =>
+            ReaderPublic.AuthorityChanged += authority =>
             {
                 Assert.AreEqual(Authority.Authoritative, authority);
 
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             Assert.AreEqual(false, authorityChangedCalled, "Adding an event should not fire it immediately");
 
-            Reader.OnAuthorityChange(Authority.Authoritative);
+            ReaderInternal.OnAuthorityChange(Authority.Authoritative);
 
             Assert.AreEqual(true, authorityChangedCalled);
         }
@@ -80,16 +80,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             var secondAuthorityChangeCalled = false;
 
-            Reader.AuthorityChanged += authority =>
+            ReaderPublic.AuthorityChanged += authority =>
                 throw new Exception("Authority failure: backwards time travel");
-            Reader.AuthorityChanged += authority => { secondAuthorityChangeCalled = true; };
-            Reader.AuthorityChanged += authority =>
+            ReaderPublic.AuthorityChanged += authority => { secondAuthorityChangeCalled = true; };
+            ReaderPublic.AuthorityChanged += authority =>
                 throw new Exception("Authority failure: help I'm stuck in an exception factory");
 
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: backwards time travel");
             LogAssert.Expect(LogType.Exception, "Exception: Authority failure: help I'm stuck in an exception factory");
 
-            Assert.DoesNotThrow(() => { Reader.OnAuthorityChange(Authority.NotAuthoritative); },
+            Assert.DoesNotThrow(() => { ReaderInternal.OnAuthorityChange(Authority.NotAuthoritative); },
                 "Exceptions that happen within authority change callbacks should not propagate to callers.");
 
             Assert.IsTrue(secondAuthorityChangeCalled);

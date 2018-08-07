@@ -16,14 +16,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             var componentUpdated = false;
             var updateToQueue = new SpatialOSBlittableComponent.Update();
-            Reader.ComponentUpdated += update =>
+            ReaderPublic.ComponentUpdated += update =>
             {
                 Assert.AreEqual(updateToQueue, update);
                 componentUpdated = true;
             };
 
             Assert.IsFalse(componentUpdated, "Adding an event callback should not fire it immediately");
-            Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update());
+            ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update());
             Assert.IsTrue(componentUpdated);
         }
 
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 new SpatialOSBlittableComponent.Update()
             };
             var updatesReceived = 0;
-            Reader.ComponentUpdated += update =>
+            ReaderPublic.ComponentUpdated += update =>
             {
                 Assert.AreEqual(updatesToQueue[updatesReceived], update,
                     $"The update at index {updatesReceived} did not match the received update.");
@@ -48,7 +48,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             Assert.AreEqual(0, updatesReceived, "Adding an event callback should not fire it immediately");
             foreach (var update in updatesToQueue)
             {
-                Reader.OnComponentUpdate(update);
+                ReaderInternal.OnComponentUpdate(update);
             }
 
             Assert.AreEqual(3, updatesReceived);
@@ -58,13 +58,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void ComponentUpdated_calls_all_callbacks_even_if_some_callbacks_fail()
         {
             bool secondUpdateCalled = false;
-            Reader.ComponentUpdated += update => throw new Exception("Update Exception: divide by zero");
-            Reader.ComponentUpdated += update => { secondUpdateCalled = true; };
-            Reader.ComponentUpdated += update => throw new Exception("Update Exception: this statement is false");
+            ReaderPublic.ComponentUpdated += update => throw new Exception("Update Exception: divide by zero");
+            ReaderPublic.ComponentUpdated += update => { secondUpdateCalled = true; };
+            ReaderPublic.ComponentUpdated += update => throw new Exception("Update Exception: this statement is false");
 
             LogAssert.Expect(LogType.Exception, "Exception: Update Exception: divide by zero");
             LogAssert.Expect(LogType.Exception, "Exception: Update Exception: this statement is false");
-            Assert.DoesNotThrow(() => { Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update()); },
+            Assert.DoesNotThrow(() => { ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update()); },
                 "Exceptions that happen within component update callbacks should not propagate to callers.");
             Assert.IsTrue(secondUpdateCalled);
         }
@@ -74,12 +74,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             bool floatFieldUpdated = false;
             float receivedFloatValue = 0;
-            Reader.FloatFieldUpdated += newValue =>
+            ReaderPublic.FloatFieldUpdated += newValue =>
             {
                 floatFieldUpdated = true;
                 receivedFloatValue = newValue;
             };
-            Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update
+            ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update
             {
                 FloatField = new Option<float>(10.0f),
             });
@@ -96,17 +96,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             bool intFieldUpdated = false;
             float receivedFloatValue = 0;
             int receivedIntValue = 0;
-            Reader.FloatFieldUpdated += newValue =>
+            ReaderPublic.FloatFieldUpdated += newValue =>
             {
                 floatFieldUpdated = true;
                 receivedFloatValue = newValue;
             };
-            Reader.IntFieldUpdated += newValue =>
+            ReaderPublic.IntFieldUpdated += newValue =>
             {
                 intFieldUpdated = true;
                 receivedIntValue = newValue;
             };
-            Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update
+            ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update
             {
                 FloatField = new Option<float>(10.0f),
             });
@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 "The update does not contain an int field but the callback for the int field was called. ");
 
             floatFieldUpdated = false;
-            Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update
+            ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update
             {
                 IntField = new Option<int>(20),
             });
@@ -137,17 +137,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             bool intFieldUpdated = false;
             float receivedFloatValue = 0;
             int receivedIntValue = 0;
-            Reader.FloatFieldUpdated += newValue =>
+            ReaderPublic.FloatFieldUpdated += newValue =>
             {
                 floatFieldUpdated = true;
                 receivedFloatValue = newValue;
             };
-            Reader.IntFieldUpdated += newValue =>
+            ReaderPublic.IntFieldUpdated += newValue =>
             {
                 intFieldUpdated = true;
                 receivedIntValue = newValue;
             };
-            Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update
+            ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update
             {
                 IntField = new Option<int>(30),
                 FloatField = new Option<float>(40.0f)
@@ -166,12 +166,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             bool intUpdateCalled = false;
             bool floatUpdateCalled = false;
-            Reader.IntFieldUpdated += newValue => throw new Exception($"Int Update Exception: {newValue}");
-            Reader.IntFieldUpdated += newValue => { intUpdateCalled = true; };
-            Reader.IntFieldUpdated += newValue => throw new Exception($"Int Update Exception 2: {newValue}");
-            Reader.FloatFieldUpdated += newValue => throw new Exception($"Float Update Exception: {newValue:F2}");
-            Reader.FloatFieldUpdated += newValue => { floatUpdateCalled = true; };
-            Reader.FloatFieldUpdated += newValue => throw new Exception($"Float Update Exception 2: {newValue:F2}");
+            ReaderPublic.IntFieldUpdated += newValue => throw new Exception($"Int Update Exception: {newValue}");
+            ReaderPublic.IntFieldUpdated += newValue => { intUpdateCalled = true; };
+            ReaderPublic.IntFieldUpdated += newValue => throw new Exception($"Int Update Exception 2: {newValue}");
+            ReaderPublic.FloatFieldUpdated += newValue => throw new Exception($"Float Update Exception: {newValue:F2}");
+            ReaderPublic.FloatFieldUpdated += newValue => { floatUpdateCalled = true; };
+            ReaderPublic.FloatFieldUpdated += newValue => throw new Exception($"Float Update Exception 2: {newValue:F2}");
 
             LogAssert.Expect(LogType.Exception, "Exception: Int Update Exception: 10");
             LogAssert.Expect(LogType.Exception, "Exception: Int Update Exception 2: 10");
@@ -179,7 +179,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             LogAssert.Expect(LogType.Exception, "Exception: Float Update Exception 2: 20.05");
             Assert.DoesNotThrow(() =>
                 {
-                    Reader.OnComponentUpdate(new SpatialOSBlittableComponent.Update
+                    ReaderInternal.OnComponentUpdate(new SpatialOSBlittableComponent.Update
                     {
                         IntField = new Option<int>(10),
                         FloatField = new Option<float>(20.05f)

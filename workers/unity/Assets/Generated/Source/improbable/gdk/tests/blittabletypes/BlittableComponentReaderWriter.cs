@@ -3,10 +3,12 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests.BlittableTypes
@@ -26,44 +28,74 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         [ComponentId(1001)]
         public interface Reader : IReader<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>
         {
+            event Action<BlittableBool> BoolFieldUpdated;
+            event Action<int> IntFieldUpdated;
+            event Action<long> LongFieldUpdated;
+            event Action<float> FloatFieldUpdated;
+            event Action<double> DoubleFieldUpdated;
         }
 
         [WriterInterface]
         [ComponentId(1001)]
-        public interface Writer 
+        public interface Writer
         {
         }
 
-        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
+        internal class ReaderWriterImpl :
+            BlittableReaderBase<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>, Reader, Writer
         {
-            public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                : base(entity, entityManager, logDispatcher)
             {
             }
-            
-            public Authority Authority => throw new System.NotImplementedException();
 
-            public SpatialOSBlittableComponent Data => throw new System.NotImplementedException();
+            private readonly List<Action<BlittableBool>> boolFieldDelegates = new List<Action<BlittableBool>>();
 
-            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
+            public event Action<BlittableBool> BoolFieldUpdated
             {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+                add => boolFieldDelegates.Add(value);
+                remove => boolFieldDelegates.Remove(value);
             }
 
-            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
+            private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
+
+            public event Action<int> IntFieldUpdated
             {
-                throw new System.NotImplementedException();
+                add => intFieldDelegates.Add(value);
+                remove => intFieldDelegates.Remove(value);
             }
 
-            public void OnComponentUpdate(SpatialOSBlittableComponent.Update update)
+            private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
+
+            public event Action<long> LongFieldUpdated
             {
-                throw new System.NotImplementedException();
+                add => longFieldDelegates.Add(value);
+                remove => longFieldDelegates.Remove(value);
             }
 
-            public event GameObjectDelegates.ComponentUpdated<SpatialOSBlittableComponent.Update> ComponentUpdated
+            private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
+
+            public event Action<float> FloatFieldUpdated
             {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+                add => floatFieldDelegates.Add(value);
+                remove => floatFieldDelegates.Remove(value);
+            }
+
+            private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
+
+            public event Action<double> DoubleFieldUpdated
+            {
+                add => doubleFieldDelegates.Add(value);
+                remove => doubleFieldDelegates.Remove(value);
+            }
+
+            protected override void TriggerFieldCallbacks(SpatialOSBlittableComponent.Update update)
+            {
+                DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
+                DispatchWithErrorHandling(update.IntField, intFieldDelegates);
+                DispatchWithErrorHandling(update.LongField, longFieldDelegates);
+                DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
+                DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
             }
 
             public void OnFirstEventEvent(FirstEventEvent payload)
