@@ -13,7 +13,7 @@ The Unity Game Development Kit (GDK) enables game developers to build multiplaye
 
 * the example game, which both tests and demonstrates the Feature Modules; for use as a starting point or resource for game development.
 
-In the future you will be able to use the Unity GDK to make multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product (currently it's Windows only but later releases will also support MacOS). To find out more see the [Unity GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps). 
+In the future you will be able to use the Unity GDK to make multiplayer games with [Unity](http://unity3d.com) and [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). This is a pre-alpha release of the GDK Core which is the foundation of the product. To find out more see the [Unity GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps). 
 
 You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.
 
@@ -23,7 +23,7 @@ You can [sign up for SpatialOS Unity GDK updates](http://go.pardot.com/l/169082/
 
 ## Recommended use
 
-This pre-alpha version software and its documentation is, by its very nature, rough and ready; every part of it is subject to change, including the APIs, and it isn’t optimised for performance. In addition, the GDK is based on Unity’s experimental [Entity Component System and Job System](https://unity3d.com/unity/features/job-system-ECS). Currently it's Windows only but later releases will also support MacOS.
+This pre-alpha version software and its documentation is, by its very nature, rough and ready; every part of it is subject to change, including the APIs, and it isn’t optimised for performance. In addition, the GDK is based on Unity’s experimental [Entity Component System and Job System](https://unity3d.com/unity/features/job-system-ECS).
 
 This release is for evaluation and feedback only, with limited documentation; we aren’t supporting any game development on the pre-alpha version of the Unity GDK. 
 
@@ -32,7 +32,10 @@ This release is for evaluation and feedback only, with limited documentation; we
 This pre-alpha release is for experienced Unity developers who have some understanding of [SpatialOS concepts](https://docs.improbable.io/reference/13.0/shared/concepts/spatialos), are interested in Unity's [Entity Component System](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md), and want to give early feedback.
 
 ## Installation and setup 
-For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation. 
+For prerequisites, installation and setup, see the [Installation and setup](docs/setup-and-installing.md) documentation.
+
+## Known Issues
+See the [Known issues](docs/known-issues.md) documentation.
 
 ## Questions? 
 Check out our [FAQs](docs/content/faqs/faqs.md) or head over to our discussion forums, listed below.
