@@ -22,14 +22,14 @@ namespace Improbable.Gdk.Core.Components
         }
 
         public abstract ComponentType TargetComponentType { get; }
-        protected readonly ILogDispatcher LogDispatcher;
-        protected readonly WorkerBase worker;
+        protected readonly WorkerBase Worker;
         protected readonly string LoggerName = "Translation";
+        protected readonly ILogDispatcher LogDispatcher;
 
         protected ComponentTranslation(WorkerBase worker)
         {
-            this.worker = worker;
-            LogDispatcher = worker.LogDispatcher;
+            Worker = worker;
+            LogDispatcher = Worker.LogDispatcher;
             translationHandle = GetNextHandle();
             HandleToTranslation.Add(translationHandle, this);
         }
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (worker.EntityManager.HasComponent<T>(entity))
+                if (Worker.EntityManager.HasComponent<T>(entity))
                 {
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
@@ -87,9 +87,9 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (worker.EntityManager.HasComponent<T>(entity))
+                if (Worker.EntityManager.HasComponent<T>(entity))
                 {
-                    pool.PutComponent(worker.EntityManager.GetComponentObject<T>(entity));
+                    pool.PutComponent(Worker.EntityManager.GetComponentObject<T>(entity));
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
             }
@@ -98,7 +98,7 @@ namespace Improbable.Gdk.Core.Components
         public void HandleAuthorityChange<T>(long entityId, Authority authority, ComponentPool<AuthoritiesChanged<T>> pool)
         {
             Entity entity;
-            if (!worker.TryGetEntity(entityId, out entity))
+            if (!Worker.TryGetEntity(entityId, out entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -110,7 +110,7 @@ namespace Improbable.Gdk.Core.Components
             switch (authority)
             {
                 case Authority.Authoritative:
-                    if (!worker.EntityManager.HasComponent<NotAuthoritative<T>>(entity))
+                    if (!Worker.EntityManager.HasComponent<NotAuthoritative<T>>(entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -120,11 +120,11 @@ namespace Improbable.Gdk.Core.Components
                         return;
                     }
 
-                    worker.EntityManager.RemoveComponent<NotAuthoritative<T>>(entity);
-                    worker.EntityManager.AddComponentData(entity, new Authoritative<T>());
+                    Worker.EntityManager.RemoveComponent<NotAuthoritative<T>>(entity);
+                    Worker.EntityManager.AddComponentData(entity, new Authoritative<T>());
                     break;
                 case Authority.AuthorityLossImminent:
-                    if (!worker.EntityManager.HasComponent<Authoritative<T>>(entity))
+                    if (!Worker.EntityManager.HasComponent<Authoritative<T>>(entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -134,10 +134,10 @@ namespace Improbable.Gdk.Core.Components
                         return;
                     }
 
-                    worker.EntityManager.AddComponentData(entity, new AuthorityLossImminent<T>());
+                    Worker.EntityManager.AddComponentData(entity, new AuthorityLossImminent<T>());
                     break;
                 case Authority.NotAuthoritative:
-                    if (!worker.EntityManager.HasComponent<Authoritative<T>>(entity))
+                    if (!Worker.EntityManager.HasComponent<Authoritative<T>>(entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -147,22 +147,22 @@ namespace Improbable.Gdk.Core.Components
                         return;
                     }
 
-                    if (worker.EntityManager.HasComponent<AuthorityLossImminent<T>>(entity))
+                    if (Worker.EntityManager.HasComponent<AuthorityLossImminent<T>>(entity))
                     {
-                        worker.EntityManager.RemoveComponent<AuthorityLossImminent<T>>(entity);
+                        Worker.EntityManager.RemoveComponent<AuthorityLossImminent<T>>(entity);
                     }
 
-                    worker.EntityManager.RemoveComponent<Authoritative<T>>(entity);
-                    worker.EntityManager.AddComponentData(entity, new NotAuthoritative<T>());
+                    Worker.EntityManager.RemoveComponent<Authoritative<T>>(entity);
+                    Worker.EntityManager.AddComponentData(entity, new NotAuthoritative<T>());
                     break;
             }
 
-            var bufferedComponents = worker.EntityManager.HasComponent<AuthoritiesChanged<T>>(entity)
-                ? worker.EntityManager.GetComponentObject<AuthoritiesChanged<T>>(entity)
+            var bufferedComponents = Worker.EntityManager.HasComponent<AuthoritiesChanged<T>>(entity)
+                ? Worker.EntityManager.GetComponentObject<AuthoritiesChanged<T>>(entity)
                 : pool.GetComponent();
             
             bufferedComponents.Buffer.Add(authority);
-            worker.EntityManager.SetComponentObject(entity, bufferedComponents);
+            Worker.EntityManager.SetComponentObject(entity, bufferedComponents);
         }
 
         public void AddComponentsUpdated<T>(Entity entity, T update, ComponentPool<ComponentsUpdated<T>> pool)
@@ -193,9 +193,9 @@ namespace Improbable.Gdk.Core.Components
             ComponentPool<TMessagesReceived> pool)
             where TMessagesReceived : MessagesReceived<TMessage>, new()
         {
-            var messageBuffer = worker.EntityManager.HasComponent<TMessagesReceived>(entity) ? worker.EntityManager.GetComponentObject<TMessagesReceived>(entity) : pool.GetComponent();
+            var messageBuffer = Worker.EntityManager.HasComponent<TMessagesReceived>(entity) ? Worker.EntityManager.GetComponentObject<TMessagesReceived>(entity) : pool.GetComponent();
             messageBuffer.Buffer.Add(message);
-            worker.EntityManager.SetComponentObject(entity, messageBuffer);
+            Worker.EntityManager.SetComponentObject(entity, messageBuffer);
         }
 
         public const string Type = "Type";

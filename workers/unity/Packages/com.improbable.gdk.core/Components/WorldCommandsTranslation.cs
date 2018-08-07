@@ -258,7 +258,7 @@ namespace Improbable.Gdk.Core
 
         public override void AddCommandRequestSender(Entity entity, long EntityId)
         {
-            worker.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
+            Worker.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
         }
 
         public override void ExecuteReplication(Connection connection)
@@ -407,13 +407,9 @@ namespace Improbable.Gdk.Core
         private bool TryGetEntityFromEntityId(long entityId, string responseName, out Entity entity)
         {
             entity = Entity.Null;
-            if (entityId == WorkerBase.WorkerEntityId)
+            if (!Worker.TryGetEntity(entityId, out entity))
             {
-                entity = worker.WorkerEntity;
-            }
-            else if (!worker.TryGetEntity(entityId, out entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
+                Worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, entityId)
                     .WithField("ResponseName", responseName));
