@@ -1,5 +1,6 @@
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,12 +18,14 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void SetWorkerForWorld_sets_worker_for_world_twice()
         {
-            using (var testWorker = new UnityTestWorker("someId", Vector3.zero))
+            World world = new World("test-world");
+            var entityManager = world.GetOrCreateManager<EntityManager>();
+            using (var worker = new UnityTestWorker(entityManager))
             {
-                testWorker.RegisterSystems();
+                WorkerRegistry.SetWorkerForWorld(worker, world);
                 var exception =
-                    Assert.Throws<System.ArgumentException>(() => WorkerRegistry.SetWorkerForWorld(testWorker));
-                Assert.IsTrue(exception.Message.Contains("worker") && exception.Message.Contains("world"));
+                    Assert.Throws<System.ArgumentException>(() => WorkerRegistry.SetWorkerForWorld(worker, world));
+                Assert.IsTrue(exception.Message.Contains("Worker") && exception.Message.Contains("world"));
             }
         }
     }
