@@ -19,9 +19,7 @@ namespace Playground
 
         public const string LoggerName = "Bootstrap";
 
-        private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
-
-        private static ConnectionConfig connectionConfig;
+        private static Dictionary<SpatialOSWorld, ConnectionConfig> WorldToConfig = new Dictionary<SpatialOSWorld, ConnectionConfig>();
 
         public void Awake()
         {
@@ -43,14 +41,12 @@ namespace Playground
                     {
                         continue;
                     }
-
-                    var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
-                        workerConfig.Origin);
-                    Workers.Add(worker);
-                }
-
-                connectionConfig = new ReceptionistConfig();
-                connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
+                    var config = new ReceptionistConfig();
+                    config.UseExternalIp = workerConfigurations.UseExternalIp;
+                    config.WorkerType = workerConfig.Type;
+                    config.WorkerId = $"{config.WorkerType}-{Guid.NewGuid()}";
+                    WorldToConfig.Add(new SpatialOSWorld(config.WorkerId), config);
+                } 
 #endif
             }
             else
@@ -58,29 +54,21 @@ namespace Playground
                 var commandLineArguments = System.Environment.GetCommandLineArgs();
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-                var workerType =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerType,
-                        string.Empty);
-                var workerId =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerId,
-                        string.Empty);
 
-                // because the launcher does not pass in the worker type as an argument
-                var worker = workerType.Equals(string.Empty)
-                    ? WorkerRegistry.CreateWorker<UnityClient>(
-                        workerId: null, // The worker id for the UnityClient will be auto-generated.
-                        origin: new Vector3(0, 0, 0))
-                    : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
-                Workers.Add(worker);
-
-                connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                var connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                if (string.Empty.Equals(connectionConfig.WorkerType))
+                {
+                    // because the launcher does not pass in the worker type...
+                    connectionConfig.WorkerType = nameof(UnityClient);
+                }
+                WorldToConfig.Add(new SpatialOSWorld(connectionConfig.WorkerId), connectionConfig);
             }
 
             if (World.AllWorlds.Count <= 0)
             {
                 throw new InvalidConfigurationException(
-                    "No worlds have been created, due to invalid worker types being specified. Check the config in" +
+                    "No worlds have been created, due to invalid Worker types being specified. Check the config in" +
                     "Improbable -> Configure editor workers.");
             }
 
@@ -92,21 +80,23 @@ namespace Playground
 
         public void Start()
         {
-            foreach (var worker in Workers)
+            foreach (KeyValuePair<SpatialOSWorld, ConnectionConfig> worldConfigPair in WorldToConfig)
             {
-                LoadLevel(worker);
+                LoadLevel(Vector3.zero);
 
                 try
                 {
-                    worker.Connect(connectionConfig);
+                    worldConfigPair.Key.Connect(worldConfigPair.Value, new ForwardingDispatcher(), Vector3.zero);
+
                 }
                 catch (ConnectionFailedException exception)
                 {
-                    worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
+                    new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent(exception.Message)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Reason", exception.Reason));
                 }
             }
+            ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
         }
 
         public static void InitializeWorkerTypes()
@@ -136,13 +126,18 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            // because otherwise the world won't get cleaned up and unity stops working:
+            foreach (var world in WorldToConfig.Keys) {
+                world.Dispose();
+            }
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
 
-        private void LoadLevel(WorkerBase worker)
+        private void LoadLevel(Vector3 origin)
         {
-            Instantiate(Level, worker.Origin, Quaternion.identity);
+            Instantiate(Level, origin, Quaternion.identity);
         }
     }
 }

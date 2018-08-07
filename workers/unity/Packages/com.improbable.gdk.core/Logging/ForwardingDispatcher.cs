@@ -40,6 +40,11 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            if (connection == null)
+            {
+                return;
+            }
+
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
