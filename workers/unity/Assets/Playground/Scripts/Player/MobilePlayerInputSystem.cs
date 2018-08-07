@@ -23,8 +23,8 @@ namespace Playground
         private static GameObject cameraControllerJoystick;
         private static VirtualJoystick movementJoystick;
         private static VirtualJoystick cameraJoystick;
-        private static HashSet<int> oldTouchSet;
-        private static HashSet<int> newTouchSet;
+        private static HashSet<int> oldTouchSet = new HashSet<int>();
+        private static HashSet<int> newTouchSet = new HashSet<int>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -51,9 +51,6 @@ namespace Playground
                 WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
             }
-
-            oldTouchSet = new HashSet<int>();
-            newTouchSet = new HashSet<int>();
         }
 
         protected override void OnUpdate()
@@ -66,6 +63,7 @@ namespace Playground
                 input.Vertical = movementJoystick.InputDirection.y;
                 input.RightStickHorizontal = cameraJoystick.InputDirection.x;
                 input.RightStickVertical = cameraJoystick.InputDirection.y;
+                // Camera zoom and running are not implemented for mobile
                 // input.CameraDistance = Input.GetAxis("Mouse ScrollWheel");
                 // input.Running = Input.GetKey(KeyCode.LeftShift);
                 input.ShootSmall = touches == 1;
@@ -94,9 +92,10 @@ namespace Playground
             foreach (var touch in Input.touches)
             {
                 if (!(RectTransformUtility.RectangleContainsScreenPoint(
-                        controllerJoystick.GetComponent<Image>().rectTransform, touch.position, null) ||
-                    RectTransformUtility.RectangleContainsScreenPoint(
-                        cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) && !oldTouchSet.Contains(touch.fingerId))
+                            controllerJoystick.GetComponent<Image>().rectTransform, touch.position, null) ||
+                        RectTransformUtility.RectangleContainsScreenPoint(
+                            cameraControllerJoystick.GetComponent<Image>().rectTransform, touch.position, null)) &&
+                    !oldTouchSet.Contains(touch.fingerId))
                 {
                     count++;
                 }
