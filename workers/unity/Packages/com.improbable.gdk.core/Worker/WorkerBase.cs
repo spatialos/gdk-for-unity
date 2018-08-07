@@ -11,131 +11,86 @@ namespace Improbable.Gdk.Core
 {
     public abstract class WorkerBase : IDisposable
     {
-        public Connection Connection { get; private set; }
-
-        public Vector3 Origin { get; }
-
-        public string WorkerId { get; }
-
-        public abstract string GetWorkerType { get; }
-
-        public bool UseDynamicId { get; protected set; }
+        public const long WorkerEntityId = -1337;
 
         public readonly EntityManager EntityManager;
-        public const long WorkerEntityId = -1337;
-        public readonly Entity WorkerEntity;
-
+        public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
 
-        public readonly Type[] RequiredSpatialSystems = new[]
+        public readonly List<Type> RequiredSpatialSystems = new List<Type>
         {
             typeof(SpatialOSReceiveSystem),
             typeof(SpatialOSSendSystem),
             typeof(CleanReactiveComponentsSystem)
         };
 
-        private readonly Dictionary<long, Entity> entityMapping = new Dictionary<long, Entity>();
+        internal readonly Dictionary<long, Entity> EntityMapping = new Dictionary<long, Entity>();
 
-        protected WorkerBase(string workerId, ConnectionConfig config, Vector3 origin, EntityManager entityManager)
+        protected WorkerBase(ConnectionConfig config, EntityManager entityManager, ILogDispatcher logDispatcher, Vector3 origin)
         {
             FindTranslationUnits();
-            // TODO addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
 
-            LogDispatcher = new ForwardingDispatcher();
             EntityManager = entityManager;
-            WorkerId = workerId;
-            if (config is ReceptionistConfig)
+            LogDispatcher = logDispatcher;
+            Connection = Connect(config);
+            if (logDispatcher is ForwardingDispatcher dispatcher)
             {
-                if (UseDynamicId)
-                {
-                    WorkerId = $"{GetWorkerType}-{Guid.NewGuid()}";
-                }
-
-                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig)config, GetWorkerType,
-                    WorkerId);
+                dispatcher.SetConnection(Connection);
             }
-            else if (config is LocatorConfig)
-            {
-                Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig)config, GetWorkerType);
-            }
-            else
-            {
-                throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
-                    "ReceptionistConfig and LocatorConfig are supported.");
-            }
-
-            WorkerEntity = entityManager.CreateEntity(typeof(WorkerEntityTag));
-
-            Application.quitting += () =>
-            {
-                ConnectionUtility.Disconnect(Connection);
-                Connection = null;
-            };
-
-            entityManager.AddComponent(WorkerEntity, typeof(IsConnected));
-            entityManager.AddComponent(WorkerEntity, typeof(OnConnected));
-
-            Origin = origin;
-        }
-
-        public void Dispose()
-        {
-            ConnectionUtility.Disconnect(Connection);
-            EntityManager.DestroyEntity(WorkerEntity);
-            // todo destroy all spatial entities
-            foreach (var translation in TranslationUnits.Values)
-            {
-                translation.Dispose();
-            }
-        }
-
-        internal void CreateEntity(long entityId)
-        {
-            if (entityMapping.ContainsKey(entityId))
-            {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to add an entity but there is already an entity associated with that EntityId.")
-                    .WithField(LoggingUtils.LoggerName, GetWorkerType)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
-            }
-
-            var entity = EntityManager.CreateEntity();
-            EntityManager.AddComponentData(entity, new SpatialEntityId
-            {
-                EntityId = entityId
-            });
-            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
-
-            // TODO addAllCommandRequestSenders(entity, entityId);
-            entityMapping.Add(entityId, entity);
+            var workerEntity = entityManager.CreateEntity(
+                typeof(WorkerEntityTag),
+                typeof(IsConnected),
+                typeof(OnConnected)
+                );
+            EntityMapping.Add(WorkerEntityId, workerEntity);
+            AddAllCommandRequestSenders(workerEntity, WorkerEntityId);
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)
         {
-            return entityMapping.TryGetValue(entityId, out entity);
+            return EntityMapping.TryGetValue(entityId, out entity);
         }
 
-        internal void RemoveEntity(long entityId)
+        public void Dispose()
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            foreach (var translation in TranslationUnits.Values)
             {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
-                    .WithField(LoggingUtils.LoggerName, GetWorkerType)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
+                translation.Dispose();
+            }
+            foreach (var entity in EntityMapping.Values)
+            {
+                EntityManager.DestroyEntity(entity);
+            }
+            EntityMapping.Clear();
+            ConnectionUtility.Disconnect(Connection);
+            Connection.Dispose();
+        }
+
+        private static Connection Connect(ConnectionConfig config)
+        {
+            switch (config)
+            {
+                case ReceptionistConfig receptionistConfig:
+                    if (string.IsNullOrEmpty(config.WorkerId))
+                    {
+                        config.WorkerId = $"{config.WorkerType}-{Guid.NewGuid()}";
+                    }
+                    return ConnectionUtility.ConnectToSpatial(receptionistConfig);
+                case LocatorConfig locatorConfig:
+                    return ConnectionUtility.LocatorConnectToSpatial(locatorConfig);
             }
 
-            EntityManager.DestroyEntity(entityMapping[entityId]);
-            entityMapping.Remove(entityId);
+            throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
+                "ReceptionistConfig and LocatorConfig are supported.");
         }
 
-        // section of stuff that will hopefully be removed soonish
+        // section of stuff that will be removed soon.
+        // leaving it here until Jamie is done with his refactoring :P
 
         public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
             new Dictionary<int, ComponentTranslation>();
 
-        private Action<Entity, long> addAllCommandRequestSenders;
+        public Action<Entity, long> AddAllCommandRequestSenders;
 
         private void FindTranslationUnits()
         {
@@ -147,7 +102,7 @@ namespace Improbable.Gdk.Core
                 var translator = (ComponentTranslation)Activator.CreateInstance(translationType, this);
                 TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
 
-                //TODO addAllCommandRequestSenders += translator.AddCommandRequestSender;
+                AddAllCommandRequestSenders += translator.AddCommandRequestSender;
             }
         }
     }
