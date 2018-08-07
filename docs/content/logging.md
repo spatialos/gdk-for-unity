@@ -68,3 +68,6 @@ public class UnityClient : WorkerBase
     }
 }
 ```
+
+-----
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
