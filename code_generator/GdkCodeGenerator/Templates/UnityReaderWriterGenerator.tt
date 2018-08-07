@@ -46,7 +46,11 @@ namespace <#= qualifiedNamespace #>
 
         [WriterInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-        public interface Writer
+<# if (fieldDetailsList.Count > 0) { #>
+        public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+<# } else { #>
+        public interface Writer : IWriter<<#= componentDetails.TypeName #>>
+<# } #>
         {
         }
 
@@ -80,6 +84,19 @@ namespace <#= qualifiedNamespace #>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
+<# } #>
+            }
+<# if (componentDetails.IsBlittable) { #>
+            protected override void UpdateData(ref <#= componentDetails.TypeName#> data, <#= componentDetails.TypeName#>.Update update)
+<# } else { #>
+            protected override void UpdateData(<#= componentDetails.TypeName#> data, <#= componentDetails.TypeName#>.Update update)
+<# } #>
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
+                {
+                    data.<#= fieldDetails.PascalCaseName #> = update.<#= fieldDetails.PascalCaseName #>.Value;
+                }
 <# } #>
             }
 <# } #>

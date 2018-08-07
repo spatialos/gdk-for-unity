@@ -41,7 +41,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
         [WriterInterface]
         [ComponentId(1002)]
-        public interface Writer
+        public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
         }
 
@@ -136,6 +136,45 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 DispatchWithErrorHandling(update.OptionalField, optionalFieldDelegates);
                 DispatchWithErrorHandling(update.ListField, listFieldDelegates);
                 DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
+            }
+            protected override void UpdateData(SpatialOSNonBlittableComponent data, SpatialOSNonBlittableComponent.Update update)
+            {
+                if (update.BoolField.HasValue)
+                {
+                    data.BoolField = update.BoolField.Value;
+                }
+                if (update.IntField.HasValue)
+                {
+                    data.IntField = update.IntField.Value;
+                }
+                if (update.LongField.HasValue)
+                {
+                    data.LongField = update.LongField.Value;
+                }
+                if (update.FloatField.HasValue)
+                {
+                    data.FloatField = update.FloatField.Value;
+                }
+                if (update.DoubleField.HasValue)
+                {
+                    data.DoubleField = update.DoubleField.Value;
+                }
+                if (update.StringField.HasValue)
+                {
+                    data.StringField = update.StringField.Value;
+                }
+                if (update.OptionalField.HasValue)
+                {
+                    data.OptionalField = update.OptionalField.Value;
+                }
+                if (update.ListField.HasValue)
+                {
+                    data.ListField = update.ListField.Value;
+                }
+                if (update.MapField.HasValue)
+                {
+                    data.MapField = update.MapField.Value;
+                }
             }
 
             public void OnFirstEventEvent(FirstEventEvent payload)

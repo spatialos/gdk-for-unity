@@ -33,7 +33,7 @@ namespace Generated.Improbable.Gdk.Tests
 
         [WriterInterface]
         [ComponentId(20152)]
-        public interface Writer
+        public interface Writer : IWriter<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
         {
         }
 
@@ -56,6 +56,13 @@ namespace Generated.Improbable.Gdk.Tests
             protected override void TriggerFieldCallbacks(SpatialOSNestedComponent.Update update)
             {
                 DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
+            }
+            protected override void UpdateData(ref SpatialOSNestedComponent data, SpatialOSNestedComponent.Update update)
+            {
+                if (update.NestedType.HasValue)
+                {
+                    data.NestedType = update.NestedType.Value;
+                }
             }
         }
     }

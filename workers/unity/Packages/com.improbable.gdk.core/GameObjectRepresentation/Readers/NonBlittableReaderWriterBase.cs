@@ -28,5 +28,21 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
             }
         }
+
+        public override void Send(TComponentUpdate update)
+        {
+            try
+            {
+                var data = EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
+                UpdateData(data, update);
+                EntityManager.SetComponentObject(Entity, data);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        protected abstract void UpdateData(TSpatialComponentData data, TComponentUpdate update);
     }
 }

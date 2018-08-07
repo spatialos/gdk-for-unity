@@ -48,7 +48,7 @@ namespace Generated.Improbable.Gdk.Tests
 
         [WriterInterface]
         [ComponentId(197715)]
-        public interface Writer
+        public interface Writer : IWriter<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>
         {
         }
 
@@ -206,6 +206,73 @@ namespace Generated.Improbable.Gdk.Tests
                 DispatchWithErrorHandling(update.Field15, field15Delegates);
                 DispatchWithErrorHandling(update.Field16, field16Delegates);
                 DispatchWithErrorHandling(update.Field17, field17Delegates);
+            }
+            protected override void UpdateData(SpatialOSExhaustiveSingular data, SpatialOSExhaustiveSingular.Update update)
+            {
+                if (update.Field1.HasValue)
+                {
+                    data.Field1 = update.Field1.Value;
+                }
+                if (update.Field2.HasValue)
+                {
+                    data.Field2 = update.Field2.Value;
+                }
+                if (update.Field4.HasValue)
+                {
+                    data.Field4 = update.Field4.Value;
+                }
+                if (update.Field5.HasValue)
+                {
+                    data.Field5 = update.Field5.Value;
+                }
+                if (update.Field6.HasValue)
+                {
+                    data.Field6 = update.Field6.Value;
+                }
+                if (update.Field7.HasValue)
+                {
+                    data.Field7 = update.Field7.Value;
+                }
+                if (update.Field8.HasValue)
+                {
+                    data.Field8 = update.Field8.Value;
+                }
+                if (update.Field9.HasValue)
+                {
+                    data.Field9 = update.Field9.Value;
+                }
+                if (update.Field10.HasValue)
+                {
+                    data.Field10 = update.Field10.Value;
+                }
+                if (update.Field11.HasValue)
+                {
+                    data.Field11 = update.Field11.Value;
+                }
+                if (update.Field12.HasValue)
+                {
+                    data.Field12 = update.Field12.Value;
+                }
+                if (update.Field13.HasValue)
+                {
+                    data.Field13 = update.Field13.Value;
+                }
+                if (update.Field14.HasValue)
+                {
+                    data.Field14 = update.Field14.Value;
+                }
+                if (update.Field15.HasValue)
+                {
+                    data.Field15 = update.Field15.Value;
+                }
+                if (update.Field16.HasValue)
+                {
+                    data.Field16 = update.Field16.Value;
+                }
+                if (update.Field17.HasValue)
+                {
+                    data.Field17 = update.Field17.Value;
+                }
             }
         }
     }

@@ -9,8 +9,7 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
     internal abstract class ReaderWriterBase<TSpatialComponentData>
-        : IReader<TSpatialComponentData>,
-            IReaderWriterInternal
+        : IWriter<TSpatialComponentData>, IReaderWriterInternal
         where TSpatialComponentData : ISpatialComponentData
     {
         protected readonly Entity Entity;
@@ -103,7 +102,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
     }
 
     internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
-        : ReaderWriterBase<TSpatialComponentData>, IReader<TSpatialComponentData, TComponentUpdate>
+        : ReaderWriterBase<TSpatialComponentData>, IWriter<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
@@ -148,5 +147,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         protected virtual void TriggerFieldCallbacks(TComponentUpdate update)
         {
         }
+
+        public abstract void Send(TComponentUpdate update);
     }
 }
