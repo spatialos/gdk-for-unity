@@ -5,7 +5,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class HandlePlayerHeartbeatRequestSystem : ComponentSystem
+    public class HandlePlayerHeartbeatRequestSystem : SpatialOSSystem
     {
         public struct Data
         {

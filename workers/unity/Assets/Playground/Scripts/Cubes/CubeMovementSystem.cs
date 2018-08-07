@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
-    internal class CubeMovementSystem : ComponentSystem
+    internal class CubeMovementSystem : SpatialOSSystem
     {
         public struct Data
         {

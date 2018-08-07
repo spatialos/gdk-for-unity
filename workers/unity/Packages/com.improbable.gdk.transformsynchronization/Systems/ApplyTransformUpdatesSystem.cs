@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class ApplyTransformUpdatesSystem : ComponentSystem
+    public class ApplyTransformUpdatesSystem : SpatialOSSystem
     {
         public struct TransformUpdateData
         {

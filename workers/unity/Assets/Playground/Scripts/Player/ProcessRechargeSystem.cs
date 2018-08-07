@@ -10,7 +10,7 @@ namespace Playground
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class ProcessRechargeSystem : ComponentSystem
+    public class ProcessRechargeSystem : SpatialOSSystem
     {
         private struct Data
         {

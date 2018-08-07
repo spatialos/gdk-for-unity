@@ -8,7 +8,7 @@ using Unity.Entities;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class TriggerColorChangeSystem : ComponentSystem
+    public class TriggerColorChangeSystem : SpatialOSSystem
     {
         public struct CubeColorData
         {

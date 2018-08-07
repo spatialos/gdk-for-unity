@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
-    public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData
+    public abstract class CustomSpatialOSSendSystem<T> : SpatialOSSystem where T : ISpatialComponentData
     {
         private const string LoggerName = "CustomSpatialOSSendSystem";
 
@@ -13,18 +13,14 @@ namespace Improbable.Gdk.Core
 
         private SpatialOSSendSystem spatialOSSendSystem;
 
-        protected WorkerBase worker;
-
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
             if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
+                Worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("ComponentType", typeof(T)));
             }

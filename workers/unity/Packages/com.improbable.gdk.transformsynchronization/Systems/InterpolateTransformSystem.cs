@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
-    public class InterpolateTransformSystem : ComponentSystem
+    public class InterpolateTransformSystem : SpatialOSSystem
     {
         private const uint TargetTickOffset = 2;
         private const uint MaxBufferSize = 4;

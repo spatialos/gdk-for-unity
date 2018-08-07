@@ -8,7 +8,7 @@ using Quaternion = Generated.Improbable.Transform.Quaternion;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
-    public class LocalTransformSyncSystem : ComponentSystem
+    public class LocalTransformSyncSystem : SpatialOSSystem
     {
         public struct TransformData
         {

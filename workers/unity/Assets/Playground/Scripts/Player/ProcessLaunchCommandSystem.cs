@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class ProcessLaunchCommandSystem : ComponentSystem
+    public class ProcessLaunchCommandSystem : SpatialOSSystem
     {
         private const float RechargeTime = 2.0f;
 

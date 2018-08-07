@@ -7,7 +7,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class HandleCreatePlayerRequestSystem : ComponentSystem
+    public class HandleCreatePlayerRequestSystem : SpatialOSSystem
     {
         public struct Data
         {

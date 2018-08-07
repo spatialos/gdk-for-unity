@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class InitCameraSystem : ComponentSystem
+    public class InitCameraSystem : SpatialOSSystem
     {
         public struct Data
         {
