@@ -10,4 +10,4 @@ Known issue = any major user-facing bug or lack of user-facing feature that:
 
 | Issue | Date added | Ticket | Workaround? | Done? |
 |-------|-------------------|--------|-------------|-------|
-| The Unity editor randomly crashes on MacOS when using ECS preview packages. | 2018-07-25 | [1064084](https://fogbugz.unity3d.com/default.asp?1064084_q5lp4g8hn0vhp706) | Simply retry. | No|
+| The Unity editor randomly crashes on MacOS when using ECS preview packages. | 2018-07-25 | [1064084](https://fogbugz.unity3d.com/default.asp?1065860_s1mjqfrksmi5a3d9) | Simply retry. | No|
