@@ -7,6 +7,7 @@ TagManager:
   - Cube
   - ConnectionPanel
   - CameraJoystick
+  - MovementJoystick
   layers:
   - Default
   - TransparentFX

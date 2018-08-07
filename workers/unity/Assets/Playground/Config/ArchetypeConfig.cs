@@ -24,7 +24,7 @@ namespace Playground
                     UnityClient.WorkerType,
                     new Dictionary<string, ComponentType[]>()
                     {
-                        { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
+                        { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform), typeof(LocalInput) } },
                         { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }
                     }
                 }

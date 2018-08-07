@@ -43,8 +43,18 @@ namespace Playground
             // Client test event systems
             World.GetOrCreateManager<ProcessColorChangeSystem>();
 
+            if (Application.isMobilePlatform)
+            {
+                World.GetOrCreateManager<MobilePlayerInputSystem>();
+            }
+            else
+            {
+                World.GetOrCreateManager<PlayerInputSystem>();
+            }
+
             // Client player movement systems
             World.GetOrCreateManager<LocalPlayerInputSync>();
+
             World.GetOrCreateManager<InitCameraSystem>();
             World.GetOrCreateManager<FollowCameraSystem>();
 

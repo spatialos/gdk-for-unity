@@ -1,5 +1,3 @@
-using System;
-using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -30,11 +28,10 @@ namespace Playground
         // Origin offset to make camera orbit character's head rather than their feet.
         private static readonly Vector3 TargetOffset = new Vector3(0, 1, 0);
 
-        public static VirtualJoystick VirtualJoystick;
-
         private struct Data
         {
             public readonly int Length;
+            [ReadOnly] public ComponentDataArray<LocalInput> LocalInput;
             public ComponentDataArray<CameraInput> CameraInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             [ReadOnly] public ComponentArray<Rigidbody> RigidBody;
@@ -42,32 +39,11 @@ namespace Playground
 
         [Inject] private Data data;
 
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-            try
-            {
-                GameObject cameraJoystick = GameObject.FindGameObjectWithTag("CameraJoystick");
-                VirtualJoystick = cameraJoystick.GetComponent<VirtualJoystick>();
-#if !(UNITY_ANDROID || UNITY_IOS)
-                cameraJoystick.SetActive(false);
-#endif
-            }
-            catch (NullReferenceException)
-            {
-                WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
-#if (UNITY_ANDROID || UNITY_IOS)
-                Enabled = false;
-#endif
-            }
-        }
-
         protected override void OnUpdate()
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var input = UpdateCameraInput(data.CameraInput[i]);
+                var input = UpdateCameraInput(data.CameraInput[i], data.LocalInput[i]);
                 var transform = UpdateCameraTransform(input, data.RigidBody[i].position);
 
                 UpdateCamera(transform);
@@ -77,16 +53,11 @@ namespace Playground
             }
         }
 
-        private static CameraInput UpdateCameraInput(CameraInput input)
+        private static CameraInput UpdateCameraInput(CameraInput cameraInput, LocalInput localInput)
         {
-#if UNITY_ANDROID || UNITY_IOS
-            var x = input.X + VirtualJoystick.InputDirection.x;
-            var y = input.Y - VirtualJoystick.InputDirection.y;
-#else
-            var x = input.X + Input.GetAxis("Mouse X");
-            var y = input.Y - Input.GetAxis("Mouse Y");
-#endif
-            var distance = input.Distance + Input.GetAxis("Mouse ScrollWheel") * ZoomScale;
+            var x = cameraInput.X + localInput.RightStick.x;
+            var y = cameraInput.Y - localInput.RightStick.y;
+            var distance = cameraInput.Distance + localInput.CameraDistance * ZoomScale;
 
             x %= 360;
             y = Mathf.Clamp(y, MinYAngle, MaxYAngle);
