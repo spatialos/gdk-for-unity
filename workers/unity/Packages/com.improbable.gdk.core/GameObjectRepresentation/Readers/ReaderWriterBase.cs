@@ -8,7 +8,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    internal abstract class ReaderBase<TSpatialComponentData>
+    internal abstract class ReaderWriterBase<TSpatialComponentData>
         : IReader<TSpatialComponentData>,
             IReaderWriterInternal
         where TSpatialComponentData : ISpatialComponentData
@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core.MonoBehaviours
 
         protected readonly ILogDispatcher logDispatcher;
 
-        protected ReaderBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
@@ -102,12 +102,12 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         }
     }
 
-    internal abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
-        : ReaderBase<TSpatialComponentData>, IReader<TSpatialComponentData, TComponentUpdate>
+    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderWriterBase<TSpatialComponentData>, IReader<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
-        protected ReaderBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             : base(entity, entityManager, logDispatcher)
         {
         }

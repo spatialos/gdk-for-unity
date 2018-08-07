@@ -5,12 +5,12 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    internal abstract class BlittableReaderBase<TSpatialComponentData, TComponentUpdate>
-        : ReaderBase<TSpatialComponentData, TComponentUpdate>
+    internal abstract class BlittableReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
-        protected BlittableReaderBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(entity, entityManager, logDispatcher)
+        protected BlittableReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(entity, entityManager, logDispatcher)
         {
         }
 
