@@ -177,14 +177,50 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
+            // TODO move into readerwriterbase
+            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
+            {
+                foreach (var callback in callbacks)
+                {
+                    try
+                    {
+                        callback(payload);
+                    }
+                    catch (Exception e)
+                    {
+                        // Log the exception but do not rethrow it, as other delegates should still get called
+                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        Debug.LogException(e);
+                    }
+                }
+            }
+
+            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new List<Action<FirstEventEvent>>();
+
+            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
+            public event Action<FirstEventEvent> FirstEventTriggered
+            {
+                add => firstEventDelegates.Add(value);
+                remove => firstEventDelegates.Remove(value);
+            }
+
             public void OnFirstEventEvent(FirstEventEvent payload)
             {
-                throw new System.NotImplementedException();
+                DispatchEventWithErrorHandling(payload, firstEventDelegates);
+            }
+
+            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new List<Action<SecondEventEvent>>();
+
+            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
+            public event Action<SecondEventEvent> SecondEventTriggered
+            {
+                add => secondEventDelegates.Add(value);
+                remove => secondEventDelegates.Remove(value);
             }
 
             public void OnSecondEventEvent(SecondEventEvent payload)
             {
-                throw new System.NotImplementedException();
+                DispatchEventWithErrorHandling(payload, secondEventDelegates);
             }
 
             public void OnFirstCommandCommandRequest(FirstCommand.Request request)

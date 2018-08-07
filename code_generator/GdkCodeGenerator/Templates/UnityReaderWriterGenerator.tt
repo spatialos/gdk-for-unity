@@ -100,11 +100,41 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 <# } #>
-<# foreach (var eventDetails in eventDetailsList) { #>
 
-            public void On<#= eventDetails.EventName #>Event(<#= eventDetails.EventName #>Event payload)
+            // TODO move into readerwriterbase
+            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
             {
-                throw new System.NotImplementedException();
+                foreach (var callback in callbacks)
+                {
+                    try
+                    {
+                        callback(payload);
+                    }
+                    catch (Exception e)
+                    {
+                        // Log the exception but do not rethrow it, as other delegates should still get called
+                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        Debug.LogException(e);
+                    }
+                }
+            }
+<# foreach (var eventDetails in eventDetailsList) {
+            var delegateList = eventDetails.CamelCaseTypeName + "Delegates";
+            var eventType = eventDetails.EventName + "Event";
+#>
+
+            private readonly List<Action<<#= eventType #>>> <#= delegateList #> = new List<Action<<#= eventType #>>>();
+
+            // TODO check naming, should it be Xtriggered, or OnXEvent or OnX?
+            public event Action<<#= eventType #>> <#= eventDetails.EventName #>Triggered
+            {
+                add => <#= delegateList #>.Add(value);
+                remove => <#= delegateList #>.Remove(value);
+            }
+
+            public void On<#= eventType #>(<#= eventType #> payload)
+            {
+                DispatchEventWithErrorHandling(payload, <#= delegateList #>);
             }
 <# } #>
 <# foreach (var command in commandDetailsList) { #>

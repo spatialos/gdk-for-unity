@@ -64,6 +64,24 @@ namespace Generated.Improbable.Gdk.Tests
                     data.NestedType = update.NestedType.Value;
                 }
             }
+
+            // TODO move into readerwriterbase
+            private void DispatchEventWithErrorHandling<T>(T payload, IEnumerable<Action<T>> callbacks)
+            {
+                foreach (var callback in callbacks)
+                {
+                    try
+                    {
+                        callback(payload);
+                    }
+                    catch (Exception e)
+                    {
+                        // Log the exception but do not rethrow it, as other delegates should still get called
+                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        Debug.LogException(e);
+                    }
+                }
+            }
         }
     }
 }
