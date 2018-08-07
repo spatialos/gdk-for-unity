@@ -138,15 +138,5 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         protected virtual void TriggerFieldCallbacks(TComponentUpdate update)
         {
         }
-
-        public void OnEvent(int eventIndex)
-        {
-            // TODO
-        }
-
-        public void OnCommandRequest(int commandIndex)
-        {
-            // TODO
-        }
     }
 }
