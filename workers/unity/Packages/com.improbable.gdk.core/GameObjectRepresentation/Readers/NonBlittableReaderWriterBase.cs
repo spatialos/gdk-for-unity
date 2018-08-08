@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
                 catch (Exception e)
                 {
-                    throw new ReaderDataGetFailedException(e);
+                    throw new ReaderDataGetFailedException(e, Entity.Index);
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
             catch (Exception e)
             {
-                throw new WriterDataUpdateFailedException(e);
+                throw new WriterDataUpdateFailedException(e, Entity.Index);
             }
         }
 
