@@ -89,7 +89,7 @@ namespace <#= qualifiedNamespace #>
                     (component) => component.Buffer.Clear());
 <# } #>
 
-            public Translation(WorkerBase worker) : base(worker)
+            public Translation(WorkerBase Worker) : base(Worker)
             {
             }
 
@@ -109,14 +109,14 @@ namespace <#= qualifiedNamespace #>
             public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
             {
 <# if(commandDetailsList.Count > 0) { #>
-                worker.EntityManager.AddComponentData(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                Worker.EntityManager.AddComponentData(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
 <# } #>
             }
 
             public void OnAddComponent(AddComponentOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -135,19 +135,19 @@ namespace <#= qualifiedNamespace #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
 
 <# if (componentDetails.IsBlittable) { #>
-                worker.EntityManager.AddComponentData(entity, <#= componentDetails.CamelCaseTypeName#>);
+                Worker.EntityManager.AddComponentData(entity, <#= componentDetails.CamelCaseTypeName#>);
 <# } else { #>
-                 worker.EntityManager.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
+                 Worker.EntityManager.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
 <# } #>
-                worker.EntityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+                Worker.EntityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
 
-                if (worker.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                if (Worker.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
+                    Worker.EntityManager.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                else if (!Worker.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                    Worker.EntityManager.AddComponentData(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace <#= qualifiedNamespace #>
             public void OnComponentUpdate(ComponentUpdateOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -172,16 +172,16 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# if (componentDetails.IsBlittable) { #>
-                var componentData = worker.EntityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
+                var componentData = Worker.EntityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
 <# } else { #>
-                var componentData = worker.EntityManager.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+                var componentData = Worker.EntityManager.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
 <# } #>
 <# if(fieldDetailsList.Count > 0 || eventDetailsList.Count > 0) { #>
                 var update = op.Update.Get();
 <# } #>
 
 <# if(fieldDetailsList.Count > 0) { #>
-                if (worker.EntityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
+                if (Worker.EntityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
@@ -207,16 +207,16 @@ namespace <#= qualifiedNamespace #>
                 componentData.DirtyBit = false;
 
 <# if (componentDetails.IsBlittable) { #>
-                if (!worker.EntityManager.HasComponent<<#= componentDetails.TypeName #>>(entity))
+                if (!Worker.EntityManager.HasComponent<<#= componentDetails.TypeName #>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, componentData);
+                    Worker.EntityManager.AddComponentData(entity, componentData);
                 }
                 else
                 {
-                    worker.EntityManager.SetComponentData(entity, componentData);
+                    Worker.EntityManager.SetComponentData(entity, componentData);
                 }
 <# } else { #>
-                 worker.EntityManager.SetComponentObject(entity, componentData);
+                 Worker.EntityManager.SetComponentObject(entity, componentData);
 <# } #>
 
 <# if (fieldDetailsList.Count > 0) { #>
@@ -240,7 +240,7 @@ namespace <#= qualifiedNamespace #>
             public void OnRemoveComponent(RemoveComponentOp op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -249,15 +249,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                worker.EntityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+                Worker.EntityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
-                if (worker.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                if (Worker.EntityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                    Worker.EntityManager.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                else if (!Worker.EntityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                    Worker.EntityManager.AddComponentData(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -273,7 +273,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var entityId = op.EntityId.Id;
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(entityId, out entity))
+                if (!Worker.TryGetEntity(entityId, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -287,14 +287,14 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
 <# } #>
-                    worker.EntityManager.AddComponentData(entity, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                    Worker.EntityManager.AddComponentData(entity, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events.Remove(entityId);
 <# } #>
-                    worker.EntityManager.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entity);
+                    Worker.EntityManager.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entity);
                 }
 <# } #>
                 HandleAuthorityChange(entityId, op.Authority, AuthsPool);
@@ -314,7 +314,7 @@ namespace <#= qualifiedNamespace #>
                     var componentData = componentDataArray[i];
                     var entityId = spatialEntityIdData[i].EntityId;
                     Unity.Entities.Entity entity;
-                    if (!worker.TryGetEntity(entityId, out entity))
+                    if (!Worker.TryGetEntity(entityId, out entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during replication.")
                             .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -346,7 +346,7 @@ namespace <#= qualifiedNamespace #>
 <# if (componentDetails.IsBlittable) { #>
                         componentDataArray[i] = componentData;
 <# } else { #>
-                        worker.EntityManager.SetComponentObject(entity, componentData);
+                        Worker.EntityManager.SetComponentObject(entity, componentData);
 <# } #>
 
 <# foreach(var eventDetails in eventDetailsList) { #>
@@ -383,7 +383,7 @@ namespace <#= qualifiedNamespace #>
             public void OnCommandRequest<#= commandDetails.CommandName #>(CommandRequestOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -414,12 +414,7 @@ namespace <#= qualifiedNamespace #>
 
                 RequestIdToRequestContext.Remove(requestId);
 
-                Unity.Entities.Entity entity;
-                if (requestContext.EntityId == WorkerBase.WorkerEntityId)
-                {
-                    entity = worker.WorkerEntity;
-                }
-                else if (!worker.TryGetEntity(requestContext.EntityId, out entity))
+                if (!Worker.TryGetEntity(requestContext.EntityId, out var entity))
                 {
                     return;
                 }

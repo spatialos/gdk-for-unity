@@ -1,3 +1,4 @@
+using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Playground
     ///     ScrollWheel: controls the orbit radius, moving the camera closer to or
     ///     farther from the player.
     /// </remarks>
-    public class FollowCameraSystem : ComponentSystem
+    public class FollowCameraSystem : SpatialOSSystem
     {
         // The min/max distance from camera to the player.
         private const float MinCameraDistance = 2.0f;

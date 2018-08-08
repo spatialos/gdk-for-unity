@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
-    public class InterpolateTransformSystem : ComponentSystem
+    public class InterpolateTransformSystem : SpatialOSSystem
     {
         private const uint TargetTickOffset = 2;
         private const uint MaxBufferSize = 4;
@@ -31,8 +31,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            origin = SpatialWorld.Origin;
 
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }

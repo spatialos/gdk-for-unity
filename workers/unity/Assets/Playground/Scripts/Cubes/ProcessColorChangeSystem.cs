@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class ProcessColorChangeSystem : ComponentSystem
+    public class ProcessColorChangeSystem : SpatialOSSystem
     {
         private static readonly Dictionary<Generated.Playground.Color, UnityEngine.Color> ColorMapping =
             new Dictionary<Generated.Playground.Color, UnityEngine.Color>

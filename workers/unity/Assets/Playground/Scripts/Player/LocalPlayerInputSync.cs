@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    internal class LocalPlayerInputSync : ComponentSystem
+    internal class LocalPlayerInputSync : SpatialOSSystem
     {
         public struct PlayerInputData
         {

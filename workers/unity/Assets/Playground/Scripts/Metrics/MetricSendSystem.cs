@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class MetricSendSystem : ComponentSystem
+    public class MetricSendSystem : SpatialOSSystem
     {
         private WorkerBase worker;
 

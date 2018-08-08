@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class EntityGameObjectLinker
+    public class EntityGameObjectLinker : IDisposable
     {
         private readonly World world;
         private readonly ILogDispatcher logDispatcher;
@@ -41,6 +41,11 @@ namespace Improbable.Gdk.Core
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
             spatialOSComponent.World = world;
+        }
+
+        public void Dispose()
+        {
+            gameObjectComponentTypes.Clear();
         }
     }
 }

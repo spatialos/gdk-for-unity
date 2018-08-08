@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class InitUISystem : ComponentSystem
+    public class InitUISystem : SpatialOSSystem
     {
         public struct Data
         {

@@ -14,7 +14,7 @@ namespace Playground
     ///     Adds a list of components to newly spawned entities according to an archetype definition.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
-    public class ArchetypeInitializationSystem : ComponentSystem
+    public class ArchetypeInitializationSystem : SpatialOSSystem
     {
         public struct Data
         {
@@ -32,7 +32,7 @@ namespace Playground
         private const string UnsupportedArchetype =
             "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
-        private MutableView view;
+        private WorkerBase worker;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
 
         private readonly MethodInfo addComponentMethod = typeof(EntityCommandBuffer).GetMethods().First(method =>
@@ -49,18 +49,17 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
+            worker = WorkerRegistry.GetWorkerForWorld(World);
 
             if (!(worker is UnityClient) && !(worker is UnityGameLogic))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
 
-            workerType = worker.GetWorkerType;
+            workerType = worker.GetType().Name;
         }
 
         protected override void OnUpdate()
@@ -74,7 +73,7 @@ namespace Playground
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
                     .TryGetValue(archetypeName, out componentTypesToAdd))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("ArchetypeName", archetypeName)
                         .WithField("WorkerType", workerType));
@@ -112,7 +111,7 @@ namespace Playground
                 }
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer(EntityManager);
         }
     }
 }

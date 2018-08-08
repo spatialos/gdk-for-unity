@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    internal class MoveLocalPlayerSystem : ComponentSystem
+    internal class MoveLocalPlayerSystem : SpatialOSSystem
     {
         public struct Speed : IComponentData
         {

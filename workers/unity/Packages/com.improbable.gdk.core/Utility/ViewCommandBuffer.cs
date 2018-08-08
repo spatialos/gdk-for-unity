@@ -19,6 +19,13 @@ namespace Improbable.Gdk.Core
         private const string UnknownErrorEncountered =
             "ViewCommandBuffer encountered unknown command type during buffer flush.";
 
+        private readonly ILogDispatcher LogDispatcher;
+
+        public ViewCommandBuffer()
+        {
+            LogDispatcher = new LoggingDispatcher();
+        }
+
         public void AddComponent<T>(Entity entity, T component) where T : Component
         {
             AddComponent(entity, ComponentType.Create<T>(), component);
@@ -46,23 +53,23 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void FlushBuffer(WorkerBase worker)
+        public void FlushBuffer(EntityManager entityManager)
         {
             foreach (var bufferedCommand in bufferedCommands)
             {
                 switch (bufferedCommand.CommandType)
                 {
                     case CommandType.AddComponent:
-                        worker.EntityManager.SetComponentObject(bufferedCommand.Entity,
+                        entityManager.SetComponentObject(bufferedCommand.Entity,
                             bufferedCommand.ComponentType,
                             bufferedCommand.ComponentObj);
                         break;
                     case CommandType.RemoveComponent:
-                        worker.EntityManager.RemoveComponent(bufferedCommand.Entity,
+                        entityManager.RemoveComponent(bufferedCommand.Entity,
                             bufferedCommand.ComponentType);
                         break;
                     default:
-                        worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField("CommandType", bufferedCommand.CommandType));
                         break;

@@ -9,8 +9,7 @@ namespace Improbable.Gdk.Core
     {
         private static readonly Dictionary<World, WorkerBase> WorldToWorker = new Dictionary<World, WorkerBase>();
 
-        private static readonly Dictionary<string, Func<string, Vector3, WorkerBase>> WorkerTypeToInitializationFunction
-            = new Dictionary<string, Func<string, Vector3, WorkerBase>>();
+        private static readonly Dictionary<string, Type> WorkerTypes = new Dictionary<string, Type>();
 
         private static readonly Dictionary<Type, WorkerAttributeSet> WorkerTypeToAttributeSet =
             new Dictionary<Type, WorkerAttributeSet>();
@@ -19,7 +18,7 @@ namespace Improbable.Gdk.Core
         {
             if (WorldToWorker.ContainsKey(world))
             {
-                throw new ArgumentException($"A worker is already stored for world '{world.Name}'");
+                throw new ArgumentException($"A Worker is already stored for world '{world.Name}'");
             }
 
             WorldToWorker[world] = worker;
@@ -37,37 +36,33 @@ namespace Improbable.Gdk.Core
 
         public static WorkerBase GetWorkerForWorld(World world)
         {
-            WorkerBase worker;
-            WorldToWorker.TryGetValue(world, out worker);
+            WorldToWorker.TryGetValue(world, out var worker);
             return worker;
         }
 
         public static void RegisterWorkerType<T>() where T : WorkerBase
         {
-            string workerType = (string) typeof(T).GetField("WorkerType").GetValue(null);
+            WorkerTypes.Add(typeof(T).Name, typeof(T));
             WorkerTypeToAttributeSet.Add(
                 typeof(T),
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { workerType })
+                new WorkerAttributeSet(new Improbable.Collections.List<string> { typeof(T).Name })
             );
 
-            WorkerTypeToInitializationFunction.Add(workerType, CreateWorker<T>);
         }
 
-        public static T CreateWorker<T>(string workerId, Vector3 origin) where T : WorkerBase
+        public static T CreateWorker<T>(ConnectionConfig config, EntityManager entityManager, ILogDispatcher logDispatcher, Vector3 origin) where T : WorkerBase
         {
-            var worker = (T) Activator.CreateInstance(typeof(T), workerId, origin);
-            return worker;
+            return (T) Activator.CreateInstance(typeof(T), config, entityManager, logDispatcher, origin);
         }
 
-        public static WorkerBase CreateWorker(ConnectionConfig config, Vector3 origin)
+        public static WorkerBase CreateWorker(ConnectionConfig config, EntityManager entityManager, ILogDispatcher logDispatcher, Vector3 origin)
         {
-            Func<string, Vector3, WorkerBase> createWorker;
-            if (!WorkerTypeToInitializationFunction.TryGetValue(config.WorkerType, out createWorker))
+            if (!WorkerTypes.ContainsKey(config.WorkerType))
             {
                 throw new ArgumentException($"No worker found for worker type '{config.WorkerType}'", nameof(config.WorkerType));
             }
 
-            return createWorker(config.WorkerId, origin);
+            return (WorkerBase)Activator.CreateInstance(WorkerTypes[config.WorkerType], config, entityManager, logDispatcher, origin);
         }
 
         public static WorkerRequirementSet GetWorkerRequirementSet(Type workerType, params Type[] workerTypes)

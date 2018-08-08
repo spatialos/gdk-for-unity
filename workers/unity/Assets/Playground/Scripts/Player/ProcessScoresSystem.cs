@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    class ProcessScoresSystem : ComponentSystem
+    class ProcessScoresSystem : SpatialOSSystem
     {
         private struct ScoringData
         {

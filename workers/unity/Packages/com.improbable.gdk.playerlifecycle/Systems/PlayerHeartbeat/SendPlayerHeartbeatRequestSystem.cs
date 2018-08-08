@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
-    public class SendPlayerHeartbeatRequestSystem : ComponentSystem
+    public class SendPlayerHeartbeatRequestSystem : SpatialOSSystem
     {
         public struct Data
         {

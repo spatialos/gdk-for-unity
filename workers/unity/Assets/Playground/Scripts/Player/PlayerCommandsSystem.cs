@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class PlayerCommandsSystem : ComponentSystem
+    public class PlayerCommandsSystem : SpatialOSSystem
     {
         private enum PlayerCommand
         {
@@ -22,8 +22,6 @@ namespace Playground
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
 
-        private MutableView view;
-
         private struct PlayerData
         {
             public readonly int Length;
@@ -33,13 +31,6 @@ namespace Playground
         }
 
         [Inject] private PlayerData playerData;
-
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-
-            view = WorkerRegistry.GetWorkerForWorld(World).View;
-        }
 
         protected override void OnUpdate()
         {

@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class SendCreatePlayerRequestSystem : ComponentSystem
+    public class SendCreatePlayerRequestSystem : SpatialOSSystem
     {
         private const long PlayerCreatorEntityId = 1;
 

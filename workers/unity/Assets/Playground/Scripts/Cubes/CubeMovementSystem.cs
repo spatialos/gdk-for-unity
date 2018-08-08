@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
-    internal class CubeMovementSystem : ComponentSystem
+    internal class CubeMovementSystem : SpatialOSSystem
     {
         public struct Data
         {
@@ -27,8 +27,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            origin = SpatialWorld.Origin;
         }
 
         protected override void OnUpdate()

@@ -7,7 +7,7 @@ using Unity.Entities;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    public class UpdateUISystem : ComponentSystem
+    public class UpdateUISystem : SpatialOSSystem
     {
         public struct PlayerDataLauncher
         {

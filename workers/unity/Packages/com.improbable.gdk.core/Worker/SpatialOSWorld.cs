@@ -7,42 +7,57 @@ namespace Improbable.Gdk.Core
 {
     public class SpatialOSWorld : World
     {
+        public Vector3 Origin { get; }
         private WorkerBase worker;
-        private List<ScriptBehaviourManager> spatialOSSystemManagers;
-        public EntityGameObjectLinker EntityGameObjectLinker { get; }
+        private HashSet<ScriptBehaviourManager> spatialOSSystemManagers = new HashSet<ScriptBehaviourManager>();
+        private EntityManager entityManager;
 
-        public SpatialOSWorld(string name) : base(name)
+        public SpatialOSWorld(string name, Vector3 origin) : base(name)
         {
-            EntityGameObjectLinker = new EntityGameObjectLinker(this);
+            entityManager = GetOrCreateManager<EntityManager>();
+            Origin = origin;
         }
 
-        public void Connect(ConnectionConfig config, Vector3 origin)
+        public void Connect(ConnectionConfig config, ILogDispatcher logDispatcher)
         {
-            // Create worker, connect to fabric and register worker-specific systems
-            worker = WorkerRegistry.CreateWorker(config, origin);
+            if (worker != null)
+            {
+                throw new NullReferenceException("Called connect while having a Worker already connected to SpatialOS.");
+            }
+
+            worker = WorkerRegistry.CreateWorker(config, entityManager, logDispatcher, Origin);
+            WorkerRegistry.SetWorkerForWorld(worker, this);
             foreach (var type in worker.RequiredSpatialSystems)
             {
                 var manager = GetOrCreateManager(type);
                 spatialOSSystemManagers.Add(manager);
             }
-            WorkerRegistry.SetWorkerForWorld(worker, this);
         }
 
         public void Disconnect(string reason)
         {
+            if (worker == null)
+            {
+                throw new NullReferenceException("Called disconnect without having a Worker connected to SpatialOS.");
+            }
+
             foreach (var manager in spatialOSSystemManagers)
             {
                 DestroyManager(manager);
             }
+            spatialOSSystemManagers.Clear();
             WorkerRegistry.UnsetWorkerForWorld(worker, this);
-            Dispose();
+            worker.Dispose();
+            worker = null;
         }
 
         public new void Dispose()
         {
+            if (worker != null)
+            {
+                Disconnect("World is getting disposed.");
+            }
             base.Dispose();
-            worker.Dispose();
-            worker = null;
         }
     }
 }

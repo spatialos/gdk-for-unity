@@ -13,7 +13,7 @@ namespace Playground
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    internal class CollisionProcessSystem : ComponentSystem
+    internal class CollisionProcessSystem : SpatialOSSystem
     {
         private struct Data
         {

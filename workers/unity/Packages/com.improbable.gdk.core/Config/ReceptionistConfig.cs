@@ -21,6 +21,10 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol);
+            config.WorkerType = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerType, string.Empty);
+            config.WorkerId = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerId, string.Empty);
             return config;
         }
     }
