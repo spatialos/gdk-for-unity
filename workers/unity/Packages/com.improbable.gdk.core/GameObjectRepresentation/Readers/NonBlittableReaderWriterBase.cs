@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
             catch (Exception e)
             {
-                throw new WriterDataUpdateFailedException();
+                throw new WriterDataUpdateFailedException(e);
             }
         }
 
