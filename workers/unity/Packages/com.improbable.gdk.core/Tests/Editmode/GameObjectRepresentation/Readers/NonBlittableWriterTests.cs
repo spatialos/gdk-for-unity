@@ -17,6 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
                 var writer = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent());
 
                 writer.Send(new SpatialOSNonBlittableComponent.Update
                 {

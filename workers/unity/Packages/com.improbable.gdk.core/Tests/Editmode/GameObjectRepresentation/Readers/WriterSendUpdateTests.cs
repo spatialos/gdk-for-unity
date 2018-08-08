@@ -43,5 +43,15 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             int valueRead = ReaderPublic.Data.IntField;
             Assert.AreEqual(42, valueRead);
         }
+
+        [Test]
+        public void Sending_component_update_sets_dirtybit()
+        {
+            WriterPublic.Send(new SpatialOSBlittableComponent.Update
+            {
+                IntField = new Option<int>(42)
+            });
+            Assert.IsTrue(EntityManager.GetComponentData<SpatialOSBlittableComponent>(Entity).DirtyBit);
+        }
     }
 }
