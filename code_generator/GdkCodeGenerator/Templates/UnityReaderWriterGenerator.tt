@@ -10,10 +10,12 @@
 #>
 <#= generatedHeader #>
 
+using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
 using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
@@ -31,51 +33,54 @@ namespace <#= qualifiedNamespace #>
 
         [ReaderInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-<# if(fieldDetailsList.Count > 0) { #>
+<# if (fieldDetailsList.Count > 0) { #>
         public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
 <# } else { #>
         public interface Reader : IReader<<#= componentDetails.TypeName #>>
 <# } #>
         {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+            event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
+<# } #>
         }
 
         [WriterInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-        public interface Writer 
+        public interface Writer
         {
         }
 
-        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
+<# if (fieldDetailsList.Count > 0 && componentDetails.IsBlittable) { #>
+        internal class ReaderWriterImpl :
+            BlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+<# } else if (fieldDetailsList.Count > 0 && !componentDetails.IsBlittable) { #>
+        internal class ReaderWriterImpl :
+            NonBlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+<# } else /* fieldDetailsList.Count == 0 */ { #>
+        internal class ReaderWriterImpl : ReaderWriterBase<<#= componentDetails.TypeName #>>, Reader, Writer
+<# } #>
         {
-            public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                : base(entity, entityManager, logDispatcher)
             {
             }
-            
-            public Authority Authority => throw new System.NotImplementedException();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
 
-            public <#= componentDetails.TypeName #> Data => throw new System.NotImplementedException();
+            private readonly List<Action<<#= fieldDetails.Type #>>> <#= fieldDetails.CamelCaseName #>Delegates = new List<Action<<#= fieldDetails.Type #>>>();
 
-            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
+            public event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated
             {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+                add => <#= fieldDetails.CamelCaseName #>Delegates.Add(value);
+                remove => <#= fieldDetails.CamelCaseName #>Delegates.Remove(value);
             }
-
-            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
-            {
-                throw new System.NotImplementedException();
-            }
+<# } #>
 <# if (fieldDetailsList.Count > 0) { #>
 
-            public void OnComponentUpdate(<#= componentDetails.TypeName #>.Update update)
+            protected override void TriggerFieldCallbacks(<#= componentDetails.TypeName#>.Update update)
             {
-                throw new System.NotImplementedException();
-            }
-
-            public event GameObjectDelegates.ComponentUpdated<<#= componentDetails.TypeName #>.Update> ComponentUpdated
-            {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
+<# } #>
             }
 <# } #>
 <# foreach (var eventDetails in eventDetailsList) { #>

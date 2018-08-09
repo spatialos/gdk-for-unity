@@ -11,7 +11,6 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         where TSpatialComponentData : ISpatialComponentData
     {
         Authority Authority { get; }
-        TSpatialComponentData Data { get; }
 
         event GameObjectDelegates.AuthorityChanged AuthorityChanged;
     }
@@ -22,6 +21,8 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
+        TSpatialComponentData Data { get; }
+
         event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated;
     }
 }

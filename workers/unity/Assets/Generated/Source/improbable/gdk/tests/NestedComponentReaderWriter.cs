@@ -3,10 +3,12 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests
@@ -26,44 +28,34 @@ namespace Generated.Improbable.Gdk.Tests
         [ComponentId(20152)]
         public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
         {
+            event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
         }
 
         [WriterInterface]
         [ComponentId(20152)]
-        public interface Writer 
+        public interface Writer
         {
         }
 
-        internal class ReaderWriterImpl : IReaderWriterInternal, Reader, Writer
+        internal class ReaderWriterImpl :
+            BlittableReaderWriterBase<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>, Reader, Writer
         {
-            public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                : base(entity, entityManager, logDispatcher)
             {
             }
-            
-            public Authority Authority => throw new System.NotImplementedException();
 
-            public SpatialOSNestedComponent Data => throw new System.NotImplementedException();
+            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>> nestedTypeDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>>();
 
-            public event GameObjectDelegates.AuthorityChanged AuthorityChanged
+            public event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
             {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+                add => nestedTypeDelegates.Add(value);
+                remove => nestedTypeDelegates.Remove(value);
             }
 
-            public void OnAuthorityChange(global::Improbable.Worker.Authority auth)
+            protected override void TriggerFieldCallbacks(SpatialOSNestedComponent.Update update)
             {
-                throw new System.NotImplementedException();
-            }
-
-            public void OnComponentUpdate(SpatialOSNestedComponent.Update update)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            public event GameObjectDelegates.ComponentUpdated<SpatialOSNestedComponent.Update> ComponentUpdated
-            {
-                add => throw new System.NotImplementedException();
-                remove => throw new System.NotImplementedException();
+                DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
             }
         }
     }

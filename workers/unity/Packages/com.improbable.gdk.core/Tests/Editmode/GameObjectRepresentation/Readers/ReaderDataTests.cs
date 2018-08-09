@@ -13,8 +13,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
             var data = EntityManager.GetComponentData<SpatialOSBlittableComponent>(Entity);
 
-            Assert.AreEqual(data, Reader.Data);
-            Assert.AreEqual(data.FloatField, Reader.Data.FloatField);
+            Assert.AreEqual(data, ReaderPublic.Data);
+            Assert.AreEqual(data.FloatField, ReaderPublic.Data.FloatField);
         }
     }
 }

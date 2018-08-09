@@ -10,39 +10,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
     [TestFixture]
     public class NonBlittableReaderTests
     {
-        private class SpatialOSNonBlittableComponentReader :
-            NonBlittableReaderBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
-        {
-            public SpatialOSNonBlittableComponentReader(Entity entity,
-                EntityManager entityManager,
-                ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
-            {
-            }
-
-            private readonly List<Action<string>> stringFieldDelegates = new List<Action<string>>();
-
-            public event Action<string> StringFieldUpdated
-            {
-                add => stringFieldDelegates.Add(value);
-                remove => stringFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<List<int>>> listFieldDelegates = new List<Action<List<int>>>();
-
-            public event Action<List<int>> ListFieldUpdates
-            {
-                add => listFieldDelegates.Add(value);
-                remove => listFieldDelegates.Remove(value);
-            }
-
-            protected override void TriggerFieldCallbacks(SpatialOSNonBlittableComponent.Update update)
-            {
-                DispatchWithErrorHandling(update.StringField, stringFieldDelegates);
-                DispatchWithErrorHandling(update.ListField, listFieldDelegates);
-            }
-        }
-
         [Test]
         public void Data_returns_non_blittable_component_instance()
         {
@@ -50,7 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-                var reader = new SpatialOSNonBlittableComponentReader(entity, entityManager, new LoggingDispatcher());
+                var reader = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent
                 {
@@ -71,13 +38,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-                var reader = new SpatialOSNonBlittableComponentReader(entity, entityManager, new LoggingDispatcher());
+                var reader = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 string stringValue = null;
                 List<int> listValue = null;
 
                 reader.StringFieldUpdated += newValue => { stringValue = newValue; };
-                reader.ListFieldUpdates += newValue => { listValue = newValue; };
+                reader.ListFieldUpdated += newValue => { listValue = newValue; };
 
                 reader.OnComponentUpdate(new SpatialOSNonBlittableComponent.Update
                 {

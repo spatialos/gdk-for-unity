@@ -1,16 +1,16 @@
 ﻿using System;
+using System.IO;
 using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    internal abstract class NonBlittableReaderBase<TSpatialComponentData, TComponentUpdate>
-        : ReaderBase<TSpatialComponentData, TComponentUpdate>
-        where TSpatialComponentData : Component, ISpatialComponentData
+    internal abstract class BlittableReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
-        protected NonBlittableReaderBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(entity, entityManager, logDispatcher)
+        protected BlittableReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(entity, entityManager, logDispatcher)
         {
         }
 
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 try
                 {
-                    return EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
+                    return EntityManager.GetComponentData<TSpatialComponentData>(Entity);
                 }
                 catch (Exception e)
                 {

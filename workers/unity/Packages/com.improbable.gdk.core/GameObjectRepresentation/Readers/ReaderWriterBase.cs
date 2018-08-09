@@ -8,18 +8,17 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    internal abstract class ReaderBase<TSpatialComponentData, TComponentUpdate>
-        : IReader<TSpatialComponentData, TComponentUpdate>,
+    internal abstract class ReaderWriterBase<TSpatialComponentData>
+        : IReader<TSpatialComponentData>,
             IReaderWriterInternal
         where TSpatialComponentData : ISpatialComponentData
-        where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
 
-        private readonly ILogDispatcher logDispatcher;
+        protected readonly ILogDispatcher logDispatcher;
 
-        protected ReaderBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
@@ -50,8 +49,6 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             }
         }
 
-        public abstract TSpatialComponentData Data { get; }
-
         private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
             = new List<GameObjectDelegates.AuthorityChanged>();
 
@@ -59,15 +56,6 @@ namespace Improbable.Gdk.Core.MonoBehaviours
         {
             add => authorityChangedDelegates.Add(value);
             remove => authorityChangedDelegates.Remove(value);
-        }
-
-        private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
-            = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
-
-        public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
-        {
-            add => componentUpdateDelegates.Add(value);
-            remove => componentUpdateDelegates.Remove(value);
         }
 
         /// <summary>
@@ -111,6 +99,28 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
                 }
             }
+        }
+    }
+
+    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : ReaderWriterBase<TSpatialComponentData>, IReader<TSpatialComponentData, TComponentUpdate>
+        where TSpatialComponentData : ISpatialComponentData
+        where TComponentUpdate : ISpatialComponentUpdate
+    {
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            : base(entity, entityManager, logDispatcher)
+        {
+        }
+
+        public abstract TSpatialComponentData Data { get; }
+
+        private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
+            = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
+
+        public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
+        {
+            add => componentUpdateDelegates.Add(value);
+            remove => componentUpdateDelegates.Remove(value);
         }
 
         public void OnComponentUpdate(TComponentUpdate update)
