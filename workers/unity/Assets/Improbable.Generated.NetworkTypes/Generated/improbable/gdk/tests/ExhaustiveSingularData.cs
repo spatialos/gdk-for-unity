@@ -223,7 +223,8 @@ public static class ExhaustiveSingularData_Internal
         var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_data.field7);
         global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
       }
-      else{
+      else
+      {
         global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, null, 0);
       }
     }
