@@ -33,6 +33,14 @@ namespace Improbable.Gdk.Core
             SetupDispatcherHandlers();
         }
 
+        protected override void OnDestroyManager()
+        {
+            foreach (var pair in componentSpecificDispatchers)
+            {
+                pair.Value.Dispose();
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (worker.Connection == null)
@@ -154,7 +162,7 @@ namespace Improbable.Gdk.Core
             {
                 var componentDispatcher =
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
-                        new { view });
+                        new object[]{ view , World} );
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
             }
 

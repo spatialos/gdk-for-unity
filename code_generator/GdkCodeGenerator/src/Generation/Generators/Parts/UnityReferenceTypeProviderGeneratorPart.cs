@@ -3,11 +3,7 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
 {
-    /// <summary>
-    ///     This class contains the data required to fill out the "UnityComponentConversionGenerator.tt" templates.
-    ///     This template generates the ComponentTranslation implementation for Components.
-    /// </summary>
-    public partial class UnityComponentConversionGenerator
+    public partial class UnityReferenceTypeProviderGenerator
     {
         private string qualifiedNamespace;
         private string spatialNamespace;
@@ -34,18 +30,6 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return unityComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
                 .Select(fieldDefinition => new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet)).ToList();
-        }
-
-        private List<UnityCommandDetails> GetCommandDetailsList()
-        {
-            return unityComponentDefinition.CommandDefinitions
-                .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
-        }
-
-        private List<UnityEventDetails> GetEventDetailsList()
-        {
-            return unityComponentDefinition.EventDefinitions
-                .Select(eventDefinition => new UnityEventDetails(eventDefinition)).ToList();
         }
     }
 }

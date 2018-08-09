@@ -16,7 +16,7 @@ namespace Playground
 
         public static readonly WorkerAttributeSet WorkerAttributeSet = new WorkerAttributeSet
         {
-            Attribute = { "UnityClient" }
+            Attribute = new List<string> { WorkerType }
         };
 
         public UnityClient(string workerId, Vector3 origin) : base(workerId, origin, new ForwardingDispatcher())

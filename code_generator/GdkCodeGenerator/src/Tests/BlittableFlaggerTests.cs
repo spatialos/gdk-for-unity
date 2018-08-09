@@ -10,12 +10,20 @@ namespace Improbable.Gdk.CodeGenerator.Tests
     {
         private string fakeFileName;
 
+        private UnityComponentDefinition BlittableComponentDefinition;
+        private UnityComponentDefinition NonBlittableComponentDefinition;
+
+        private UnityFieldDefinition BlittableFieldDefinition;
+        private UnityFieldDefinition NonBlittableFieldDefinition;
+
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             // This file needs to be created because UnitySchemaProcessor asserts that the SchemaFileRaw has a reference to a file that exists.
             fakeFileName = Path.GetTempFileName();
             File.WriteAllText(fakeFileName, "this is a fake file for testing");
+
+            BuildTestProcessedSchemaFiles();
         }
 
         [OneTimeTearDown]
@@ -32,7 +40,26 @@ namespace Improbable.Gdk.CodeGenerator.Tests
         }
 
         [Test]
-        public void MarksComponentsAsBlittableAccordingToReferencedTypes()
+        public void Components_should_have_correct_blittable_state()
+        {
+            Assert.IsTrue(BlittableComponentDefinition.IsBlittable,
+                "Components with int types should be blittable");
+
+            Assert.IsFalse(NonBlittableComponentDefinition.IsBlittable,
+                "Components with string types should not be blittable");
+        }
+
+        [Test]
+        public void Fields_should_have_correct_blittable_state()
+        {
+            Assert.IsTrue(BlittableFieldDefinition.IsBlittable,
+                "Field with int type should be blittable");
+
+            Assert.IsFalse(NonBlittableFieldDefinition.IsBlittable,
+                "Field with string type should be non-blittable");
+        }
+
+        private void BuildTestProcessedSchemaFiles()
         {
             var processedSchemaFiles = new UnitySchemaProcessor(new[]
             {
@@ -97,14 +124,15 @@ namespace Improbable.Gdk.CodeGenerator.Tests
 
             BlittableFlagger.SetBlittableFlags(processedSchemaFiles);
 
-            Assert.IsTrue(
-                processedSchemaFiles.First().ComponentDefinitions
-                    .Find(definition => definition.Name == "component-with-int").IsBlittable,
-                "Components with int types should be blittable");
-            Assert.IsFalse(
-                processedSchemaFiles.First().ComponentDefinitions
-                    .Find(definition => definition.Name == "component-with-string").IsBlittable,
-                "Components with string types should not be blittable");
+            BlittableComponentDefinition = processedSchemaFiles.First().ComponentDefinitions
+                .Find(definition => definition.Name == "component-with-int");
+            NonBlittableComponentDefinition = processedSchemaFiles.First().ComponentDefinitions
+                .Find(definition => definition.Name == "component-with-string");
+
+            BlittableFieldDefinition = BlittableComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
+                .First();
+            NonBlittableFieldDefinition = NonBlittableComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
+                .First();
         }
     }
 }

@@ -17,7 +17,6 @@ namespace Improbable.Gdk.CodeGenerator
             CamelCaseTypeName = "spatialOS" + ComponentName;
             ComponentId = componentDefinition.Id;
             IsBlittable = componentDefinition.IsBlittable;
-            ComponentId = componentDefinition.Id;
         }
     }
 }

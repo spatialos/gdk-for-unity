@@ -31,9 +31,18 @@ namespace <#= qualifiedNamespace #>
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
-            public DispatcherHandler(MutableView mutableView) : base(mutableView)
+            public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView, world)
             {
                 entityManager = mutableView.EntityManager;
+            }
+
+            public override void Dispose() 
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
+<# } #>
+<# } #>
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -42,8 +51,10 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
-
-                entityManager.AddComponentData(entity, global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields()));
+                var data =  global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                data.DirtyBit = false;
+                entityManager.AddComponentData(entity, data);
+                entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
 
                 if (entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
@@ -69,6 +80,15 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
+<# if (!componentDetails.IsBlittable) { #>
+
+                var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
+<# } #>
+<# } #>
+<# } #>
 
                 entityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
@@ -101,10 +121,25 @@ namespace <#= qualifiedNamespace #>
 
                 var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
 
+                if (entityManager.HasComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity))
+                {
+                    var updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity);
+                    updates.Updates.Add(update);
+                }
+                else 
+                {
+                    var updates = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updates.handle, new List<<#= componentDetails.TypeName #>.Update>());
+                    entityManager.AddComponentData(entity, updates);
+                }
+
                 // TODO: Events?
 
+                data.DirtyBit = false;
                 entityManager.SetComponentData(entity, data);
-                // TODO: Add update to the list? 
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
@@ -309,6 +344,19 @@ namespace <#= qualifiedNamespace #>
                 typeof(ComponentRemoved<<#= componentDetails.TypeName #>>)
                 // TODO: More to come potentially
             };
+
+            public override ComponentType ComponentUpdateType => ComponentType.CreateReadonly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+
+            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = updateGroup.GetEntityArray();
+                var data = updateGroup.GetComponentDataArray<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entities[i]);
+                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
+                }
+            }
         }
     }
 

@@ -111,9 +111,13 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 foreach (var component in schemaFile.ComponentDefinitions)
                 {
+                    foreach (var field in component.DataDefinition.typeDefinition.FieldDefinitions)
+                    {
+                        field.IsBlittable = CanBlitFieldOfComponent(field, blittableTypeMap);
+                    }
+
                     component.IsBlittable =
-                        component.DataDefinition.typeDefinition.FieldDefinitions.All(fieldDefinition =>
-                            CanBlitFieldOfComponent(fieldDefinition, blittableTypeMap));
+                        component.DataDefinition.typeDefinition.FieldDefinitions.All((field) => field.IsBlittable);
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace Playground
 
         public static readonly WorkerAttributeSet WorkerAttributeSet = new WorkerAttributeSet
         {
-            Attribute = { WorkerType }
+            Attribute = new List<string> { WorkerType }
         };
 
         public UnityGameLogic(string workerId, Vector3 origin) : base(workerId, origin, new ForwardingDispatcher())
