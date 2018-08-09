@@ -21,21 +21,27 @@ namespace Improbable.Gdk.Core
     ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
     ///     Removed at the end of the tick it was added
     /// </summary>
-    [RemoveAtEndOfTick]
-    public struct OnConnected : IComponentData
+    public struct OnConnected : IComponentData, RemoveAtEndOfTick
     {
+        public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
+        {
+            commands.RemoveComponent<OnConnected>(entity);
+        }
     }
 
     /// <summary>
     ///     Component added to the worker entity immediately after disconnecting from SpatialOS
     ///     Removed at the end of the tick it was added
     /// </summary>
-    [RemoveAtEndOfTick]
-    public struct OnDisconnected : ISharedComponentData
+    public struct OnDisconnected : ISharedComponentData, RemoveAtEndOfTick
     {
         /// <summary>
         ///     The reported reason for disconnecting
         /// </summary>
         public string ReasonForDisconnect;
+        public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
+        {
+            commands.RemoveComponent<OnDisconnected>(entity);
+        }
     }
 }

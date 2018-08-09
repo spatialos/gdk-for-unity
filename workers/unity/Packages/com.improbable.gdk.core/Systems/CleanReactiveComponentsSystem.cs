@@ -38,29 +38,15 @@ namespace Improbable.Gdk.Core
                     translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
                 }
             }
-
-            const string methodName = "AddRemoveComponentAction";
-            MethodInfo addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod(methodName,
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if (addRemoveComponentActionMethod == null)
-            {
-                throw new MissingMethodException(methodName);
-            }
-
+            
             // Find all components with the RemoveAtEndOfTick attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
-                    {
-                        continue;
-                    }
-
-                    if (!typeof(IComponentData).IsAssignableFrom(type)
-                        && !typeof(ISharedComponentData).IsAssignableFrom(type))
+                    if (!typeof(RemoveAtEndOfTick).IsAssignableFrom(type) ||
+                        (!typeof(IComponentData).IsAssignableFrom(type)
+                         && !typeof(ISharedComponentData).IsAssignableFrom(type)))
                     {
                         continue;
                     }
@@ -71,14 +57,14 @@ namespace Improbable.Gdk.Core
                     }
 
                     typesToRemove.Add(type);
-                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                    AddRemoveComponentAction(type);
                 }
             }
         }
 
-        private void AddRemoveComponentAction<T>()
+        private void AddRemoveComponentAction(ComponentType type)
         {
-            var componentGroup = GetComponentGroup(ComponentType.ReadOnly<T>());
+            var componentGroup = GetComponentGroup(type);
             removeComponentActions.Add(() =>
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
@@ -86,26 +72,16 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
+                RemoveAtEndOfTick typeInstance = (RemoveAtEndOfTick)Activator.CreateInstance(type.GetManagedType());
+
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    PostUpdateCommands.RemoveComponent<T>(entityArray[i]);
+                    typeInstance.RemoveComponent(PostUpdateCommands, entityArray[i]);
                 }
             });
         }
         
-        private void UsedOnlyForAotCodeGeneration()
-        {
-            // IL2CPP needs those lines for AOT instantiation of methods
-            AddRemoveComponentAction<OnConnected>();
-            AddRemoveComponentAction<OnDisconnected>();
-            AddRemoveComponentAction<NewlyAddedSpatialOSEntity>();
-
-            // Include an exception so we can be sure to know if this method is ever called.
-            throw new InvalidOperationException(
-                "This method is used for AOT code generation only. Do not call it at runtime.");
-        }
-
         protected override void OnUpdate()
         {
             var commandBuffer = PostUpdateCommands;
