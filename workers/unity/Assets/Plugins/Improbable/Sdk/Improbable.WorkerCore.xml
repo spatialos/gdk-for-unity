@@ -1342,6 +1342,14 @@
             are doing; prefer to use the RequestId object instead.
             </summary>
         </member>
+        <member name="M:Improbable.Worker.Core.SchemaComponentData.#ctor(System.UInt32)">
+            <summary>
+            Creates a new component data object. This object is treated like a raw, unmanaged
+            pointer, and must be passed to the C API so it can take ownership of the memory.
+            Otherwise, this can lead to a memory leak.
+            </summary>
+            <param name="componentId"></param>
+        </member>
         <member name="T:Improbable.Worker.Core.SnapshotInputStream">
             <summary>
             A stream for reading snapshot one Entity at a time.
