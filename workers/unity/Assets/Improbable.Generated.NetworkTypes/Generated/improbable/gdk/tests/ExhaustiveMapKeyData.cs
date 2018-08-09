@@ -206,265 +206,326 @@ public static class ExhaustiveMapKeyData_Internal
   public static unsafe void Write(global::Improbable.Worker.Internal.GcHandlePool _pool,
                                   ExhaustiveMapKeyData _data, global::Improbable.Worker.Internal.Pbio.Object* _obj)
   {
-    for (var _node = _data.field2.First; _node != null; _node = _node.Next)
+    if (_data.field2 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 2);
+      for (var _node = _data.field2.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddFloat(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 2);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddFloat(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field4.First; _node != null; _node = _node.Next)
+    if (_data.field4 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 4);
+      for (var _node = _data.field4.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddInt32(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 4);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddInt32(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field5.First; _node != null; _node = _node.Next)
+    if (_data.field5 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 5);
+      for (var _node = _data.field5.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 5);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field6.First; _node != null; _node = _node.Next)
+    if (_data.field6 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 6);
+      for (var _node = _data.field6.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddDouble(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 6);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddDouble(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field7.First; _node != null; _node = _node.Next)
+    if (_data.field7 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 7);
+      for (var _node = _data.field7.First; _node != null; _node = _node.Next)
       {
-        if (_node.Value.Key != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 7);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Key);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          if (_node.Value.Key != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Key);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, null, 0);
+          }
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, null, 0);
-        }
-      }
-      {
-        if (_node.Value.Value != null)
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
-        }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field8.First; _node != null; _node = _node.Next)
+    if (_data.field8 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 8);
+      for (var _node = _data.field8.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddUint32(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 8);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddUint32(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field9.First; _node != null; _node = _node.Next)
+    if (_data.field9 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 9);
+      for (var _node = _data.field9.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddUint64(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 9);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddUint64(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field10.First; _node != null; _node = _node.Next)
+    if (_data.field10 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 10);
+      for (var _node = _data.field10.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddSint32(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 10);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddSint32(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field11.First; _node != null; _node = _node.Next)
+    if (_data.field11 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 11);
+      for (var _node = _data.field11.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddSint64(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 11);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddSint64(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field12.First; _node != null; _node = _node.Next)
+    if (_data.field12 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 12);
+      for (var _node = _data.field12.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddFixed32(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 12);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddFixed32(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field13.First; _node != null; _node = _node.Next)
+    if (_data.field13 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 13);
+      for (var _node = _data.field13.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddFixed64(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 13);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddFixed64(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field14.First; _node != null; _node = _node.Next)
+    if (_data.field14 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 14);
+      for (var _node = _data.field14.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddSfixed32(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 14);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddSfixed32(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field15.First; _node != null; _node = _node.Next)
+    if (_data.field15 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 15);
+      for (var _node = _data.field15.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddSfixed64(_pair, 1, _node.Value.Key);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 15);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddSfixed64(_pair, 1, _node.Value.Key);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field16.First; _node != null; _node = _node.Next)
+    if (_data.field16 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 16);
+      for (var _node = _data.field16.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key.Id);
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 16);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key.Id);
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
-    for (var _node = _data.field17.First; _node != null; _node = _node.Next)
+    if (_data.field17 != null)
     {
-      var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 17);
+      for (var _node = _data.field17.First; _node != null; _node = _node.Next)
       {
-        global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _node.Value.Key, global::Improbable.Worker.Internal.Pbio.AddObject(_pair, 1));
-      }
-      {
-        if (_node.Value.Value != null)
+        var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 17);
         {
-          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _node.Value.Key, global::Improbable.Worker.Internal.Pbio.AddObject(_pair, 1));
         }
-        else{
-          global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+        {
+          if (_node.Value.Value != null)
+          {
+            var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+          }
+          else
+          {
+            global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+          }
         }
       }
     }
