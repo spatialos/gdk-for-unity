@@ -34,8 +34,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             try
             {
                 var data = EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
-                UpdateData(data, update);
-                EntityManager.SetComponentObject(Entity, data);
+                ApplyUpdate(update, data);
             }
             catch (Exception e)
             {
@@ -43,6 +42,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        protected abstract void UpdateData(TSpatialComponentData data, TComponentUpdate update);
+        protected abstract void ApplyUpdate(TComponentUpdate update, TSpatialComponentData data);
     }
 }

@@ -197,7 +197,7 @@ namespace Generated.Improbable.Gdk.Tests
                 DispatchWithErrorHandling(update.Field16, field16Delegates);
                 DispatchWithErrorHandling(update.Field17, field17Delegates);
             }
-            protected override void UpdateData(ref SpatialOSExhaustiveBlittableSingular data, SpatialOSExhaustiveBlittableSingular.Update update)
+            protected override void ApplyUpdate(SpatialOSExhaustiveBlittableSingular.Update update, ref SpatialOSExhaustiveBlittableSingular data)
             {
                 if (update.Field1.HasValue)
                 {

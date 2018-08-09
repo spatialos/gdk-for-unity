@@ -87,9 +87,9 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 <# if (componentDetails.IsBlittable) { #>
-            protected override void UpdateData(ref <#= componentDetails.TypeName#> data, <#= componentDetails.TypeName#>.Update update)
+            protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, ref <#= componentDetails.TypeName#> data)
 <# } else { #>
-            protected override void UpdateData(<#= componentDetails.TypeName#> data, <#= componentDetails.TypeName#>.Update update)
+            protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, <#= componentDetails.TypeName#> data)
 <# } #>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>

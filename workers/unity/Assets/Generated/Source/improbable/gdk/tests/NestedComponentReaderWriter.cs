@@ -57,7 +57,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
             }
-            protected override void UpdateData(ref SpatialOSNestedComponent data, SpatialOSNestedComponent.Update update)
+            protected override void ApplyUpdate(SpatialOSNestedComponent.Update update, ref SpatialOSNestedComponent data)
             {
                 if (update.NestedType.HasValue)
                 {

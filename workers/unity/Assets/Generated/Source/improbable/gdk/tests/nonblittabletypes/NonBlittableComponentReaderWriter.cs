@@ -137,7 +137,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 DispatchWithErrorHandling(update.ListField, listFieldDelegates);
                 DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
             }
-            protected override void UpdateData(SpatialOSNonBlittableComponent data, SpatialOSNonBlittableComponent.Update update)
+            protected override void ApplyUpdate(SpatialOSNonBlittableComponent.Update update, SpatialOSNonBlittableComponent data)
             {
                 if (update.BoolField.HasValue)
                 {

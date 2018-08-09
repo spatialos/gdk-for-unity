@@ -97,7 +97,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
                 DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
             }
-            protected override void UpdateData(ref SpatialOSBlittableComponent data, SpatialOSBlittableComponent.Update update)
+            protected override void ApplyUpdate(SpatialOSBlittableComponent.Update update, ref SpatialOSBlittableComponent data)
             {
                 if (update.BoolField.HasValue)
                 {

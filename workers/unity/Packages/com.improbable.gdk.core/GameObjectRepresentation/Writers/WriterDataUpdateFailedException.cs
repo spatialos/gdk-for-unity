@@ -11,7 +11,5 @@ namespace Improbable.Gdk.Core.MonoBehaviours
             : base(FailureMessage + entityIndex, innerException)
         {
         }
-
-
     }
 }
