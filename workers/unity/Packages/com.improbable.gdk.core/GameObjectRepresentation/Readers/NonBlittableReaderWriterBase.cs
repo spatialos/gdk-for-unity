@@ -24,9 +24,24 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
                 catch (Exception e)
                 {
-                    throw new ReaderDataGetFailedException(e);
+                    throw new ReaderDataGetFailedException(e, Entity.Index);
                 }
             }
         }
+
+        public override void Send(TComponentUpdate update)
+        {
+            try
+            {
+                var data = EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
+                ApplyUpdate(update, data);
+            }
+            catch (Exception e)
+            {
+                throw new WriterDataUpdateFailedException(e, Entity.Index);
+            }
+        }
+
+        protected abstract void ApplyUpdate(TComponentUpdate update, TSpatialComponentData data);
     }
 }

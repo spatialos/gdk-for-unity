@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Generated.Improbable;
+using Generated.Improbable.Gdk.Tests.BlittableTypes;
+using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core.MonoBehaviours;
 using NUnit.Framework;
 using Unity.Entities;
@@ -13,22 +15,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class SpatialOSBehaviourLibraryTests
     {
-        // The dummy code needs to be removed once we have codegenerated writers.
         private const uint PositionComponentId = 54;
-        private const uint ComponentId2 = 1338;
-        private const uint ComponentId3 = 1339;
-
-        [WriterInterface]
-        [ComponentId(ComponentId2)]
-        private interface DummyWriter1
-        {
-        }
-
-        [WriterInterface]
-        [ComponentId(ComponentId3)]
-        private interface DummyWriter2
-        {
-        }
+        private const uint BlittableComponentId = 1001;
+        private const uint NonBlittableComponentId = 1002;
 
         private class SingleReaderBehaviour : MonoBehaviour
         {
@@ -37,8 +26,8 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
         private class TwoWritersBehaviour : MonoBehaviour
         {
-            [Require] public DummyWriter1 Writer1;
-            [Require] public DummyWriter2 Writer2;
+            [Require] public BlittableComponent.Writer Writer1;
+            [Require] public NonBlittableComponent.Writer Writer2;
         }
 
         private class MultipleReadersOfSameType : MonoBehaviour

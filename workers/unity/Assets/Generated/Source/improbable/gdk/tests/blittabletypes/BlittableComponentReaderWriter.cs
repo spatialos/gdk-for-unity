@@ -37,7 +37,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
         [WriterInterface]
         [ComponentId(1001)]
-        public interface Writer
+        public interface Writer : IWriter<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>
         {
         }
 
@@ -96,6 +96,29 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 DispatchWithErrorHandling(update.LongField, longFieldDelegates);
                 DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
                 DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
+            }
+            protected override void ApplyUpdate(SpatialOSBlittableComponent.Update update, ref SpatialOSBlittableComponent data)
+            {
+                if (update.BoolField.HasValue)
+                {
+                    data.BoolField = update.BoolField.Value;
+                }
+                if (update.IntField.HasValue)
+                {
+                    data.IntField = update.IntField.Value;
+                }
+                if (update.LongField.HasValue)
+                {
+                    data.LongField = update.LongField.Value;
+                }
+                if (update.FloatField.HasValue)
+                {
+                    data.FloatField = update.FloatField.Value;
+                }
+                if (update.DoubleField.HasValue)
+                {
+                    data.DoubleField = update.DoubleField.Value;
+                }
             }
 
             public void OnFirstEventEvent(FirstEventEvent payload)
