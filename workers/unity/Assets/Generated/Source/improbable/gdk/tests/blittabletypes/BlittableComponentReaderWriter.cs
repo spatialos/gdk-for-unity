@@ -33,6 +33,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             event Action<long> LongFieldUpdated;
             event Action<float> FloatFieldUpdated;
             event Action<double> DoubleFieldUpdated;
+
+            event Action<FirstEventEvent> OnFirstEvent;
+            event Action<SecondEventEvent> OnSecondEvent;
         }
 
         [WriterInterface]
@@ -121,27 +124,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            // TODO move into readerwriterbase
-            private void DispatchEventWithErrorHandling<T>(T payload, System.Collections.Generic.IEnumerable<System.Action<T>> callbacks)
-            {
-                foreach (var callback in callbacks)
-                {
-                    try
-                    {
-                        callback(payload);
-                    }
-                    catch (System.Exception e)
-                    {
-                        // Log the exception but do not rethrow it, as other delegates should still get called
-                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        UnityEngine.Debug.LogException(e);
-                    }
-                }
-            }
+            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
 
-            private readonly System.Collections.Generic.List<System.Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
-
-            public event System.Action<FirstEventEvent> OnFirstEvent
+            public event Action<FirstEventEvent> OnFirstEvent
             {
                 add => firstEventDelegates.Add(value);
                 remove => firstEventDelegates.Remove(value);
@@ -152,9 +137,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 DispatchEventWithErrorHandling(payload, firstEventDelegates);
             }
 
-            private readonly System.Collections.Generic.List<System.Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
+            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
 
-            public event System.Action<SecondEventEvent> OnSecondEvent
+            public event Action<SecondEventEvent> OnSecondEvent
             {
                 add => secondEventDelegates.Add(value);
                 remove => secondEventDelegates.Remove(value);

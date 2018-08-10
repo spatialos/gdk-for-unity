@@ -99,6 +99,22 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                 }
             }
         }
+
+        protected void DispatchEventWithErrorHandling<T>(T payload, List<Action<T>> callbacks)
+        {
+            foreach (var callback in callbacks)
+            {
+                try
+                {
+                    callback(payload);
+                }
+                catch (Exception e)
+                {
+                    // Log the exception but do not rethrow it, as other delegates should still get called
+                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                }
+            }
+        }
     }
 
     internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>

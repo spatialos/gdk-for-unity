@@ -28,6 +28,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         [ComponentId(1004)]
         public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents>
         {
+
+            event Action<EvtEvent> OnEvt;
         }
 
         [WriterInterface]
@@ -43,27 +45,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             {
             }
 
-            // TODO move into readerwriterbase
-            private void DispatchEventWithErrorHandling<T>(T payload, System.Collections.Generic.IEnumerable<System.Action<T>> callbacks)
-            {
-                foreach (var callback in callbacks)
-                {
-                    try
-                    {
-                        callback(payload);
-                    }
-                    catch (System.Exception e)
-                    {
-                        // Log the exception but do not rethrow it, as other delegates should still get called
-                        // TODO logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        UnityEngine.Debug.LogException(e);
-                    }
-                }
-            }
+            private readonly List<Action<EvtEvent>> evtDelegates = new System.Collections.Generic.List<System.Action<EvtEvent>>();
 
-            private readonly System.Collections.Generic.List<System.Action<EvtEvent>> evtDelegates = new System.Collections.Generic.List<System.Action<EvtEvent>>();
-
-            public event System.Action<EvtEvent> OnEvt
+            public event Action<EvtEvent> OnEvt
             {
                 add => evtDelegates.Add(value);
                 remove => evtDelegates.Remove(value);

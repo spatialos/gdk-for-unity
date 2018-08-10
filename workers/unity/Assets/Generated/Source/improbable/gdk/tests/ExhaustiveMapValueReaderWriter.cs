@@ -43,6 +43,7 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::System.Collections.Generic.Dictionary<string, long>> Field15Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, long>> Field16Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
+
         }
 
         [WriterInterface]
@@ -260,7 +261,6 @@ namespace Generated.Improbable.Gdk.Tests
                     data.Field17 = update.Field17.Value;
                 }
             }
-
         }
     }
 }

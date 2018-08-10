@@ -44,6 +44,7 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<long> Field15Updated;
             event Action<long> Field16Updated;
             event Action<global::Generated.Improbable.Gdk.Tests.SomeType> Field17Updated;
+
         }
 
         [WriterInterface]
@@ -274,7 +275,6 @@ namespace Generated.Improbable.Gdk.Tests
                     data.Field17 = update.Field17.Value;
                 }
             }
-
         }
     }
 }

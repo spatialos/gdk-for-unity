@@ -29,6 +29,7 @@ namespace Generated.Improbable.Gdk.Tests
         public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
         {
             event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
+
         }
 
         [WriterInterface]
@@ -64,7 +65,6 @@ namespace Generated.Improbable.Gdk.Tests
                     data.NestedType = update.NestedType.Value;
                 }
             }
-
         }
     }
 }

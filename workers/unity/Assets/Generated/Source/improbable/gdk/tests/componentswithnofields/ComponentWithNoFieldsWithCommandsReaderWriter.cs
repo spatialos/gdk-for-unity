@@ -28,6 +28,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         [ComponentId(1005)]
         public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands>
         {
+
         }
 
         [WriterInterface]
@@ -42,7 +43,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 : base(entity, entityManager, logDispatcher)
             {
             }
-
 
             public void OnCmdCommandRequest(Cmd.Request request)
             {
