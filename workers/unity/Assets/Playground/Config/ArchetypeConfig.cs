@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
@@ -8,6 +9,7 @@ namespace Playground
     {
         public const string CharacterArchetype = "Character";
         public const string CubeArchetype = "Cube";
+        public const string PlayerCreator = "PlayerCreator";
 
         public static readonly Dictionary<string, Dictionary<string, ComponentType[]>>
             WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>
