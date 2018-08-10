@@ -111,6 +111,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<float>> field2;
     public Update SetField2(global::Improbable.Collections.List<float> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field2.Set(_value);
       return this;
     }
@@ -121,6 +125,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<int>> field4;
     public Update SetField4(global::Improbable.Collections.List<int> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field4.Set(_value);
       return this;
     }
@@ -131,6 +139,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<long>> field5;
     public Update SetField5(global::Improbable.Collections.List<long> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field5.Set(_value);
       return this;
     }
@@ -141,6 +153,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<double>> field6;
     public Update SetField6(global::Improbable.Collections.List<double> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field6.Set(_value);
       return this;
     }
@@ -151,6 +167,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<string>> field7;
     public Update SetField7(global::Improbable.Collections.List<string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field7.Set(_value);
       return this;
     }
@@ -161,6 +181,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<uint>> field8;
     public Update SetField8(global::Improbable.Collections.List<uint> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field8.Set(_value);
       return this;
     }
@@ -171,6 +195,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<ulong>> field9;
     public Update SetField9(global::Improbable.Collections.List<ulong> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field9.Set(_value);
       return this;
     }
@@ -181,6 +209,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<int>> field10;
     public Update SetField10(global::Improbable.Collections.List<int> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field10.Set(_value);
       return this;
     }
@@ -191,6 +223,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<long>> field11;
     public Update SetField11(global::Improbable.Collections.List<long> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field11.Set(_value);
       return this;
     }
@@ -201,6 +237,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<uint>> field12;
     public Update SetField12(global::Improbable.Collections.List<uint> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field12.Set(_value);
       return this;
     }
@@ -211,6 +251,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<ulong>> field13;
     public Update SetField13(global::Improbable.Collections.List<ulong> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field13.Set(_value);
       return this;
     }
@@ -221,6 +265,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<int>> field14;
     public Update SetField14(global::Improbable.Collections.List<int> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field14.Set(_value);
       return this;
     }
@@ -231,6 +279,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<long>> field15;
     public Update SetField15(global::Improbable.Collections.List<long> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field15.Set(_value);
       return this;
     }
@@ -241,6 +293,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<global::Improbable.EntityId>> field16;
     public Update SetField16(global::Improbable.Collections.List<global::Improbable.EntityId> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field16.Set(_value);
       return this;
     }
@@ -251,6 +307,10 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     public global::Improbable.Collections.Option<global::Improbable.Collections.List<global::Improbable.Gdk.Tests.SomeType>> field17;
     public Update SetField17(global::Improbable.Collections.List<global::Improbable.Gdk.Tests.SomeType> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field17.Set(_value);
       return this;
     }
@@ -448,6 +508,7 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
     get {
       global::Improbable.Worker.Internal.ComponentProtocol.ComponentVtable vtable;
       vtable.ComponentId = ComponentId;
+      unsafe { vtable.UserData = null; }
       vtable.Free = global::System.Runtime.InteropServices.Marshal
           .GetFunctionPointerForDelegate(global::Improbable.Worker.Internal.ClientHandles.ClientFree);
       vtable.Copy = global::System.Runtime.InteropServices.Marshal
@@ -473,6 +534,7 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientDeserialize))]
   private static unsafe global::System.Byte
   ClientDeserialize(global::System.UInt32 componentId,
+                    void* userData,
                     global::System.Byte handleType,
                     global::Improbable.Worker.Internal.Pbio.Object* root,
                     global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle** handleOut)
@@ -718,6 +780,7 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientSerialize))]
   private static unsafe void
   ClientSerialize(global::System.UInt32 componentId,
+                  void* userData,
                   global::System.Byte handleType,
                   global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle* handle,
                   global::Improbable.Worker.Internal.Pbio.Object* root)
@@ -735,9 +798,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 2);
           }
-          for (int _i = 0; _i < data.field2.Value.Count; ++_i)
+          if (data.field2.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddFloat(stateObject, 2, data.field2.Value[_i]);
+            for (int _i = 0; _i < data.field2.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddFloat(stateObject, 2, data.field2.Value[_i]);
+            }
           }
         }
         if (data.field4.HasValue)
@@ -746,9 +812,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 4);
           }
-          for (int _i = 0; _i < data.field4.Value.Count; ++_i)
+          if (data.field4.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddInt32(stateObject, 4, data.field4.Value[_i]);
+            for (int _i = 0; _i < data.field4.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddInt32(stateObject, 4, data.field4.Value[_i]);
+            }
           }
         }
         if (data.field5.HasValue)
@@ -757,9 +826,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 5);
           }
-          for (int _i = 0; _i < data.field5.Value.Count; ++_i)
+          if (data.field5.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddInt64(stateObject, 5, data.field5.Value[_i]);
+            for (int _i = 0; _i < data.field5.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddInt64(stateObject, 5, data.field5.Value[_i]);
+            }
           }
         }
         if (data.field6.HasValue)
@@ -768,9 +840,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 6);
           }
-          for (int _i = 0; _i < data.field6.Value.Count; ++_i)
+          if (data.field6.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddDouble(stateObject, 6, data.field6.Value[_i]);
+            for (int _i = 0; _i < data.field6.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddDouble(stateObject, 6, data.field6.Value[_i]);
+            }
           }
         }
         if (data.field7.HasValue)
@@ -779,15 +854,19 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 7);
           }
-          for (int _i = 0; _i < data.field7.Value.Count; ++_i)
+          if (data.field7.Value != null)
           {
-            if (data.field7.Value[_i] != null)
+            for (int _i = 0; _i < data.field7.Value.Count; ++_i)
             {
-              var _buffer = global::System.Text.Encoding.UTF8.GetBytes(data.field7.Value[_i]);
-              global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
-            }
-            else{
-              global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, null, 0);
+              if (data.field7.Value[_i] != null)
+              {
+                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(data.field7.Value[_i]);
+                global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+              }
+              else
+              {
+                global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, null, 0);
+              }
             }
           }
         }
@@ -797,9 +876,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 8);
           }
-          for (int _i = 0; _i < data.field8.Value.Count; ++_i)
+          if (data.field8.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddUint32(stateObject, 8, data.field8.Value[_i]);
+            for (int _i = 0; _i < data.field8.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddUint32(stateObject, 8, data.field8.Value[_i]);
+            }
           }
         }
         if (data.field9.HasValue)
@@ -808,9 +890,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 9);
           }
-          for (int _i = 0; _i < data.field9.Value.Count; ++_i)
+          if (data.field9.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddUint64(stateObject, 9, data.field9.Value[_i]);
+            for (int _i = 0; _i < data.field9.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddUint64(stateObject, 9, data.field9.Value[_i]);
+            }
           }
         }
         if (data.field10.HasValue)
@@ -819,9 +904,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 10);
           }
-          for (int _i = 0; _i < data.field10.Value.Count; ++_i)
+          if (data.field10.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddSint32(stateObject, 10, data.field10.Value[_i]);
+            for (int _i = 0; _i < data.field10.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddSint32(stateObject, 10, data.field10.Value[_i]);
+            }
           }
         }
         if (data.field11.HasValue)
@@ -830,9 +918,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 11);
           }
-          for (int _i = 0; _i < data.field11.Value.Count; ++_i)
+          if (data.field11.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddSint64(stateObject, 11, data.field11.Value[_i]);
+            for (int _i = 0; _i < data.field11.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddSint64(stateObject, 11, data.field11.Value[_i]);
+            }
           }
         }
         if (data.field12.HasValue)
@@ -841,9 +932,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 12);
           }
-          for (int _i = 0; _i < data.field12.Value.Count; ++_i)
+          if (data.field12.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddFixed32(stateObject, 12, data.field12.Value[_i]);
+            for (int _i = 0; _i < data.field12.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddFixed32(stateObject, 12, data.field12.Value[_i]);
+            }
           }
         }
         if (data.field13.HasValue)
@@ -852,9 +946,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 13);
           }
-          for (int _i = 0; _i < data.field13.Value.Count; ++_i)
+          if (data.field13.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddFixed64(stateObject, 13, data.field13.Value[_i]);
+            for (int _i = 0; _i < data.field13.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddFixed64(stateObject, 13, data.field13.Value[_i]);
+            }
           }
         }
         if (data.field14.HasValue)
@@ -863,9 +960,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 14);
           }
-          for (int _i = 0; _i < data.field14.Value.Count; ++_i)
+          if (data.field14.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddSfixed32(stateObject, 14, data.field14.Value[_i]);
+            for (int _i = 0; _i < data.field14.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddSfixed32(stateObject, 14, data.field14.Value[_i]);
+            }
           }
         }
         if (data.field15.HasValue)
@@ -874,9 +974,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 15);
           }
-          for (int _i = 0; _i < data.field15.Value.Count; ++_i)
+          if (data.field15.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddSfixed64(stateObject, 15, data.field15.Value[_i]);
+            for (int _i = 0; _i < data.field15.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddSfixed64(stateObject, 15, data.field15.Value[_i]);
+            }
           }
         }
         if (data.field16.HasValue)
@@ -885,9 +988,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 16);
           }
-          for (int _i = 0; _i < data.field16.Value.Count; ++_i)
+          if (data.field16.Value != null)
           {
-            global::Improbable.Worker.Internal.Pbio.AddInt64(stateObject, 16, data.field16.Value[_i].Id);
+            for (int _i = 0; _i < data.field16.Value.Count; ++_i)
+            {
+              global::Improbable.Worker.Internal.Pbio.AddInt64(stateObject, 16, data.field16.Value[_i].Id);
+            }
           }
         }
         if (data.field17.HasValue)
@@ -896,9 +1002,12 @@ public partial class ExhaustiveRepeated : global::Improbable.Worker.IComponentMe
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 17);
           }
-          for (int _i = 0; _i < data.field17.Value.Count; ++_i)
+          if (data.field17.Value != null)
           {
-            global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, data.field17.Value[_i], global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 17));
+            for (int _i = 0; _i < data.field17.Value.Count; ++_i)
+            {
+              global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, data.field17.Value[_i], global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 17));
+            }
           }
         }
       }

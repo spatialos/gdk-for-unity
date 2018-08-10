@@ -472,6 +472,7 @@ public partial class ExhaustiveSingular : global::Improbable.Worker.IComponentMe
     get {
       global::Improbable.Worker.Internal.ComponentProtocol.ComponentVtable vtable;
       vtable.ComponentId = ComponentId;
+      unsafe { vtable.UserData = null; }
       vtable.Free = global::System.Runtime.InteropServices.Marshal
           .GetFunctionPointerForDelegate(global::Improbable.Worker.Internal.ClientHandles.ClientFree);
       vtable.Copy = global::System.Runtime.InteropServices.Marshal
@@ -497,6 +498,7 @@ public partial class ExhaustiveSingular : global::Improbable.Worker.IComponentMe
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientDeserialize))]
   private static unsafe global::System.Byte
   ClientDeserialize(global::System.UInt32 componentId,
+                    void* userData,
                     global::System.Byte handleType,
                     global::Improbable.Worker.Internal.Pbio.Object* root,
                     global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle** handleOut)
@@ -675,6 +677,7 @@ public partial class ExhaustiveSingular : global::Improbable.Worker.IComponentMe
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientSerialize))]
   private static unsafe void
   ClientSerialize(global::System.UInt32 componentId,
+                  void* userData,
                   global::System.Byte handleType,
                   global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle* handle,
                   global::Improbable.Worker.Internal.Pbio.Object* root)
@@ -724,7 +727,8 @@ public partial class ExhaustiveSingular : global::Improbable.Worker.IComponentMe
               var _buffer = global::System.Text.Encoding.UTF8.GetBytes(data.field7.Value);
               global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
             }
-            else{
+            else
+            {
               global::Improbable.Worker.Internal.Pbio.AddBytes(stateObject, 7, null, 0);
             }
           }

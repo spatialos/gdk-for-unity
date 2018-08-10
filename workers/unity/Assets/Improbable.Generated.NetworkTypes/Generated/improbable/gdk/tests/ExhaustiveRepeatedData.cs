@@ -206,72 +206,118 @@ public static class ExhaustiveRepeatedData_Internal
   public static unsafe void Write(global::Improbable.Worker.Internal.GcHandlePool _pool,
                                   ExhaustiveRepeatedData _data, global::Improbable.Worker.Internal.Pbio.Object* _obj)
   {
-    for (int _i = 0; _i < _data.field2.Count; ++_i)
+    if (_data.field2 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddFloat(_obj, 2, _data.field2[_i]);
-    }
-    for (int _i = 0; _i < _data.field4.Count; ++_i)
-    {
-      global::Improbable.Worker.Internal.Pbio.AddInt32(_obj, 4, _data.field4[_i]);
-    }
-    for (int _i = 0; _i < _data.field5.Count; ++_i)
-    {
-      global::Improbable.Worker.Internal.Pbio.AddInt64(_obj, 5, _data.field5[_i]);
-    }
-    for (int _i = 0; _i < _data.field6.Count; ++_i)
-    {
-      global::Improbable.Worker.Internal.Pbio.AddDouble(_obj, 6, _data.field6[_i]);
-    }
-    for (int _i = 0; _i < _data.field7.Count; ++_i)
-    {
-      if (_data.field7[_i] != null)
+      for (int _i = 0; _i < _data.field2.Count; ++_i)
       {
-        var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_data.field7[_i]);
-        global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
-      }
-      else{
-        global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, null, 0);
+        global::Improbable.Worker.Internal.Pbio.AddFloat(_obj, 2, _data.field2[_i]);
       }
     }
-    for (int _i = 0; _i < _data.field8.Count; ++_i)
+    if (_data.field4 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddUint32(_obj, 8, _data.field8[_i]);
+      for (int _i = 0; _i < _data.field4.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddInt32(_obj, 4, _data.field4[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field9.Count; ++_i)
+    if (_data.field5 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddUint64(_obj, 9, _data.field9[_i]);
+      for (int _i = 0; _i < _data.field5.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddInt64(_obj, 5, _data.field5[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field10.Count; ++_i)
+    if (_data.field6 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddSint32(_obj, 10, _data.field10[_i]);
+      for (int _i = 0; _i < _data.field6.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddDouble(_obj, 6, _data.field6[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field11.Count; ++_i)
+    if (_data.field7 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddSint64(_obj, 11, _data.field11[_i]);
+      for (int _i = 0; _i < _data.field7.Count; ++_i)
+      {
+        if (_data.field7[_i] != null)
+        {
+          var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_data.field7[_i]);
+          global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+        }
+        else
+        {
+          global::Improbable.Worker.Internal.Pbio.AddBytes(_obj, 7, null, 0);
+        }
+      }
     }
-    for (int _i = 0; _i < _data.field12.Count; ++_i)
+    if (_data.field8 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddFixed32(_obj, 12, _data.field12[_i]);
+      for (int _i = 0; _i < _data.field8.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddUint32(_obj, 8, _data.field8[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field13.Count; ++_i)
+    if (_data.field9 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddFixed64(_obj, 13, _data.field13[_i]);
+      for (int _i = 0; _i < _data.field9.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddUint64(_obj, 9, _data.field9[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field14.Count; ++_i)
+    if (_data.field10 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddSfixed32(_obj, 14, _data.field14[_i]);
+      for (int _i = 0; _i < _data.field10.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddSint32(_obj, 10, _data.field10[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field15.Count; ++_i)
+    if (_data.field11 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddSfixed64(_obj, 15, _data.field15[_i]);
+      for (int _i = 0; _i < _data.field11.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddSint64(_obj, 11, _data.field11[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field16.Count; ++_i)
+    if (_data.field12 != null)
     {
-      global::Improbable.Worker.Internal.Pbio.AddInt64(_obj, 16, _data.field16[_i].Id);
+      for (int _i = 0; _i < _data.field12.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddFixed32(_obj, 12, _data.field12[_i]);
+      }
     }
-    for (int _i = 0; _i < _data.field17.Count; ++_i)
+    if (_data.field13 != null)
     {
-      global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _data.field17[_i], global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 17));
+      for (int _i = 0; _i < _data.field13.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddFixed64(_obj, 13, _data.field13[_i]);
+      }
+    }
+    if (_data.field14 != null)
+    {
+      for (int _i = 0; _i < _data.field14.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddSfixed32(_obj, 14, _data.field14[_i]);
+      }
+    }
+    if (_data.field15 != null)
+    {
+      for (int _i = 0; _i < _data.field15.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddSfixed64(_obj, 15, _data.field15[_i]);
+      }
+    }
+    if (_data.field16 != null)
+    {
+      for (int _i = 0; _i < _data.field16.Count; ++_i)
+      {
+        global::Improbable.Worker.Internal.Pbio.AddInt64(_obj, 16, _data.field16[_i].Id);
+      }
+    }
+    if (_data.field17 != null)
+    {
+      for (int _i = 0; _i < _data.field17.Count; ++_i)
+      {
+        global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _data.field17[_i], global::Improbable.Worker.Internal.Pbio.AddObject(_obj, 17));
+      }
     }
   }
 
