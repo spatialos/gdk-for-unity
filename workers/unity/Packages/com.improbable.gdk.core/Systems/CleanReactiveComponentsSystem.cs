@@ -64,19 +64,20 @@ namespace Improbable.Gdk.Core
 
         private void RemoveComponents()
         {
-            var componentGroups = new List<ComponentGroup>();
+            var componentToRemove = new List<Tuple<Entity,Type>>();
             foreach (Type type in typesToRemove)
             {
-                componentGroups.Add(GetComponentGroup(ComponentType.ReadOnly(type)));
-            }
-
-            foreach (var componentGroup in componentGroups)
-            {
+                var componentGroup = GetComponentGroup(ComponentType.ReadOnly(type));
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    EntityManager.RemoveComponent(entityArray[i], componentGroup.Types[0]);
+                    componentToRemove.Add(Tuple.Create<Entity, Type>(entityArray[i], type));
                 }
+            }
+
+            foreach (Tuple<Entity, Type> entity in componentToRemove)
+            {
+                EntityManager.RemoveComponent(entity.Item1, entity.Item2);
             }
         }
 
