@@ -44,7 +44,8 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (!typeof(RemoveAtEndOfTick).IsAssignableFrom(type) ||
+                    if (type.IsAbstract ||
+                        !typeof(IRemoveableComponent).IsAssignableFrom(type) ||
                         (!typeof(IComponentData).IsAssignableFrom(type)
                          && !typeof(ISharedComponentData).IsAssignableFrom(type)))
                     {
@@ -57,31 +58,28 @@ namespace Improbable.Gdk.Core
                     }
 
                     typesToRemove.Add(type);
-                    AddRemoveComponentAction(type);
+                }
+            }            
+        }
+
+        private void RemoveComponents()
+        {
+            var componentGroups = new List<ComponentGroup>();
+            foreach (Type type in typesToRemove)
+            {
+                componentGroups.Add(GetComponentGroup(ComponentType.ReadOnly(type)));
+            }
+
+            foreach (var componentGroup in componentGroups)
+            {
+                var entityArray = componentGroup.GetEntityArray();
+                for (var i = 0; i < entityArray.Length; ++i)
+                {
+                    EntityManager.RemoveComponent(entityArray[i], componentGroup.Types[0]);
                 }
             }
         }
 
-        private void AddRemoveComponentAction(ComponentType type)
-        {
-            var componentGroup = GetComponentGroup(type);
-            removeComponentActions.Add(() =>
-            {
-                if (componentGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                RemoveAtEndOfTick typeInstance = (RemoveAtEndOfTick)Activator.CreateInstance(type.GetManagedType());
-
-                var entityArray = componentGroup.GetEntityArray();
-                for (var i = 0; i < entityArray.Length; ++i)
-                {
-                    typeInstance.RemoveComponent(PostUpdateCommands, entityArray[i]);
-                }
-            });
-        }
-        
         protected override void OnUpdate()
         {
             var commandBuffer = PostUpdateCommands;
@@ -91,11 +89,11 @@ namespace Improbable.Gdk.Core
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
-
+            
             // Clean components with RemoveAtEndOfTick attribute
             foreach (var removeComponentAction in removeComponentActions)
             {
-                removeComponentAction();
+                RemoveComponents();
             }
         }
     }
