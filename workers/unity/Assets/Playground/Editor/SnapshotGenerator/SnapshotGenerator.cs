@@ -106,7 +106,7 @@ namespace Playground.Editor.SnapshotGenerator
 
             {
                 var coords = new Coordinates(0, 0, 0);
-                var transform = new Transform.Data(new Location(0, 0.5f, 4), new Quaternion(1, 0, 0, 0), 0);
+                var transform = new Transform.Data(new Location(3, 0.5f, 0), new Quaternion(1, 0, 0, 0), 0);
                 var prefab = new Prefab.Data("RotatingCuboid");
                 var archetypeComponent = new ArchetypeComponent.Data("RotatingCuboid");
 
