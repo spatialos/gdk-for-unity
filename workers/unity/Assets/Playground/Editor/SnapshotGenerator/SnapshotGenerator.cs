@@ -78,7 +78,7 @@ namespace Playground.Editor.SnapshotGenerator
 
                     if (entities.Count == numberEntities)
                     {
-                        return entities;
+                        break;
                     }
 
                     var coords = new Coordinates(i, 0, j);
@@ -102,6 +102,24 @@ namespace Playground.Editor.SnapshotGenerator
 
                     entities[new EntityId(entities.Count + 1)] = entity;
                 }
+            }
+
+            {
+                var coords = new Coordinates(0, 0, 0);
+                var transform = new Transform.Data(new Location(0, 0.5f, 4), new Quaternion(1, 0, 0, 0), 0);
+                var prefab = new Prefab.Data("RotatingCuboid");
+                var archetypeComponent = new ArchetypeComponent.Data("RotatingCuboid");
+
+                var entity = EntityBuilder.Begin()
+                    .AddPositionComponent(coords, WorkerSet)
+                    .AddComponent(new Metadata.Data("RotatingCuboid"), WorkerSet)
+                    .SetPersistence(true)
+                    .SetReadAcl(AllWorkersSet)
+                    .AddComponent(transform, WorkerSet)
+                    .AddComponent(prefab, WorkerSet)
+                    .AddComponent(archetypeComponent, WorkerSet)
+                    .Build();
+                entities[new EntityId(entities.Count + 1)] = entity;
             }
 
             return entities;

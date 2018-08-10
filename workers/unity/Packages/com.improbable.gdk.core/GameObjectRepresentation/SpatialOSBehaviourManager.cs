@@ -65,12 +65,19 @@ namespace Improbable.Gdk.Core
                 }
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
+
+                behaviour.enabled = false;
             }
         }
 
 
         public HashSet<IReaderWriterInternal> GetReadersWriters(uint componentId)
         {
+            if (!compIdToReadersWriters.ContainsKey(componentId))
+            {
+                return null;
+            }
+
             return compIdToReadersWriters[componentId];
         }
 
@@ -91,7 +98,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            foreach (var behaviour in behavioursToDisable)
+            foreach (var behaviour in behavioursToEnable)
             {
                 behaviour.enabled = true;
             }
@@ -127,6 +134,11 @@ namespace Improbable.Gdk.Core
 
         public void AddComponent(uint componentId)
         {
+            if (!behavioursRequiringReaderTypes.ContainsKey(componentId))
+            {
+                return;
+            }
+
             // Mark reader components ready in relevant SpatialOSBehaviours
             var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
             MarkComponentRequirementSatisfied(relevantReaderSpatialOSBehaviours);
@@ -134,6 +146,11 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent(uint componentId)
         {
+            if (!behavioursRequiringReaderTypes.ContainsKey(componentId))
+            {
+                return;
+            }
+
             // Mark reader components not ready in relevant SpatialOSBehaviours
             var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
             MarkComponentRequirementUnsatisfied(relevantReaderSpatialOSBehaviours);
@@ -141,6 +158,11 @@ namespace Improbable.Gdk.Core
 
         public void ChangeAuthority(uint componentId, Authority authority)
         {
+            if (!behavioursRequiringWriterTypes.ContainsKey(componentId))
+            {
+                return;
+            }
+
             if (authority == Authority.Authoritative)
             {
                 // Mark writer components ready in relevant SpatialOSBehaviours

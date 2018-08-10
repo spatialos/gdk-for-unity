@@ -52,6 +52,11 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                         .GetReadersWriters(197716);
+                    if (readers == null)
+                    {
+                        continue;
+                    }
+
                     var updateList = updateLists[i];
                     foreach (var reader in readers)
                     {
@@ -93,6 +98,11 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                         .GetReadersWriters(197716);
+                    if (readers == null)
+                    {
+                        continue;
+                    }
+
                     var authChanges = authChangeLists[i];
                     foreach (var reader in readers)
                     {

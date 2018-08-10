@@ -56,6 +56,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                         .GetReadersWriters(1002);
+                    if (readers == null)
+                    {
+                        continue;
+                    }
+
                     var updateList = updateLists[i];
                     foreach (var reader in readers)
                     {
@@ -77,6 +82,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                             .GetReadersWriters(1002);
                         var eventList = eventLists[i];
+                        if (readers == null)
+                        {
+                            continue;
+                        }
+                        
                         foreach (var reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
@@ -94,6 +104,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                             .GetReadersWriters(1002);
                         var eventList = eventLists[i];
+                        if (readers == null)
+                        {
+                            continue;
+                        }
+                        
                         foreach (var reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
@@ -114,6 +129,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                             .GetReadersWriters(1002);
+                        if (readers == null)
+                        {
+                            continue;
+                        }
+
                         var commandList = commandLists[i];
                         foreach (var reader in readers)
                         {
@@ -131,6 +151,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                             .GetReadersWriters(1002);
+                        if (readers == null)
+                        {
+                            continue;
+                        }
+
                         var commandList = commandLists[i];
                         foreach (var reader in readers)
                         {
@@ -165,6 +190,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
                         .GetReadersWriters(1002);
+                    if (readers == null)
+                    {
+                        continue;
+                    }
+
                     var authChanges = authChangeLists[i];
                     foreach (var reader in readers)
                     {
