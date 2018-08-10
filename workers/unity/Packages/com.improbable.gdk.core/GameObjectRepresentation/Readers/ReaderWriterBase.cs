@@ -8,9 +8,11 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.MonoBehaviours
 {
-    internal abstract class ReaderWriterBase<TSpatialComponentData>
-        : IWriter<TSpatialComponentData>, IReaderWriterInternal
+    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : IWriter<TSpatialComponentData, TComponentUpdate>,
+            IReaderWriterInternal
         where TSpatialComponentData : ISpatialComponentData
+        where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
@@ -114,17 +116,6 @@ namespace Improbable.Gdk.Core.MonoBehaviours
                     logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
                 }
             }
-        }
-    }
-
-    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
-        : ReaderWriterBase<TSpatialComponentData>, IWriter<TSpatialComponentData, TComponentUpdate>
-        where TSpatialComponentData : ISpatialComponentData
-        where TComponentUpdate : ISpatialComponentUpdate
-    {
-        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-            : base(entity, entityManager, logDispatcher)
-        {
         }
 
         public abstract TSpatialComponentData Data { get; }
