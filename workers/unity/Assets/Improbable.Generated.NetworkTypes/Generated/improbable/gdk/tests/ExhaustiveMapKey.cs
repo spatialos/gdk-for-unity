@@ -111,6 +111,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<float, string>> field2;
     public Update SetField2(global::Improbable.Collections.Map<float, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field2.Set(_value);
       return this;
     }
@@ -121,6 +125,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<int, string>> field4;
     public Update SetField4(global::Improbable.Collections.Map<int, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field4.Set(_value);
       return this;
     }
@@ -131,6 +139,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<long, string>> field5;
     public Update SetField5(global::Improbable.Collections.Map<long, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field5.Set(_value);
       return this;
     }
@@ -141,6 +153,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<double, string>> field6;
     public Update SetField6(global::Improbable.Collections.Map<double, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field6.Set(_value);
       return this;
     }
@@ -151,6 +167,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<string, string>> field7;
     public Update SetField7(global::Improbable.Collections.Map<string, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field7.Set(_value);
       return this;
     }
@@ -161,6 +181,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<uint, string>> field8;
     public Update SetField8(global::Improbable.Collections.Map<uint, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field8.Set(_value);
       return this;
     }
@@ -171,6 +195,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<ulong, string>> field9;
     public Update SetField9(global::Improbable.Collections.Map<ulong, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field9.Set(_value);
       return this;
     }
@@ -181,6 +209,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<int, string>> field10;
     public Update SetField10(global::Improbable.Collections.Map<int, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field10.Set(_value);
       return this;
     }
@@ -191,6 +223,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<long, string>> field11;
     public Update SetField11(global::Improbable.Collections.Map<long, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field11.Set(_value);
       return this;
     }
@@ -201,6 +237,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<uint, string>> field12;
     public Update SetField12(global::Improbable.Collections.Map<uint, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field12.Set(_value);
       return this;
     }
@@ -211,6 +251,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<ulong, string>> field13;
     public Update SetField13(global::Improbable.Collections.Map<ulong, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field13.Set(_value);
       return this;
     }
@@ -221,6 +265,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<int, string>> field14;
     public Update SetField14(global::Improbable.Collections.Map<int, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field14.Set(_value);
       return this;
     }
@@ -231,6 +279,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<long, string>> field15;
     public Update SetField15(global::Improbable.Collections.Map<long, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field15.Set(_value);
       return this;
     }
@@ -241,6 +293,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<global::Improbable.EntityId, string>> field16;
     public Update SetField16(global::Improbable.Collections.Map<global::Improbable.EntityId, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field16.Set(_value);
       return this;
     }
@@ -251,6 +307,10 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     public global::Improbable.Collections.Option<global::Improbable.Collections.Map<global::Improbable.Gdk.Tests.SomeType, string>> field17;
     public Update SetField17(global::Improbable.Collections.Map<global::Improbable.Gdk.Tests.SomeType, string> _value)
     {
+      if (_value == null)
+      {
+        throw new System.ArgumentNullException(null, "Attempt to send update with null value.");
+      }
       field17.Set(_value);
       return this;
     }
@@ -448,6 +508,7 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
     get {
       global::Improbable.Worker.Internal.ComponentProtocol.ComponentVtable vtable;
       vtable.ComponentId = ComponentId;
+      unsafe { vtable.UserData = null; }
       vtable.Free = global::System.Runtime.InteropServices.Marshal
           .GetFunctionPointerForDelegate(global::Improbable.Worker.Internal.ClientHandles.ClientFree);
       vtable.Copy = global::System.Runtime.InteropServices.Marshal
@@ -473,6 +534,7 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientDeserialize))]
   private static unsafe global::System.Byte
   ClientDeserialize(global::System.UInt32 componentId,
+                    void* userData,
                     global::System.Byte handleType,
                     global::Improbable.Worker.Internal.Pbio.Object* root,
                     global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle** handleOut)
@@ -733,6 +795,7 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
   [global::Improbable.Worker.Internal.MonoPInvokeCallback(typeof(global::Improbable.Worker.Internal.ComponentProtocol.ClientSerialize))]
   private static unsafe void
   ClientSerialize(global::System.UInt32 componentId,
+                  void* userData,
                   global::System.Byte handleType,
                   global::Improbable.Worker.Internal.ComponentProtocol.ClientHandle* handle,
                   global::Improbable.Worker.Internal.Pbio.Object* root)
@@ -750,20 +813,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 2);
           }
-          for (var _node = data.field2.Value.First; _node != null; _node = _node.Next)
+          if (data.field2.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 2);
+            for (var _node = data.field2.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddFloat(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 2);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddFloat(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -774,20 +841,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 4);
           }
-          for (var _node = data.field4.Value.First; _node != null; _node = _node.Next)
+          if (data.field4.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 4);
+            for (var _node = data.field4.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddInt32(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 4);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddInt32(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -798,20 +869,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 5);
           }
-          for (var _node = data.field5.Value.First; _node != null; _node = _node.Next)
+          if (data.field5.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 5);
+            for (var _node = data.field5.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 5);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -822,20 +897,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 6);
           }
-          for (var _node = data.field6.Value.First; _node != null; _node = _node.Next)
+          if (data.field6.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 6);
+            for (var _node = data.field6.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddDouble(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 6);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddDouble(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -846,27 +925,32 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 7);
           }
-          for (var _node = data.field7.Value.First; _node != null; _node = _node.Next)
+          if (data.field7.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 7);
+            for (var _node = data.field7.Value.First; _node != null; _node = _node.Next)
             {
-              if (_node.Value.Key != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 7);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Key);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                if (_node.Value.Key != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Key);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, null, 0);
+                }
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 1, null, 0);
-              }
-            }
-            {
-              if (_node.Value.Value != null)
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
-              }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -877,20 +961,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 8);
           }
-          for (var _node = data.field8.Value.First; _node != null; _node = _node.Next)
+          if (data.field8.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 8);
+            for (var _node = data.field8.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddUint32(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 8);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddUint32(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -901,20 +989,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 9);
           }
-          for (var _node = data.field9.Value.First; _node != null; _node = _node.Next)
+          if (data.field9.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 9);
+            for (var _node = data.field9.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddUint64(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 9);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddUint64(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -925,20 +1017,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 10);
           }
-          for (var _node = data.field10.Value.First; _node != null; _node = _node.Next)
+          if (data.field10.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 10);
+            for (var _node = data.field10.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddSint32(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 10);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddSint32(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -949,20 +1045,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 11);
           }
-          for (var _node = data.field11.Value.First; _node != null; _node = _node.Next)
+          if (data.field11.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 11);
+            for (var _node = data.field11.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddSint64(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 11);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddSint64(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -973,20 +1073,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 12);
           }
-          for (var _node = data.field12.Value.First; _node != null; _node = _node.Next)
+          if (data.field12.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 12);
+            for (var _node = data.field12.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddFixed32(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 12);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddFixed32(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -997,20 +1101,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 13);
           }
-          for (var _node = data.field13.Value.First; _node != null; _node = _node.Next)
+          if (data.field13.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 13);
+            for (var _node = data.field13.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddFixed64(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 13);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddFixed64(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -1021,20 +1129,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 14);
           }
-          for (var _node = data.field14.Value.First; _node != null; _node = _node.Next)
+          if (data.field14.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 14);
+            for (var _node = data.field14.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddSfixed32(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 14);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddSfixed32(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -1045,20 +1157,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 15);
           }
-          for (var _node = data.field15.Value.First; _node != null; _node = _node.Next)
+          if (data.field15.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 15);
+            for (var _node = data.field15.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddSfixed64(_pair, 1, _node.Value.Key);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 15);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddSfixed64(_pair, 1, _node.Value.Key);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -1069,20 +1185,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 16);
           }
-          for (var _node = data.field16.Value.First; _node != null; _node = _node.Next)
+          if (data.field16.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 16);
+            for (var _node = data.field16.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key.Id);
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 16);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Worker.Internal.Pbio.AddInt64(_pair, 1, _node.Value.Key.Id);
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }
@@ -1093,20 +1213,24 @@ public partial class ExhaustiveMapKey : global::Improbable.Worker.IComponentMeta
           {
             global::Improbable.Worker.Internal.Pbio.AddUint32(root, /* fields to clear */ 1, 17);
           }
-          for (var _node = data.field17.Value.First; _node != null; _node = _node.Next)
+          if (data.field17.Value != null)
           {
-            var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 17);
+            for (var _node = data.field17.Value.First; _node != null; _node = _node.Next)
             {
-              global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _node.Value.Key, global::Improbable.Worker.Internal.Pbio.AddObject(_pair, 1));
-            }
-            {
-              if (_node.Value.Value != null)
+              var _pair = global::Improbable.Worker.Internal.Pbio.AddObject(stateObject, 17);
               {
-                var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                global::Improbable.Gdk.Tests.SomeType_Internal.Write(_pool, _node.Value.Key, global::Improbable.Worker.Internal.Pbio.AddObject(_pair, 1));
               }
-              else{
-                global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+              {
+                if (_node.Value.Value != null)
+                {
+                  var _buffer = global::System.Text.Encoding.UTF8.GetBytes(_node.Value.Value);
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, (byte*) _pool.Pin(_buffer), (uint) _buffer.Length);
+                }
+                else
+                {
+                  global::Improbable.Worker.Internal.Pbio.AddBytes(_pair, 2, null, 0);
+                }
               }
             }
           }

@@ -49,10 +49,11 @@ cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"        "to
 cleanAndUnpackTo "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-macos"        "tools/schema_compiler/macos"
 
 # `spatial local launch` and `spatial upload` require these to be here, until the new project structure is applied.
-cleanAndUnpackTo "${CORE_SDK_DIR}/build/schema/standard_library"             "build/dependencies/schema/standard_library"
+cleanAndUnpackTo "${CORE_SDK_DIR}/schema/standard_library"             "build/dependencies/schema/standard_library"
 
 # Remove unused tools and files.
 rm tools/schema_compiler/win/protoc.exe
 rm tools/schema_compiler/macos/protoc
 rm -rf tools/schema_compiler/win/proto
 rm -rf tools/schema_compiler/macos/proto
+rm -rf "${CORE_SDK_DIR}"

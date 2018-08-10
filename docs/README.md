@@ -36,6 +36,7 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Summary of key features](content/faqs/key-features.md)
 
 ##### Contents
+* [System update order](content/system-update-order.md)
 * [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
 * [Sending and receiving commands](content/commands.md)

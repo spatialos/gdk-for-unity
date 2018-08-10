@@ -68,5 +68,5 @@ As for distribution, we’re still experimenting! We’re currently leaning towa
 
 ## 5. Is the GDK for Unity on Windows only or also on MacOS X? 
 
-The GDK supports both Windows and MacOS X for development. We have experienced some stability issues with the Unity ECS on Mac OS, however this should be resolved by Unity in the near future.
+The GDK supports both Windows and MacOS X for development. We have experienced some stability issues with the Unity ECS on Mac OS, and have reported these to [Unity](https://fogbugz.unity3d.com/default.asp?1064084_q5lp4g8hn0vhp706).
 
