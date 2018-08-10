@@ -36,7 +36,7 @@ namespace <#= qualifiedNamespace #>
                 entityManager = mutableView.EntityManager;
             }
 
-            public override void Dispose() 
+            public override void Dispose()
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
@@ -64,7 +64,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     entityManager.AddComponentData(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
                 }
-                else 
+                else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -100,7 +100,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     entityManager.AddComponentData(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
                 }
-                else 
+                else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -126,7 +126,7 @@ namespace <#= qualifiedNamespace #>
                     var updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity);
                     updates.Updates.Add(update);
                 }
-                else 
+                else
                 {
                     var updates = new <#= componentDetails.TypeName #>.ReceivedUpdates
                     {
@@ -209,7 +209,7 @@ namespace <#= qualifiedNamespace #>
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity)) 
+                        if (!entityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
@@ -219,7 +219,7 @@ namespace <#= qualifiedNamespace #>
                         entityManager.AddComponentData(entity, new Authoritative<<#= componentDetails.TypeName #>>());
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity)) 
+                        if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
@@ -287,13 +287,13 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-        public class ComponentReplicator : ComponentReplicationHandler 
+        public class ComponentReplicator : ComponentReplicationHandler
         {
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                typeof(<#= componentDetails.TypeName #>), 
-                typeof(Authoritative<<#= componentDetails.TypeName #>>), 
+                typeof(<#= componentDetails.TypeName #>),
+                typeof(Authoritative<<#= componentDetails.TypeName #>>),
                 typeof(SpatialEntityId)
             };
 
@@ -312,7 +312,7 @@ namespace <#= qualifiedNamespace #>
                 var componentData = replicationGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
                 var entityIdData = replicationGroup.GetComponentDataArray<SpatialEntityId>();
 
-                for (var i = 0; i < componentData.Length; i++) 
+                for (var i = 0; i < componentData.Length; i++)
                 {
                     var data = componentData[i];
                     if (data.DirtyBit)
@@ -336,7 +336,7 @@ namespace <#= qualifiedNamespace #>
 
         }
 
-        public class ComponentCleanup : ComponentCleanupHandler 
+        public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = {
@@ -345,7 +345,7 @@ namespace <#= qualifiedNamespace #>
                 // TODO: More to come potentially
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.CreateReadonly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
