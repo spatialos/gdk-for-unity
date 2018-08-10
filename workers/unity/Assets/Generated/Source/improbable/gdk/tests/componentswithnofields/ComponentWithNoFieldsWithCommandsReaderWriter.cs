@@ -26,20 +26,28 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         [ReaderInterface]
         [ComponentId(1005)]
-        public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands>
+        public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
         {
         }
 
         [WriterInterface]
         [ComponentId(1005)]
-        public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithCommands>
+        public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
         {
         }
 
-        internal class ReaderWriterImpl : ReaderWriterBase<SpatialOSComponentWithNoFieldsWithCommands>, Reader, Writer
+        internal class ReaderWriterImpl :
+            BlittableReaderWriterBase<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
+            {
+            }
+
+            protected override void TriggerFieldCallbacks(SpatialOSComponentWithNoFieldsWithCommands.Update update)
+            {
+            }
+            protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithCommands.Update update, ref SpatialOSComponentWithNoFieldsWithCommands data)
             {
             }
 
