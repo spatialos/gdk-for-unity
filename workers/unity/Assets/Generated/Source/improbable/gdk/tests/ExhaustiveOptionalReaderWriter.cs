@@ -42,7 +42,6 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::System.Nullable<long>> Field15Updated;
             event Action<global::System.Nullable<long>> Field16Updated;
             event Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
-
         }
 
         [WriterInterface]

@@ -33,7 +33,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             event Action<long> LongFieldUpdated;
             event Action<float> FloatFieldUpdated;
             event Action<double> DoubleFieldUpdated;
-
             event Action<FirstEventEvent> OnFirstEvent;
             event Action<SecondEventEvent> OnSecondEvent;
         }

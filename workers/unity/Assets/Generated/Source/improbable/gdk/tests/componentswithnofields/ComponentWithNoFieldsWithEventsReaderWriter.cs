@@ -28,7 +28,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         [ComponentId(1004)]
         public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents>
         {
-
             event Action<EvtEvent> OnEvt;
         }
 

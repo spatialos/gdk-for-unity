@@ -37,7 +37,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             event Action<global::System.Nullable<int>> OptionalFieldUpdated;
             event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated;
             event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated;
-
             event Action<FirstEventEvent> OnFirstEvent;
             event Action<SecondEventEvent> OnSecondEvent;
         }
