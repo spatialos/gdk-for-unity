@@ -27,7 +27,6 @@ namespace Playground.Editor.SnapshotGenerator
             arguments = new SnapshotGenerator.Arguments
             {
                 NumberEntities = 16,
-                WorldLength = 5000,
                 OutputPath = Path.GetFullPath(
                     Path.Combine(
                         Application.dataPath,
@@ -50,7 +49,6 @@ namespace Playground.Editor.SnapshotGenerator
                 }
 
                 arguments.NumberEntities = EditorGUILayout.IntField("Number of entities", arguments.NumberEntities);
-                arguments.WorldLength = EditorGUILayout.FloatField("World length", arguments.WorldLength);
                 arguments.OutputPath = EditorGUILayout.TextField("Snapshot path", arguments.OutputPath);
 
                 var shouldDisable = string.IsNullOrEmpty(arguments.OutputPath);

@@ -11,7 +11,7 @@ public struct <#= typeDetails.CapitalisedName #>
     public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
 <# } #>
 
-    public static class Serialization 
+    public static class Serialization
     {
         public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.Core.SchemaObject obj)
         {
@@ -27,10 +27,10 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-            foreach (var value in instance.<#= fieldDetails.PascalCaseName #>) 
+            foreach (var value in instance.<#= fieldDetails.PascalCaseName #>)
             {
-<# if (listTypeInfo.IsEnum) { #>   
-                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);             
+<# if (listTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);
 <# } else if (listTypeInfo.IsPrimitive) { #>
                 obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
 <# } else { #>
@@ -55,7 +55,7 @@ public struct <#= typeDetails.CapitalisedName #>
             {
                 var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
 <# if (mapTypeInfo.Key.IsEnum) { #>
-                mapObj.AddEnum(1, (uint) keyValuePair.Key);                    
+                mapObj.AddEnum(1, (uint) keyValuePair.Key);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>
                 mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
 <# } else { #>
@@ -89,17 +89,17 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
 <# if (listTypeInfo.IsEnum) { #>
-            for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++) 
+            for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
             {
                 instance.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>));
             }
 <# } else if (listTypeInfo.IsPrimitive) { #>
-            for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++) 
+            for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
             {
                 instance.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));
             }
 <# } else { #>
-            for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++) 
+            for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
             {
                 instance.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
             }
@@ -108,19 +108,19 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
 <# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
 <# if (optionTypeInfo.IsEnum) { #>
-            if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1) 
+            if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
             {
                 instance.<#= fieldDetails.PascalCaseName #> = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
             }
 <# } else if (optionTypeInfo.IsPrimitive) { #>
-            if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1) 
+            if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
             {
                 instance.<#= fieldDetails.PascalCaseName #> = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
             }
 <# } else { #>
-            if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1) 
+            if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
             {
-                instance.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
+                instance.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
             }
 <# } #>
 <# } else { #>
@@ -152,17 +152,17 @@ public struct <#= typeDetails.CapitalisedName #>
             return instance;
         }
     }
-<# 
+<#
     var typeGenerator = new UnityTypeContent();
-    foreach (var nestedType in nestedTypes) 
+    foreach (var nestedType in nestedTypes)
     {
 #>
 
     <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, enumSet)) #>
 <# } #>
-<# 
+<#
     var enumGenerator = new UnityEnumContent();
-    foreach (var nestedEnum in nestedEnums) 
+    foreach (var nestedEnum in nestedEnums)
     {
 #>
 

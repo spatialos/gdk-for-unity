@@ -11,7 +11,7 @@ using Unity.Entities;
 using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
-{ 
+{
     public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
     {
         public uint ComponentId => <#= componentDetails.ComponentId #>;
@@ -36,11 +36,11 @@ namespace <#= qualifiedNamespace #>
 
         public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
         {
-            get => <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
+            get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
             set
             {
                 DirtyBit = true;
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
             }
         }
 <# } #>
@@ -48,7 +48,7 @@ namespace <#= qualifiedNamespace #>
 
 <# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
         public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
-<# foreach(var fieldDetails in fieldDetailsList) { 
+<# foreach(var fieldDetails in fieldDetailsList) {
     var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
 #>
             <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
@@ -70,10 +70,10 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-            foreach (var value in <#= fieldDetails.CamelCaseName #>) 
+            foreach (var value in <#= fieldDetails.CamelCaseName #>)
             {
-<# if (listTypeInfo.IsEnum) { #>   
-                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);             
+<# if (listTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);
 <# } else if (listTypeInfo.IsPrimitive) { #>
                 obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
 <# } else { #>
@@ -98,7 +98,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
 <# if (mapTypeInfo.Key.IsEnum) { #>
-                mapObj.AddEnum(1, (uint) keyValuePair.Key);                    
+                mapObj.AddEnum(1, (uint) keyValuePair.Key);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>
                 mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
 <# } else { #>
@@ -120,7 +120,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 
 
-        public static class Serialization 
+        public static class Serialization
         {
             public static void Serialize(<#= componentDetails.TypeName #> component, global::Improbable.Worker.Core.SchemaObject obj)
             {
@@ -136,10 +136,10 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-                foreach (var value in component.<#= fieldDetails.PascalCaseName #>) 
+                foreach (var value in component.<#= fieldDetails.PascalCaseName #>)
                 {
-<# if (listTypeInfo.IsEnum) { #>   
-                    obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);             
+<# if (listTypeInfo.IsEnum) { #>
+                    obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);
 <# } else if (listTypeInfo.IsPrimitive) { #>
                     obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
 <# } else { #>
@@ -164,7 +164,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
 <# if (mapTypeInfo.Key.IsEnum) { #>
-                    mapObj.AddEnum(1, (uint) keyValuePair.Key);                    
+                    mapObj.AddEnum(1, (uint) keyValuePair.Key);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>
                     mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
 <# } else { #>
@@ -185,10 +185,10 @@ namespace <#= qualifiedNamespace #>
             public static <#= componentDetails.TypeName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentDetails.TypeName #>();
-                
+
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                component.<#= fieldDetails.CamelCaseName#>Handle = <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
+                component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
 
 <# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
@@ -203,17 +203,17 @@ namespace <#= qualifiedNamespace #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
 <# if (listTypeInfo.IsEnum) { #>
-                for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++) 
+                for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
                     component.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>));
                 }
 <# } else if (listTypeInfo.IsPrimitive) { #>
-                for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++) 
+                for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
                 {
                     component.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));
                 }
 <# } else { #>
-                for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++) 
+                for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
                     component.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
                 }
@@ -222,17 +222,17 @@ namespace <#= qualifiedNamespace #>
 <# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
 <# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
 <# if (optionTypeInfo.IsEnum) { #>
-                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     component.<#= fieldDetails.PascalCaseName #> = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
                 }
 <# } else if (optionTypeInfo.IsPrimitive) { #>
-                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     component.<#= fieldDetails.PascalCaseName #> = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
                 }
 <# } else { #>
-                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     component.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
                 }
@@ -272,7 +272,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
 <# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
-                if (obj.<#= singularTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.<#= singularTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
                 {
 <# if (singularTypeInfo.IsEnum) { #>
                     var value = (<#= fieldDetails.Type #>)obj.GetEnum(<#= fieldDetails.FieldNumber #>);
@@ -289,13 +289,13 @@ namespace <#= qualifiedNamespace #>
                 {
 <# if (listTypeInfo.IsEnum) { #>
                     var listSize = obj.GetEnumCount(<#= fieldDetails.FieldNumber #>);
-                    if (listSize > 0) 
+                    if (listSize > 0)
                     {
                         update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
-                    for (var i = 0; i < listSize; i++) 
+                    for (var i = 0; i < listSize; i++)
                     {
                         var value = (<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
@@ -303,13 +303,13 @@ namespace <#= qualifiedNamespace #>
                     }
 <# } else if (listTypeInfo.IsPrimitive) { #>
                     var listSize = obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>);
-                    if (listSize > 0) 
+                    if (listSize > 0)
                     {
                         update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
-                    for (var i = 0; i < listSize; i++) 
+                    for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
@@ -317,13 +317,13 @@ namespace <#= qualifiedNamespace #>
                     }
 <# } else { #>
                     var listSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
-                    if (listSize > 0) 
+                    if (listSize > 0)
                     {
                         update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
-                    for (var i = 0; i < listSize; i++) 
+                    for (var i = 0; i < listSize; i++)
                     {
                         var value = <#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
@@ -334,21 +334,21 @@ namespace <#= qualifiedNamespace #>
 <# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
 <# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
 <# if (optionTypeInfo.IsEnum) { #>
-                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     var value = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
                     update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
                     component.<#= fieldDetails.PascalCaseName #> = value;
                 }
 <# } else if (optionTypeInfo.IsPrimitive) { #>
-                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     var value = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
                     update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
                     component.<#= fieldDetails.PascalCaseName #> = value;
                 }
 <# } else { #>
-                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1) 
+                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     var value = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
                     update.<#= fieldDetails.PascalCaseName #> = value;
@@ -359,7 +359,7 @@ namespace <#= qualifiedNamespace #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
                 {
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
-                    if (mapSize > 0) 
+                    if (mapSize > 0)
                     {
                         update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
                     }
@@ -385,7 +385,7 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
 <# } #>
-<# } #>             
+<# } #>
                 return update;
             }
         }
@@ -397,12 +397,12 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-        public struct ReceivedUpdates : IComponentData 
+        public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates 
+            public global::System.Collections.Generic.List<Update> Updates
             {
-                get => <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+                get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
     }
