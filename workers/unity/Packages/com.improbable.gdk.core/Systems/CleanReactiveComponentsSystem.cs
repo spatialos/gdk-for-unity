@@ -78,7 +78,8 @@ namespace Improbable.Gdk.Core
                         componentCleanups.Add(new ComponentCleanup
                         {
                             Handler = componentCleanupHandler,
-                            UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType)
+                            UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
+                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType)
                         });
                     }
                 }
@@ -114,6 +115,7 @@ namespace Improbable.Gdk.Core
             foreach (var componentCleanup in componentCleanups)
             {
                 componentCleanup.Handler.CleanupUpdates(componentCleanup.UpdateGroup, ref buffer);
+                componentCleanup.Handler.CleanupAuthChanges(componentCleanup.AuthorityChangesGroup, ref buffer);
             }
         }
 
@@ -121,6 +123,7 @@ namespace Improbable.Gdk.Core
         {
             public ComponentCleanupHandler Handler;
             public ComponentGroup UpdateGroup;
+            public ComponentGroup AuthorityChangesGroup;
         }
     }
 }
