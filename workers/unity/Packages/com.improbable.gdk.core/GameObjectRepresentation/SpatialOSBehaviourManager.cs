@@ -71,14 +71,9 @@ namespace Improbable.Gdk.Core
         }
 
 
-        public HashSet<IReaderWriterInternal> GetReadersWriters(uint componentId)
+        public bool TryGetReadersWriters(uint componentId, out HashSet<IReaderWriterInternal> readers)
         {
-            if (!compIdToReadersWriters.ContainsKey(componentId))
-            {
-                return null;
-            }
-
-            return compIdToReadersWriters[componentId];
+            return compIdToReadersWriters.TryGetValue(componentId, out readers);
         }
 
         public void EnableSpatialOSBehaviours()
