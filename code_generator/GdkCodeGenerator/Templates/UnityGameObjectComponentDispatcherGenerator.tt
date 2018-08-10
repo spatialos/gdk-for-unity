@@ -66,14 +66,18 @@ namespace <#= qualifiedNamespace #>
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(<#= unityComponentDefinition.Id #>, out var readers))
+                    {
+                        continue;
+                    }
+
                     var updateList = updateLists[i];
-                    foreach (var reader in readers)
+                    foreach (<#= componentDetails.ComponentName #>.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            reader.OnComponentUpdate(update);
                         }
                     }
                 }
@@ -88,14 +92,19 @@ namespace <#= qualifiedNamespace #>
                     var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(<#= unityComponentDefinition.Id #>, out var readers))
+                        {
+                            continue;
+                        }
+
                         var eventList = eventLists[i];
-                        foreach (var reader in readers)
+
+                        foreach (<#= componentDetails.ComponentName #>.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
-                                ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).On<#= eventDetailsList[j].EventName #>Event(e);
+                                reader.On<#= eventDetailsList[j].EventName #>Event(e);
                             }
                         }
                     }
@@ -111,14 +120,18 @@ namespace <#= qualifiedNamespace #>
                     var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(<#= unityComponentDefinition.Id #>, out var readers))
+                        {
+                            continue;
+                        }
+
                         var commandList = commandLists[i];
-                        foreach (var reader in readers)
+                        foreach (<#= componentDetails.ComponentName #>.ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
-                                ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
+                                reader.On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
                             }
                         }
                     }
@@ -146,14 +159,18 @@ namespace <#= qualifiedNamespace #>
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(<#= unityComponentDefinition.Id #>);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(<#= unityComponentDefinition.Id #>, out var readers))
+                    {
+                        continue;
+                    }
+
                     var authChanges = authChangeLists[i];
-                    foreach (var reader in readers)
+                    foreach (<#= componentDetails.ComponentName #>.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((<#= componentDetails.ComponentName #>.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            reader.OnAuthorityChange(auth);
                         }
                     }
                 }

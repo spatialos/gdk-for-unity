@@ -50,14 +50,18 @@ namespace Generated.Improbable.Gdk.Tests
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveSingular.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(197715);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(197715, out var readers))
+                    {
+                        continue;
+                    }
+
                     var updateList = updateLists[i];
-                    foreach (var reader in readers)
+                    foreach (ExhaustiveSingular.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((ExhaustiveSingular.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            reader.OnComponentUpdate(update);
                         }
                     }
                 }
@@ -91,14 +95,18 @@ namespace Generated.Improbable.Gdk.Tests
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveSingular>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(197715);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(197715, out var readers))
+                    {
+                        continue;
+                    }
+
                     var authChanges = authChangeLists[i];
-                    foreach (var reader in readers)
+                    foreach (ExhaustiveSingular.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((ExhaustiveSingular.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            reader.OnAuthorityChange(auth);
                         }
                     }
                 }

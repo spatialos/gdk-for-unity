@@ -54,14 +54,18 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSBlittableComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1001);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(1001, out var readers))
+                    {
+                        continue;
+                    }
+
                     var updateList = updateLists[i];
-                    foreach (var reader in readers)
+                    foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            ((BlittableComponent.ReaderWriterImpl) reader).OnComponentUpdate(update);
+                            reader.OnComponentUpdate(update);
                         }
                     }
                 }
@@ -74,14 +78,19 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(1001);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        {
+                            continue;
+                        }
+
                         var eventList = eventLists[i];
-                        foreach (var reader in readers)
+
+                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
-                                ((BlittableComponent.ReaderWriterImpl) reader).OnFirstEventEvent(e);
+                                reader.OnFirstEventEvent(e);
                             }
                         }
                     }
@@ -91,14 +100,19 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(1001);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        {
+                            continue;
+                        }
+
                         var eventList = eventLists[i];
-                        foreach (var reader in readers)
+
+                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
-                                ((BlittableComponent.ReaderWriterImpl) reader).OnSecondEventEvent(e);
+                                reader.OnSecondEventEvent(e);
                             }
                         }
                     }
@@ -112,14 +126,18 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(1001);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        {
+                            continue;
+                        }
+
                         var commandList = commandLists[i];
-                        foreach (var reader in readers)
+                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
-                                ((BlittableComponent.ReaderWriterImpl) reader).OnFirstCommandCommandRequest(req);
+                                reader.OnFirstCommandCommandRequest(req);
                             }
                         }
                     }
@@ -129,14 +147,18 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                            .GetReadersWriters(1001);
+                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        {
+                            continue;
+                        }
+
                         var commandList = commandLists[i];
-                        foreach (var reader in readers)
+                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
-                                ((BlittableComponent.ReaderWriterImpl) reader).OnSecondCommandCommandRequest(req);
+                                reader.OnSecondCommandCommandRequest(req);
                             }
                         }
                     }
@@ -163,14 +185,18 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readers = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index)
-                        .GetReadersWriters(1001);
+                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
+                    if (!manager.TryGetReadersWriters(1001, out var readers))
+                    {
+                        continue;
+                    }
+
                     var authChanges = authChangeLists[i];
-                    foreach (var reader in readers)
+                    foreach (BlittableComponent.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            ((BlittableComponent.ReaderWriterImpl) reader).OnAuthorityChange(auth);
+                            reader.OnAuthorityChange(auth);
                         }
                     }
                 }
