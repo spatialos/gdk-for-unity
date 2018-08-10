@@ -33,6 +33,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             event Action<long> LongFieldUpdated;
             event Action<float> FloatFieldUpdated;
             event Action<double> DoubleFieldUpdated;
+            event Action<FirstEventEvent> OnFirstEvent;
+            event Action<SecondEventEvent> OnSecondEvent;
         }
 
         [WriterInterface]
@@ -121,14 +123,30 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
+            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
+
+            public event Action<FirstEventEvent> OnFirstEvent
+            {
+                add => firstEventDelegates.Add(value);
+                remove => firstEventDelegates.Remove(value);
+            }
+
             public void OnFirstEventEvent(FirstEventEvent payload)
             {
-                throw new System.NotImplementedException();
+                DispatchEventWithErrorHandling(payload, firstEventDelegates);
+            }
+
+            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
+
+            public event Action<SecondEventEvent> OnSecondEvent
+            {
+                add => secondEventDelegates.Add(value);
+                remove => secondEventDelegates.Remove(value);
             }
 
             public void OnSecondEventEvent(SecondEventEvent payload)
             {
-                throw new System.NotImplementedException();
+                DispatchEventWithErrorHandling(payload, secondEventDelegates);
             }
 
             public void OnFirstCommandCommandRequest(FirstCommand.Request request)
