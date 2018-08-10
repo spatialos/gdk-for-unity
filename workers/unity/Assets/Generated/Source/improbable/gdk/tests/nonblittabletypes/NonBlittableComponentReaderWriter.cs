@@ -3,11 +3,12 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
+using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.Core.MonoBehaviours;
-using Improbable.Worker;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
