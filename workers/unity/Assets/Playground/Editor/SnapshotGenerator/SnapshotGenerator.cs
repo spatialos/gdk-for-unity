@@ -26,12 +26,12 @@ namespace Playground.Editor.SnapshotGenerator
             var snapshot = CreateSnapshot(arguments.NumberEntities);
 
             Debug.Log($"Writing snapshot to: {arguments.OutputPath}");
-            snapshot.Serialize(arguments.OutputPath);
+            snapshot.WriteToFile(arguments.OutputPath);
         }
 
-        private static SnapshotBuilder CreateSnapshot(int cubeCount)
+        private static Snapshot CreateSnapshot(int cubeCount)
         {
-            var snapshot = new SnapshotBuilder();
+            var snapshot = new Snapshot();
 
             AddPlayerSpawner(snapshot);
             AddCubeGrid(snapshot, cubeCount);
@@ -39,21 +39,20 @@ namespace Playground.Editor.SnapshotGenerator
             return snapshot;
         }
 
-        private static void AddPlayerSpawner(SnapshotBuilder snapshot)
+        private static void AddPlayerSpawner(Snapshot snapshot)
         {
             var playerCreator = SpatialOSPlayerCreator.CreateSchemaComponentData();
             var spawner = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, UnityGameLogic.WorkerType)
-                .AddMetadata(ArchetypeConfig.PlayerCreator, UnityGameLogic.WorkerType)
+                .AddMetadata("PlayerCreator", UnityGameLogic.WorkerType)
                 .SetPersistence(true)
                 .SetReadAcl(UnityWorkers)
                 .AddComponent(playerCreator, UnityGameLogic.WorkerType)
                 .Build();
-            
             snapshot.AddEntity(spawner);
         }
 
-        private static void AddCubeGrid(SnapshotBuilder snapshot, int cubeCount)
+        private static void AddCubeGrid(Snapshot snapshot, int cubeCount)
         {
             // Calculate grid size
             var gridLength = (int) Math.Ceiling(Math.Sqrt(cubeCount));

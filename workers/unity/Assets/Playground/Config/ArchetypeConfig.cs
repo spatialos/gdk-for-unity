@@ -9,7 +9,6 @@ namespace Playground
     {
         public const string CharacterArchetype = "Character";
         public const string CubeArchetype = "Cube";
-        public const string PlayerCreator = "PlayerCreator";
 
         public static readonly Dictionary<string, Dictionary<string, ComponentType[]>>
             WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class SnapshotBuilder
+    public class Snapshot
     {
         private readonly Dictionary<EntityId, Entity> entities = new Dictionary<EntityId, Entity>();
 
@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
             entities[new EntityId(entities.Count + 1)] = entity;
         }
 
-        public void Serialize(string path)
+        public void WriteToFile(string path)
         {
             var parameters = new SnapshotParameters
             {
