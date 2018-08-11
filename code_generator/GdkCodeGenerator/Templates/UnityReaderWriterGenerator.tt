@@ -33,11 +33,7 @@ namespace <#= qualifiedNamespace #>
 
         [ReaderInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-<# if (fieldDetailsList.Count > 0) { #>
         public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
-<# } else { #>
-        public interface Reader : IReader<<#= componentDetails.TypeName #>>
-<# } #>
         {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
             event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
@@ -51,22 +47,16 @@ namespace <#= qualifiedNamespace #>
 
         [WriterInterface]
         [ComponentId(<#= unityComponentDefinition.Id #>)]
-<# if (fieldDetailsList.Count > 0) { #>
         public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
-<# } else { #>
-        public interface Writer : IWriter<<#= componentDetails.TypeName #>>
-<# } #>
         {
         }
 
-<# if (fieldDetailsList.Count > 0 && componentDetails.IsBlittable) { #>
+<# if (componentDetails.IsBlittable) { #>
         internal class ReaderWriterImpl :
             BlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } else if (fieldDetailsList.Count > 0 && !componentDetails.IsBlittable) { #>
+<# } else { #>
         internal class ReaderWriterImpl :
             NonBlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } else /* fieldDetailsList.Count == 0 */ { #>
-        internal class ReaderWriterImpl : ReaderWriterBase<<#= componentDetails.TypeName #>>, Reader, Writer
 <# } #>
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
@@ -83,7 +73,6 @@ namespace <#= qualifiedNamespace #>
                 remove => <#= fieldDetails.CamelCaseName #>Delegates.Remove(value);
             }
 <# } #>
-<# if (fieldDetailsList.Count > 0) { #>
 
             protected override void TriggerFieldCallbacks(<#= componentDetails.TypeName#>.Update update)
             {
@@ -104,7 +93,6 @@ namespace <#= qualifiedNamespace #>
                 }
 <# } #>
             }
-<# } #>
 <# foreach (var eventDetails in eventDetailsList) {
             var delegateList = eventDetails.CamelCaseTypeName + "Delegates";
             var eventType = eventDetails.EventName + "Event";
