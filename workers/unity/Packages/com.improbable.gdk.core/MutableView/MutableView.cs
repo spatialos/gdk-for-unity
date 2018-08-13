@@ -292,7 +292,7 @@ namespace Improbable.Gdk.Core
         }
 
         internal void RemoveEntity(long entityId)
-        {            
+        {
             if (!TryGetEntity(entityId, out _))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
