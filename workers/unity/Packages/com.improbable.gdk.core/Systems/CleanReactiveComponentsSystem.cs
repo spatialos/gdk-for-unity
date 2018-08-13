@@ -48,6 +48,7 @@ namespace Improbable.Gdk.Core
                     {
                         continue;
                     }
+
                     if (!typeof(IComponentData).IsAssignableFrom(type)
                         && !typeof(ISharedComponentData).IsAssignableFrom(type))
                     {
@@ -66,20 +67,20 @@ namespace Improbable.Gdk.Core
 
         private void RemoveComponents()
         {
-            var componentToRemove = new List<Tuple<Entity,Type>>();
+            var componentToRemove = new List<(Entity, Type)>();
             foreach (Type type in typesToRemove)
             {
                 var componentGroup = GetComponentGroup(ComponentType.ReadOnly(type));
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    componentToRemove.Add(Tuple.Create<Entity, Type>(entityArray[i], type));
+                    componentToRemove.Add((entityArray[i], type));
                 }
             }
 
-            foreach (Tuple<Entity, Type> entity in componentToRemove)
+            foreach ((Entity entity, Type type) in componentToRemove)
             {
-                EntityManager.RemoveComponent(entity.Item1, entity.Item2);
+                EntityManager.RemoveComponent(entity, type);
             }
         }
 

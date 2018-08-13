@@ -24,10 +24,6 @@ namespace Improbable.Gdk.Core
     [RemoveAtEndOfTick]
     public struct OnConnected : IComponentData
     {
-        public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
-        {
-            commands.RemoveComponent<OnConnected>(entity);
-        }
     }
 
     /// <summary>
@@ -41,9 +37,5 @@ namespace Improbable.Gdk.Core
         ///     The reported reason for disconnecting
         /// </summary>
         public string ReasonForDisconnect;
-        public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
-        {
-            commands.RemoveComponent<OnDisconnected>(entity);
-        }
     }
 }
