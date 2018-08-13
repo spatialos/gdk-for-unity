@@ -147,7 +147,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(true, option == option);
+            Assert.AreEqual(true, option == payload);
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(false, option != option);
+            Assert.AreEqual(false, option != payload);
         }
 
         [Test]

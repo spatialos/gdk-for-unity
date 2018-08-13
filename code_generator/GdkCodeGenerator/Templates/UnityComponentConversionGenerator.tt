@@ -109,14 +109,13 @@ namespace <#= qualifiedNamespace #>
             public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
             {
 <# if(commandDetailsList.Count > 0) { #>
-                view.AddComponent(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                View.AddComponent(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, TranslationHandle));
 <# } #>
             }
 
             public void OnAddComponent(AddComponentOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -135,19 +134,19 @@ namespace <#= qualifiedNamespace #>
                 <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
 
 <# if (componentDetails.IsBlittable) { #>
-                view.AddComponent(entity, <#= componentDetails.CamelCaseTypeName#>);
+                View.AddComponent(entity, <#= componentDetails.CamelCaseTypeName#>);
 <# } else { #>
-                view.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
+                View.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
 <# } #>
-                view.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+                View.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
 
-                if (view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                if (View.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
+                    View.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                else if (!View.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                    View.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -161,8 +160,7 @@ namespace <#= qualifiedNamespace #>
 
             public void OnComponentUpdate(ComponentUpdateOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -172,16 +170,16 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# if (componentDetails.IsBlittable) { #>
-                var componentData = view.GetComponent<<#= componentDetails.TypeName #>>(entity);
+                var componentData = View.GetComponent<<#= componentDetails.TypeName #>>(entity);
 <# } else { #>
-                var componentData = view.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
+                var componentData = View.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
 <# } #>
 <# if(fieldDetailsList.Count > 0 || eventDetailsList.Count > 0) { #>
                 var update = op.Update.Get();
 <# } #>
 
 <# if(fieldDetailsList.Count > 0) { #>
-                if (view.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
+                if (View.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
@@ -201,15 +199,15 @@ namespace <#= qualifiedNamespace #>
                         Payload = <#= eventDetails.FullyQualifiedPayloadTypeName #>.ToNative(spatialEvent)
                     };
 
-                    view.AddEventReceived(entity, nativeEvent, <#= eventDetails.EventName #>EventPool);
+                    View.AddEventReceived(entity, nativeEvent, <#= eventDetails.EventName #>EventPool);
                 }
 <# } #>
                 componentData.DirtyBit = false;
 
 <# if (componentDetails.IsBlittable) { #>
-                view.SetComponentData(entity, componentData);
+                View.SetComponentData(entity, componentData);
 <# } else { #>
-                view.SetComponentObject(entity, componentData);
+                View.SetComponentObject(entity, componentData);
 <# } #>
 
 <# if (fieldDetailsList.Count > 0) { #>
@@ -225,15 +223,14 @@ namespace <#= qualifiedNamespace #>
 
                 if (componentFieldsUpdated)
                 {
-                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
 <# } #>
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -242,15 +239,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                view.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+                View.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
 
-                if (view.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                if (View.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                    View.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                    View.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
                 }
                 else
                 {
@@ -271,17 +268,17 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
 <# } #>
-                    view.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, translationHandle));
+                    View.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, TranslationHandle));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
 <# foreach(var eventDetails in eventDetailsList) { #>
                     EntityIdTo<#= eventDetails.EventName #>Events.Remove(entityId);
 <# } #>
-                    view.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
+                    View.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
                 }
 <# } #>
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)
@@ -322,7 +319,7 @@ namespace <#= qualifiedNamespace #>
 <# if (componentDetails.IsBlittable) { #>
                         componentDataArray[i] = componentData;
 <# } else { #>
-                        view.SetComponentObject(entityId, componentData);
+                        View.SetComponentObject(entityId, componentData);
 <# } #>
 
 <# foreach(var eventDetails in eventDetailsList) { #>
@@ -358,8 +355,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var commandDetails in commandDetailsList) { #>
             public void OnCommandRequest<#= commandDetails.CommandName #>(CommandRequestOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -372,7 +368,7 @@ namespace <#= qualifiedNamespace #>
                 var unityRequestPayload = <#= commandDetails.RequestType #>.ToNative(requestPayload);
                 var request = new <#= commandDetails.CommandName #>.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
 
-                view.AddCommandRequest(entity, request, <#= commandDetails.CommandName #>RequestPool);
+                View.AddCommandRequest(entity, request, <#= commandDetails.CommandName #>RequestPool);
             }
 
             public void OnCommandResponse<#= commandDetails.CommandName #>(CommandResponseOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
@@ -393,9 +389,9 @@ namespace <#= qualifiedNamespace #>
                 Unity.Entities.Entity entity;
                 if (requestContext.EntityId == MutableView.WorkerEntityId)
                 {
-                    entity = view.WorkerEntity;
+                    entity = View.WorkerEntity;
                 }
-                else if (!view.TryGetEntity(requestContext.EntityId, out entity))
+                else if (!View.TryGetEntity(requestContext.EntityId, out entity))
                 {
                     return;
                 }
@@ -406,7 +402,7 @@ namespace <#= qualifiedNamespace #>
                 var outgoingRequest = (<#= commandDetails.CommandName #>.OutgoingRequest) requestContext.Request;
                 var response = new <#= commandDetails.CommandName #>.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
 
-                view.AddCommandResponse(entity, response, <#= commandDetails.CommandName #>ResponsePool);
+                View.AddCommandResponse(entity, response, <#= commandDetails.CommandName #>ResponsePool);
             }
 
             private void Send<#= commandDetails.CommandName #>Request(Connection connection, <#= commandDetails.CommandName #>.OutgoingRequest outgoingRequest)

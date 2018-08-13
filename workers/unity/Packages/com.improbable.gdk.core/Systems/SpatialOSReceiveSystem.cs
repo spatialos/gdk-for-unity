@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
         private MutableView view;
         private Dispatcher dispatcher;
 
-        private bool inCriticalSection = false;
+        private bool inCriticalSection;
 
         protected override void OnCreateManager(int capacity)
         {

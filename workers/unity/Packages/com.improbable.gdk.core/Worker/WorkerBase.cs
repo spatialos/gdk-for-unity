@@ -7,19 +7,19 @@ namespace Improbable.Gdk.Core
 {
     public abstract class WorkerBase : IDisposable
     {
-        public World World { get; private set; }
+        public World World { get; }
 
-        public MutableView View { get; private set; }
+        public MutableView View { get; }
 
         public Connection Connection { get; private set; }
 
-        public Vector3 Origin { get; private set; }
+        public Vector3 Origin { get; }
 
         public string WorkerId { get; private set; }
 
         public abstract string GetWorkerType { get; }
 
-        public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
+        public EntityGameObjectLinker EntityGameObjectLinker { get; }
 
         public bool UseDynamicId { get; protected set; }
 
@@ -58,24 +58,23 @@ namespace Improbable.Gdk.Core
 
         public virtual void Connect(ConnectionConfig config)
         {
-            if (config is ReceptionistConfig)
+            switch (config)
             {
-                if (UseDynamicId)
-                {
-                    WorkerId = GenerateDynamicWorkerId();
-                }
+                case ReceptionistConfig receptionistConfig:
+                    if (UseDynamicId)
+                    {
+                        WorkerId = GenerateDynamicWorkerId();
+                    }
 
-                Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType,
-                    WorkerId);
-            }
-            else if (config is LocatorConfig)
-            {
-                Connection = ConnectionUtility.LocatorConnectToSpatial((LocatorConfig) config, GetWorkerType);
-            }
-            else
-            {
-                throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
-                    "ReceptionistConfig and LocatorConfig are supported.");
+                    Connection = ConnectionUtility.ConnectToSpatial(receptionistConfig, GetWorkerType,
+                        WorkerId);
+                    break;
+                case LocatorConfig locatorConfig:
+                    Connection = ConnectionUtility.LocatorConnectToSpatial(locatorConfig, GetWorkerType);
+                    break;
+                default:
+                    throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
+                        "ReceptionistConfig and LocatorConfig are supported.");
             }
 
             Application.quitting += () =>

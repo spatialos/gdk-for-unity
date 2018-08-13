@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
 {
     public abstract class MessagesReceived<T> : Component
     {
-        public List<T> Buffer = new List<T>();
+        public List<T> Buffer { get; } = new List<T>();
     }
 
     public class ComponentsUpdated<T> : MessagesReceived<T> where T : ISpatialComponentUpdate

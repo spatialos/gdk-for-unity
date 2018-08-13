@@ -22,24 +22,23 @@ namespace Improbable.Gdk.Core.Components
         }
 
         public abstract ComponentType TargetComponentType { get; }
-        protected readonly MutableView view;
+        protected readonly MutableView View;
         protected readonly ILogDispatcher LogDispatcher;
 
         protected ComponentTranslation(MutableView view)
         {
-            this.view = view;
+            View = view;
             LogDispatcher = view.LogDispatcher;
-            translationHandle = GetNextHandle();
-            HandleToTranslation.Add(translationHandle, this);
+            TranslationHandle = GetNextHandle();
+            HandleToTranslation.Add(TranslationHandle, this);
         }
 
         public void Dispose()
         {
-            ComponentTranslation translationForHandle;
-            if (HandleToTranslation.TryGetValue(translationHandle, out translationForHandle) &&
+            if (HandleToTranslation.TryGetValue(TranslationHandle, out var translationForHandle) &&
                 translationForHandle == this)
             {
-                HandleToTranslation.Remove(translationHandle);
+                HandleToTranslation.Remove(TranslationHandle);
             }
         }
 
@@ -48,7 +47,7 @@ namespace Improbable.Gdk.Core.Components
 
         private static uint GetNextHandle() => (uint) HandleToTranslation.Count;
 
-        protected uint translationHandle { get; }
+        protected uint TranslationHandle { get; }
 
         public abstract void RegisterWithDispatcher(Dispatcher dispatcher);
 
@@ -70,7 +69,7 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
+                if (View.HasComponent<T>(entity))
                 {
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
@@ -86,9 +85,9 @@ namespace Improbable.Gdk.Core.Components
             for (var i = 0; i < entityArray.Length; i++)
             {
                 var entity = entityArray[i];
-                if (view.HasComponent<T>(entity))
+                if (View.HasComponent<T>(entity))
                 {
-                    pool.PutComponent(view.GetComponentObject<T>(entity));
+                    pool.PutComponent(View.GetComponentObject<T>(entity));
                     entityCommandBuffer.RemoveComponent<T>(entity);
                 }
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.Components
@@ -14,8 +15,8 @@ namespace Improbable.Gdk.Core.Components
 
         public ComponentPool(InitFunc<T> initFunc, ResetFunc<T> resetFunc)
         {
-            init = initFunc;
-            reset = resetFunc;
+            init = initFunc ?? throw new ArgumentNullException(nameof(initFunc));
+            reset = resetFunc ?? throw new ArgumentNullException(nameof(resetFunc));
         }
 
         public T GetComponent()

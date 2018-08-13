@@ -5,7 +5,6 @@ namespace Improbable.Gdk.Core
     public interface IMessageSender<T> : IComponentData
     {
         long EntityId { get; }
-        uint InternalHandleToTranslation { get; }
     }
 
     public struct CommandRequestSender<T> : IMessageSender<T>

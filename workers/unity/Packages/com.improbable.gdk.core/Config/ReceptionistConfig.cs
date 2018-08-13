@@ -14,13 +14,15 @@ namespace Improbable.Gdk.Core
 
         public static ReceptionistConfig CreateConnectionConfigFromCommandLine(Dictionary<string, string> parsedArgs)
         {
-            var config = new ReceptionistConfig();
-            config.ReceptionistHost = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.ReceptionistHost, RuntimeConfigDefaults.ReceptionistHost);
-            config.ReceptionistPort = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort);
-            config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol);
+            var config = new ReceptionistConfig
+            {
+                ReceptionistHost = CommandLineUtility.GetCommandLineValue(
+                    parsedArgs, RuntimeConfigNames.ReceptionistHost, RuntimeConfigDefaults.ReceptionistHost),
+                ReceptionistPort = CommandLineUtility.GetCommandLineValue(
+                    parsedArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort),
+                LinkProtocol = CommandLineUtility.GetCommandLineValue(
+                    parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol)
+            };
             return config;
         }
     }

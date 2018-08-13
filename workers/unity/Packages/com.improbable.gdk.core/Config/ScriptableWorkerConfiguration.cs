@@ -9,6 +9,6 @@ namespace Improbable.Gdk.Core
 
         public List<WorkerConfiguration> WorkerConfigurations = new List<WorkerConfiguration>();
 
-        public bool UseExternalIp = false;
+        public bool UseExternalIp;
     }
 }

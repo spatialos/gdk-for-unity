@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 using UnityEngine;
 
@@ -27,9 +28,7 @@ namespace Improbable.Gdk.Core
 
         public static void UnsetWorkerForWorld(WorkerBase worker)
         {
-            WorkerBase workerForWorld;
-
-            if (WorldToWorker.TryGetValue(worker.World, out workerForWorld) && workerForWorld == worker)
+            if (WorldToWorker.TryGetValue(worker.World, out var workerForWorld) && workerForWorld == worker)
             {
                 WorldToWorker.Remove(worker.World);
             }
@@ -37,8 +36,7 @@ namespace Improbable.Gdk.Core
 
         public static WorkerBase GetWorkerForWorld(World world)
         {
-            WorkerBase worker;
-            WorldToWorker.TryGetValue(world, out worker);
+            WorldToWorker.TryGetValue(world, out var worker);
             return worker;
         }
 
@@ -62,8 +60,7 @@ namespace Improbable.Gdk.Core
 
         public static WorkerBase CreateWorker(string workerType, string workerId, Vector3 origin)
         {
-            Func<string, Vector3, WorkerBase> createWorker;
-            if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out createWorker))
+            if (!WorkerTypeToInitializationFunction.TryGetValue(workerType, out var createWorker))
             {
                 throw new ArgumentException($"No worker found for worker type '{workerType}'", nameof(workerType));
             }
@@ -73,12 +70,9 @@ namespace Improbable.Gdk.Core
 
         public static WorkerRequirementSet GetWorkerRequirementSet(Type workerType, params Type[] workerTypes)
         {
-            var workerAttributes = new Improbable.Collections.List<WorkerAttributeSet>();
-            workerAttributes.Add(WorkerTypeToAttributeSet[workerType]);
-            foreach (var nextType in workerTypes)
-            {
-                workerAttributes.Add(WorkerTypeToAttributeSet[nextType]);
-            }
+            var workerAttributes =
+                new Improbable.Collections.List<WorkerAttributeSet> { WorkerTypeToAttributeSet[workerType] };
+            workerAttributes.AddRange(workerTypes.Select(nextType => WorkerTypeToAttributeSet[nextType]));
 
             return new WorkerRequirementSet(workerAttributes);
         }

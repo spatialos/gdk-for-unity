@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     public class EntityGameObjectLinker
     {
         private readonly World world;
-        private MutableView view;
+        private readonly MutableView view;
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
 
         public EntityGameObjectLinker(World world, MutableView view)
