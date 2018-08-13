@@ -7,11 +7,8 @@ namespace Improbable.Gdk.Core
     ///     This component is automatically added to an entity upon its creation and automatically removed at the end of the
     ///     same frame.
     /// </summary>
-    public struct NewlyAddedSpatialOSEntity : IComponentData, IRemoveableComponent
+    [RemoveAtEndOfTick]
+    public struct NewlyAddedSpatialOSEntity : IComponentData
     {
-        public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
-        {
-            commands.RemoveComponent<NewlyAddedSpatialOSEntity>(entity);
-        }
     }
 }

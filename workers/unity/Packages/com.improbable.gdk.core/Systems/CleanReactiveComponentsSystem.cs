@@ -44,10 +44,12 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.IsAbstract ||
-                        !typeof(IRemoveableComponent).IsAssignableFrom(type) ||
-                        (!typeof(IComponentData).IsAssignableFrom(type)
-                         && !typeof(ISharedComponentData).IsAssignableFrom(type)))
+                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
+                    {
+                        continue;
+                    }
+                    if (!typeof(IComponentData).IsAssignableFrom(type)
+                        && !typeof(ISharedComponentData).IsAssignableFrom(type))
                     {
                         continue;
                     }
@@ -59,7 +61,7 @@ namespace Improbable.Gdk.Core
 
                     typesToRemove.Add(type);
                 }
-            }            
+            }
         }
 
         private void RemoveComponents()
@@ -90,7 +92,7 @@ namespace Improbable.Gdk.Core
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
-            
+
             // Clean components with RemoveAtEndOfTick attribute
             foreach (var removeComponentAction in removeComponentActions)
             {

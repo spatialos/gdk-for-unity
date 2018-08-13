@@ -21,7 +21,8 @@ namespace Improbable.Gdk.Core
     ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
     ///     Removed at the end of the tick it was added
     /// </summary>
-    public struct OnConnected : IComponentData, IRemoveableComponent
+    [RemoveAtEndOfTick]
+    public struct OnConnected : IComponentData
     {
         public void RemoveComponent(EntityCommandBuffer commands, Entity entity)
         {
@@ -33,7 +34,8 @@ namespace Improbable.Gdk.Core
     ///     Component added to the worker entity immediately after disconnecting from SpatialOS
     ///     Removed at the end of the tick it was added
     /// </summary>
-    public struct OnDisconnected : ISharedComponentData, IRemoveableComponent
+    [RemoveAtEndOfTick]
+    public struct OnDisconnected : ISharedComponentData
     {
         /// <summary>
         ///     The reported reason for disconnecting
