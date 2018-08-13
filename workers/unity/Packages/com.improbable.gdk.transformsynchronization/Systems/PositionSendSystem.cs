@@ -45,7 +45,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
                 var update = new global::Improbable.Position.Update();
                 update.SetCoords(global::Generated.Improbable.Coordinates.ToSpatial(component.Coords));
-                Generated.Improbable.Position.Translation.SendComponentUpdate(worker.Connection, entityId, update);
+                Generated.Improbable.Position.Translation.SendComponentUpdate(Worker.Connection, entityId, update);
 
                 component.DirtyBit = false;
                 positionData.Position[i] = component;
