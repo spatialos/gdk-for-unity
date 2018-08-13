@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         private EntityGameObjectLinker entityGameObjectLinker;
         private GameObject testGameObject;
         private Entity testEntity;
-        private const long testSpatialEntityId = 1337;
+        private const long TestSpatialEntityId = 1337;
 
         [SetUp]
         public void Setup()
@@ -39,12 +39,12 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void LinkGameObjectToEntity_adds_SpatialOSComponent_component()
         {
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, TestSpatialEntityId,
                 new ViewCommandBuffer());
             var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(spatialOSComponent);
             Assert.AreEqual(testEntity, spatialOSComponent.Entity);
-            Assert.AreEqual(testSpatialEntityId, spatialOSComponent.SpatialEntityId);
+            Assert.AreEqual(TestSpatialEntityId, spatialOSComponent.SpatialEntityId);
             Assert.AreEqual(world, spatialOSComponent.World);
         }
 
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             testGameObject.AddComponent<TestMonoBehaviour>();
             var viewCommandBuffer = new ViewCommandBuffer();
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, TestSpatialEntityId,
                 viewCommandBuffer);
             Assert.IsFalse(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
             viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             testGameObject.AddComponent<TestMonoBehaviour>();
             testGameObject.AddComponent<TestMonoBehaviour>();
             var viewCommandBuffer = new ViewCommandBuffer();
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, TestSpatialEntityId,
                 viewCommandBuffer);
             viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));

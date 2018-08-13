@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -13,7 +12,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             public int Value;
         }
 
-        [UsedImplicitly]
         private class ExampleHybridSystem : ComponentSystem
         {
             private struct PreparationData
