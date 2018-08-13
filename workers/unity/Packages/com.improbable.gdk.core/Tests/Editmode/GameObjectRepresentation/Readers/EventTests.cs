@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
 using NUnit.Framework;
 using Unity.Entities;
+using UnityEngine;
+using UnityEngine.TestTools;
 using ComponentWithEvents = Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
 
 namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
@@ -10,20 +13,20 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
     [TestFixture]
     internal class EventTests
     {
-        protected ComponentWithEvents.Reader ReaderPublic;
-        protected ComponentWithEvents.ReaderWriterImpl ReaderWriterInternal;
-        protected EntityManager EntityManager;
-        protected Entity Entity;
+        private ComponentWithEvents.Reader readerPublic;
+        private ComponentWithEvents.ReaderWriterImpl readerWriterInternal;
+        private EntityManager entityManager;
+        private Entity entity;
         private World world;
 
         [SetUp]
         public void SetUp()
         {
             world = new World("test-world");
-            EntityManager = world.GetOrCreateManager<EntityManager>();
-            Entity = EntityManager.CreateEntity(typeof(SpatialOSBlittableComponent));
-            ReaderWriterInternal = new ComponentWithEvents.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
-            ReaderPublic = ReaderWriterInternal;
+            entityManager = world.GetOrCreateManager<EntityManager>();
+            entity = entityManager.CreateEntity(ComponentType.Create<SpatialOSBlittableComponent>());
+            readerWriterInternal = new ComponentWithEvents.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+            readerPublic = readerWriterInternal;
         }
 
         [TearDown]
@@ -36,8 +39,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void Event_callback_is_invoked()
         {
             bool callbackInvoked = false;
-            ReaderPublic.OnEvt += (ev => callbackInvoked = true);
-            ReaderWriterInternal.OnEvtEvent(new EvtEvent());
+            readerPublic.OnEvt += (ev => callbackInvoked = true);
+            readerWriterInternal.OnEvtEvent(new EvtEvent());
             Assert.IsTrue(callbackInvoked);
         }
 
@@ -45,18 +48,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         public void All_event_callbacks_invoked_if_one_throws_exceptiom()
         {
             bool firstCallbackInvoked = false;
-            ReaderPublic.OnEvt += (ev => firstCallbackInvoked = true);
-            ReaderWriterInternal.OnEvtEvent(new EvtEvent());
+            readerPublic.OnEvt += (ev => firstCallbackInvoked = true);
             bool secondCallbackInvoked = false;
-            ReaderPublic.OnEvt += (ev =>
+            readerPublic.OnEvt += (ev =>
             {
                 secondCallbackInvoked = true;
-                throw new Exception("no u");
+                throw new Exception("Exception propagated from user event callback");
             });
-            ReaderWriterInternal.OnEvtEvent(new EvtEvent());
             bool thirdCallbackInvoked = false;
-            ReaderPublic.OnEvt += (ev => thirdCallbackInvoked = true);
-            ReaderWriterInternal.OnEvtEvent(new EvtEvent());
+            readerPublic.OnEvt += (ev => thirdCallbackInvoked = true);
+            readerWriterInternal.OnEvtEvent(new EvtEvent());
+            LogAssert.Expect(LogType.Exception,
+                new Regex(".*Exception propagated from user event callback.*", RegexOptions.Singleline));
             Assert.IsTrue(firstCallbackInvoked);
             Assert.IsTrue(secondCallbackInvoked);
             Assert.IsTrue(thirdCallbackInvoked);
