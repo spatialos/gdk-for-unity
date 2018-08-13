@@ -97,5 +97,8 @@ if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
    [ $TOOLS_TEST_RESULT -ne 0 ]
 then
+    >&2 echo "Tests failed! See above for more information."
     exit 1
 fi
+
+echo "All tests passed!"
