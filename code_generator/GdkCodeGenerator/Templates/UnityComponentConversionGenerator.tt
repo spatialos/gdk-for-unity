@@ -244,7 +244,20 @@ namespace <#= qualifiedNamespace #>
                         break;
                 }
 
-                // TODO: Add to authorities changed list
+                if (entityManager.HasComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    var changes = entityManager.GetComponentData<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity);
+                    changes.Changes.Add(authority);
+                }
+                else 
+                {
+                    var changes = new AuthorityChanges<<#= componentDetails.TypeName #>>
+                    {
+                        Handle = AuthorityChangesProvider.Allocate(World)
+                    };
+                    AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
+                    entityManager.AddComponentData(entity, changes);
+                }                
             }
 
             private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
@@ -342,10 +355,10 @@ namespace <#= qualifiedNamespace #>
             private static readonly ComponentType[] cleanUpComponentTypes = {
                 typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
                 typeof(ComponentRemoved<<#= componentDetails.TypeName #>>)
-                // TODO: More to come potentially
             };
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>();
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
@@ -355,6 +368,17 @@ namespace <#= qualifiedNamespace #>
                 {
                     buffer.RemoveComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entities[i]);
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
+                }
+            }
+
+            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = authorityChangeGroup.GetEntityArray();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entities[i]);
+                    AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }
         }

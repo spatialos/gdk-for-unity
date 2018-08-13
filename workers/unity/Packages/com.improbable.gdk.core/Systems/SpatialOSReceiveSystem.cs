@@ -39,6 +39,9 @@ namespace Improbable.Gdk.Core
             {
                 pair.Value.Dispose();
             }
+
+            // Remove data for AuthorityChanges
+            AuthorityChangesProvider.CleanDataInWorld(World);
         }
 
         protected override void OnUpdate()
@@ -162,7 +165,7 @@ namespace Improbable.Gdk.Core
             {
                 var componentDispatcher =
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
-                        new object[]{ view , World} );
+                        new object[] { view, World });
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
             }
 
