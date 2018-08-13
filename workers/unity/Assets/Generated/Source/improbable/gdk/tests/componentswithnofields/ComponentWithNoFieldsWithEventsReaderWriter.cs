@@ -35,6 +35,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         [ComponentId(1004)]
         public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
         {
+            void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload);
         }
 
         internal class ReaderWriterImpl :
@@ -63,6 +64,12 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public void OnEvtEvent(EvtEvent payload)
             {
                 DispatchEventWithErrorHandling(payload, evtDelegates);
+            }
+
+            public void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+            {
+                var sender = EntityManager.GetComponentData<EventSender<SpatialOSComponentWithNoFieldsWithEvents>>(Entity);
+                sender.SendEvtEvent(payload);
             }
         }
     }

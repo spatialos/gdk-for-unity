@@ -45,6 +45,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         [ComponentId(1002)]
         public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
+            void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
+            void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
         }
 
         internal class ReaderWriterImpl :
@@ -192,6 +194,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 DispatchEventWithErrorHandling(payload, firstEventDelegates);
             }
 
+            public void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
+            {
+                var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
+                sender.SendFirstEventEvent(payload);
+            }
+
             private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
 
             public event Action<SecondEventEvent> OnSecondEvent
@@ -203,6 +211,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public void OnSecondEventEvent(SecondEventEvent payload)
             {
                 DispatchEventWithErrorHandling(payload, secondEventDelegates);
+            }
+
+            public void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
+            {
+                var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
+                sender.SendSecondEventEvent(payload);
             }
 
             public void OnFirstCommandCommandRequest(FirstCommand.Request request)

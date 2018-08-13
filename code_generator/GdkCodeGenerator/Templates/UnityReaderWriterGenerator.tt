@@ -49,6 +49,9 @@ namespace <#= qualifiedNamespace #>
         [ComponentId(<#= unityComponentDefinition.Id #>)]
         public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
         {
+<# foreach (var eventDetails in eventDetailsList) { #>
+            void Send<#= eventDetails.EventName #>( <#= eventDetails.FullyQualifiedPayloadTypeName #> payload);
+<# } #>
         }
 
 <# if (componentDetails.IsBlittable) { #>
@@ -109,6 +112,12 @@ namespace <#= qualifiedNamespace #>
             public void On<#= eventType #>(<#= eventType #> payload)
             {
                 DispatchEventWithErrorHandling(payload, <#= delegateList #>);
+            }
+
+            public void Send<#= eventDetails.EventName #>( <#= eventDetails.FullyQualifiedPayloadTypeName #> payload)
+            {
+                var sender = EntityManager.GetComponentData<EventSender<<#= componentDetails.TypeName #>>>(Entity);
+                sender.Send<#= eventDetails.EventName #>Event(payload);
             }
 <# } #>
 <# foreach (var command in commandDetailsList) { #>
