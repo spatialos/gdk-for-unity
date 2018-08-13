@@ -4,6 +4,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 
 namespace Generated.Improbable.Gdk.Tests
 {

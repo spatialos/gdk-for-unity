@@ -1,13 +1,11 @@
 using System.Linq;
-using System.Text.RegularExpressions;
 using Generated.Improbable;
 using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Generated.Improbable.Gdk.Tests.NonblittableTypes;
-using Improbable.Gdk.Core.MonoBehaviours;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 namespace Improbable.Gdk.Core.EditmodeTests

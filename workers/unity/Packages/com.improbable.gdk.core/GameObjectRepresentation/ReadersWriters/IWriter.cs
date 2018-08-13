@@ -1,4 +1,4 @@
-﻿namespace Improbable.Gdk.Core.MonoBehaviours
+﻿namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public interface IWriter<TSpatialComponentData, TComponentUpdate>
         : IReader<TSpatialComponentData, TComponentUpdate>

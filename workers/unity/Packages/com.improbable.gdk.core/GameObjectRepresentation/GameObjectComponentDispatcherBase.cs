@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     internal abstract class GameObjectComponentDispatcherBase
     {

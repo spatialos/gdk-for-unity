@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Gdk.Core.MonoBehaviours
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Marks an interface as a SpatialOS Component Writer interface.
