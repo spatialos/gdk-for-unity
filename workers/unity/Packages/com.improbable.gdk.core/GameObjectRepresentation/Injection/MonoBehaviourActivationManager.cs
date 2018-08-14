@@ -7,7 +7,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Keeps track of Reader/Writer availability for SpatialOSBehaviours on a particular GameObject and decides when
-    ///     a SpatialOSBehaviour should be enabled, calling into the SpatialOSBehaviourLibrary for injection.
+    ///     a SpatialOSBehaviour should be enabled, calling into the SpatialOSBehaviourLibrary for injection, storing
+    ///     the created Readers/Writers in the given ReaderWriterStore.
     /// </summary>
     internal class MonoBehaviourActivationManager
     {
@@ -71,11 +72,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 behaviours.Add(behaviour);
             }
-        }
-
-        public bool TryGetReadersWriters(uint componentId, out HashSet<IReaderWriterInternal> readers)
-        {
-            return store.TryGetReaderWritersForComponent(componentId, out readers);
         }
 
         public void EnableSpatialOSBehaviours()

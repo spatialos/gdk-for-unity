@@ -25,17 +25,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private ReaderWriterInjector injector;
         private ILogDispatcher logger;
 
-        internal void AddSpatialOSBehaviourManager(int entityIndex, MonoBehaviourActivationManager activationManager)
-        {
-            if (entityIndexToActivationManager.ContainsKey(entityIndex))
-            {
-                throw new ActivationManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entityIndex}.");
-            }
-
-            entityIndexToActivationManager[entityIndex] = activationManager;
-            activationManagers.Add(activationManager);
-        }
-
         internal void RemoveActivationManagerAndReaderWriterStore(int entityIndex)
         {
             if (!entityIndexToActivationManager.ContainsKey(entityIndex))
@@ -47,21 +36,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             entityIndexToActivationManager.Remove(entityIndex);
             activationManagers.Remove(spatialOSBehaviourManager);
             entityIndexToReaderWriterStore.Remove(entityIndex);
-        }
-
-        public bool HasSpatialOSBehaviourManager(int entityId)
-        {
-            return entityIndexToActivationManager.ContainsKey(entityId);
-        }
-
-        public MonoBehaviourActivationManager GetSpatialOSBehaviourManager(int entityIndex)
-        {
-            if (!entityIndexToActivationManager.ContainsKey(entityIndex))
-            {
-                throw new ActivationManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
-            }
-
-            return entityIndexToActivationManager[entityIndex];
         }
 
         protected override void OnCreateManager(int capacity)
