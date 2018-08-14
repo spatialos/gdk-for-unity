@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
@@ -12,8 +13,6 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
-        private MutableView view;
-
         private readonly List<Action> removeComponentActions = new List<Action>();
 
         private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
@@ -24,19 +23,20 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
+            // TODO: Remove workaround when UTY-936 is fixed
             var addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
+                typeof(CleanReactiveComponentsSystem).GetMethod(nameof(AddRemoveComponentAction),
                     BindingFlags.NonPublic | BindingFlags.Instance);
 
+            if (addRemoveComponentActionMethod == null)
+            {
+                throw new MissingMethodException(nameof(CleanReactiveComponentsSystem), nameof(AddRemoveComponentAction));
+            }
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -54,13 +54,10 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    if (typesToRemove.Contains(type))
+                    if (typesToRemove.Add(type))
                     {
-                        continue;
+                        addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
                     }
-
-                    typesToRemove.Add(type);
-                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
                 }
 
                 // Find all ComponentCleanupHandlers
@@ -75,11 +72,13 @@ namespace Improbable.Gdk.Core
                             addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
                         }
 
+                        // Updates group
                         componentCleanups.Add(new ComponentCleanup
                         {
                             Handler = componentCleanupHandler,
                             UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
-                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType)
+                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
+                            EventGroups = componentCleanupHandler.EventComponentTypes.Select(eventType => GetComponentGroup(eventType)).ToArray(),
                         });
                     }
                 }
@@ -112,10 +111,11 @@ namespace Improbable.Gdk.Core
             }
 
             var buffer = PostUpdateCommands;
-            foreach (var componentCleanup in componentCleanups)
+            foreach (var cleanup in componentCleanups)
             {
-                componentCleanup.Handler.CleanupUpdates(componentCleanup.UpdateGroup, ref buffer);
-                componentCleanup.Handler.CleanupAuthChanges(componentCleanup.AuthorityChangesGroup, ref buffer);
+                cleanup.Handler.CleanupUpdates(cleanup.UpdateGroup, ref buffer);
+                cleanup.Handler.CleanupEvents(cleanup.EventGroups, ref buffer);
+                cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
             }
         }
 
@@ -124,6 +124,7 @@ namespace Improbable.Gdk.Core
             public ComponentCleanupHandler Handler;
             public ComponentGroup UpdateGroup;
             public ComponentGroup AuthorityChangesGroup;
+            public ComponentGroup[] EventGroups;
         }
     }
 }

@@ -43,6 +43,9 @@ namespace <#= qualifiedNamespace #>
                 <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
 <# } #>
 <# } #>
+<# foreach (var eventDetails in eventDetailsList) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
+<# } #>
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -51,7 +54,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
-                var data =  global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+
+                var data = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
@@ -136,8 +140,42 @@ namespace <#= qualifiedNamespace #>
                     entityManager.AddComponentData(entity, updates);
                 }
 
-                // TODO: Events?
+<# if (eventDetailsList.Count > 0) { #>
+                var eventsObject = op.Update.SchemaData.Value.GetEvents();
+<# foreach (var eventDetails in eventDetailsList) { #>
+                {
+                    var eventCount = eventsObject.GetObjectCount(<#= eventDetails.EventIndex #>);
+                    if (eventCount > 0)
+                    {
+                        // Create component to hold received events
+                        ReceivedEvents.<#= eventDetails.PascalCaseName #> eventsReceived;
+                        List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> eventList;
+                        if (!entityManager.HasComponent<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity))
+                        {
+                            eventsReceived = new ReceivedEvents.<#= eventDetails.PascalCaseName #>() {
+                                handle = ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Allocate(World)
+                            };
+                            eventList = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>((int) eventCount);
+                            ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(eventsReceived.handle, eventList);
+                            entityManager.AddComponentData(entity, eventsReceived);
+                        }
+                        else
+                        {
+                            eventsReceived = entityManager.GetComponentData<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity);
+                            eventList = eventsReceived.Events;
+                        }
 
+                        // Deserialize events onto component
+                        for (var i = 0; i < eventCount; i++)
+                        {
+                            var e = <#= eventDetails.FullyQualifiedPayloadTypeName #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
+                            eventList.Add(e);
+                        }
+                    }
+                }
+
+<# } #>
+<# } #>
                 data.DirtyBit = false;
                 entityManager.SetComponentData(entity, data);
             }
@@ -217,6 +255,18 @@ namespace <#= qualifiedNamespace #>
 
                         entityManager.RemoveComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity);
                         entityManager.AddComponentData(entity, new Authoritative<<#= componentDetails.TypeName #>>());
+
+                        // Add event senders
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        {
+                            var eventSender = new EventSender.<#= eventDetail.PascalCaseName #>()
+                            {
+                                handle = ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Allocate(World)
+                            };
+                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FullyQualifiedPayloadTypeName #>>());
+                            entityManager.AddComponentData(entity, eventSender);
+                        }
+<# } #>
                         break;
                     case Authority.AuthorityLossImminent:
                         if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
@@ -241,6 +291,15 @@ namespace <#= qualifiedNamespace #>
 
                         entityManager.RemoveComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity);
                         entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+
+                        // Remove event senders
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        {
+                            var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
+                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Free(eventSender.handle);                           
+                            entityManager.RemoveComponent<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
+                        }
+<# } #>
                         break;
                 }
 
@@ -305,9 +364,12 @@ namespace <#= qualifiedNamespace #>
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                typeof(<#= componentDetails.TypeName #>),
-                typeof(Authoritative<<#= componentDetails.TypeName #>>),
-                typeof(SpatialEntityId)
+<# foreach (var eventDetail in eventDetailsList) { #>
+                ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
+<# } #>
+                ComponentType.Create<<#= componentDetails.TypeName #>>(),
+                ComponentType.ReadOnly<Authoritative<<#= componentDetails.TypeName #>>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
             };
 
             public override ComponentType[] CommandTypes => new ComponentType[] {
@@ -322,22 +384,48 @@ namespace <#= qualifiedNamespace #>
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, Connection connection)
             {
-                var componentData = replicationGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
-                var entityIdData = replicationGroup.GetComponentDataArray<SpatialEntityId>();
+                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
+<# foreach (var eventDetail in eventDetailsList) { #>
+                var event<#= eventDetail.EventName #>Array = replicationGroup.GetComponentDataArray<EventSender.<#= eventDetail.EventName #>>();
+<# } #>
 
-                for (var i = 0; i < componentData.Length; i++)
+                for (var i = 0; i < componentDataArray.Length; i++)
                 {
-                    var data = componentData[i];
-                    if (data.DirtyBit)
+                    var data = componentDataArray[i];
+                    var dirtyEvents = 0;
+<# foreach (var eventDetail in eventDetailsList) { #>
+                    var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
+                    dirtyEvents += events<#= eventDetail.EventName #>.Count;
+<# } #>
+
+                    if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
                         <#= componentDetails.TypeName #>.Serialization.Serialize(data, update.GetFields());
-                        connection.SendComponentUpdate(entityIdData[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-                        // TODO: Generate event serialization into update
+<# if (eventDetailsList.Count > 0) { #>
+                        // Serialize events
+                        var eventsObject = update.GetEvents();
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        if (events<#= eventDetail.EventName #>.Count > 0)
+                        {
+                            foreach (var e in events<#= eventDetail.EventName #>)
+                            {
+                                var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
+                                <#= eventDetail.FullyQualifiedPayloadTypeName #>.Serialization.Serialize(e, obj);
+                            }
+
+                            events<#= eventDetail.EventName #>.Clear();
+                        }
+
+<# } #>
+<# } #>
+                        // Send serialized update over the wire
+                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
                         data.DirtyBit = false;
-                        componentData[i] = data;
+                        componentDataArray[i] = data;
                     }
                 }
             }
@@ -351,10 +439,15 @@ namespace <#= qualifiedNamespace #>
 
         public class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
-            private static readonly ComponentType[] cleanUpComponentTypes = {
+            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
                 typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
-                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>)
+                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
+            };
+
+            public override ComponentType[] EventComponentTypes => new ComponentType[] {
+<# foreach (var eventDetails in eventDetailsList) { #>
+                typeof(ReceivedEvents.<#= eventDetails.EventName #>),
+<# } #>
             };
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
@@ -380,6 +473,27 @@ namespace <#= qualifiedNamespace #>
                     buffer.RemoveComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entities[i]);
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
+            }
+            
+            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
+            {
+<# for (var i = 0; i < eventDetailsList.Count; i++) { #>
+<# var eventDetails = eventDetailsList[i]; #>
+                // Clean <#= eventDetails.EventName #>
+                {
+                    var group = eventGroups[<#= i #>];
+                    if (!group.IsEmptyIgnoreFilter)
+                    {
+                        var entities = group.GetEntityArray();
+                        var data = group.GetComponentDataArray<ReceivedEvents.<#= eventDetails.EventName #>>();
+                        for (var i = 0; i < entities.Length; i++)
+                        {
+                            buffer.RemoveComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entities[i]);
+                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Free(data[i].handle);
+                        }
+                    }
+                }
+<# } #>
             }
         }
     }
