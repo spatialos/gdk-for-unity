@@ -12,10 +12,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {
-        private readonly Dictionary<int, SpatialOSBehaviourManager> entityIndexToSpatialOSBehaviourManager =
-            new Dictionary<int, SpatialOSBehaviourManager>();
-        private readonly List<SpatialOSBehaviourManager> spatialOSBehaviourManagers =
-            new Collections.List<SpatialOSBehaviourManager>();
+        private readonly Dictionary<int, MonoBehaviourActivationManager> entityIndexToActivationManager =
+            new Dictionary<int, MonoBehaviourActivationManager>();
+        private readonly List<MonoBehaviourActivationManager> activationManagers =
+            new Collections.List<MonoBehaviourActivationManager>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
@@ -24,42 +24,42 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private ReaderWriterStore readerWriterStore;
         private ILogDispatcher logger;
 
-        internal void AddSpatialOSBehaviourManager(int entityIndex, SpatialOSBehaviourManager spatialOSBehaviourManager)
+        internal void AddSpatialOSBehaviourManager(int entityIndex, MonoBehaviourActivationManager activationManager)
         {
-            if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            if (entityIndexToActivationManager.ContainsKey(entityIndex))
             {
-                throw new SpatialOSBehaviourManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entityIndex}.");
+                throw new ActivationManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entityIndex}.");
             }
 
-            entityIndexToSpatialOSBehaviourManager[entityIndex] = spatialOSBehaviourManager;
-            spatialOSBehaviourManagers.Add(spatialOSBehaviourManager);
+            entityIndexToActivationManager[entityIndex] = activationManager;
+            activationManagers.Add(activationManager);
         }
 
-        internal void RemoveSpatialOSBehaviourManager(int entityIndex)
+        internal void RemoveActivationManager(int entityIndex)
         {
-            if (!entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            if (!entityIndexToActivationManager.ContainsKey(entityIndex))
             {
-                throw new SpatialOSBehaviourManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
+                throw new ActivationManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
             }
 
-            var spatialOSBehaviourManager = entityIndexToSpatialOSBehaviourManager[entityIndex];
-            entityIndexToSpatialOSBehaviourManager.Remove(entityIndex);
-            spatialOSBehaviourManagers.Remove(spatialOSBehaviourManager);
+            var spatialOSBehaviourManager = entityIndexToActivationManager[entityIndex];
+            entityIndexToActivationManager.Remove(entityIndex);
+            activationManagers.Remove(spatialOSBehaviourManager);
         }
 
         public bool HasSpatialOSBehaviourManager(int entityId)
         {
-            return entityIndexToSpatialOSBehaviourManager.ContainsKey(entityId);
+            return entityIndexToActivationManager.ContainsKey(entityId);
         }
 
-        public SpatialOSBehaviourManager GetSpatialOSBehaviourManager(int entityIndex)
+        public MonoBehaviourActivationManager GetSpatialOSBehaviourManager(int entityIndex)
         {
-            if (!entityIndexToSpatialOSBehaviourManager.ContainsKey(entityIndex))
+            if (!entityIndexToActivationManager.ContainsKey(entityIndex))
             {
-                throw new SpatialOSBehaviourManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
+                throw new ActivationManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
             }
 
-            return entityIndexToSpatialOSBehaviourManager[entityIndex];
+            return entityIndexToActivationManager[entityIndex];
         }
 
         protected override void OnCreateManager(int capacity)
@@ -130,14 +130,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
+                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(entityIndexToActivationManager);
             }
 
-            foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
+            foreach (var activationManager in activationManagers)
             {
-                    spatialOSBehaviourManager.EnableSpatialOSBehaviours();
+                activationManager.EnableSpatialOSBehaviours();
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
@@ -148,37 +148,37 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(readerWriterStore);
             }
 
-            foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
+            foreach (var activationManager in activationManagers)
             {
-                spatialOSBehaviourManager.DisableSpatialOSBehaviours();
+                activationManager.DisableSpatialOSBehaviours();
             }
         }
 
-        public class SpatialOSBehaviourManagerAlreadyExistsException : Exception
+        public class ActivationManagerAlreadyExistsException : Exception
         {
-            public SpatialOSBehaviourManagerAlreadyExistsException(string message) : base(message)
+            public ActivationManagerAlreadyExistsException(string message) : base(message)
             {
             }
         }
 
-        public class SpatialOSBehaviourManagerNotFoundException : Exception
+        public class ActivationManagerNotFoundException : Exception
         {
-            public SpatialOSBehaviourManagerNotFoundException(string message) : base(message)
+            public ActivationManagerNotFoundException(string message) : base(message)
             {
             }
         }
 
-        public void CreateBehaviourManager(Entity entity)
+        public void CreateActivationManager(Entity entity)
         {
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
-            var manager = new SpatialOSBehaviourManager(gameObject, injector, readerWriterStore, logger);
-            if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entity.Index))
+            var manager = new MonoBehaviourActivationManager(gameObject, injector, readerWriterStore, logger);
+            if (entityIndexToActivationManager.ContainsKey(entity.Index))
             {
-                throw new SpatialOSBehaviourManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");
+                throw new ActivationManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");
             }
 
-            entityIndexToSpatialOSBehaviourManager[entity.Index] = manager;
-            spatialOSBehaviourManagers.Add(manager);
+            entityIndexToActivationManager[entity.Index] = manager;
+            activationManagers.Add(manager);
         }
     }
 }

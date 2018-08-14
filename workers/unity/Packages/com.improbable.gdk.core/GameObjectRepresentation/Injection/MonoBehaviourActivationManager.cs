@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     Keeps track of Reader/Writer availability for SpatialOSBehaviours on a particular GameObject and decides when
     ///     a SpatialOSBehaviour should be enabled, calling into the SpatialOSBehaviourLibrary for injection.
     /// </summary>
-    internal class SpatialOSBehaviourManager
+    internal class MonoBehaviourActivationManager
     {
         private readonly Entity entity;
         private readonly long spatialId;
@@ -31,9 +31,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private readonly ILogDispatcher logger;
 
-        private const string LoggerName = "SpatialOSBehaviourManager";
+        private const string LoggerName = "MonoBehaviourActivationManager";
 
-        public SpatialOSBehaviourManager(GameObject gameObject, ReaderWriterInjector injector,
+        public MonoBehaviourActivationManager(GameObject gameObject, ReaderWriterInjector injector,
             ReaderWriterStore store, ILogDispatcher logger)
         {
             this.logger = logger;

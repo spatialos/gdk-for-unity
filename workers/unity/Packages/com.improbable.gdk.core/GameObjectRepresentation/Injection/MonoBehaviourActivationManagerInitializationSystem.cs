@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitialisationGroup))]
-    public class SpatialOSBehaviourManagerInitializationSystem : ComponentSystem
+    public class MonoBehaviourActivationManagerInitializationSystem : ComponentSystem
     {
         public struct AddedEntitiesData
         {
@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             public EntityArray Entities;
             public ComponentArray<GameObjectReference> GameObjectReferences;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
-            [ReadOnly] public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
+            [ReadOnly] public ComponentDataArray<RequiresMonoBehaviourActivationManager> RequiresSpatialOSBehaviourManagerTags;
         }
 
         public struct RemovedEntitiesData
@@ -44,16 +44,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var entityIndex = addedEntitiesData.Entities[i].Index;
-                gameObjectDispatcherSystem.CreateBehaviourManager(addedEntitiesData.Entities[i]);
+                gameObjectDispatcherSystem.CreateActivationManager(addedEntitiesData.Entities[i]);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                gameObjectDispatcherSystem.RemoveSpatialOSBehaviourManager(entityIndex);
+                gameObjectDispatcherSystem.RemoveActivationManager(entityIndex);
             }
         }
-
-
     }
 }

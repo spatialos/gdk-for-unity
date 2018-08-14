@@ -106,7 +106,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
 
             World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            World.GetOrCreateManager<SpatialOSBehaviourManagerInitializationSystem>();
+            World.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
         }
     }
 }

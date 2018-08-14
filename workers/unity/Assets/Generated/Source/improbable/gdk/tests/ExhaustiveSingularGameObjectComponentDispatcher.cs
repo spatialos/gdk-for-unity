@@ -47,16 +47,16 @@ namespace Generated.Improbable.Gdk.Tests
                 return 197715;
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers)
+            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveSingular>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityIndexToManagers[entities[i].Index];
                     for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
                     {
-                        spatialOSBehaviourManager.ChangeAuthority(197715, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(197715, authoritiesChangedTags[i].Buffer[j]);
                     }
                 }
             }

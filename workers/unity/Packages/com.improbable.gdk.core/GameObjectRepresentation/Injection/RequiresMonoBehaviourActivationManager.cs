@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     Tag component for marking entities that require a RequiresSpatialOSBehaviourManager.
     /// </summary>
     [RemoveAtEndOfTick]
-    public struct RequiresSpatialOSBehaviourManager : IComponentData
+    public struct RequiresMonoBehaviourActivationManager : IComponentData
     {
     }
 }

@@ -21,27 +21,27 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         protected abstract uint GetComponentId();
 
-        public void InvokeOnAddComponentLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers)
+        public void InvokeOnAddComponentLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
         {
             var entities = ComponentAddedComponentGroup.GetEntityArray();
             for (var i = 0; i < entities.Length; i++)
             {
-                var spatialOSBehaviourManager = entityIndexToManagers[entities[i].Index];
-                spatialOSBehaviourManager.AddComponent(GetComponentId());
+                var activationManager = entityIndexToManagers[entities[i].Index];
+                activationManager.AddComponent(GetComponentId());
             }
         }
 
-        public void InvokeOnRemoveComponentLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers)
+        public void InvokeOnRemoveComponentLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
         {
             var entities = ComponentRemovedComponentGroup.GetEntityArray();
             for (var i = 0; i < entities.Length; i++)
             {
-                var spatialOSBehaviourManager = entityIndexToManagers[entities[i].Index];
-                spatialOSBehaviourManager.RemoveComponent(GetComponentId());
+                var activationManager = entityIndexToManagers[entities[i].Index];
+                activationManager.RemoveComponent(GetComponentId());
             }
         }
 
-        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers);
+        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
 
         public abstract void InvokeOnComponentUpdateUserCallbacks(ReaderWriterStore readerWriterStore);
         public abstract void InvokeOnEventUserCallbacks(ReaderWriterStore readerWriterStore);

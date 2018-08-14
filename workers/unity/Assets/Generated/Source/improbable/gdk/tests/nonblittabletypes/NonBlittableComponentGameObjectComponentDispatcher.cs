@@ -51,16 +51,16 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 return 1002;
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers)
+            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSNonBlittableComponent>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var spatialOSBehaviourManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityIndexToManagers[entities[i].Index];
                     for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
                     {
-                        spatialOSBehaviourManager.ChangeAuthority(1002, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(1002, authoritiesChangedTags[i].Buffer[j]);
                     }
                 }
             }
