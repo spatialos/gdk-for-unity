@@ -63,10 +63,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
-<<<<<<< HEAD
 
-=======
->>>>>>> impl command sending and receiving
                 var data = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
