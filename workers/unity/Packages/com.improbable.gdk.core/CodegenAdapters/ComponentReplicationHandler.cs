@@ -14,10 +14,12 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection);
 
         protected EntityManager EntityManager;
+        protected readonly CommandParameters ShortCircuitParameters;
 
         protected ComponentReplicationHandler(EntityManager entityManager)
         {
             EntityManager = entityManager;
+            ShortCircuitParameters = new CommandParameters { AllowShortCircuiting = true };
         }
     }
 }

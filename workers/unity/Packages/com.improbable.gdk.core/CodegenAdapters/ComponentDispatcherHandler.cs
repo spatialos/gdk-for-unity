@@ -1,5 +1,6 @@
 using Improbable.Worker.Core;
 using Unity.Entities;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.CodegenAdapters
 {
@@ -13,6 +14,8 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         public abstract void OnCommandRequest(CommandRequestOp op);
         public abstract void OnCommandResponse(CommandResponseOp op);
+
+        public abstract void AddCommandComponents(Entity entity);
 
         public abstract void Dispose();
 

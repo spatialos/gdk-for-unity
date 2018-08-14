@@ -50,11 +50,8 @@ namespace Improbable.Gdk.CodeGenerator
                 fileName = Path.ChangeExtension(unityComponentDefinition.Name + "Translation", fileExtension);
                 OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
 
-                if (!unityComponentDefinition.IsBlittable)
-                {
-                    fileName = Path.ChangeExtension($"{unityComponentDefinition.Name}Providers", fileExtension);
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
-                }
+                fileName = Path.ChangeExtension($"{unityComponentDefinition.Name}Providers", fileExtension);
+                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
             }
 
             enumsToGenerate = new List<EnumDefinitionRaw>();
@@ -74,9 +71,11 @@ namespace Improbable.Gdk.CodeGenerator
             var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
+            var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
+            var commandStorageGenerator = new UnityCommandStorageGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -98,7 +97,7 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentCode = blittableComponentGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
-                 
+
                 if (component.CommandDefinitions.Count > 0)
                 {
                     var commandPayloadsFileName =
@@ -106,6 +105,17 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandPayloadCode =
                         commandPayloadGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
+
+                    var commandComponentsFileName =
+                        Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension);
+                    var commandComponentsCode =
+                        commandComponentsGenerator.Generate(component, package);
+                    Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
+
+                    var commandStorageFileName =
+                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension);
+                    var commandStorageCode = commandStorageGenerator.Generate(component, package);
+                    Content.Add(Path.Combine(relativeOutputPath, commandStorageFileName), commandStorageCode);
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -114,7 +124,6 @@ namespace Improbable.Gdk.CodeGenerator
                     var eventsCode = eventGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
-                
 
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);

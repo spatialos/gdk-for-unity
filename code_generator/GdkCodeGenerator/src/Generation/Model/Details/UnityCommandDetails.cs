@@ -5,7 +5,7 @@ namespace Improbable.Gdk.CodeGenerator
     public class UnityCommandDetails
     {
         public string CommandName;
-        public string CamelCaseTypeName;
+        public string CamelCaseName;
         public string RequestType;
         public string ResponseType;
         public uint CommandIndex;
@@ -13,7 +13,7 @@ namespace Improbable.Gdk.CodeGenerator
         public UnityCommandDetails(UnityComponentDefinition.UnityCommandDefinition commandDefinition)
         {
             CommandName = Formatting.SnakeCaseToCapitalisedCamelCase(commandDefinition.Name);
-            CamelCaseTypeName = "spatialOS" + Formatting.QualifiedNameToCapitalisedCamelCase(commandDefinition.Name);
+            CamelCaseName = Formatting.QualifiedNameToCapitalisedCamelCase(commandDefinition.Name);
             RequestType = "global::" + UnityTypeMappings.PackagePrefix +
                 Formatting.CapitaliseQualifiedNameParts(commandDefinition.RequestType.typeDefinition.QualifiedName);
             ResponseType = "global::" + UnityTypeMappings.PackagePrefix +

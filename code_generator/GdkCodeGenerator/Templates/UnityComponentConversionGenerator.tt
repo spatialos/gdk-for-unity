@@ -18,6 +18,7 @@ using Unity.Entities;
 using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.Core.Commands;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -31,9 +32,17 @@ namespace <#= qualifiedNamespace #>
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
+<# foreach (var commandDetails in commandDetailsList) { #>
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
+<# } #>
+
             public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView, world)
             {
                 entityManager = mutableView.EntityManager;
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+<# foreach (var commandDetails in commandDetailsList) { #>
+                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
+<# } #>
             }
 
             public override void Dispose()
@@ -218,11 +227,6 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandResponseOp", out var entity))
-                {
-                    return;
-                }
-
                 var commandIndex = op.Response.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
@@ -240,6 +244,25 @@ namespace <#= qualifiedNamespace #>
                         );
                         break;
                 }
+            }
+
+            public override void AddCommandComponents(Unity.Entities.Entity entity)
+            {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                {
+                    var commandSender = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>();
+                    commandSender.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.Allocate(World);
+                    commandSender.RequestsToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Request>();
+
+                    entityManager.AddComponentData(entity, commandSender);
+
+                    var commandResponder = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>();
+                    commandResponder.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponderProvider.Allocate(World);
+                    commandResponder.ResponsesToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Response>();
+
+                    entityManager.AddComponentData(entity, commandResponder);
+                }
+<# } #>
             }
 
             private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
@@ -296,7 +319,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var eventDetail in eventDetailsList) { #>
                         {
                             var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
-                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Free(eventSender.handle);                           
+                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Free(eventSender.handle);
                             entityManager.RemoveComponent<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
                         }
 <# } #>
@@ -308,7 +331,7 @@ namespace <#= qualifiedNamespace #>
                     var changes = entityManager.GetComponentData<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity);
                     changes.Changes.Add(authority);
                 }
-                else 
+                else
                 {
                     var changes = new AuthorityChanges<<#= componentDetails.TypeName #>>
                     {
@@ -316,7 +339,7 @@ namespace <#= qualifiedNamespace #>
                     };
                     AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
                     entityManager.AddComponentData(entity, changes);
-                }                
+                }
             }
 
             private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
@@ -346,15 +369,90 @@ namespace <#= qualifiedNamespace #>
                 );
             }
 
-<# foreach (var command in commandDetailsList) { #>
-            private void On<#= command.CommandName #>Request(CommandRequestOp op)
+<# foreach (var commandDetails in commandDetailsList) {
+    var wrappedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
+    var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
+
+    var wrappedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
+    var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{commandDetails.CommandName}";
+
+    var commandStorage = $"{commandDetails.CamelCaseName}Storage";
+#>
+            private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
             {
-                // TODO: Implement commands
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
+                {
+                    return;
+                }
+
+                var deserializedRequest = <#= commandDetails.RequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+
+                List<<#= wrappedCommandRequestType #>> requests;
+                if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
+                {
+                    requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
+                }
+                else
+                {
+                    var data = new <#= commandRequestBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Allocate(World)
+                    };
+                    requests = data.Requests = new List<<#= wrappedCommandRequestType #>>();
+                    entityManager.AddComponentData(entity, data);
+                }
+
+                requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId.Id,
+                    op.CallerWorkerId,
+                    op.CallerAttributeSet,
+                    deserializedRequest));
             }
 
-            private void On<#= command.CommandName #>Response(CommandResponseOp op)
+            private void On<#= commandDetails.CommandName #>Response(CommandResponseOp op)
             {
-                // TODO: Implement commands
+                if (!<#= commandStorage #>.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+                {
+                    throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command <#= commandDetails.CommandName #>.");
+                }
+
+                var entity = requestBundle.Entity;
+                <#= commandStorage #>.CommandRequestsInFlight.Remove(op.RequestId.Id);
+                if (!entityManager.Exists(entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("Op", "CommandResponseOp - <#= commandDetails.CommandName #>")
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
+                    );
+                    return;
+                }
+
+                <#= commandDetails.ResponseType #>? response = null;
+                if (op.StatusCode == StatusCode.Success)
+                {
+                    response = <#= commandDetails.ResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                }
+
+                List<<#= wrappedCommandResponseType #>> responses;
+                if (entityManager.HasComponent<<#= commandResponseBufferType #>>(entity))
+                {
+                    responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(entity).Responses;
+                }
+                else
+                {
+                    var data = new <#= commandResponseBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Allocate(World)
+                    };
+                    responses = data.Responses = new List<<#= wrappedCommandResponseType #>>();
+                    entityManager.AddComponentData(entity, data);
+                }
+
+                responses.Add(new <#= wrappedCommandResponseType #>(op.EntityId,
+                    op.Message,
+                    op.StatusCode,
+                    response,
+                    requestBundle.Request));
             }
 <# } #>
         }
@@ -373,13 +471,22 @@ namespace <#= qualifiedNamespace #>
             };
 
             public override ComponentType[] CommandTypes => new ComponentType[] {
-<# foreach (var command in commandDetailsList) { #>
-
+<# foreach (var commandDetails in commandDetailsList) { #>
+                ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>>(),
+                ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>>(),
 <# } #>
             };
 
-            public ComponentReplicator(EntityManager entityManager) : base(entityManager)
+<# foreach (var commandDetails in commandDetailsList) { #>
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
+<# } #>
+
+            public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+<# foreach (var commandDetails in commandDetailsList) { #>
+                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
+<# } #>
             }
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, Connection connection)
@@ -432,7 +539,70 @@ namespace <#= qualifiedNamespace #>
 
             public override void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection)
             {
-                // TODO: Generate command serialization
+<#
+for (var i = 0; i < commandDetailsList.Count; i++) {
+    var commandDetails = commandDetailsList[i];
+    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
+    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
+#>
+                if (!commandComponentGroups[<#= 2*i #>].IsEmptyIgnoreFilter)
+                {
+                    var componentGroup = commandComponentGroups[<#= 2*i #>];
+                    var commandSenderDataArray = componentGroup.GetComponentDataArray<<#= commandSenderType #>>();
+                    var entityArray = componentGroup.GetEntityArray();
+
+                    for (var j = 0; j < commandSenderDataArray.Length; j++)
+                    {
+                        var requests = commandSenderDataArray[j];
+                        for (var k = 0; k < requests.RequestsToSend.Count; k++)
+                        {
+                            var wrappedCommandRequest = requests.RequestsToSend[k];
+
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
+                            <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
+
+                            var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
+                                new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                                wrappedCommandRequest.TimeoutMillis,
+                                wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
+
+                            <#= commandDetails.CamelCaseName #>Storage.CommandRequestsInFlight[requestId.Id] =
+                                new CommandRequestStore<<#= commandDetails.RequestType #>>(entityArray[j], wrappedCommandRequest.RawRequest, null);
+                        }
+
+                        requests.RequestsToSend.Clear();
+                    }
+                }
+                if (!commandComponentGroups[<#= 2*i + 1 #>].IsEmptyIgnoreFilter)
+                {
+                    var componentGroup = commandComponentGroups[<#= 2*i + 1 #>];
+                    var commandResponderDataArray = componentGroup.GetComponentDataArray<<#= commandResponderType #>>();
+
+                    for (var j = 0; j < commandResponderDataArray.Length; j++)
+                    {
+                        var responses = commandResponderDataArray[j];
+                        for (var k = 0; k < responses.ResponsesToSend.Count; k++)
+                        {
+                            var wrappedCommandResponse = responses.ResponsesToSend[k];
+                            var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
+
+                            if (wrappedCommandResponse.FailureMessage != null)
+                            {
+                                // Send a command failure if the string is non-null.
+                                connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
+                                continue;
+                            }
+
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
+                            <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
+
+                            connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                        }
+
+                        responses.ResponsesToSend.Clear();
+                    }
+                }
+<# } #>
             }
 
         }
@@ -452,6 +622,13 @@ namespace <#= qualifiedNamespace #>
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
             public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+
+            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                ComponentType.ReadOnly<CommandRequests.<#= commandDetails.CommandName #>>(),
+                ComponentType.ReadOnly<CommandResponses.<#= commandDetails.CommandName #>>(),
+<# } #>
+            };
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
@@ -474,7 +651,7 @@ namespace <#= qualifiedNamespace #>
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }
-            
+
             public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
             {
 <# for (var i = 0; i < eventDetailsList.Count; i++) { #>
@@ -491,6 +668,38 @@ namespace <#= qualifiedNamespace #>
                             buffer.RemoveComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entities[i]);
                             ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Free(data[i].handle);
                         }
+                    }
+                }
+<# } #>
+            }
+
+            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
+            {
+<#
+for (var j = 0; j < commandDetailsList.Count; j++) {
+    var commandDetails = commandDetailsList[j];
+#>
+                if (!commandCleanupGroups[<#= 2*j #>].IsEmptyIgnoreFilter)
+                {
+                    var requestsGroup = commandCleanupGroups[<#= 2*j #>];
+                    var entities = requestsGroup.GetEntityArray();
+                    var data = requestsGroup.GetComponentDataArray<CommandRequests.<#= commandDetails.CommandName #>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        buffer.RemoveComponent<CommandRequests.<#= commandDetails.CommandName #>>(entities[i]);
+                        ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Free(data[i].CommandListHandle);
+                    }
+                }
+
+                if (!commandCleanupGroups[<#= 2*j + 1 #>].IsEmptyIgnoreFilter)
+                {
+                    var responsesGroup = commandCleanupGroups[<#= 2*j + 1 #>];
+                    var entities = responsesGroup.GetEntityArray();
+                    var data = responsesGroup.GetComponentDataArray<CommandResponses.<#= commandDetails.CommandName #>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        buffer.RemoveComponent<CommandResponses.<#= commandDetails.CommandName #>>(entities[i]);
+                        ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Free(data[i].CommandListHandle);
                     }
                 }
 <# } #>
