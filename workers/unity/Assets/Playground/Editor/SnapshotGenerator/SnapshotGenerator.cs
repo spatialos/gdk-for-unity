@@ -104,25 +104,26 @@ namespace Playground.Editor.SnapshotGenerator
                 }
             }
 
-            {
-                var coords = new Coordinates(0, 0, 0);
-                var transform = new Transform.Data(new Location(3, 0.5f, 0), new Quaternion(1, 0, 0, 0), 0);
-                var prefab = new Prefab.Data("RotatingCuboid");
-                var archetypeComponent = new ArchetypeComponent.Data("RotatingCuboid");
-
-                var entity = EntityBuilder.Begin()
-                    .AddPositionComponent(coords, WorkerSet)
-                    .AddComponent(new Metadata.Data("RotatingCuboid"), WorkerSet)
-                    .SetPersistence(true)
-                    .SetReadAcl(AllWorkersSet)
-                    .AddComponent(transform, WorkerSet)
-                    .AddComponent(prefab, WorkerSet)
-                    .AddComponent(archetypeComponent, WorkerSet)
-                    .Build();
-                entities[new EntityId(entities.Count + 1)] = entity;
-            }
-
+            entities[new EntityId(entities.Count + 1)] = CreateSpinner(new Coordinates(3, 0.5f, 0));
+            entities[new EntityId(entities.Count + 1)] = CreateSpinner(new Coordinates(-3, 0.5f, 0));
             return entities;
+        }
+
+        private static Entity CreateSpinner(Coordinates coords)
+        {
+            var transform = new Transform.Data(new Location((float) coords.x, (float) coords.y, (float) coords.z), new Quaternion(1, 0, 0, 0), 0);
+            var prefab = new Prefab.Data("Spinner");
+            var archetypeComponent = new ArchetypeComponent.Data("Spinner");
+
+            return EntityBuilder.Begin()
+                .AddPositionComponent(coords, WorkerSet)
+                .AddComponent(new Metadata.Data("Spinner"), WorkerSet)
+                .SetPersistence(true)
+                .SetReadAcl(AllWorkersSet)
+                .AddComponent(transform, WorkerSet)
+                .AddComponent(prefab, WorkerSet)
+                .AddComponent(archetypeComponent, WorkerSet)
+                .Build();
         }
 
         private static void WriteSnapshot(Dictionary<EntityId, Entity> entities, string snapshotName)
