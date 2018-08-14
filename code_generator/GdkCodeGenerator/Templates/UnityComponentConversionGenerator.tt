@@ -547,6 +547,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
     var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
 #>
+                if (!commandComponentGroups[<#= 2*i #>].IsEmptyIgnoreFilter)
                 {
                     var componentGroup = commandComponentGroups[<#= 2*i #>];
                     var commandSenderDataArray = componentGroup.GetComponentDataArray<<#= commandSenderType #>>();
@@ -574,6 +575,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         requests.RequestsToSend.Clear();
                     }
                 }
+                if (!commandComponentGroups[<#= 2*i + 1 #>].IsEmptyIgnoreFilter)
                 {
                     var componentGroup = commandComponentGroups[<#= 2*i + 1 #>];
                     var commandResponderDataArray = componentGroup.GetComponentDataArray<<#= commandResponderType #>>();
@@ -679,6 +681,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 for (var j = 0; j < commandDetailsList.Count; j++) {
     var commandDetails = commandDetailsList[j];
 #>
+                if (!commandCleanupGroups[<#= 2*j #>].IsEmptyIgnoreFilter)
                 {
                     var requestsGroup = commandCleanupGroups[<#= 2*j #>];
                     var entities = requestsGroup.GetEntityArray();
@@ -689,6 +692,8 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                         ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Free(data[i].CommandListHandle);
                     }
                 }
+
+                if (!commandCleanupGroups[<#= 2*j + 1 #>].IsEmptyIgnoreFilter)
                 {
                     var responsesGroup = commandCleanupGroups[<#= 2*j + 1 #>];
                     var entities = responsesGroup.GetEntityArray();
