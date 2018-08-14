@@ -116,7 +116,6 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension);
                     var commandStorageCode = commandStorageGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandStorageFileName), commandStorageCode);
-
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -125,7 +124,6 @@ namespace Improbable.Gdk.CodeGenerator
                     var eventsCode = eventGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
-
 
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);

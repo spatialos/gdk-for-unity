@@ -6,9 +6,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public class CommandBookkeepingSystem : ComponentSystem
+    public class CommandRequestTrackerSystem : ComponentSystem
     {
-        private Dictionary<Type, CommandStorage> commandStorageInstances = new Dictionary<Type, CommandStorage>();
+        private readonly Dictionary<Type, CommandStorage> commandStorageInstances = new Dictionary<Type, CommandStorage>();
 
         public TConcreteCommandStorage GetCommandStorageForType<TConcreteCommandStorage>()
             where TConcreteCommandStorage : CommandStorage
