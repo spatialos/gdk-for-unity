@@ -43,6 +43,7 @@ namespace Playground
         private EntityGameObjectCreator entityGameObjectCreator;
         private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
+        private EntityGameObjectLinker entityGameObjectLinker;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -52,6 +53,7 @@ namespace Playground
             view = worker.View;
             origin = worker.Origin;
             entityGameObjectCreator = new EntityGameObjectCreator(World);
+            entityGameObjectLinker = new EntityGameObjectLinker(World, view);
         }
 
         protected override void OnUpdate()
@@ -94,7 +96,7 @@ namespace Playground
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
                     requiresSpatialOSBehaviourManagerComponent);
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
-                worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
 

@@ -20,8 +20,6 @@ namespace Improbable.Gdk.Core
 
         public abstract string GetWorkerType { get; }
 
-        public EntityGameObjectLinker EntityGameObjectLinker { get; private set; }
-
         public bool UseDynamicId { get; protected set; }
 
         protected WorkerBase(string workerId, Vector3 origin) : this(workerId, origin, new LoggingDispatcher())
@@ -46,8 +44,6 @@ namespace Improbable.Gdk.Core
 
             View = new MutableView(World, loggingDispatcher);
             Origin = origin;
-
-            EntityGameObjectLinker = new EntityGameObjectLinker(World, View);
         }
 
         public void Dispose()
