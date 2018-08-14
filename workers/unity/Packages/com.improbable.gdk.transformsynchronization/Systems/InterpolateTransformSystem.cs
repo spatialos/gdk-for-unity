@@ -1,5 +1,6 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ namespace Improbable.Gdk.TransformSynchronization
         private long serverTickOffset;
         private bool tickOffsetSet;
 
-        private Vector3 origin;
-
         public struct TransformData
         {
             public readonly int Length;
@@ -27,12 +26,17 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private TransformData transformData;
 
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private WorkerData workerData;
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
 
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }
@@ -55,6 +59,8 @@ namespace Improbable.Gdk.TransformSynchronization
          */
         protected override void OnUpdate()
         {
+            var worldOrigin = workerData.WorkerConfigs[0].Worker.Origin;
+
             for (var i = 0; i < transformData.Length; i++)
             {
                 var transformQueue = transformData.BufferedTransform[i].TransformUpdates;
@@ -98,14 +104,14 @@ namespace Improbable.Gdk.TransformSynchronization
                     var newRotation = new UnityEngine.Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
                         nextTransform.Rotation.Z, nextTransform.Rotation.W);
 
-                    rigidBody.MovePosition(newPosition + origin);
+                    rigidBody.MovePosition(newPosition + worldOrigin);
                     rigidBody.MoveRotation(newRotation);
                 }
                 else // Interpolate from current transform to next transform in the future.
                 {
                     var t = (float) 1.0 / (nextTransform.Tick - (serverTickToApply - 1));
 
-                    var currentLocation = transformData.Rigidbody[i].position - origin;
+                    var currentLocation = transformData.Rigidbody[i].position - worldOrigin;
                     var currentRotation = transformData.Rigidbody[i].rotation;
 
                     var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
@@ -116,7 +122,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     var interpolateLocation = Vector3.Lerp(currentLocation, newPosition, t);
                     var interpolateRotation = UnityEngine.Quaternion.Slerp(currentRotation, newRotation, t);
 
-                    rigidBody.MovePosition(interpolateLocation + origin);
+                    rigidBody.MovePosition(interpolateLocation + worldOrigin);
                     rigidBody.MoveRotation(interpolateRotation);
                 }
             }

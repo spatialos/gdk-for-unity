@@ -26,58 +26,64 @@ namespace Playground
 
         [Inject] private Data data;
 
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private WorkerData workerData;
+
         private const string LoggerName = "ArchetypeInitializationSystem";
         private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
 
         private const string UnsupportedArchetype =
             "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
-        private MutableView view;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private ViewCommandBuffer viewCommandBuffer;
 
         private readonly MethodInfo addComponentMethod = typeof(EntityCommandBuffer).GetMethods().First(method =>
             method.Name == "AddComponent" && method.GetParameters()[0].ParameterType == typeof(Entity));
 
-        private string workerType;
 
         private readonly Dictionary<Type, bool> typeToIsComponentData = new Dictionary<Type, bool>();
 
         private readonly Dictionary<Type, MethodInfo> typeToAddComponentGenericMethodInfo =
             new Dictionary<Type, MethodInfo>();
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnUpdate()
         {
-            base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
-            if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+            if (workerData.Length == 0)
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
+                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
+            }
+
+            var worker = workerData.WorkerConfigs[0].Worker;
+            if (!("UnityGameLogic".Equals(worker.WorkerType)) && !("UnityClient".Equals(worker.WorkerType)))
+            {
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
 
-            workerType = worker.GetWorkerType;
-        }
-
-        protected override void OnUpdate()
-        {
+            if (viewCommandBuffer == null)
+            {
+                viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            }
             for (var i = 0; i < data.Length; i++)
             {
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
                 ComponentType[] componentTypesToAdd;
-                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
+                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[worker.WorkerType]
                     .TryGetValue(archetypeName, out componentTypesToAdd))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("ArchetypeName", archetypeName)
-                        .WithField("WorkerType", workerType));
+                        .WithField("WorkerType", worker.WorkerType));
                     continue;
                 }
 
@@ -103,7 +109,7 @@ namespace Playground
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new object[] { entity, componentInstance });
+                            new [] { entity, componentInstance });
                     }
                     else
                     {
@@ -112,7 +118,7 @@ namespace Playground
                 }
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer(EntityManager);
         }
     }
 }

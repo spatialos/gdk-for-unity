@@ -1,5 +1,6 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -20,10 +21,16 @@ namespace Improbable.Gdk.TransformSynchronization
         // Number of transform sends per second.
         private const float SendRateHz = 30.0f;
 
-        private float timeSinceLastSend = 0.0f;
+        private float timeSinceLastSend;
 
         protected override void OnUpdate()
         {
+            if (WorkerConfigData.Length == 0)
+            {
+                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
+            }
+            var connection = WorkerConfigData.WorkerConfigs[0].Worker.Connection;
+
             // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
             if (timeSinceLastSend < (1.0f / SendRateHz))
@@ -47,7 +54,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 update.SetLocation(global::Generated.Improbable.Transform.Location.ToSpatial(component.Location));
                 update.SetRotation(global::Generated.Improbable.Transform.Quaternion.ToSpatial(component.Rotation));
                 update.SetTick(component.Tick);
-                Generated.Improbable.Transform.Transform.Translation.SendComponentUpdate(worker.Connection, entityId,
+                Generated.Improbable.Transform.Transform.Translation.SendComponentUpdate(connection, entityId,
                     update);
 
                 component.DirtyBit = false;

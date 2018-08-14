@@ -32,14 +32,19 @@ namespace Playground
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
         }
 
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
+        [Inject] private WorkerData workerData;
 
-        private MutableView view;
-        private WorkerBase worker;
-        private Vector3 origin;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
+        private EntityGameObjectLinker entityGameObjectLinker;
         private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
@@ -47,14 +52,27 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-            origin = worker.Origin;
             entityGameObjectCreator = new EntityGameObjectCreator(World);
         }
 
         protected override void OnUpdate()
         {
+            if (workerData.Length == 0)
+            {
+                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
+            }
+
+            var worker = workerData.WorkerConfigs[0].Worker;
+            if (viewCommandBuffer == null)
+            {
+                viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            }
+
+            if (entityGameObjectLinker == null)
+            {
+                entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
+            }
+
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var prefabMapping = PrefabConfig.PrefabMappings[addedEntitiesData.PrefabNames[i].Prefab];
@@ -62,20 +80,20 @@ namespace Playground
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+                if (!("UnityGameLogic".Equals(worker.WorkerType)) && !("UnityClient".Equals(worker.WorkerType)))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Worker type isn't supported by the GameObjectInitializationSystem.")
                         .WithField("WorldName", World.Name)
-                        .WithField("WorkerType", worker));
+                        .WithField("WorkerType", worker.WorkerType));
                     continue;
                 }
 
-                var prefabName = worker is UnityGameLogic
+                var prefabName = "UnityGameLogic".Equals(worker.WorkerType)
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
 
-                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
+                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + worker.Origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
 
@@ -89,17 +107,16 @@ namespace Playground
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
                         .WithField("EntityIndex", entityIndex));
                     continue;
@@ -111,7 +128,7 @@ namespace Playground
                     removedEntitiesData.Entities[i]);
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer(EntityManager);
         }
     }
 }

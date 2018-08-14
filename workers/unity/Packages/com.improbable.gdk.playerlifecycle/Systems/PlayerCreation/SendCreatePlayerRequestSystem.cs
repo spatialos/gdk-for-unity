@@ -13,8 +13,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         public struct Data
         {
             public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSPlayerCreator>> RequestSenders;
-            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
             [ReadOnly] public ComponentDataArray<OnConnected> DenotesJustConnected;
         }
 

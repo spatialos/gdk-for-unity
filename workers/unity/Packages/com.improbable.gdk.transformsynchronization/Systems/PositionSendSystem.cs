@@ -24,6 +24,12 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
+            if (WorkerConfigData.Length == 0)
+            {
+                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
+            }
+            var connection = WorkerConfigData.WorkerConfigs[0].Worker.Connection;
+
             // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
             if (timeSinceLastSend < (1.0f / SendRateHz))
@@ -45,7 +51,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
                 var update = new global::Improbable.Position.Update();
                 update.SetCoords(global::Generated.Improbable.Coordinates.ToSpatial(component.Coords));
-                Generated.Improbable.Position.Translation.SendComponentUpdate(worker.Connection, entityId, update);
+                Generated.Improbable.Position.Translation.SendComponentUpdate(connection, entityId, update);
 
                 component.DirtyBit = false;
                 positionData.Position[i] = component;

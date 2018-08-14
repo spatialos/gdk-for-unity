@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -7,28 +8,23 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
 
-        private float timeElapsedSinceUpdate = 0.0f;
+        [Inject] private WorkerData workerData;
+
+        private float timeElapsedSinceUpdate;
 
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
 
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-        }
-
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
-            {
-                return;
-            }
-
-            var connection = worker.Connection;
+            var connection = workerData.WorkerConfigs[0].Worker.Connection;
 
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();

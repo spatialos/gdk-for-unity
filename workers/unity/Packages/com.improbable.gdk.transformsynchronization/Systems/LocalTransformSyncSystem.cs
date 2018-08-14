@@ -1,6 +1,7 @@
 using Generated.Improbable;
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
@@ -23,7 +24,13 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private TransformData transformData;
 
-        private Vector3 origin;
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private WorkerData workerData;
 
         private TickSystem tickSystem;
 
@@ -35,15 +42,13 @@ namespace Improbable.Gdk.TransformSynchronization
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
-
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }
 
         protected override void OnUpdate()
         {
+            var worldOrigin = workerData.WorkerConfigs[0].Worker.Origin;
+
             for (var i = 0; i < transformData.Length; i++)
             {
                 var rigidbody = transformData.GameObjectRigidBody[i];
@@ -51,7 +56,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var nativePosition = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z);
 
-                var positionDifference = (rigidbody.position - origin - nativePosition).sqrMagnitude;
+                var positionDifference = (rigidbody.position - worldOrigin - nativePosition).sqrMagnitude;
 
                 // Sync if sufficient difference or if sufficient time has passed
                 if (positionDifference <= ToleranceMeters)
@@ -69,7 +74,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
                 }
 
-                var position = rigidbody.position - origin;
+                var position = rigidbody.position - worldOrigin;
                 var location = new Location { X = position.x, Y = position.y, Z = position.z };
                 var rotation = new Quaternion
                 {

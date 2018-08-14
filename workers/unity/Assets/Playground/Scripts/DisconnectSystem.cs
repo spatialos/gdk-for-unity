@@ -11,17 +11,20 @@ namespace Playground
         public struct DisconnectData
         {
             public readonly int Length;
+            public EntityArray Entities;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-
-            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> Configs;
         }
 
         [Inject] private DisconnectData data;
 
         protected override void OnUpdate()
         {
-            Debug.LogWarningFormat("Diconnected from SpatialOS with reason: \"{0}\"",
-                data.DisconnectMessage[0].ReasonForDisconnect);
+            data.Configs[0].Worker.LogDispatcher.HandleLog(
+                LogType.Warning,
+                new LogEvent($"Disconnected from SpatialOS with reason: \"{data.DisconnectMessage[0].ReasonForDisconnect}\""
+                ));
+            Worker.Disconnect(data.Configs[0].Worker);
         }
     }
 }
