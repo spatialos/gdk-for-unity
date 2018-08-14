@@ -42,12 +42,29 @@ namespace Generated.Improbable.Gdk.Tests
             {
             };
 
-            protected override uint GetComponentId()
+            private const uint componentId = 197717;
+
+            public override void InvokeOnAddComponentLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
-                return 197717;
+                var entities = ComponentAddedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    activationManager.AddComponent(componentId);
+                }
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void InvokeOnRemoveComponentLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            {
+                var entities = ComponentRemovedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    activationManager.RemoveComponent(componentId);
+                }
+            }
+
+            public override void InvokeOnAuthorityChangeLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveRepeated>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
@@ -56,25 +73,25 @@ namespace Generated.Improbable.Gdk.Tests
                     var activationManager = entityIndexToManagers[entities[i].Index];
                     for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
                     {
-                        activationManager.ChangeAuthority(197717, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
                     }
                 }
             }
 
-            public override void InvokeOnComponentUpdateUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveRepeated.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = readerWriterStores[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(197717, out var readers))
+                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                     {
                         continue;
                     }
 
                     var updateList = updateLists[i];
-                    foreach (var reader in readers.OfType<ExhaustiveRepeated.ReaderWriterImpl>())
+                    foreach (ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
@@ -84,28 +101,28 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            public override void InvokeOnEventUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
+            public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
             }
 
-            public override void InvokeOnCommandRequestUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
             }
 
-            public override void InvokeOnAuthorityChangeUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveRepeated>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = readerWriterStores[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(197717, out var readers))
+                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (var reader in readers.OfType<ExhaustiveRepeated.ReaderWriterImpl>())
+                    foreach (ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

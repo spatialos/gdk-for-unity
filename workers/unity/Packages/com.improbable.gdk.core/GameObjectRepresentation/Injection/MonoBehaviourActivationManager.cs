@@ -28,13 +28,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
 
         private readonly ReaderWriterStore store;
-        private readonly ReaderWriterInjector injector;
+        private readonly RequireTagInjector injector;
 
         private readonly ILogDispatcher logger;
 
-        private const string LoggerName = "MonoBehaviourActivationManager";
+        private const string LoggerName = nameof(MonoBehaviourActivationManager);
 
-        public MonoBehaviourActivationManager(GameObject gameObject, ReaderWriterInjector injector,
+        public MonoBehaviourActivationManager(GameObject gameObject, RequireTagInjector injector,
             ReaderWriterStore store, ILogDispatcher logger)
         {
             this.logger = logger;
@@ -48,10 +48,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 var readerIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
-                AddBehaviourForIds(behaviour, readerIds, behavioursRequiringReaderTypes);
+                AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
 
                 var writerIds = injector.GetRequiredWriterComponentIds(behaviour.GetType());
-                AddBehaviourForIds(behaviour, writerIds, behavioursRequiringWriterTypes);
+                AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
 
@@ -59,15 +59,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        private void AddBehaviourForIds(MonoBehaviour behaviour, List<uint> componentIds,
-            Dictionary<uint, HashSet<MonoBehaviour>> idsToBehaviours)
+        private void AddBehaviourForComponentIds(MonoBehaviour behaviour, List<uint> componentIds,
+            Dictionary<uint, HashSet<MonoBehaviour>> componentIdsToBehaviours)
         {
             foreach (var id in componentIds)
             {
-                if (!idsToBehaviours.TryGetValue(id, out var behaviours))
+                if (!componentIdsToBehaviours.TryGetValue(id, out var behaviours))
                 {
                     behaviours = new HashSet<MonoBehaviour>();
-                    idsToBehaviours[id] = behaviours;
+                    componentIdsToBehaviours[id] = behaviours;
                 }
 
                 behaviours.Add(behaviour);
@@ -78,8 +78,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var behaviour in behavioursToEnable)
             {
-                var idsToReaderWriterLists = injector.InjectAllReadersWriters(behaviour, entity);
-                store.AddReaderWritersForBehaviour(behaviour, idsToReaderWriterLists);
+                var componentIdsToReaderWriterLists = injector.InjectAllReadersWriters(behaviour, entity);
+                store.AddReaderWritersForBehaviour(behaviour, componentIdsToReaderWriterLists);
             }
 
             foreach (var behaviour in behavioursToEnable)

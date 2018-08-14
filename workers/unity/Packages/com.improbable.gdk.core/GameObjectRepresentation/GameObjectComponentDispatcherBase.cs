@@ -19,33 +19,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
-        protected abstract uint GetComponentId();
+        public abstract void InvokeOnAddComponentLifecycleMethods
+            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+        public abstract void InvokeOnRemoveComponentLifecycleMethods
+            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+        public abstract void InvokeOnAuthorityChangeLifecycleMethods
+            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
 
-        public void InvokeOnAddComponentLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
-        {
-            var entities = ComponentAddedComponentGroup.GetEntityArray();
-            for (var i = 0; i < entities.Length; i++)
-            {
-                var activationManager = entityIndexToManagers[entities[i].Index];
-                activationManager.AddComponent(GetComponentId());
-            }
-        }
-
-        public void InvokeOnRemoveComponentLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
-        {
-            var entities = ComponentRemovedComponentGroup.GetEntityArray();
-            for (var i = 0; i < entities.Length; i++)
-            {
-                var activationManager = entityIndexToManagers[entities[i].Index];
-                activationManager.RemoveComponent(GetComponentId());
-            }
-        }
-
-        public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
-
-        public abstract void InvokeOnComponentUpdateUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
-        public abstract void InvokeOnEventUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
-        public abstract void InvokeOnCommandRequestUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
-        public abstract void InvokeOnAuthorityChangeUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
     }
 }

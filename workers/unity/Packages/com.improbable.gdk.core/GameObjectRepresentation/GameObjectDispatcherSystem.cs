@@ -20,14 +20,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
 
-        private ReaderWriterInjector injector;
+        private RequireTagInjector injector;
         private ILogDispatcher logger;
 
         internal void RemoveActivationManagerAndReaderWriterStore(int entityIndex)
         {
             if (!entityIndexToActivationManager.ContainsKey(entityIndex))
             {
-                throw new ActivationManagerNotFoundException($"SpatialOSBehaviourManager not found for entityIndex {entityIndex}.");
+                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entityIndex {entityIndex}.");
             }
 
             var spatialOSBehaviourManager = entityIndexToActivationManager[entityIndex];
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            injector = new ReaderWriterInjector(entityManager, logger);
+            injector = new RequireTagInjector(entityManager, logger);
         }
 
         private void FindGameObjectComponentDispatchers()
@@ -102,9 +102,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleMethods(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleMethods(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleMethods(entityIndexToActivationManager);
             }
 
             foreach (var indexManagerPair in entityIndexToActivationManager)
@@ -114,10 +114,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityIndexToReaderWriterStore);
             }
 
             foreach (var indexManagerPair in entityIndexToActivationManager)
@@ -144,7 +144,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (entityIndexToActivationManager.ContainsKey(entity.Index))
             {
-                throw new ActivationManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");
+                throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entityIndex {entity.Index}.");
             }
 
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;

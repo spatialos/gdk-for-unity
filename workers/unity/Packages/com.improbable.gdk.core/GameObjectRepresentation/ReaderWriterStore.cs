@@ -8,23 +8,23 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>> behaviourToReadersWriters
             = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>>();
 
-        private readonly Dictionary<uint, HashSet<IReaderWriterInternal>> compIdToReadersWriters =
+        private readonly Dictionary<uint, HashSet<IReaderWriterInternal>> componentIdToReadersWriters =
             new Dictionary<uint, HashSet<IReaderWriterInternal>>();
 
         public void AddReaderWritersForBehaviour(MonoBehaviour behaviour,
-            Dictionary<uint, IReaderWriterInternal[]> idsToReaderWriterLists)
+            Dictionary<uint, IReaderWriterInternal[]> componentIdsToReaderWriterLists)
         {
-            behaviourToReadersWriters[behaviour] = idsToReaderWriterLists;
-            foreach (var idToReaderWriterList in idsToReaderWriterLists)
+            behaviourToReadersWriters[behaviour] = componentIdsToReaderWriterLists;
+            foreach (var idToReaderWriterList in componentIdsToReaderWriterLists)
             {
                 var id = idToReaderWriterList.Key;
                 var readerWriterList = idToReaderWriterList.Value;
                 foreach (var readerWriter in readerWriterList)
                 {
-                    if (!compIdToReadersWriters.TryGetValue(id, out var readersWriters))
+                    if (!componentIdToReadersWriters.TryGetValue(id, out var readersWriters))
                     {
                         readersWriters = new HashSet<IReaderWriterInternal>();
-                        compIdToReadersWriters[id] = readersWriters;
+                        componentIdToReadersWriters[id] = readersWriters;
                     }
 
                     readersWriters.Add(readerWriter);
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var readerWriterList = idToReaderWriterList.Value;
                 foreach (var readerWriter in readerWriterList)
                 {
-                    compIdToReadersWriters[id].Remove(readerWriter);
+                    componentIdToReadersWriters[id].Remove(readerWriter);
                 }
             }
 
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public bool TryGetReaderWritersForComponent(uint componentId, out HashSet<IReaderWriterInternal> readers)
         {
-            return compIdToReadersWriters.TryGetValue(componentId, out readers);
+            return componentIdToReadersWriters.TryGetValue(componentId, out readers);
         }
     }
 }

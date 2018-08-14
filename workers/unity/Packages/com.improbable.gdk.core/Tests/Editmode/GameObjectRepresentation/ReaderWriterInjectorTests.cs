@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         private World world;
-        private ReaderWriterInjector injector;
+        private RequireTagInjector injector;
         private Entity testEntity;
         private GameObject testGameObject;
 
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             var entityManager = world.GetOrCreateManager<EntityManager>();
-            injector = new ReaderWriterInjector(entityManager, new LoggingDispatcher());
+            injector = new RequireTagInjector(entityManager, new LoggingDispatcher());
             testEntity = entityManager.CreateEntity();
             testGameObject = new GameObject();
         }
