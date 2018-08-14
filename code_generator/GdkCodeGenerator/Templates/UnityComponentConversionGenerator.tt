@@ -141,7 +141,6 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# if (eventDetailsList.Count > 0) { #>
-                // Events
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
 <# foreach (var eventDetails in eventDetailsList) { #>
                 {
@@ -260,7 +259,8 @@ namespace <#= qualifiedNamespace #>
                         // Add event senders
 <# foreach (var eventDetail in eventDetailsList) { #>
                         {
-                            var eventSender = new EventSender.<#= eventDetail.PascalCaseName #>() {
+                            var eventSender = new EventSender.<#= eventDetail.PascalCaseName #>()
+                            {
                                 handle = ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Allocate(World)
                             };
                             ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FullyQualifiedPayloadTypeName #>>());
@@ -428,20 +428,6 @@ namespace <#= qualifiedNamespace #>
                         componentDataArray[i] = data;
                     }
                 }
-
-<# foreach (var eventDetail in eventDetailsList) { #>
-                {
-                    var eventSenderArray = replicationGroup.GetComponentDataArray<EventSender.<#= eventDetail.EventName #>>();
-                    for (var i = 0; i < eventSenderArray.Length; i++)
-                    {
-                        var eventSender = eventSenderArray[i];
-                        foreach (var e in eventSender.Events)
-                        {
-                        }
-                    }
-                }
-<# } #>
-
             }
 
             public override void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection)

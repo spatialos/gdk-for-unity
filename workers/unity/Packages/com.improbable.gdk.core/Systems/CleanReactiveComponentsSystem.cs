@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
@@ -64,20 +65,11 @@ namespace Improbable.Gdk.Core
                 {
                     if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
                     {
-                        // These are generic and cannot use `RemoveAtEndOfTick`
                         var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
                             typesToRemove.Add(componentType.GetManagedType());
                             addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
-                        }
-
-                        // EventsReceived groups
-                        var eventGroups = new ComponentGroup[componentCleanupHandler.EventComponentTypes.Length];
-                        for (var i = 0; i < componentCleanupHandler.EventComponentTypes.Length; i++)
-                        {
-                            var componentType = componentCleanupHandler.EventComponentTypes[i];
-                            eventGroups[i] = GetComponentGroup(componentType);
                         }
 
                         // Updates group
@@ -86,7 +78,7 @@ namespace Improbable.Gdk.Core
                             Handler = componentCleanupHandler,
                             UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
                             AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
-                            EventGroups = eventGroups,
+                            EventGroups = componentCleanupHandler.EventComponentTypes.Select(eventType => GetComponentGroup(eventType)).ToArray(),
                         });
                     }
                 }
