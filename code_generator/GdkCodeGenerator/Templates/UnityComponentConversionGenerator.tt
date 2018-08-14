@@ -416,6 +416,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entity = requestBundle.Entity;
+                <#= commandStorage #>.CommandRequestsInFlight.Remove(op.RequestId.Id);
                 if (!entityManager.Exists(entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
