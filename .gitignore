@@ -26,6 +26,7 @@ workers/unity/*.sln
 *.userprefs
 *.svd
 *.DotSettings.user
+_ReSharper.Caches
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt

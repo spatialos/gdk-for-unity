@@ -4,6 +4,14 @@ using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -11,28 +19,22 @@ namespace Playground
     {
         public struct PlayerDataLauncher
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSLauncher.Update>> Updates;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
-#pragma warning restore 649
         }
 
         public struct PlayerDataScore
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
             [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSScore.Update>> Updates;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private PlayerDataLauncher playerDataLauncher;
         [Inject] private PlayerDataScore playerDataScore;
-#pragma warning restore 649
 
         protected override void OnUpdate()
         {

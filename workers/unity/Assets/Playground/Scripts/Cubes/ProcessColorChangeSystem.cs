@@ -4,6 +4,14 @@ using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -20,16 +28,13 @@ namespace Playground
 
         public struct Data
         {
-#pragma warning disable 649
             public readonly int Length;
             public ComponentArray<EventsReceived<ChangeColorEvent>> EventUpdate;
             public ComponentArray<MeshRenderer> Renderers;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private Data data;
-#pragma warning restore 649
+
         private Dictionary<Generated.Playground.Color, MaterialPropertyBlock> materialPropertyBlocks;
 
         protected override void OnCreateManager(int capacity)

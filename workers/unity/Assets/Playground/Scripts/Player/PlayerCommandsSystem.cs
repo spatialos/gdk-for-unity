@@ -7,13 +7,22 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class PlayerCommandsSystem : ComponentSystem
     {
         private enum PlayerCommand
-        {
+        {            
+            // ReSharper disable once UnusedMember.Local
             None,
             LaunchSmall,
             LaunchLarge
@@ -26,17 +35,13 @@ namespace Playground
 
         private struct PlayerData
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private PlayerData playerData;
-#pragma warning restore 649
 
         protected override void OnCreateManager(int capacity)
         {

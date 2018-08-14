@@ -16,7 +16,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         {
             private struct PreparationData
             {
-#pragma warning disable 649
                 public readonly int Length;
 
                 /*
@@ -26,9 +25,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 it has ComponentArray<> fields, and not its contents.
                 */
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
-
                 public ComponentDataArray<TestPreparation> PreparationStruct;
-#pragma warning restore 649
             }
 
             [Inject] private PreparationData testDataToPrepare;

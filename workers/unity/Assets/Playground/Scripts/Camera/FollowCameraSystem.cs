@@ -2,6 +2,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     /// <summary>
@@ -30,12 +38,10 @@ namespace Playground
 
         private struct Data
         {
-#pragma warning disable 649
             public readonly int Length;
             public ComponentDataArray<CameraInput> CameraInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             [ReadOnly] public ComponentArray<Rigidbody> RigidBody;
-#pragma warning restore 649
         }
 
         [Inject] private Data data;

@@ -3,6 +3,14 @@ using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     public struct Recharging : IComponentData
@@ -14,12 +22,10 @@ namespace Playground
     {
         private struct Data
         {
-#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entity;
             public ComponentDataArray<Recharging> Reloading;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
-#pragma warning restore 649
         }
 
         [Inject] private Data data;

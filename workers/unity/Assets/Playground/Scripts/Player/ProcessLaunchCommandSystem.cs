@@ -5,6 +5,14 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -14,7 +22,6 @@ namespace Playground
 
         private struct LaunchCommandData
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
@@ -23,12 +30,10 @@ namespace Playground
             public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
 
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
-#pragma warning restore 649
         }
 
         private struct LaunchableData
         {
-#pragma warning disable 649
             public readonly int Length;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
 
@@ -37,7 +42,6 @@ namespace Playground
 
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
-#pragma warning restore 649
         }
 
         [Inject] private LaunchCommandData launchCommandData;

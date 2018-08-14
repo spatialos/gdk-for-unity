@@ -6,6 +6,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     /// <summary>
@@ -16,30 +24,24 @@ namespace Playground
     {
         public struct AddedEntitiesData
         {
-#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
-#pragma warning restore 649
         }
 
         public struct RemovedEntitiesData
         {
-#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
-#pragma warning restore 649
 
         private MutableView view;
         private WorkerBase worker;

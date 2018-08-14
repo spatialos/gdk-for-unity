@@ -5,6 +5,14 @@ using Improbable.Gdk.TransformSynchronization;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -12,15 +20,11 @@ namespace Playground
     {
         public struct CubeColorData
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<EventSender<SpatialOSCubeColor>> EventSenders;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private CubeColorData cubeColorData;
-#pragma warning restore 649
 
         private Array colorValues;
 

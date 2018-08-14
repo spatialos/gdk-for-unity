@@ -3,6 +3,14 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [RemoveAtEndOfTick]
@@ -17,19 +25,15 @@ namespace Playground
     {
         private struct Data
         {
-#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private Data data;
-#pragma warning restore 649
 
         protected override void OnUpdate()
         {

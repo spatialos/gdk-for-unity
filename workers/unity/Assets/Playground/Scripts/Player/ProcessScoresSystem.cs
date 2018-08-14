@@ -3,6 +3,14 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -10,13 +18,11 @@ namespace Playground
     {
         private struct ScoringData
         {
-#pragma warning disable 649
             public readonly int Length;
             public ComponentDataArray<SpatialOSScore> Score;
 
             [ReadOnly]
             public ComponentArray<CommandRequests<Generated.Playground.Launcher.IncreaseScore.Request>> CommandRequests;
-#pragma warning restore 649
         }
 
         [Inject] private ScoringData scoringData;

@@ -4,6 +4,14 @@ using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -17,28 +25,23 @@ namespace Playground
 
         public struct NewPlayerData
         {
-#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entity;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
-#pragma warning restore 649
         }
-
-        [Inject] private NewPlayerData newPlayerData;
 
         public struct PlayerInputData
         {
-#pragma warning disable 649
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-            public ComponentDataArray<Speed> Speed;
-#pragma warning restore 649
+            public ComponentDataArray<Speed> SpeedData;
         }
 
+        [Inject] private NewPlayerData newPlayerData;
         [Inject] private PlayerInputData playerInputData;
 
         private const float WalkSpeed = 2;
@@ -81,12 +84,12 @@ namespace Playground
 
                 var running = playerInputData.PlayerInput[i].Running;
                 var targetSpeed = (running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
-                var speed = playerInputData.Speed[i];
+                var speed = playerInputData.SpeedData[i];
                 var currentSpeed = speed.CurrentSpeed;
                 var speedSmoothVelocity = speed.SpeedSmoothVelocity;
 
                 currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime);
-                playerInputData.Speed[i] = new Speed
+                playerInputData.SpeedData[i] = new Speed
                 {
                     CurrentSpeed = currentSpeed,
                     SpeedSmoothVelocity = speedSmoothVelocity

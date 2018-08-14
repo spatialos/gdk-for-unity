@@ -8,6 +8,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     /// <summary>
@@ -18,17 +26,13 @@ namespace Playground
     {
         public struct Data
         {
-#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentArray<SpatialOSArchetypeComponent> ArchetypeComponents;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
-#pragma warning restore 649
         }
 
-#pragma warning disable 649
         [Inject] private Data data;
-#pragma warning restore 649
 
         private const string LoggerName = nameof(ArchetypeInitializationSystem);
         private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
