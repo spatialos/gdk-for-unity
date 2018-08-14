@@ -16,8 +16,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             new Dictionary<int, MonoBehaviourActivationManager>();
         private readonly Dictionary<int, ReaderWriterStore> entityIndexToReaderWriterStore =
             new Dictionary<int, ReaderWriterStore>();
-        private readonly List<MonoBehaviourActivationManager> activationManagers =
-            new Collections.List<MonoBehaviourActivationManager>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
@@ -34,7 +32,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var spatialOSBehaviourManager = entityIndexToActivationManager[entityIndex];
             entityIndexToActivationManager.Remove(entityIndex);
-            activationManagers.Remove(spatialOSBehaviourManager);
             entityIndexToReaderWriterStore.Remove(entityIndex);
         }
 
@@ -110,9 +107,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(entityIndexToActivationManager);
             }
 
-            foreach (var activationManager in activationManagers)
+            foreach (var indexManagerPair in entityIndexToActivationManager)
             {
-                activationManager.EnableSpatialOSBehaviours();
+                indexManagerPair.Value.EnableSpatialOSBehaviours();
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
@@ -123,9 +120,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(entityIndexToReaderWriterStore);
             }
 
-            foreach (var activationManager in activationManagers)
+            foreach (var indexManagerPair in entityIndexToActivationManager)
             {
-                activationManager.DisableSpatialOSBehaviours();
+                indexManagerPair.Value.DisableSpatialOSBehaviours();
             }
         }
 
@@ -155,7 +152,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             entityIndexToReaderWriterStore[entity.Index] = store;
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityIndexToActivationManager[entity.Index] = manager;
-            activationManagers.Add(manager);
         }
     }
 }
