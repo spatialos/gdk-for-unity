@@ -1,4 +1,4 @@
-**Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+**Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
@@ -7,7 +7,7 @@
 ## Setting up your machine
 
 1. Before setting up for Android:
-    * Follow the steps in [Setup and install GDK](https://github.com/spatialos/UnityGDK/blob/master/docs/setup-and-installing.md). 
+    * Follow the steps in [Setup and install GDK](../../../docs/setup-and-installing.md). 
     * Make sure you use the Unity Editor specified in the *Setup and install GDK* documentation.
 
 2. Install Android prerequisites
@@ -80,4 +80,4 @@ See [Deploy your game to an Android device](#deploy-your-game-to-an-android-devi
 7. Play the game on the mobile device.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
