@@ -16,7 +16,7 @@ namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitCameraSystem : ComponentSystem
-    {        
+    {
         private struct Data
         {
             public readonly int Length;

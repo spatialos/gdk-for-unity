@@ -40,6 +40,7 @@ markStartOfBlock "Linting tools"
 
 ${LINTER} --profile="IW Code Cleanup" \
   --settings=ReSharper2017.DotSettings \
+  --disable-settings-layers="SolutionPersonal;GlobalAll;GlobalPerProduct" \
   tools/Tools.sln
 
 markEndOfBlock "Linting tools"
@@ -47,19 +48,23 @@ markEndOfBlock "Linting tools"
 markStartOfBlock "Linting GDK Code Generator"
 
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=ReSharper2017.DotSettings \
-  --exclude=Generated/**/* \
-  --exclude=Improbable.TextTemplating/**/* \
-  --exclude=Mono.TextTemplating/**/* \
+  --settings=code_generator/GdkCodeGenerator.sln.DotSettings \
+  --disable-settings-layers="SolutionPersonal;GlobalAll;GlobalPerProduct" \
   code_generator/GdkCodeGenerator.sln
 
 markEndOfBlock "Linting GDK Code Generator"
 
 markStartOfBlock "Linting Unity GDK"
 
+# We've setup ReSharper to ignore the Generated code projects, which means it will spuriously delete all `using`
+# references to them unless we copy them from the location that Unity has built them into where the .csproj's
+# <OutputPath> says they'll be.
+mkdir -p workers/unity/Temp/bin/Debug
+cp -r workers/unity/Library/ScriptAssemblies/*Generated*.dll workers/unity/Temp/bin/Debug/
+
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=ReSharper2017.DotSettings \
-  --exclude=workers/unity/Assets/Improbable.Generated.NetworkTypes/**/* \
+  --settings=workers/unity/unity.sln.DotSettings \
+  --disable-settings-layers="SolutionPersonal;GlobalAll;GlobalPerProduct" \
   workers/unity/unity.sln
 
 markEndOfBlock "Linting Unity GDK"

@@ -21,7 +21,7 @@ namespace Playground
     public class PlayerCommandsSystem : ComponentSystem
     {
         private enum PlayerCommand
-        {            
+        {
             // ReSharper disable once UnusedMember.Local
             None,
             LaunchSmall,
