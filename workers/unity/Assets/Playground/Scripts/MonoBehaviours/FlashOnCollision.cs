@@ -1,5 +1,4 @@
-﻿using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
-using Generated.Playground;
+﻿using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 
@@ -9,6 +8,7 @@ public class FlashOnCollision : MonoBehaviour
 
     private float collideTime;
     private bool flashing = false;
+    private const float flashTime = 0.2f;
 
     void OnEnable()
     {
@@ -36,7 +36,7 @@ public class FlashOnCollision : MonoBehaviour
 
     void Update()
     {
-        if (flashing && Time.time - collideTime > 0.2f)
+        if (flashing && Time.time - collideTime > flashTime)
         {
             var renderer = gameObject.GetComponent<MeshRenderer>();
             renderer.material.SetColor("_Color", UnityEngine.Color.white);
