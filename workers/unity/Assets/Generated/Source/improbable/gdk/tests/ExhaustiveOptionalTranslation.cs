@@ -46,7 +46,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSExhaustiveOptional.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(WorkerBase worker) : base(worker)
+            public Translation(Worker worker) : base(worker)
             {
             }
 
@@ -66,7 +66,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveOptional> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -93,16 +93,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveOptional.Field17 = data.field17.HasValue ? new global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>(global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(data.field17.Value)) : new global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>();
                 spatialOSExhaustiveOptional.DirtyBit = false;
 
-                 worker.EntityManager.SetComponentObject(entity, spatialOSExhaustiveOptional);
-                worker.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
+                 EntityManager.SetComponentObject(entity, spatialOSExhaustiveOptional);
+                EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
 
-                if (worker.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                if (EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
+                    EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                else if (!EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
+                    EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
                 }
                 else
                 {
@@ -117,7 +117,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveOptional> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -126,10 +126,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = worker.EntityManager.GetComponentObject<SpatialOSExhaustiveOptional>(entity);
+                var componentData = EntityManager.GetComponentObject<SpatialOSExhaustiveOptional>(entity);
                 var update = op.Update.Get();
 
-                if (worker.EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
+                if (EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
                 {
                     if (update.field2.HasValue)
                     {
@@ -191,7 +191,7 @@ namespace Generated.Improbable.Gdk.Tests
 
                 componentData.DirtyBit = false;
 
-                 worker.EntityManager.SetComponentObject(entity, componentData);
+                 EntityManager.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
                 var gdkUpdate = new SpatialOSExhaustiveOptional.Update();
@@ -275,7 +275,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnRemoveComponent(RemoveComponentOp op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -284,15 +284,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                worker.EntityManager.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
+                EntityManager.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
 
-                if (worker.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                if (EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
+                    EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                else if (!EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
+                    EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
                 }
                 else
                 {
@@ -308,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 var entityId = op.EntityId.Id;
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(entityId, out entity))
+                if (!Worker.TryGetEntity(entityId, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -329,7 +329,7 @@ namespace Generated.Improbable.Gdk.Tests
                     var componentData = componentDataArray[i];
                     var entityId = spatialEntityIdData[i].EntityId;
                     Unity.Entities.Entity entity;
-                    if (!worker.TryGetEntity(entityId, out entity))
+                    if (!Worker.TryGetEntity(entityId, out entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during replication.")
                             .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -358,7 +358,7 @@ namespace Generated.Improbable.Gdk.Tests
                         SendComponentUpdate(connection, entityId, update);
 
                         componentData.DirtyBit = false;
-                        worker.EntityManager.SetComponentObject(entity, componentData);
+                        EntityManager.SetComponentObject(entity, componentData);
 
                     }
                 }
