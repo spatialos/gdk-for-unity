@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -29,6 +30,7 @@ namespace Improbable.Gdk.Core
                 new ParameterModifier[] { });
 
         private readonly Dictionary<EntityId, Entity> entityMapping;
+        private readonly World world;
 
         public MutableView(World world, ILogDispatcher logDispatcher)
         {
@@ -38,10 +40,11 @@ namespace Improbable.Gdk.Core
 
             setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), EntityManager, setComponentObjectMethodInfo);
-
+            this.world = world;
             // Create the worker entity
             WorkerEntity = EntityManager.CreateEntity(typeof(WorkerEntityTag));
             AddAllCommandComponents.ForEach(action => action(WorkerEntity));
+            WorldCommands.AddWorldCommandRequesters(world, EntityManager, WorkerEntity);
         }
 
         public void Dispose()
@@ -200,13 +203,13 @@ namespace Improbable.Gdk.Core
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
             AddAllCommandComponents.ForEach(action => action(entity));
+            WorldCommands.AddWorldCommandRequesters(world, EntityManager, entity);
             entityMapping.Add(entityId, entity);
         }
 
         internal void RemoveEntity(EntityId entityId)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -214,7 +217,8 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            EntityManager.DestroyEntity(entityMapping[entityId]);
+            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
+            EntityManager.DestroyEntity(entity);
             entityMapping.Remove(entityId);
         }
 
