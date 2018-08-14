@@ -2,6 +2,7 @@
 <#@ output extension=".cs" #>
 <#
     var fieldDetailsList = GetFieldDetailsList();
+    var eventDetailsList = GetEventDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var generator = new UnityReferenceTypeProviderContent();
@@ -16,7 +17,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        internal class ReferenceTypeProviders 
+        internal static class ReferenceTypeProviders 
         {
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentDetails.TypeName}.Update>"), 3) #>
 
@@ -25,6 +26,10 @@ namespace <#= qualifiedNamespace #>
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(fieldDetails.PascalCaseName, fieldDetails.Type), 3) #>
 
 <# } #>
+<# } #>
+<# foreach(var eventDetails in eventDetailsList) { #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(eventDetails.PascalCaseName, $"List<{eventDetails.FullyQualifiedPayloadTypeName}>"), 3) #>
+
 <# } #>
         }
     }

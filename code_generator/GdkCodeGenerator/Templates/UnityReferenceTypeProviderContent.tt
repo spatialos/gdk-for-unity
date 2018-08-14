@@ -1,6 +1,6 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
-public class <#= Name #>Provider 
+public static class <#= Name #>Provider 
 {
     private static readonly Dictionary<uint, <#= TypeName #>> Storage = new Dictionary<uint, <#= TypeName #>>();
     private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();

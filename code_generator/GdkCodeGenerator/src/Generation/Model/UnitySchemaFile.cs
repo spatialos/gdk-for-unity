@@ -142,6 +142,7 @@ namespace Improbable.Gdk.CodeGenerator
             public readonly string Name;
             internal readonly TypeReferenceRaw RawType;
             public UnityTypeReference Type;
+            public uint EventIndex;
 
             internal UnityEventDefinition(ComponentDefinitionRaw.EventDefinitionRaw rawEventDefinition)
             {
@@ -152,6 +153,8 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     Type = new UnityTypeReference(RawType.TypeName, null, null);
                 }
+
+                EventIndex = rawEventDefinition.eventIndex;
             }
         }
 

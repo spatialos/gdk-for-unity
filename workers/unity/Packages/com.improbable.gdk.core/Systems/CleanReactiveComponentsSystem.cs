@@ -12,11 +12,9 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
-        private MutableView view;
-
         private readonly List<Action> removeComponentActions = new List<Action>();
 
-        private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
+        private readonly List<ComponentCleanup> componentUpdateCleanups = new List<ComponentCleanup>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
@@ -24,19 +22,20 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
+            // TODO: Remove workaround when UTY-936 is fixed
             var addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
+                typeof(CleanReactiveComponentsSystem).GetMethod(nameof(AddRemoveComponentAction),
                     BindingFlags.NonPublic | BindingFlags.Instance);
 
+            if (addRemoveComponentActionMethod == null)
+            {
+                throw new MissingMethodException(nameof(CleanReactiveComponentsSystem), nameof(AddRemoveComponentAction));
+            }
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -54,13 +53,10 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    if (typesToRemove.Contains(type))
+                    if (typesToRemove.Add(type))
                     {
-                        continue;
+                        addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
                     }
-
-                    typesToRemove.Add(type);
-                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
                 }
 
                 // Find all ComponentCleanupHandlers
@@ -68,6 +64,7 @@ namespace Improbable.Gdk.Core
                 {
                     if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
                     {
+                        // These are generic and cannot use `RemoveAtEndOfTick`
                         var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
@@ -75,11 +72,21 @@ namespace Improbable.Gdk.Core
                             addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
                         }
 
-                        componentCleanups.Add(new ComponentCleanup
+                        // EventsReceived groups
+                        var eventGroups = new ComponentGroup[componentCleanupHandler.EventComponentTypes.Length];
+                        for (var i = 0; i < componentCleanupHandler.EventComponentTypes.Length; i++)
+                        {
+                            var componentType = componentCleanupHandler.EventComponentTypes[i];
+                            eventGroups[i] = GetComponentGroup(componentType);
+                        }
+
+                        // Updates group
+                        componentUpdateCleanups.Add(new ComponentCleanup
                         {
                             Handler = componentCleanupHandler,
                             UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
                             AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType)
+                            EventGroups = eventGroups,
                         });
                     }
                 }
@@ -112,10 +119,11 @@ namespace Improbable.Gdk.Core
             }
 
             var buffer = PostUpdateCommands;
-            foreach (var componentCleanup in componentCleanups)
+            foreach (var updatesCleanup in componentUpdateCleanups)
             {
-                componentCleanup.Handler.CleanupUpdates(componentCleanup.UpdateGroup, ref buffer);
-                componentCleanup.Handler.CleanupAuthChanges(componentCleanup.AuthorityChangesGroup, ref buffer);
+                updatesCleanup.Handler.CleanupUpdates(updatesCleanup.UpdateGroup, ref buffer);
+                updatesCleanup.Handler.CleanupEvents(updatesCleanup.EventGroups, ref buffer);
+                updatesCleanup.Handler.CleanupAuthChanges(updatesCleanup.AuthorityChangesGroup, ref buffer);
             }
         }
 
@@ -124,6 +132,7 @@ namespace Improbable.Gdk.Core
             public ComponentCleanupHandler Handler;
             public ComponentGroup UpdateGroup;
             public ComponentGroup AuthorityChangesGroup;
+            public ComponentGroup[] EventGroups;
         }
     }
 }
