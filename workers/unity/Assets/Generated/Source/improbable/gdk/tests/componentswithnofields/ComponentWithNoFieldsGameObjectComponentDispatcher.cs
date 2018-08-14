@@ -60,24 +60,25 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnComponentUpdateUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnComponentUpdateUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
             }
 
-            public override void InvokeOnEventUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnEventUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
             }
 
-            public override void InvokeOnCommandRequestUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnCommandRequestUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
             }
 
-            public override void InvokeOnAuthorityChangeUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnAuthorityChangeUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
+                    var readerWriterStore = readerWriterStores[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(1003, out var readers))
                     {
                         continue;

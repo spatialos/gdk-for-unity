@@ -43,9 +43,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public abstract void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
 
-        public abstract void InvokeOnComponentUpdateUserCallbacks(ReaderWriterStore readerWriterStore);
-        public abstract void InvokeOnEventUserCallbacks(ReaderWriterStore readerWriterStore);
-        public abstract void InvokeOnCommandRequestUserCallbacks(ReaderWriterStore readerWriterStore);
-        public abstract void InvokeOnAuthorityChangeUserCallbacks(ReaderWriterStore readerWriterStore);
+        public abstract void InvokeOnComponentUpdateUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnEventUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnCommandRequestUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
+        public abstract void InvokeOnAuthorityChangeUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);
     }
 }

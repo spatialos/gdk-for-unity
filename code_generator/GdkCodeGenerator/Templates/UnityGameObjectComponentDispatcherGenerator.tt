@@ -76,13 +76,14 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            public override void InvokeOnComponentUpdateUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnComponentUpdateUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
 <# if (fieldDetailsList.Count > 0) { #>
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
+                    var readerWriterStore = readerWriterStores[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(<#= unityComponentDefinition.Id #>, out var readers))
                     {
                         continue;
@@ -100,7 +101,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public override void InvokeOnEventUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnEventUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
 <# for (var j = 0; j < eventDetailsList.Count; j++) { #>
                 {
@@ -108,6 +109,7 @@ namespace <#= qualifiedNamespace #>
                     var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
+                        var readerWriterStore = readerWriterStores[entities[i].Index];
                         if (!readerWriterStore.TryGetReaderWritersForComponent(<#= unityComponentDefinition.Id #>, out var readers))
                         {
                             continue;
@@ -127,7 +129,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public override void InvokeOnCommandRequestUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnCommandRequestUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
                 {
@@ -135,6 +137,7 @@ namespace <#= qualifiedNamespace #>
                     var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
+                        var readerWriterStore = readerWriterStores[entities[i].Index];
                         if (!readerWriterStore.TryGetReaderWritersForComponent(<#= unityComponentDefinition.Id #>, out var readers))
                         {
                             continue;
@@ -153,12 +156,13 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public override void InvokeOnAuthorityChangeUserCallbacks(ReaderWriterStore readerWriterStore)
+            public override void InvokeOnAuthorityChangeUserCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores)
             {
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
+                    var readerWriterStore = readerWriterStores[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(<#= unityComponentDefinition.Id #>, out var readers))
                     {
                         continue;

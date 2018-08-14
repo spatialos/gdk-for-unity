@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<int, MonoBehaviourActivationManager> entityIndexToActivationManager =
             new Dictionary<int, MonoBehaviourActivationManager>();
+        private readonly Dictionary<int, ReaderWriterStore> entityIndexToReaderWriterStore =
+            new Dictionary<int, ReaderWriterStore>();
         private readonly List<MonoBehaviourActivationManager> activationManagers =
             new Collections.List<MonoBehaviourActivationManager>();
 
@@ -21,7 +23,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             new List<GameObjectComponentDispatcherBase>();
 
         private ReaderWriterInjector injector;
-        private ReaderWriterStore readerWriterStore;
         private ILogDispatcher logger;
 
         internal void AddSpatialOSBehaviourManager(int entityIndex, MonoBehaviourActivationManager activationManager)
@@ -35,7 +36,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             activationManagers.Add(activationManager);
         }
 
-        internal void RemoveActivationManager(int entityIndex)
+        internal void RemoveActivationManagerAndReaderWriterStore(int entityIndex)
         {
             if (!entityIndexToActivationManager.ContainsKey(entityIndex))
             {
@@ -45,6 +46,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             var spatialOSBehaviourManager = entityIndexToActivationManager[entityIndex];
             entityIndexToActivationManager.Remove(entityIndex);
             activationManagers.Remove(spatialOSBehaviourManager);
+            entityIndexToReaderWriterStore.Remove(entityIndex);
         }
 
         public bool HasSpatialOSBehaviourManager(int entityId)
@@ -72,7 +74,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
             injector = new ReaderWriterInjector(entityManager, logger);
-            readerWriterStore = new ReaderWriterStore();
         }
 
         private void FindGameObjectComponentDispatchers()
@@ -142,10 +143,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(readerWriterStore);
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(readerWriterStore);
-                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(readerWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(readerWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(entityIndexToReaderWriterStore);
             }
 
             foreach (var activationManager in activationManagers)
@@ -168,15 +169,17 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public void CreateActivationManager(Entity entity)
+        public void CreateActivationManagerAndReaderWriterStore(Entity entity)
         {
-            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
-            var manager = new MonoBehaviourActivationManager(gameObject, injector, readerWriterStore, logger);
             if (entityIndexToActivationManager.ContainsKey(entity.Index))
             {
                 throw new ActivationManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");
             }
 
+            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
+            var store = new ReaderWriterStore();
+            entityIndexToReaderWriterStore[entity.Index] = store;
+            var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityIndexToActivationManager[entity.Index] = manager;
             activationManagers.Add(manager);
         }
