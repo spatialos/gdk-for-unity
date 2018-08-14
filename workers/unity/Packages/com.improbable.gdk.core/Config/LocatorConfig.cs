@@ -50,6 +50,10 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol);
+            config.WorkerType = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerType, "UnityClient");
+            config.WorkerId = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerId, string.Empty);
             return config;
         }
     }

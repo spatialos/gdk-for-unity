@@ -6,13 +6,27 @@ namespace Improbable.Gdk.Core
 {
     public static class ConnectionUtility
     {
-        public static Connection ConnectToSpatial(ReceptionistConfig config, string workerType, string workerId)
+        public static Connection Connect(ConnectionConfig config, string workerId)
+        {
+            switch (config)
+            {
+                case ReceptionistConfig receptionistConfig:
+                    return ConnectToSpatial(receptionistConfig, workerId);
+                case LocatorConfig locatorConfig:
+                    return LocatorConnectToSpatial(locatorConfig);
+            }
+
+            throw new InvalidConfigurationException($"Invalid connection config was provided: '{config}' Only" +
+                "ReceptionistConfig and LocatorConfig are supported.");
+        }
+
+        public static Connection ConnectToSpatial(ReceptionistConfig config, string workerId)
         {
             config.Validate();
 
             Debug.Log("Attempting connection to SpatialOS...");
 
-            var parameters = CreateConnectionParameters(config, workerType);
+            var parameters = CreateConnectionParameters(config);
             using (var connectionFuture = Connection
                 .ConnectAsync(config.ReceptionistHost, config.ReceptionistPort,
                     workerId, parameters))
@@ -21,7 +35,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public static Connection LocatorConnectToSpatial(LocatorConfig config, string workerType)
+        public static Connection LocatorConnectToSpatial(LocatorConfig config)
         {
             config.Validate();
 
@@ -33,7 +47,7 @@ namespace Improbable.Gdk.Core
                 Debug.Log("Successfully obtained deployment name!");
 
                 Debug.Log("Attempting connection to SpatialOS with Locator...");
-                var parameters = CreateConnectionParameters(config, workerType);
+                var parameters = CreateConnectionParameters(config);
                 using (var connectionFuture = locator
                     .ConnectAsync(deploymentName, parameters, status => true))
                 {
@@ -54,11 +68,11 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private static ConnectionParameters CreateConnectionParameters(ConnectionConfig config, string workerType)
+        private static ConnectionParameters CreateConnectionParameters(ConnectionConfig config)
         {
             var connectionParameters = new ConnectionParameters
             {
-                WorkerType = workerType,
+                WorkerType = config.WorkerType,
                 Network =
                 {
                     ConnectionType = config.LinkProtocol,
