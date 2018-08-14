@@ -17,7 +17,7 @@
             * The Android Studio emulator
     2. [Android NDK r13b](https://developer.android.com/ndk/downloads/older_releases)
     3. [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-    4. [Unity Remote](https://play.google.com/store/apps/details?id=com.unity3d.genericremote) (Optional - This is Unity's solution for faster development iteration times.)]
+    4. [Unity Remote](https://play.google.com/store/apps/details?id=com.unity3d.genericremote) (Optional - this is Unity's solution for faster development iteration times.)]
 
 3. Set up your Unity Editor
     * In the Unity Editor, go to **File > Build Settings**. Select Android and click on **Switch Platform**.
@@ -38,7 +38,7 @@ See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html)
 
 ### Android Emulator
 The Android Emulator from Android Studio simulates Android devices on your development computer so that you can test your game on a variety of devices and Android APIs without needing to have each physical device. You need to build and deploy your game to use the Emulator.
-See the [Android Developers documentation](https://developer.android.com/studio/run/emulator) for more information. See also [Deploy your game with Android Emulator](#deploy-your-game-to-android-emulator).
+See the [Android Developers documentation](https://developer.android.com/studio/run/emulator) for more information. See also [Deploy your game with Android Emulator](#deploy-your-game-to-the-android-emulator).
 
 ### Android device
 While it takes time to build and deploy, this option provides the full native capabilities of deploying the game to a device; good picture quality, instant feedback, and snappy controls. 
@@ -56,9 +56,9 @@ See [Deploy your game to an Android device](#deploy-your-game-to-an-android-devi
     > You can change the resolution of the game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that's identical to your mobile device to produce the best results.
 6. You should now see your Editor screen mirrored on your Android device.
 
-### Deploy your game to Android emulator
+### Deploy your game to the Android Emulator
 
-1. [Start the Emulator in Andorid Studio](https://developer.android.com/studio/run/managing-avds)
+1. [Start the Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds)
     > Make sure you choose the same CPU architecture for your virtual machine as your development computer. If you don't, you will get warning messages as mis-matched CPU architecture affects performance.
 2. In the Editor, go to **File > Build Settings**. Choose the virtual device from the drop-down menu. The device is likely to be called **Google Android SDK built for x86 (emulator-XXXX)**. Click **Build and Run**. 
     > For subsequent runs, you can just select **File > Build and Run**.
