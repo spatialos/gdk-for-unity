@@ -12,15 +12,19 @@ namespace Playground
     {
         public struct Data
         {
+#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
             [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
+#pragma warning restore 649
         }
 
+#pragma warning disable 649
         [Inject] private Data data;
+#pragma warning restore 649
 
         protected override void OnUpdate()
         {

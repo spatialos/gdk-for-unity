@@ -10,13 +10,16 @@ namespace Playground
     {
         public struct DisconnectData
         {
+#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+#pragma warning restore 649
         }
 
+#pragma warning disable 649
         [Inject] private DisconnectData data;
+#pragma warning restore 649
 
         protected override void OnUpdate()
         {

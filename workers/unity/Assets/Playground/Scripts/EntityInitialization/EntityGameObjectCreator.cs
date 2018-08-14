@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Playground
 {
@@ -19,8 +20,7 @@ namespace Playground
         public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,
             Quaternion rotation, long spatialEntityId)
         {
-            GameObject prefab;
-            if (!cachedPrefabs.TryGetValue(prefabPath, out prefab))
+            if (!cachedPrefabs.TryGetValue(prefabPath, out var prefab))
             {
                 prefab = Resources.Load<GameObject>(prefabPath);
                 if (prefab == null)
@@ -31,7 +31,7 @@ namespace Playground
                 cachedPrefabs[prefabPath] = prefab;
             }
 
-            var gameObject = GameObject.Instantiate(prefab, position, rotation);
+            var gameObject = Object.Instantiate(prefab, position, rotation);
             gameObject.name = $"{prefab.name}(SpatialOS: {spatialEntityId}, Unity: {entity.Index}/{world.Name})";
             return gameObject;
         }

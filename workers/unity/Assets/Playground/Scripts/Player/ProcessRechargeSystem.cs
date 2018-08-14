@@ -14,10 +14,12 @@ namespace Playground
     {
         private struct Data
         {
+#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entity;
             public ComponentDataArray<Recharging> Reloading;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
+#pragma warning restore 649
         }
 
         [Inject] private Data data;

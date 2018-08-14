@@ -10,10 +10,12 @@ namespace Playground
     {
         public struct PlayerInputData
         {
+#pragma warning disable 649
             public readonly int Length;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
             public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+#pragma warning restore 649
         }
 
         [Inject] private PlayerInputData playerInputData;

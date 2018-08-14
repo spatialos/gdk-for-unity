@@ -14,6 +14,7 @@ namespace Playground
 
         private struct LaunchCommandData
         {
+#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
@@ -22,10 +23,12 @@ namespace Playground
             public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
 
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
+#pragma warning restore 649
         }
 
         private struct LaunchableData
         {
+#pragma warning disable 649
             public readonly int Length;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
 
@@ -34,6 +37,7 @@ namespace Playground
 
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+#pragma warning restore 649
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -91,7 +95,6 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
-                var player = 0L;
                 foreach (var request in launchableData.CommandRequests[i].Buffer)
                 {
                     var info = request.RawRequest;
@@ -100,14 +103,13 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    player = info.Player;
-                    launchable.MostRecentLauncher = player;
+                    launchable.MostRecentLauncher = info.Player;
                 }
 
                 sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,
                     new Generated.Playground.ScoreIncreaseRequest
                     {
-                        Amount = 1.0f,
+                        Amount = 1.0f
                     });
                 launchableData.Launchable[i] = launchable;
             }

@@ -11,13 +11,17 @@ namespace Playground
     {
         public struct Data
         {
+#pragma warning disable 649
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
             public SubtractiveComponent<SpatialOSPlayerInput> NoPlayerInput;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+#pragma warning restore 649
         }
 
+#pragma warning disable 649
         [Inject] private Data data;
+#pragma warning restore 649
 
         private static Vector3 speed = new Vector3(2, 0, 0);
 

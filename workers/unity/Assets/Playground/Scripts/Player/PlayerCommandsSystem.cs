@@ -17,7 +17,7 @@ namespace Playground
             None,
             LaunchSmall,
             LaunchLarge
-        };
+        }
 
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
@@ -26,13 +26,17 @@ namespace Playground
 
         private struct PlayerData
         {
+#pragma warning disable 649
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
             [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+#pragma warning restore 649
         }
 
+#pragma warning disable 649
         [Inject] private PlayerData playerData;
+#pragma warning restore 649
 
         protected override void OnCreateManager(int capacity)
         {
@@ -50,8 +54,7 @@ namespace Playground
 
             if (playerData.Length > 1)
             {
-                throw new ArgumentOutOfRangeException("playerData",
-                    $"Expected at most 1 playerData, got: {playerData.Length}");
+                throw new InvalidOperationException($"Expected at most 1 playerData, got: {playerData.Length}");
             }
 
             PlayerCommand command;
@@ -69,8 +72,7 @@ namespace Playground
             }
 
             var ray = Camera.main.ScreenPointToRay(UIComponent.Main.Reticle.transform.position);
-            RaycastHit info;
-            if (!Physics.Raycast(ray, out info) || info.rigidbody == null)
+            if (!Physics.Raycast(ray, out var info) || info.rigidbody == null)
             {
                 return;
             }
@@ -80,20 +82,22 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            if (component != null && view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component == null || !view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
-                var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
-                var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
-
-                sender.SendLaunchEntityRequest(playerId, new Generated.Playground.LaunchCommandRequest
-                {
-                    EntityToLaunch = component.SpatialEntityId,
-                    ImpactPoint = impactPoint,
-                    LaunchDirection = launchDirection,
-                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
-                    Player = playerId
-                });
+                return;
             }
+
+            var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
+            var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
+
+            sender.SendLaunchEntityRequest(playerId, new Generated.Playground.LaunchCommandRequest
+            {
+                EntityToLaunch = component.SpatialEntityId,
+                ImpactPoint = impactPoint,
+                LaunchDirection = launchDirection,
+                LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
+                Player = playerId
+            });
         }
     }
 }

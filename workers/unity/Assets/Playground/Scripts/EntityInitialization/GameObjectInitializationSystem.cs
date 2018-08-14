@@ -16,24 +16,30 @@ namespace Playground
     {
         public struct AddedEntitiesData
         {
+#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
+#pragma warning restore 649
         }
 
         public struct RemovedEntitiesData
         {
+#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
+#pragma warning restore 649
         }
 
+#pragma warning disable 649
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
+#pragma warning restore 649
 
         private MutableView view;
         private WorkerBase worker;
@@ -42,6 +48,8 @@ namespace Playground
         private EntityGameObjectCreator entityGameObjectCreator;
         private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
+
+        private const string LoggerName = nameof(GameObjectInitializationSystem);
 
         protected override void OnCreateManager(int capacity)
         {
@@ -65,7 +73,8 @@ namespace Playground
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Worker type isn't supported by the GameObjectInitializationSystem.")
+                            "Worker type isn't supported.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("WorldName", World.Name)
                         .WithField("WorkerType", worker));
                     continue;
@@ -74,7 +83,6 @@ namespace Playground
                 var prefabName = worker is UnityGameLogic
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
-
                 var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
@@ -96,11 +104,11 @@ namespace Playground
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("EntityIndex", entityIndex));
                     continue;
                 }

@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
     public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData
     {
-        private const string LoggerName = "CustomSpatialOSSendSystem";
+        private const string LoggerName = nameof(CustomSpatialOSSendSystem<T>);
 
         private const string CustomReplicationSystemAlreadyExists =
             "Custom Replication System for this component already exists.";

@@ -17,22 +17,26 @@ namespace Playground
 
         public struct NewPlayerData
         {
+#pragma warning disable 649
             public readonly int Length;
             public EntityArray Entity;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
+#pragma warning restore 649
         }
 
         [Inject] private NewPlayerData newPlayerData;
 
         public struct PlayerInputData
         {
+#pragma warning disable 649
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
             public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public ComponentDataArray<Speed> Speed;
+#pragma warning restore 649
         }
 
         [Inject] private PlayerInputData playerInputData;

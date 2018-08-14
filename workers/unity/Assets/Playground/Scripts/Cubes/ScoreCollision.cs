@@ -22,19 +22,21 @@ public class ScoreCollision : MonoBehaviour
             entityManager = component.World.GetExistingManager<EntityManager>();
         }
 
-        if (col.gameObject && col.gameObject.tag == "Cube")
+        if (!col.gameObject || !col.gameObject.CompareTag("Cube"))
         {
-            var otherComponent = col.gameObject.GetComponent<SpatialOSComponent>();
-            if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
-                && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent))
-                && otherComponent)
+            return;
+        }
+
+        var otherComponent = col.gameObject.GetComponent<SpatialOSComponent>();
+        if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
+            && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent))
+            && otherComponent)
+        {
+            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
             {
-                entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
-                {
-                    ownEntity = component.Entity,
-                    otherEntity = otherComponent.Entity,
-                });
-            }
+                OwnEntity = component.Entity,
+                OtherEntity = otherComponent.Entity
+            });
         }
     }
 }
