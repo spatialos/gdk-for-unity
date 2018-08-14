@@ -13,8 +13,6 @@ namespace Improbable.Gdk.Core
     {
         private MutableView view;
 
-        private readonly List<Action> removeComponentActions = new List<Action>();
-
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
@@ -95,10 +93,7 @@ namespace Improbable.Gdk.Core
             }
 
             // Clean components with RemoveAtEndOfTick attribute
-            foreach (var removeComponentAction in removeComponentActions)
-            {
-                RemoveComponents();
-            }
+            RemoveComponents();
         }
     }
 }
