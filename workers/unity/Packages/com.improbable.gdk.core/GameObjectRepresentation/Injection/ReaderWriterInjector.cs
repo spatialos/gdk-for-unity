@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// <summary>
     ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
     /// </summary>
-    internal class SpatialOSBehaviourLibrary
+    internal class ReaderWriterInjector
     {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly ILogDispatcher logger;
         private readonly ReaderWriterFactory readerWriterFactory;
 
-        private const string LoggerName = "SpatialOSBehaviourLibrary";
+        private const string LoggerName = "ReaderWriterInjector";
         private const string BadRequiredMemberWarning
             = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
         private const string MultipleReadersWritersRequiredError
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private const string MalformedReaderOrWriter
             = "Reader or Writer found without a Component ID attribute, this is invalid.";
 
-        public SpatialOSBehaviourLibrary(EntityManager entityManager, ILogDispatcher logger)
+        public ReaderWriterInjector(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
             this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);

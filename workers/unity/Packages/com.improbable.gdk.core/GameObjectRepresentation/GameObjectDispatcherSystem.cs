@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
 
-        private SpatialOSBehaviourLibrary behaviourLibrary;
+        private ReaderWriterInjector injector;
         private ReaderWriterStore readerWriterStore;
         private ILogDispatcher logger;
 
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            behaviourLibrary = new SpatialOSBehaviourLibrary(entityManager, logger);
+            injector = new ReaderWriterInjector(entityManager, logger);
             readerWriterStore = new ReaderWriterStore();
         }
 
@@ -171,7 +171,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public void CreateBehaviourManager(Entity entity)
         {
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
-            var manager = new SpatialOSBehaviourManager(gameObject, behaviourLibrary, readerWriterStore, logger);
+            var manager = new SpatialOSBehaviourManager(gameObject, injector, readerWriterStore, logger);
             if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entity.Index))
             {
                 throw new SpatialOSBehaviourManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");

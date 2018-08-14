@@ -27,18 +27,18 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
 
         private readonly ReaderWriterStore store;
-        private readonly SpatialOSBehaviourLibrary behaviourLibrary;
+        private readonly ReaderWriterInjector injector;
 
         private readonly ILogDispatcher logger;
 
         private const string LoggerName = "SpatialOSBehaviourManager";
 
-        public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library,
+        public SpatialOSBehaviourManager(GameObject gameObject, ReaderWriterInjector injector,
             ReaderWriterStore store, ILogDispatcher logger)
         {
             this.logger = logger;
             this.store = store;
-            behaviourLibrary = library;
+            this.injector = injector;
 
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
             entity = spatialComponent.Entity;
@@ -46,10 +46,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
-                var readerIds = library.GetRequiredReaderComponentIds(behaviour.GetType());
+                var readerIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
                 AddBehaviourForIds(behaviour, readerIds, behavioursRequiringReaderTypes);
 
-                var writerIds = library.GetRequiredWriterComponentIds(behaviour.GetType());
+                var writerIds = injector.GetRequiredWriterComponentIds(behaviour.GetType());
                 AddBehaviourForIds(behaviour, writerIds, behavioursRequiringWriterTypes);
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
@@ -82,7 +82,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var behaviour in behavioursToEnable)
             {
-                var idsToReaderWriterLists = behaviourLibrary.InjectAllReadersWriters(behaviour, entity);
+                var idsToReaderWriterLists = injector.InjectAllReadersWriters(behaviour, entity);
                 store.AddReaderWritersForBehaviour(behaviour, idsToReaderWriterLists);
             }
 
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in behavioursToDisable)
             {
-                behaviourLibrary.DeInjectAllReadersWriters(behaviour);
+                injector.DeInjectAllReadersWriters(behaviour);
                 store.RemoveReaderWritersForBehaviour(behaviour);
             }
 
