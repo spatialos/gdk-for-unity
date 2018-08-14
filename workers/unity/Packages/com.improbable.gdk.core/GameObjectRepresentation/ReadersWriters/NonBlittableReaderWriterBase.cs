@@ -1,5 +1,4 @@
 ﻿using System;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 using UnityEngine;
 

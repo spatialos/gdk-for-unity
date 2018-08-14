@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
-namespace Improbable.Gdk.Core.MonoBehaviours
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : IWriter<TSpatialComponentData, TComponentUpdate>,

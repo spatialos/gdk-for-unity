@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Gathers incoming dispatcher ops and invokes callbacks on relevant GameObjects.

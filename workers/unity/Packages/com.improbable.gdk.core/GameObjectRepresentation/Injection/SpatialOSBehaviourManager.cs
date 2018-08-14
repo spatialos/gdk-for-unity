@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Net;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Improbable.Worker;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Keeps track of Reader/Writer availability for SpatialOSBehaviours on a particular GameObject and decides when

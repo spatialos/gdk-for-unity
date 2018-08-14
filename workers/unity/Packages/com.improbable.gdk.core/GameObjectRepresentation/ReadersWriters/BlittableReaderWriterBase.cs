@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation

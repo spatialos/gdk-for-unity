@@ -1,3 +1,4 @@
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 using UnityEngine;

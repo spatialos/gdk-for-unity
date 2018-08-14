@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.Core.MonoBehaviours;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public class ReaderWriterFactory
     {

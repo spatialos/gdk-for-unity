@@ -1,6 +1,6 @@
 using System;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Associates a unique component Id with a specific interface or class.
