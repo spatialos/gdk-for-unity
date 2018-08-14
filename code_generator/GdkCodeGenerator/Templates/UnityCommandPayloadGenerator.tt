@@ -27,7 +27,7 @@ namespace <#= qualifiedNamespace #>
 
                 public Request(EntityId targetEntityId,
                     <#= commandDetails.RequestType #> request,
-                    uint? timeoutMillis,
+                    uint? timeoutMillis = null,
                     bool allowShortCircuiting = false)
                 {
                     TargetEntityId = targetEntityId;
