@@ -34,7 +34,8 @@ To run tests on all elements of the SpatialOS GDK for Unity (the tools and the U
 * A successful test run displays this message: `All tests passed!`
 * A failed test run displays this message: `Tests failed! See above for more information.`
 
-**How to test the SpatialOS GDK’s Unity project only**<br/>
+## How to test the SpatialOS GDK’s Unity project only
+
 In addition to the `test.sh` script mentioned above, you can use the Test Runner Window of Unity Editor to test the Unity Engine integration specific parts of the SpatialOS GDK for Unity.
 The tests for the GDK are the assemblies that start with `Improbable.Gdk.`.<br>
 For more information on how to use the Unity Test Runner, see Unity’s [Unity Test Runner manual page](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).

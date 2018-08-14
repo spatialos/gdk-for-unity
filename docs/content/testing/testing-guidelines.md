@@ -21,7 +21,8 @@ With [NUnit](https://github.com/nunit/docs/wiki/NUnit-Documentation), you can se
 
 
 **Test directory location**<br/>
-The project's assets are divided into modules, such as `Core`, `TransformSynchronization`, `PlayerLifecycle`. In the GDK repository, each module is in its own directory within `workers/unity/Packages`. In the future, each module will have its own tests which cover the functionality of that module only. Each module can have tests for Unity Editmode and Playmode using the Unity Test Runner (see the Unity User Manual [Test Runner documentation](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) for the difference between EditMode and PlayMode tests. Currently, there are only tests for the Core.
+The project's assets are divided into modules, such as `Core`, `TransformSynchronization`, `PlayerLifecycle`. In the GDK repository, each module is in its own directory within `workers/unity/Packages`. In the future, each module will have its own tests which cover the functionality of that module only. Each module can have tests for Unity Editmode and Playmode using the Unity Test Runner (see the Unity User Manual [Test Runner documentation for the difference between EditMode and PlayMode tests](https://docs.unity3d.com/Manual/testing-editortestsrunner.html). Currently, there are only tests for the Core.
+
 [//]: # (TODO: Update document when new Feature Module tests added.) 
 
 The tests have to be located so that each module’s directory has a test directory containing tests about that module; the test directory must have separate subdirectories for EditMode and PlayMode testing if a module needs both of these tests. This split between modes is a requirement of Unity because EditMode and PlayMode tests need to be in different assemblies, and currently Unity `.asmdef` files affect all files within the same directory.
@@ -237,5 +238,5 @@ Do not forget to reset `LogAssert.ignoreFailingMessages` to false every time you
 
 
 [//]: # (Editorial review status: Full review 2018-07-13)
-[//]: # (Questions to deal with (but not limited to):)
+[//]: # (Questions to deal with \(but not limited to\):)
 [//]: # (TODO: 1. Update document when new Feature Module tests added.)

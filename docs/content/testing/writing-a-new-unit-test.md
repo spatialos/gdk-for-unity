@@ -4,22 +4,22 @@
 
 -----
 
-# Writing a new test
+# Writing a new unit test
 
 This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS Unity GDK). It walks through creating tests for a made-up class to explain how you can test parts of the Unity GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.
 
 ## Prerequisites
 
 Please look through and understand the follow documentation and videos before writing a new test:
-* SpatialOS Unity GDK documentation - [Testing overview](./test-overview.md)
+* SpatialOS Unity GDK documentation - [Testing overview](./testing-overview.md)
 * SpatialOS Unity GDK documentation - [How to run tests](./how-to-run-tests.md)
-* SptialOS Unity GDK documentation - [Testing guidelines](./test-guidelines.md)
+* SptialOS Unity GDK documentation - [Testing guidelines](./testing-guidelines.md)
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
 * NUnit video - [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
 - Unity documentation - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
-* Infallible Code video -  [How To Test Unity ECS Code](https://http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
+* Infallible Code video -  [How To Test Unity ECS Code](http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
 
 ## Example new test
 
@@ -234,8 +234,8 @@ In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.
 
 You can follow the namespace and fixture name in the hierarchy:
 
-- **Improbable** > ** Gdk**  > ** Core**  > ** EditModeTests** > ** Utility**  > ** MyClassStaticTests** 
-- ** Improbable**  > ** Gdk**  > ** Core**  > ** EditModeTests**  > ** Utility**  > ** MyClassInstanceTests** 
+- **Improbable** > **Gdk**  > **Core**  > **EditModeTests** > **Utility**  > **MyClassStaticTests** 
+- **Improbable**  > **Gdk**  > **Core**  > **EditModeTests**  > **Utility**  > **MyClassInstanceTests** 
 
 Double-click the test fixture name to run all tests within that fixture.
 
@@ -245,36 +245,40 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
 1. Create the directory: `/workers/Unity/Assets/Gdk/Legacy/Tests/EditMode`
 
-2. In the Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
+1. In the Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
 
-3. Name the new **Assembly Definition** file you have just created to match: `Improbable.Gdk.Legacy.EditModeTests`.
+1. Name the new **Assembly Definition** file you have just created to match: `Improbable.Gdk.Legacy.EditModeTests`.
 
-4. Select this file, and change the **name** property in the Unity Inspector to match the filename:`Improbable.Gdk.Legacy.EditModeTests`.
+1. Select this file, and change the **name** property in the Unity Inspector to match the filename:`Improbable.Gdk.Legacy.EditModeTests`.
 
-5. Click  **Apply** .
+1. Click  **Apply** .
 
-6. Check the **Test Assemblies** checkbox.
+1. Check the **Test Assemblies** checkbox.
 
-7. If you're writing EditMode tests:
-    0. Uncheck the **Any Platform** checkbox.
-    0. Scroll to the bottom, and select **Deselect All**.
-    0. Check the **Editor** checkbox only.
-    0. Click on Apply** again.
+1. If you're writing EditMode tests:
 
-8. In the references list, add the reference to the package you are testing (in this
+    1. Uncheck the **Any Platform** checkbox.
+
+    1. Scroll to the bottom, and select **Deselect All**.
+
+    1. Check the **Editor** checkbox only.
+
+    1. Click on Apply** again.
+
+1. In the references list, add the reference to the package you are testing (in this
  case, `Improbable.Gdk.Legacy`).
 
-9. Click **Apply** again.
+1. Click **Apply** again.
 
 ### Add the entities package references to test assemblies
 
 You need to edit the `.asmdef` file manually to add references to the entities preview package assemblies.
 
-0. Right-click the assembly definition file, and select the **Show in Explorer** action.
+1. Right-click the assembly definition file, and select the **Show in Explorer** action.
 
-0. Open in your favourite text editor.
+1. Open in your favourite text editor.
 
-0. Add in these lines to references:
+1. Add in these lines to references:
 
 ```
   "Unity.Entities",

@@ -30,8 +30,8 @@ Find out more about the Unity GDK Unity project test directory structure and fil
 ## Further information
 
 * [How to run tests](./how-to-run-tests.md)
-* [Test guidelines](./test-guidelines.md) - covers Unity tests only (contains information on the Unity GDK Unity project test directory structure and file names) 
-* [Writing a new test](./writing-a-new-test.md) covers Unity tests only
+* [Testing guidelines](./testing-guidelines.md) - covers Unity tests only (contains information on the Unity GDK Unity project test directory structure and file names) 
+* [Writing a new test](./writing-a-new-unit-test.md) covers Unity tests only
 
 [//]: # (Editorial review status: Full review 2018-07-13)
 
