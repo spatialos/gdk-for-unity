@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
             if (!commandStorageInstances.TryGetValue(typeof(TConcreteCommandStorage), out var storage))
             {
                 throw new ArgumentException(
-                    $"Could not find command storage of type {nameof(TConcreteCommandStorage)}");
+                    $"Could not find command storage of type {typeof(TConcreteCommandStorage).Name}");
             }
 
             return (TConcreteCommandStorage) storage;
