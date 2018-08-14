@@ -389,26 +389,26 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var deserializedRequest = <#= commandDetails.RequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+
+                List<<#= wrappedCommandRequestType #>> requests;
                 if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
                 {
-                    var data = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity);
-                    data.Requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId.Id,
-                        op.CallerWorkerId,
-                        op.CallerAttributeSet,
-                        deserializedRequest));
+                    requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
                 }
                 else
                 {
-                    var data = new <#= commandRequestBufferType #>();
-                    data.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Allocate(World);
-                    data.Requests = new List<<#= wrappedCommandRequestType #>>();
-                    data.Requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId.Id,
-                        op.CallerWorkerId,
-                        op.CallerAttributeSet,
-                        deserializedRequest));
-
+                    var data = new <#= commandRequestBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Allocate(World)
+                    };
+                    requests = data.Requests = new List<<#= wrappedCommandRequestType #>>();
                     entityManager.AddComponentData(entity, data);
                 }
+
+                requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId.Id,
+                    op.CallerWorkerId,
+                    op.CallerAttributeSet,
+                    deserializedRequest));
             }
 
             private void On<#= commandDetails.CommandName #>Response(CommandResponseOp op)
@@ -435,28 +435,26 @@ namespace <#= qualifiedNamespace #>
                     response = <#= commandDetails.ResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
+                List<<#= wrappedCommandResponseType #>> responses;
                 if (entityManager.HasComponent<<#= commandResponseBufferType #>>(entity))
                 {
-                    var data = entityManager.GetComponentData<<#= commandResponseBufferType #>>(entity);
-                    data.Responses.Add(new <#= wrappedCommandResponseType #>(op.EntityId,
-                        op.Message,
-                        op.StatusCode,
-                        response,
-                        requestBundle.Request));
+                    responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(entity).Responses;
                 }
                 else
                 {
-                    var data = new <#= commandResponseBufferType #>();
-                    data.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Allocate(World);
-                    data.Responses = new List<<#= wrappedCommandResponseType #>>();
-                    data.Responses.Add(new <#= wrappedCommandResponseType #>(op.EntityId,
-                        op.Message,
-                        op.StatusCode,
-                        response,
-                        requestBundle.Request));
-
+                    var data = new <#= commandResponseBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Allocate(World)
+                    };
+                    responses = data.Responses = new List<<#= wrappedCommandResponseType #>>();
                     entityManager.AddComponentData(entity, data);
                 }
+
+                responses.Add(new <#= wrappedCommandResponseType #>(op.EntityId,
+                    op.Message,
+                    op.StatusCode,
+                    response,
+                    requestBundle.Request));
             }
 <# } #>
         }
