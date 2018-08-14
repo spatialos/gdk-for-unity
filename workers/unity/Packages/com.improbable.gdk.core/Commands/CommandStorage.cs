@@ -5,7 +5,6 @@ namespace Improbable.Gdk.Core.Commands
 {
     public abstract class CommandStorage
     {
-        public abstract Type CommandType { get; }
     }
 
     public struct CommandRequestStore<T>

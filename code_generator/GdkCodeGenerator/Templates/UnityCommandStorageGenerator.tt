@@ -20,8 +20,6 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var commandDetails in commandDetailsList) { #>
             public class <#= commandDetails.CommandName #> : CommandStorage
             {
-                public override Type CommandType => typeof(<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>);
-
                 public Dictionary<uint, CommandRequestStore<<#= commandDetails.RequestType #>>> CommandRequestsInFlight =
                     new Dictionary<uint, CommandRequestStore<<#= commandDetails.RequestType #>>>();
             }

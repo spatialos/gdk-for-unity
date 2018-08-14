@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core
                 foreach (var commandStorageType in commandStorageTypes)
                 {
                     var storage = (CommandStorage) Activator.CreateInstance(commandStorageType);
-                    commandStorageInstances.Add(storage.CommandType, storage);
+                    commandStorageInstances.Add(storage.GetType(), storage);
                 }
             }
         }
