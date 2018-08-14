@@ -81,7 +81,6 @@ namespace Playground
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("SystemName", nameof(ArchetypeInitializationSystem))
                         .WithField("ArchetypeName", archetypeName)
                         .WithField("WorkerType", workerType));
                     continue;
