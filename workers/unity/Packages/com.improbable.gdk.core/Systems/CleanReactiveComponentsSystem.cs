@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<Action> removeComponentActions = new List<Action>();
 
-        private readonly List<ComponentCleanup> componentUpdateCleanups = new List<ComponentCleanup>();
+        private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
@@ -81,11 +81,11 @@ namespace Improbable.Gdk.Core
                         }
 
                         // Updates group
-                        componentUpdateCleanups.Add(new ComponentCleanup
+                        componentCleanups.Add(new ComponentCleanup
                         {
                             Handler = componentCleanupHandler,
                             UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
-                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType)
+                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
                             EventGroups = eventGroups,
                         });
                     }
@@ -119,11 +119,11 @@ namespace Improbable.Gdk.Core
             }
 
             var buffer = PostUpdateCommands;
-            foreach (var updatesCleanup in componentUpdateCleanups)
+            foreach (var cleanup in componentCleanups)
             {
-                updatesCleanup.Handler.CleanupUpdates(updatesCleanup.UpdateGroup, ref buffer);
-                updatesCleanup.Handler.CleanupEvents(updatesCleanup.EventGroups, ref buffer);
-                updatesCleanup.Handler.CleanupAuthChanges(updatesCleanup.AuthorityChangesGroup, ref buffer);
+                cleanup.Handler.CleanupUpdates(cleanup.UpdateGroup, ref buffer);
+                cleanup.Handler.CleanupEvents(cleanup.EventGroups, ref buffer);
+                cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
             }
         }
 
