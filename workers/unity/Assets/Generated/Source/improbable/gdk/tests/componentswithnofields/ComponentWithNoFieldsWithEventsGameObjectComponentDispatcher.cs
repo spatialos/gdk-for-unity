@@ -2,6 +2,8 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
@@ -45,26 +47,39 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 return 1004;
             }
 
-            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAuthorityChangeLifecycleCallbacks(Dictionary<int, SpatialOSBehaviourManager> entityIndexToManagers)
+            {
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>();
+                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var spatialOSBehaviourManager = entityIndexToManagers[entities[i].Index];
+                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    {
+                        spatialOSBehaviourManager.ChangeAuthority(1004, authoritiesChangedTags[i].Buffer[j]);
+                    }
+                }
+            }
+
+            public override void InvokeOnComponentUpdateUserCallbacks(ReaderWriterStore readerWriterStore)
             {
             }
 
-            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnEventUserCallbacks(ReaderWriterStore readerWriterStore)
             {
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<EvtEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                        if (!manager.TryGetReadersWriters(1004, out var readers))
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(1004, out var readers))
                         {
                             continue;
                         }
 
                         var eventList = eventLists[i];
 
-                        foreach (ComponentWithNoFieldsWithEvents.ReaderWriterImpl reader in readers)
+                        foreach (var reader in readers.OfType<ComponentWithNoFieldsWithEvents.ReaderWriterImpl>())
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -75,38 +90,23 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnCommandRequestUserCallbacks(ReaderWriterStore readerWriterStore)
             {
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>();
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
-                    {
-                        spatialOSBehaviourManager.ChangeAuthority(1004, authoritiesChangedTags[i].Buffer[j]);
-                    }
-                }
-            }
-
-            public override void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAuthorityChangeUserCallbacks(ReaderWriterStore readerWriterStore)
             {
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    if (!manager.TryGetReadersWriters(1004, out var readers))
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(1004, out var readers))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (ComponentWithNoFieldsWithEvents.ReaderWriterImpl reader in readers)
+                    foreach (var reader in readers.OfType<ComponentWithNoFieldsWithEvents.ReaderWriterImpl>())
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

@@ -1,5 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -30,18 +31,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         private GameObjectDispatcherSystem gameObjectDispatcherSystem;
-        private SpatialOSBehaviourLibrary behaviourLibrary;
-
-        private ILogDispatcher logger;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
             gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            var entityManager = World.GetOrCreateManager<EntityManager>();
-            behaviourLibrary = new SpatialOSBehaviourLibrary(entityManager, logger);
         }
 
         protected override void OnUpdate()
@@ -49,9 +44,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var entityIndex = addedEntitiesData.Entities[i].Index;
-                var spatialOSBehaviourManager = new SpatialOSBehaviourManager(
-                    addedEntitiesData.GameObjectReferences[i].GameObject, behaviourLibrary, logger);
-                gameObjectDispatcherSystem.AddSpatialOSBehaviourManager(entityIndex, spatialOSBehaviourManager);
+                gameObjectDispatcherSystem.CreateBehaviourManager(addedEntitiesData.Entities[i]);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
@@ -60,5 +53,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 gameObjectDispatcherSystem.RemoveSpatialOSBehaviourManager(entityIndex);
             }
         }
+
+
     }
 }

@@ -23,24 +23,21 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
             = new Dictionary<MonoBehaviour, int>();
 
-        private readonly Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>> behaviourToReadersWriters
-            = new Dictionary<MonoBehaviour, Dictionary<uint, IReaderWriterInternal[]>>();
-
-        private readonly Dictionary<uint, HashSet<IReaderWriterInternal>> compIdToReadersWriters =
-            new Dictionary<uint, HashSet<IReaderWriterInternal>>();
-
         private readonly HashSet<MonoBehaviour> behavioursToEnable = new HashSet<MonoBehaviour>();
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
 
+        private readonly ReaderWriterStore store;
         private readonly SpatialOSBehaviourLibrary behaviourLibrary;
 
         private readonly ILogDispatcher logger;
 
         private const string LoggerName = "SpatialOSBehaviourManager";
 
-        public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library, ILogDispatcher logger)
+        public SpatialOSBehaviourManager(GameObject gameObject, SpatialOSBehaviourLibrary library,
+            ReaderWriterStore store, ILogDispatcher logger)
         {
             this.logger = logger;
+            this.store = store;
             behaviourLibrary = library;
 
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
@@ -50,16 +47,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 var readerIds = library.GetRequiredReaderComponentIds(behaviour.GetType());
-                foreach (var id in readerIds)
-                {
-                    GetOrCreateValue(behavioursRequiringReaderTypes, id).Add(behaviour);
-                }
+                AddBehaviourForIds(behaviour, readerIds, behavioursRequiringReaderTypes);
 
                 var writerIds = library.GetRequiredWriterComponentIds(behaviour.GetType());
-                foreach (var id in writerIds)
-                {
-                    GetOrCreateValue(behavioursRequiringWriterTypes, id).Add(behaviour);
-                }
+                AddBehaviourForIds(behaviour, writerIds, behavioursRequiringWriterTypes);
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
 
@@ -67,27 +58,32 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
+        private void AddBehaviourForIds(MonoBehaviour behaviour, List<uint> componentIds,
+            Dictionary<uint, HashSet<MonoBehaviour>> idsToBehaviours)
+        {
+            foreach (var id in componentIds)
+            {
+                if (!idsToBehaviours.TryGetValue(id, out var behaviours))
+                {
+                    behaviours = new HashSet<MonoBehaviour>();
+                    idsToBehaviours[id] = behaviours;
+                }
+
+                behaviours.Add(behaviour);
+            }
+        }
 
         public bool TryGetReadersWriters(uint componentId, out HashSet<IReaderWriterInternal> readers)
         {
-            return compIdToReadersWriters.TryGetValue(componentId, out readers);
+            return store.TryGetReaderWritersForComponent(componentId, out readers);
         }
 
         public void EnableSpatialOSBehaviours()
         {
             foreach (var behaviour in behavioursToEnable)
             {
-                var dict = behaviourLibrary.InjectAllReadersWriters(behaviour, entity);
-                behaviourToReadersWriters[behaviour] = dict;
-                foreach (var idToReaderWriterList in dict)
-                {
-                    var id = idToReaderWriterList.Key;
-                    var readerWriterList = idToReaderWriterList.Value;
-                    foreach (var readerWriter in readerWriterList)
-                    {
-                        GetOrCreateValue(compIdToReadersWriters, id).Add(readerWriter);
-                    }
-                }
+                var idsToReaderWriterLists = behaviourLibrary.InjectAllReadersWriters(behaviour, entity);
+                store.AddReaderWritersForBehaviour(behaviour, idsToReaderWriterLists);
             }
 
             foreach (var behaviour in behavioursToEnable)
@@ -108,17 +104,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in behavioursToDisable)
             {
                 behaviourLibrary.DeInjectAllReadersWriters(behaviour);
-                foreach (var idToReaderWriterList in behaviourToReadersWriters[behaviour])
-                {
-                    var id = idToReaderWriterList.Key;
-                    var readerWriterList = idToReaderWriterList.Value;
-                    foreach (var readerWriter in readerWriterList)
-                    {
-                        compIdToReadersWriters[id].Remove(readerWriter);
-                    }
-                }
-
-                behaviourToReadersWriters.Remove(behaviour);
+                store.RemoveReaderWritersForBehaviour(behaviour);
             }
 
             behavioursToDisable.Clear();
@@ -214,17 +200,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 numUnsatisfiedReadersOrWriters[behaviour]++;
             }
-        }
-
-        private TValue GetOrCreateValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key) where TValue : new()
-        {
-            if (!dictionary.TryGetValue(key, out var value))
-            {
-                value = new TValue();
-                dictionary[key] = value;
-            }
-
-            return value;
         }
     }
 }

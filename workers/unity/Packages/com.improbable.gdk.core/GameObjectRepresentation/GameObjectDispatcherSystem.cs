@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -18,6 +19,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
+
+        private SpatialOSBehaviourLibrary behaviourLibrary;
+        private ReaderWriterStore readerWriterStore;
+        private ILogDispatcher logger;
 
         internal void AddSpatialOSBehaviourManager(int entityIndex, SpatialOSBehaviourManager spatialOSBehaviourManager)
         {
@@ -63,6 +68,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             FindGameObjectComponentDispatchers();
             GenerateComponentGroups();
+
+            var entityManager = World.GetOrCreateManager<EntityManager>();
+            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
+            behaviourLibrary = new SpatialOSBehaviourLibrary(entityManager, logger);
+            readerWriterStore = new ReaderWriterStore();
         }
 
         private void FindGameObjectComponentDispatchers()
@@ -120,9 +130,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
+                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleCallbacks(entityIndexToSpatialOSBehaviourManager);
             }
 
             foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
@@ -132,10 +142,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(this);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(this);
+                gameObjectComponentDispatcher.InvokeOnAuthorityChangeUserCallbacks(readerWriterStore);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateUserCallbacks(readerWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventUserCallbacks(readerWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestUserCallbacks(readerWriterStore);
             }
 
             foreach (var spatialOSBehaviourManager in spatialOSBehaviourManagers)
@@ -156,6 +166,19 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             public SpatialOSBehaviourManagerNotFoundException(string message) : base(message)
             {
             }
+        }
+
+        public void CreateBehaviourManager(Entity entity)
+        {
+            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
+            var manager = new SpatialOSBehaviourManager(gameObject, behaviourLibrary, readerWriterStore, logger);
+            if (entityIndexToSpatialOSBehaviourManager.ContainsKey(entity.Index))
+            {
+                throw new SpatialOSBehaviourManagerAlreadyExistsException($"SpatialOSBehaviourManager already exists for entityIndex {entity.Index}.");
+            }
+
+            entityIndexToSpatialOSBehaviourManager[entity.Index] = manager;
+            spatialOSBehaviourManagers.Add(manager);
         }
     }
 }
