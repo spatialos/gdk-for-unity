@@ -82,9 +82,11 @@ namespace Improbable.Gdk.Core
         protected void RegisterCoreSystems()
         {
             World.GetOrCreateManager<EntityManager>();
+            World.GetOrCreateManager<CommandBookkeepingSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
+            World.GetOrCreateManager<CommandBookkeepingSystem>();
         }
     }
 }

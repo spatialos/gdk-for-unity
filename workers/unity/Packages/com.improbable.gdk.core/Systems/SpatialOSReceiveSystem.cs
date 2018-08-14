@@ -167,6 +167,8 @@ namespace Improbable.Gdk.Core
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
                         new object[] { view, World });
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
+                // TODO: Remove - temporary work around until Jess's worker refactor comes in.
+                view.AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
             }
 
             dispatcher.OnAddEntity(OnAddEntity);

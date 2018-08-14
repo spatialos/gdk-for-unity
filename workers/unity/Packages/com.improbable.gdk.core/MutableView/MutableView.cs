@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
         public Entity WorkerEntity { get; }
         public ILogDispatcher LogDispatcher { get; }
 
-        private Action<Entity, long> addAllCommandRequestSenders;
+        public List<Action<Entity>> AddAllCommandComponents = new List<Action<Entity>>();
 
         public readonly EntityManager EntityManager;
 
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core
 
             // Create the worker entity
             WorkerEntity = EntityManager.CreateEntity(typeof(WorkerEntityTag));
-            addAllCommandRequestSenders(WorkerEntity, WorkerEntityId);
+            AddAllCommandComponents.ForEach(action => action(WorkerEntity));
         }
 
         public void Dispose()
@@ -293,7 +293,7 @@ namespace Improbable.Gdk.Core
             });
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
-            // addAllCommandRequestSenders(entity, entityId);
+            AddAllCommandComponents.ForEach(action => action(entity));
             entityMapping.Add(entityId, entity);
         }
 
