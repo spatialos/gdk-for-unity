@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core
         AuthorityLost = 4,
         PermissionDenied = 5,
         ApplicationError = 6,
-        InternalError = 7,
+        InternalError = 7
     }
 
     public interface IOutgoingCommandRequest

@@ -73,13 +73,12 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
             {
-                view.AddComponent(entity, new CommandRequestSender<SpatialOSComponentWithNoFieldsWithCommands>(entityId, translationHandle));
+                View.AddComponent(entity, new CommandRequestSender<SpatialOSComponentWithNoFieldsWithCommands>(entityId, TranslationHandle));
             }
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -91,16 +90,16 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var spatialOSComponentWithNoFieldsWithCommands = new SpatialOSComponentWithNoFieldsWithCommands();
                 spatialOSComponentWithNoFieldsWithCommands.DirtyBit = false;
 
-                view.AddComponent(entity, spatialOSComponentWithNoFieldsWithCommands);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSComponentWithNoFieldsWithCommands>());
+                View.AddComponent(entity, spatialOSComponentWithNoFieldsWithCommands);
+                View.AddComponent(entity, new NotAuthoritative<SpatialOSComponentWithNoFieldsWithCommands>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
+                if (View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity);
+                    View.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
+                else if (!View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>());
+                    View.AddComponent(entity, new ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>());
                 }
                 else
                 {
@@ -114,8 +113,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -124,19 +122,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var componentData = view.GetComponent<SpatialOSComponentWithNoFieldsWithCommands>(entity);
+                var componentData = View.GetComponent<SpatialOSComponentWithNoFieldsWithCommands>(entity);
 
 
                 componentData.DirtyBit = false;
 
-                view.SetComponentData(entity, componentData);
+                View.SetComponentData(entity, componentData);
 
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -145,15 +142,15 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSComponentWithNoFieldsWithCommands>(entity);
+                View.RemoveComponent<SpatialOSComponentWithNoFieldsWithCommands>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
+                if (View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity);
+                    View.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFieldsWithCommands>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>());
+                    View.AddComponent(entity, new ComponentRemoved<SpatialOSComponentWithNoFieldsWithCommands>());
                 }
                 else
                 {
@@ -168,7 +165,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)
@@ -212,8 +209,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void OnCommandRequestCmd(CommandRequestOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Commands.Cmd> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -226,7 +222,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var unityRequestPayload = global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.ToNative(requestPayload);
                 var request = new Cmd.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
 
-                view.AddCommandRequest(entity, request, CmdRequestPool);
+                View.AddCommandRequest(entity, request, CmdRequestPool);
             }
 
             public void OnCommandResponseCmd(CommandResponseOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Commands.Cmd> op)
@@ -247,9 +243,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 Unity.Entities.Entity entity;
                 if (requestContext.EntityId == MutableView.WorkerEntityId)
                 {
-                    entity = view.WorkerEntity;
+                    entity = View.WorkerEntity;
                 }
-                else if (!view.TryGetEntity(requestContext.EntityId, out entity))
+                else if (!View.TryGetEntity(requestContext.EntityId, out entity))
                 {
                     return;
                 }
@@ -260,7 +256,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var outgoingRequest = (Cmd.OutgoingRequest) requestContext.Request;
                 var response = new Cmd.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
 
-                view.AddCommandResponse(entity, response, CmdResponsePool);
+                View.AddCommandResponse(entity, response, CmdResponsePool);
             }
 
             private void SendCmdRequest(Connection connection, Cmd.OutgoingRequest outgoingRequest)

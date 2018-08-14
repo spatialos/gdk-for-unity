@@ -106,13 +106,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
             {
-                view.AddComponent(entity, new CommandRequestSender<SpatialOSNonBlittableComponent>(entityId, translationHandle));
+                View.AddComponent(entity, new CommandRequestSender<SpatialOSNonBlittableComponent>(entityId, TranslationHandle));
             }
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -134,16 +133,16 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 spatialOSNonBlittableComponent.MapField = data.mapField.ToDictionary(entry => entry.Key, entry => entry.Value);
                 spatialOSNonBlittableComponent.DirtyBit = false;
 
-                view.SetComponentObject(entity, spatialOSNonBlittableComponent);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSNonBlittableComponent>());
+                View.SetComponentObject(entity, spatialOSNonBlittableComponent);
+                View.AddComponent(entity, new NotAuthoritative<SpatialOSNonBlittableComponent>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
+                if (View.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity);
+                    View.RemoveComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
+                else if (!View.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSNonBlittableComponent>());
+                    View.AddComponent(entity, new ComponentAdded<SpatialOSNonBlittableComponent>());
                 }
                 else
                 {
@@ -157,8 +156,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -167,10 +165,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var componentData = view.GetComponentObject<SpatialOSNonBlittableComponent>(entity);
+                var componentData = View.GetComponentObject<SpatialOSNonBlittableComponent>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSNonBlittableComponent>>(entity))
+                if (View.HasComponent<NotAuthoritative<SpatialOSNonBlittableComponent>>(entity))
                 {
                     if (update.boolField.HasValue)
                     {
@@ -218,7 +216,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         Payload = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.ToNative(spatialEvent)
                     };
 
-                    view.AddEventReceived(entity, nativeEvent, FirstEventEventPool);
+                    View.AddEventReceived(entity, nativeEvent, FirstEventEventPool);
                 }
                 var secondEventEvents = update.secondEvent;
                 foreach (var spatialEvent in secondEventEvents)
@@ -228,11 +226,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         Payload = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.ToNative(spatialEvent)
                     };
 
-                    view.AddEventReceived(entity, nativeEvent, SecondEventEventPool);
+                    View.AddEventReceived(entity, nativeEvent, SecondEventEventPool);
                 }
                 componentData.DirtyBit = false;
 
-                view.SetComponentObject(entity, componentData);
+                View.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
                 var gdkUpdate = new SpatialOSNonBlittableComponent.Update();
@@ -284,14 +282,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 if (componentFieldsUpdated)
                 {
-                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -300,15 +297,15 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSNonBlittableComponent>(entity);
+                View.RemoveComponent<SpatialOSNonBlittableComponent>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
+                if (View.HasComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity);
+                    View.RemoveComponent<ComponentAdded<SpatialOSNonBlittableComponent>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSNonBlittableComponent>());
+                    View.AddComponent(entity, new ComponentRemoved<SpatialOSNonBlittableComponent>());
                 }
                 else
                 {
@@ -327,15 +324,15 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     EntityIdToFirstEventEvents[entityId] = new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>();
                     EntityIdToSecondEventEvents[entityId] = new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>();
-                    view.AddComponent(entityId, new EventSender<SpatialOSNonBlittableComponent>(entityId, translationHandle));
+                    View.AddComponent(entityId, new EventSender<SpatialOSNonBlittableComponent>(entityId, TranslationHandle));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
                     EntityIdToFirstEventEvents.Remove(entityId);
                     EntityIdToSecondEventEvents.Remove(entityId);
-                    view.RemoveComponent<EventSender<SpatialOSNonBlittableComponent>>(entityId);
+                    View.RemoveComponent<EventSender<SpatialOSNonBlittableComponent>>(entityId);
                 }
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)
@@ -378,7 +375,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         SendComponentUpdate(connection, entityId, update);
 
                         componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
+                        View.SetComponentObject(entityId, componentData);
 
                         firstEventEvents.Clear();
                         secondEventEvents.Clear();
@@ -409,8 +406,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public void OnCommandRequestFirstCommand(CommandRequestOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Commands.FirstCommand> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -423,7 +419,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var unityRequestPayload = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.ToNative(requestPayload);
                 var request = new FirstCommand.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
 
-                view.AddCommandRequest(entity, request, FirstCommandRequestPool);
+                View.AddCommandRequest(entity, request, FirstCommandRequestPool);
             }
 
             public void OnCommandResponseFirstCommand(CommandResponseOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Commands.FirstCommand> op)
@@ -444,9 +440,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 Unity.Entities.Entity entity;
                 if (requestContext.EntityId == MutableView.WorkerEntityId)
                 {
-                    entity = view.WorkerEntity;
+                    entity = View.WorkerEntity;
                 }
-                else if (!view.TryGetEntity(requestContext.EntityId, out entity))
+                else if (!View.TryGetEntity(requestContext.EntityId, out entity))
                 {
                     return;
                 }
@@ -457,7 +453,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var outgoingRequest = (FirstCommand.OutgoingRequest) requestContext.Request;
                 var response = new FirstCommand.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
 
-                view.AddCommandResponse(entity, response, FirstCommandResponsePool);
+                View.AddCommandResponse(entity, response, FirstCommandResponsePool);
             }
 
             private void SendFirstCommandRequest(Connection connection, FirstCommand.OutgoingRequest outgoingRequest)
@@ -489,8 +485,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             }
             public void OnCommandRequestSecondCommand(CommandRequestOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Commands.SecondCommand> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -503,7 +498,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var unityRequestPayload = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.ToNative(requestPayload);
                 var request = new SecondCommand.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
 
-                view.AddCommandRequest(entity, request, SecondCommandRequestPool);
+                View.AddCommandRequest(entity, request, SecondCommandRequestPool);
             }
 
             public void OnCommandResponseSecondCommand(CommandResponseOp<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Commands.SecondCommand> op)
@@ -524,9 +519,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 Unity.Entities.Entity entity;
                 if (requestContext.EntityId == MutableView.WorkerEntityId)
                 {
-                    entity = view.WorkerEntity;
+                    entity = View.WorkerEntity;
                 }
-                else if (!view.TryGetEntity(requestContext.EntityId, out entity))
+                else if (!View.TryGetEntity(requestContext.EntityId, out entity))
                 {
                     return;
                 }
@@ -537,7 +532,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var outgoingRequest = (SecondCommand.OutgoingRequest) requestContext.Request;
                 var response = new SecondCommand.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
 
-                view.AddCommandResponse(entity, response, SecondCommandResponsePool);
+                View.AddCommandResponse(entity, response, SecondCommandResponsePool);
             }
 
             private void SendSecondCommandRequest(Connection connection, SecondCommand.OutgoingRequest outgoingRequest)

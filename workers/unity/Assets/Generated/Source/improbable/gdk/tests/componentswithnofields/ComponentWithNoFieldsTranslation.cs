@@ -60,8 +60,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -73,16 +72,16 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var spatialOSComponentWithNoFields = new SpatialOSComponentWithNoFields();
                 spatialOSComponentWithNoFields.DirtyBit = false;
 
-                view.AddComponent(entity, spatialOSComponentWithNoFields);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
+                View.AddComponent(entity, spatialOSComponentWithNoFields);
+                View.AddComponent(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
+                if (View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity);
+                    View.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
+                else if (!View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSComponentWithNoFields>());
+                    View.AddComponent(entity, new ComponentAdded<SpatialOSComponentWithNoFields>());
                 }
                 else
                 {
@@ -96,8 +95,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -106,19 +104,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var componentData = view.GetComponent<SpatialOSComponentWithNoFields>(entity);
+                var componentData = View.GetComponent<SpatialOSComponentWithNoFields>(entity);
 
 
                 componentData.DirtyBit = false;
 
-                view.SetComponentData(entity, componentData);
+                View.SetComponentData(entity, componentData);
 
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -127,15 +124,15 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSComponentWithNoFields>(entity);
+                View.RemoveComponent<SpatialOSComponentWithNoFields>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
+                if (View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity);
+                    View.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSComponentWithNoFields>());
+                    View.AddComponent(entity, new ComponentRemoved<SpatialOSComponentWithNoFields>());
                 }
                 else
                 {
@@ -150,7 +147,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)

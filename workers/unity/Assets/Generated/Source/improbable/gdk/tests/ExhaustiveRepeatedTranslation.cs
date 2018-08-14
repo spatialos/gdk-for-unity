@@ -65,8 +65,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveRepeated> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -94,16 +93,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveRepeated.Field17 = data.field17.Select(internalObject => global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(internalObject)).ToList();
                 spatialOSExhaustiveRepeated.DirtyBit = false;
 
-                view.SetComponentObject(entity, spatialOSExhaustiveRepeated);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveRepeated>());
+                View.SetComponentObject(entity, spatialOSExhaustiveRepeated);
+                View.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveRepeated>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity))
+                if (View.HasComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity);
+                    View.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity))
+                else if (!View.HasComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveRepeated>());
+                    View.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveRepeated>());
                 }
                 else
                 {
@@ -117,8 +116,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveRepeated> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -127,10 +125,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponentObject<SpatialOSExhaustiveRepeated>(entity);
+                var componentData = View.GetComponentObject<SpatialOSExhaustiveRepeated>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSExhaustiveRepeated>>(entity))
+                if (View.HasComponent<NotAuthoritative<SpatialOSExhaustiveRepeated>>(entity))
                 {
                     if (update.field2.HasValue)
                     {
@@ -196,7 +194,7 @@ namespace Generated.Improbable.Gdk.Tests
 
                 componentData.DirtyBit = false;
 
-                view.SetComponentObject(entity, componentData);
+                View.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
                 var gdkUpdate = new SpatialOSExhaustiveRepeated.Update();
@@ -278,14 +276,13 @@ namespace Generated.Improbable.Gdk.Tests
 
                 if (componentFieldsUpdated)
                 {
-                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -294,15 +291,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSExhaustiveRepeated>(entity);
+                View.RemoveComponent<SpatialOSExhaustiveRepeated>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity))
+                if (View.HasComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity);
+                    View.RemoveComponent<ComponentAdded<SpatialOSExhaustiveRepeated>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<SpatialOSExhaustiveRepeated>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveRepeated>());
+                    View.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveRepeated>());
                 }
                 else
                 {
@@ -317,7 +314,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)
@@ -352,7 +349,7 @@ namespace Generated.Improbable.Gdk.Tests
                         SendComponentUpdate(connection, entityId, update);
 
                         componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
+                        View.SetComponentObject(entityId, componentData);
 
                     }
                 }

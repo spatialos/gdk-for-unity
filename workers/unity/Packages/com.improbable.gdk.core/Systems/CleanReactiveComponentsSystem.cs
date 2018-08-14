@@ -39,16 +39,22 @@ namespace Improbable.Gdk.Core
                 }
             }
 
+            const string methodName = "AddRemoveComponentAction";
             MethodInfo addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
+                typeof(CleanReactiveComponentsSystem).GetMethod(methodName,
                     BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (addRemoveComponentActionMethod == null)
+            {
+                throw new MissingMethodException(methodName);
+            }
 
             // Find all components with the RemoveAtEndOfTick attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
+                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
                     {
                         continue;
                     }

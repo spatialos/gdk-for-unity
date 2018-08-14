@@ -47,7 +47,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 update.SetLocation(global::Generated.Improbable.Transform.Location.ToSpatial(component.Location));
                 update.SetRotation(global::Generated.Improbable.Transform.Quaternion.ToSpatial(component.Rotation));
                 update.SetTick(component.Tick);
-                Generated.Improbable.Transform.Transform.Translation.SendComponentUpdate(worker.Connection, entityId,
+                Generated.Improbable.Transform.Transform.Translation.SendComponentUpdate(Worker.Connection, entityId,
                     update);
 
                 component.DirtyBit = false;

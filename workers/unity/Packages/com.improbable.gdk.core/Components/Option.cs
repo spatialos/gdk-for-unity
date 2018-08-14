@@ -34,15 +34,15 @@ namespace Improbable.Gdk.Core
             this.value = value;
         }
 
-        public bool TryGetValue(out T value)
+        public bool TryGetValue(out T outValue)
         {
             if (!HasValue)
             {
-                value = default(T);
+                outValue = default(T);
                 return false;
             }
 
-            value = this.value;
+            outValue = value;
             return true;
         }
 
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         public override bool Equals(object other)
         {
-            return other is Option<T> && this.Equals((Option<T>) other);
+            return other is Option<T> option && Equals(option);
         }
 
         public bool Equals(Option<T> other)

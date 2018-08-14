@@ -204,19 +204,19 @@ namespace Improbable.Gdk.Core
             typeof(CommandResponses<CreateEntityResponse>),
             typeof(CommandResponses<DeleteEntityResponse>),
             typeof(CommandResponses<ReserveEntityIdsResponse>),
-            typeof(CommandResponses<EntityQueryResponse>),
+            typeof(CommandResponses<EntityQueryResponse>)
         };
 
         private readonly Dictionary<uint, CreateEntityRequest> requestIdToCreateEntityRequest
             = new Dictionary<uint, CreateEntityRequest>();
 
-        private Dictionary<uint, DeleteEntityRequest> requestIdToDeleteEntityRequest
+        private readonly Dictionary<uint, DeleteEntityRequest> requestIdToDeleteEntityRequest
             = new Dictionary<uint, DeleteEntityRequest>();
 
-        private Dictionary<uint, ReserveEntityIdsRequest> requestIdToReserveEntityIdsRequest
+        private readonly Dictionary<uint, ReserveEntityIdsRequest> requestIdToReserveEntityIdsRequest
             = new Dictionary<uint, ReserveEntityIdsRequest>();
 
-        private Dictionary<uint, EntityQueryRequest> requestIdToEntityQueryRequest
+        private readonly Dictionary<uint, EntityQueryRequest> requestIdToEntityQueryRequest
             = new Dictionary<uint, EntityQueryRequest>();
 
         internal List<CreateEntityRequest> CreateEntityRequests = new List<CreateEntityRequest>();
@@ -224,30 +224,27 @@ namespace Improbable.Gdk.Core
         internal List<ReserveEntityIdsRequest> ReserveEntityIdsRequests = new List<ReserveEntityIdsRequest>();
         internal List<EntityQueryRequest> EntityQueryRequests = new List<EntityQueryRequest>();
 
-        private static readonly ComponentPool<CommandResponses<CreateEntityResponse>> createEntityResponsePool =
+        private static readonly ComponentPool<CommandResponses<CreateEntityResponse>> CreateEntityResponsePool =
             new ComponentPool<CommandResponses<CreateEntityResponse>>(
                 () => new CommandResponses<CreateEntityResponse>(),
                 component => component.Buffer.Clear());
 
-        private static readonly ComponentPool<CommandResponses<DeleteEntityResponse>> deleteEntityResponsePool =
+        private static readonly ComponentPool<CommandResponses<DeleteEntityResponse>> DeleteEntityResponsePool =
             new ComponentPool<CommandResponses<DeleteEntityResponse>>(
                 () => new CommandResponses<DeleteEntityResponse>(),
                 component => component.Buffer.Clear());
 
-        private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> reserveEntityIdsResponsesPool
+        private static readonly ComponentPool<CommandResponses<ReserveEntityIdsResponse>> ReserveEntityIdsResponsesPool
             = new ComponentPool<CommandResponses<ReserveEntityIdsResponse>>(
                 () => new CommandResponses<ReserveEntityIdsResponse>(),
                 component => component.Buffer.Clear());
 
-        private static readonly ComponentPool<CommandResponses<EntityQueryResponse>> entityQueryResponsePool =
+        private static readonly ComponentPool<CommandResponses<EntityQueryResponse>> EntityQueryResponsePool =
             new ComponentPool<CommandResponses<EntityQueryResponse>>(
                 () => new CommandResponses<EntityQueryResponse>(),
                 component => component.Buffer.Clear());
 
         private const string LoggerName = "WorldCommandsTranslation";
-
-        private const string EntityNotFoundForRequestId =
-            "Entity not found when attempting to get EntityId from RequestId.";
 
         private const string EntityNotFoundForEntityId =
             "Entity not found when attempting to get Entity from EntityId.";
@@ -256,9 +253,9 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        public override void AddCommandRequestSender(Entity entity, long EntityId)
+        public override void AddCommandRequestSender(Entity entity, long entityId)
         {
-            view.AddComponent(entity, new WorldCommandSender(EntityId, translationHandle));
+            View.AddComponent(entity, new WorldCommandSender(entityId, TranslationHandle));
         }
 
         public override void ExecuteReplication(Connection connection)
@@ -335,8 +332,7 @@ namespace Improbable.Gdk.Core
             CreateEntityRequest request = requestIdToCreateEntityRequest[op.RequestId.Id];
             requestIdToCreateEntityRequest.Remove(op.RequestId.Id);
 
-            Entity entity;
-            if (!TryGetEntityFromEntityId(request.SenderEntityId, "CreateEntity", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "CreateEntity", out var entity))
             {
                 return;
             }
@@ -344,7 +340,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new CreateEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Value.Id, request);
 
-            view.AddCommandResponse(entity, response, createEntityResponsePool);
+            View.AddCommandResponse(entity, response, CreateEntityResponsePool);
         }
 
         public void OnDeleteEntityResponse(DeleteEntityResponseOp op)
@@ -352,8 +348,7 @@ namespace Improbable.Gdk.Core
             DeleteEntityRequest request = requestIdToDeleteEntityRequest[op.RequestId.Id];
             requestIdToDeleteEntityRequest.Remove(op.RequestId.Id);
 
-            Entity entity;
-            if (!TryGetEntityFromEntityId(request.SenderEntityId, "DeleteEntity", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "DeleteEntity", out var entity))
             {
                 return;
             }
@@ -361,7 +356,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new DeleteEntityResponse((CommandStatusCode) op.StatusCode, op.Message, op.EntityId.Id, request);
 
-            view.AddCommandResponse(entity, response, deleteEntityResponsePool);
+            View.AddCommandResponse(entity, response, DeleteEntityResponsePool);
         }
 
         public void OnReserveEntityIdResponse(ReserveEntityIdsResponseOp op)
@@ -369,8 +364,7 @@ namespace Improbable.Gdk.Core
             ReserveEntityIdsRequest request = requestIdToReserveEntityIdsRequest[op.RequestId.Id];
             requestIdToReserveEntityIdsRequest.Remove(op.RequestId.Id);
 
-            Entity entity;
-            if (!TryGetEntityFromEntityId(request.SenderEntityId, "ReserveEntityIds", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "ReserveEntityIds", out var entity))
             {
                 return;
             }
@@ -378,7 +372,7 @@ namespace Improbable.Gdk.Core
             var response = new ReserveEntityIdsResponse((CommandStatusCode) op.StatusCode, op.Message,
                 op.FirstEntityId.Value.Id, op.NumberOfEntityIds, request);
 
-            view.AddCommandResponse(entity, response, reserveEntityIdsResponsesPool);
+            View.AddCommandResponse(entity, response, ReserveEntityIdsResponsesPool);
         }
 
         public void OnEntityQueryResponse(EntityQueryResponseOp op)
@@ -392,8 +386,7 @@ namespace Improbable.Gdk.Core
                 result.Add(pair.Key.Id, pair.Value);
             }
 
-            Entity entity;
-            if (!TryGetEntityFromEntityId(request.SenderEntityId, "EntityQuery", out entity))
+            if (!TryGetEntityFromEntityId(request.SenderEntityId, "EntityQuery", out var entity))
             {
                 return;
             }
@@ -401,7 +394,7 @@ namespace Improbable.Gdk.Core
             var response =
                 new EntityQueryResponse((CommandStatusCode) op.StatusCode, op.Message, op.ResultCount, result, request);
 
-            view.AddCommandResponse(entity, response, entityQueryResponsePool);
+            View.AddCommandResponse(entity, response, EntityQueryResponsePool);
         }
 
         private bool TryGetEntityFromEntityId(long entityId, string responseName, out Entity entity)
@@ -409,11 +402,11 @@ namespace Improbable.Gdk.Core
             entity = Entity.Null;
             if (entityId == MutableView.WorkerEntityId)
             {
-                entity = view.WorkerEntity;
+                entity = View.WorkerEntity;
             }
-            else if (!view.TryGetEntity(entityId, out entity))
+            else if (!View.TryGetEntity(entityId, out entity))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
+                View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, entityId)
                     .WithField("ResponseName", responseName));

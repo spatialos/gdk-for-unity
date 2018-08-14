@@ -47,9 +47,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void SetConnection(Connection connection)
+        public void SetConnection(Connection newConnection)
         {
-            this.connection = connection;
+            connection = newConnection;
         }
 
         public void HandleLog(LogType type, LogEvent logEvent)

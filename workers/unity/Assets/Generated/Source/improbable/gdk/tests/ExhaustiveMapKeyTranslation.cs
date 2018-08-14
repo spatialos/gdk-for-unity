@@ -65,8 +65,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveMapKey> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -94,16 +93,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveMapKey.Field17 = data.field17.ToDictionary(entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(entry.Key), entry => entry.Value);
                 spatialOSExhaustiveMapKey.DirtyBit = false;
 
-                view.SetComponentObject(entity, spatialOSExhaustiveMapKey);
-                view.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveMapKey>());
+                View.SetComponentObject(entity, spatialOSExhaustiveMapKey);
+                View.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveMapKey>());
 
-                if (view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
+                if (View.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity);
+                    View.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity);
                 }
-                else if (!view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
+                else if (!View.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveMapKey>());
+                    View.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveMapKey>());
                 }
                 else
                 {
@@ -117,8 +116,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveMapKey> op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -127,10 +125,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = view.GetComponentObject<SpatialOSExhaustiveMapKey>(entity);
+                var componentData = View.GetComponentObject<SpatialOSExhaustiveMapKey>(entity);
                 var update = op.Update.Get();
 
-                if (view.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapKey>>(entity))
+                if (View.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapKey>>(entity))
                 {
                     if (update.field2.HasValue)
                     {
@@ -196,7 +194,7 @@ namespace Generated.Improbable.Gdk.Tests
 
                 componentData.DirtyBit = false;
 
-                view.SetComponentObject(entity, componentData);
+                View.SetComponentObject(entity, componentData);
 
                 var componentFieldsUpdated = false;
                 var gdkUpdate = new SpatialOSExhaustiveMapKey.Update();
@@ -278,14 +276,13 @@ namespace Generated.Improbable.Gdk.Tests
 
                 if (componentFieldsUpdated)
                 {
-                    view.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
+                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
                 }
             }
 
             public void OnRemoveComponent(RemoveComponentOp op)
             {
-                Unity.Entities.Entity entity;
-                if (!view.TryGetEntity(op.EntityId.Id, out entity))
+                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -294,15 +291,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                view.RemoveComponent<SpatialOSExhaustiveMapKey>(entity);
+                View.RemoveComponent<SpatialOSExhaustiveMapKey>(entity);
 
-                if (view.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
+                if (View.HasComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity);
+                    View.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapKey>>(entity);
                 }
-                else if (!view.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
+                else if (!View.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
                 {
-                    view.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveMapKey>());
+                    View.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveMapKey>());
                 }
                 else
                 {
@@ -317,7 +314,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entityId = op.EntityId.Id;
-                view.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
+                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
             }
 
             public override void ExecuteReplication(Connection connection)
@@ -352,7 +349,7 @@ namespace Generated.Improbable.Gdk.Tests
                         SendComponentUpdate(connection, entityId, update);
 
                         componentData.DirtyBit = false;
-                        view.SetComponentObject(entityId, componentData);
+                        View.SetComponentObject(entityId, componentData);
 
                     }
                 }

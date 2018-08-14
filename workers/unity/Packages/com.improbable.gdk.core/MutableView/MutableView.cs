@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
 using Unity.Entities;
@@ -57,8 +56,7 @@ namespace Improbable.Gdk.Core
 
         public void AddComponent<T>(long entityId, T component) where T : struct, IComponentData
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAdd)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -82,8 +80,7 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent<T>(long entityId)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnRemove)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -138,8 +135,7 @@ namespace Improbable.Gdk.Core
 
         public void SetComponentObject<T>(long entityId, T component) where T : Component
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnSetComponentObject)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -198,8 +194,7 @@ namespace Improbable.Gdk.Core
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out var entity))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -298,8 +293,7 @@ namespace Improbable.Gdk.Core
 
         internal void RemoveEntity(long entityId)
         {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
+            if (!TryGetEntity(entityId, out _))
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
