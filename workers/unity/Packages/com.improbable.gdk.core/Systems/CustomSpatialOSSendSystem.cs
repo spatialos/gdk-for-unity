@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -13,18 +14,22 @@ namespace Improbable.Gdk.Core
 
         private SpatialOSSendSystem spatialOSSendSystem;
 
-        protected WorkerBase worker;
+        public struct WorkerData
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] protected WorkerData WorkerConfigData;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
             if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
+                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("ComponentType", typeof(T)));
             }

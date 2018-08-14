@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -6,22 +7,29 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
-
         private readonly List<int> registeredReplicators = new List<int>();
         private readonly List<int> commandSenders = new List<int>();
+
+        public struct Data
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private Data data;
+
+        private TranslationUnityRegistry TranslationUnityRegistry;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            TranslationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var componentTranslatorPair in worker.TranslationUnits)
+            foreach (var componentTranslatorPair in TranslationUnityRegistry.TranslationUnits)
             {
                 var componentIndex = componentTranslatorPair.Key;
                 var componentTranslator = componentTranslatorPair.Value;
@@ -45,23 +53,19 @@ namespace Improbable.Gdk.Core
             return registeredReplicators.Remove(type.TypeIndex);
         }
 
+
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
-            {
-                return;
-            }
-
-            var connection = worker.Connection;
+            var worker = data.WorkerConfigs[0].Worker;
 
             foreach (var componentTypeIndex in registeredReplicators)
             {
-                worker.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
+                TranslationUnityRegistry.TranslationUnits[componentTypeIndex].ExecuteReplication(worker.Connection);
             }
 
             foreach (var componentTypeIndex in commandSenders)
             {
-                worker.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                TranslationUnityRegistry.TranslationUnits[componentTypeIndex].SendCommands(worker.Connection);
             }
         }
     }

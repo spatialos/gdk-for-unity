@@ -1,33 +1,41 @@
 using Improbable.Worker;
+using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        private WorkerBase worker;
         private Dispatcher dispatcher;
 
-        private bool inCriticalSection = false;
+        private bool inCriticalSection;
+        private string LoggerName = nameof(SpatialOSReceiveSystem);
+
+        public struct Data
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private Data data;
+
+        private TranslationUnityRegistry translationUnityRegistry;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-
+            translationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
             dispatcher = new Dispatcher();
-            SetupDispatcherHandlers();
+            SetupDispatcherHandlers();            
         }
+
+        private Worker worker;
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
-            {
-                return;
-            }
-
+            worker = data.WorkerConfigs[0].Worker;
             do
             {
                 using (var opList = worker.Connection.GetOpList(0))
@@ -40,18 +48,52 @@ namespace Improbable.Gdk.Core
 
         private void OnAddEntity(AddEntityOp op)
         {
-            worker.CreateEntity(op.EntityId.Id);
+            var entityId = op.EntityId.Id;
+            if (worker.EntityMapping.ContainsKey(entityId))
+            {
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to add an entity but there is already an entity associated with that EntityId.")
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId));
+                return;
+            }
+
+            var entity = EntityManager.CreateEntity();
+            EntityManager.AddComponentData(entity, new SpatialEntityId
+            {
+                EntityId = entityId
+            });
+            EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
+
+            translationUnityRegistry.AddAllCommandRequestSenders(entity, entityId);
+            worker.EntityMapping.Add(entityId, entity);
         }
 
         private void OnRemoveEntity(RemoveEntityOp op)
         {
-            worker.RemoveEntity(op.EntityId.Id);
+            var entityId = op.EntityId.Id;
+            if (!worker.TryGetEntity(entityId, out var entity))
+            {
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId));
+                return;
+            }
+
+            EntityManager.DestroyEntity(entity);
+            worker.EntityMapping.Remove(entityId);
         }
 
         private void OnDisconnect(DisconnectOp op)
         {
-            EntityManager.RemoveComponent<IsConnected>(worker.WorkerEntity);
-            EntityManager.AddSharedComponentData(worker.WorkerEntity, new OnDisconnected { ReasonForDisconnect = op.Reason });
+            if (!worker.TryGetEntity(Worker.WorkerEntityId, out var entity))
+            {
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, Worker.WorkerEntityId));
+                return;
+            }
+            
+            EntityManager.AddSharedComponentData(entity, new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
         private void SetupDispatcherHandlers()
@@ -60,8 +102,8 @@ namespace Improbable.Gdk.Core
             dispatcher.OnRemoveEntity(OnRemoveEntity);
             dispatcher.OnDisconnect(OnDisconnect);
             dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
-
-            foreach (var translationUnit in worker.TranslationUnits.Values)
+            
+            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
             {
                 translationUnit.RegisterWithDispatcher(dispatcher);
             }

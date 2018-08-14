@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -16,18 +17,18 @@ namespace Improbable.Gdk.Core
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
-        private WorkerBase worker;
-
+        private TranslationUnityRegistry translationUnityRegistry;
+        
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            translationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var translationUnit in worker.TranslationUnits.Values)
+            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
                 foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
@@ -90,7 +91,7 @@ namespace Improbable.Gdk.Core
             var commandBuffer = PostUpdateCommands;
 
             // Clean generated components
-            foreach (var translationUnit in worker.TranslationUnits.Values)
+            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
