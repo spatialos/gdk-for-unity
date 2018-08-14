@@ -8,11 +8,23 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        private static readonly WorkerRequirementSet GameLogicSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityGameLogic));
+        private static WorkerRequirementSet GetWorkerRequirementSet(string workerType, params string[] workerTypes)
+        {
+            var workerAttributes = new Improbable.Collections.List<WorkerAttributeSet>();
+            workerAttributes.Add(new WorkerAttributeSet(new Improbable.Collections.List<string> { workerType }));
+            foreach (var nextType in workerTypes)
+            {
+                workerAttributes.Add(
+                    new WorkerAttributeSet(new Improbable.Collections.List<string> { nextType }));
+            }
+
+            return new WorkerRequirementSet(workerAttributes);
+        }
+
+        private static readonly WorkerRequirementSet GameLogicSet = GetWorkerRequirementSet("UnityGameLogic");
 
         private static readonly WorkerRequirementSet AllWorkersSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityClient), typeof(UnityGameLogic));
+            GetWorkerRequirementSet("UnityClient", "UnityGameLogic");
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)

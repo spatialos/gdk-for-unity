@@ -13,7 +13,7 @@ namespace Playground
             WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>
             {
                 {
-                    UnityGameLogic.WorkerType,
+                    "UnityGameLogic",
                     new Dictionary<string, ComponentType[]>()
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
@@ -21,7 +21,7 @@ namespace Playground
                     }
                 },
                 {
-                    UnityClient.WorkerType,
+                    "UnityClient",
                     new Dictionary<string, ComponentType[]>()
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
