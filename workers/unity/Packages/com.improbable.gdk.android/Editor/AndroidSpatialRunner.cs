@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Android.Editor
         private const string ProcessParams = "local launch";
         private const string Config = "android_launch.json";
 
-        [MenuItem("Improbable/Run Spatial for Android")]
+        [MenuItem("Improbable/Run SpatialOS for Android")]
         public static void RunAndroidSpatial()
         {
             Debug.Log($"Connect phone to IP: {GetLocalIpAddress()}");
