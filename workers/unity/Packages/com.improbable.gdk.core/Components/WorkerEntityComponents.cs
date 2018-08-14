@@ -2,11 +2,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    /// <summary>
-    ///     Component denoting a worker entity
-    /// </summary>
-    public struct WorkerEntityTag : IComponentData
+    public struct WorkerConfig : ISharedComponentData
     {
+        public Worker Worker;
     }
 
     /// <summary>
