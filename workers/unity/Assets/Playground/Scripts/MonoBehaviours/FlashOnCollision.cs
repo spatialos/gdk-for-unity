@@ -1,4 +1,6 @@
-﻿using Improbable.Gdk.Core.GameObjectRepresentation;
+﻿using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
+using Generated.Playground;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 
 public class FlashOnCollision : MonoBehaviour
@@ -12,14 +14,24 @@ public class FlashOnCollision : MonoBehaviour
     {
         if (reader != null)
         {
-            reader.OnPlayerCollided += e =>
-            {
-                collideTime = Time.time;
-                flashing = true;
-                var renderer = gameObject.GetComponent<MeshRenderer>();
-                renderer.material.SetColor("_Color", UnityEngine.Color.red);
-            };
+            reader.OnPlayerCollided += HandleCollisionEvent;
         }
+    }
+
+    void OnDisable()
+    {
+        if (reader != null)
+        {
+            reader.OnPlayerCollided -= HandleCollisionEvent;
+        }
+    }
+
+    void HandleCollisionEvent(PlayerCollidedEvent e)
+    {
+        collideTime = Time.time;
+        flashing = true;
+        var renderer = gameObject.GetComponent<MeshRenderer>();
+        renderer.material.SetColor("_Color", UnityEngine.Color.red);
     }
 
     void Update()
