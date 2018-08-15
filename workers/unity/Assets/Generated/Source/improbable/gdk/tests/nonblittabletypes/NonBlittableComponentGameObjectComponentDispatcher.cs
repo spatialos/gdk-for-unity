@@ -48,7 +48,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             private const uint componentId = 1002;
 
-            public override void InvokeOnAddComponentLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -58,7 +58,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
-            public override void InvokeOnRemoveComponentLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -68,7 +68,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleMethods(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSNonBlittableComponent>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();

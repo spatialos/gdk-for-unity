@@ -19,11 +19,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
-        public abstract void InvokeOnAddComponentLifecycleMethods
+        public abstract void MarkComponentsAddedForActivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
-        public abstract void InvokeOnRemoveComponentLifecycleMethods
+        public abstract void MarkComponentsRemovedForDeactivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
-        public abstract void InvokeOnAuthorityChangeLifecycleMethods
+        public abstract void MarkAuthorityChangesForActivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
 
         public abstract void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> readerWriterStores);

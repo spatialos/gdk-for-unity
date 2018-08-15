@@ -102,9 +102,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAddComponentLifecycleMethods(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.InvokeOnRemoveComponentLifecycleMethods(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeLifecycleMethods(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkComponentsRemovedForDeactivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkAuthorityChangesForActivation(entityIndexToActivationManager);
             }
 
             foreach (var indexManagerPair in entityIndexToActivationManager)
