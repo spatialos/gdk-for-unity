@@ -41,26 +41,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-            var createdReaderWriters = new Dictionary<uint, List<IReaderWriterInternal>>();
-
-            foreach (var componentId in componentReaderIdsForBehaviours[behaviourType])
+            var createdReaderWriters = new Dictionary<uint, IReaderWriterInternal[]>();
+            foreach (var idToFields in fieldInfoCache[behaviourType])
             {
-                List<IReaderWriterInternal> readerWritersForComp = new List<IReaderWriterInternal>();
-                createdReaderWriters[componentId] = readerWritersForComp;
-                Inject(behaviour, componentId, entity, readerWritersForComp);
+                var id = idToFields.Key;
+                var fields = idToFields.Value;
+                createdReaderWriters[id] = fields.Select(field => Inject(behaviour, id, entity, field)).ToArray();
             }
 
-            foreach (var componentId in componentWriterIdsForBehaviours[behaviourType])
-            {
-                if (!createdReaderWriters.TryGetValue(componentId, out var readerWritersForComp))
-                {
-                    readerWritersForComp = new List<IReaderWriterInternal>();
-                }
-
-                Inject(behaviour, componentId, entity, readerWritersForComp);
-            }
-
-            return createdReaderWriters.ToDictionary(kp => kp.Key, kp => kp.Value.ToArray());
+            return createdReaderWriters;
         }
 
         public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
@@ -91,15 +80,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             return componentWriterIdsForBehaviours[behaviourType];
         }
 
-        private void Inject(MonoBehaviour behaviour, uint componentId, Entity entity,
-            IList<IReaderWriterInternal> store)
+        private IReaderWriterInternal Inject(MonoBehaviour behaviour, uint componentId, Entity entity, FieldInfo field)
         {
-            foreach (var field in fieldInfoCache[behaviour.GetType()][componentId])
-            {
-                var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
-                field.SetValue(behaviour, readerWriter);
-                store.Add(readerWriter);
-            }
+            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
+            field.SetValue(behaviour, readerWriter);
+            return readerWriter;
         }
 
         private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)

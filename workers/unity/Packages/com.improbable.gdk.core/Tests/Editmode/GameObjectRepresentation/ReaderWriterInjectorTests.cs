@@ -13,13 +13,12 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class ReaderWriterInjectorTests
     {
-        private const uint PositionComponentId = 54;
         private const uint BlittableComponentId = 1001;
         private const uint NonBlittableComponentId = 1002;
 
         private class SingleReaderBehaviour : MonoBehaviour
         {
-            [Require] public Position.Reader Reader;
+            [Require] public BlittableComponent.Reader Reader;
         }
 
         private class TwoWritersBehaviour : MonoBehaviour
@@ -30,8 +29,14 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
         private class MultipleReadersOfSameType : MonoBehaviour
         {
-            [Require] public Position.Reader Reader1;
-            [Require] public Position.Reader Reader2;
+            [Require] public BlittableComponent.Reader Reader1;
+            [Require] public BlittableComponent.Reader Reader2;
+        }
+
+        private class ReaderAndWriterOfSameType : MonoBehaviour
+        {
+            [Require] public BlittableComponent.Reader Reader;
+            [Require] public BlittableComponent.Writer Writer;
         }
 
         private class RequireInvalidMember : MonoBehaviour
@@ -66,17 +71,17 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_injects_Reader()
+        public void RequireTagInjector_injects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             Assert.IsNull(behaviour.Reader);
             injector.InjectAllReadersWriters(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
-            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader.GetType());
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_injects_two_Writers()
+        public void RequireTagInjector_injects_two_Writers()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
             injector.InjectAllReadersWriters(behaviour, testEntity);
@@ -85,7 +90,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_deinjects_Reader()
+        public void RequireTagInjector_deinjects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             injector.InjectAllReadersWriters(behaviour, testEntity);
@@ -94,16 +99,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_finds_required_Reader_component_id()
+        public void RequireTagInjector_finds_required_Reader_component_id()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             var foundIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
             var foundId = foundIds.First();
-            Assert.AreEqual(PositionComponentId, foundId);
+            Assert.AreEqual(BlittableComponentId, foundId);
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_finds_two_required_Writers()
+        public void RequireTagInjector_finds_two_required_Writers()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
             var foundIds = injector.GetRequiredWriterComponentIds(behaviour.GetType());
@@ -111,7 +116,31 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_ignores_invalid_Require_tags()
+        public void RequireTagInjector_creates_two_different_required_Writers()
+        {
+            var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
+            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
+        }
+
+        [Test]
+        public void RequireTagInjector_creates_two_identical_required_Readers()
+        {
+            var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
+            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
+        }
+
+        [Test]
+        public void RequireTagInjector_creates_one_Reader_and_one_Writer_for_same_component()
+        {
+            var behaviour = testGameObject.AddComponent<ReaderAndWriterOfSameType>();
+            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
+        }
+
+        [Test]
+        public void RequireTagInjector_ignores_invalid_Require_tags()
         {
             var behaviour = testGameObject.AddComponent<RequireInvalidMember>();
             var foundIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
@@ -119,16 +148,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SpatialOSBehaviourLibrary_injects_multiple_Readers()
+        public void RequireTagInjector_injects_multiple_Readers()
         {
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);
             injector.InjectAllReadersWriters(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader1);
-            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader1.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader1.GetType());
             Assert.NotNull(behaviour.Reader2);
-            Assert.AreEqual(typeof(Position.ReaderWriterImpl), behaviour.Reader2.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader2.GetType());
         }
     }
 }
