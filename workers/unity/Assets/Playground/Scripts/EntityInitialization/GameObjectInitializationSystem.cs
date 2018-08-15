@@ -14,17 +14,17 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        public struct AddedEntitiesData
+        private struct AddedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
+            [ReadOnly] public ComponentDataArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
-        public struct RemovedEntitiesData
+        private struct RemovedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
@@ -40,7 +40,6 @@ namespace Playground
         private Vector3 origin;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
         private EntityGameObjectCreator entityGameObjectCreator;
-        private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
         protected override void OnCreateManager(int capacity)
@@ -95,9 +94,10 @@ namespace Playground
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
-                var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                var entity = removedEntitiesData.Entities[i];
+                var entityIndex = entity.Index;
+
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
@@ -107,8 +107,7 @@ namespace Playground
 
                 entityGameObjectCache.Remove(entityIndex);
                 UnityObjectDestroyer.Destroy(gameObject);
-                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(
-                    removedEntitiesData.Entities[i]);
+                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }
 
             viewCommandBuffer.FlushBuffer(view);

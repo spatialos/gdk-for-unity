@@ -1,3 +1,4 @@
+using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace Improbable.Gdk.Core
 {
     public class SpatialOSComponent : MonoBehaviour
     {
-        public long SpatialEntityId;
+        public EntityId SpatialEntityId;
         public Entity Entity;
         public World World;
     }

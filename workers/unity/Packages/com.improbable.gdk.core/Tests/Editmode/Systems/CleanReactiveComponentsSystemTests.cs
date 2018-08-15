@@ -46,24 +46,5 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             Assert.IsFalse(entityManager.HasComponent(entityWithReactiveComponent, reactiveComponentType));
         }
-
-        [Test]
-        public void CleanReactiveComponentsSystem_should_prepare_translation_groups_when_initialised()
-        {
-            var world = worker.World;
-
-            foreach (var translationUnit in worker.View.TranslationUnits.Values)
-            {
-                Assert.IsNull(translationUnit.CleanUpComponentGroups);
-            }
-
-            world.GetOrCreateManager<CleanReactiveComponentsSystem>();
-
-            foreach (var translationUnit in worker.View.TranslationUnits.Values)
-            {
-                Assert.IsNotNull(translationUnit.CleanUpComponentGroups);
-                Assert.IsTrue(translationUnit.CleanUpComponentGroups.Any());
-            }
-        }
     }
 }

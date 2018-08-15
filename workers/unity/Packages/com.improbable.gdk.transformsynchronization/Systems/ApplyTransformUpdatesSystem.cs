@@ -8,10 +8,10 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ApplyTransformUpdatesSystem : ComponentSystem
     {
-        public struct TransformUpdateData
+        private struct TransformUpdateData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSTransform.Update>> TransformUpdate;
+            [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
             public ComponentArray<BufferedTransform> BufferedTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
         }
@@ -22,7 +22,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             for (var i = 0; i < transformUpdateData.Length; i++)
             {
-                var transformUpdates = transformUpdateData.TransformUpdate[i].Buffer;
+                var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
                 var lastTransformSnapshot = transformUpdateData.BufferedTransform[i].LastTransformSnapshot;
                 foreach (var update in transformUpdates)
                 {

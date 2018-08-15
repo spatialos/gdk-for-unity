@@ -10,13 +10,13 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitUISystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
             public EntityArray Entites;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
-            [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
 
         [Inject] private Data data;

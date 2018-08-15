@@ -1,5 +1,6 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,10 +9,10 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessColorChangeSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
-            public ComponentArray<EventsReceived<ChangeColorEvent>> EventUpdate;
+            [ReadOnly] public ComponentDataArray<CubeColor.ReceivedEvents.ChangeColor> EventUpdate;
             public ComponentArray<MeshRenderer> Renderers;
         }
 
@@ -23,10 +24,10 @@ namespace Playground
             {
                 var component = data.EventUpdate[i];
                 var renderer = data.Renderers[i];
-                foreach (var colorEvent in component.Buffer)
+                foreach (var colorEvent in component.Events)
                 {
                     var color = UnityEngine.Color.white;
-                    switch (colorEvent.Payload.Color)
+                    switch (colorEvent.Color)
                     {
                         case Generated.Playground.Color.BLUE:
                             color = UnityEngine.Color.blue;

@@ -17,21 +17,15 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
-
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
+            [ReadOnly] public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
         }
 
         private struct LaunchableData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
-
+            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
         }
 
@@ -43,7 +37,7 @@ namespace Playground
             // Handle Launch Commands from players. Only allow if they have energy etc.
             for (var i = 0; i < launchCommandData.Length; i++)
             {
-                var sender = launchCommandData.Sender[i];
+                var sender = launchCommandData.Senders[i];
                 var launcher = launchCommandData.Launcher[i];
 
                 if (launcher.RechargeTimeLeft > 0)
@@ -51,19 +45,19 @@ namespace Playground
                     return;
                 }
 
-                var requests = launchCommandData.CommandRequests[i].Buffer;
+                var requests = launchCommandData.Requests[i].Requests;
                 var energyLeft = launcher.EnergyLeft;
                 var j = 0;
                 while (energyLeft > 0f && j < requests.Count)
                 {
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.SendLaunchMeRequest(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
+                    sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
                     {
                         ImpactPoint = info.ImpactPoint,
                         LaunchDirection = info.LaunchDirection,
                         LaunchEnergy = energy
-                    });
+                    }));
                     energyLeft -= energy;
                     j++;
                 }
@@ -87,8 +81,7 @@ namespace Playground
             for (var i = 0; i < launchableData.Length; i++)
             {
                 var rigidbody = launchableData.Rigidbody[i];
-                var launchable = launchableData.Launchable[i];
-                foreach (var request in launchableData.CommandRequests[i].Buffer)
+                foreach (var request in launchableData.Requests[i].Requests)
                 {
                     var info = request.RawRequest;
                     rigidbody.AddForceAtPosition(

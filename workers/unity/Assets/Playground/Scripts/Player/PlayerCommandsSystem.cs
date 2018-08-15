@@ -29,7 +29,7 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
         [Inject] private PlayerData playerData;
@@ -69,8 +69,7 @@ namespace Playground
             }
 
             var ray = Camera.main.ScreenPointToRay(UIComponent.Main.Reticle.transform.position);
-            RaycastHit info;
-            if (!Physics.Raycast(ray, out info) || info.rigidbody == null)
+            if (!Physics.Raycast(ray, out var info) || info.rigidbody == null)
             {
                 return;
             }
@@ -80,18 +79,18 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            if (component != null && view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component != null && EntityManager.HasComponent<SpatialOSLaunchable>(component.Entity))
             {
                 var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
                 var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
 
-                sender.SendLaunchEntityRequest(playerId, new Generated.Playground.LaunchCommandRequest
+                sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId, new Generated.Playground.LaunchCommandRequest
                 {
                     EntityToLaunch = component.SpatialEntityId,
                     ImpactPoint = impactPoint,
                     LaunchDirection = launchDirection,
                     LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
-                });
+                }));
             }
         }
     }
