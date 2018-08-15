@@ -54,8 +54,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
 
                 numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
-
-                behaviour.enabled = false;
+                if (numUnsatisfiedReadersOrWriters[behaviour] > 0)
+                {
+                    behaviour.enabled = false;
+                }
             }
         }
 
