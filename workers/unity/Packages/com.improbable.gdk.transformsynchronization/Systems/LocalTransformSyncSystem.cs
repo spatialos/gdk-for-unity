@@ -1,6 +1,7 @@
 using Generated.Improbable;
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
@@ -23,9 +24,8 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private TransformData transformData;
 
-        private Vector3 origin;
-
         private TickSystem tickSystem;
+        private Core.Worker worker;
 
         private const float ToleranceMeters = 0.001f;
         private const float ToleranceAngle = 0.001f;
@@ -35,11 +35,8 @@ namespace Improbable.Gdk.TransformSynchronization
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
-
             tickSystem = World.GetOrCreateManager<TickSystem>();
+            worker = Core.Worker.TryGetWorker(World);
         }
 
         protected override void OnUpdate()
@@ -51,7 +48,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var nativePosition = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z);
 
-                var positionDifference = (rigidbody.position - origin - nativePosition).sqrMagnitude;
+                var positionDifference = (rigidbody.position - worker.Origin - nativePosition).sqrMagnitude;
 
                 // Sync if sufficient difference or if sufficient time has passed
                 if (positionDifference <= ToleranceMeters)
@@ -69,7 +66,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
                 }
 
-                var position = rigidbody.position - origin;
+                var position = rigidbody.position - worker.Origin;
                 var location = new Location { X = position.x, Y = position.y, Z = position.z };
                 var rotation = new Quaternion
                 {

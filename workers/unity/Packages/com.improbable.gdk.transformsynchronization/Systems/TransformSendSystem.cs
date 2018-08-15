@@ -1,5 +1,6 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace Improbable.Gdk.TransformSynchronization
         // Number of transform sends per second.
         private const float SendRateHz = 30.0f;
 
-        private float timeSinceLastSend = 0.0f;
+        private float timeSinceLastSend;
 
         protected override void OnUpdate()
         {

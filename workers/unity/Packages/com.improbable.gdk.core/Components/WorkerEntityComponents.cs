@@ -3,17 +3,9 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Component denoting a worker entity
+    ///     Component denoting a worker entity 
     /// </summary>
     public struct WorkerEntityTag : IComponentData
-    {
-    }
-
-    /// <summary>
-    ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
-    ///     Removed immediately after disconnecting
-    /// </summary>
-    public struct IsConnected : IComponentData
     {
     }
 

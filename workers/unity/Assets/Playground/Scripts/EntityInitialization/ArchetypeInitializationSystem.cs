@@ -32,13 +32,12 @@ namespace Playground
         private const string UnsupportedArchetype =
             "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
-        private MutableView view;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private ViewCommandBuffer viewCommandBuffer;
+        private Worker worker;
 
         private readonly MethodInfo addComponentMethod = typeof(EntityCommandBuffer).GetMethods().First(method =>
             method.Name == "AddComponent" && method.GetParameters()[0].ParameterType == typeof(Entity));
 
-        private string workerType;
 
         private readonly Dictionary<Type, bool> typeToIsComponentData = new Dictionary<Type, bool>();
 
@@ -48,36 +47,35 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
+            worker = Worker.TryGetWorker(World);
+        }
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
-            if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+        protected override void OnUpdate()
+        {
+            if (!(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)) && !(SystemConfig.UnityClient.Equals(worker.WorkerType)))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
 
-            workerType = worker.GetWorkerType;
-        }
-
-        protected override void OnUpdate()
-        {
+            if (viewCommandBuffer == null)
+            {
+                viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            }
             for (var i = 0; i < data.Length; i++)
             {
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
-                ComponentType[] componentTypesToAdd;
-                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
-                    .TryGetValue(archetypeName, out componentTypesToAdd))
+                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[worker.WorkerType]
+                    .TryGetValue(archetypeName, out var componentTypesToAdd))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("ArchetypeName", archetypeName)
-                        .WithField("WorkerType", workerType));
+                        .WithField("WorkerType", worker.WorkerType));
                     continue;
                 }
 
@@ -103,7 +101,7 @@ namespace Playground
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new object[] { entity, componentInstance });
+                            new [] { entity, componentInstance });
                     }
                     else
                     {
@@ -112,7 +110,7 @@ namespace Playground
                 }
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer(EntityManager);
         }
     }
 }

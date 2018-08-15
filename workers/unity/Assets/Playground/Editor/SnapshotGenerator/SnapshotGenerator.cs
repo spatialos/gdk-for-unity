@@ -20,20 +20,17 @@ namespace Playground.Editor.SnapshotGenerator
             public string OutputPath;
         }
 
-        private const string UnityGameLogicType = "UnityGameLogic";
-        private const string UnityClientType = "UnityClient";
-
         private static readonly WorkerRequirementSet AllWorkersSet = new WorkerRequirementSet(
             new Improbable.Collections.List<WorkerAttributeSet>
             {
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { UnityGameLogicType }),
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { UnityClientType })
+                new WorkerAttributeSet(new Improbable.Collections.List<string> { SystemConfig.UnityGameLogic }),
+                new WorkerAttributeSet(new Improbable.Collections.List<string> { SystemConfig.UnityClient })
             });
 
         private static readonly WorkerRequirementSet WorkerSet = new WorkerRequirementSet(
             new Improbable.Collections.List<WorkerAttributeSet>
             {
-                new WorkerAttributeSet(new Improbable.Collections.List<string> { UnityGameLogicType })
+                new WorkerAttributeSet(new Improbable.Collections.List<string> { SystemConfig.UnityGameLogic })
             });
 
         private const string EntityName = "Cube";

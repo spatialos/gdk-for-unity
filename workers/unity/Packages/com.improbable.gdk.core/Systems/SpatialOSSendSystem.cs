@@ -1,24 +1,25 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
-
         private readonly List<int> registeredReplicators = new List<int>();
         private readonly List<int> commandSenders = new List<int>();
+
+        private Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.TryGetWorker(World);
             GenerateComponentGroups();
         }
-
+        
         private void GenerateComponentGroups()
         {
             foreach (var componentTranslatorPair in worker.TranslationUnits)
@@ -45,23 +46,17 @@ namespace Improbable.Gdk.Core
             return registeredReplicators.Remove(type.TypeIndex);
         }
 
+
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
-            {
-                return;
-            }
-
-            var connection = worker.Connection;
-
             foreach (var componentTypeIndex in registeredReplicators)
             {
-                worker.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
+                worker.TranslationUnits[componentTypeIndex].ExecuteReplication(worker.Connection);
             }
 
             foreach (var componentTypeIndex in commandSenders)
             {
-                worker.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                worker.TranslationUnits[componentTypeIndex].SendCommands(worker.Connection);
             }
         }
     }

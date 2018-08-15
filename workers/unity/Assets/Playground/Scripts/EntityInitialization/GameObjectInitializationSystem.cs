@@ -35,21 +35,19 @@ namespace Playground
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
-        private MutableView view;
-        private WorkerBase worker;
-        private Vector3 origin;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private Worker worker;
+        private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
+        private EntityGameObjectLinker entityGameObjectLinker;
         private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-            origin = worker.Origin;
+            worker = Worker.TryGetWorker(World);
+            viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
         }
 
@@ -62,20 +60,20 @@ namespace Playground
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+                if (!(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)) && !(SystemConfig.UnityClient.Equals(worker.WorkerType)))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Worker type isn't supported by the GameObjectInitializationSystem.")
                         .WithField("WorldName", World.Name)
-                        .WithField("WorkerType", worker));
+                        .WithField("WorkerType", worker.WorkerType));
                     continue;
                 }
 
-                var prefabName = worker is UnityGameLogic
+                var prefabName = SystemConfig.UnityGameLogic.Equals(worker.WorkerType)
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
 
-                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
+                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + worker.Origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
 
@@ -89,17 +87,16 @@ namespace Playground
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
                         .WithField("EntityIndex", entityIndex));
                     continue;
@@ -111,7 +108,7 @@ namespace Playground
                     removedEntitiesData.Entities[i]);
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer(EntityManager);
         }
     }
 }

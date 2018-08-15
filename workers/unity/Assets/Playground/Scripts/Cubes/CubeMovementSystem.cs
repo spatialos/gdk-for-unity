@@ -1,6 +1,7 @@
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -19,16 +20,14 @@ namespace Playground
 
         [Inject] private Data data;
 
-        private static Vector3 speed = new Vector3(2, 0, 0);
+        private Worker worker;
 
-        private Vector3 origin;
+        private static Vector3 speed = new Vector3(2, 0, 0);
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            origin = worker.Origin;
+            worker = Worker.TryGetWorker(World);
         }
 
         protected override void OnUpdate()
@@ -36,12 +35,12 @@ namespace Playground
             for (var i = 0; i < data.Length; i++)
             {
                 var rigidbodyComponent = data.Rigidbody[i];
-                if (rigidbodyComponent.position.x - origin.x > 10)
+                if (rigidbodyComponent.position.x - worker.Origin.x > 10)
                 {
                     speed = new Vector3(-2, 0, 0);
                 }
 
-                if (rigidbodyComponent.position.x - origin.x < -10)
+                if (rigidbodyComponent.position.x - worker.Origin.x < -10)
                 {
                     speed = new Vector3(2, 0, 0);
                 }

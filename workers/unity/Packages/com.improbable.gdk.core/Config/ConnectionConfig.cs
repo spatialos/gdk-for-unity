@@ -1,4 +1,3 @@
-using System;
 using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
@@ -10,16 +9,6 @@ namespace Improbable.Gdk.Core
         public bool UseExternalIp = false;
         public string WorkerType;
         public string WorkerId;
-
-        public string GetWorkerId()
-        {
-            if (string.IsNullOrEmpty(WorkerId))
-            {
-                WorkerId = $"{WorkerType}-{Guid.NewGuid()}";
-            }
-
-            return WorkerId;
-        }
 
         public abstract void Validate();
 

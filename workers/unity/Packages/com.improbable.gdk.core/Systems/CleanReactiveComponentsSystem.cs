@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -10,18 +11,18 @@ namespace Improbable.Gdk.Core
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
-    {
+    {       
         private readonly List<Action> removeComponentActions = new List<Action>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
-        private WorkerBase worker;
+        private Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.TryGetWorker(World);
             GenerateComponentGroups();
         }
 

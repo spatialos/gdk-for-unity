@@ -46,7 +46,7 @@ namespace Generated.Improbable.Gdk.Tests
                     () => new ComponentsUpdated<SpatialOSExhaustiveBlittableSingular.Update>(),
                     (component) => component.Buffer.Clear());
 
-            public Translation(WorkerBase worker) : base(worker)
+            public Translation(Worker worker) : base(worker)
             {
             }
 
@@ -66,7 +66,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveBlittableSingular> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -94,16 +94,16 @@ namespace Generated.Improbable.Gdk.Tests
                 spatialOSExhaustiveBlittableSingular.Field17 = global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(data.field17);
                 spatialOSExhaustiveBlittableSingular.DirtyBit = false;
 
-                worker.EntityManager.AddComponentData(entity, spatialOSExhaustiveBlittableSingular);
-                worker.EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveBlittableSingular>());
+                EntityManager.AddComponentData(entity, spatialOSExhaustiveBlittableSingular);
+                EntityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveBlittableSingular>());
 
-                if (worker.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity);
+                    EntityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
+                else if (!EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveBlittableSingular>());
+                    EntityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveBlittableSingular>());
                 }
                 else
                 {
@@ -118,7 +118,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveBlittableSingular> op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -127,10 +127,10 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var componentData = worker.EntityManager.GetComponentData<SpatialOSExhaustiveBlittableSingular>(entity);
+                var componentData = EntityManager.GetComponentData<SpatialOSExhaustiveBlittableSingular>(entity);
                 var update = op.Update.Get();
 
-                if (worker.EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (EntityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
                     if (update.field1.HasValue)
                     {
@@ -196,13 +196,13 @@ namespace Generated.Improbable.Gdk.Tests
 
                 componentData.DirtyBit = false;
 
-                if (!worker.EntityManager.HasComponent<SpatialOSExhaustiveBlittableSingular>(entity))
+                if (!EntityManager.HasComponent<SpatialOSExhaustiveBlittableSingular>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, componentData);
+                    EntityManager.AddComponentData(entity, componentData);
                 }
                 else
                 {
-                    worker.EntityManager.SetComponentData(entity, componentData);
+                    EntityManager.SetComponentData(entity, componentData);
                 }
 
                 var componentFieldsUpdated = false;
@@ -292,7 +292,7 @@ namespace Generated.Improbable.Gdk.Tests
             public void OnRemoveComponent(RemoveComponentOp op)
             {
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(op.EntityId.Id, out entity))
+                if (!Worker.TryGetEntity(op.EntityId.Id, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -301,15 +301,15 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                worker.EntityManager.RemoveComponent<SpatialOSExhaustiveBlittableSingular>(entity);
+                EntityManager.RemoveComponent<SpatialOSExhaustiveBlittableSingular>(entity);
 
-                if (worker.EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
+                if (EntityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    worker.EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity);
+                    EntityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveBlittableSingular>>(entity);
                 }
-                else if (!worker.EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
+                else if (!EntityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveBlittableSingular>>(entity))
                 {
-                    worker.EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveBlittableSingular>());
+                    EntityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveBlittableSingular>());
                 }
                 else
                 {
@@ -325,7 +325,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 var entityId = op.EntityId.Id;
                 Unity.Entities.Entity entity;
-                if (!worker.TryGetEntity(entityId, out entity))
+                if (!Worker.TryGetEntity(entityId, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAuthorityChange.")
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -346,7 +346,7 @@ namespace Generated.Improbable.Gdk.Tests
                     var componentData = componentDataArray[i];
                     var entityId = spatialEntityIdData[i].EntityId;
                     Unity.Entities.Entity entity;
-                    if (!worker.TryGetEntity(entityId, out entity))
+                    if (!Worker.TryGetEntity(entityId, out entity))
                     {
                         LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during replication.")
                             .WithField(LoggingUtils.LoggerName, LoggerName)

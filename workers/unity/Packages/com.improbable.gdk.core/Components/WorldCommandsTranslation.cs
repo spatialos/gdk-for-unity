@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
 {
     public struct CreateEntityRequest
     {
-        public Worker.Entity Entity;
+        public Improbable.Worker.Entity Entity;
         public EntityId? EntityId;
         public uint TimeoutMillis;
         public long SenderEntityId;
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Core
 
     public struct EntityQueryRequest
     {
-        public Worker.Query.EntityQuery EntityQuery;
+        public Improbable.Worker.Query.EntityQuery EntityQuery;
         public uint TimeoutMillis;
         public long SenderEntityId;
     }
@@ -95,11 +95,11 @@ namespace Improbable.Gdk.Core
         public CommandStatusCode StatusCode { get; }
         public string Message { get; }
         public int ResultCount { get; }
-        public Dictionary<long, Worker.Entity> Result { get; }
+        public Dictionary<long, Improbable.Worker.Entity> Result { get; }
         public EntityQueryRequest RawRequest { get; }
 
         internal EntityQueryResponse(CommandStatusCode statusCode, string message, int resultCount,
-            Dictionary<long, Worker.Entity> result, EntityQueryRequest req)
+            Dictionary<long, Improbable.Worker.Entity> result, EntityQueryRequest req)
         {
             StatusCode = statusCode;
             Message = message;
@@ -133,7 +133,7 @@ namespace Improbable.Gdk.Core
             HandleToTranslation = handleToTranslation;
         }
 
-        public void SendCreateEntityRequest(Worker.Entity entity, long entityId = 0, uint timeoutMillis = 0)
+        public void SendCreateEntityRequest(Improbable.Worker.Entity entity, long entityId = 0, uint timeoutMillis = 0)
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -176,7 +176,7 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void SendEntityQueryRequest(Worker.Query.EntityQuery entityQuery, uint timeoutMillis = 0)
+        public void SendEntityQueryRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint timeoutMillis = 0)
         {
             WorldCommandsTranslation translation =
                 (WorldCommandsTranslation) ComponentTranslation.HandleToTranslation[HandleToTranslation];
@@ -252,13 +252,13 @@ namespace Improbable.Gdk.Core
         private const string EntityNotFoundForEntityId =
             "Entity not found when attempting to get Entity from EntityId.";
 
-        public WorldCommandsTranslation(WorkerBase worker) : base(worker)
+        public WorldCommandsTranslation(Worker worker) : base(worker)
         {
         }
 
         public override void AddCommandRequestSender(Entity entity, long EntityId)
         {
-            worker.EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
+            EntityManager.AddComponentData(entity, new WorldCommandSender(EntityId, translationHandle));
         }
 
         public override void ExecuteReplication(Connection connection)
@@ -386,7 +386,7 @@ namespace Improbable.Gdk.Core
             EntityQueryRequest request = requestIdToEntityQueryRequest[op.RequestId.Id];
             requestIdToEntityQueryRequest.Remove(op.RequestId.Id);
 
-            var result = new Dictionary<long, Worker.Entity>();
+            var result = new Dictionary<long, Improbable.Worker.Entity>();
             foreach (var pair in op.Result)
             {
                 result.Add(pair.Key.Id, pair.Value);
@@ -407,13 +407,9 @@ namespace Improbable.Gdk.Core
         private bool TryGetEntityFromEntityId(long entityId, string responseName, out Entity entity)
         {
             entity = Entity.Null;
-            if (entityId == WorkerBase.WorkerEntityId)
+            if (!Worker.TryGetEntity(entityId, out entity))
             {
-                entity = worker.WorkerEntity;
-            }
-            else if (!worker.TryGetEntity(entityId, out entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
+                Worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFoundForEntityId)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, entityId)
                     .WithField("ResponseName", responseName));
