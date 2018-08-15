@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
