@@ -1,6 +1,9 @@
 using System;
+using System.Diagnostics;
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
+using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -14,7 +17,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<PlayerCreator.CommandRequests.CreatePlayer> CreatePlayerRequests;
             [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
-            // TODO: [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
         }
 
         [Inject] private CreatePlayerData createPlayerData;
@@ -35,9 +38,12 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                     var playerEntity = PlayerLifecycleConfig.CreatePlayerEntityTemplate(request.CallerAttributeSet,
                         request.RawRequest.Position);
-                    // TODO: createPlayerData.WorldCommandSenders[i].SendCreateEntityRequest(playerEntity);
+                    createPlayerData.CreateEntitySender[i].RequestsToSend.Add(new WorldCommands.CreateEntity.Request
+                    {
+                        Entity = playerEntity
+                    });
 
-                    // TODO: responders.Add(PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType(somePlayerEntityIdHere)));
+                    responders.Add(PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType()));
                 }
             }
         }

@@ -1,5 +1,6 @@
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -17,7 +18,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>
                 PlayerHeartbeatResponses;
 
-            // TODO: [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;
             public EntityArray Entities;
@@ -58,7 +59,10 @@ namespace Improbable.Gdk.PlayerLifecycle
                             PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
                         {
                             Debug.LogFormat(Messages.DeletingPlayer, entityId);
-                            // TODO: data.WorldCommandSenders[i].SendDeleteEntityRequest(entityId);
+                            data.WorldCommandSenders[i].RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
+                            {
+                                EntityId = entityId,
+                            });
                         }
                     }
                     else
