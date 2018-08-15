@@ -11,15 +11,13 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        private static readonly string GameLogicAttribute = UnityGameLogic.WorkerType;
-
         private static readonly List<string> AllWorkerAttributes =
-            new List<string> { UnityGameLogic.WorkerType, UnityClient.WorkerType };
+            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient};
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)
         {
-            var clientAttribute = clientAttributeSet.First(attribute => attribute != UnityClient.WorkerType);
+            var clientAttribute = clientAttributeSet.First(attribute => attribute != SystemConfig.UnityClient);
 
             if (clientAttribute == null)
             {
@@ -38,18 +36,18 @@ namespace Playground
             var serverHeartbeat = SpatialOSPlayerHeartbeatServer.CreateSchemaComponentData();
 
             var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, GameLogicAttribute)
-                .AddMetadata(ArchetypeConfig.CharacterArchetype, GameLogicAttribute)
+                .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)
+                .AddMetadata(ArchetypeConfig.CharacterArchetype, SystemConfig.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(AllWorkerAttributes)
-                .SetEntityAclComponentWriteAccess(GameLogicAttribute)
-                .AddComponent(transform, GameLogicAttribute)
+                .SetEntityAclComponentWriteAccess(SystemConfig.UnityGameLogic)
+                .AddComponent(transform, SystemConfig.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)
-                .AddComponent(prefab, GameLogicAttribute)
-                .AddComponent(archetype, GameLogicAttribute)
-                .AddComponent(launcher, GameLogicAttribute)
+                .AddComponent(prefab, SystemConfig.UnityGameLogic)
+                .AddComponent(archetype, SystemConfig.UnityGameLogic)
+                .AddComponent(launcher, SystemConfig.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)
-                .AddComponent(serverHeartbeat, GameLogicAttribute);
+                .AddComponent(serverHeartbeat, SystemConfig.UnityGameLogic);
 
             return entityBuilder.Build();
         }
