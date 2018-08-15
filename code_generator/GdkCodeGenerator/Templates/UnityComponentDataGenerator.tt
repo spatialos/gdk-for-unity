@@ -202,20 +202,21 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+                component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
 <# if (listTypeInfo.IsEnum) { #>
                 for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>));
+                    component.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i));
                 }
 <# } else if (listTypeInfo.IsPrimitive) { #>
                 for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));
+                    component.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
                 }
 <# } else { #>
                 for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
+                    component.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
                 }
 <# } #>
 
@@ -240,10 +241,11 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
                 {
+                    component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.GetObject(<#= fieldDetails.FieldNumber #>);
+                        var mapObj = obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i);
 <# if (mapTypeInfo.Key.IsEnum) { #>
                         var key = (<#= mapTypeInfo.Key.Type #>) mapObj.GetEnum(1);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>
@@ -291,13 +293,13 @@ namespace <#= qualifiedNamespace #>
                     var listSize = obj.GetEnumCount(<#= fieldDetails.FieldNumber #>);
                     if (listSize > 0)
                     {
-                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
                     for (var i = 0; i < listSize; i++)
                     {
-                        var value = (<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+                        var value = (<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i);
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
                         component.<#= fieldDetails.PascalCaseName #>.Add(value);
                     }
@@ -305,13 +307,13 @@ namespace <#= qualifiedNamespace #>
                     var listSize = obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>);
                     if (listSize > 0)
                     {
-                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
                     for (var i = 0; i < listSize; i++)
                     {
-                        var value = obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+                        var value = obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i);
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
                         component.<#= fieldDetails.PascalCaseName #>.Add(value);
                     }
@@ -319,13 +321,13 @@ namespace <#= qualifiedNamespace #>
                     var listSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     if (listSize > 0)
                     {
-                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
                         component.<#= fieldDetails.PascalCaseName #>.Clear();
                     }
 
                     for (var i = 0; i < listSize; i++)
                     {
-                        var value = <#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+                        var value = <#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i));
                         update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
                         component.<#= fieldDetails.PascalCaseName #>.Add(value);
                     }
@@ -361,11 +363,12 @@ namespace <#= qualifiedNamespace #>
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     if (mapSize > 0)
                     {
-                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>();
+                        component.<#= fieldDetails.PascalCaseName #>.Clear();
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>, <#= mapTypeInfo.Value.Type #>>());
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.GetObject(<#= fieldDetails.FieldNumber #>);
+                        var mapObj = obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i);
 <# if (mapTypeInfo.Key.IsEnum) { #>
                         var key = (<#= mapTypeInfo.Key.Type #>) mapObj.GetEnum(1);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>

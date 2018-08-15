@@ -88,20 +88,21 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+            instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
 <# if (listTypeInfo.IsEnum) { #>
             for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>));
+                instance.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.EnumIndex(<#= fieldDetails.FieldNumber #>, (uint) i));
             }
 <# } else if (listTypeInfo.IsPrimitive) { #>
             for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));
+                instance.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
             }
 <# } else { #>
             for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));
+                instance.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
             }
 <# } #>
 
@@ -126,10 +127,11 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
             {
+                instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
                 var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                 for (var i = 0; i < mapSize; i++)
                 {
-                    var mapObj = obj.GetObject(<#= fieldDetails.FieldNumber #>);
+                    var mapObj = obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i);
 <# if (mapTypeInfo.Key.IsEnum) { #>
                     var key = (<#= mapTypeInfo.Key.Type #>) mapObj.GetEnum(1);
 <# } else if (mapTypeInfo.Key.IsPrimitive) { #>

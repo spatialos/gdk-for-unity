@@ -65,5 +65,25 @@ namespace Improbable.Gdk.CodeGenerator
             { BuiltInTypeConstants.builtInSint64, "GetSint64Count" },
             { BuiltInTypeConstants.builtInString, "GetStringCount" }
         };
+
+        public static Dictionary<string, string> BuiltInTypeToIndexSchemaFunction = new Dictionary<string, string>
+        {
+            { BuiltInTypeConstants.builtInBool, "IndexBool"},
+            { BuiltInTypeConstants.builtInBytes, "IndexBytes" },
+            { BuiltInTypeConstants.builtInDouble, "IndexDouble" },
+            { BuiltInTypeConstants.builtInEntityId, "IndexEntityId" },
+            { BuiltInTypeConstants.builtInFixed32, "IndexFixed32" },
+            { BuiltInTypeConstants.builtInFixed64, "IndexFixed64" },
+            { BuiltInTypeConstants.builtInFloat, "IndexFloat" },
+            { BuiltInTypeConstants.builtInInt32, "IndexInt32" },
+            { BuiltInTypeConstants.builtInInt64, "IndexInt64" },
+            { BuiltInTypeConstants.builtInSfixed32, "IndexSfixed32" },
+            { BuiltInTypeConstants.builtInSfixed64, "IndexSfixed64" },
+            { BuiltInTypeConstants.builtInUint32, "IndexUint32" },
+            { BuiltInTypeConstants.builtInUint64, "IndexUint64" },
+            { BuiltInTypeConstants.builtInSint32, "IndexSint32" },
+            { BuiltInTypeConstants.builtInSint64, "IndexSint64" },
+            { BuiltInTypeConstants.builtInString, "IndexString" }
+        };
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -339,6 +340,13 @@ namespace Improbable.Gdk.Core
             responses.Add(new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
         }
 
+        private void HandleException(Exception e)
+        {
+            // TODO: Use the special exception handle when merged with master
+            logDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+                .WithField("message", e.Message));
+        }
+
         private void SetupDispatcherHandlers()
         {
             // Find all component specific dispatchers and create an instance.
@@ -374,6 +382,8 @@ namespace Improbable.Gdk.Core
             dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
             dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
             dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
+
+            ClientError.ExceptionCallback = HandleException;
         }
     }
 }

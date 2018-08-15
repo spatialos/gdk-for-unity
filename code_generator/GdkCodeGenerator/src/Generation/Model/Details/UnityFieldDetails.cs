@@ -31,6 +31,7 @@ namespace Improbable.Gdk.CodeGenerator
             public string Serialize;
             public string Deserialize;
             public string GetCount;
+            public string DeserializeIndex;
         }
 
         public string Type;
@@ -70,7 +71,8 @@ namespace Improbable.Gdk.CodeGenerator
                             Deserialize =
                                 GetDeserializationFunctionFromType(valueType,
                                     packagePrefix),
-                            GetCount = GetSchemaCountFunctionFromType(valueType)
+                            GetCount = GetSchemaCountFunctionFromType(valueType),
+                            DeserializeIndex = GetDeserializeIndexFunctionFromType(valueType)
                         }
                     }
                 };
@@ -95,7 +97,8 @@ namespace Improbable.Gdk.CodeGenerator
                             Deserialize =
                                 GetDeserializationFunctionFromType(valueType,
                                     packagePrefix),
-                            GetCount = GetSchemaCountFunctionFromType(valueType)
+                            GetCount = GetSchemaCountFunctionFromType(valueType),
+                            DeserializeIndex = GetDeserializeIndexFunctionFromType(valueType)
                         }
                     }
                 };
@@ -125,7 +128,8 @@ namespace Improbable.Gdk.CodeGenerator
                                 Deserialize =
                                     GetDeserializationFunctionFromType(keyType,
                                         packagePrefix),
-                                GetCount = GetSchemaCountFunctionFromType(keyType)
+                                GetCount = GetSchemaCountFunctionFromType(keyType),
+                                DeserializeIndex = GetDeserializeIndexFunctionFromType(keyType)
                             }
                         },
                         new TypeInfo
@@ -141,7 +145,8 @@ namespace Improbable.Gdk.CodeGenerator
                                 Deserialize =
                                     GetDeserializationFunctionFromType(valueType,
                                         packagePrefix),
-                                GetCount = GetSchemaCountFunctionFromType(valueType)
+                                GetCount = GetSchemaCountFunctionFromType(valueType),
+                                DeserializeIndex = GetDeserializeIndexFunctionFromType(valueType)
                             }
                         }
                     )
@@ -165,7 +170,8 @@ namespace Improbable.Gdk.CodeGenerator
                                 GetSerializationFunctionFromType(rawFieldDefinition.singularType, packagePrefix),
                             Deserialize =
                                 GetDeserializationFunctionFromType(rawFieldDefinition.singularType, packagePrefix),
-                            GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.singularType)
+                            GetCount = GetSchemaCountFunctionFromType(rawFieldDefinition.singularType),
+                            DeserializeIndex = GetDeserializeIndexFunctionFromType(rawFieldDefinition.singularType)
                         }
                     }
                 };
@@ -200,6 +206,13 @@ namespace Improbable.Gdk.CodeGenerator
             return SchemaFunctionMappings.BuiltInTypeToGetCountSchemaFunction.ContainsKey(typeReference.TypeName)
                 ? SchemaFunctionMappings.BuiltInTypeToGetCountSchemaFunction[typeReference.TypeName]
                 : "GetObjectCount";
+        }
+
+        private static string GetDeserializeIndexFunctionFromType(TypeReferenceRaw typeReference)
+        {
+            return SchemaFunctionMappings.BuiltInTypeToIndexSchemaFunction.ContainsKey(typeReference.TypeName)
+                ? SchemaFunctionMappings.BuiltInTypeToIndexSchemaFunction[typeReference.TypeName]
+                : null;
         }
     }
 }
