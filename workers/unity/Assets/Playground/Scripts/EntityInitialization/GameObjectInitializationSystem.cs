@@ -46,7 +46,7 @@ namespace Playground
             base.OnCreateManager(capacity);
 
             worker = Worker.TryGetWorker(World);
-            viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
             entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
         }
@@ -110,7 +110,7 @@ namespace Playground
                 PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }
 
-            viewCommandBuffer.FlushBuffer(EntityManager);
+            viewCommandBuffer.FlushBuffer();
         }
     }
 }

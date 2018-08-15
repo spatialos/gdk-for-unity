@@ -56,7 +56,7 @@ namespace Playground
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
-            viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }
 
         protected override void OnUpdate()
@@ -105,7 +105,7 @@ namespace Playground
                 }
             }
 
-            viewCommandBuffer.FlushBuffer(EntityManager);
+            viewCommandBuffer.FlushBuffer();
         }
     }
 }

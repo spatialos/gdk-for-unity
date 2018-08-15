@@ -5,10 +5,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
 
 namespace Playground
 {
@@ -33,14 +29,14 @@ namespace Playground
             {
                 var config = new ReceptionistConfig
                 {
-                    WorkerType = SystemConfig.UnityClient,
-                };
-                CreateWorker(config, Vector3.zero);
-                config = new ReceptionistConfig
-                {
                     WorkerType = SystemConfig.UnityGameLogic,
                 };
                 CreateWorker(config, new Vector3(10, 0, 0));
+                config = new ReceptionistConfig
+                {
+                    WorkerType = SystemConfig.UnityClient,
+                };
+                CreateWorker(config, Vector3.zero);
             }
             else
             {
@@ -85,6 +81,10 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            foreach (var worker in Workers)
+            {
+                worker.Dispose();
+            }
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }

@@ -16,7 +16,10 @@ namespace Playground
         {
             typeof(SpatialOSReceiveSystem),
             typeof(SpatialOSSendSystem),
-            typeof(CleanReactiveComponentsSystem)
+            typeof(CleanReactiveComponentsSystem),
+            typeof(WorldCommandsSendSystem),
+            typeof(WorldCommandsCleanSystem),
+            typeof(CommandRequestTrackerSystem),
         };
 
         public static readonly Type[] CommonSystems =
@@ -24,7 +27,7 @@ namespace Playground
             typeof(EntityManager),
             typeof(GameObjectInitializationSystem),
             typeof(ArchetypeInitializationSystem),
-            typeof(DisconnectSystem)
+            typeof(DisconnectSystem),
         };
 
         public static List<Type> GetSystems(string workerType)
@@ -55,7 +58,7 @@ namespace Playground
                 typeof(InitUISystem),
                 typeof(UpdateUISystem),
                 typeof(PlayerCommandsSystem),
-                typeof(MetricSendSystem)
+                typeof(MetricSendSystem),
             });
             return systems;
         }

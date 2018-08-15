@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             entityGameObjectLinker = new EntityGameObjectLinker(world, new LoggingDispatcher());
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
-            commandBuffer = new ViewCommandBuffer(new LoggingDispatcher());
+            commandBuffer = new ViewCommandBuffer(entityManager, new LoggingDispatcher());
         }
 
         [TearDown]
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 commandBuffer);
             Assert.IsFalse(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
-            commandBuffer.FlushBuffer(entityManager);
+            commandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
 
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             testGameObject.AddComponent<TestMonoBehaviour>();
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 commandBuffer);
-            commandBuffer.FlushBuffer(entityManager);
+            commandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
     }

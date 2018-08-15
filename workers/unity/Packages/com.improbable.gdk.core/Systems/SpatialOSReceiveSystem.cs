@@ -94,6 +94,7 @@ namespace Improbable.Gdk.Core
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
             AddAllCommandComponents.ForEach(action => action(entity));
+            WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
             worker.EntityMapping.Add(entityId, entity);
         }
 
@@ -186,7 +187,6 @@ namespace Improbable.Gdk.Core
                         .WithField("ComponentId", op.Request.ComponentId));
                 return;
             }
-
             specificDispatcher.OnCommandRequest(op);
         }
 
@@ -374,7 +374,7 @@ namespace Improbable.Gdk.Core
         private void HandleException(Exception e)
         {
             // TODO: Use the special exception handle when merged with master
-            logDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+            worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
                 .WithField("message", e.Message));
         }
 
@@ -385,15 +385,14 @@ namespace Improbable.Gdk.Core
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract);
 
+            worker.TryGetEntity(new EntityId(Worker.WorkerEntityId), out var workerEntity);
+            WorldCommands.AddWorldCommandRequesters(World, EntityManager, workerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
                 var componentDispatcher =
-                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType,
-                        new object[] { worker, World });
+                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker, World);
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
-                // TODO: UTY-836 temporary work around until Jess's worker refactor comes in.
                 AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
-                worker.TryGetEntity(new EntityId(Worker.WorkerEntityId), out var workerEntity);
                 componentDispatcher.AddCommandComponents(workerEntity);
             }
 
