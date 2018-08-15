@@ -13,12 +13,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        internal static class ReferenceTypeProviders 
+        internal static class ReferenceTypeProviders
         {
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentDetails.TypeName}.Update>"), 3) #>
 
