@@ -13,7 +13,7 @@ using Unity.Entities;
 
 namespace Playground
 {
-    [RemoveAtEndOfTick]
+    [RemoveAtEndOfTickAttribute]
     public struct CollisionComponent : IComponentData
     {
         public Entity OwnEntity;

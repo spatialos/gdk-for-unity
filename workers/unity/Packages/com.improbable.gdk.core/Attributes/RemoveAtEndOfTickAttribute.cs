@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     ///     Can be added to components extending <see cref="IComponentData" /> or <see cref="ISharedComponentData" />
     /// </summary>
     [AttributeUsage(AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
-    public class RemoveAtEndOfTick : Attribute
+    public class RemoveAtEndOfTickAttribute : Attribute
     {
     }
 }
