@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;

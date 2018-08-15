@@ -9,20 +9,22 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {
-        public struct Data
+        private struct CreatePlayerData
         {
             public readonly int Length;
-            public ComponentArray<CommandRequests<PlayerCreator.CreatePlayer.Request>> CreatePlayerRequests;
-            [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandRequests.CreatePlayer> CreatePlayerRequests;
+            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
+            // TODO: [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
         }
 
-        [Inject] private Data data;
+        [Inject] private CreatePlayerData createPlayerData;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            for (var i = 0; i < createPlayerData.Length; i++)
             {
-                var requests = data.CreatePlayerRequests[i].Buffer;
+                var requests = createPlayerData.CreatePlayerRequests[i].Requests;
+                var responders = createPlayerData.CreatePlayerResponders[i].ResponsesToSend;
 
                 foreach (var request in requests)
                 {
@@ -33,7 +35,9 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                     var playerEntity = PlayerLifecycleConfig.CreatePlayerEntityTemplate(request.CallerAttributeSet,
                         request.RawRequest.Position);
-                    data.WorldCommandSenders[i].SendCreateEntityRequest(playerEntity);
+                    // TODO: createPlayerData.WorldCommandSenders[i].SendCreateEntityRequest(playerEntity);
+
+                    // TODO: responders.Add(PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType(somePlayerEntityIdHere)));
                 }
             }
         }

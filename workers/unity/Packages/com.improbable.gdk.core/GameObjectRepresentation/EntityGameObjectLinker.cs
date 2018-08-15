@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Improbable.Gdk.Core
             this.view = view;
         }
 
-        public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, long spatialEntityId,
+        public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, EntityId spatialEntityId,
             ViewCommandBuffer viewCommandBuffer)
         {
             gameObjectComponentTypes.Clear();

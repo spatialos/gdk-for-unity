@@ -13,7 +13,7 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
-            [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSLauncher.Update>> Updates;
+            [ReadOnly] public ComponentDataArray<SpatialOSLauncher.ReceivedUpdates> Updates;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
         }
 

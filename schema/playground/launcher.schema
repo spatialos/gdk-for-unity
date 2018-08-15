@@ -7,7 +7,7 @@ import "improbable/vector3.schema";
 
 // Command sent by clients to request launching a Launchable.
 type LaunchCommandRequest {
-    int64 entity_to_launch = 1;
+    EntityId entity_to_launch = 1;
     improbable.Vector3f impact_point = 2;
     improbable.Vector3f launch_direction = 3;
     float launch_energy = 4;

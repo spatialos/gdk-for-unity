@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Core.Components;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -157,30 +155,6 @@ namespace Improbable.Gdk.Core
             setComponentObjectAction(entity, typeof(T), component);
         }
 
-        public void AddComponentsUpdated<T>(Entity entity, T update, ComponentPool<ComponentsUpdated<T>> pool)
-            where T : struct, ISpatialComponentUpdate
-        {
-            AddReceivedMessageToComponent(entity, update, pool);
-        }
-
-        public void AddEventReceived<T>(Entity entity, T eventData, ComponentPool<EventsReceived<T>> pool)
-            where T : struct, ISpatialEvent
-        {
-            AddReceivedMessageToComponent(entity, eventData, pool);
-        }
-
-        public void AddCommandRequest<T>(Entity entity, T commandRequest, ComponentPool<CommandRequests<T>> pool)
-            where T : struct, IIncomingCommandRequest
-        {
-            AddReceivedMessageToComponent(entity, commandRequest, pool);
-        }
-
-        public void AddCommandResponse<T>(Entity entity, T commandResponse, ComponentPool<CommandResponses<T>> pool)
-            where T : struct, IIncomingCommandResponse
-        {
-            AddReceivedMessageToComponent(entity, commandResponse, pool);
-        }
-
         public bool HasComponent<T>(Entity entity)
         {
             return HasComponent(entity, typeof(T));
@@ -194,74 +168,6 @@ namespace Improbable.Gdk.Core
         public bool TryGetEntity(EntityId entityId, out Entity entity)
         {
             return entityMapping.TryGetValue(entityId, out entity);
-        }
-
-        public void HandleAuthorityChange<T>(EntityId entityId, Authority authority,
-            ComponentPool<AuthoritiesChanged<T>> pool)
-        {
-            Entity entity;
-            if (!TryGetEntity(entityId, out entity))
-            {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.EntityNotFoundOnAuthotityChange)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId)
-                    .WithField(Component, typeof(T).Name));
-                return;
-            }
-
-            switch (authority)
-            {
-                case Authority.Authoritative:
-                    if (!HasComponent<NotAuthoritative<T>>(entity))
-                    {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(Type, typeof(Authority))
-                            .WithField(NewState, Authority.Authoritative)
-                            .WithField(OldState, Authority.NotAuthoritative));
-                        return;
-                    }
-
-                    RemoveComponent<NotAuthoritative<T>>(entity);
-                    AddComponent(entity, new Authoritative<T>());
-                    break;
-                case Authority.AuthorityLossImminent:
-                    if (!HasComponent<Authoritative<T>>(entity))
-                    {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(Type, typeof(Authority))
-                            .WithField(NewState, Authority.AuthorityLossImminent)
-                            .WithField(OldState, Authority.Authoritative));
-                        return;
-                    }
-
-                    AddComponent(entity, new AuthorityLossImminent<T>());
-                    break;
-                case Authority.NotAuthoritative:
-                    if (!HasComponent<Authoritative<T>>(entity))
-                    {
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.UnexpectedAuthorityChangeError)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(Type, typeof(Authority))
-                            .WithField(NewState, Authority.NotAuthoritative)
-                            .WithField(OldState, Authority.Authoritative));
-                        return;
-                    }
-
-                    if (HasComponent<AuthorityLossImminent<T>>(entity))
-                    {
-                        RemoveComponent<AuthorityLossImminent<T>>(entity);
-                    }
-
-                    RemoveComponent<Authoritative<T>>(entity);
-                    AddComponent(entity, new NotAuthoritative<T>());
-                    break;
-            }
-
-            var bufferedComponents = GetOrCreateComponent(entity, pool);
-            bufferedComponents.Buffer.Add(authority);
-            SetComponentObject(entity, bufferedComponents);
         }
 
         internal void Connect()
@@ -310,20 +216,6 @@ namespace Improbable.Gdk.Core
 
             EntityManager.DestroyEntity(entityMapping[entityId]);
             entityMapping.Remove(entityId);
-        }
-
-        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
-        {
-            return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
-        }
-
-        private void AddReceivedMessageToComponent<TMessagesReceived, TMessage>(Entity entity, TMessage message,
-            ComponentPool<TMessagesReceived> pool)
-            where TMessagesReceived : MessagesReceived<TMessage>, new()
-        {
-            var messageBuffer = GetOrCreateComponent(entity, pool);
-            messageBuffer.Buffer.Add(message);
-            SetComponentObject(entity, messageBuffer);
         }
 
         private static class Errors

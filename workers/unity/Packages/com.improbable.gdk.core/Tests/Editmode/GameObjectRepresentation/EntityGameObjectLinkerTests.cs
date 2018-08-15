@@ -1,4 +1,5 @@
 using Improbable.Gdk.TestUtils;
+using Improbable.Worker;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         private EntityGameObjectLinker entityGameObjectLinker;
         private GameObject testGameObject;
         private Entity testEntity;
-        private const long testSpatialEntityId = 1337;
+        private readonly EntityId testSpatialEntityId = new EntityId(1337);
 
         [SetUp]
         public void Setup()
