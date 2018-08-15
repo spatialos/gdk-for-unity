@@ -12,23 +12,29 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
+        public struct Data
+        {
+            public readonly int Length;
+            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
+        }
+
+        [Inject] private Data data;
+        
         private readonly List<Action> removeComponentActions = new List<Action>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
-        private TranslationUnityRegistry translationUnityRegistry;
-        
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            translationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
-            GenerateComponentGroups();
+            var worker = data.WorkerConfigs[0].Worker;
+            GenerateComponentGroups(worker);
         }
 
-        private void GenerateComponentGroups()
+        private void GenerateComponentGroups(Worker worker)
         {
-            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
+            foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
                 foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
@@ -88,10 +94,11 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
+            var worker = data.WorkerConfigs[0].Worker;
             var commandBuffer = PostUpdateCommands;
 
             // Clean generated components
-            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
+            foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }

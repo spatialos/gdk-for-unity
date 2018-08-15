@@ -25,7 +25,6 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
             if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
             {

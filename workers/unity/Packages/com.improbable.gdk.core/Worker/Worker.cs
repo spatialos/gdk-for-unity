@@ -51,13 +51,12 @@ namespace Improbable.Gdk.Core
                 Worker = this
             };
 
+            FindTranslationUnits();
             var entity = entityManager.CreateEntity();
             entityManager.AddComponentData(entity, new OnConnected());
             entityManager.AddSharedComponentData(entity, workerConfig);
             EntityMapping.Add(WorkerEntityId, entity);
-
-            var translationUnityRegistry = new TranslationUnityRegistry(this);
-            translationUnityRegistry.AddAllCommandRequestSenders(entity, WorkerEntityId);
+            AddAllCommandRequestSenders(entity, WorkerEntityId);
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)
@@ -80,10 +79,35 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            foreach (var translation in TranslationUnits.Values)
+            {
+                translation.Dispose();
+            }
             EntityMapping.Clear();
             World.Dispose();
             ConnectionUtility.Disconnect(Connection);
             Connection.Dispose();
+        }
+        
+        
+        // can be deleted soonish
+        public readonly Dictionary<int, ComponentTranslation> TranslationUnits =
+            new Dictionary<int, ComponentTranslation>();
+        
+        public Action<Entity, long> AddAllCommandRequestSenders;
+
+        private void FindTranslationUnits()
+        {
+            var translationTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentTranslation).IsAssignableFrom(type) && !type.IsAbstract).ToList();
+
+            foreach (var translationType in translationTypes)
+            {
+                var translator = (ComponentTranslation)Activator.CreateInstance(translationType, this);
+                TranslationUnits.Add(translator.TargetComponentType.TypeIndex, translator);
+
+                AddAllCommandRequestSenders += translator.AddCommandRequestSender;
+            } 
         }
     }
 }

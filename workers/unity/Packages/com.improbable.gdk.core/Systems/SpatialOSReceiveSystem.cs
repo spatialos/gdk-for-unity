@@ -21,14 +21,16 @@ namespace Improbable.Gdk.Core
 
         [Inject] private Data data;
 
-        private TranslationUnityRegistry translationUnityRegistry;
-
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            translationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
             dispatcher = new Dispatcher();
-            SetupDispatcherHandlers();            
+            SetupDispatcherHandlers();
+            worker = data.WorkerConfigs[0].Worker;
+            foreach (var translationUnit in worker.TranslationUnits.Values)
+            {
+                translationUnit.RegisterWithDispatcher(dispatcher);
+            }
         }
 
         private Worker worker;
@@ -64,7 +66,7 @@ namespace Improbable.Gdk.Core
             });
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
-            translationUnityRegistry.AddAllCommandRequestSenders(entity, entityId);
+            worker.AddAllCommandRequestSenders(entity, entityId);
             worker.EntityMapping.Add(entityId, entity);
         }
 
@@ -102,11 +104,6 @@ namespace Improbable.Gdk.Core
             dispatcher.OnRemoveEntity(OnRemoveEntity);
             dispatcher.OnDisconnect(OnDisconnect);
             dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
-            
-            foreach (var translationUnit in translationUnityRegistry.TranslationUnits.Values)
-            {
-                translationUnit.RegisterWithDispatcher(dispatcher);
-            }
         }
     }
 }

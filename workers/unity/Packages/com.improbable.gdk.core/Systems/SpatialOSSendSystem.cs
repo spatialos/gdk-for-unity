@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -18,18 +19,16 @@ namespace Improbable.Gdk.Core
 
         [Inject] private Data data;
 
-        private TranslationUnityRegistry TranslationUnityRegistry;
-
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            TranslationUnityRegistry = TranslationUnityRegistry.WorldToTranslationUnit[World];
-            GenerateComponentGroups();
+            var worker = data.WorkerConfigs[0].Worker;
+            GenerateComponentGroups(worker);
         }
-
-        private void GenerateComponentGroups()
+        
+        private void GenerateComponentGroups(Worker worker)
         {
-            foreach (var componentTranslatorPair in TranslationUnityRegistry.TranslationUnits)
+            foreach (var componentTranslatorPair in worker.TranslationUnits)
             {
                 var componentIndex = componentTranslatorPair.Key;
                 var componentTranslator = componentTranslatorPair.Value;
@@ -60,12 +59,12 @@ namespace Improbable.Gdk.Core
 
             foreach (var componentTypeIndex in registeredReplicators)
             {
-                TranslationUnityRegistry.TranslationUnits[componentTypeIndex].ExecuteReplication(worker.Connection);
+                worker.TranslationUnits[componentTypeIndex].ExecuteReplication(worker.Connection);
             }
 
             foreach (var componentTypeIndex in commandSenders)
             {
-                TranslationUnityRegistry.TranslationUnits[componentTypeIndex].SendCommands(worker.Connection);
+                worker.TranslationUnits[componentTypeIndex].SendCommands(worker.Connection);
             }
         }
     }
