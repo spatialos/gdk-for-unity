@@ -7,6 +7,8 @@ namespace Improbable.Gdk.Core
         public NetworkConnectionType LinkProtocol = NetworkConnectionType.RakNet;
         public bool EnableProtocolLoggingAtStartup = false;
         public bool UseExternalIp = false;
+        public string WorkerId;
+        public string WorkerType;
 
         public abstract void Validate();
 
