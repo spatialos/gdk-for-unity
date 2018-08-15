@@ -8,6 +8,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
+        private const string DeleteEntityError = "Tried to delete an entity but there is no entity associated with that EntityId.";
+
         private Dispatcher dispatcher;
 
         private bool inCriticalSection;
@@ -75,7 +77,7 @@ namespace Improbable.Gdk.Core
             var entityId = op.EntityId.Id;
             if (!worker.TryGetEntity(entityId, out var entity))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(DeleteEntityError)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, entityId));
                 return;
@@ -89,7 +91,7 @@ namespace Improbable.Gdk.Core
         {
             if (!worker.TryGetEntity(Worker.WorkerEntityId, out var entity))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(DeleteEntityError)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, Worker.WorkerEntityId));
                 return;
