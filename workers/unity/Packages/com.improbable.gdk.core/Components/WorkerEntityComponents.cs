@@ -11,14 +11,6 @@ namespace Improbable.Gdk.Core
 
     /// <summary>
     ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
-    ///     Removed immediately after disconnecting
-    /// </summary>
-    public struct IsConnected : IComponentData
-    {
-    }
-
-    /// <summary>
-    ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
     ///     Removed at the end of the tick it was added
     /// </summary>
     [RemoveAtEndOfTick]
