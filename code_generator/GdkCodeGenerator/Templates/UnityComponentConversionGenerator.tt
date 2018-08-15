@@ -134,20 +134,24 @@ namespace <#= qualifiedNamespace #>
 
                 var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
 
+                List<<#= componentDetails.TypeName #>.Update> updates;
                 if (entityManager.HasComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity))
                 {
-                    var updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity);
-                    updates.Updates.Add(update);
+                    updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity).Updates;
+
                 }
                 else
                 {
-                    var updates = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                    var updatesComponent = new <#= componentDetails.TypeName #>.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updates.handle, new List<<#= componentDetails.TypeName #>.Update>());
-                    entityManager.AddComponentData(entity, updates);
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentDetails.TypeName #>.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
                 }
+
+                updates.Add(update);
 
 <# if (eventDetailsList.Count > 0) { #>
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
@@ -326,10 +330,11 @@ namespace <#= qualifiedNamespace #>
                         break;
                 }
 
+                List<Authority> authorityChanges;
                 if (entityManager.HasComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    var changes = entityManager.GetComponentData<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity);
-                    changes.Changes.Add(authority);
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity).Changes;
+
                 }
                 else
                 {
@@ -338,8 +343,11 @@ namespace <#= qualifiedNamespace #>
                         Handle = AuthorityChangesProvider.Allocate(World)
                     };
                     AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
+                    authorityChanges = changes.Changes;
                     entityManager.AddComponentData(entity, changes);
                 }
+
+                authorityChanges.Add(authority);
             }
 
             private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
