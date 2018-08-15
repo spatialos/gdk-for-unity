@@ -337,6 +337,7 @@ namespace Improbable.Gdk.Core
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
                 // TODO: UTY-836 temporary work around until Jess's worker refactor comes in.
                 view.AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
+                componentDispatcher.AddCommandComponents(view.WorkerEntity);
             }
 
             dispatcher.OnAddEntity(OnAddEntity);
