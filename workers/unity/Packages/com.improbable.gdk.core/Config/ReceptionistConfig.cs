@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol);
             config.WorkerType = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.WorkerType, "UnityClient");
+                parsedArgs, RuntimeConfigNames.WorkerType, string.Empty);
             config.WorkerId = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.WorkerId, string.Empty);
             return config;

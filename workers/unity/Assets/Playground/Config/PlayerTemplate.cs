@@ -21,10 +21,11 @@ namespace Playground
             return new WorkerRequirementSet(workerAttributes);
         }
 
-        private static readonly WorkerRequirementSet GameLogicSet = GetWorkerRequirementSet("UnityGameLogic");
+        private static readonly WorkerRequirementSet
+            GameLogicSet = GetWorkerRequirementSet(SystemConfig.UnityGameLogic);
 
         private static readonly WorkerRequirementSet AllWorkersSet =
-            GetWorkerRequirementSet("UnityClient", "UnityGameLogic");
+            GetWorkerRequirementSet(SystemConfig.UnityClient, SystemConfig.UnityGameLogic);
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)

@@ -80,7 +80,7 @@ namespace Playground
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                if (!("UnityGameLogic".Equals(worker.WorkerType)) && !("UnityClient".Equals(worker.WorkerType)))
+                if (!(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)) && !(SystemConfig.UnityClient.Equals(worker.WorkerType)))
                 {
                     worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Worker type isn't supported by the GameObjectInitializationSystem.")
@@ -89,7 +89,7 @@ namespace Playground
                     continue;
                 }
 
-                var prefabName = "UnityGameLogic".Equals(worker.WorkerType)
+                var prefabName = SystemConfig.UnityGameLogic.Equals(worker.WorkerType)
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
 

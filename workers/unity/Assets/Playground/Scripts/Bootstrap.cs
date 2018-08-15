@@ -26,12 +26,12 @@ namespace Playground
             {
                 var config = new ReceptionistConfig
                 {
-                    WorkerType = "UnityClient",
+                    WorkerType = SystemConfig.UnityClient,
                 };
                 CreateWorker(config, Vector3.zero);
                 config = new ReceptionistConfig
                 {
-                    WorkerType = "UnityGameLogic",
+                    WorkerType = SystemConfig.UnityGameLogic,
                 };
                 CreateWorker(config, new Vector3(10, 0, 0));
             }
@@ -84,11 +84,7 @@ namespace Playground
 
         private void CreateWorker(ConnectionConfig config, Vector3 origin)
         {
-            if (config.WorkerType.Equals("UnityGameLogic"))
-            {
-                PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
-            }
-            
+            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
             Instantiate(Level, origin, Quaternion.identity);
             foreach (var system in SystemConfig.GetSystems(config.WorkerType))

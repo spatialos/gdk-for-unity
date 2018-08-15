@@ -59,7 +59,7 @@ namespace Playground
             }
 
             var worker = workerData.WorkerConfigs[0].Worker;
-            if (!("UnityGameLogic".Equals(worker.WorkerType)) && !("UnityClient".Equals(worker.WorkerType)))
+            if (!(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)) && !(SystemConfig.UnityClient.Equals(worker.WorkerType)))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)

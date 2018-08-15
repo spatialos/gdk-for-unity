@@ -9,8 +9,8 @@ namespace Playground
 {
     public static class SystemConfig
     {
-        public const string CharacterArchetype = "Character";
-        public const string CubeArchetype = "Cube";
+        public const string UnityClient = "UnityClient";
+        public const string UnityGameLogic = "UnityGameLogic";
 
         public static readonly Type[] SpatialSystems =
         {
@@ -31,9 +31,9 @@ namespace Playground
         {
             switch (workerType)
             {
-                case "UnityClient":
+                case UnityClient:
                     return GetClientSystems();
-                case "UnityGameLogic":
+                case UnityGameLogic:
                     return GetGameLogicSystems();
                 default:
                     throw new Exception("Worker type not known");

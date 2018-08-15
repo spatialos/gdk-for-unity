@@ -57,6 +57,7 @@ namespace Improbable.Gdk.Core
             entityManager.AddSharedComponentData(entity, workerConfig);
             EntityMapping.Add(WorkerEntityId, entity);
             AddAllCommandRequestSenders(entity, WorkerEntityId);
+            OnConnect(this);
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)
@@ -66,14 +67,11 @@ namespace Improbable.Gdk.Core
 
         public static Worker Connect(ConnectionConfig config, ILogDispatcher logDispatcher, Vector3 origin)
         {
-            var worker = new Worker(config, logDispatcher, origin);
-            OnConnect(worker);
-            return worker;
+            return new Worker(config, logDispatcher, origin);
         }
 
         public static void Disconnect(Worker worker)
         {
-            OnDisconnect(worker);
             worker.Dispose();
         }
 
@@ -85,6 +83,7 @@ namespace Improbable.Gdk.Core
             }
             EntityMapping.Clear();
             World.Dispose();
+            OnDisconnect(this);
             ConnectionUtility.Disconnect(Connection);
             Connection.Dispose();
         }
