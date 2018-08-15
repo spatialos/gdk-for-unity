@@ -114,6 +114,7 @@ namespace Improbable.Gdk.Core
         public Entity Build()
         {
             entity.Add(acl.Build());
+            componentsAdded.Add(EntityAclComponentId);
             CheckRequiredComponents();
             return entity;
         }
