@@ -12,16 +12,6 @@ namespace Playground
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
 
-        public static readonly Type[] SpatialSystems =
-        {
-            typeof(SpatialOSReceiveSystem),
-            typeof(SpatialOSSendSystem),
-            typeof(CleanReactiveComponentsSystem),
-            typeof(WorldCommandsSendSystem),
-            typeof(WorldCommandsCleanSystem),
-            typeof(CommandRequestTrackerSystem),
-        };
-
         public static readonly Type[] CommonSystems =
         {
             typeof(EntityManager),
@@ -45,7 +35,7 @@ namespace Playground
 
         public static List<Type> GetClientSystems()
         {
-            var systems = new List<Type>(SpatialSystems);
+            var systems = new List<Type>(CoreSystemHelper.Systems);
             systems.AddRange(TransformSynchronizationSystemHelper.ClientSystems);
             systems.AddRange(PlayerLifecycleConfig.ClientSystems);
             systems.AddRange(CommonSystems);
@@ -65,7 +55,7 @@ namespace Playground
 
         public static List<Type> GetGameLogicSystems()
         {
-            var systems = new List<Type>(SpatialSystems);
+            var systems = new List<Type>(CoreSystemHelper.Systems);
             systems.AddRange(TransformSynchronizationSystemHelper.ServerSystems);
             systems.AddRange(PlayerLifecycleConfig.ServerSystems);
             systems.AddRange(CommonSystems);
@@ -79,7 +69,7 @@ namespace Playground
                 typeof(MetricSendSystem),
                 // TODO after rebase on master
                 //typeof(ProcessScoresSystem),
-                //typeof(CollisionProcessSystem)
+                //typeof(CollisionProcessSystem),
             });
             return systems;
         }

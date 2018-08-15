@@ -11,7 +11,7 @@ namespace Improbable.Gdk.TransformSynchronization
             typeof(InterpolateTransformSystem),
             typeof(ApplyTransformUpdatesSystem),
             typeof(TransformSendSystem),
-            typeof(PositionSendSystem)
+            typeof(PositionSendSystem),
         };
 
         public static readonly Type[] ServerSystems =
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.TransformSynchronization
             typeof(InterpolateTransformSystem),
             typeof(ApplyTransformUpdatesSystem),
             typeof(TransformSendSystem),
-            typeof(PositionSendSystem)
+            typeof(PositionSendSystem),
         };
     }
 }

@@ -28,12 +28,10 @@ namespace Improbable.Gdk.Core
         private Worker(ConnectionConfig config, ILogDispatcher logDispatcher, Vector3 origin)
         {
             Origin = origin;
-            WorkerId = config.WorkerId;
-            if (string.IsNullOrEmpty(WorkerId))
-            {
-                WorkerId = $"{config.WorkerType}-{Guid.NewGuid()}";
-            }
-            
+            WorkerId = string.IsNullOrEmpty(config.WorkerId)
+                ? $"{config.WorkerType}-{Guid.NewGuid()}"
+                : config.WorkerId;
+
             Connection = ConnectionUtility.Connect(config, WorkerId);
             LogDispatcher = logDispatcher;
             WorkerType = config.WorkerType;

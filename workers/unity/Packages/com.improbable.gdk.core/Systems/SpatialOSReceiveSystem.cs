@@ -109,6 +109,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
             EntityManager.DestroyEntity(worker.EntityMapping[entityId]);
             worker.EntityMapping.Remove(entityId);
         }
@@ -117,12 +118,13 @@ namespace Improbable.Gdk.Core
         {
             if (!worker.TryGetEntity(new EntityId(Worker.WorkerEntityId), out var entity))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent("Tried to delete an entity but there is no entity associated with that EntityId.")
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField(LoggingUtils.EntityId, Worker.WorkerEntityId));
                 return;
             }
 
+            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
             EntityManager.AddSharedComponentData(entity, new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
