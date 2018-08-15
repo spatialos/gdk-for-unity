@@ -14,10 +14,17 @@ namespace Improbable.Gdk.Core
     {
         private readonly Queue<BufferedCommand> bufferedCommands = new Queue<BufferedCommand>();
 
-        private const string LoggerName = "ViewCommandBuffer";
+        private const string LoggerName = nameof(ViewCommandBuffer);
 
         private const string UnknownErrorEncountered =
             "ViewCommandBuffer encountered unknown command type during buffer flush.";
+
+        private readonly ILogDispatcher LogDispatcher;
+
+        public ViewCommandBuffer(ILogDispatcher logDispatcher)
+        {
+            LogDispatcher = logDispatcher;
+        }
 
         public void AddComponent<T>(Entity entity, T component) where T : Component
         {
@@ -46,23 +53,25 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void FlushBuffer(MutableView view)
+        public void FlushBuffer(EntityManager entityManager)
         {
             foreach (var bufferedCommand in bufferedCommands)
             {
                 switch (bufferedCommand.CommandType)
                 {
                     case CommandType.AddComponent:
-                        view.SetComponentObject(bufferedCommand.Entity,
+                        /* TODO until rebased on master
+                        entityManager.SetComponentObject(bufferedCommand.Entity,
                             bufferedCommand.ComponentType,
                             bufferedCommand.ComponentObj);
+                            */
                         break;
                     case CommandType.RemoveComponent:
-                        view.RemoveComponent(bufferedCommand.Entity,
+                        entityManager.RemoveComponent(bufferedCommand.Entity,
                             bufferedCommand.ComponentType);
                         break;
                     default:
-                        view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField("CommandType", bufferedCommand.CommandType));
                         break;
