@@ -22,9 +22,9 @@ namespace Improbable.Gdk.Core
         public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
 
-        // callbacks for monobehaviour
-        public static Action<Worker> OnConnect;
-        public static Action<Worker> OnDisconnect;
+        public delegate void WorkerEventHandler(Worker worker);
+        public static event WorkerEventHandler OnConnect;
+        public static event WorkerEventHandler OnDisconnect;
 
         private Worker(ConnectionConfig config, ILogDispatcher logDispatcher, Vector3 origin)
         {
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Core
             entityManager.AddComponentData(entity, new WorkerEntityTag());
             EntityMapping.Add(WorkerEntityId, entity);
             AddAllCommandRequestSenders(entity, WorkerEntityId);
-            OnConnect(this);
+            OnConnect?.Invoke(this);
         }
 
         public static Worker TryGetWorker(World world)
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.Core
             }
             EntityMapping.Clear();
             World.Dispose();
-            OnDisconnect(this);
+            OnDisconnect?.Invoke(this);
             ConnectionUtility.Disconnect(Connection);
             Connection.Dispose();
         }

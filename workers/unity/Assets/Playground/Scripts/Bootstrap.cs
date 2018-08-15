@@ -23,7 +23,7 @@ namespace Playground
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
             Application.targetFrameRate = TargetFrameRate;
-            Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
+            Worker.OnConnect += w => Debug.Log($"worker is connecting");
             Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
             if (Application.isEditor)
             {
