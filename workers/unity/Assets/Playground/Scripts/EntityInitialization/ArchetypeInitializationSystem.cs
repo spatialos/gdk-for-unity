@@ -76,9 +76,8 @@ namespace Playground
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
-                ComponentType[] componentTypesToAdd;
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[worker.WorkerType]
-                    .TryGetValue(archetypeName, out componentTypesToAdd))
+                    .TryGetValue(archetypeName, out var componentTypesToAdd))
                 {
                     worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)

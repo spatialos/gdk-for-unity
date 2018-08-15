@@ -51,7 +51,9 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
+            var worker = workerData.WorkerConfigs[0].Worker;
+            viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
+            entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
         }
 
@@ -63,15 +65,6 @@ namespace Playground
             }
 
             var worker = workerData.WorkerConfigs[0].Worker;
-            if (viewCommandBuffer == null)
-            {
-                viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
-            }
-
-            if (entityGameObjectLinker == null)
-            {
-                entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
-            }
 
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
