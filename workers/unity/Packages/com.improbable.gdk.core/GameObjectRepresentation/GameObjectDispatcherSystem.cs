@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
 
-        private RequireTagInjector injector;
+        private RequiredFieldInjector injector;
         private ILogDispatcher logger;
 
         internal void RemoveActivationManagerAndReaderWriterStore(int entityIndex)
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            injector = new RequireTagInjector(entityManager, logger);
+            injector = new RequiredFieldInjector(entityManager, logger);
         }
 
         private void FindGameObjectComponentDispatchers()

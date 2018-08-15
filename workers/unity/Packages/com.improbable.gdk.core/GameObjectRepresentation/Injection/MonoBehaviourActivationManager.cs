@@ -28,13 +28,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
 
         private readonly ReaderWriterStore store;
-        private readonly RequireTagInjector injector;
+        private readonly RequiredFieldInjector injector;
 
         private readonly ILogDispatcher logger;
 
         private const string LoggerName = nameof(MonoBehaviourActivationManager);
 
-        public MonoBehaviourActivationManager(GameObject gameObject, RequireTagInjector injector,
+        public MonoBehaviourActivationManager(GameObject gameObject, RequiredFieldInjector injector,
             ReaderWriterStore store, ILogDispatcher logger)
         {
             this.logger = logger;

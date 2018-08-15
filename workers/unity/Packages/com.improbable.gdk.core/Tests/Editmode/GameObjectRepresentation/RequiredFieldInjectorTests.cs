@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 namespace Improbable.Gdk.Core.EditmodeTests
 {
     [TestFixture]
-    public class ReaderWriterInjectorTests
+    public class RequiredFieldInjectorTests
     {
         private const uint BlittableComponentId = 1001;
         private const uint NonBlittableComponentId = 1002;
@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         private World world;
-        private RequireTagInjector injector;
+        private RequiredFieldInjector injector;
         private Entity testEntity;
         private GameObject testGameObject;
 
@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             var entityManager = world.GetOrCreateManager<EntityManager>();
-            injector = new RequireTagInjector(entityManager, new LoggingDispatcher());
+            injector = new RequiredFieldInjector(entityManager, new LoggingDispatcher());
             testEntity = entityManager.CreateEntity();
             testGameObject = new GameObject();
         }
