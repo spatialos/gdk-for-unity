@@ -25,6 +25,7 @@ namespace Playground
             Application.targetFrameRate = TargetFrameRate;
             Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
             Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
+            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             if (Application.isEditor)
             {
                 var config = new ReceptionistConfig
@@ -91,7 +92,6 @@ namespace Playground
 
         private void CreateWorker(ConnectionConfig config, Vector3 origin)
         {
-            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
             var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
             Instantiate(Level, origin, Quaternion.identity);
             foreach (var system in SystemConfig.GetSystems(config.WorkerType))
