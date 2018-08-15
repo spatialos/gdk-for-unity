@@ -44,7 +44,7 @@ namespace Playground.EditmodeTests
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
             var position = Vector3.one * 1337;
             var rotation = new Quaternion(0, 0, 1, 0);
-            long spatialEntityId = 1;
+            const long spatialEntityId = 1;
             testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, position,
                 rotation, spatialEntityId);
 
@@ -59,7 +59,7 @@ namespace Playground.EditmodeTests
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
             var position = Vector3.zero;
             var rotation = Quaternion.identity;
-            long spatialEntityId = 1;
+            const long spatialEntityId = 1;
             Assert.Throws<PrefabNotFoundException>(() =>
             {
                 testGameObject =

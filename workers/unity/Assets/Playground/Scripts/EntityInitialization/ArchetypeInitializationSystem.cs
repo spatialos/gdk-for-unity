@@ -8,6 +8,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     /// <summary>
@@ -26,11 +34,9 @@ namespace Playground
 
         [Inject] private Data data;
 
-        private const string LoggerName = "ArchetypeInitializationSystem";
+        private const string LoggerName = nameof(ArchetypeInitializationSystem);
         private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
-
-        private const string UnsupportedArchetype =
-            "Worker type isn't supported by the ArchetypeInitializationSystem.";
+        private const string UnsupportedArchetype = "Worker type isn't supported.";
 
         private MutableView view;
         private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
@@ -70,9 +76,8 @@ namespace Playground
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
-                ComponentType[] componentTypesToAdd;
                 if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
-                    .TryGetValue(archetypeName, out componentTypesToAdd))
+                    .TryGetValue(archetypeName, out var componentTypesToAdd))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -86,8 +91,7 @@ namespace Playground
                     var type = componentType.GetManagedType();
                     var componentInstance = Activator.CreateInstance(type);
 
-                    bool isComponentData;
-                    if (!typeToIsComponentData.TryGetValue(type, out isComponentData))
+                    if (!typeToIsComponentData.TryGetValue(type, out var isComponentData))
                     {
                         isComponentData = type.GetInterfaces().Contains(typeof(IComponentData));
                         typeToIsComponentData[type] = isComponentData;
@@ -95,15 +99,14 @@ namespace Playground
 
                     if (isComponentData)
                     {
-                        MethodInfo addComponentMethodGeneric;
-                        if (!typeToAddComponentGenericMethodInfo.TryGetValue(type, out addComponentMethodGeneric))
+                        if (!typeToAddComponentGenericMethodInfo.TryGetValue(type, out var addComponentMethodGeneric))
                         {
                             addComponentMethodGeneric = addComponentMethod.MakeGenericMethod(type);
                             typeToAddComponentGenericMethodInfo[type] = addComponentMethodGeneric;
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new object[] { entity, componentInstance });
+                            new[] { entity, componentInstance });
                     }
                     else
                     {

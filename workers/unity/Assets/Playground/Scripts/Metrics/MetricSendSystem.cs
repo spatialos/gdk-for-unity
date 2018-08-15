@@ -9,7 +9,7 @@ namespace Playground
     {
         private WorkerBase worker;
 
-        private float timeElapsedSinceUpdate = 0.0f;
+        private float timeElapsedSinceUpdate;
 
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
@@ -32,20 +32,22 @@ namespace Playground
 
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();
-            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
+            if (!(timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs))
             {
-                timeElapsedSinceUpdate = 0;
-                float fps = CalculateFps();
-                var load = DefaultLoadCalculation(fps);
-                Improbable.Worker.Metrics metrics = new Improbable.Worker.Metrics
-                {
-                    Load = load
-                };
-                connection.SendMetrics(metrics);
+                return;
             }
+
+            timeElapsedSinceUpdate = 0;
+            var fps = CalculateFps();
+            var load = DefaultLoadCalculation(fps);
+            var metrics = new Improbable.Worker.Metrics
+            {
+                Load = load
+            };
+            connection.SendMetrics(metrics);
         }
 
-        private float DefaultLoadCalculation(float fps)
+        private static float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
             return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
@@ -63,7 +65,7 @@ namespace Playground
 
         private float CalculateFps()
         {
-            float fps = 0.0f;
+            var fps = 0.0f;
             foreach (var measurement in fpsMeasurements)
             {
                 fps += measurement;

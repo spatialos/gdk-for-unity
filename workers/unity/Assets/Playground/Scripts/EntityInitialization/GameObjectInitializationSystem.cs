@@ -6,6 +6,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     /// <summary>
@@ -43,6 +51,8 @@ namespace Playground
         private uint currentHandle;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
+        private const string LoggerName = nameof(GameObjectInitializationSystem);
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
@@ -65,7 +75,8 @@ namespace Playground
                 if (!(worker is UnityClient) && !(worker is UnityGameLogic))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Worker type isn't supported by the GameObjectInitializationSystem.")
+                            "Worker type isn't supported.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("WorldName", World.Name)
                         .WithField("WorkerType", worker));
                     continue;
@@ -74,7 +85,6 @@ namespace Playground
                 var prefabName = worker is UnityGameLogic
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
-
                 var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
@@ -96,11 +106,11 @@ namespace Playground
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                GameObject gameObject;
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out gameObject))
+                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
                     view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("EntityIndex", entityIndex));
                     continue;
                 }

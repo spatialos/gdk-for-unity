@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
     public class MutableView : IDisposable
     {
         public const long WorkerEntityId = -1337;
-        private const string LoggerName = "MutableView";
+        private const string LoggerName = nameof(MutableView);
         public Entity WorkerEntity { get; }
         public ILogDispatcher LogDispatcher { get; }
 

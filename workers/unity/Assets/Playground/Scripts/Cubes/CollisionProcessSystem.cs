@@ -3,13 +3,21 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [RemoveAtEndOfTick]
     public struct CollisionComponent : IComponentData
     {
-        public Entity ownEntity;
-        public Entity otherEntity;
+        public Entity OwnEntity;
+        public Entity OtherEntity;
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -34,33 +42,33 @@ namespace Playground
                 // Handle all the different possible outcomes of the collision.
                 // This requires looking at their most recent launchers.
                 var collision = data.Collision[i];
-                var first = data.Collision[i].ownEntity;
-                var second = data.Collision[i].otherEntity;
-                var first_launchable = EntityManager.GetComponentData<SpatialOSLaunchable>(first);
-                var second_launchable = EntityManager.GetComponentData<SpatialOSLaunchable>(second);
-                var first_launcher = first_launchable.MostRecentLauncher;
-                var second_launcher = second_launchable.MostRecentLauncher;
-                if (first_launcher == second_launcher)
+                var first = collision.OwnEntity;
+                var second = collision.OtherEntity;
+                var firstLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(first);
+                var secondLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(second);
+                var firstLauncher = firstLaunchable.MostRecentLauncher;
+                var secondLauncher = secondLaunchable.MostRecentLauncher;
+                if (firstLauncher == secondLauncher)
                 {
-                    if (first_launcher != 0)
+                    if (firstLauncher != 0)
                     {
-                        data.Sender[i].SendIncreaseScoreRequest(first_launcher,
-                            new Generated.Playground.ScoreIncreaseRequest()
+                        data.Sender[i].SendIncreaseScoreRequest(firstLauncher,
+                            new Generated.Playground.ScoreIncreaseRequest
                             {
-                                Amount = 1,
+                                Amount = 1
                             });
                     }
                 }
-                else if (second_launcher != 0)
+                else if (secondLauncher != 0)
                 {
                     var launchable = data.Launchable[i];
-                    if (first_launcher == 0)
+                    if (firstLauncher == 0)
                     {
-                        launchable.MostRecentLauncher = second_launcher;
-                        data.Sender[i].SendIncreaseScoreRequest(second_launcher,
-                            new Generated.Playground.ScoreIncreaseRequest()
+                        launchable.MostRecentLauncher = secondLauncher;
+                        data.Sender[i].SendIncreaseScoreRequest(secondLauncher,
+                            new Generated.Playground.ScoreIncreaseRequest
                             {
-                                Amount = 1,
+                                Amount = 1
                             });
                     }
                     else

@@ -5,6 +5,14 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -91,7 +99,6 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
-                var player = 0L;
                 foreach (var request in launchableData.CommandRequests[i].Buffer)
                 {
                     var info = request.RawRequest;
@@ -100,14 +107,13 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    player = info.Player;
-                    launchable.MostRecentLauncher = player;
+                    launchable.MostRecentLauncher = info.Player;
                 }
 
                 sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,
                     new Generated.Playground.ScoreIncreaseRequest
                     {
-                        Amount = 1.0f,
+                        Amount = 1.0f
                     });
                 launchableData.Launchable[i] = launchable;
             }

@@ -244,7 +244,7 @@ namespace Improbable.Gdk.Core
                 () => new CommandResponses<EntityQueryResponse>(),
                 component => component.Buffer.Clear());
 
-        private const string LoggerName = "WorldCommandsTranslation";
+        private const string LoggerName = nameof(WorldCommandsTranslation);
 
         private const string EntityNotFoundForEntityId =
             "Entity not found when attempting to get Entity from EntityId.";

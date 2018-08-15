@@ -4,6 +4,14 @@ using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -30,21 +38,15 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < playerDataLauncher.Length; i++)
+            for (var i = 0; i < playerDataLauncher.Length; i++)
             {
                 var launcher = playerDataLauncher.Launcher[i];
 
-                if (launcher.RechargeTimeLeft > 0.0f)
-                {
-                    UIComponent.Main.TestText.text = "Recharging";
-                }
-                else
-                {
-                    UIComponent.Main.TestText.text = $"Energy: {launcher.EnergyLeft}";
-                }
+                UIComponent.Main.TestText.text =
+                    launcher.RechargeTimeLeft > 0.0f ? "Recharging" : $"Energy: {launcher.EnergyLeft}";
             }
 
-            for (int i = 0; i < playerDataScore.Length; i++)
+            for (var i = 0; i < playerDataScore.Length; i++)
             {
                 var score = playerDataScore.Score[i];
                 UIComponent.Main.ScoreText.text = $"Score: {score.Score}";

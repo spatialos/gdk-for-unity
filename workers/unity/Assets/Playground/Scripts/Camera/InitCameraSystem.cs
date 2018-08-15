@@ -4,15 +4,23 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitCameraSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
-            public EntityArray Entites;
+            public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
             [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
@@ -23,9 +31,8 @@ namespace Playground
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var camera = Camera.main;
-                PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Input);
-                PostUpdateCommands.AddComponent(data.Entites[i], CameraComponentDefaults.Transform);
+                PostUpdateCommands.AddComponent(data.Entities[i], CameraComponentDefaults.Input);
+                PostUpdateCommands.AddComponent(data.Entities[i], CameraComponentDefaults.Transform);
 
                 Cursor.lockState = CursorLockMode.Locked;
             }

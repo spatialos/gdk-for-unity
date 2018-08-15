@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly Queue<BufferedCommand> bufferedCommands = new Queue<BufferedCommand>();
 
-        private const string LoggerName = "ViewCommandBuffer";
+        private const string LoggerName = nameof(ViewCommandBuffer);
 
         private const string UnknownErrorEncountered =
             "ViewCommandBuffer encountered unknown command type during buffer flush.";

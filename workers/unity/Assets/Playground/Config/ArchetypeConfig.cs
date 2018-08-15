@@ -14,7 +14,7 @@ namespace Playground
             {
                 {
                     UnityGameLogic.WorkerType,
-                    new Dictionary<string, ComponentType[]>()
+                    new Dictionary<string, ComponentType[]>
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
                         { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }
@@ -22,7 +22,7 @@ namespace Playground
                 },
                 {
                     UnityClient.WorkerType,
-                    new Dictionary<string, ComponentType[]>()
+                    new Dictionary<string, ComponentType[]>
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
                         { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }

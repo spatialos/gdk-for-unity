@@ -3,10 +3,18 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-    class ProcessScoresSystem : ComponentSystem
+    internal class ProcessScoresSystem : ComponentSystem
     {
         private struct ScoringData
         {
@@ -21,7 +29,7 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < scoringData.Length; i++)
+            for (var i = 0; i < scoringData.Length; i++)
             {
                 var playerScore = scoringData.Score[i];
                 foreach (var request in scoringData.CommandRequests[i].Buffer)
