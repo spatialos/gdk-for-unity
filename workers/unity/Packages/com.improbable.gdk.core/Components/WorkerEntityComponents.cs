@@ -2,16 +2,10 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public struct WorkerConfig : ISharedComponentData
-    {
-        public Worker Worker;
-    }
-
     /// <summary>
-    ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
-    ///     Removed immediately after disconnecting
+    ///     Component denoting a worker entity 
     /// </summary>
-    public struct IsConnected : IComponentData
+    public struct WorkerEntityTag : IComponentData
     {
     }
 

@@ -32,16 +32,10 @@ namespace Playground
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
         }
 
-        public struct WorkerData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
-        [Inject] private WorkerData workerData;
 
+        private Worker worker;
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
         private EntityGameObjectLinker entityGameObjectLinker;
@@ -51,7 +45,7 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            var worker = workerData.WorkerConfigs[0].Worker;
+            worker = Worker.TryGetWorker(World);
             viewCommandBuffer = new ViewCommandBuffer(worker.LogDispatcher);
             entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
@@ -59,13 +53,6 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (workerData.Length == 0)
-            {
-                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
-            }
-
-            var worker = workerData.WorkerConfigs[0].Worker;
-
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var prefabMapping = PrefabConfig.PrefabMappings[addedEntitiesData.PrefabNames[i].Prefab];

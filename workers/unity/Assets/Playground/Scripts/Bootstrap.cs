@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
@@ -12,6 +13,8 @@ namespace Playground
         public GameObject Level;
 
         private const int TargetFrameRate = -1; // Turns off VSync
+
+        private static readonly List<Worker> Workers = new List<Worker>();
 
         public void Awake()
         {
@@ -78,6 +81,10 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            foreach (var worker in Workers)
+            {
+                Worker.Disconnect(worker);
+            }
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
@@ -91,6 +98,7 @@ namespace Playground
             {
                 worker.World.GetOrCreateManager(system);
             }
+            Workers.Add(worker);
         }
     }
 }

@@ -13,18 +13,26 @@ namespace Playground
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> Configs;
+            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
         }
 
         [Inject] private DisconnectData data;
 
+        private Worker worker;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+            worker = Worker.TryGetWorker(World);
+        }
+
         protected override void OnUpdate()
         {
-            data.Configs[0].Worker.LogDispatcher.HandleLog(
+            worker.LogDispatcher.HandleLog(
                 LogType.Warning,
                 new LogEvent($"Disconnected from SpatialOS with reason: \"{data.DisconnectMessage[0].ReasonForDisconnect}\""
                 ));
-            Worker.Disconnect(data.Configs[0].Worker);
+            Worker.Disconnect(worker);
         }
     }
 }

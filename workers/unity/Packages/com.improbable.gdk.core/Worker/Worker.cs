@@ -44,20 +44,24 @@ namespace Improbable.Gdk.Core
             }
 
             World = new World(WorkerId);
-            var entityManager = World.GetOrCreateManager<EntityManager>();
-
-            var workerConfig = new WorkerConfig
-            {
-                Worker = this
-            };
+            var workerSystem = World.GetOrCreateManager<WorkerSystem>();
+            workerSystem.Worker = this;
 
             FindTranslationUnits();
+
+            var entityManager = World.GetOrCreateManager<EntityManager>();
             var entity = entityManager.CreateEntity();
             entityManager.AddComponentData(entity, new OnConnected());
-            entityManager.AddSharedComponentData(entity, workerConfig);
+            entityManager.AddComponentData(entity, new WorkerEntityTag());
             EntityMapping.Add(WorkerEntityId, entity);
             AddAllCommandRequestSenders(entity, WorkerEntityId);
             OnConnect(this);
+        }
+
+        public static Worker TryGetWorker(World world)
+        {
+            var workerSystem = world.GetExistingManager<WorkerSystem>();
+            return workerSystem.Worker;
         }
 
         public bool TryGetEntity(long entityId, out Entity entity)

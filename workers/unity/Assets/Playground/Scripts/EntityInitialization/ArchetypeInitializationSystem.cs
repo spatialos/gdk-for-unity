@@ -26,14 +26,6 @@ namespace Playground
 
         [Inject] private Data data;
 
-        public struct WorkerData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private WorkerData workerData;
-
         private const string LoggerName = "ArchetypeInitializationSystem";
         private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
 
@@ -41,6 +33,7 @@ namespace Playground
             "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
         private ViewCommandBuffer viewCommandBuffer;
+        private Worker worker;
 
         private readonly MethodInfo addComponentMethod = typeof(EntityCommandBuffer).GetMethods().First(method =>
             method.Name == "AddComponent" && method.GetParameters()[0].ParameterType == typeof(Entity));
@@ -51,14 +44,14 @@ namespace Playground
         private readonly Dictionary<Type, MethodInfo> typeToAddComponentGenericMethodInfo =
             new Dictionary<Type, MethodInfo>();
 
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+            worker = Worker.TryGetWorker(World);
+        }
+
         protected override void OnUpdate()
         {
-            if (workerData.Length == 0)
-            {
-                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent("This system should not have been run without a worker entity"));
-            }
-
-            var worker = workerData.WorkerConfigs[0].Worker;
             if (!(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)) && !(SystemConfig.UnityClient.Equals(worker.WorkerType)))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)

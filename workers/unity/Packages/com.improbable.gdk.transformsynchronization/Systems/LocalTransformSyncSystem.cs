@@ -24,15 +24,8 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private TransformData transformData;
 
-        public struct WorkerData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private WorkerData workerData;
-
         private TickSystem tickSystem;
+        private Core.Worker worker;
 
         private const float ToleranceMeters = 0.001f;
         private const float ToleranceAngle = 0.001f;
@@ -43,12 +36,11 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             base.OnCreateManager(capacity);
             tickSystem = World.GetOrCreateManager<TickSystem>();
+            worker = Core.Worker.TryGetWorker(World);
         }
 
         protected override void OnUpdate()
         {
-            var worldOrigin = workerData.WorkerConfigs[0].Worker.Origin;
-
             for (var i = 0; i < transformData.Length; i++)
             {
                 var rigidbody = transformData.GameObjectRigidBody[i];
@@ -56,7 +48,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var nativePosition = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z);
 
-                var positionDifference = (rigidbody.position - worldOrigin - nativePosition).sqrMagnitude;
+                var positionDifference = (rigidbody.position - worker.Origin - nativePosition).sqrMagnitude;
 
                 // Sync if sufficient difference or if sufficient time has passed
                 if (positionDifference <= ToleranceMeters)
@@ -74,7 +66,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
                 }
 
-                var position = rigidbody.position - worldOrigin;
+                var position = rigidbody.position - worker.Origin;
                 var location = new Location { X = position.x, Y = position.y, Z = position.z };
                 var rotation = new Quaternion
                 {

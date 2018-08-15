@@ -11,22 +11,16 @@ namespace Improbable.Gdk.Core
         private readonly List<int> registeredReplicators = new List<int>();
         private readonly List<int> commandSenders = new List<int>();
 
-        public struct Data
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private Data data;
+        private Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            var worker = data.WorkerConfigs[0].Worker;
-            GenerateComponentGroups(worker);
+            worker = Worker.TryGetWorker(World);
+            GenerateComponentGroups();
         }
         
-        private void GenerateComponentGroups(Worker worker)
+        private void GenerateComponentGroups()
         {
             foreach (var componentTranslatorPair in worker.TranslationUnits)
             {
@@ -55,8 +49,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var worker = data.WorkerConfigs[0].Worker;
-
             foreach (var componentTypeIndex in registeredReplicators)
             {
                 worker.TranslationUnits[componentTypeIndex].ExecuteReplication(worker.Connection);

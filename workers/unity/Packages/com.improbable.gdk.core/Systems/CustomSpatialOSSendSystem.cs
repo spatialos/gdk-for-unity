@@ -7,6 +7,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
     public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData
     {
+        protected Worker worker;
+
         private const string LoggerName = "CustomSpatialOSSendSystem";
 
         private const string CustomReplicationSystemAlreadyExists =
@@ -14,21 +16,14 @@ namespace Improbable.Gdk.Core
 
         private SpatialOSSendSystem spatialOSSendSystem;
 
-        public struct WorkerData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] protected WorkerData WorkerConfigData;
-
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
+            worker = Worker.TryGetWorker(World);
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
             if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
             {
-                new LoggingDispatcher().HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("ComponentType", typeof(T)));
             }

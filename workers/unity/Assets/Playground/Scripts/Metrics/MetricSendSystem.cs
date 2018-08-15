@@ -8,24 +8,21 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        public struct WorkerData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private WorkerData workerData;
-
         private float timeElapsedSinceUpdate;
+        private Worker worker;
 
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
 
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+            worker = Worker.TryGetWorker(World);
+        }
+
         protected override void OnUpdate()
         {
-            var connection = workerData.WorkerConfigs[0].Worker.Connection;
-
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();
             if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
@@ -37,7 +34,7 @@ namespace Playground
                 {
                     Load = load
                 };
-                connection.SendMetrics(metrics);
+                worker.Connection.SendMetrics(metrics);
             }
         }
 

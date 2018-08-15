@@ -14,32 +14,22 @@ namespace Improbable.Gdk.Core
 
         private bool inCriticalSection;
         private string LoggerName = nameof(SpatialOSReceiveSystem);
-
-        public struct Data
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private Data data;
+        private Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
             dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
-            worker = data.WorkerConfigs[0].Worker;
+            worker = Worker.TryGetWorker(World);
             foreach (var translationUnit in worker.TranslationUnits.Values)
             {
                 translationUnit.RegisterWithDispatcher(dispatcher);
             }
         }
 
-        private Worker worker;
-
         protected override void OnUpdate()
         {
-            worker = data.WorkerConfigs[0].Worker;
             do
             {
                 using (var opList = worker.Connection.GetOpList(0))

@@ -11,28 +11,22 @@ namespace Improbable.Gdk.Core
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
-    {
-        public struct Data
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<WorkerConfig> WorkerConfigs;
-        }
-
-        [Inject] private Data data;
-        
+    {       
         private readonly List<Action> removeComponentActions = new List<Action>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
 
+        private Worker worker;
+
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            var worker = data.WorkerConfigs[0].Worker;
-            GenerateComponentGroups(worker);
+            worker = Worker.TryGetWorker(World);
+            GenerateComponentGroups();
         }
 
-        private void GenerateComponentGroups(Worker worker)
+        private void GenerateComponentGroups()
         {
             foreach (var translationUnit in worker.TranslationUnits.Values)
             {
@@ -94,7 +88,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var worker = data.WorkerConfigs[0].Worker;
             var commandBuffer = PostUpdateCommands;
 
             // Clean generated components
