@@ -24,7 +24,8 @@ namespace Improbable.Gdk.Core
 
         private const string LoggerName = nameof(SpatialOSReceiveSystem);
         private const string UnknownComponentIdError = "Received an op with an unknown ComponentId";
-        private const string EntityNotFound = "No entity found for entity specified in op.";
+        private const string EntityNotFound = "No entity found for SpatialOS EntityId specified in op.";
+        private const string RequestIdNotFound = "No corresponding request found for response.";
 
         private WorldCommands.CreateEntity.Storage createEntityStorage;
         private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
@@ -172,9 +173,13 @@ namespace Improbable.Gdk.Core
 
         private void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
-            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.CreateEntity.Request> requestBundle))
             {
-                throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command CreateEntity.");
+                logDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("RequestId", op.RequestId.Id)
+                    .WithField("Command Type", "CreateEntity"));
+                return;
             }
 
             var entity = requestBundle.Entity;
@@ -182,7 +187,7 @@ namespace Improbable.Gdk.Core
 
             if (!EntityManager.Exists(entity))
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                logDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("Op", "CreateEntityResponseOp")
                 );
@@ -210,9 +215,13 @@ namespace Improbable.Gdk.Core
 
         private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
-            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.DeleteEntity.Request> requestBundle))
             {
-                throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command DeleteEntity.");
+                logDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("RequestId", op.RequestId.Id)
+                    .WithField("Command Type", "DeleteEntity"));
+                return;
             }
 
             var entity = requestBundle.Entity;
@@ -220,7 +229,7 @@ namespace Improbable.Gdk.Core
 
             if (!EntityManager.Exists(entity))
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                logDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("Op", "DeleteEntityResponseOp")
                 );
@@ -248,9 +257,13 @@ namespace Improbable.Gdk.Core
 
         private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
-            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.ReserveEntityIds.Request> requestBundle))
             {
-                throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command ReserveEntityIds.");
+                logDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("RequestId", op.RequestId.Id)
+                    .WithField("Command Type", "ReserveEntityIds"));
+                return;
             }
 
             var entity = requestBundle.Entity;
@@ -258,7 +271,7 @@ namespace Improbable.Gdk.Core
 
             if (!EntityManager.Exists(entity))
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                logDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("Op", "ReserveEntityIdsResponseOp")
                 );
@@ -286,9 +299,13 @@ namespace Improbable.Gdk.Core
 
         private void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
-            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.EntityQuery.Request> requestBundle))
             {
-                throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command EntityQuery.");
+                logDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("RequestId", op.RequestId.Id)
+                    .WithField("Command Type", "EntityQuery"));
+                return;
             }
 
             var entity = requestBundle.Entity;
@@ -296,7 +313,7 @@ namespace Improbable.Gdk.Core
 
             if (!EntityManager.Exists(entity))
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                logDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("Op", "EntityQueryResponseOp")
                 );
