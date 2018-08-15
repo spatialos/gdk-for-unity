@@ -67,7 +67,6 @@ namespace Improbable.Gdk.Core.Commands
                 public Entity Entity;
                 public EntityId? EntityId;
                 public uint? TimeoutMillis;
-                public uint SenderEntityId;
             }
 
             public struct ReceivedResponse
@@ -248,7 +247,6 @@ namespace Improbable.Gdk.Core.Commands
             {
                 public EntityId EntityId;
                 public uint? TimeoutMillis;
-                public long SenderEntityId;
             }
 
             public struct ReceivedResponse
@@ -429,7 +427,6 @@ namespace Improbable.Gdk.Core.Commands
             {
                 public uint NumberOfEntityIds;
                 public uint? TimeoutMillis;
-                public long SenderEntityId;
             }
 
             public struct ReceivedResponse
@@ -610,7 +607,6 @@ namespace Improbable.Gdk.Core.Commands
             {
                 public Worker.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
-                public long SenderEntityId;
             }
 
             public struct ReceivedResponse
