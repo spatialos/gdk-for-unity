@@ -27,7 +27,7 @@ component ExhaustiveSingular {
 
 component ExhaustiveOptional {
   id = 197716;
-  // option<bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
+  option<bool> field1 = 1;
   option<float> field2 = 2;
   // option<bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   option<int32> field4 = 4;
@@ -48,7 +48,7 @@ component ExhaustiveOptional {
 
 component ExhaustiveRepeated {
   id = 197717;
-  // list<bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
+  list<bool> field1 = 1;
   list<float> field2 = 2;
   // list<bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   list<int32> field4 = 4;
@@ -69,7 +69,7 @@ component ExhaustiveRepeated {
 
 component ExhaustiveMapValue {
   id = 197718;
-  // map<string, bool> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
+  map<string, bool> field1 = 1;
   map<string, float> field2 = 2;
   // map<string, bytes> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   map<string, int32> field4 = 4;
@@ -90,7 +90,7 @@ component ExhaustiveMapValue {
 
 component ExhaustiveMapKey {
   id = 197719;
-  // map<bool, string> field1 = 1; TODO: UTY-450 Uncomment when bool1 wrappers fixed.
+  map<bool, string> field1 = 1;
   map<float, string> field2 = 2;
   // map<bytes, string> field3 = 3; TODO: UTY-498 Uncomment when bytes are supported.
   map<int32, string> field4 = 4;
