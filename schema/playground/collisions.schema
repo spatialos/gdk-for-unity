@@ -1,8 +1,6 @@
 package playground;
 
-type Empty 
-{
-}
+type Empty {}
 
 component Collisions
 {

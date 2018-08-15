@@ -12,7 +12,7 @@ public class FlashOnCollision : MonoBehaviour
 
     void OnEnable()
     {
-        if (reader != null)
+        if (reader != null) // Needed until prefab preprocessing is implemented
         {
             reader.OnPlayerCollided += HandleCollisionEvent;
         }
@@ -20,7 +20,7 @@ public class FlashOnCollision : MonoBehaviour
 
     void OnDisable()
     {
-        if (reader != null)
+        if (reader != null) // Needed until prefab preprocessing is implemented
         {
             reader.OnPlayerCollided -= HandleCollisionEvent;
         }

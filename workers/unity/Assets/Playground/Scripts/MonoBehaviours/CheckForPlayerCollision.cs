@@ -9,6 +9,9 @@ public class CheckForPlayerCollision : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        writer.SendPlayerCollided(new Empty());
+        if (writer != null)
+        {
+            writer.SendPlayerCollided(new Empty());
+        }
     }
 }
