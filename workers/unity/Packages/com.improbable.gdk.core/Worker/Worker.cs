@@ -17,10 +17,12 @@ namespace Improbable.Gdk.Core
         public readonly Vector3 Origin;
         public readonly string WorkerType;
         public readonly string WorkerId;
-        public readonly World World;
         public readonly Entity WorkerEntity;
-        public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
+
+        public Connection Connection { get; private set; }
+        public World World { get; private set; }
+
 
         internal readonly Dictionary<EntityId, Entity> EntityMapping = new Dictionary<EntityId, Entity>();
 
@@ -74,11 +76,11 @@ namespace Improbable.Gdk.Core
         public void Dispose()
         {
             EntityMapping.Clear();
-            World.Dispose();
+            World?.Dispose();
             World = null;
             OnDisconnect?.Invoke(this);
             ConnectionUtility.Disconnect(Connection);
-            Connection.Dispose();
+            Connection?.Dispose();
             Connection = null;
         }
     }
