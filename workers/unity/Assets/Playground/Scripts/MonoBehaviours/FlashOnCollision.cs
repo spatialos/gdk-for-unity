@@ -27,7 +27,7 @@ public class FlashOnCollision : MonoBehaviour
 
     private void OnEnable()
     {
-        if (reader != null) // TODO: Needed until prefab preprocessing is implemented
+        if (reader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
         {
             reader.OnPlayerCollided += HandleCollisionEvent;
         }
@@ -40,7 +40,7 @@ public class FlashOnCollision : MonoBehaviour
 
     private void OnDisable()
     {
-        if (reader != null) // TODO: Needed until prefab preprocessing is implemented
+        if (reader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
         {
             reader.OnPlayerCollided -= HandleCollisionEvent;
         }
@@ -62,6 +62,3 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 }
-
-
-
