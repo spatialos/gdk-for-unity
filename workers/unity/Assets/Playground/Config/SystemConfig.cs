@@ -63,9 +63,8 @@ namespace Playground
             world.GetOrCreateManager<ProcessLaunchCommandSystem>();
             world.GetOrCreateManager<ProcessRechargeSystem>();
             world.GetOrCreateManager<MetricSendSystem>();
-            // TODO uncomment after rebasing on master
-            //world.GetOrCreateManager<ProcessScoresSystem>();
-            //world.GetOrCreateManager<CollisionProcessSystem>();
+            world.GetOrCreateManager<ProcessScoresSystem>();
+            world.GetOrCreateManager<CollisionProcessSystem>();
         }
     }
 }
