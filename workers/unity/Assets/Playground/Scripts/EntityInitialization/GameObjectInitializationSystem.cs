@@ -87,7 +87,7 @@ namespace Playground
                         spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
-                var requiresSpatialOSBehaviourManagerComponent = new RequiresSpatialOSBehaviourManager();
+                var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();
 
                 entityGameObjectCache[entity.Index] = gameObject;
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();

@@ -2,6 +2,8 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
@@ -44,25 +46,76 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 new ComponentType[] { ComponentType.ReadOnly<CommandRequests<SecondCommand.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
-            protected override uint GetComponentId()
+            private const uint componentId = 1001;
+
+            public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
-                return 1001;
+                if (ComponentAddedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var entities = ComponentAddedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    activationManager.AddComponent(componentId);
+                }
             }
 
-            public override void InvokeOnComponentUpdateUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentRemovedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var entities = ComponentRemovedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    activationManager.RemoveComponent(componentId);
+                }
+            }
+
+            public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
+                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    {
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                    }
+                }
+            }
+
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            {
+                if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSBlittableComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    if (!manager.TryGetReadersWriters(1001, out var readers))
+                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                     {
                         continue;
                     }
 
                     var updateList = updateLists[i];
-                    foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                    foreach (ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
@@ -72,22 +125,23 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public override void InvokeOnEventUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                         {
                             continue;
                         }
 
                         var eventList = eventLists[i];
 
-                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                        foreach (ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -96,20 +150,21 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
                     }
                 }
+                if (!EventsReceivedComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[1].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                         {
                             continue;
                         }
 
                         var eventList = eventLists[i];
 
-                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                        foreach (ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -120,21 +175,22 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public override void InvokeOnCommandRequestUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
                     var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                         {
                             continue;
                         }
 
                         var commandList = commandLists[i];
-                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                        foreach (ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
@@ -143,19 +199,20 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
                     }
                 }
+                if (!CommandRequestsComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[1].GetEntityArray();
                     var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                        if (!manager.TryGetReadersWriters(1001, out var readers))
+                        var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                         {
                             continue;
                         }
 
                         var commandList = commandLists[i];
-                        foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                        foreach (ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
@@ -166,34 +223,25 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public override void InvokeOnAuthorityChangeLifecycleCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; i++)
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
-                    var spatialOSBehaviourManager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
-                    {
-                        spatialOSBehaviourManager.ChangeAuthority(1001, authoritiesChangedTags[i].Buffer[j]);
-                    }
+                    return;
                 }
-            }
 
-            public override void InvokeOnAuthorityChangeUserCallbacks(GameObjectDispatcherSystem gameObjectDispatcherSystem)
-            {
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var manager = gameObjectDispatcherSystem.GetSpatialOSBehaviourManager(entities[i].Index);
-                    if (!manager.TryGetReadersWriters(1001, out var readers))
+                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (BlittableComponent.ReaderWriterImpl reader in readers)
+                    foreach (ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

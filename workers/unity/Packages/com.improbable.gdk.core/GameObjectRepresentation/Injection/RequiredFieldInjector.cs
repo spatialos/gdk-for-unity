@@ -8,9 +8,9 @@ using UnityEngine;
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
-    ///     Retrieves Reader and Writer fields from MonoBehaviours and handles injection into them.
+    ///     Retrieves fields with [Require] tags from MonoBehaviours and handles injection into them.
     /// </summary>
-    internal class SpatialOSBehaviourLibrary
+    internal class RequiredFieldInjector
     {
         private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
@@ -22,16 +22,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly ILogDispatcher logger;
         private readonly ReaderWriterFactory readerWriterFactory;
 
-        private const string LoggerName = "SpatialOSBehaviourLibrary";
+        private const string LoggerName = nameof(RequiredFieldInjector);
         private const string BadRequiredMemberWarning
             = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
-        private const string MultipleReadersWritersRequiredError
-            = "MonoBehaviour found requesting more than one Reader or Writer for the same component. " +
-            "This MonoBehaviour will not be enabled.";
         private const string MalformedReaderOrWriter
             = "Reader or Writer found without a Component ID attribute, this is invalid.";
 
-        public SpatialOSBehaviourLibrary(EntityManager entityManager, ILogDispatcher logger)
+        public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
             this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);
@@ -41,41 +38,41 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-            var createdReaderWriters = new Dictionary<uint, List<IReaderWriterInternal>>();
-
-            foreach (var componentId in componentReaderIdsForBehaviours[behaviourType])
+            var createdReaderWriters = new Dictionary<uint, IReaderWriterInternal[]>();
+            foreach (var idToFields in fieldInfoCache[behaviourType])
             {
-                List<IReaderWriterInternal> readerWritersForComp = new List<IReaderWriterInternal>();
-                createdReaderWriters[componentId] = readerWritersForComp;
-                Inject(behaviour, componentId, entity, readerWritersForComp);
-            }
-
-            foreach (var componentId in componentWriterIdsForBehaviours[behaviourType])
-            {
-                if (!createdReaderWriters.TryGetValue(componentId, out var readerWritersForComp))
+                var id = idToFields.Key;
+                var fields = idToFields.Value;
+                var readerWritersArray = new IReaderWriterInternal[fields.Length];
+                for (var i = 0; i < fields.Length; i++)
                 {
-                    readerWritersForComp = new List<IReaderWriterInternal>();
+                    readerWritersArray[i] = Inject(behaviour, id, entity, fields[i]);
                 }
 
-                Inject(behaviour, componentId, entity, readerWritersForComp);
+                createdReaderWriters[id] = readerWritersArray;
             }
 
-            return createdReaderWriters.ToDictionary(kp => kp.Key, kp => kp.Value.ToArray());
+            return createdReaderWriters;
+        }
+
+        private IReaderWriterInternal Inject(MonoBehaviour behaviour, uint componentId, Entity entity, FieldInfo field)
+        {
+            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
+            field.SetValue(behaviour, readerWriter);
+            return readerWriter;
         }
 
         public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[behaviourType])
+            foreach (var fieldsToComponents in fieldInfoCache[behaviourType])
             {
-                DeInject(behaviour, readerWriterComponentId);
-            }
-
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[behaviourType])
-            {
-                DeInject(behaviour, readerWriterComponentId);
+                var fields = fieldsToComponents.Value;
+                foreach (var field in fields)
+                {
+                    field.SetValue(behaviour, null);
+                }
             }
         }
 
@@ -89,25 +86,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             EnsureLoaded(behaviourType);
             return componentWriterIdsForBehaviours[behaviourType];
-        }
-
-        private void Inject(MonoBehaviour behaviour, uint componentId, Entity entity,
-            IList<IReaderWriterInternal> store)
-        {
-            foreach (var field in fieldInfoCache[behaviour.GetType()][componentId])
-            {
-                var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
-                field.SetValue(behaviour, readerWriter);
-                store.Add(readerWriter);
-            }
-        }
-
-        private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
-        {
-            foreach (var field in fieldInfoCache[spatialOSBehaviour.GetType()][componentId])
-            {
-                field.SetValue(spatialOSBehaviour, null);
-            }
         }
 
         private void EnsureLoaded(Type behaviourType)

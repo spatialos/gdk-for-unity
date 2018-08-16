@@ -1,5 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitialisationGroup))]
-    public class SpatialOSBehaviourManagerInitializationSystem : ComponentSystem
+    public class MonoBehaviourActivationManagerInitializationSystem : ComponentSystem
     {
         public struct AddedEntitiesData
         {
@@ -15,7 +16,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             public EntityArray Entities;
             public ComponentArray<GameObjectReference> GameObjectReferences;
             [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
-            [ReadOnly] public ComponentDataArray<RequiresSpatialOSBehaviourManager> RequiresSpatialOSBehaviourManagerTags;
+            [ReadOnly] public ComponentDataArray<RequiresMonoBehaviourActivationManager> RequiresSpatialOSBehaviourManagerTags;
         }
 
         public struct RemovedEntitiesData
@@ -30,34 +31,26 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         private GameObjectDispatcherSystem gameObjectDispatcherSystem;
-        private SpatialOSBehaviourLibrary behaviourLibrary;
-
-        private ILogDispatcher logger;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
             gameObjectDispatcherSystem = World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
-            var entityManager = World.GetOrCreateManager<EntityManager>();
-            behaviourLibrary = new SpatialOSBehaviourLibrary(entityManager, logger);
         }
 
         protected override void OnUpdate()
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
-                var entityIndex = addedEntitiesData.Entities[i].Index;
-                var spatialOSBehaviourManager = new SpatialOSBehaviourManager(
-                    addedEntitiesData.GameObjectReferences[i].GameObject, behaviourLibrary, logger);
-                gameObjectDispatcherSystem.AddSpatialOSBehaviourManager(entityIndex, spatialOSBehaviourManager);
+                var entity = addedEntitiesData.Entities[i];
+                gameObjectDispatcherSystem.CreateActivationManagerAndReaderWriterStore(entity);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entityIndex = removedEntitiesData.Entities[i].Index;
-                gameObjectDispatcherSystem.RemoveSpatialOSBehaviourManager(entityIndex);
+                gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entityIndex);
             }
         }
     }
