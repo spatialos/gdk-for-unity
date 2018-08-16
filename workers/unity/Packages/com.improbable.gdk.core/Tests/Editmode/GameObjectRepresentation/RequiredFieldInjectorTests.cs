@@ -13,8 +13,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class RequiredFieldInjectorTests
     {
-        private const uint BlittableComponentId = 1001;
-        private const uint NonBlittableComponentId = 1002;
+        private readonly InjectableId BlittableComponentReaderWriterId
+            = new InjectableId(InjectableType.ReaderWriter, 1001);
+        private readonly InjectableId NonBlittableComponentReaderWriterId
+            = new InjectableId(InjectableType.ReaderWriter, 1002);
 
         private class SingleReaderBehaviour : MonoBehaviour
         {
@@ -75,7 +77,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             Assert.IsNull(behaviour.Reader);
-            injector.InjectAllReadersWriters(behaviour, testEntity);
+            injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
             Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader.GetType());
         }
@@ -84,7 +86,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_injects_two_Writers()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
-            injector.InjectAllReadersWriters(behaviour, testEntity);
+            injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Writer1);
             Assert.NotNull(behaviour.Writer2);
         }
@@ -93,8 +95,8 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_deinjects_Reader()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
-            injector.InjectAllReadersWriters(behaviour, testEntity);
-            injector.DeInjectAllReadersWriters(behaviour);
+            injector.InjectAllRequiredFields(behaviour, testEntity);
+            injector.DeInjectAllRequiredFields(behaviour);
             Assert.IsNull(behaviour.Reader);
         }
 
@@ -102,16 +104,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_finds_required_Reader_component_id()
         {
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
-            var foundIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
+            var foundIds = injector.GetComponentPresenceRequirements(behaviour.GetType());
             var foundId = foundIds.First();
-            Assert.AreEqual(BlittableComponentId, foundId);
+            Assert.AreEqual(BlittableComponentReaderWriterId, foundId);
         }
 
         [Test]
         public void RequireTagInjector_finds_two_required_Writers()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
-            var foundIds = injector.GetRequiredWriterComponentIds(behaviour.GetType());
+            var foundIds = injector.GetComponentAuthorityRequirements(behaviour.GetType());
             Assert.AreEqual(2, foundIds.Count);
         }
 
@@ -119,7 +121,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_creates_two_Writers_required_for_different_components()
         {
             var behaviour = testGameObject.AddComponent<TwoWritersBehaviour>();
-            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            var createdReaderWriters = injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
         }
 
@@ -127,7 +129,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_creates_two_Readers_required_for_the_same_component()
         {
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
-            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            var createdReaderWriters = injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
         }
 
@@ -135,7 +137,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void RequireTagInjector_creates_one_Reader_and_one_Writer_required_for_same_component()
         {
             var behaviour = testGameObject.AddComponent<ReaderAndWriterOfSameType>();
-            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
+            var createdReaderWriters = injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.AreEqual(2, createdReaderWriters.Aggregate(0, (cnt, pair) => cnt + pair.Value.Length));
         }
 
@@ -143,15 +145,15 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Readers_created_for_same_component_are_different()
         {
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
-            var createdReaderWriters = injector.InjectAllReadersWriters(behaviour, testEntity);
-            Assert.AreNotEqual(createdReaderWriters[BlittableComponentId][0], createdReaderWriters[BlittableComponentId][1]);
+            var createdReaderWriters = injector.InjectAllRequiredFields(behaviour, testEntity);
+            Assert.AreNotEqual(createdReaderWriters[BlittableComponentReaderWriterId][0], createdReaderWriters[BlittableComponentReaderWriterId][1]);
         }
 
         [Test]
         public void RequireTagInjector_ignores_invalid_Require_tags()
         {
             var behaviour = testGameObject.AddComponent<RequireInvalidMember>();
-            var foundIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
+            var foundIds = injector.GetComponentPresenceRequirements(behaviour.GetType());
             Assert.IsEmpty(foundIds);
         }
 
@@ -161,7 +163,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var behaviour = testGameObject.AddComponent<MultipleReadersOfSameType>();
             Assert.IsNull(behaviour.Reader1);
             Assert.IsNull(behaviour.Reader2);
-            injector.InjectAllReadersWriters(behaviour, testEntity);
+            injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader1);
             Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader1.GetType());
             Assert.NotNull(behaviour.Reader2);

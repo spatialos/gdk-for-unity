@@ -21,17 +21,17 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
         {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
@@ -44,8 +44,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-        [WriterInterface]
-        [ComponentId(<#= unityComponentDefinition.Id #>)]
+        [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
         {
 <# foreach (var eventDetails in eventDetailsList) { #>

@@ -6,28 +6,29 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
-    ///     Keeps track of Reader/Writer availability for SpatialOSBehaviours on a particular GameObject and decides when
-    ///     a SpatialOSBehaviour should be enabled, calling into the SpatialOSBehaviourLibrary for injection, storing
-    ///     the created Readers/Writers in the given ReaderWriterStore.
+    ///     Keeps track of Component availability for MonoBehaviours on a particular GameObject and decides when
+    ///     a MonoBehaviour has all the conditions associated with its [Require] tags fulfilled, at which point they
+    ///     are enabled , calling into the RequiredFieldInjector for injection, storing the created Injectables in the
+    ///     given ReaderWriterStore.
     /// </summary>
     internal class MonoBehaviourActivationManager
     {
         private readonly Entity entity;
         private readonly long spatialId;
 
-        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringReaderTypes
+        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsToRead
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
 
-        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringWriterTypes
+        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsWithAuth
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
 
-        private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedReadersOrWriters
+        private readonly Dictionary<MonoBehaviour, int> numUnsatisfiedRequirements
             = new Dictionary<MonoBehaviour, int>();
 
         private readonly HashSet<MonoBehaviour> behavioursToEnable = new HashSet<MonoBehaviour>();
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
 
-        private readonly ReaderWriterStore store;
+        private readonly InjectableStore store;
         private readonly RequiredFieldInjector injector;
 
         private readonly ILogDispatcher logger;
@@ -35,7 +36,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private const string LoggerName = nameof(MonoBehaviourActivationManager);
 
         public MonoBehaviourActivationManager(GameObject gameObject, RequiredFieldInjector injector,
-            ReaderWriterStore store, ILogDispatcher logger)
+            InjectableStore store, ILogDispatcher logger)
         {
             this.logger = logger;
             this.store = store;
@@ -48,22 +49,22 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 var behaviourType = behaviour.GetType();
-                var readerIds = injector.GetRequiredReaderComponentIds(behaviourType);
-                var writerIds = injector.GetRequiredWriterComponentIds(behaviourType);
+                var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
+                var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
 
-                if (readerIds.Count + writerIds.Count > 0)
+                if (componentReadRequirements.Count + componentAuthRequirements.Count > 0)
                 {
-                    if (readerIds.Count > 0)
+                    if (componentReadRequirements.Count > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
+                        AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsToRead);
                     }
 
-                    if (writerIds.Count > 0)
+                    if (componentAuthRequirements.Count > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
+                        AddBehaviourForComponentIds(behaviour, componentAuthRequirements, behavioursRequiringComponentsWithAuth);
                     }
 
-                    numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
+                    numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
                     behaviour.enabled = false;
                 }
             }
@@ -88,8 +89,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var behaviour in behavioursToEnable)
             {
-                var componentIdsToReaderWriterLists = injector.InjectAllReadersWriters(behaviour, entity);
-                store.AddReaderWritersForBehaviour(behaviour, componentIdsToReaderWriterLists);
+                var injectablesFromIds = injector.InjectAllRequiredFields(behaviour, entity);
+                store.AddInjectablesForBehaviour(behaviour, injectablesFromIds);
             }
 
             foreach (var behaviour in behavioursToEnable)
@@ -109,8 +110,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in behavioursToDisable)
             {
-                injector.DeInjectAllReadersWriters(behaviour);
-                store.RemoveReaderWritersForBehaviour(behaviour);
+                injector.DeInjectAllRequiredFields(behaviour);
+                store.RemoveInjectablesForBehaviour(behaviour);
             }
 
             behavioursToDisable.Clear();
@@ -118,31 +119,31 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void AddComponent(uint componentId)
         {
-            if (!behavioursRequiringReaderTypes.ContainsKey(componentId))
+            if (!behavioursRequiringComponentsToRead.ContainsKey(componentId))
             {
                 return;
             }
 
             // Mark reader components ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
+            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsToRead[componentId];
             MarkComponentRequirementSatisfied(relevantReaderSpatialOSBehaviours);
         }
 
         public void RemoveComponent(uint componentId)
         {
-            if (!behavioursRequiringReaderTypes.ContainsKey(componentId))
+            if (!behavioursRequiringComponentsToRead.ContainsKey(componentId))
             {
                 return;
             }
 
             // Mark reader components not ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = behavioursRequiringReaderTypes[componentId];
+            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsToRead[componentId];
             MarkComponentRequirementUnsatisfied(relevantReaderSpatialOSBehaviours);
         }
 
         public void ChangeAuthority(uint componentId, Authority authority)
         {
-            if (!behavioursRequiringWriterTypes.ContainsKey(componentId))
+            if (!behavioursRequiringComponentsWithAuth.ContainsKey(componentId))
             {
                 return;
             }
@@ -150,13 +151,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             if (authority == Authority.Authoritative)
             {
                 // Mark writer components ready in relevant SpatialOSBehaviours
-                var relevantWriterSpatialOSBehaviours = behavioursRequiringWriterTypes[componentId];
+                var relevantWriterSpatialOSBehaviours = behavioursRequiringComponentsWithAuth[componentId];
                 MarkComponentRequirementSatisfied(relevantWriterSpatialOSBehaviours);
             }
             else if (authority == Authority.NotAuthoritative)
             {
                 // Mark writer components not ready in relevant SpatialOSBehaviours
-                var relevantWriterSpatialOSBehaviours = behavioursRequiringWriterTypes[componentId];
+                var relevantWriterSpatialOSBehaviours = behavioursRequiringComponentsWithAuth[componentId];
                 MarkComponentRequirementUnsatisfied(relevantWriterSpatialOSBehaviours);
             }
         }
@@ -166,8 +167,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             // Inject all Readers/Writers at once when all requirements are met
             foreach (var behaviour in behaviours)
             {
-                numUnsatisfiedReadersOrWriters[behaviour]--;
-                if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
+                numUnsatisfiedRequirements[behaviour]--;
+                if (numUnsatisfiedRequirements[behaviour] == 0)
                 {
                     if (!behaviour.enabled)
                     {
@@ -189,7 +190,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in behaviours)
             {
                 // De-inject all Readers/Writers at once when a single requirement is not met
-                if (numUnsatisfiedReadersOrWriters[behaviour] == 0)
+                if (numUnsatisfiedRequirements[behaviour] == 0)
                 {
                     if (behaviour.enabled)
                     {
@@ -204,7 +205,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     }
                 }
 
-                numUnsatisfiedReadersOrWriters[behaviour]++;
+                numUnsatisfiedRequirements[behaviour]++;
             }
         }
     }

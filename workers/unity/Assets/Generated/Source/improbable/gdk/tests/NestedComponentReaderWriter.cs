@@ -14,24 +14,24 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class NestedComponent
     {
-        [ComponentId(20152)]
+        [InjectableId(InjectableType.ReaderWriter, 20152)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(20152)]
+        [InjectableId(InjectableType.ReaderWriter, 20152)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
         {
             event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
         }
 
-        [WriterInterface]
-        [ComponentId(20152)]
+        [InjectableId(InjectableType.ReaderWriter, 20152)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
         {
         }

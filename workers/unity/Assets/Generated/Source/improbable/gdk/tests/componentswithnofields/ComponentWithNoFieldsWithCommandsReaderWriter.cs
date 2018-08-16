@@ -14,23 +14,23 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
-        [ComponentId(1005)]
+        [InjectableId(InjectableType.ReaderWriter, 1005)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(1005)]
+        [InjectableId(InjectableType.ReaderWriter, 1005)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
         {
         }
 
-        [WriterInterface]
-        [ComponentId(1005)]
+        [InjectableId(InjectableType.ReaderWriter, 1005)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
         {
         }

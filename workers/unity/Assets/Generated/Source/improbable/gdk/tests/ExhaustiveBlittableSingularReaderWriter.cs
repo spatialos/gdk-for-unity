@@ -14,17 +14,17 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class ExhaustiveBlittableSingular
     {
-        [ComponentId(197720)]
+        [InjectableId(InjectableType.ReaderWriter, 197720)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(197720)]
+        [InjectableId(InjectableType.ReaderWriter, 197720)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>
         {
             event Action<BlittableBool> Field1Updated;
@@ -44,8 +44,8 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::Generated.Improbable.Gdk.Tests.SomeType> Field17Updated;
         }
 
-        [WriterInterface]
-        [ComponentId(197720)]
+        [InjectableId(InjectableType.ReaderWriter, 197720)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>
         {
         }

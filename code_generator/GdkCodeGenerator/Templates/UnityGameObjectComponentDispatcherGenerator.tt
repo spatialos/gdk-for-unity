@@ -58,6 +58,7 @@ namespace <#= qualifiedNamespace #>
             };
 
             private const uint componentId = <#= unityComponentDefinition.Id #>;
+            private static readonly InjectableId injectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -121,7 +122,7 @@ namespace <#= qualifiedNamespace #>
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                     {
                         continue;
                     }
@@ -148,7 +149,7 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                         {
                             continue;
                         }
@@ -177,7 +178,7 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                         {
                             continue;
                         }
@@ -207,7 +208,7 @@ namespace <#= qualifiedNamespace #>
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                     {
                         continue;
                     }

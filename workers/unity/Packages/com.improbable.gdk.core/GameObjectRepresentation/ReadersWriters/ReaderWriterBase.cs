@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : IWriter<TSpatialComponentData, TComponentUpdate>,
-            IReaderWriterInternal
+            IInjectable
         where TSpatialComponentData : ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {

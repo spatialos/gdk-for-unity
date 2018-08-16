@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
-    ///     Creates and removes SpatialOSBehaviourManager object for EntityGameObjects.
+    ///     Creates and removes MonoBehaviourActivationManager object for EntityGameObjects.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitialisationGroup))]
     public class MonoBehaviourActivationManagerInitializationSystem : ComponentSystem

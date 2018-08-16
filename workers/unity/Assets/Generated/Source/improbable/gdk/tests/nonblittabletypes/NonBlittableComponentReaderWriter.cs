@@ -14,17 +14,17 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
-        [ComponentId(1002)]
+        [InjectableId(InjectableType.ReaderWriter, 1002)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(1002)]
+        [InjectableId(InjectableType.ReaderWriter, 1002)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
             event Action<BlittableBool> BoolFieldUpdated;
@@ -40,8 +40,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             event Action<SecondEventEvent> OnSecondEvent;
         }
 
-        [WriterInterface]
-        [ComponentId(1002)]
+        [InjectableId(InjectableType.ReaderWriter, 1002)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
             void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);

@@ -14,8 +14,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<int, MonoBehaviourActivationManager> entityIndexToActivationManager =
             new Dictionary<int, MonoBehaviourActivationManager>();
-        private readonly Dictionary<int, ReaderWriterStore> entityIndexToReaderWriterStore =
-            new Dictionary<int, ReaderWriterStore>();
+        private readonly Dictionary<int, InjectableStore> entityIndexToReaderWriterStore =
+            new Dictionary<int, InjectableStore>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
@@ -147,7 +147,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
-            var store = new ReaderWriterStore();
+            var store = new InjectableStore();
             entityIndexToReaderWriterStore[entity.Index] = store;
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityIndexToActivationManager[entity.Index] = manager;

@@ -14,17 +14,17 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class ExhaustiveRepeated
     {
-        [ComponentId(197717)]
+        [InjectableId(InjectableType.ReaderWriter, 197717)]
         internal class ReaderWriterCreator : IReaderWriterCreator
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
         }
 
-        [ReaderInterface]
-        [ComponentId(197717)]
+        [InjectableId(InjectableType.ReaderWriter, 197717)]
+        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
         public interface Reader : IReader<SpatialOSExhaustiveRepeated, SpatialOSExhaustiveRepeated.Update>
         {
             event Action<global::System.Collections.Generic.List<float>> Field2Updated;
@@ -44,8 +44,8 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
         }
 
-        [WriterInterface]
-        [ComponentId(197717)]
+        [InjectableId(InjectableType.ReaderWriter, 197717)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
         public interface Writer : IWriter<SpatialOSExhaustiveRepeated, SpatialOSExhaustiveRepeated.Update>
         {
         }
