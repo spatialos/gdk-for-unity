@@ -10,15 +10,15 @@ public class FlashOnCollision : MonoBehaviour
     private float collideTime;
     private bool flashing = false;
 
-    [SerializeField] float flashTime = 0.2f;
-    [SerializeField] Color flashColor = Color.red;
+    [SerializeField] private float flashTime = 0.2f;
+    [SerializeField] private Color flashColor = Color.red;
 
     private MeshRenderer renderer;
 
     private MaterialPropertyBlock basicMaterial;
     private MaterialPropertyBlock flashingMaterial;
 
-    void OnEnable()
+    private void OnEnable()
     {
         if (reader != null) // Needed until prefab preprocessing is implemented
         {
@@ -26,7 +26,7 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 
-    void Awake()
+    private void Awake()
     {
         renderer = gameObject.GetComponent<MeshRenderer>();
         basicMaterial = new MaterialPropertyBlock();
@@ -35,7 +35,7 @@ public class FlashOnCollision : MonoBehaviour
         flashingMaterial.SetColor("_Color", flashColor);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         if (reader != null) // Needed until prefab preprocessing is implemented
         {
@@ -43,14 +43,14 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 
-    void HandleCollisionEvent(PlayerCollidedEvent e)
+    private void HandleCollisionEvent(PlayerCollidedEvent e)
     {
         collideTime = Time.time;
         flashing = true;
         renderer.SetPropertyBlock(flashingMaterial);
     }
 
-    void Update()
+    private void Update()
     {
         if (flashing && Time.time - collideTime > flashTime)
         {
