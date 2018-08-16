@@ -1,5 +1,6 @@
 ﻿using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using UnityEditor;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -11,16 +12,22 @@ public class FlashOnCollision : MonoBehaviour
     private bool flashing = false;
 
     [SerializeField] private float flashTime = 0.2f;
-    [SerializeField] private Color flashColor = Color.red;
 
     private MeshRenderer renderer;
 
-    private MaterialPropertyBlock basicMaterial;
-    private MaterialPropertyBlock flashingMaterial;
+    private static MaterialPropertyBlock basicMaterial = new MaterialPropertyBlock();
+    private static MaterialPropertyBlock flashingMaterial = new MaterialPropertyBlock();
+
+    [RuntimeInitializeOnLoadMethod]
+    public static void SetupColors()
+    {
+        basicMaterial.SetColor("_Color", Color.white);
+        flashingMaterial.SetColor("_Color", Color.red);
+    }
 
     private void OnEnable()
     {
-        if (reader != null) // Needed until prefab preprocessing is implemented
+        if (reader != null) // TODO: Needed until prefab preprocessing is implemented
         {
             reader.OnPlayerCollided += HandleCollisionEvent;
         }
@@ -29,15 +36,11 @@ public class FlashOnCollision : MonoBehaviour
     private void Awake()
     {
         renderer = gameObject.GetComponent<MeshRenderer>();
-        basicMaterial = new MaterialPropertyBlock();
-        basicMaterial.SetColor("_Color", Color.white);
-        flashingMaterial = new MaterialPropertyBlock();
-        flashingMaterial.SetColor("_Color", flashColor);
     }
 
     private void OnDisable()
     {
-        if (reader != null) // Needed until prefab preprocessing is implemented
+        if (reader != null) // TODO: Needed until prefab preprocessing is implemented
         {
             reader.OnPlayerCollided -= HandleCollisionEvent;
         }
@@ -59,3 +62,6 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 }
+
+
+
