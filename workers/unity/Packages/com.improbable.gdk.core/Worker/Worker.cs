@@ -10,14 +10,13 @@ namespace Improbable.Gdk.Core
 {
     public class Worker : IDisposable
     {
-        public const long WorkerEntityId = -1337;
-
         internal readonly Dictionary<EntityId, Entity> EntityMapping = new Dictionary<EntityId, Entity>();
 
         public readonly Vector3 Origin;
         public readonly string WorkerType;
         public readonly string WorkerId;
         public readonly World World;
+        public readonly Entity WorkerEntity;
         public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
 
@@ -41,20 +40,19 @@ namespace Improbable.Gdk.Core
             }
 
             World = new World(WorkerId);
-            var workerSystem = World.GetOrCreateManager<WorkerSystem>();
-            workerSystem.Worker = this;
-
+            World.CreateManager<WorkerSystem>(this);
             var entityManager = World.GetOrCreateManager<EntityManager>();
-            var entity = entityManager.CreateEntity();
-            entityManager.AddComponentData(entity, new OnConnected());
-            entityManager.AddComponentData(entity, new WorkerEntityTag());
-            EntityMapping.Add(new EntityId(WorkerEntityId), entity);
+            WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
             OnConnect?.Invoke(this);
         }
 
         public static Worker TryGetWorker(World world)
         {
             var workerSystem = world.GetExistingManager<WorkerSystem>();
+            if (workerSystem == null)
+            {
+                throw new NullReferenceException("This world does not have a worker associated with it.");
+            }
             return workerSystem.Worker;
         }
 

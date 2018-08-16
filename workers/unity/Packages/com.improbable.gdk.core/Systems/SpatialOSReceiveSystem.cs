@@ -116,16 +116,9 @@ namespace Improbable.Gdk.Core
 
         private void OnDisconnect(DisconnectOp op)
         {
-            if (!worker.TryGetEntity(new EntityId(Worker.WorkerEntityId), out var entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, Worker.WorkerEntityId));
-                return;
-            }
-
-            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
-            EntityManager.AddSharedComponentData(entity, new OnDisconnected { ReasonForDisconnect = op.Reason });
+            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
+            EntityManager.AddSharedComponentData(worker.WorkerEntity,
+                new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
         private void OnAddComponent(AddComponentOp op)
@@ -387,15 +380,14 @@ namespace Improbable.Gdk.Core
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract);
 
-            worker.TryGetEntity(new EntityId(Worker.WorkerEntityId), out var workerEntity);
-            WorldCommands.AddWorldCommandRequesters(World, EntityManager, workerEntity);
+            WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
                 var componentDispatcher =
                     (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker, World);
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
                 AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
-                componentDispatcher.AddCommandComponents(workerEntity);
+                componentDispatcher.AddCommandComponents(worker.WorkerEntity);
             }
 
             dispatcher.OnAddEntity(OnAddEntity);

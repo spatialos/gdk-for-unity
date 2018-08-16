@@ -4,7 +4,13 @@ namespace Improbable.Gdk.Core
 {
     internal class WorkerSystem : ComponentSystem
     {
-        public Worker Worker { get; internal set; }
+        public readonly Worker Worker;
+
+        public WorkerSystem(Worker worker)
+        {
+            Worker = worker;
+        }
+
         protected override void OnUpdate()
         {
         }
