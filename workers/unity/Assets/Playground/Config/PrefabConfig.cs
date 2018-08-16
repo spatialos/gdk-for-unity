@@ -11,8 +11,8 @@ namespace Playground
                 new PrefabMapping { UnityGameLogic = "Prefabs/Cube", UnityClient = "Prefabs/CubeKinematic" }
             },
             {
-                ArchetypeConfig.RotatingCuboidArchetype,
-                new PrefabMapping { UnityGameLogic = "Prefabs/RotatingCuboid", UnityClient = "Prefabs/RotatingCuboid" }
+                ArchetypeConfig.SpinnerArchetype,
+                new PrefabMapping { UnityGameLogic = "Prefabs/Spinner", UnityClient = "Prefabs/Spinner" }
             },
             {
                 ArchetypeConfig.CharacterArchetype,
