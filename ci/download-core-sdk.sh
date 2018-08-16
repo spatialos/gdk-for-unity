@@ -18,6 +18,12 @@ function cleanAndUnpackTo() {
   unzip -o -q "${SOURCE}" -d "${TARGET}"
 }
 
+function cleanUp() {
+  rm -rf "${CORE_SDK_DIR}"
+}
+
+trap cleanUp EXIT
+
 PINNED_CORE_SDK_VERSION="$(cat core-sdk.version)"
 
 CORE_SDK_DIR="$(pwd)/build/core_sdk"
@@ -59,5 +65,3 @@ rm -rf tools/schema_compiler/macos/proto
 rm -rf "${NATIVE_DEPENDENCIES_PATH}/Windows/x86_64/include"
 rm -rf "${NATIVE_DEPENDENCIES_PATH}/Linux/x86_64/include"
 rm -rf "${NATIVE_DEPENDENCIES_PATH}/OSX/include"
-
-rm -rf "${CORE_SDK_DIR}"
