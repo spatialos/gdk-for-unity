@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,10 +31,8 @@ namespace Improbable.Gdk.CodeGenerator
             relativeOutputPath = Formatting.GetNamespacePath(schemaFile.Package);
             package = Formatting.CapitaliseQualifiedNameParts(schemaFile.Package);
 
-            // Filter out the data types like PositionData or TransformData. We don't want to generate these.
-            typesToGenerate = schemaFile.TypeDefinitions.Where(type =>
-                schemaFile.ComponentDefinitions.Select(component => component.DataDefinition.typeDefinition.Name)
-                    .All(componentDataName => componentDataName != type.Name)).ToList();
+            typesToGenerate = new List<UnityTypeDefinition>();
+            SelectTypesToGenerate(schemaFile);
 
             foreach (var unityTypeDefinition in typesToGenerate)
             {
@@ -134,6 +133,32 @@ namespace Improbable.Gdk.CodeGenerator
                     referenceTypeProviderGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName), referenceProviderTranslationCode);
             }
+        }
+
+        /// <summary>
+        ///     Filters out auto-generated types like PositionData from the JSON AST.
+        ///     However, we want to keep types that are used as a "data" field in a component.
+        /// </summary>
+        private void SelectTypesToGenerate(UnitySchemaFile schemaFile)
+        {
+            var componentDataTypes =
+                schemaFile.ComponentDefinitions.Select(component => component.RawDataDefinition);
+
+            // From inspection of the JSON AST you can observe that a type definition is auto-generated if the following
+            // conditions are true:
+            //     1. The FQN type names are the same .
+            //     2. The source references are the same.
+            // Using this information, we can effectively filter out auto-generated types.
+            var filteredTypes = schemaFile.TypeDefinitions.Where(type => componentDataTypes.All(componentData =>
+                type.QualifiedName != componentData.TypeName ||
+                !SourceReferenceEquals(type.SourceReference, componentData.sourceReference)));
+
+            typesToGenerate.AddRange(filteredTypes);
+        }
+
+        private bool SourceReferenceEquals(SourceReferenceRaw sourceRef1, SourceReferenceRaw sourceRef2)
+        {
+            return sourceRef1.column == sourceRef2.column && sourceRef1.line == sourceRef2.line;
         }
     }
 }
