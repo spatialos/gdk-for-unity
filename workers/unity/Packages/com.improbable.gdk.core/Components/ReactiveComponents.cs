@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using Improbable.Worker;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {

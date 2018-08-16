@@ -90,7 +90,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             const string loginToken = "myToken";
             const string projectName = "myproject";
             const string host = "myhost";
-            string networkType = NetworkConnectionType.Tcp.ToString();
+            var networkType = NetworkConnectionType.Tcp.ToString();
 
             var parsedArgs = new Dictionary<string, string>
             {

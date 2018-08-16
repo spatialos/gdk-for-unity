@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -28,4 +27,3 @@ namespace Improbable.Gdk.PlayerLifecycle
         }
     }
 }
-

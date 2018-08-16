@@ -8,7 +8,8 @@ namespace Improbable.Gdk.Core
 {
     public class CommandRequestTrackerSystem : ComponentSystem
     {
-        private readonly Dictionary<Type, CommandStorage> commandStorageInstances = new Dictionary<Type, CommandStorage>();
+        private readonly Dictionary<Type, CommandStorage> commandStorageInstances =
+            new Dictionary<Type, CommandStorage>();
 
         public TConcreteCommandStorage GetCommandStorageForType<TConcreteCommandStorage>()
             where TConcreteCommandStorage : CommandStorage

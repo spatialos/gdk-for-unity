@@ -86,6 +86,7 @@ namespace Playground
             {
                 worker.Dispose();
             }
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }

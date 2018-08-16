@@ -49,13 +49,15 @@ namespace Playground
             base.OnCreateManager(capacity);
 
             worker = Worker.GetWorkerFromWorld(World);
-            if (!SystemConfig.UnityClient.Equals(worker.WorkerType) && !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
+            if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
+                !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
+
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }
 
@@ -96,7 +98,7 @@ namespace Playground
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new [] { entity, componentInstance });
+                            new[] { entity, componentInstance });
                     }
                     else
                     {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;

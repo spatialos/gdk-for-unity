@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Core
                 case LocatorConfig locatorConfig:
                     return LocatorConnectToSpatial(locatorConfig);
             }
+
             throw new InvalidConfigurationException($"Invalid connection config " +
                 $"was provided:\n '{config}' Only ReceptionistConfig and LocatorConfig are supported.");
         }

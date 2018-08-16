@@ -60,7 +60,8 @@ namespace Playground
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                if (!(SystemConfig.UnityClient.Equals(worker.WorkerType)) && !(SystemConfig.UnityGameLogic.Equals(worker.WorkerType)))
+                if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
+                    !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
                 {
                     worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "Worker type isn't supported by the GameObjectInitializationSystem.")
@@ -73,7 +74,8 @@ namespace Playground
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
 
-                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + worker.Origin;
+                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
+                    worker.Origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
 

@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
         {
             EntityManager = entityManager;
             LogDispatcher = logDispatcher;
-            setComponentObjectAction = (Action<Entity, ComponentType, object>)Delegate.CreateDelegate(
+            setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
         }
 

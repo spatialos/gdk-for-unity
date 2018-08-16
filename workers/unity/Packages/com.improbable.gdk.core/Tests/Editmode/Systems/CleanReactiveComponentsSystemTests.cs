@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
-using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {

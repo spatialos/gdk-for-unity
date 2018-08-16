@@ -11,6 +11,7 @@ namespace Improbable.Gdk.Core
     public class Worker : IDisposable
     {
         public delegate void WorkerEventHandler(Worker worker);
+
         public static event WorkerEventHandler OnConnect;
         public static event WorkerEventHandler OnDisconnect;
 
@@ -55,6 +56,7 @@ namespace Improbable.Gdk.Core
             {
                 throw new NullReferenceException("This world does not have a worker associated with it.");
             }
+
             return workerSystem.Worker;
         }
 

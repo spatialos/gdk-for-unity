@@ -27,7 +27,8 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 Position = new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 }
             };
-            data.RequestSenders[0].RequestsToSend.Add(new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request));
+            data.RequestSenders[0].RequestsToSend
+                .Add(new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request));
         }
     }
 }

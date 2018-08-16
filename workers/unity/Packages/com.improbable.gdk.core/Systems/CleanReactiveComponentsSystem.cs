@@ -35,7 +35,8 @@ namespace Improbable.Gdk.Core
 
             if (addRemoveComponentActionMethod == null)
             {
-                throw new MissingMethodException(nameof(CleanReactiveComponentsSystem), nameof(AddRemoveComponentAction));
+                throw new MissingMethodException(nameof(CleanReactiveComponentsSystem),
+                    nameof(AddRemoveComponentAction));
             }
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -69,7 +70,8 @@ namespace Improbable.Gdk.Core
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
                             typesToRemove.Add(componentType.GetManagedType());
-                            addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType()).Invoke(this, null);
+                            addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType())
+                                .Invoke(this, null);
                         }
 
                         // Updates group
@@ -78,8 +80,11 @@ namespace Improbable.Gdk.Core
                             Handler = componentCleanupHandler,
                             UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
                             AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
-                            EventGroups = componentCleanupHandler.EventComponentTypes.Select(eventType => GetComponentGroup(eventType)).ToArray(),
-                            CommandsGroups = componentCleanupHandler.CommandReactiveTypes.Select(t => GetComponentGroup(t)).ToArray()
+                            EventGroups =
+                                componentCleanupHandler.EventComponentTypes
+                                    .Select(eventType => GetComponentGroup(eventType)).ToArray(),
+                            CommandsGroups = componentCleanupHandler.CommandReactiveTypes
+                                .Select(t => GetComponentGroup(t)).ToArray()
                         });
                     }
                 }

@@ -1,9 +1,7 @@
 using System;
-using System.Diagnostics;
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -43,7 +41,8 @@ namespace Improbable.Gdk.PlayerLifecycle
                         Entity = playerEntity
                     });
 
-                    responders.Add(PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType()));
+                    responders.Add(
+                        PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType()));
                 }
             }
         }

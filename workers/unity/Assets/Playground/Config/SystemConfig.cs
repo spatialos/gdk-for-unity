@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;

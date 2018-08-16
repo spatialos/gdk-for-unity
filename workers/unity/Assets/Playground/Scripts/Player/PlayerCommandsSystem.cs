@@ -79,7 +79,7 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            
+
             if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
                 return;
@@ -88,13 +88,14 @@ namespace Playground
             var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
             var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
 
-            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId, new Generated.Playground.LaunchCommandRequest
-            {
-                EntityToLaunch = component.SpatialEntityId,
-                ImpactPoint = impactPoint,
-                LaunchDirection = launchDirection,
-                LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
-            }));
+            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
+                new Generated.Playground.LaunchCommandRequest
+                {
+                    EntityToLaunch = component.SpatialEntityId,
+                    ImpactPoint = impactPoint,
+                    LaunchDirection = launchDirection,
+                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
+                }));
         }
     }
 }

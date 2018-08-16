@@ -1,5 +1,5 @@
-using Improbable.Worker;
 using System.Collections.Generic;
+using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
 {
@@ -16,12 +16,12 @@ namespace Improbable.Gdk.Core
             {
                 if (dataEntityId is EntityId)
                 {
-                    return (EntityId)dataEntityId;
+                    return (EntityId) dataEntityId;
                 }
 
                 if (dataEntityId is long)
                 {
-                    return new EntityId((long)dataEntityId);
+                    return new EntityId((long) dataEntityId);
                 }
             }
 

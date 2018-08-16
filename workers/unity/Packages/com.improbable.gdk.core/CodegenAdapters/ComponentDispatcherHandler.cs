@@ -25,8 +25,10 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         protected const string ReceivedDuplicateComponentAdded =
             "Received ComponentAdded, but already received one for this entity.";
+
         protected const string ReceivedDuplicateComponentRemoved =
             "Received ComponentRemoved, but already received one for this entity.";
+
         protected const string EntityNotFound = "No entity found for entity specified in op.";
         protected const string CommandIndexNotFound = "Command index not found.";
         protected const string InvalidAuthorityChange = "Invalid authority state change received.";

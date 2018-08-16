@@ -18,6 +18,7 @@ namespace Improbable.Gdk.Core
 
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
             new Dictionary<uint, ComponentDispatcherHandler>();
+
         public List<Action<Unity.Entities.Entity>> AddAllCommandComponents = new List<Action<Unity.Entities.Entity>>();
 
         private bool inCriticalSection;
@@ -97,6 +98,7 @@ namespace Improbable.Gdk.Core
             {
                 AddCommandCompoent(entity);
             }
+
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
             worker.EntityMapping.Add(entityId, entity);
         }
@@ -185,6 +187,7 @@ namespace Improbable.Gdk.Core
                         .WithField("ComponentId", op.Request.ComponentId));
                 return;
             }
+
             specificDispatcher.OnCommandRequest(op);
         }
 
@@ -203,7 +206,7 @@ namespace Improbable.Gdk.Core
 
         private void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
-            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.CreateEntity.Request> requestBundle))
+            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -240,12 +243,13 @@ namespace Improbable.Gdk.Core
                 EntityManager.AddComponentData(entity, data);
             }
 
-            responses.Add(new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+            responses.Add(
+                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
         }
 
         private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
-            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.DeleteEntity.Request> requestBundle))
+            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -282,12 +286,13 @@ namespace Improbable.Gdk.Core
                 EntityManager.AddComponentData(entity, data);
             }
 
-            responses.Add(new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+            responses.Add(
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
         }
 
         private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
-            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.ReserveEntityIds.Request> requestBundle))
+            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -324,12 +329,13 @@ namespace Improbable.Gdk.Core
                 EntityManager.AddComponentData(entity, data);
             }
 
-            responses.Add(new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+            responses.Add(
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
         }
 
         private void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
-            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out CommandRequestStore<WorldCommands.EntityQuery.Request> requestBundle))
+            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -366,7 +372,8 @@ namespace Improbable.Gdk.Core
                 EntityManager.AddComponentData(entity, data);
             }
 
-            responses.Add(new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+            responses.Add(
+                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
         }
 
         private void HandleException(Exception e)

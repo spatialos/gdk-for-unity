@@ -12,7 +12,7 @@ namespace Playground
     public static class PlayerTemplate
     {
         private static readonly List<string> AllWorkerAttributes =
-            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient};
+            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient };
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)

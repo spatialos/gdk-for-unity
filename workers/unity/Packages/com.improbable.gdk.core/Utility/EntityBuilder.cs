@@ -18,7 +18,8 @@ namespace Improbable.Gdk.Core
         private const uint PositionComponentId = 54;
         private const uint PersistenceComponentId = 55;
 
-        private static readonly HashSet<uint> requiredComponents = new HashSet<uint>{ EntityAclComponentId, PositionComponentId};
+        private static readonly HashSet<uint> requiredComponents =
+            new HashSet<uint> { EntityAclComponentId, PositionComponentId };
 
 
         public static EntityBuilder Begin()

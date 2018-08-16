@@ -76,7 +76,8 @@ namespace Improbable.Gdk.Core
                 foreach (var req in sender.RequestsToSend)
                 {
                     var reqId = worker.Connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
-                    createEntityStorage.CommandRequestsInFlight.Add(reqId.Id, new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, null));
+                    createEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, null));
                 }
 
                 sender.RequestsToSend.Clear();
@@ -89,7 +90,8 @@ namespace Improbable.Gdk.Core
                 foreach (var req in sender.RequestsToSend)
                 {
                     var reqId = worker.Connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
-                    deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id, new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, null));
+                    deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, null));
                 }
 
                 sender.RequestsToSend.Clear();
@@ -103,7 +105,8 @@ namespace Improbable.Gdk.Core
                 foreach (var req in sender.RequestsToSend)
                 {
                     var reqId = worker.Connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
-                    reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id, new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, null));
+                    reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, null));
                 }
 
                 sender.RequestsToSend.Clear();
@@ -116,7 +119,8 @@ namespace Improbable.Gdk.Core
                 foreach (var req in sender.RequestsToSend)
                 {
                     var reqId = worker.Connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
-                    entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id, new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, null));
+                    entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, null));
                 }
 
                 sender.RequestsToSend.Clear();

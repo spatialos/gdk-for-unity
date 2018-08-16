@@ -28,7 +28,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < (1.0f / SendRateHz))
+            if (timeSinceLastSend < 1.0f / SendRateHz)
             {
                 return;
             }
@@ -47,7 +47,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = transformData.SpatialEntityIds[i].EntityId;
 
                 var update = new SchemaComponentUpdate(component.ComponentId);
-                Generated.Improbable.Transform.SpatialOSTransform.Serialization.Serialize(component, update.GetFields());
+                Generated.Improbable.Transform.SpatialOSTransform.Serialization.Serialize(component,
+                    update.GetFields());
                 worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
