@@ -29,11 +29,11 @@ component ExhaustiveOptional {
   id = 197716;
   option<bool> field1 = 1;
   option<float> field2 = 2;
-  // option<bytes> field3 = 3; TODO: UTY-496 Uncomment when Nullable<bytes[]> bug is fixed.
+  option<bytes> field3 = 3;
   option<int32> field4 = 4;
   option<int64> field5 = 5;
   option<double> field6 = 6;
-  // option<string> field7 = 7; TODO: UTY-496 Uncomment when Nullable<string> bug is fixed.
+  option<string> field7 = 7;
   option<uint32> field8 = 8;
   option<uint64> field9 = 9;
   option<sint32> field10 = 10;
