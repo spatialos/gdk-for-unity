@@ -193,7 +193,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.SchemaData.Value.GetCommandIndex();
+                var commandIndex = op.Response.CommandIndex;
                 switch (commandIndex)
                 {
                     default:

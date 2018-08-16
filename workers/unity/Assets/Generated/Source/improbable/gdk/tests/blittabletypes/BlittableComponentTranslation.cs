@@ -235,7 +235,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.SchemaData.Value.GetCommandIndex();
+                var commandIndex = op.Response.CommandIndex;
                 switch (commandIndex)
                 {
                     case 1:
