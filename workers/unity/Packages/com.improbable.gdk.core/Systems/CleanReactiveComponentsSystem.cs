@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core
 
             GenerateComponentGroups();
         }
-
+        
         private void GenerateComponentGroups()
         {
             foreach (var translationUnit in view.TranslationUnits.Values)
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core
                     translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
                 }
             }
-            
+
             // Find all components with the RemoveAtEndOfTick attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -74,7 +74,7 @@ namespace Improbable.Gdk.Core
                 {
                     continue;
                 }
-                
+
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
