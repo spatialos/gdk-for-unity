@@ -24,7 +24,12 @@ namespace Generated.Improbable.Gdk.Tests
             private static readonly ComponentType targetComponentType = typeof(SpatialOSNestedComponent);
 
             public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(SpatialOSNestedComponent), typeof(Authoritative<SpatialOSNestedComponent>), typeof(SpatialEntityId)};
+            private static readonly ComponentType[] replicationComponentTypes = { typeof(SpatialOSNestedComponent), typeof(Authoritative<SpatialOSNestedComponent>), 
+                typeof(SpatialEntityId) };
+                
+            public override ComponentType[] AuthorityLossComponentTypes => authorityLossComponentTypes;
+            private static readonly ComponentType[] authorityLossComponentTypes = { typeof(AuthorityLossImminent<SpatialOSNestedComponent>),
+                typeof(SpatialEntityId) };
 
             public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
             private static readonly ComponentType[] cleanUpComponentTypes = 
@@ -216,6 +221,24 @@ namespace Generated.Improbable.Gdk.Tests
                 
             }
 
+
+            public override void SendAuthorityLossImminentAcknowledgement(Connection connection)
+            {
+                var componentDataArray = AuthorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSNestedComponent>>();
+                var spatialEntityIdData = AuthorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement<global::Improbable.Gdk.Tests.NestedComponent>(new global::Improbable.EntityId(spatialEntityIdData[i].EntityId));
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
+                    }
+                }
+            }
+                
             public override void SendCommands(Connection connection)
             {
             }

@@ -230,7 +230,11 @@ namespace Improbable.Gdk.Core
                         return;
                     }
 
-                    AddComponent(entity, new AuthorityLossImminent<T>());
+                    AddComponent(entity, new AuthorityLossImminent<T>
+                    {
+                        AuthorityLossAcknowledged = false,
+                        AuthorityLossAcknowledgmentSent = false
+                    });
                     break;
                 case Authority.NotAuthoritative:
                     if (!HasComponent<Authoritative<T>>(entity))

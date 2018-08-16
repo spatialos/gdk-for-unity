@@ -55,11 +55,15 @@ namespace Improbable.Gdk.Core.Components
         public ComponentGroup ReplicationComponentGroup { get; set; }
         public abstract void ExecuteReplication(Connection connection);
 
+        public abstract ComponentType[] AuthorityLossComponentTypes { get; }
+        public ComponentGroup AuthorityLossComponentGroup { get; set; }
+
         public abstract ComponentType[] CleanUpComponentTypes { get; }
         public List<ComponentGroup> CleanUpComponentGroups { get; set; }
         public abstract void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer);
 
         public abstract void AddCommandRequestSender(Entity entity, long entityId);
+        public abstract void SendAuthorityLossImminentAcknowledgement(Connection connection);
         public abstract void SendCommands(Connection connection);
 
         protected void RemoveComponents<T>(ref EntityCommandBuffer entityCommandBuffer, int groupIndex)
