@@ -5,12 +5,18 @@ using Color = UnityEngine.Color;
 
 public class FlashOnCollision : MonoBehaviour
 {
-    [Require] private Generated.Playground.Collisions.Reader reader;
+    [Require] private Collisions.Reader reader;
 
     private float collideTime;
     private bool flashing = false;
-    [SerializeField] public float flashTime = 0.2f;
-    [SerializeField] public Color flashColor = Color.red;
+
+    [SerializeField] float flashTime = 0.2f;
+    [SerializeField] Color flashColor = Color.red;
+
+    private MeshRenderer renderer;
+
+    private MaterialPropertyBlock basicMaterial;
+    private MaterialPropertyBlock flashingMaterial;
 
     void OnEnable()
     {
@@ -18,6 +24,15 @@ public class FlashOnCollision : MonoBehaviour
         {
             reader.OnPlayerCollided += HandleCollisionEvent;
         }
+    }
+
+    void Awake()
+    {
+        renderer = gameObject.GetComponent<MeshRenderer>();
+        basicMaterial = new MaterialPropertyBlock();
+        basicMaterial.SetColor("_Color", Color.white);
+        flashingMaterial = new MaterialPropertyBlock();
+        flashingMaterial.SetColor("_Color", flashColor);
     }
 
     void OnDisable()
@@ -32,16 +47,15 @@ public class FlashOnCollision : MonoBehaviour
     {
         collideTime = Time.time;
         flashing = true;
-        var renderer = gameObject.GetComponent<MeshRenderer>();
-        renderer.material.SetColor("_Color", flashColor);
+        renderer.SetPropertyBlock(flashingMaterial);
     }
 
     void Update()
     {
         if (flashing && Time.time - collideTime > flashTime)
         {
-            var renderer = gameObject.GetComponent<MeshRenderer>();
-            renderer.material.SetColor("_Color", UnityEngine.Color.white);
+            renderer.SetPropertyBlock(basicMaterial);
+            flashing = false;
         }
     }
 }
