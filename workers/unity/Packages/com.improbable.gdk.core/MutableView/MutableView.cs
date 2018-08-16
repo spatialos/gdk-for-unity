@@ -319,7 +319,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
+        public T GetOrCreateComponent<T>(Entity entity, ComponentPool<T> pool) where T : Component
         {
             return HasComponent<T>(entity) ? GetComponentObject<T>(entity) : pool.GetComponent();
         }

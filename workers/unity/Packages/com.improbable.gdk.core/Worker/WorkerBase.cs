@@ -100,6 +100,7 @@ namespace Improbable.Gdk.Core
         {
             World.GetOrCreateManager<EntityManager>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
+            World.GetOrCreateManager<ReactiveComponentAdditionSystem>();
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
         }
