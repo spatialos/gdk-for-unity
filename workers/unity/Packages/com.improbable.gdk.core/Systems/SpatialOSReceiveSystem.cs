@@ -372,7 +372,7 @@ namespace Improbable.Gdk.Core
         private void HandleException(Exception e)
         {
             // TODO: Use the special exception handle when merged with master
-            logDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+            worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
                 .WithField("message", e.Message)
                 .WithField("stackTrace", e.StackTrace));
         }

@@ -33,7 +33,7 @@ namespace Playground
         private struct LaunchableData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
