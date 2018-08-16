@@ -34,6 +34,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.injectableFactory = new InjectableFactory(entityManager, logger);
         }
 
+        public bool HasRequiredFields(Type behaviourType)
+        {
+            EnsureLoaded(behaviourType);
+            return fieldInfoCache[behaviourType].Count > 0;
+        }
+
         public Dictionary<InjectableId, IInjectable[]> InjectAllRequiredFields(MonoBehaviour behaviour, Entity entity)
         {
             var behaviourType = behaviour.GetType();

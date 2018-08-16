@@ -49,22 +49,30 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 var behaviourType = behaviour.GetType();
-                var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
-                var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
-
-                if (componentReadRequirements.Count + componentAuthRequirements.Count > 0)
+                if (injector.HasRequiredFields(behaviourType))
                 {
-                    if (componentReadRequirements.Count > 0)
+                    var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
+                    var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
+                    var readRequirementCount = componentAuthRequirements.Count;
+                    var authRequirementCount = componentAuthRequirements.Count;
+
+                    if (readRequirementCount == 0 && authRequirementCount == 0)
+                    {
+                        behavioursToEnable.Add(behaviour);
+                    }
+
+                    if (readRequirementCount > 0)
                     {
                         AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsToRead);
                     }
 
-                    if (componentAuthRequirements.Count > 0)
+                    if (authRequirementCount > 0)
                     {
                         AddBehaviourForComponentIds(behaviour, componentAuthRequirements, behavioursRequiringComponentsWithAuth);
                     }
 
                     numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
+                    
                     behaviour.enabled = false;
                 }
             }
