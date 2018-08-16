@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Core
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
+        private readonly List<(ComponentGroup, Type)> componentGroupsToRemove = new List<(ComponentGroup, Type)>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -59,24 +60,29 @@ namespace Improbable.Gdk.Core
                     }
 
                     typesToRemove.Add(type);
+                    componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
                 }
             }
         }
 
         private void RemoveComponents()
         {
-            var componentToRemove = new List<(Entity, Type)>();
-            foreach (Type type in typesToRemove)
+            var componentsToRemove = new List<(Entity, Type)>();
+            foreach ((ComponentGroup componentGroup, Type type) in componentGroupsToRemove)
             {
-                var componentGroup = GetComponentGroup(ComponentType.ReadOnly(type));
+                if (componentGroup.IsEmptyIgnoreFilter)
+                {
+                    continue;
+                }
+                
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    componentToRemove.Add((entityArray[i], type));
+                    componentsToRemove.Add((entityArray[i], type));
                 }
             }
 
-            foreach ((Entity entity, Type type) in componentToRemove)
+            foreach ((Entity entity, Type type) in componentsToRemove)
             {
                 EntityManager.RemoveComponent(entity, type);
             }
