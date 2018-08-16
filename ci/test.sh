@@ -48,7 +48,6 @@ pushd "workers/unity"
     -testPlatform editmode \
     -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
     -testResults "${EDITMODE_TEST_RESULTS_FILE}"
-popd
 
     EDITMODE_TEST_RESULT=$?
 popd
@@ -67,7 +66,6 @@ pushd "workers/unity"
     -testPlatform playmode \
     -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
     -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
-popd
 
     PLAYMODE_TEST_RESULT=$?
 popd
