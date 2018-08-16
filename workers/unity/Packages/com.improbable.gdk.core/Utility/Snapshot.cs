@@ -27,10 +27,13 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var entry in entities)
                 {
-                    var error = outputStream.WriteEntity(entry.Key, entry.Value);
-                    if (error.HasValue)
+                    try
                     {
-                        Debug.LogError(error.Value);
+                        outputStream.WriteEntity(entry.Key, entry.Value);
+                    }
+                    catch (System.IO.InvalidDataException e)
+                    {
+                        Debug.LogError(e.Message);
                     }
                 }
             }

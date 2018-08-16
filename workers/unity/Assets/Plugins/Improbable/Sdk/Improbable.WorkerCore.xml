@@ -501,22 +501,45 @@
         </member>
         <member name="T:Improbable.Worker.Core.ComponentData">
             <summary>
-            Represents data-at-rest for the component identified by the metaclass C. Each component data
-            has an extension method <c>Get()</c> that returns the concrete data type.
+            Represents data-at-rest for a component identified by the ComponentId.
+            Underlying binary data format can be either raw SchemaData or UserData
+            controlled entirely by user.
             </summary>
         </member>
         <member name="T:Improbable.Worker.Core.ComponentUpdate">
             <summary>
-            Represents an update for the component identified by the metaclass C. Each component update
-            has an extension method <c>Get()</c> that returns the concrete update type.
+            Represents an update for the component identified by the ComponentId.
+            Underlying binary data format can be either raw SchemaData or some UserData
+            controlled entirely by user.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Core.GenericCommandObject">
+            <summary>
+            Proxy object that can hold the request or response type of any command.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.GenericCommandObject.CommandId">
+            <summary>
+            ID of command within component.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Core.GenericCommandObject.CommandObject">
+            <summary>
+            A request or response object for the command with the given ID.
             </summary>
         </member>
         <member name="T:Improbable.Worker.Core.CommandRequest">
             <summary>
-            Interface representing a command for a particular component. The generated code for a
-            component will contain a command metaclass for each command defined by the component.
-            These metaclasses are used to identify commands; in particular they are given as the generic
-            type parameter to various command-related classes and methods.
+            Represents a command request for a component identified by the ComponentId.
+            Underlying binary data format can be either raw SchemaData or UserData
+            controlled entirely by user.
+            </summary>
+        </member>
+        <member name="T:Improbable.Worker.Core.CommandResponse">
+            <summary>
+            Represents a command response for a component identified by the ComponentId.
+            Underlying binary data format can be either raw SchemaData or UserData
+            controlled entirely by user.
             </summary>
         </member>
         <member name="T:Improbable.Worker.Core.InterestOverride">
@@ -619,7 +642,7 @@
             callback.
             </summary>
             <remarks>
-            If timeout_millis is not specified, the default timeout will be used.
+            If timeoutMillis is not specified, the default timeout will be used.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendCreateEntityRequest(Improbable.Worker.Core.Entity,System.Nullable{Improbable.Worker.EntityId},System.Nullable{System.UInt32})">
@@ -629,7 +652,7 @@
             </summary>
             <remarks>
             If an entity ID is provided, it must have been reserved using SendReserveEntityIdsRequest().
-            If timeout_millis is not specified, the default timeout will be used.
+            If timeoutMillis is not specified, the default timeout will be used.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendDeleteEntityRequest(Improbable.Worker.EntityId,System.Nullable{System.UInt32})">
@@ -638,7 +661,7 @@
             identify a response to the request via the Dispatcher.OnDeleteEntityResponse callback.
             </summary>
             <remarks>
-            If timeout_millis is not specified, the default timeout will be used.
+            If timeoutMillis is not specified, the default timeout will be used.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendEntityQueryRequest(Improbable.Worker.Query.EntityQuery,System.Nullable{System.UInt32})">
@@ -647,7 +670,7 @@
             identify a response to the request via the Dispatcher.OnEntityQueryResponse callback.
             </summary>
             <remarks>
-            If timeout_millis is not specified, the default timeout will be used.
+            If timeoutMillis is not specified, the default timeout will be used.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendComponentInterest(Improbable.Worker.EntityId,System.Collections.Generic.Dictionary{System.UInt32,Improbable.Worker.Core.InterestOverride})">
@@ -677,9 +700,10 @@
             subsequent call to GetOpList(), unless the Loopback parameter is set to none.
             </summary>
             <remarks>
-            The behaviour is undefined if the update is mutated after it is sent; use
-            <c>SendComponentUpdate(update.DeepCopy())</c> if you intend to hold on to the update and
-            modify it later.
+            The behaviour is undefined if the update is mutated after it is sent; you should perform
+            deep copy of underlying update data to hold on to it and modify later. To deep-copy the
+            <c>SchemaComponentData</c> call <c>schemaComponentDataInstance.DeepCopy()</c>. Deep-copying
+            UserData is controlled by user.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendCommandRequest(Improbable.Worker.EntityId,Improbable.Worker.Core.CommandRequest,System.Nullable{System.UInt32},Improbable.Worker.Core.CommandParameters)">
@@ -690,9 +714,8 @@
             </summary>
             <remarks>
             If timeoutMillis is not specified, the default timeout will be used. Like
-            SendComponentUpdate, the behaviour is undefined if the request is mutated after it is
-            sent; <c>SendCommandRequest(request.DeepCopy())</c> if you intend to modify the object
-            later.
+            <c>SendComponentUpdate</c>, the behaviour is undefined if the request is mutated after it is
+            sent; deep-copy the request if you intend to modify its data later.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendCommandResponse(Improbable.Worker.Core.RequestId{Improbable.Worker.Core.IncomingCommandRequest},Improbable.Worker.Core.CommandResponse)">
@@ -702,9 +725,8 @@
             the Dispatcher.OnCommandRequest callback.
             </summary>
             <remarks>
-            Like SendComponentUpdate, the behaviour is undefined if the response is mutated after it
-            is sent; <c>SendCommandResponse(response.DeepCopy())</c> if you intend to modify the
-            object later.
+            Like <c>SendComponentUpdate</c>, the behaviour is undefined if the response is mutated after it
+            is sent; deep-copy the response if you intend to modify its data later.
             </remarks>
         </member>
         <member name="M:Improbable.Worker.Core.Connection.SendCommandFailure(Improbable.Worker.Core.RequestId{Improbable.Worker.Core.IncomingCommandRequest},System.String)">
@@ -1084,7 +1106,7 @@
         <member name="M:Improbable.Worker.Core.Dispatcher.OnAddComponent(System.Action{Improbable.Worker.Core.AddComponentOp})">
             <summary>
             Registers a callback to be invoked when a particular component is added to an existing
-            entity in the worker's view of the sumulation.
+            entity in the worker's view of the simulation.
             </summary>
         </member>
         <member name="M:Improbable.Worker.Core.Dispatcher.OnRemoveComponent(System.Action{Improbable.Worker.Core.RemoveComponentOp})">
@@ -1248,7 +1270,7 @@
             <summary>
             Queries the current list of deployments for the project specified in the
             LocatorParameters. The resulting future can be used to make this connection either
-            synchronously or asyncronously.
+            synchronously or asynchronously.
             </summary>
             <returns>A future object for the list of deployments.</returns>
             <seealso cref="M:Improbable.Worker.Core.Locator.ConnectAsync(System.String,Improbable.Worker.Core.ConnectionParameters,System.Func{Improbable.Worker.Core.QueueStatus,System.Boolean})"/>
@@ -1312,6 +1334,48 @@
             Whether to enable protocol logging at startup.
             </summary>
         </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.ComponentVtables">
+             <summary>
+             Vtables used by Connection when sending and receiving requests.
+             Separate behavior can be specified per component type,
+             per handle type (data, update, command request, command response)
+             and per direction (serialization, deserialization).
+            </summary>
+             <remarks>
+             If no Vtable is provided for given component, the default Vtable will be used.
+             If there's no default Vtable, exception will be thrown when initializing Connection.
+             </remarks>
+        </member>
+        <member name="F:Improbable.Worker.Core.ConnectionParameters.DefaultComponentVtable">
+            <summary>
+            The default Vtable used by Connection when there's no component-specific override.
+            </summary>
+            <remarks>
+            If the Vtable is null, exception is thrown when initializing Connection.
+            Set it to <c>PassthroughComponentVtable</c> to treat components without Vtable override as raw schema data.
+            </remarks>
+        </member>
+        <member name="F:Improbable.Worker.Core.SnapshotParameters.ComponentVtables">
+             <summary>
+             Vtables used by snapshot streams when saving and reading snapshots
+             Separate behavior can be specified per component type,
+             per handle type (data, update, command request, command response)
+             and per direction (serialization, deserialization).
+            </summary>
+             <remarks>
+             If no Vtable is provided for given component, the default Vtable will be used.
+             If there's no default Vtable, exception will be thrown when initializing snapshot I/O streams.
+             </remarks>
+        </member>
+        <member name="F:Improbable.Worker.Core.SnapshotParameters.DefaultComponentVtable">
+            <summary>
+            The default Vtable used by snapshot streams when there's no component-specific override.
+            </summary>
+            <remarks>
+            If the Vtable is null, exception is thrown when initializing snapshot I/O streams.
+            Set it to <c>PassthroughComponentVtable</c> to treat components without Vtable override as raw schema data.
+            </remarks>
+        </member>
         <member name="T:Improbable.Worker.Core.ReserveEntityIdsRequest">
             <summary>Type parameter for multiple entity ID reservation request IDs.</summary>
         </member>
@@ -1342,13 +1406,123 @@
             are doing; prefer to use the RequestId object instead.
             </summary>
         </member>
-        <member name="M:Improbable.Worker.Core.SchemaComponentData.#ctor(System.UInt32)">
+        <member name="T:Improbable.Worker.Core.SchemaComponentData">
             <summary>
-            Creates a new component data object. This object is treated like a raw, unmanaged
-            pointer, and must be passed to the C API so it can take ownership of the memory.
+            Wrapper of the raw schema data. This struct is treated like a raw, unmanaged
+            pointer, and should be passed to the C API so it can take an ownership of the memory.
             Otherwise, this can lead to a memory leak.
             </summary>
-            <param name="componentId"></param>
+            <remarks>
+            If you don't pass this struct to the C API, you must dispose of underlying data by calling <c>.Dispose()</c>
+            exactly once.
+            Copies of this struct created by assignment refer to the same underlying data. Call <c>.DeepCopy()</c>
+            to copy the underlying data itself.
+            Each deep copy should be independently disposed of either by
+            passing it to the C API or calling <c>.Dispose()</c>.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Core.SchemaComponentUpdate">
+            <summary>
+            Wrapper of the raw schema data. This struct is treated like a raw, unmanaged
+            pointer, and should be passed to the C API so it can take ownership of the memory.
+            Otherwise, this can lead to a memory leak.
+            </summary>
+            <remarks>
+            If you don't pass this struct to the C API, you must dispose of underlying data by calling <c>.Dispose()</c>
+            exactly once.
+            Copies of this struct created by assignment refer to the same underlying data. Call <c>.DeepCopy()</c>
+            to copy the underlying data itself.
+            Each deep copy should be independently disposed of either by
+            passing it to the C API or calling <c>.Dispose()</c>.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Core.SchemaCommandRequest">
+            <summary>
+            Wrapper of the raw schema data. This struct is treated like a raw, unmanaged
+            pointer, and should be passed to the C API so it can take ownership of the memory.
+            Otherwise, this can lead to a memory leak.
+            </summary>
+            <remarks>
+            If you don't pass this struct to the C API, you must dispose of underlying data by calling <c>.Dispose()</c>
+            exactly once.
+            Copies of this struct created by assignment refer to the same underlying data. Call <c>.DeepCopy()</c>
+            to copy the underlying data itself.
+            Each deep copy should be independently disposed of either by
+            passing it to the C API or calling <c>.Dispose()</c>.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Core.SchemaCommandResponse">
+            <summary>
+            Wrapper of the raw schema data. This struct is treated like a raw, unmanaged
+            pointer, and should be passed to the C API so it can take ownership of the memory.
+            Otherwise, this can lead to a memory leak.
+            </summary>
+            <remarks>
+            If you don't pass this struct to the C API, you must dispose of underlying data by calling <c>.Dispose()</c>
+            exactly once.
+            Copies of this struct created by assignment refer to the same underlying data. Call <c>.DeepCopy()</c>
+            to copy the underlying data itself.
+            Each deep copy should be independently disposed of either by
+            passing it to the C API or calling <c>.Dispose()</c>.
+            </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Core.SchemaObject">
+             <summary>
+             This object defines an interface for manipulating types defined in the
+             SpatialOS schema in a dynamic way.
+             </summary>
+             <remarks>
+             SchemaObject is the main type for data manipulation, and roughly-speaking corresponds to an
+             instance of a "type" as defined in schema. Each SchemaObject is owned by a "root" schema type
+             instance, of which there are four: SchemaCommandRequest, SchemaCommandResponse,
+             SchemaComponentData, and SchemaComponentUpdate.
+            
+             Each field defined in schema has a _field ID_, a  _type_ and an _arity_. For each type, there is
+             a family of functions that can be used to read and write fields of that type for a particular
+             field ID inside a SchemaObject. The mapping from schema type to function family is given below:
+            
+                  .schema type | function family
+             ------------------|----------------
+                         int32 | Int32
+                         int64 | Int64
+                        uint32 | Uint32
+                        uint64 | Uint64
+                        sint32 | Sint32
+                        sint64 | Sint64
+                       fixed32 | Fixed32
+                       fixed64 | Fixed64
+                      sfixed32 | Sfixed32
+                      sfixed64 | Sfixed64
+                          bool | Bool
+                         float | Float
+                        double | Double
+                        string | Bytes
+                      EntityId | EntityId (alias for Int64)
+                         bytes | Bytes
+             user-defined enum | Enum (alias for Uint32)
+             user-defined type | Object
+            
+             The arity of a field is either singular, option, or list. The same function family can be used
+             for manipulating fields of any arity: a singular field is simply a field whose ID occurs exactly
+             once; an option field is a field whose ID occurs zero or one times; and a list field is a field
+             whose ID occurs any number of times.
+            
+             Therefore, typically, where X is the function family, we use the GetX and AddX
+             functions to read and write singular fields; the GetXCount, GetX and AddX
+             functions to read and write option fields, and the GetXCount, IndexX and
+             AddX functions to read and write list fields. However, these functions are all
+             interopable: internally, GetX just retrieves the last occurence of the given field ID, for
+             instance.
+            
+             Map fields are represented as lists of Object fields, where each object represents an entry in
+             the map, and has the key under field ID 1 (SchemaMapKeyFieldId) and the value under field ID
+             2 (SchemaMapValueFieldId).
+            
+             It is the responsibility of the user to ensure that SchemaObjects are accessed and mutated in a
+             way consistent with the schema definitions of their corresponding types. Typically, this is done
+             by writing a custom code generator for the schema AST.
+            
+             </remarks>
         </member>
         <member name="T:Improbable.Worker.Core.SnapshotInputStream">
             <summary>
@@ -1367,10 +1541,9 @@
         </member>
         <member name="M:Improbable.Worker.Core.SnapshotInputStream.ReadEntity(Improbable.Worker.EntityId@,Improbable.Worker.Core.Entity@)">
             <summary>
-            Reads the next EntityId entityId, Entity entity pair from the Snapshot.
+            Reads the next (EntityId, Entity) pair from the Snapshot.
             </summary>
-            <remarks> Returns an optional string error message if an error occurs during reading.
-            </remarks>
+            <exception cref="T:System.IO.InvalidDataException">if any error is encountered</exception>
         </member>
         <member name="M:Improbable.Worker.Core.SnapshotInputStream.HasNext">
             <summary>
@@ -1394,10 +1567,9 @@
         </member>
         <member name="M:Improbable.Worker.Core.SnapshotOutputStream.WriteEntity(Improbable.Worker.EntityId,Improbable.Worker.Core.Entity)">
             <summary>
-            Writes the EntityId entityId, Entity entity pair to the Snapshot.
+            Writes the (EntityId, Entity) pair to the Snapshot.
             </summary>
-            <remarks> Returns an Optional string error message if an error occurs during writing.
-            </remarks>
+            <exception cref="T:System.IO.InvalidDataException">if any error is encountered</exception>
         </member>
         <member name="M:Improbable.Worker.Internal.Callbacks`1.UpdateCallbacks">
             <summary>
@@ -1428,7 +1600,7 @@
         </member>
         <member name="T:Improbable.Worker.Internal.MonoPInvokeCallbackAttribute">
             <summary>
-            This attribute is valid on static functions and it is used by Mono's 
+            This attribute is valid on static functions and it is used by Mono's
             Ahead of Time Compiler (AOT) to generate the code necessary to support
             native calls back into managed code.
             </summary>
@@ -1439,6 +1611,12 @@
             See: https://github.com/mono/mono/blob/master/mcs/class/System/Mono.Util/MonoPInvokeCallbackAttribute.cs
             See: https://developer.xamarin.com/api/type/MonoTouch.MonoPInvokeCallbackAttribute/
             </remarks>
+        </member>
+        <member name="T:Improbable.Worker.Internal.Schema">
+            <summary>
+            Wrapper for C API schema manipulation.
+            Consult the corresponding c_schema.h header for documentation.
+            </summary>
         </member>
     </members>
 </doc>
