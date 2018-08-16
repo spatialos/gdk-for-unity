@@ -497,7 +497,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
@@ -545,7 +545,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            public override void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection)
+            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {
