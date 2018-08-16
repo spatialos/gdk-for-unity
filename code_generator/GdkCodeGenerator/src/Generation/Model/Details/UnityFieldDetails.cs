@@ -55,7 +55,11 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 var valueType = rawFieldDefinition.optionType.valueType;
                 var containedType = GetTypeFromTypeReference(valueType, packagePrefix);
-                Type = string.Format("global::System.Nullable<{0}>", containedType);
+                var isBuiltInRefType = valueType.TypeName == BuiltInTypeConstants.builtInBytes ||
+                    valueType.TypeName == BuiltInTypeConstants.builtInString;
+                Type = isBuiltInRefType
+                    ? string.Format("global::Improbable.Gdk.Core.Option<{0}>", containedType)
+                    : string.Format("global::System.Nullable<{0}>", containedType);
                 SchemaTypeInfo = new FieldTypeInfo
                 {
                     OptionTypeInfo = new TypeInfo
