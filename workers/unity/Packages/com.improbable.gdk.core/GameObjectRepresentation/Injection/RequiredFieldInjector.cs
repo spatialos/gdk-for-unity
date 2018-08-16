@@ -53,15 +53,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-
-            foreach (var readerWriterComponentId in componentReaderIdsForBehaviours[behaviourType])
+            foreach (var fieldsToComponents in fieldInfoCache[behaviourType])
             {
-                DeInject(behaviour, readerWriterComponentId);
-            }
-
-            foreach (var readerWriterComponentId in componentWriterIdsForBehaviours[behaviourType])
-            {
-                DeInject(behaviour, readerWriterComponentId);
+                var componentId = fieldsToComponents.Key;
+                var fields = fieldsToComponents.Value;
+                foreach (var field in fields)
+                {
+                    field.SetValue(behaviour, null);
+                }
             }
         }
 
@@ -75,21 +74,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             EnsureLoaded(behaviourType);
             return componentWriterIdsForBehaviours[behaviourType];
-        }
-
-        private IReaderWriterInternal Inject(MonoBehaviour behaviour, uint componentId, Entity entity, FieldInfo field)
-        {
-            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
-            field.SetValue(behaviour, readerWriter);
-            return readerWriter;
-        }
-
-        private void DeInject(MonoBehaviour spatialOSBehaviour, uint componentId)
-        {
-            foreach (var field in fieldInfoCache[spatialOSBehaviour.GetType()][componentId])
-            {
-                field.SetValue(spatialOSBehaviour, null);
-            }
         }
 
         private void EnsureLoaded(Type behaviourType)
