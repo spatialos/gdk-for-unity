@@ -48,6 +48,7 @@ namespace Improbable.Gdk.CodeGenerator
         public readonly EnumDefinitionRaw[] EnumDefinitions;
         public readonly List<UnityTypeDefinition> TypeDefinitions;
         public readonly List<UnityFieldDefinition> FieldDefinitions;
+        public readonly SourceReferenceRaw SourceReference;
         public bool IsBlittable;
         public bool IsEventPayload;
         public bool IsCommandRequestPayload;
@@ -65,6 +66,7 @@ namespace Improbable.Gdk.CodeGenerator
                 ? rawTypeDefinition.fieldDefinitions
                     .Select(rawFieldDefinition => new UnityFieldDefinition(rawFieldDefinition)).ToList()
                 : new List<UnityFieldDefinition>();
+            SourceReference = rawTypeDefinition.sourceReference;
             IsBlittable = false;
             IsEventPayload = false;
             IsCommandRequestPayload = false;
