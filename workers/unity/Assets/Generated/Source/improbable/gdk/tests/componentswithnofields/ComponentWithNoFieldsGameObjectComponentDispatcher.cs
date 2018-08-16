@@ -93,19 +93,19 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
                 if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -116,7 +116,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                     {
                         continue;

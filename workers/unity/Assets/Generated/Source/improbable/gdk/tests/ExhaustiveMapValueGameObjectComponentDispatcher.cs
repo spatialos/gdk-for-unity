@@ -94,7 +94,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
                 if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -105,7 +105,7 @@ namespace Generated.Improbable.Gdk.Tests
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                     {
                         continue;
@@ -122,15 +122,15 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToReaderWriterStore)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
                 if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -141,7 +141,7 @@ namespace Generated.Improbable.Gdk.Tests
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveMapValue>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
+                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
                     if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
                     {
                         continue;
