@@ -49,6 +49,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             return createdReaderWriters;
         }
 
+        private IReaderWriterInternal Inject(MonoBehaviour behaviour, uint componentId, Entity entity, FieldInfo field)
+        {
+            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
+            field.SetValue(behaviour, readerWriter);
+            return readerWriter;
+        }
+
         public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
         {
             var behaviourType = behaviour.GetType();
