@@ -1,6 +1,7 @@
 ﻿using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class FlashOnCollision : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class FlashOnCollision : MonoBehaviour
 
     private float collideTime;
     private bool flashing = false;
-    private const float flashTime = 0.2f;
+    [SerializeField] public float flashTime = 0.2f;
+    [SerializeField] public Color flashColor = Color.red;
 
     void OnEnable()
     {
@@ -31,7 +33,7 @@ public class FlashOnCollision : MonoBehaviour
         collideTime = Time.time;
         flashing = true;
         var renderer = gameObject.GetComponent<MeshRenderer>();
-        renderer.material.SetColor("_Color", UnityEngine.Color.red);
+        renderer.material.SetColor("_Color", flashColor);
     }
 
     void Update()
