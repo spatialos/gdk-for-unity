@@ -43,7 +43,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 var id = idToFields.Key;
                 var fields = idToFields.Value;
-                createdReaderWriters[id] = fields.Select(field => Inject(behaviour, id, entity, field)).ToArray();
+                var readerWritersArray = new IReaderWriterInternal[fields.Length];
+                for (var i = 0; i < fields.Length; i++)
+                {
+                    readerWritersArray[i] = Inject(behaviour, id, entity, fields[i]);
+                }
+
+                createdReaderWriters[id] = readerWritersArray;
             }
 
             return createdReaderWriters;
@@ -62,7 +68,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             EnsureLoaded(behaviourType);
             foreach (var fieldsToComponents in fieldInfoCache[behaviourType])
             {
-                var componentId = fieldsToComponents.Key;
                 var fields = fieldsToComponents.Value;
                 foreach (var field in fields)
                 {

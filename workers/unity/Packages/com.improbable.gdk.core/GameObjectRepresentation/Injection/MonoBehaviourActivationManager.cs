@@ -47,15 +47,23 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
-                var readerIds = injector.GetRequiredReaderComponentIds(behaviour.GetType());
-                AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
+                var behaviourType = behaviour.GetType();
+                var readerIds = injector.GetRequiredReaderComponentIds(behaviourType);
+                var writerIds = injector.GetRequiredWriterComponentIds(behaviourType);
 
-                var writerIds = injector.GetRequiredWriterComponentIds(behaviour.GetType());
-                AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
-
-                numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
-                if (numUnsatisfiedReadersOrWriters[behaviour] > 0)
+                if (readerIds.Count > 0)
                 {
+                    AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
+                }
+
+                if (writerIds.Count > 0)
+                {
+                    AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
+                }
+
+                if (readerIds.Count > 0 || writerIds.Count > 0)
+                {
+                    numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
                     behaviour.enabled = false;
                 }
             }

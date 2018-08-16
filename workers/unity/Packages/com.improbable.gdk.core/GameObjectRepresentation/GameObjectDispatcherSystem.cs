@@ -30,7 +30,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entityIndex {entityIndex}.");
             }
 
-            var spatialOSBehaviourManager = entityIndexToActivationManager[entityIndex];
             entityIndexToActivationManager.Remove(entityIndex);
             entityIndexToReaderWriterStore.Remove(entityIndex);
         }

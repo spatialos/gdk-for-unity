@@ -61,6 +61,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentAddedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -71,6 +76,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentRemovedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -81,6 +91,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -96,6 +111,11 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
 <# if (fieldDetailsList.Count > 0) { #>
+                if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
                 for (var i = 0; i < entities.Length; i++)
@@ -121,6 +141,7 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
 <# for (var j = 0; j < eventDetailsList.Count; j++) { #>
+                if (!EventsReceivedComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[<#= j #>].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
@@ -149,6 +170,7 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
+                if (!CommandRequestsComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
                     var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
@@ -175,6 +197,11 @@ namespace <#= qualifiedNamespace #>
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 for (var i = 0; i < entities.Length; i++)

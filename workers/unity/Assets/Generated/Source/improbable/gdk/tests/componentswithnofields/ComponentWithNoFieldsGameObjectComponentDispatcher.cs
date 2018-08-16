@@ -45,6 +45,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentAddedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -55,6 +60,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentRemovedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -65,6 +75,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -91,6 +106,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)

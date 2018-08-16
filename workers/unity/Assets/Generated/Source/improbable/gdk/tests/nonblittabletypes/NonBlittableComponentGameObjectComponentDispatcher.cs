@@ -50,6 +50,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentAddedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -60,6 +65,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (ComponentRemovedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -70,6 +80,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSNonBlittableComponent>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -84,6 +99,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
@@ -107,6 +127,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
@@ -129,6 +150,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+                if (!EventsReceivedComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[1].GetEntityArray();
                     var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
@@ -155,6 +177,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
                     var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
@@ -176,6 +199,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+                if (!CommandRequestsComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[1].GetEntityArray();
                     var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
@@ -201,6 +225,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
+                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSNonBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
