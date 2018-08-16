@@ -518,7 +518,7 @@
             Proxy object that can hold the request or response type of any command.
             </summary>
         </member>
-        <member name="F:Improbable.Worker.Core.GenericCommandObject.CommandId">
+        <member name="F:Improbable.Worker.Core.GenericCommandObject.CommandIndex">
             <summary>
             ID of command within component.
             </summary>
