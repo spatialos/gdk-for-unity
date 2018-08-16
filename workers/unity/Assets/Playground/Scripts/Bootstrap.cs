@@ -32,7 +32,7 @@ namespace Playground
                 {
                     WorkerType = SystemConfig.UnityGameLogic,
                 };
-                CreateWorker(config, new Vector3(10, 0, 0));
+                CreateWorker(config, new Vector3(500, 0, 0));
                 config = new ReceptionistConfig
                 {
                     WorkerType = SystemConfig.UnityClient,
