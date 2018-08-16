@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Improbable.Worker.Core;
+using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 

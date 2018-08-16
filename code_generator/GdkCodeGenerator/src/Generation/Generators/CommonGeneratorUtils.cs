@@ -8,7 +8,8 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static string GetGeneratedHeader()
         {
-            return "// ===========\r\n// DO NOT EDIT - this file is automatically regenerated.\r\n// ===========";
+            return $"// ==========={System.Environment.NewLine}// DO NOT EDIT - this file is automatically " +
+            $"regenerated.{System.Environment.NewLine}// ===========";
         }
 
         public static string IndentEveryNewline(string input)
@@ -19,7 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
         public static string IndentEveryNewline(string input, int numIndents)
         {
             var spaces = new String(' ', numIndents * SpacesPerIndent);
-            return input.Replace("\r\n", $"\r\n{spaces}");
+            return input.Replace($"{System.Environment.NewLine}", $"{System.Environment.NewLine}{spaces}");
         }
     }
 }

@@ -4,6 +4,7 @@ using Generated.Improbable.PlayerLifecycle;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
 
@@ -88,7 +89,7 @@ namespace Playground.Editor.SnapshotGenerator
 
                     var cubeColor = SpatialOSCubeColor.CreateSchemaComponentData();
                     var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
-                    var launchable = SpatialOSLaunchable.CreateSchemaComponentData();
+                    var launchable = SpatialOSLaunchable.CreateSchemaComponentData(new EntityId(0));
                     var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
 
                     var entity = EntityBuilder.Begin()

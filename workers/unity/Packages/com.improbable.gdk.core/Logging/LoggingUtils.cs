@@ -30,14 +30,15 @@ namespace Improbable.Gdk.Core
 
         public static string ExtractLoggerName(Dictionary<string, object> data)
         {
-            if (data.ContainsKey(LoggerName))
+            if (!data.ContainsKey(LoggerName))
             {
-                var loggerName = data[LoggerName];
-                var name = loggerName as string;
-                if (name != null)
-                {
-                    return name;
-                }
+                return UnknownLogger;
+            }
+
+            var loggerName = data[LoggerName];
+            if (loggerName is string name)
+            {
+                return name;
             }
 
             return UnknownLogger;

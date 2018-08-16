@@ -7,6 +7,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -14,10 +22,11 @@ namespace Playground
     {
         private enum PlayerCommand
         {
+            // ReSharper disable once UnusedMember.Local
             None,
             LaunchSmall,
             LaunchLarge
-        };
+        }
 
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
@@ -42,8 +51,7 @@ namespace Playground
 
             if (playerData.Length > 1)
             {
-                throw new ArgumentOutOfRangeException("playerData",
-                    $"Expected at most 1 playerData, got: {playerData.Length}");
+                throw new InvalidOperationException($"Expected at most 1 playerData, got: {playerData.Length}");
             }
 
             PlayerCommand command;
@@ -71,19 +79,22 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            if (component != null && EntityManager.HasComponent<SpatialOSLaunchable>(component.Entity))
+            
+            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
-                var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
-                var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
-
-                sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId, new Generated.Playground.LaunchCommandRequest
-                {
-                    EntityToLaunch = component.SpatialEntityId,
-                    ImpactPoint = impactPoint,
-                    LaunchDirection = launchDirection,
-                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
-                }));
+                return;
             }
+
+            var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
+            var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
+
+            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId, new Generated.Playground.LaunchCommandRequest
+            {
+                EntityToLaunch = component.SpatialEntityId,
+                ImpactPoint = impactPoint,
+                LaunchDirection = launchDirection,
+                LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
+            }));
         }
     }
 }

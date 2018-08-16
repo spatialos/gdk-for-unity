@@ -50,7 +50,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 {
     public struct TransformData
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSTransform> Transforms;
         public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
         public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
@@ -101,7 +101,7 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 {
     public struct ColorData
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSCubeColor> CubeColors;
         public ComponentDataArray<EventSender<SpatialOSCubeColor>> CubeColorEventSenders;
         public ComponentDataArray<Authoritative<SpatialOSCubeColor>> CubeColorAuthority;
@@ -123,11 +123,11 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
                 continue;
             }
 
-            var update = new global::DemoGame.CubeColor.Update();
+            var update = new global::Playground.CubeColor.Update();
 
             foreach(var event in changeColorEvents)
             {
-                update.changeColor.Add(global::Generated.DemoGame.ColorData.ToSpatial(event));
+                update.changeColor.Add(global::Generated.Playground.ColorData.ToSpatial(event));
             }
 
             SpatialOSCubeColorTranslation.SendComponentUpdate(worker.Connection, entityId, update);

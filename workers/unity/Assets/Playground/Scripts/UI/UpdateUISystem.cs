@@ -4,12 +4,20 @@ using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class UpdateUISystem : ComponentSystem
     {
-        public struct PlayerData
+        public struct PlayerDataLauncher
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
@@ -17,19 +25,31 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
         }
 
-        [Inject] private PlayerData playerData;
+        public struct PlayerDataScore
+        {
+            public readonly int Length;
+            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
+            [ReadOnly] public ComponentDataArray<SpatialOSScore.ReceivedUpdates> Updates;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
+        }
+
+        [Inject] private PlayerDataLauncher playerDataLauncher;
+        [Inject] private PlayerDataScore playerDataScore;
 
         protected override void OnUpdate()
         {
-            var launcher = playerData.Launcher[0];
+            for (var i = 0; i < playerDataLauncher.Length; i++)
+            {
+                var launcher = playerDataLauncher.Launcher[i];
 
-            if (launcher.RechargeTimeLeft > 0.0f)
-            {
-                UIComponent.Main.TestText.text = "Recharging";
+                UIComponent.Main.TestText.text =
+                    launcher.RechargeTimeLeft > 0.0f ? "Recharging" : $"Energy: {launcher.EnergyLeft}";
             }
-            else
+
+            for (var i = 0; i < playerDataScore.Length; i++)
             {
-                UIComponent.Main.TestText.text = $"Energy: {launcher.EnergyLeft}";
+                var score = playerDataScore.Score[i];
+                UIComponent.Main.ScoreText.text = $"Score: {score.Score}";
             }
         }
     }

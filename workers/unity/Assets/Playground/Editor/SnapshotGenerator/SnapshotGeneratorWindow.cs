@@ -34,7 +34,7 @@ namespace Playground.Editor.SnapshotGenerator
                         "..",
                         "..",
                         "snapshots",
-                        "default.snapshot")),
+                        "default.snapshot"))
             };
         }
 

@@ -34,6 +34,7 @@ namespace Playground
             var launcher = SpatialOSLauncher.CreateSchemaComponentData(100, 0);
             var clientHeartbeat = SpatialOSPlayerHeartbeatClient.CreateSchemaComponentData();
             var serverHeartbeat = SpatialOSPlayerHeartbeatServer.CreateSchemaComponentData();
+            var score = SpatialOSScore.CreateSchemaComponentData(0);
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)
@@ -47,7 +48,8 @@ namespace Playground
                 .AddComponent(archetype, SystemConfig.UnityGameLogic)
                 .AddComponent(launcher, SystemConfig.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)
-                .AddComponent(serverHeartbeat, SystemConfig.UnityGameLogic);
+                .AddComponent(serverHeartbeat, SystemConfig.UnityGameLogic)
+                .AddComponent(score, SystemConfig.UnityGameLogic);
 
             return entityBuilder.Build();
         }

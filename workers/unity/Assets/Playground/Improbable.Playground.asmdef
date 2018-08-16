@@ -5,10 +5,10 @@
         "Improbable.Gdk.TransformSynchronization",
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Legacy",
-        "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Improbable.Gdk.Generated"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

@@ -19,7 +19,7 @@ Because of this, the Unity GDK attaches a `CommandRequestSender<T>` (where `T` i
 Given this schema:
 
 ```
-package demogame;
+package playground;
 import "improbable/transform.transform.schema"
 
 type BuildRequest
@@ -46,8 +46,8 @@ The Unity GDK generates these types:
 
 * `BuildRequest` - Equivalent of the schema type.
 * `BuildResponse` - Equivalent of the schema type.
-* `BuildWallRequest` - Represents the `build_wall` command request. Holds metadata associated with the request (for example, the caller's attribute set) and a `BuildRequest` object. Implements `IIncomingCommandRequest`.
-* `BuildWallResponse` - Represents the `build_wall` command response. Holds metadata associated with the response (e.g. status code) and a `BuildResponse` object. Implements `IIncomingCommandResponse`.
+* `BuildWall.Request` - Represents the `build_wall` command request. Holds metadata associated with the request (for example, the caller's attribute set) and a `BuildRequest` object. Implements `IIncomingCommandRequest`.
+* `BuildWall.Response` - Represents the `build_wall` command response. Holds metadata associated with the response (e.g. status code) and a `BuildResponse` object. Implements `IIncomingCommandResponse`.
 
 The corresponding ECS component for sending commands is `CommandRequestSender<Builder>`, which has the function `SendBuildWallRequest(long targetEntityId, BuildRequest buildRequest)` to send the command request.
 
@@ -58,7 +58,7 @@ public class BuildSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<SpatialOSBuilder> Builders;
         public ComponentDataArray<CommandRequestSender<SpatialOSBuilder>> BuilderRequestSender;
         public ComponentDataArray<SpatialEntityId> EntityIds;
@@ -106,8 +106,8 @@ public class BuildWallHandlerSystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
-        public ComponentArray<CommandRequests<BuildWallRequest>> BuildWallRequests;
+        public readonly int Length;
+        public ComponentArray<CommandRequests<BuildWall.Request>> BuildWallRequests;
     }
 
     [Inject] Data data;
@@ -135,7 +135,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 }
 ```
 
-`build_wall` command requests are on a `CommandRequests<BuildWallRequest>` ECS component. The worker instance should respond to the request using the `SendBuildWallResponse(BuildResponse buildResponse)` method on the request itself.
+`build_wall` command requests are on a `CommandRequests<BuildWall.Request>` ECS component. The worker instance should respond to the request using the `SendBuildWallResponse(BuildResponse buildResponse)` method on the request itself.
 
 ### Receiving command responses
 
@@ -152,8 +152,8 @@ public class BuildWallResponseHandler : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
-        public ComponentArray<CommandResponses<BuildWallResponse>> BuildWallResponses;
+        public readonly int Length;
+        public ComponentArray<CommandResponses<BuildWall.Response>> BuildWallResponses;
     }
 
     [Inject] Data data;
@@ -182,7 +182,7 @@ public class BuildWallResponseHandler : ComponentSystem
 }
 ```
 
-`build_wall` command responses are on a `CommandResponses<BuildWallResponse>` ECS component.
+`build_wall` command responses are on a `CommandResponses<BuildWall.Response>` ECS component.
 
 ### World commands
 
@@ -227,7 +227,7 @@ public class CreateEntitySystem : ComponentSystem
 {
     public struct Data
     {
-        public int Length;
+        public readonly int Length;
         public ComponentDataArray<Foo> Foo;
         public ComponentDataArray<WorldCommandSender> WorldCommandSender;
     }

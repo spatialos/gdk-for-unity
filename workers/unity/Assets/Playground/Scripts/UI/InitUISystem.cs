@@ -5,6 +5,14 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -15,6 +23,7 @@ namespace Playground
             public readonly int Length;
             public EntityArray Entites;
             [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
+            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
             [ReadOnly] public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
@@ -30,6 +39,7 @@ namespace Playground
                 var uiComponent = inst.GetComponent<UIComponent>();
                 UIComponent.Main = uiComponent;
                 uiComponent.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
+                uiComponent.ScoreText.text = $"Score: {data.Score[i].Score}";
             }
 
             // Disable system after first run.

@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core
                 // Find all components with the RemoveAtEndOfTick attribute
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
+                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
                     {
                         continue;
                     }

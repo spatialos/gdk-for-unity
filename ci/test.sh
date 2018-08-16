@@ -26,14 +26,14 @@ cleanUnity
 
 markStartOfBlock "Tools Testing"
 
-dotnet test --logger:"nunit;LogFilePath=${TOOLS_TEST_RESULTS_FILES}" tools/DocsLinter/DocsLinter.csproj
+dotnet test --logger:"nunit;LogFilePath=${TOOLS_TEST_RESULTS_FILES}" "${PROJECT_DIR}/tools/DocsLinter/DocsLinter.csproj"
 TOOLS_TEST_RESULT=$?
 
 markEndOfBlock "Tools Testing"
 
 markStartOfBlock "Code Generator Testing"
 
-dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj
+dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" "${PROJECT_DIR}/code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj"
 CODE_GENERATOR_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator Testing"
@@ -41,8 +41,7 @@ markEndOfBlock "Code Generator Testing"
 markStartOfBlock "Editmode Testing"
 
 pushd "workers/unity"
-  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
+  dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
@@ -51,7 +50,8 @@ pushd "workers/unity"
     -testResults "${EDITMODE_TEST_RESULTS_FILE}"
 popd
 
-EDITMODE_TEST_RESULT=$?
+    EDITMODE_TEST_RESULT=$?
+popd
 
 markEndOfBlock "Editmode Testing"
 
@@ -60,8 +60,7 @@ cleanUnity
 markStartOfBlock "Playmode Testing"
 
 pushd "workers/unity"
-  dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
-    -nographics \
+  dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
     -batchmode \
     -projectPath "${PROJECT_DIR}/workers/unity" \
     -runTests \
@@ -70,7 +69,8 @@ pushd "workers/unity"
     -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
 popd
 
-PLAYMODE_TEST_RESULT=$?
+    PLAYMODE_TEST_RESULT=$?
+popd
 
 markEndOfBlock "Playmode Testing"
 

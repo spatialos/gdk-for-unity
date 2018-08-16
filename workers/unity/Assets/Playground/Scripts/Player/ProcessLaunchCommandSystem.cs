@@ -1,9 +1,18 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
 
 namespace Playground
 {
@@ -27,6 +36,7 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -81,6 +91,8 @@ namespace Playground
             for (var i = 0; i < launchableData.Length; i++)
             {
                 var rigidbody = launchableData.Rigidbody[i];
+                var launchable = launchableData.Launchable[i];
+                var sender = launchableData.Sender[i];
                 foreach (var request in launchableData.Requests[i].Requests)
                 {
                     var info = request.RawRequest;
@@ -89,7 +101,14 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
+                    launchable.MostRecentLauncher = info.Player;
                 }
+
+                sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                    launchable.MostRecentLauncher,
+                    new ScoreIncreaseRequest { Amount = 1.0f }));
+
+                launchableData.Launchable[i] = launchable;
             }
         }
     }
