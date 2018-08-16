@@ -31,8 +31,7 @@ namespace Improbable.Gdk.CodeGenerator
             relativeOutputPath = Formatting.GetNamespacePath(schemaFile.Package);
             package = Formatting.CapitaliseQualifiedNameParts(schemaFile.Package);
 
-            typesToGenerate = new List<UnityTypeDefinition>();
-            SelectTypesToGenerate(schemaFile);
+            typesToGenerate = SelectTypesToGenerate(schemaFile);
 
             foreach (var unityTypeDefinition in typesToGenerate)
             {
@@ -139,7 +138,7 @@ namespace Improbable.Gdk.CodeGenerator
         ///     Filters out auto-generated types like PositionData from the JSON AST.
         ///     However, we want to keep types that are used as a "data" field in a component.
         /// </summary>
-        private void SelectTypesToGenerate(UnitySchemaFile schemaFile)
+        private List<UnityTypeDefinition> SelectTypesToGenerate(UnitySchemaFile schemaFile)
         {
             var componentDataTypes =
                 schemaFile.ComponentDefinitions.Select(component => component.RawDataDefinition);
@@ -153,7 +152,7 @@ namespace Improbable.Gdk.CodeGenerator
                 type.QualifiedName != componentData.TypeName ||
                 !SourceReferenceEquals(type.SourceReference, componentData.sourceReference)));
 
-            typesToGenerate.AddRange(filteredTypes);
+            return filteredTypes.ToList();
         }
 
         private bool SourceReferenceEquals(SourceReferenceRaw sourceRef1, SourceReferenceRaw sourceRef2)
