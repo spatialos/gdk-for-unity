@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -13,18 +14,18 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
 
-        public static readonly Type[] ClientSystems =
+        public static void AddClientSystems(World world)
         {
-            typeof(SendCreatePlayerRequestSystem),
-            typeof(HandlePlayerHeartbeatRequestSystem),
-        };
+            world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
+            world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
+        }
 
-        public static readonly Type[] ServerSystems =
+        public static void AddServerSystems(World world)
         {
-            typeof(HandleCreatePlayerRequestSystem),
-            typeof(SendPlayerHeartbeatRequestSystem),
-            typeof(HandlePlayerHeartbeatResponseSystem),
-        };
+            world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();
+            world.GetOrCreateManager<SendPlayerHeartbeatRequestSystem>();
+            world.GetOrCreateManager<HandlePlayerHeartbeatResponseSystem>();
+        }
     }
 }
 

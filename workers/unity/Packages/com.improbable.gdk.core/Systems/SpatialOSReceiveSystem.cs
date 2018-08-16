@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
             dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
 
@@ -93,7 +93,10 @@ namespace Improbable.Gdk.Core
             });
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
-            AddAllCommandComponents.ForEach(action => action(entity));
+            foreach (var AddCommandCompoent in AddAllCommandComponents)
+            {
+                AddCommandCompoent(entity);
+            }
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
             worker.EntityMapping.Add(entityId, entity);
         }

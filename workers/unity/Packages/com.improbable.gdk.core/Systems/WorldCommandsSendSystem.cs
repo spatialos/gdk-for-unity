@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
             createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();

@@ -1,18 +1,19 @@
 using System;
 using Improbable.Gdk.Core;
+using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     public static class CoreSystemHelper
     {
-        public static readonly Type[] Systems =
+        public static void AddSystems(World world)
         {
-            typeof(SpatialOSReceiveSystem),
-            typeof(SpatialOSSendSystem),
-            typeof(CleanReactiveComponentsSystem),
-            typeof(WorldCommandsCleanSystem),
-            typeof(WorldCommandsSendSystem),
-            typeof(CommandRequestTrackerSystem),
-        };
+            world.GetOrCreateManager<SpatialOSSendSystem>();
+            world.GetOrCreateManager<SpatialOSReceiveSystem>();
+            world.GetOrCreateManager<CleanReactiveComponentsSystem>();
+            world.GetOrCreateManager<WorldCommandsCleanSystem>();
+            world.GetOrCreateManager<WorldCommandsSendSystem>();
+            world.GetOrCreateManager<CommandRequestTrackerSystem>();
+        }
     }
 }

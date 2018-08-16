@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
 
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
 

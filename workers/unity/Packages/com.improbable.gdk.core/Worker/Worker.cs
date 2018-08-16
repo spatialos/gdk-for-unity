@@ -10,7 +10,9 @@ namespace Improbable.Gdk.Core
 {
     public class Worker : IDisposable
     {
-        internal readonly Dictionary<EntityId, Entity> EntityMapping = new Dictionary<EntityId, Entity>();
+        public delegate void WorkerEventHandler(Worker worker);
+        public static event WorkerEventHandler OnConnect;
+        public static event WorkerEventHandler OnDisconnect;
 
         public readonly Vector3 Origin;
         public readonly string WorkerType;
@@ -20,9 +22,7 @@ namespace Improbable.Gdk.Core
         public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
 
-        public delegate void WorkerEventHandler(Worker worker);
-        public static event WorkerEventHandler OnConnect;
-        public static event WorkerEventHandler OnDisconnect;
+        internal readonly Dictionary<EntityId, Entity> EntityMapping = new Dictionary<EntityId, Entity>();
 
         private Worker(ConnectionConfig config, ILogDispatcher logDispatcher, Vector3 origin)
         {
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
             OnConnect?.Invoke(this);
         }
 
-        public static Worker TryGetWorker(World world)
+        public static Worker GetWorkerFromWorld(World world)
         {
             var workerSystem = world.GetExistingManager<WorkerSystem>();
             if (workerSystem == null)
@@ -75,9 +75,11 @@ namespace Improbable.Gdk.Core
         {
             EntityMapping.Clear();
             World.Dispose();
+            World = null;
             OnDisconnect?.Invoke(this);
             ConnectionUtility.Disconnect(Connection);
             Connection.Dispose();
+            Connection = null;
         }
     }
 }

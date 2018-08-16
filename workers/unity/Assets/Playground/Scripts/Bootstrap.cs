@@ -94,10 +94,7 @@ namespace Playground
         {
             var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
             Instantiate(Level, origin, Quaternion.identity);
-            foreach (var system in SystemConfig.GetSystems(config.WorkerType))
-            {
-                worker.World.GetOrCreateManager(system);
-            }
+            SystemConfig.AddSystems(worker.World, config.WorkerType);
             Workers.Add(worker);
         }
     }

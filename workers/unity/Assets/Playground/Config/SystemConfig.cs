@@ -12,66 +12,60 @@ namespace Playground
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
 
-        public static readonly Type[] CommonSystems =
-        {
-            typeof(EntityManager),
-            typeof(GameObjectInitializationSystem),
-            typeof(ArchetypeInitializationSystem),
-            typeof(DisconnectSystem),
-        };
-
-        public static List<Type> GetSystems(string workerType)
+        public static void AddSystems(World world, string workerType)
         {
             switch (workerType)
             {
                 case UnityClient:
-                    return GetClientSystems();
+                    AddClientSystems(world);
+                    break;
                 case UnityGameLogic:
-                    return GetGameLogicSystems();
+                    AddGameLogicSystems(world);
+                    break;
                 default:
                     throw new Exception("Worker type not known");
             }
         }
 
-        public static List<Type> GetClientSystems()
+        public static void AddCommonSystems(World world)
         {
-            var systems = new List<Type>(CoreSystemHelper.Systems);
-            systems.AddRange(TransformSynchronizationSystemHelper.ClientSystems);
-            systems.AddRange(PlayerLifecycleConfig.ClientSystems);
-            systems.AddRange(CommonSystems);
-            systems.AddRange(new[]
-            {
-                typeof(ProcessColorChangeSystem),
-                typeof(LocalPlayerInputSync),
-                typeof(InitCameraSystem),
-                typeof(FollowCameraSystem),
-                typeof(InitUISystem),
-                typeof(UpdateUISystem),
-                typeof(PlayerCommandsSystem),
-                typeof(MetricSendSystem),
-            });
-            return systems;
+            world.GetOrCreateManager<EntityManager>();
+            world.GetOrCreateManager<GameObjectInitializationSystem>();
+            world.GetOrCreateManager<ArchetypeInitializationSystem>();
+            world.GetOrCreateManager<DisconnectSystem>();
         }
 
-        public static List<Type> GetGameLogicSystems()
+        public static void AddClientSystems(World world)
         {
-            var systems = new List<Type>(CoreSystemHelper.Systems);
-            systems.AddRange(TransformSynchronizationSystemHelper.ServerSystems);
-            systems.AddRange(PlayerLifecycleConfig.ServerSystems);
-            systems.AddRange(CommonSystems);
-            systems.AddRange(new[]
-            {
-                typeof(CubeMovementSystem),
-                typeof(MoveLocalPlayerSystem),
-                typeof(TriggerColorChangeSystem),
-                typeof(ProcessLaunchCommandSystem),
-                typeof(ProcessRechargeSystem),
-                typeof(MetricSendSystem),
-                // TODO after rebase on master
-                //typeof(ProcessScoresSystem),
-                //typeof(CollisionProcessSystem),
-            });
-            return systems;
+            AddCommonSystems(world);
+            CoreSystemHelper.AddSystems(world);
+            TransformSynchronizationSystemHelper.AddSystems(world);
+            PlayerLifecycleConfig.AddClientSystems(world);
+            world.GetOrCreateManager<ProcessColorChangeSystem>();
+            world.GetOrCreateManager<LocalPlayerInputSync>();
+            world.GetOrCreateManager<InitCameraSystem>();
+            world.GetOrCreateManager<FollowCameraSystem>();
+            world.GetOrCreateManager<InitUISystem>();
+            world.GetOrCreateManager<UpdateUISystem>();
+            world.GetOrCreateManager<PlayerCommandsSystem>();
+            world.GetOrCreateManager<MetricSendSystem>();
+        }
+
+        public static void AddGameLogicSystems(World world)
+        {
+            AddCommonSystems(world);
+            CoreSystemHelper.AddSystems(world);
+            TransformSynchronizationSystemHelper.AddSystems(world);
+            PlayerLifecycleConfig.AddServerSystems(world);
+            world.GetOrCreateManager<CubeMovementSystem>();
+            world.GetOrCreateManager<MoveLocalPlayerSystem>();
+            world.GetOrCreateManager<TriggerColorChangeSystem>();
+            world.GetOrCreateManager<ProcessLaunchCommandSystem>();
+            world.GetOrCreateManager<ProcessRechargeSystem>();
+            world.GetOrCreateManager<MetricSendSystem>();
+            // TODO uncomment after rebasing on master
+            //world.GetOrCreateManager<ProcessScoresSystem>();
+            //world.GetOrCreateManager<CollisionProcessSystem>();
         }
     }
 }

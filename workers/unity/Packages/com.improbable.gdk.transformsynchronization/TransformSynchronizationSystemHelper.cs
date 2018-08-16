@@ -1,27 +1,19 @@
 using System;
+using Improbable.Gdk.Core;
+using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationSystemHelper
     {
-        public static readonly Type[] ClientSystems =
+        public static void AddSystems(World world)
         {
-            typeof(TickSystem),
-            typeof(LocalTransformSyncSystem),
-            typeof(InterpolateTransformSystem),
-            typeof(ApplyTransformUpdatesSystem),
-            typeof(TransformSendSystem),
-            typeof(PositionSendSystem),
-        };
-
-        public static readonly Type[] ServerSystems =
-        {
-            typeof(TickSystem),
-            typeof(LocalTransformSyncSystem),
-            typeof(InterpolateTransformSystem),
-            typeof(ApplyTransformUpdatesSystem),
-            typeof(TransformSendSystem),
-            typeof(PositionSendSystem),
-        };
+            world.GetOrCreateManager<TickSystem>();
+            world.GetOrCreateManager<LocalTransformSyncSystem>();
+            world.GetOrCreateManager<InterpolateTransformSystem>();
+            world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
+            world.GetOrCreateManager<TransformSendSystem>();
+            world.GetOrCreateManager<PositionSendSystem>();
+        }
     }
 }

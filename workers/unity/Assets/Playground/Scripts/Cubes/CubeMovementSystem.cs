@@ -27,7 +27,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
         }
 
         protected override void OnUpdate()

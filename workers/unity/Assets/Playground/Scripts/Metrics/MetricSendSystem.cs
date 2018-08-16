@@ -18,7 +18,7 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
         }
 
         protected override void OnUpdate()

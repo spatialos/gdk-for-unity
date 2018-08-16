@@ -45,7 +45,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
             entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);

@@ -48,7 +48,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.TryGetWorker(World);
+            worker = Worker.GetWorkerFromWorld(World);
             if (!SystemConfig.UnityClient.Equals(worker.WorkerType) && !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
