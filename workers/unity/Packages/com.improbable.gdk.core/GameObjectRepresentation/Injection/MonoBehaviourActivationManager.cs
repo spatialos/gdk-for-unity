@@ -51,20 +51,20 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var readerIds = injector.GetRequiredReaderComponentIds(behaviourType);
                 var writerIds = injector.GetRequiredWriterComponentIds(behaviourType);
 
-                if (readerIds.Count > 0 || writerIds.Count > 0)
+                if (readerIds.Count + writerIds.Count > 0)
                 {
+                    if (readerIds.Count > 0)
+                    {
+                        AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
+                    }
+
+                    if (writerIds.Count > 0)
+                    {
+                        AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
+                    }
+
                     numUnsatisfiedReadersOrWriters[behaviour] = readerIds.Count + writerIds.Count;
                     behaviour.enabled = false;
-                }
-
-                if (readerIds.Count > 0)
-                {
-                    AddBehaviourForComponentIds(behaviour, readerIds, behavioursRequiringReaderTypes);
-                }
-
-                if (writerIds.Count > 0)
-                {
-                    AddBehaviourForComponentIds(behaviour, writerIds, behavioursRequiringWriterTypes);
                 }
             }
         }
