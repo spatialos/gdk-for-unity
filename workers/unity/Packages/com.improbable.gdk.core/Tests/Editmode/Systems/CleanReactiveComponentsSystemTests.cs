@@ -10,19 +10,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     [TestFixture]
     public class CleanReactiveComponentsSystemTests
     {
-        private UnityTestWorker worker;
+        private World world;
 
         [SetUp]
         public void Setup()
         {
             // Need to use a different worker instance for every test because the system's world needs to be re-created.
-            worker = new UnityTestWorker("worker-id", new Vector3());
+            world = new World("test");
         }
 
         [TearDown]
         public void TearDown()
         {
-            worker.Dispose();
+            world.Dispose();
         }
 
         [Test]
@@ -31,8 +31,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [TestCase(typeof(OnDisconnected))]
         public void CleanReactiveComponentsSystem_should_remove_components_when_ticked(Type reactiveComponentType)
         {
-            var world = worker.World;
-
             var entityManager = world.GetOrCreateManager<EntityManager>();
 
             var entityWithReactiveComponent = entityManager.CreateEntity(reactiveComponentType);

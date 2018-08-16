@@ -18,7 +18,7 @@ namespace Playground.Editor.SnapshotGenerator
         }
 
         private static readonly List<string> UnityWorkers =
-            new List<string> { UnityGameLogic.WorkerType, UnityClient.WorkerType };
+            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient};
 
         public static void Generate(Arguments arguments)
         {
@@ -43,11 +43,11 @@ namespace Playground.Editor.SnapshotGenerator
         {
             var playerCreator = SpatialOSPlayerCreator.CreateSchemaComponentData();
             var spawner = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, UnityGameLogic.WorkerType)
-                .AddMetadata("PlayerCreator", UnityGameLogic.WorkerType)
+                .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)
+                .AddMetadata("PlayerCreator", SystemConfig.UnityGameLogic)
                 .SetPersistence(true)
                 .SetReadAcl(UnityWorkers)
-                .AddComponent(playerCreator, UnityGameLogic.WorkerType)
+                .AddComponent(playerCreator, SystemConfig.UnityGameLogic)
                 .Build();
             snapshot.AddEntity(spawner);
         }
@@ -92,15 +92,15 @@ namespace Playground.Editor.SnapshotGenerator
                     var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
 
                     var entity = EntityBuilder.Begin()
-                        .AddPosition(x, 0, z, UnityGameLogic.WorkerType)
-                        .AddMetadata(entityType, UnityGameLogic.WorkerType)
+                        .AddPosition(x, 0, z, SystemConfig.UnityGameLogic)
+                        .AddMetadata(entityType, SystemConfig.UnityGameLogic)
                         .SetPersistence(true)
                         .SetReadAcl(UnityWorkers)
-                        .AddComponent(transform, UnityGameLogic.WorkerType)
-                        .AddComponent(cubeColor, UnityGameLogic.WorkerType)
-                        .AddComponent(prefab, UnityGameLogic.WorkerType)
-                        .AddComponent(archetypeComponent, UnityGameLogic.WorkerType)
-                        .AddComponent(launchable, UnityGameLogic.WorkerType)
+                        .AddComponent(transform, SystemConfig.UnityGameLogic)
+                        .AddComponent(cubeColor, SystemConfig.UnityGameLogic)
+                        .AddComponent(prefab, SystemConfig.UnityGameLogic)
+                        .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
+                        .AddComponent(launchable, SystemConfig.UnityGameLogic)
                         .Build();
 
                     snapshot.AddEntity(entity);

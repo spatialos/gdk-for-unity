@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -13,13 +14,13 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
 
-        public static void RegisterClientSystems(World world)
+        public static void AddClientSystems(World world)
         {
             world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }
 
-        public static void RegisterServerSystems(World world)
+        public static void AddServerSystems(World world)
         {
             world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();
             world.GetOrCreateManager<SendPlayerHeartbeatRequestSystem>();
@@ -27,3 +28,4 @@ namespace Improbable.Gdk.PlayerLifecycle
         }
     }
 }
+

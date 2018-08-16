@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
+        private Worker worker;
 
         private struct CreateEntitySenderData
         {
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.GetWorkerFromWorld(World);
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
             createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();

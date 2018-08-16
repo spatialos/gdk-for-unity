@@ -32,13 +32,12 @@ namespace Playground
         private const string UnsupportedArchetype =
             "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
-        private MutableView view;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private ViewCommandBuffer viewCommandBuffer;
 
         private readonly MethodInfo addComponentMethod = typeof(EntityCommandBuffer).GetMethods().First(method =>
             method.Name == "AddComponent" && method.GetParameters()[0].ParameterType == typeof(Entity));
 
-        private string workerType;
+        private Worker worker;
 
         private readonly Dictionary<Type, bool> typeToIsComponentData = new Dictionary<Type, bool>();
 
@@ -49,18 +48,15 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
-            if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+            worker = Worker.GetWorkerFromWorld(World);
+            if (!SystemConfig.UnityClient.Equals(worker.WorkerType) && !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
             {
-                view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("WorldName", World.Name)
                     .WithField("WorkerType", worker));
             }
-
-            workerType = worker.GetWorkerType;
+            viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }
 
         protected override void OnUpdate()
@@ -70,13 +66,13 @@ namespace Playground
                 var archetypeName = data.ArchetypeComponents[i].ArchetypeName;
                 var entity = data.Entities[i];
 
-                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[workerType]
+                if (!ArchetypeConfig.WorkerTypeToArchetypeNameToComponentTypes[worker.WorkerType]
                     .TryGetValue(archetypeName, out var componentTypesToAdd))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("ArchetypeName", archetypeName)
-                        .WithField("WorkerType", workerType));
+                        .WithField("WorkerType", worker.WorkerType));
                     continue;
                 }
 
@@ -100,7 +96,7 @@ namespace Playground
                         }
 
                         addComponentMethodGeneric.Invoke(PostUpdateCommands,
-                            new object[] { entity, componentInstance });
+                            new [] { entity, componentInstance });
                     }
                     else
                     {
@@ -109,7 +105,7 @@ namespace Playground
                 }
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer();
         }
     }
 }

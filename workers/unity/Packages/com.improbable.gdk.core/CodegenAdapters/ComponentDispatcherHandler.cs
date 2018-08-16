@@ -19,9 +19,9 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         public abstract void Dispose();
 
-        protected MutableView MutableView;
         protected ILogDispatcher LogDispatcher;
         protected World World;
+        protected Worker Worker;
 
         protected const string ReceivedDuplicateComponentAdded =
             "Received ComponentAdded, but already received one for this entity.";
@@ -31,11 +31,11 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         protected const string CommandIndexNotFound = "Command index not found.";
         protected const string InvalidAuthorityChange = "Invalid authority state change received.";
 
-        protected ComponentDispatcherHandler(MutableView mutableView, World world)
+        protected ComponentDispatcherHandler(Worker worker, World world)
         {
-            MutableView = mutableView;
-            LogDispatcher = mutableView.LogDispatcher;
+            LogDispatcher = worker.LogDispatcher;
             World = world;
+            Worker = worker;
         }
     }
 }

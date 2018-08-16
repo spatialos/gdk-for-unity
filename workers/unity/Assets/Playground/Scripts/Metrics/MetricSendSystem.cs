@@ -7,9 +7,9 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
+        private Worker worker;
 
-        private float timeElapsedSinceUpdate = 0.0f;
+        private float timeElapsedSinceUpdate;
 
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
@@ -18,7 +18,7 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.GetWorkerFromWorld(World);
         }
 
         protected override void OnUpdate()

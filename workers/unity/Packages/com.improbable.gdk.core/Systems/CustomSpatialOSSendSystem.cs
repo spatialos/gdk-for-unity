@@ -13,13 +13,13 @@ namespace Improbable.Gdk.Core
 
         private SpatialOSSendSystem spatialOSSendSystem;
 
-        protected WorkerBase worker;
+        protected Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.GetWorkerFromWorld(World);
 
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
 
@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core
 
             if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
             {
-                worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("ComponentType", typeof(T)));
             }

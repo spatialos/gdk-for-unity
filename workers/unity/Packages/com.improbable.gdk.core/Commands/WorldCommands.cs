@@ -605,7 +605,7 @@ namespace Improbable.Gdk.Core.Commands
         {
             public struct Request
             {
-                public Worker.Query.EntityQuery EntityQuery;
+                public Improbable.Worker.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
             }
 

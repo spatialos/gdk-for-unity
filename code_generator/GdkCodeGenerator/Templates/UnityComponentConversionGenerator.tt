@@ -36,9 +36,9 @@ namespace <#= qualifiedNamespace #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
 <# } #>
 
-            public DispatcherHandler(MutableView mutableView, global::Unity.Entities.World world) : base(mutableView, world)
+            public DispatcherHandler(Worker worker, World world) : base(worker, world)
             {
-                entityManager = mutableView.EntityManager;
+                entityManager = world.GetOrCreateManager<EntityManager>();
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
 <# foreach (var commandDetails in commandDetailsList) { #>
                 <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
@@ -352,7 +352,7 @@ namespace <#= qualifiedNamespace #>
 
             private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
             {
-                if (!MutableView.TryGetEntity(entityId, out entity))
+                if (!Worker.TryGetEntity(entityId, out entity))
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
