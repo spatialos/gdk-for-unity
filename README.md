@@ -1,14 +1,3 @@
-# The SpatialOS CSharp Core SDK readme (EXPERIMENTAL)
-
-<img align="left" src="docs/assets/warning.png" width="125px"> 
-
-## WARNING: Experimental feature
-This branch contains an experimental feature. It may change, break or disappear at any time and without notice. It might get no improvements, maintenance or support from Improbable (or it might get a load). Do not rely on it: the only thing reliable about this branch is its unreliability.
-
-**Proceed with extreme caution!**
-
-This is an experimental branch of the [SpatialOS Unity GDK repository](https://github.com/spatialos/UnityGDK). We sync it with the SpatialOS Unity GDK master branch occasionally.
-
 # The SpatialOS Unity GDK readme (pre-alpha)
 
 Welcome to the SpatialOS and Unity GDK community. 
