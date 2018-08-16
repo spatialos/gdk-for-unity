@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTickAttribute from all entities
+    ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
@@ -38,12 +38,12 @@ namespace Improbable.Gdk.Core
                 }
             }
             
-            // Find all components with the RemoveAtEndOfTickAttribute attribute
+            // Find all components with the RemoveAtEndOfTick attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
+                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
                     {
                         continue;
                     }

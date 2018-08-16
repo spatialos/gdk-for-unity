@@ -7,8 +7,8 @@ namespace Improbable.Gdk.Core
     ///     Any component with this attribute will be removed from all entities by the CleanReactiveComponentSystem
     ///     Can be added to components extending <see cref="IComponentData" /> or <see cref="ISharedComponentData" />
     /// </summary>
-    [AttributeUsage(AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
-    public class RemoveAtEndOfTickAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Struct)]
+    public class RemoveAtEndOfTick : Attribute
     {
     }
 }
