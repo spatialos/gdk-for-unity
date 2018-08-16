@@ -106,7 +106,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var behaviour = testGameObject.AddComponent<SingleReaderBehaviour>();
             var foundIds = injector.GetComponentPresenceRequirements(behaviour.GetType());
             var foundId = foundIds.First();
-            Assert.AreEqual(BlittableComponentReaderWriterId, foundId);
+            Assert.AreEqual(BlittableComponentReaderWriterId.componentId, foundId);
         }
 
         [Test]

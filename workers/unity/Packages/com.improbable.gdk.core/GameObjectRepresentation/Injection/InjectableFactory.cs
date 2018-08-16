@@ -46,11 +46,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                         .WithField("ReaderWriterCreatorType", creatorType));
                     continue;
                 }
+
                 var injectableId = injectableIdAttribute.Id;
                 var readerWriterCreator = (IReaderWriterCreator) Activator.CreateInstance(creatorType);
                 injectableIdToReaderWriterCreator[injectableId] = readerWriterCreator;
-
-                Debug.Log("Found creator for id " + injectableId.type + "-" + injectableId.componentId);
             }
         }
 
@@ -58,7 +57,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (!injectableIdToReaderWriterCreator.ContainsKey(injectableId))
             {
-                Debug.Log("Failed to find creator for key id " + injectableId.type + "-" + injectableId.componentId);
                 logger.HandleLog(LogType.Error, new LogEvent(NoReaderWriterCreatorFoundForComponentIdError)
                     .WithField(LoggingUtils.LoggerName, GetType())
                     .WithField("ComponentId", injectableId));
