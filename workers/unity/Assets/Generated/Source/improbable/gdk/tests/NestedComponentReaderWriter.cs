@@ -14,53 +14,56 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class NestedComponent
     {
-        [InjectableId(InjectableType.ReaderWriter, 20152)]
-        internal class ReaderWriterCreator : IInjectableCreator
+        public partial class Accessors
         {
-            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 20152)]
+            internal class ReaderWriterCreator : IInjectableCreator
             {
-                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
-            }
-        }
-
-        [InjectableId(InjectableType.ReaderWriter, 20152)]
-        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
-        public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
-        {
-            event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
-        }
-
-        [InjectableId(InjectableType.ReaderWriter, 20152)]
-        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-        public interface Writer : IWriter<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
-        {
-        }
-
-        internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>, Reader, Writer
-        {
-            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
-            {
-            }
-
-            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>> nestedTypeDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>>();
-
-            public event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
-            {
-                add => nestedTypeDelegates.Add(value);
-                remove => nestedTypeDelegates.Remove(value);
-            }
-
-            protected override void TriggerFieldCallbacks(SpatialOSNestedComponent.Update update)
-            {
-                DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
-            }
-            protected override void ApplyUpdate(SpatialOSNestedComponent.Update update, ref SpatialOSNestedComponent data)
-            {
-                if (update.NestedType.HasValue)
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    data.NestedType = update.NestedType.Value;
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                }
+            }
+
+            [InjectableId(InjectableType.ReaderWriter, 20152)]
+            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
+            {
+                event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
+        }
+
+            [InjectableId(InjectableType.ReaderWriter, 20152)]
+            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+            public interface Writer : IWriter<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
+            {
+            }
+
+            internal class ReaderWriterImpl :
+                BlittableReaderWriterBase<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>, Reader, Writer
+            {
+                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                    : base(entity, entityManager, logDispatcher)
+                {
+                }
+
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>> nestedTypeDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>>();
+
+                public event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
+                {
+                    add => nestedTypeDelegates.Add(value);
+                    remove => nestedTypeDelegates.Remove(value);
+                }
+
+                protected override void TriggerFieldCallbacks(SpatialOSNestedComponent.Update update)
+                {
+                    DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
+                }
+                protected override void ApplyUpdate(SpatialOSNestedComponent.Update update, ref SpatialOSNestedComponent data)
+                {
+                    if (update.NestedType.HasValue)
+                    {
+                        data.NestedType = update.NestedType.Value;
+                    }
                 }
             }
         }

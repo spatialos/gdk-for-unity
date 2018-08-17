@@ -7,9 +7,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 {
     internal abstract class ReaderWriterTestsBase
     {
-        protected BlittableComponent.Reader ReaderPublic;
-        protected BlittableComponent.Writer WriterPublic;
-        protected BlittableComponent.ReaderWriterImpl ReaderWriterInternal;
+        protected BlittableComponent.Accessors.Reader ReaderPublic;
+        protected BlittableComponent.Accessors.Writer WriterPublic;
+        protected BlittableComponent.Accessors.ReaderWriterImpl ReaderWriterInternal;
         protected EntityManager EntityManager;
         protected Entity Entity;
         private World world;
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             world = new World("test-world");
             EntityManager = world.GetOrCreateManager<EntityManager>();
             Entity = EntityManager.CreateEntity(typeof(SpatialOSBlittableComponent));
-            ReaderWriterInternal = new BlittableComponent.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
+            ReaderWriterInternal = new BlittableComponent.Accessors.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
             ReaderPublic = ReaderWriterInternal;
             WriterPublic = ReaderWriterInternal;
         }

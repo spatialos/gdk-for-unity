@@ -20,25 +20,25 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
         private class SingleReaderBehaviour : MonoBehaviour
         {
-            [Require] public BlittableComponent.Reader Reader;
+            [Require] public BlittableComponent.Accessors.Reader Reader;
         }
 
         private class TwoWritersBehaviour : MonoBehaviour
         {
-            [Require] public BlittableComponent.Writer Writer1;
-            [Require] public NonBlittableComponent.Writer Writer2;
+            [Require] public BlittableComponent.Accessors.Writer Writer1;
+            [Require] public NonBlittableComponent.Accessors.Writer Writer2;
         }
 
         private class MultipleReadersOfSameType : MonoBehaviour
         {
-            [Require] public BlittableComponent.Reader Reader1;
-            [Require] public BlittableComponent.Reader Reader2;
+            [Require] public BlittableComponent.Accessors.Reader Reader1;
+            [Require] public BlittableComponent.Accessors.Reader Reader2;
         }
 
         private class ReaderAndWriterOfSameType : MonoBehaviour
         {
-            [Require] public BlittableComponent.Reader Reader;
-            [Require] public BlittableComponent.Writer Writer;
+            [Require] public BlittableComponent.Accessors.Reader Reader;
+            [Require] public BlittableComponent.Accessors.Writer Writer;
         }
 
         private class RequireInvalidMember : MonoBehaviour
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             Assert.IsNull(behaviour.Reader);
             injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
-            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Accessors.ReaderWriterImpl), behaviour.Reader.GetType());
         }
 
         [Test]
@@ -165,9 +165,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
             Assert.IsNull(behaviour.Reader2);
             injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader1);
-            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader1.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Accessors.ReaderWriterImpl), behaviour.Reader1.GetType());
             Assert.NotNull(behaviour.Reader2);
-            Assert.AreEqual(typeof(BlittableComponent.ReaderWriterImpl), behaviour.Reader2.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Accessors.ReaderWriterImpl), behaviour.Reader2.GetType());
         }
     }
 }

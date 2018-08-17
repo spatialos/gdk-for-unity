@@ -14,45 +14,48 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
-        [InjectableId(InjectableType.ReaderWriter, 1005)]
-        internal class ReaderWriterCreator : IInjectableCreator
+        public partial class Accessors
         {
-            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1005)]
+            internal class ReaderWriterCreator : IInjectableCreator
             {
-                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                }
             }
+
+            [InjectableId(InjectableType.ReaderWriter, 1005)]
+            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
+            {
         }
 
-        [InjectableId(InjectableType.ReaderWriter, 1005)]
-        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
-        public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
-        {
-        }
-
-        [InjectableId(InjectableType.ReaderWriter, 1005)]
-        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-        public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
-        {
-        }
-
-        internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>, Reader, Writer
-        {
-            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1005)]
+            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+            public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>
             {
             }
 
-            protected override void TriggerFieldCallbacks(SpatialOSComponentWithNoFieldsWithCommands.Update update)
+            internal class ReaderWriterImpl :
+                BlittableReaderWriterBase<SpatialOSComponentWithNoFieldsWithCommands, SpatialOSComponentWithNoFieldsWithCommands.Update>, Reader, Writer
             {
-            }
-            protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithCommands.Update update, ref SpatialOSComponentWithNoFieldsWithCommands data)
-            {
-            }
+                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                    : base(entity, entityManager, logDispatcher)
+                {
+                }
 
-            public void OnCmdCommandRequest(Cmd.Request request)
-            {
-                throw new System.NotImplementedException();
+                protected override void TriggerFieldCallbacks(SpatialOSComponentWithNoFieldsWithCommands.Update update)
+                {
+                }
+                protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithCommands.Update update, ref SpatialOSComponentWithNoFieldsWithCommands data)
+                {
+                }
+
+                public void OnCmdCommandRequest(Cmd.Request request)
+                {
+                    throw new System.NotImplementedException();
+                }
             }
         }
     }

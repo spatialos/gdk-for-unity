@@ -14,218 +14,221 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
-        [InjectableId(InjectableType.ReaderWriter, 1002)]
-        internal class ReaderWriterCreator : IInjectableCreator
+        public partial class Accessors
         {
-            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1002)]
+            internal class ReaderWriterCreator : IInjectableCreator
             {
-                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                }
             }
+
+            [InjectableId(InjectableType.ReaderWriter, 1002)]
+            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            public interface Reader : IReader<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
+            {
+                event Action<BlittableBool> BoolFieldUpdated;
+                event Action<int> IntFieldUpdated;
+                event Action<long> LongFieldUpdated;
+                event Action<float> FloatFieldUpdated;
+                event Action<double> DoubleFieldUpdated;
+                event Action<string> StringFieldUpdated;
+                event Action<global::System.Nullable<int>> OptionalFieldUpdated;
+                event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated;
+                event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated;
+                event Action<FirstEventEvent> OnFirstEvent;
+                event Action<SecondEventEvent> OnSecondEvent;
         }
 
-        [InjectableId(InjectableType.ReaderWriter, 1002)]
-        [InjectionCondition(InjectionCondition.RequireComponentToRead)]
-        public interface Reader : IReader<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
-        {
-            event Action<BlittableBool> BoolFieldUpdated;
-            event Action<int> IntFieldUpdated;
-            event Action<long> LongFieldUpdated;
-            event Action<float> FloatFieldUpdated;
-            event Action<double> DoubleFieldUpdated;
-            event Action<string> StringFieldUpdated;
-            event Action<global::System.Nullable<int>> OptionalFieldUpdated;
-            event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated;
-            event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated;
-            event Action<FirstEventEvent> OnFirstEvent;
-            event Action<SecondEventEvent> OnSecondEvent;
-        }
-
-        [InjectableId(InjectableType.ReaderWriter, 1002)]
-        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-        public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
-        {
-            void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
-            void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
-        }
-
-        internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>, Reader, Writer
-        {
-            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1002)]
+            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+            public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
             {
+                void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
+                void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
             }
 
-            private readonly List<Action<BlittableBool>> boolFieldDelegates = new List<Action<BlittableBool>>();
-
-            public event Action<BlittableBool> BoolFieldUpdated
+            internal class ReaderWriterImpl :
+                NonBlittableReaderWriterBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>, Reader, Writer
             {
-                add => boolFieldDelegates.Add(value);
-                remove => boolFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
-
-            public event Action<int> IntFieldUpdated
-            {
-                add => intFieldDelegates.Add(value);
-                remove => intFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
-
-            public event Action<long> LongFieldUpdated
-            {
-                add => longFieldDelegates.Add(value);
-                remove => longFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
-
-            public event Action<float> FloatFieldUpdated
-            {
-                add => floatFieldDelegates.Add(value);
-                remove => floatFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
-
-            public event Action<double> DoubleFieldUpdated
-            {
-                add => doubleFieldDelegates.Add(value);
-                remove => doubleFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<string>> stringFieldDelegates = new List<Action<string>>();
-
-            public event Action<string> StringFieldUpdated
-            {
-                add => stringFieldDelegates.Add(value);
-                remove => stringFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<global::System.Nullable<int>>> optionalFieldDelegates = new List<Action<global::System.Nullable<int>>>();
-
-            public event Action<global::System.Nullable<int>> OptionalFieldUpdated
-            {
-                add => optionalFieldDelegates.Add(value);
-                remove => optionalFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<global::System.Collections.Generic.List<int>>> listFieldDelegates = new List<Action<global::System.Collections.Generic.List<int>>>();
-
-            public event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated
-            {
-                add => listFieldDelegates.Add(value);
-                remove => listFieldDelegates.Remove(value);
-            }
-
-            private readonly List<Action<global::System.Collections.Generic.Dictionary<int, string>>> mapFieldDelegates = new List<Action<global::System.Collections.Generic.Dictionary<int, string>>>();
-
-            public event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated
-            {
-                add => mapFieldDelegates.Add(value);
-                remove => mapFieldDelegates.Remove(value);
-            }
-
-            protected override void TriggerFieldCallbacks(SpatialOSNonBlittableComponent.Update update)
-            {
-                DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
-                DispatchWithErrorHandling(update.IntField, intFieldDelegates);
-                DispatchWithErrorHandling(update.LongField, longFieldDelegates);
-                DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
-                DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
-                DispatchWithErrorHandling(update.StringField, stringFieldDelegates);
-                DispatchWithErrorHandling(update.OptionalField, optionalFieldDelegates);
-                DispatchWithErrorHandling(update.ListField, listFieldDelegates);
-                DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
-            }
-            protected override void ApplyUpdate(SpatialOSNonBlittableComponent.Update update, SpatialOSNonBlittableComponent data)
-            {
-                if (update.BoolField.HasValue)
+                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                    : base(entity, entityManager, logDispatcher)
                 {
-                    data.BoolField = update.BoolField.Value;
                 }
-                if (update.IntField.HasValue)
+
+                private readonly List<Action<BlittableBool>> boolFieldDelegates = new List<Action<BlittableBool>>();
+
+                public event Action<BlittableBool> BoolFieldUpdated
                 {
-                    data.IntField = update.IntField.Value;
+                    add => boolFieldDelegates.Add(value);
+                    remove => boolFieldDelegates.Remove(value);
                 }
-                if (update.LongField.HasValue)
+
+                private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
+
+                public event Action<int> IntFieldUpdated
                 {
-                    data.LongField = update.LongField.Value;
+                    add => intFieldDelegates.Add(value);
+                    remove => intFieldDelegates.Remove(value);
                 }
-                if (update.FloatField.HasValue)
+
+                private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
+
+                public event Action<long> LongFieldUpdated
                 {
-                    data.FloatField = update.FloatField.Value;
+                    add => longFieldDelegates.Add(value);
+                    remove => longFieldDelegates.Remove(value);
                 }
-                if (update.DoubleField.HasValue)
+
+                private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
+
+                public event Action<float> FloatFieldUpdated
                 {
-                    data.DoubleField = update.DoubleField.Value;
+                    add => floatFieldDelegates.Add(value);
+                    remove => floatFieldDelegates.Remove(value);
                 }
-                if (update.StringField.HasValue)
+
+                private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
+
+                public event Action<double> DoubleFieldUpdated
                 {
-                    data.StringField = update.StringField.Value;
+                    add => doubleFieldDelegates.Add(value);
+                    remove => doubleFieldDelegates.Remove(value);
                 }
-                if (update.OptionalField.HasValue)
+
+                private readonly List<Action<string>> stringFieldDelegates = new List<Action<string>>();
+
+                public event Action<string> StringFieldUpdated
                 {
-                    data.OptionalField = update.OptionalField.Value;
+                    add => stringFieldDelegates.Add(value);
+                    remove => stringFieldDelegates.Remove(value);
                 }
-                if (update.ListField.HasValue)
+
+                private readonly List<Action<global::System.Nullable<int>>> optionalFieldDelegates = new List<Action<global::System.Nullable<int>>>();
+
+                public event Action<global::System.Nullable<int>> OptionalFieldUpdated
                 {
-                    data.ListField = update.ListField.Value;
+                    add => optionalFieldDelegates.Add(value);
+                    remove => optionalFieldDelegates.Remove(value);
                 }
-                if (update.MapField.HasValue)
+
+                private readonly List<Action<global::System.Collections.Generic.List<int>>> listFieldDelegates = new List<Action<global::System.Collections.Generic.List<int>>>();
+
+                public event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated
                 {
-                    data.MapField = update.MapField.Value;
+                    add => listFieldDelegates.Add(value);
+                    remove => listFieldDelegates.Remove(value);
                 }
-            }
 
-            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<int, string>>> mapFieldDelegates = new List<Action<global::System.Collections.Generic.Dictionary<int, string>>>();
 
-            public event Action<FirstEventEvent> OnFirstEvent
-            {
-                add => firstEventDelegates.Add(value);
-                remove => firstEventDelegates.Remove(value);
-            }
+                public event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated
+                {
+                    add => mapFieldDelegates.Add(value);
+                    remove => mapFieldDelegates.Remove(value);
+                }
 
-            public void OnFirstEventEvent(FirstEventEvent payload)
-            {
-                DispatchEventWithErrorHandling(payload, firstEventDelegates);
-            }
+                protected override void TriggerFieldCallbacks(SpatialOSNonBlittableComponent.Update update)
+                {
+                    DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
+                    DispatchWithErrorHandling(update.IntField, intFieldDelegates);
+                    DispatchWithErrorHandling(update.LongField, longFieldDelegates);
+                    DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
+                    DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
+                    DispatchWithErrorHandling(update.StringField, stringFieldDelegates);
+                    DispatchWithErrorHandling(update.OptionalField, optionalFieldDelegates);
+                    DispatchWithErrorHandling(update.ListField, listFieldDelegates);
+                    DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
+                }
+                protected override void ApplyUpdate(SpatialOSNonBlittableComponent.Update update, SpatialOSNonBlittableComponent data)
+                {
+                    if (update.BoolField.HasValue)
+                    {
+                        data.BoolField = update.BoolField.Value;
+                    }
+                    if (update.IntField.HasValue)
+                    {
+                        data.IntField = update.IntField.Value;
+                    }
+                    if (update.LongField.HasValue)
+                    {
+                        data.LongField = update.LongField.Value;
+                    }
+                    if (update.FloatField.HasValue)
+                    {
+                        data.FloatField = update.FloatField.Value;
+                    }
+                    if (update.DoubleField.HasValue)
+                    {
+                        data.DoubleField = update.DoubleField.Value;
+                    }
+                    if (update.StringField.HasValue)
+                    {
+                        data.StringField = update.StringField.Value;
+                    }
+                    if (update.OptionalField.HasValue)
+                    {
+                        data.OptionalField = update.OptionalField.Value;
+                    }
+                    if (update.ListField.HasValue)
+                    {
+                        data.ListField = update.ListField.Value;
+                    }
+                    if (update.MapField.HasValue)
+                    {
+                        data.MapField = update.MapField.Value;
+                    }
+                }
 
-            public void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
-            {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
-                sender.SendFirstEventEvent(payload);
-            }
+                private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
 
-            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
+                public event Action<FirstEventEvent> OnFirstEvent
+                {
+                    add => firstEventDelegates.Add(value);
+                    remove => firstEventDelegates.Remove(value);
+                }
 
-            public event Action<SecondEventEvent> OnSecondEvent
-            {
-                add => secondEventDelegates.Add(value);
-                remove => secondEventDelegates.Remove(value);
-            }
+                public void OnFirstEventEvent(FirstEventEvent payload)
+                {
+                    DispatchEventWithErrorHandling(payload, firstEventDelegates);
+                }
 
-            public void OnSecondEventEvent(SecondEventEvent payload)
-            {
-                DispatchEventWithErrorHandling(payload, secondEventDelegates);
-            }
+                public void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
+                {
+                    var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
+                    sender.SendFirstEventEvent(payload);
+                }
 
-            public void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
-            {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
-                sender.SendSecondEventEvent(payload);
-            }
+                private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
 
-            public void OnFirstCommandCommandRequest(FirstCommand.Request request)
-            {
-                throw new System.NotImplementedException();
-            }
+                public event Action<SecondEventEvent> OnSecondEvent
+                {
+                    add => secondEventDelegates.Add(value);
+                    remove => secondEventDelegates.Remove(value);
+                }
 
-            public void OnSecondCommandCommandRequest(SecondCommand.Request request)
-            {
-                throw new System.NotImplementedException();
+                public void OnSecondEventEvent(SecondEventEvent payload)
+                {
+                    DispatchEventWithErrorHandling(payload, secondEventDelegates);
+                }
+
+                public void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
+                {
+                    var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
+                    sender.SendSecondEventEvent(payload);
+                }
+
+                public void OnFirstCommandCommandRequest(FirstCommand.Request request)
+                {
+                    throw new System.NotImplementedException();
+                }
+
+                public void OnSecondCommandCommandRequest(SecondCommand.Request request)
+                {
+                    throw new System.NotImplementedException();
+                }
             }
         }
     }

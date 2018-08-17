@@ -112,7 +112,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
 
                     var updateList = updateLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Accessors.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
@@ -148,7 +148,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Accessors.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

@@ -5,7 +5,7 @@ using Empty = Generated.Playground.Empty;
 
 public class CheckForPlayerCollision : MonoBehaviour
 {
-    [Require] private Collisions.Writer writer;
+    [Require] private Collisions.Accessors.Writer writer;
 
     void OnTriggerEnter(Collider other)
     {

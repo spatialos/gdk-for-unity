@@ -116,7 +116,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     var updateList = updateLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Accessors.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
@@ -142,7 +142,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                         var eventList = eventLists[i];
 
-                        foreach (ReaderWriterImpl reader in readers)
+                        foreach (Accessors.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -165,7 +165,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                         var eventList = eventLists[i];
 
-                        foreach (ReaderWriterImpl reader in readers)
+                        foreach (Accessors.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -191,7 +191,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
 
                         var commandList = commandLists[i];
-                        foreach (ReaderWriterImpl reader in readers)
+                        foreach (Accessors.ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
@@ -213,7 +213,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
 
                         var commandList = commandLists[i];
-                        foreach (ReaderWriterImpl reader in readers)
+                        foreach (Accessors.ReaderWriterImpl reader in readers)
                         {
                             foreach (var req in commandList.Buffer)
                             {
@@ -242,7 +242,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Accessors.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
