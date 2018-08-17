@@ -6,17 +6,16 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
+    ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTickAtrribute from all entities
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
         private MutableView view;
 
-        private readonly List<Action> removeComponentActions = new List<Action>();
-
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
+        private readonly List<(ComponentGroup, Type)> componentGroupsToRemove = new List<(ComponentGroup, Type)>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -39,22 +38,12 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            const string methodName = "AddRemoveComponentAction";
-            MethodInfo addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod(methodName,
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if (addRemoveComponentActionMethod == null)
-            {
-                throw new MissingMethodException(methodName);
-            }
-
-            // Find all components with the RemoveAtEndOfTick attribute
+            // Find all components with the RemoveAtEndOfTickAtrribute attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
+                    if (type.GetCustomAttribute<RemoveAtEndOfTickAtrribute>(false) == null)
                     {
                         continue;
                     }
@@ -71,27 +60,32 @@ namespace Improbable.Gdk.Core
                     }
 
                     typesToRemove.Add(type);
-                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                    componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
                 }
             }
         }
 
-        private void AddRemoveComponentAction<T>()
+        private void RemoveComponents()
         {
-            var componentGroup = GetComponentGroup(ComponentType.ReadOnly<T>());
-            removeComponentActions.Add(() =>
+            var componentsToRemove = new List<(Entity, Type)>();
+            foreach ((ComponentGroup componentGroup, Type type) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
                 {
-                    return;
+                    continue;
                 }
 
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    PostUpdateCommands.RemoveComponent<T>(entityArray[i]);
+                    componentsToRemove.Add((entityArray[i], type));
                 }
-            });
+            }
+
+            foreach ((Entity entity, Type type) in componentsToRemove)
+            {
+                EntityManager.RemoveComponent(entity, type);
+            }
         }
 
         protected override void OnUpdate()
@@ -104,11 +98,8 @@ namespace Improbable.Gdk.Core
                 translationUnit.CleanUpComponents(ref commandBuffer);
             }
 
-            // Clean components with RemoveAtEndOfTick attribute
-            foreach (var removeComponentAction in removeComponentActions)
-            {
-                removeComponentAction();
-            }
+            // Clean components with RemoveAtEndOfTickAtrribute attribute
+            RemoveComponents();
         }
     }
 }
