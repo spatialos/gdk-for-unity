@@ -14,16 +14,16 @@ namespace Improbable.Gdk.Core
             {
                 // For exception types, Unity expects an exception object to be passed.
                 // Otherwise, it will not be displayed.
-                Exception exception = logEvent.Exception ?? new Exception(logEvent.ToString());
+                var exception = logEvent.Exception ?? new Exception(logEvent.ToString());
 
                 Debug.unityLogger.LogException(exception, logEvent.Context);
             }
             else
             {
                 Debug.unityLogger.Log(
-                    logType: type,
-                    message: logEvent,
-                    context: logEvent.Context);
+                    type,
+                    logEvent,
+                    logEvent.Context);
             }
         }
     }

@@ -2,20 +2,50 @@
 <#@ output extension=".cs" #>
 <#
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
     var eventDetailsList = GetEventDetailsList();
 #>
 <#= generatedHeader #>
 
-using Improbable.Gdk.Core;
 using System.Collections.Generic;
+using Unity.Entities;
 
 namespace <#= qualifiedNamespace #>
 {
-<# foreach (var eventDetails in eventDetailsList) { #>
-    public struct <#= eventDetails.EventName #>Event : ISpatialEvent
+    public partial class <#= componentDetails.ComponentName #>
     {
-        public <#= eventDetails.FullyQualifiedPayloadTypeName #> Payload;
-    }
+        public static class ReceivedEvents
+        {
+<# foreach (var eventDetails in eventDetailsList) { #>
+            public struct <#= eventDetails.EventName #> : IComponentData
+            {
+                internal uint handle;
+
+                public List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Events
+                {
+                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Get(handle);
+                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(handle, value);
+                }
+            }
 
 <# } #>
+        }
+
+        public static class EventSender
+        {
+<# foreach (var eventDetails in eventDetailsList) { #>
+            public struct <#= eventDetails.EventName #> : IComponentData
+            {
+                internal uint handle;
+
+                public List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Events
+                {
+                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Get(handle);
+                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(handle, value);
+                }
+            }
+
+<# } #>
+        }
+    }
 }

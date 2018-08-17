@@ -1,0 +1,75 @@
+
+// ===========
+// DO NOT EDIT - this file is automatically regenerated.
+// ===========
+
+using System;
+using System.Collections.Generic;
+using Unity.Entities;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
+using Entity = Unity.Entities.Entity;
+
+namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+{
+    public partial class Connection
+    {
+        [ComponentId(1105)]
+        internal class ReaderWriterCreator : IReaderWriterCreator
+        {
+            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+            }
+        }
+
+        [ReaderInterface]
+        [ComponentId(1105)]
+        public interface Reader : IReader<SpatialOSConnection, SpatialOSConnection.Update>
+        {
+            event Action<MyEventEvent> OnMyEvent;
+        }
+
+        [WriterInterface]
+        [ComponentId(1105)]
+        public interface Writer : IWriter<SpatialOSConnection, SpatialOSConnection.Update>
+        {
+            void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
+        }
+
+        internal class ReaderWriterImpl :
+            BlittableReaderWriterBase<SpatialOSConnection, SpatialOSConnection.Update>, Reader, Writer
+        {
+            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                : base(entity, entityManager, logDispatcher)
+            {
+            }
+
+            protected override void TriggerFieldCallbacks(SpatialOSConnection.Update update)
+            {
+            }
+            protected override void ApplyUpdate(SpatialOSConnection.Update update, ref SpatialOSConnection data)
+            {
+            }
+
+            private readonly List<Action<MyEventEvent>> myEventDelegates = new System.Collections.Generic.List<System.Action<MyEventEvent>>();
+
+            public event Action<MyEventEvent> OnMyEvent
+            {
+                add => myEventDelegates.Add(value);
+                remove => myEventDelegates.Remove(value);
+            }
+
+            public void OnMyEventEvent(MyEventEvent payload)
+            {
+                DispatchEventWithErrorHandling(payload, myEventDelegates);
+            }
+
+            public void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+            {
+                var sender = EntityManager.GetComponentData<EventSender<SpatialOSConnection>>(Entity);
+                sender.SendMyEventEvent(payload);
+            }
+        }
+    }
+}

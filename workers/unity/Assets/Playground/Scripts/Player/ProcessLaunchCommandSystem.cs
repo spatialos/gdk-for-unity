@@ -1,9 +1,18 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
 
 namespace Playground
 {
@@ -17,23 +26,17 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
-
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
+            [ReadOnly] public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
         }
 
         private struct LaunchableData
         {
             public readonly int Length;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
-
+            [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -44,7 +47,7 @@ namespace Playground
             // Handle Launch Commands from players. Only allow if they have energy etc.
             for (var i = 0; i < launchCommandData.Length; i++)
             {
-                var sender = launchCommandData.Sender[i];
+                var sender = launchCommandData.Senders[i];
                 var launcher = launchCommandData.Launcher[i];
 
                 if (launcher.RechargeTimeLeft > 0)
@@ -52,20 +55,19 @@ namespace Playground
                     return;
                 }
 
-                var requests = launchCommandData.CommandRequests[i].Buffer;
+                var requests = launchCommandData.Requests[i].Requests;
                 var energyLeft = launcher.EnergyLeft;
                 var j = 0;
                 while (energyLeft > 0f && j < requests.Count)
                 {
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.SendLaunchMeRequest(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
+                    sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
                     {
                         ImpactPoint = info.ImpactPoint,
                         LaunchDirection = info.LaunchDirection,
-                        LaunchEnergy = energy,
-                        Player = info.Player
-                    });
+                        LaunchEnergy = energy
+                    }));
                     energyLeft -= energy;
                     j++;
                 }
@@ -91,8 +93,7 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
-                var player = 0L;
-                foreach (var request in launchableData.CommandRequests[i].Buffer)
+                foreach (var request in launchableData.Requests[i].Requests)
                 {
                     var info = request.RawRequest;
                     rigidbody.AddForceAtPosition(
@@ -100,15 +101,13 @@ namespace Playground
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    player = info.Player;
-                    launchable.MostRecentLauncher = player;
+                    launchable.MostRecentLauncher = info.Player;
                 }
 
-                sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,
-                    new Generated.Playground.ScoreIncreaseRequest
-                    {
-                        Amount = 1.0f,
-                    });
+                sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                    launchable.MostRecentLauncher,
+                    new ScoreIncreaseRequest { Amount = 1.0f }));
+
                 launchableData.Launchable[i] = launchable;
             }
         }

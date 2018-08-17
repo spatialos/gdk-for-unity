@@ -27,7 +27,9 @@ namespace Generated.Improbable.Gdk.Tests
         [ComponentId(197718)]
         public interface Reader : IReader<SpatialOSExhaustiveMapValue, SpatialOSExhaustiveMapValue.Update>
         {
+            event Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>> Field1Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, float>> Field2Updated;
+            event Action<global::System.Collections.Generic.Dictionary<string, byte[]>> Field3Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, int>> Field4Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, long>> Field5Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, double>> Field6Updated;
@@ -40,7 +42,7 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::System.Collections.Generic.Dictionary<string, ulong>> Field13Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, int>> Field14Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, long>> Field15Updated;
-            event Action<global::System.Collections.Generic.Dictionary<string, long>> Field16Updated;
+            event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>> Field16Updated;
             event Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
         }
 
@@ -58,12 +60,28 @@ namespace Generated.Improbable.Gdk.Tests
             {
             }
 
+            private readonly List<Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>>> field1Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>>>();
+
+            public event Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>> Field1Updated
+            {
+                add => field1Delegates.Add(value);
+                remove => field1Delegates.Remove(value);
+            }
+
             private readonly List<Action<global::System.Collections.Generic.Dictionary<string, float>>> field2Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, float>>>();
 
             public event Action<global::System.Collections.Generic.Dictionary<string, float>> Field2Updated
             {
                 add => field2Delegates.Add(value);
                 remove => field2Delegates.Remove(value);
+            }
+
+            private readonly List<Action<global::System.Collections.Generic.Dictionary<string, byte[]>>> field3Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, byte[]>>>();
+
+            public event Action<global::System.Collections.Generic.Dictionary<string, byte[]>> Field3Updated
+            {
+                add => field3Delegates.Add(value);
+                remove => field3Delegates.Remove(value);
             }
 
             private readonly List<Action<global::System.Collections.Generic.Dictionary<string, int>>> field4Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, int>>>();
@@ -162,9 +180,9 @@ namespace Generated.Improbable.Gdk.Tests
                 remove => field15Delegates.Remove(value);
             }
 
-            private readonly List<Action<global::System.Collections.Generic.Dictionary<string, long>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, long>>>();
+            private readonly List<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>>>();
 
-            public event Action<global::System.Collections.Generic.Dictionary<string, long>> Field16Updated
+            public event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>> Field16Updated
             {
                 add => field16Delegates.Add(value);
                 remove => field16Delegates.Remove(value);
@@ -180,7 +198,9 @@ namespace Generated.Improbable.Gdk.Tests
 
             protected override void TriggerFieldCallbacks(SpatialOSExhaustiveMapValue.Update update)
             {
+                DispatchWithErrorHandling(update.Field1, field1Delegates);
                 DispatchWithErrorHandling(update.Field2, field2Delegates);
+                DispatchWithErrorHandling(update.Field3, field3Delegates);
                 DispatchWithErrorHandling(update.Field4, field4Delegates);
                 DispatchWithErrorHandling(update.Field5, field5Delegates);
                 DispatchWithErrorHandling(update.Field6, field6Delegates);
@@ -198,9 +218,17 @@ namespace Generated.Improbable.Gdk.Tests
             }
             protected override void ApplyUpdate(SpatialOSExhaustiveMapValue.Update update, SpatialOSExhaustiveMapValue data)
             {
+                if (update.Field1.HasValue)
+                {
+                    data.Field1 = update.Field1.Value;
+                }
                 if (update.Field2.HasValue)
                 {
                     data.Field2 = update.Field2.Value;
+                }
+                if (update.Field3.HasValue)
+                {
+                    data.Field3 = update.Field3.Value;
                 }
                 if (update.Field4.HasValue)
                 {

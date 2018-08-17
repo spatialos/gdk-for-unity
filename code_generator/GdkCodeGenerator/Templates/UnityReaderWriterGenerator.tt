@@ -96,7 +96,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 <# foreach (var eventDetails in eventDetailsList) {
-            var delegateList = eventDetails.CamelCaseTypeName + "Delegates";
+            var delegateList = eventDetails.CamelCaseName + "Delegates";
             var eventType = eventDetails.EventName + "Event";
 #>
 

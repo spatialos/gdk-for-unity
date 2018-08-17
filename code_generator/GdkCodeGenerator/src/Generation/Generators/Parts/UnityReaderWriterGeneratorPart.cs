@@ -11,11 +11,13 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private string qualifiedNamespace;
         private UnityComponentDefinition unityComponentDefinition;
+        private HashSet<string> enumSet;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package)
+        public string Generate(UnityComponentDefinition unityComponentDefinition, string package, HashSet<string> enumSet)
         {
             qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
             this.unityComponentDefinition = unityComponentDefinition;
+            this.enumSet = enumSet;
 
             return TransformText();
         }
@@ -28,7 +30,8 @@ namespace Improbable.Gdk.CodeGenerator
         private List<UnityFieldDetails> GetFieldDetailsList()
         {
             return unityComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
-                .Select(fieldDefinition => new UnityFieldDetails(fieldDefinition.RawFieldDefinition)).ToList();
+                .Select(fieldDefinition => new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
+                .ToList();
         }
 
         private List<UnityEventDetails> GetEventDetailsList()
