@@ -26,8 +26,7 @@ public class ScoreCollision : MonoBehaviour
             && !entityManager.HasComponent<Playground.CollisionComponent>(component.Entity)
             && otherComponent)
         {
-            entityManager.AddComponentData(component.Entity,
-                new Playground.CollisionComponent(component.Entity, otherComponent.Entity));
+            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent(otherComponent.Entity));
         }
     }
 }

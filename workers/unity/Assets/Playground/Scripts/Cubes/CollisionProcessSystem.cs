@@ -3,6 +3,7 @@ using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 #region Diagnostic control
 
@@ -17,12 +18,10 @@ namespace Playground
     [RemoveAtEndOfTick]
     public struct CollisionComponent : IComponentData
     {
-        public Entity OwnEntity;
         public Entity OtherEntity;
 
-        public CollisionComponent(Entity ownEntity, Entity otherEntity)
+        public CollisionComponent(Entity otherEntity)
         {
-            OwnEntity = ownEntity;
             OtherEntity = otherEntity;
         }
     }
@@ -34,15 +33,17 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            
+
             // Gets updated through PostUpdate
             [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
-            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
+            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
         }
 
         [Inject] private Data data;
+
+        private static readonly EntityId InvalidEntityId = new EntityId(0);
 
         protected override void OnUpdate()
         {
@@ -50,37 +51,38 @@ namespace Playground
             {
                 // Handle all the different possible outcomes of the collision.
                 // This requires looking at their most recent launchers.
+                var launchable = data.Launchable[i];
                 var collision = data.Collision[i];
                 var sender = data.Sender[i];
 
-                var firstLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OwnEntity);
-                var secondLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OtherEntity);
-                var firstLauncher = firstLaunchable.MostRecentLauncher;
-                var secondLauncher = secondLaunchable.MostRecentLauncher;
+                var otherLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OtherEntity);
+                var ourOwner = launchable.MostRecentLauncher;
+                var otherOwner = otherLaunchable.MostRecentLauncher;
 
-                if (firstLauncher == secondLauncher)
+                if (ourOwner == otherOwner)
                 {
-                    if (firstLauncher.IsValid())
+                    if (ourOwner.IsValid())
                     {
+                        Debug.Log("Another score increase requested");
                         sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
-                            firstLauncher, new ScoreIncreaseRequest { Amount = 1 }));
+                            ourOwner, new ScoreIncreaseRequest { Amount = 1 }));
                         data.Sender[i] = sender;
                     }
                 }
-                else if (secondLauncher.IsValid())
+                else if (otherOwner.IsValid())
                 {
-                    var launchable = data.Launchable[i];
-                    if (!firstLauncher.IsValid())
+                    if (!ourOwner.IsValid())
                     {
-                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(secondLauncher,
+                        Debug.Log("3333 Another score increase requested");
+                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(otherOwner,
                             new ScoreIncreaseRequest { Amount = 1 }));
                         data.Sender[i] = sender;
 
-                        launchable.MostRecentLauncher = secondLauncher;
+                        launchable.MostRecentLauncher = otherOwner;
                     }
                     else
                     {
-                        launchable.MostRecentLauncher = new EntityId(0);
+                        launchable.MostRecentLauncher = InvalidEntityId;
                     }
 
                     PostUpdateCommands.SetComponent(data.Entities[i], launchable);

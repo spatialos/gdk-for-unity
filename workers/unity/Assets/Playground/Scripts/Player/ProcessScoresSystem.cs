@@ -2,6 +2,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 #region Diagnostic control
 
@@ -34,6 +35,7 @@ namespace Playground
                 var playerScore = scoringData.Score[i];
                 foreach (var request in scoringData.CommandRequests[i].Requests)
                 {
+                    Debug.Log("Score increase");
                     playerScore.Score += request.RawRequest.Amount;
                 }
 
