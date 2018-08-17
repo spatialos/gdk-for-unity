@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocsLinter", "DocsLinter\DocsLinter.csproj", "{A8D920E3-1239-4280-9FD8-CEB5D013DE45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocsLinter", "DocsLinter\DocsLinter.csproj", "{A8D920E3-1239-4280-9FD8-CEB5D013DE45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindUnity", "FindUnity\FindUnity.csproj", "{B78813CB-B137-4217-8686-606716EBDC36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityPaths", "UnityPaths\UnityPaths.csproj", "{6B5EDA68-527B-4A29-9E82-F3F384C12663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunUnity", "RunUnity\RunUnity.csproj", "{EC601956-117E-484C-A813-5E500DAFFDB2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopySchema", "CopySchema\CopySchema.csproj", "{353A1D6E-53BB-4EF3-AD2C-66FEABFDC043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunUnity", "RunUnity\RunUnity.csproj", "{EC601956-117E-484C-A813-5E500DAFFDB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE7B8A3F-099F-45B7-8F41-396FE3640A16}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,10 +33,6 @@ Global
 		{EC601956-117E-484C-A813-5E500DAFFDB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC601956-117E-484C-A813-5E500DAFFDB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC601956-117E-484C-A813-5E500DAFFDB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{353A1D6E-53BB-4EF3-AD2C-66FEABFDC043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{353A1D6E-53BB-4EF3-AD2C-66FEABFDC043}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{353A1D6E-53BB-4EF3-AD2C-66FEABFDC043}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{353A1D6E-53BB-4EF3-AD2C-66FEABFDC043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

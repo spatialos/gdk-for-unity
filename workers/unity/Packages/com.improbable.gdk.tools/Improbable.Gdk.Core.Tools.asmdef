@@ -1,0 +1,10 @@
+{
+    "name": "Improbable.Gdk.Core.Tools",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
