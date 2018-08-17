@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests
     public partial class NestedComponent
     {
         [InjectableId(InjectableType.ReaderWriter, 20152)]
-        internal class ReaderWriterCreator : IReaderWriterCreator
+        internal class ReaderWriterCreator : IInjectableCreator
         {
             public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {

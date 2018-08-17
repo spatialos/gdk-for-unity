@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private readonly EntityManager entityManager;
         private readonly ILogDispatcher logger;
-        private readonly Dictionary<InjectableId, IReaderWriterCreator> injectableIdToReaderWriterCreator = new Dictionary<InjectableId, IReaderWriterCreator>();
+        private readonly Dictionary<InjectableId, IInjectableCreator> injectableIdToReaderWriterCreator = new Dictionary<InjectableId, IInjectableCreator>();
 
         public InjectableFactory(EntityManager entityManager, ILogDispatcher logger)
         {
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             var creatorTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(IReaderWriterCreator).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
+                .Where(type => typeof(IInjectableCreator).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                 .ToList();
 
             foreach (var creatorType in creatorTypes)
@@ -48,7 +48,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var injectableId = injectableIdAttribute.Id;
-                var readerWriterCreator = (IReaderWriterCreator) Activator.CreateInstance(creatorType);
+                var readerWriterCreator = (IInjectableCreator) Activator.CreateInstance(creatorType);
                 injectableIdToReaderWriterCreator[injectableId] = readerWriterCreator;
             }
         }
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return null;
             }
 
-            return injectableIdToReaderWriterCreator[injectableId].CreateReaderWriter(entity, entityManager, logger);
+            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, entityManager, logger);
         }
     }
 }

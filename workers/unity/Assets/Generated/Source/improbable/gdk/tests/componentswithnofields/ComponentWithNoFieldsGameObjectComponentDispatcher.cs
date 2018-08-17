@@ -42,7 +42,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             };
 
             private const uint componentId = 1003;
-            private static readonly InjectableId injectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -116,8 +116,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }

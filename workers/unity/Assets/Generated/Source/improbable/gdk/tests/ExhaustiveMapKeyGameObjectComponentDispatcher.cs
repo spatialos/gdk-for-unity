@@ -43,7 +43,7 @@ namespace Generated.Improbable.Gdk.Tests
             };
 
             private const uint componentId = 197719;
-            private static readonly InjectableId injectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -105,8 +105,8 @@ namespace Generated.Improbable.Gdk.Tests
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveMapKey.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }
@@ -141,8 +141,8 @@ namespace Generated.Improbable.Gdk.Tests
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveMapKey>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }

@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             behaviourToInjectables.Remove(behaviour);
         }
 
-        public bool TryGetReaderWritersForComponent(InjectableId injectableId, out HashSet<IInjectable> injectables)
+        public bool TryGetInjectablesForComponent(InjectableId injectableId, out HashSet<IInjectable> injectables)
         {
             return injectablesFromId.TryGetValue(injectableId, out injectables);
         }

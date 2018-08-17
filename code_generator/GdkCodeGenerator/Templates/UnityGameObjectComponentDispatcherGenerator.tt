@@ -58,7 +58,7 @@ namespace <#= qualifiedNamespace #>
             };
 
             private const uint componentId = <#= unityComponentDefinition.Id #>;
-            private static readonly InjectableId injectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -121,8 +121,8 @@ namespace <#= qualifiedNamespace #>
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }
@@ -148,8 +148,8 @@ namespace <#= qualifiedNamespace #>
                     var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -177,8 +177,8 @@ namespace <#= qualifiedNamespace #>
                     var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -207,8 +207,8 @@ namespace <#= qualifiedNamespace #>
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }

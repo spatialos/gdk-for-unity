@@ -47,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             };
 
             private const uint componentId = 1001;
-            private static readonly InjectableId injectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -109,8 +109,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSBlittableComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }
@@ -134,8 +134,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -157,8 +157,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -184,8 +184,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -206,8 +206,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                         {
                             continue;
                         }
@@ -235,8 +235,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(injectableId, out var readers))
+                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
                     {
                         continue;
                     }
