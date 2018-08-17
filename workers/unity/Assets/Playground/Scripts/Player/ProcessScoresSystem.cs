@@ -34,7 +34,7 @@ namespace Playground
                 var playerScore = scoringData.Score[i];
                 foreach (var request in scoringData.CommandRequests[i].Requests)
                 {
-                    playerScore.Score += request.RawRequest.Amount;
+                    playerScore.Score += request.Payload.Amount;
                 }
 
                 scoringData.Score[i] = playerScore;
