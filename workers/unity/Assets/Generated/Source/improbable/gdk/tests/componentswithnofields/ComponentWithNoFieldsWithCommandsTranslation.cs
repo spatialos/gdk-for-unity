@@ -25,19 +25,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private const string LoggerName = "ComponentWithNoFieldsWithCommands.DispatcherHandler";
 
-            internal List<Cmd.OutgoingRequest> CmdRequests = new List<Cmd.OutgoingRequest>();
-            internal List<Cmd.OutgoingResponse> CmdResponses = new List<Cmd.OutgoingResponse>();
-            internal List<CommandFailure> CmdFailure = new List<CommandFailure>();
-            private static readonly ComponentPool<CommandRequests<Cmd.Request>> CmdRequestPool =
-                new ComponentPool<CommandRequests<Cmd.Request>>(
-                    () => new CommandRequests<Cmd.Request>(),
-                    (component) => component.Buffer.Clear());
-            private static readonly ComponentPool<CommandResponses<Cmd.Response>> CmdResponsePool =
-                new ComponentPool<CommandResponses<Cmd.Response>>(
-                    () => new CommandResponses<Cmd.Response>(),
-                    (component) => component.Buffer.Clear());
-
-
             private CommandStorages.Cmd CmdStorage;
 
             public DispatcherHandler(Worker worker, World world) : base(worker, world)
@@ -477,12 +464,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                                 connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
                                 continue;
                             }
-
-                            foreach (var failure in CmdFailure)
-                            {
-                                SendCmdFailure(connection, failure);
-                            }
-                            CmdFailure.Clear();
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());

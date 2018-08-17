@@ -25,42 +25,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             private const string LoggerName = "NonBlittableComponent.DispatcherHandler";
 
-            internal List<FirstCommand.OutgoingRequest> FirstCommandRequests = new List<FirstCommand.OutgoingRequest>();
-            internal List<FirstCommand.OutgoingResponse> FirstCommandResponses = new List<FirstCommand.OutgoingResponse>();
-            internal List<CommandFailure> FirstCommandFailure = new List<CommandFailure>();
-            private static readonly ComponentPool<CommandRequests<FirstCommand.Request>> FirstCommandRequestPool =
-                new ComponentPool<CommandRequests<FirstCommand.Request>>(
-                    () => new CommandRequests<FirstCommand.Request>(),
-                    (component) => component.Buffer.Clear());
-            private static readonly ComponentPool<CommandResponses<FirstCommand.Response>> FirstCommandResponsePool =
-                new ComponentPool<CommandResponses<FirstCommand.Response>>(
-                    () => new CommandResponses<FirstCommand.Response>(),
-                    (component) => component.Buffer.Clear());
-            internal List<SecondCommand.OutgoingRequest> SecondCommandRequests = new List<SecondCommand.OutgoingRequest>();
-            internal List<SecondCommand.OutgoingResponse> SecondCommandResponses = new List<SecondCommand.OutgoingResponse>();
-            internal List<CommandFailure> SecondCommandFailure = new List<CommandFailure>();
-            private static readonly ComponentPool<CommandRequests<SecondCommand.Request>> SecondCommandRequestPool =
-                new ComponentPool<CommandRequests<SecondCommand.Request>>(
-                    () => new CommandRequests<SecondCommand.Request>(),
-                    (component) => component.Buffer.Clear());
-            private static readonly ComponentPool<CommandResponses<SecondCommand.Response>> SecondCommandResponsePool =
-                new ComponentPool<CommandResponses<SecondCommand.Response>>(
-                    () => new CommandResponses<SecondCommand.Response>(),
-                    (component) => component.Buffer.Clear());
-
-            internal readonly Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>> EntityIdToFirstEventEvents = new Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>>();
-
-            private static readonly ComponentPool<EventsReceived<FirstEventEvent>> FirstEventEventPool =
-                new ComponentPool<EventsReceived<FirstEventEvent>>(
-                    () => new EventsReceived<FirstEventEvent>(),
-                    (component) => component.Buffer.Clear());
-            internal readonly Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>> EntityIdToSecondEventEvents = new Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>>();
-
-            private static readonly ComponentPool<EventsReceived<SecondEventEvent>> SecondEventEventPool =
-                new ComponentPool<EventsReceived<SecondEventEvent>>(
-                    () => new EventsReceived<SecondEventEvent>(),
-                    (component) => component.Buffer.Clear());
-
             private CommandStorages.FirstCommand FirstCommandStorage;
             private CommandStorages.SecondCommand SecondCommandStorage;
 
@@ -664,6 +628,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                             eventsFirstEvent.Clear();
                         }
+
                         if (eventsSecondEvent.Count > 0)
                         {
                             foreach (var e in eventsSecondEvent)
@@ -674,6 +639,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                             eventsSecondEvent.Clear();
                         }
+
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
@@ -733,12 +699,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 continue;
                             }
 
-                            foreach (var failure in FirstCommandFailure)
-                            {
-                                SendFirstCommandFailure(connection, failure);
-                            }
-                            FirstCommandFailure.Clear();
-
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
                             global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
@@ -795,12 +755,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
                                 continue;
                             }
-
-                            foreach (var failure in SecondCommandFailure)
-                            {
-                                SendSecondCommandFailure(connection, failure);
-                            }
-                            SecondCommandFailure.Clear();
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 2);
                             global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());

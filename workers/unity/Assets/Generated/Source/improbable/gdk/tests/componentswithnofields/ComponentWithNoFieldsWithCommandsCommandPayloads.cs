@@ -48,12 +48,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     CallerAttributeSet = callerAttributeSet;
                     RawRequest = request;
                 }
-                
-                public void SendCmdFailure(string message)
-                {
-                    Translation.CmdFailure.Add(
-                        new CommandFailure(RequestId, message));
-                }
             }
 
             public struct Response

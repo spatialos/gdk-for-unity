@@ -26,14 +26,6 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             private const string LoggerName = "Connection.DispatcherHandler";
 
 
-            internal readonly Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> EntityIdToMyEventEvents = new Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
-
-            private static readonly ComponentPool<EventsReceived<MyEventEvent>> MyEventEventPool =
-                new ComponentPool<EventsReceived<MyEventEvent>>(
-                    () => new EventsReceived<MyEventEvent>(),
-                    (component) => component.Buffer.Clear());
-
-
             public DispatcherHandler(Worker worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
@@ -375,6 +367,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                             eventsMyEvent.Clear();
                         }
+
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 

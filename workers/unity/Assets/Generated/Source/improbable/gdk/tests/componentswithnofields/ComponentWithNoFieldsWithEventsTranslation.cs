@@ -26,14 +26,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             private const string LoggerName = "ComponentWithNoFieldsWithEvents.DispatcherHandler";
 
 
-            internal readonly Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> EntityIdToEvtEvents = new Dictionary<long, List<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
-
-            private static readonly ComponentPool<EventsReceived<EvtEvent>> EvtEventPool =
-                new ComponentPool<EventsReceived<EvtEvent>>(
-                    () => new EventsReceived<EvtEvent>(),
-                    (component) => component.Buffer.Clear());
-
-
             public DispatcherHandler(Worker worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
@@ -375,6 +367,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                             eventsEvt.Clear();
                         }
+
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 

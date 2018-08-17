@@ -32,29 +32,6 @@ namespace <#= qualifiedNamespace #>
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
-<# foreach(var commandDetails in commandDetailsList) { #>
-            internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
-            internal List<<#= commandDetails.CommandName #>.OutgoingResponse> <#= commandDetails.CommandName #>Responses = new List<<#= commandDetails.CommandName #>.OutgoingResponse>();
-            internal List<CommandFailure> <#= commandDetails.CommandName #>Failure = new List<CommandFailure>();
-            private static readonly ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>> <#= commandDetails.CommandName #>RequestPool =
-                new ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>>(
-                    () => new CommandRequests<<#= commandDetails.CommandName #>.Request>(),
-                    (component) => component.Buffer.Clear());
-            private static readonly ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>> <#= commandDetails.CommandName #>ResponsePool =
-                new ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>>(
-                    () => new CommandResponses<<#= commandDetails.CommandName #>.Response>(),
-                    (component) => component.Buffer.Clear());
-<# } #>
-
-<# foreach(var eventDetails in eventDetailsList) { #>
-            internal readonly Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>> EntityIdTo<#= eventDetails.EventName#>Events = new Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>>();
-
-            private static readonly ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>> <#= eventDetails.EventName#>EventPool =
-                new ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>>(
-                    () => new EventsReceived<<#= eventDetails.EventName#>Event>(),
-                    (component) => component.Buffer.Clear());
-<# } #>
-
 <# foreach (var commandDetails in commandDetailsList) { #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
 <# } #>
@@ -556,6 +533,7 @@ namespace <#= qualifiedNamespace #>
 
                             events<#= eventDetail.EventName #>.Clear();
                         }
+
 <# } #>
 <# } #>
                         // Send serialized update over the wire
@@ -622,12 +600,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
                                 continue;
                             }
-
-                            foreach (var failure in <#= commandDetails.CommandName #>Failure)
-                            {
-                                Send<#= commandDetails.CommandName #>Failure(connection, failure);
-                            }
-                            <#= commandDetails.CommandName #>Failure.Clear();
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
                             <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());

@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             GenerateComponentGroups();
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
-            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
+            logger = Worker.GetWorkerFromWorld(World).LogDispatcher;
             injector = new RequiredFieldInjector(entityManager, logger);
         }
 
@@ -65,8 +65,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentAddedComponentTypes);
                 gameObjectComponentDispatcher.ComponentRemovedComponentGroup =
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentRemovedComponentTypes);
-                gameObjectComponentDispatcher.AuthoritiesChangedComponentGroup =
-                    GetComponentGroup(gameObjectComponentDispatcher.AuthoritiesChangedComponentTypes);
+                gameObjectComponentDispatcher.AuthorityChangesComponentGroup =
+                    GetComponentGroup(gameObjectComponentDispatcher.AuthorityChangesComponentTypes);
                 if (gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes.Length > 0)
                 {
                     gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup =

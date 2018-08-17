@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         [ComponentId(1004)]
         public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
         {
-            event Action<EvtEvent> OnEvt;
+            event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
         }
 
         [WriterInterface]
@@ -52,23 +52,23 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             {
             }
 
-            private readonly List<Action<EvtEvent>> evtDelegates = new System.Collections.Generic.List<System.Action<EvtEvent>>();
+            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> evtDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
 
-            public event Action<EvtEvent> OnEvt
+            public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
             {
                 add => evtDelegates.Add(value);
                 remove => evtDelegates.Remove(value);
             }
 
-            public void OnEvtEvent(EvtEvent payload)
+            public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
             {
                 DispatchEventWithErrorHandling(payload, evtDelegates);
             }
 
-            public void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+            public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
             {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSComponentWithNoFieldsWithEvents>>(Entity);
-                sender.SendEvtEvent(payload);
+                var sender = EntityManager.GetComponentData<EventSender.Evt>(Entity);
+                sender.Events.Add(payload);
             }
         }
     }

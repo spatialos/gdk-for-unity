@@ -50,7 +50,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             {
             }
 
-            public void OnCmdCommandRequest(Cmd.Request request)
+            public void OnCmdCommandRequest(Cmd.ReceivedRequest request)
             {
                 throw new System.NotImplementedException();
             }

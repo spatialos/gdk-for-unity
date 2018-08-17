@@ -48,12 +48,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     CallerAttributeSet = callerAttributeSet;
                     RawRequest = request;
                 }
-                
-                public void SendFirstCommandFailure(string message)
-                {
-                    Translation.FirstCommandFailure.Add(
-                        new CommandFailure(RequestId, message));
-                }
             }
 
             public struct Response
@@ -139,12 +133,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
                     RawRequest = request;
-                }
-                
-                public void SendSecondCommandFailure(string message)
-                {
-                    Translation.SecondCommandFailure.Add(
-                        new CommandFailure(RequestId, message));
                 }
             }
 

@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         [ComponentId(1105)]
         public interface Reader : IReader<SpatialOSConnection, SpatialOSConnection.Update>
         {
-            event Action<MyEventEvent> OnMyEvent;
+            event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
         }
 
         [WriterInterface]
@@ -52,23 +52,23 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
             }
 
-            private readonly List<Action<MyEventEvent>> myEventDelegates = new System.Collections.Generic.List<System.Action<MyEventEvent>>();
+            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> myEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
 
-            public event Action<MyEventEvent> OnMyEvent
+            public event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
             {
                 add => myEventDelegates.Add(value);
                 remove => myEventDelegates.Remove(value);
             }
 
-            public void OnMyEventEvent(MyEventEvent payload)
+            public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
             {
                 DispatchEventWithErrorHandling(payload, myEventDelegates);
             }
 
-            public void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+            public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
             {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSConnection>>(Entity);
-                sender.SendMyEventEvent(payload);
+                var sender = EntityManager.GetComponentData<EventSender.MyEvent>(Entity);
+                sender.Events.Add(payload);
             }
         }
     }

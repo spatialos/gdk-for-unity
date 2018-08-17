@@ -54,12 +54,6 @@ namespace <#= qualifiedNamespace #>
                     CallerAttributeSet = callerAttributeSet;
                     RawRequest = request;
                 }
-                
-                public void Send<#= commandDetails.CommandName #>Failure(string message)
-                {
-                    Translation.<#= commandDetails.CommandName #>Failure.Add(
-                        new CommandFailure(RequestId, message));
-                }
             }
 
             public struct Response

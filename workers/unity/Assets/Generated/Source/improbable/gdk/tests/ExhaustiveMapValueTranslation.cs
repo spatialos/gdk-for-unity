@@ -26,8 +26,6 @@ namespace Generated.Improbable.Gdk.Tests
             private const string LoggerName = "ExhaustiveMapValue.DispatcherHandler";
 
 
-
-
             public DispatcherHandler(Worker worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
