@@ -58,7 +58,7 @@ namespace Generated.Improbable.Gdk.Tests
             
                 public static void CleanDataInWorld(global::Unity.Entities.World world)
                 {
-                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key);
+                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
             
                     foreach (var handle in handles)
                     {
@@ -125,7 +125,7 @@ namespace Generated.Improbable.Gdk.Tests
             
                 public static void CleanDataInWorld(global::Unity.Entities.World world)
                 {
-                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key);
+                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
             
                     foreach (var handle in handles)
                     {
@@ -192,7 +192,7 @@ namespace Generated.Improbable.Gdk.Tests
             
                 public static void CleanDataInWorld(global::Unity.Entities.World world)
                 {
-                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key);
+                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
             
                     foreach (var handle in handles)
                     {

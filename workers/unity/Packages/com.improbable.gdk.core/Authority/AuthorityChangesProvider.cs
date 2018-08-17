@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Core
 
         public static void CleanDataInWorld(World world)
         {
-            var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key);
+            var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
 
             foreach (var handle in handles)
             {
