@@ -17,7 +17,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         [InjectableId(InjectableType.ReaderWriter, 1001)]
         internal class ReaderWriterCreator : IInjectableCreator
         {
-            public IInjectable CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
             {
                 return new ReaderWriterImpl(entity, entityManager, logDispatcher);
             }
