@@ -135,13 +135,6 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private class InvalidEntityException : Exception
-        {
-            public InvalidEntityException(string message) : base(message)
-            {
-            }
-        }
-
         private class Acl
         {
             private Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
@@ -183,6 +176,13 @@ namespace Improbable.Gdk.Core
 
                 return new ComponentData(schemaComponentData);
             }
+        }
+    }
+
+    public class InvalidEntityException : Exception
+    {
+        public InvalidEntityException(string message) : base(message)
+        {
         }
     }
 }
