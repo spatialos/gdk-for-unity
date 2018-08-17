@@ -19,6 +19,12 @@ namespace Playground
     {
         public Entity OwnEntity;
         public Entity OtherEntity;
+
+        public CollisionComponent(Entity ownEntity, Entity otherEntity)
+        {
+            OwnEntity = ownEntity;
+            OtherEntity = otherEntity;
+        }
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -28,15 +34,13 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable; // Gets updated through PostUpdate
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
             [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
         }
 
         [Inject] private Data data;
-
-        private static EntityId EmptyEntityId = new EntityId(0);
 
         protected override void OnUpdate()
         {
@@ -45,32 +49,36 @@ namespace Playground
                 // Handle all the different possible outcomes of the collision.
                 // This requires looking at their most recent launchers.
                 var collision = data.Collision[i];
-                var first = collision.OwnEntity;
-                var second = collision.OtherEntity;
-                var firstLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(first);
-                var secondLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(second);
+                var sender = data.Sender[i];
+
+                var firstLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OwnEntity);
+                var secondLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OtherEntity);
                 var firstLauncher = firstLaunchable.MostRecentLauncher;
                 var secondLauncher = secondLaunchable.MostRecentLauncher;
+
                 if (firstLauncher == secondLauncher)
                 {
-                    if (firstLauncher != EmptyEntityId)
+                    if (firstLauncher.IsValid())
                     {
-                        data.Sender[i].RequestsToSend.Add(new Launcher.IncreaseScore.Request(
-                            firstLauncher, new Generated.Playground.ScoreIncreaseRequest { Amount = 1 }));
+                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                            firstLauncher, new ScoreIncreaseRequest { Amount = 1 }));
+                        data.Sender[i] = sender;
                     }
                 }
-                else if (secondLauncher != EmptyEntityId)
+                else if (secondLauncher.IsValid())
                 {
                     var launchable = data.Launchable[i];
-                    if (firstLauncher == EmptyEntityId)
+                    if (!firstLauncher.IsValid())
                     {
-                        launchable.MostRecentLauncher = secondLauncher;
-                        data.Sender[i].RequestsToSend.Add(new Launcher.IncreaseScore.Request(secondLauncher,
+                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(secondLauncher,
                             new ScoreIncreaseRequest { Amount = 1 }));
+                        data.Sender[i] = sender;
+                        
+                        launchable.MostRecentLauncher = secondLauncher;
                     }
                     else
                     {
-                        launchable.MostRecentLauncher = EmptyEntityId;
+                        launchable.MostRecentLauncher = new EntityId(0);
                     }
 
                     PostUpdateCommands.SetComponent(data.Entities[i], launchable);

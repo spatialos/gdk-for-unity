@@ -48,24 +48,24 @@ namespace Playground
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var component = data.EventUpdate[i];
+                var colorChangeEvents = data.EventUpdate[i];
                 var renderer = data.Renderers[i];
-                foreach (var colorEvent in component.Events)
-                {
-                    renderer.SetPropertyBlock(materialPropertyBlocks[colorEvent.Color]);
-                }
+
+                var lastEvent = colorChangeEvents.Events[colorChangeEvents.Events.Count - 1];
+                renderer.SetPropertyBlock(materialPropertyBlocks[lastEvent.Color]);
             }
         }
 
         private static void PopulateMaterialPropertyBlockMap(
             out Dictionary<Generated.Playground.Color, MaterialPropertyBlock> materialpropertyBlocks)
         {
-            materialpropertyBlocks = new Dictionary<Generated.Playground.Color, MaterialPropertyBlock>();
-            foreach (var keyValuePair in ColorMapping)
+            materialpropertyBlocks = new Dictionary<Generated.Playground.Color, MaterialPropertyBlock>(ColorMapping.Count);
+
+            foreach (var colorPair in ColorMapping)
             {
                 var materialPropertyBlock = new MaterialPropertyBlock();
-                materialPropertyBlock.SetColor("_Color", keyValuePair.Value);
-                materialpropertyBlocks.Add(keyValuePair.Key, materialPropertyBlock);
+                materialPropertyBlock.SetColor("_Color", colorPair.Value);
+                materialpropertyBlocks.Add(colorPair.Key, materialPropertyBlock);
             }
         }
     }

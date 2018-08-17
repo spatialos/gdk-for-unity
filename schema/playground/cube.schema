@@ -1,0 +1,7 @@
+package playground;
+import "improbable/vector3.schema";
+
+component Cube {
+    id = 12008;
+    improbable.Vector3f velocity = 1;
+}

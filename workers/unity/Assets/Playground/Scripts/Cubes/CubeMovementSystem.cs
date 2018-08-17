@@ -1,6 +1,7 @@
-using Generated.Improbable.Transform;
+using Generated.Improbable;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,17 +18,15 @@ namespace Playground
     [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            public SubtractiveComponent<SpatialOSPlayerInput> NoPlayerInput;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            public ComponentDataArray<SpatialOSCube> Cube;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSCube>> TransformAuthority;
         }
 
         [Inject] private Data data;
-
-        private static Vector3 speed = new Vector3(2, 0, 0);
 
         private Worker worker;
 
@@ -43,17 +42,21 @@ namespace Playground
             for (var i = 0; i < data.Length; i++)
             {
                 var rigidbodyComponent = data.Rigidbody[i];
-                if (rigidbodyComponent.position.x - worker.Origin.x > 10)
+                var cubeComponent = data.Cube[i];
+
+                if (cubeComponent.Velocity.X > 0 && rigidbodyComponent.position.x - worker.Origin.x > 10)
                 {
-                    speed = new Vector3(-2, 0, 0);
+                    cubeComponent.Velocity = new Vector3f { X = -2.0f };
+                    data.Cube[i] = cubeComponent;
+                }
+                else if (cubeComponent.Velocity.X < 0 && rigidbodyComponent.position.x - worker.Origin.x < -10)
+                {
+                    cubeComponent.Velocity = new Vector3f { X = 2.0f };
+                    data.Cube[i] = cubeComponent;
                 }
 
-                if (rigidbodyComponent.position.x - worker.Origin.x < -10)
-                {
-                    speed = new Vector3(2, 0, 0);
-                }
-
-                rigidbodyComponent.MovePosition(rigidbodyComponent.position + Time.deltaTime * speed);
+                var velocity = new Vector3(cubeComponent.Velocity.X, cubeComponent.Velocity.Y, cubeComponent.Velocity.Z);
+                rigidbodyComponent.MovePosition(rigidbodyComponent.position + Time.fixedDeltaTime * velocity);
             }
         }
     }
