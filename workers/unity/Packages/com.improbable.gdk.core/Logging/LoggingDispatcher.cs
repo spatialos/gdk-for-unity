@@ -1,4 +1,5 @@
 using System;
+using Improbable.Worker.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -8,6 +9,8 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class LoggingDispatcher : ILogDispatcher
     {
+        public Connection Connection { get; set; }
+
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             if (type == LogType.Exception)
