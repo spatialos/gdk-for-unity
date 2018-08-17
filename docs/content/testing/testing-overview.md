@@ -6,7 +6,7 @@
 
 # Test overview
 
-We use tests to validate functionality and to ensure that both individual parts of the Unity GDK and the framework as a whole are resilient under different conditions.
+We use tests to validate functionality and to ensure that the Unity GDK and the framework as a whole are resilient under different conditions.
 
 ## Test categories
 
@@ -25,7 +25,7 @@ For example:
   - `workers\unity\Assets\Gdk\Core\Tests`
   - `workers\unity\Assets\Gdk\PlayerLifecycle\Tests`
 
-Find out more about the Unity GDK Unity project test directory structure and file names in [Test guidelines](./test-guidlines.md#test-directory-structure-and-file-names).
+Find out more about the Unity GDK Unity project test directory structure and file names in [Test guidelines](./testing-guidelines.md#test-directory-structure-and-file-names).
 
 ## Further information
 

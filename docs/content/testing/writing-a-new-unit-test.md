@@ -17,7 +17,7 @@ Please look through and understand the follow documentation and videos before wr
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
-* NUnit video - [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
+* [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
 - Unity documentation - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
 * Infallible Code video -  [How To Test Unity ECS Code](http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
 
@@ -75,7 +75,7 @@ The path within the package would be: `Utility/MyClass.cs`.
 
 Following the [package directory structure instructions](./testing-guidelines.md#package-directory-structure), the test filename would be:
 
-`workers/Unity/Assets/Gdk/Core/Tests/EditMode/Utility/MyClassTests.cs`
+`workers/Unity/Assets/Gdk/Core/Tests/EditMode/Utility/MyClassTests.cs`.
 
 (This assumes that the `workers/Unity/Packages/com.improbable.gdk.core/Tests/` directory exists.
  If it does not exist, see the section on 
@@ -83,7 +83,7 @@ Following the [package directory structure instructions](./testing-guidelines.md
 
 ### Test fixtures
 
-With NUnit, you can add a `TestFixture` attribute to a class. This makes the class a test. While you create specific tests for specific methods in specific classes, you can reuse the tests where methods have similar setups. (A class with a `TestFixture` attribute is also known as “test fixture” and “fixture”.) See NUnit’s documentation on the [TestFixture attribute](https://github.com/nunit/docs/wiki/TestFixture-Attribu te) and the [test fixture example class](https://github.com/nunit/docs/wiki/TestFixture-Attribute#example-1) in the the NUnit repository.
+With NUnit, you can add a `TestFixture` attribute to a class. This makes the class a test. While you create specific tests for methods in classes, you can reuse the tests where methods have similar setups. (A class with a `TestFixture` attribute is also known as “test fixture” and “fixture”.) See NUnit’s documentation on the [TestFixture attribute](https://github.com/nunit/docs/wiki/TestFixture-Attribute) and the [test fixture example class](https://github.com/nunit/docs/wiki/TestFixture-Attribute#example-1) in the the NUnit repository.
 
 As `MyClass` has both static and non-static methods, you can create tests within two separate fixtures.
 
@@ -219,7 +219,7 @@ public class MyClassInstanceTests
 
 The tests above will not compile. This is because the test class is in a different assembly to the implementation class, and the tests are looking at internal fields.
 
-To solve this; make the internals of the the `MyClass.cs` file visible to the test assembly in the way shown below.
+To solve this; make the internals of the `MyClass.cs` file visible to the test assembly as shown below.
 
 ```
 using System.Runtime.CompilerServices;
@@ -263,7 +263,7 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
     1. Check the **Editor** checkbox only.
 
-    1. Click on Apply** again.
+    1. Click on **Apply** again.
 
 1. In the references list, add the reference to the package you are testing (in this
  case, `Improbable.Gdk.Legacy`).

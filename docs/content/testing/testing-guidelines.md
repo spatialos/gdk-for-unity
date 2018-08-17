@@ -223,7 +223,7 @@ public void World_should_not_have_behaviour_managers_when_created()
 
 ### Handling Unity logs
 
-By default, any error logs will fail your test.
+By default, any error log will fail your test.
 
 You can choose to expect these errors or ignore them using the `LogAssert`
  class. Please refer to the [Unity  documentation](https://docs.unity3d.com/ScriptReference/TestTools.LogAssert.html)
