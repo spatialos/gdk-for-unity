@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : IWriter<TSpatialComponentData, TComponentUpdate>,
             IReaderWriterInternal
-        where TSpatialComponentData : ISpatialComponentData
+        where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
@@ -118,7 +118,20 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public abstract TSpatialComponentData Data { get; }
+        public TSpatialComponentData Data
+        {
+            get
+            {
+                try
+                {
+                    return EntityManager.GetComponentData<TSpatialComponentData>(Entity);
+                }
+                catch (Exception e)
+                {
+                    throw new ReaderDataGetFailedException(e, Entity.Index);
+                }
+            }
+        }
 
         private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
             = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
@@ -155,6 +168,20 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
         }
 
-        public abstract void Send(TComponentUpdate update);
+        public void Send(TComponentUpdate update)
+        {
+            try
+            {
+                var data = EntityManager.GetComponentData<TSpatialComponentData>(Entity);
+                ApplyUpdate(update, ref data);
+                EntityManager.SetComponentData(Entity, data);
+            }
+            catch (Exception e)
+            {
+                throw new WriterDataUpdateFailedException(e, Entity.Index);
+            }
+        }
+
+        protected abstract void ApplyUpdate(TComponentUpdate update, ref TSpatialComponentData data);
     }
 }

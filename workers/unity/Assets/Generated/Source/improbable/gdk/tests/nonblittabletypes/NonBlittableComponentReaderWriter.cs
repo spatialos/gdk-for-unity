@@ -44,12 +44,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         [ComponentId(1002)]
         public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
-            void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
+            void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
             void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
         }
 
         internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -140,7 +140,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 DispatchWithErrorHandling(update.ListField, listFieldDelegates);
                 DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
             }
-            protected override void ApplyUpdate(SpatialOSNonBlittableComponent.Update update, SpatialOSNonBlittableComponent data)
+            protected override void ApplyUpdate(SpatialOSNonBlittableComponent.Update update, ref SpatialOSNonBlittableComponent data)
             {
                 if (update.BoolField.HasValue)
                 {

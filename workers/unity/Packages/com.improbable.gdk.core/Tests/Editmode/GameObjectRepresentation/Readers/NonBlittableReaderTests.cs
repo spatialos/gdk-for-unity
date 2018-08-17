@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Worker.Core;
 using NUnit.Framework;
 using Unity.Entities;
 
@@ -17,12 +18,25 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
+
                 var reader = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
-                entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent
+                var schemaComponentData = SpatialOSNonBlittableComponent.CreateSchemaComponentData(
+                    boolField: false,
+                    intField: 0,
+                    longField: 0,
+                    floatField: 0,
+                    doubleField: 0,
+                    stringField: "test string",
+                    optionalField: null,
+                    listField: new List<int>(),
+                    mapField: new Dictionary<int, string>()).SchemaData;
+
+                if (schemaComponentData != null)
                 {
-                    StringField = "test string"
-                });
+                    entityManager.SetComponentData(entity, SpatialOSNonBlittableComponent.Serialization.Deserialize(
+                        schemaComponentData.Value.GetFields(), world));
+                }
 
                 var data = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity);
 

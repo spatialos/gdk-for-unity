@@ -16,13 +16,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-                entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent());
+                entityManager.SetComponentData(entity, new SpatialOSNonBlittableComponent());
                 var writer = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 writer.Send(new SpatialOSNonBlittableComponent.Update
                 {
                     IntField = new Option<int>(42)
                 });
+
                 int valueRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).IntField;
                 Assert.AreEqual(42, valueRead);
             }
@@ -36,10 +37,22 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
 
-                SpatialOSNonBlittableComponent newValues = new SpatialOSNonBlittableComponent();
-                newValues.DoubleField = 13.37;
-                newValues.StringField = "stringy";
-                entityManager.SetComponentObject(entity, newValues);
+                var schemaComponentData = SpatialOSNonBlittableComponent.CreateSchemaComponentData(
+                    boolField: false,
+                    intField: 0,
+                    longField: 0,
+                    floatField: 0,
+                    doubleField: 13.37,
+                    stringField: "stringy",
+                    optionalField: null,
+                    listField: new List<int>(),
+                    mapField: new Dictionary<int, string>()).SchemaData;
+
+                if (schemaComponentData != null)
+                {
+                    entityManager.SetComponentData(entity, SpatialOSNonBlittableComponent.Serialization.Deserialize(
+                        schemaComponentData.Value.GetFields(), world));
+                }
 
                 var writer = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
                 writer.Send(new SpatialOSNonBlittableComponent.Update

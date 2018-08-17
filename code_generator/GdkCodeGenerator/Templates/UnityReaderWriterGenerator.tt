@@ -51,13 +51,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-<# if (componentDetails.IsBlittable) { #>
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } else { #>
-        internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } #>
+            ReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -80,11 +75,7 @@ namespace <#= qualifiedNamespace #>
                 DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
             }
-<# if (componentDetails.IsBlittable) { #>
             protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, ref <#= componentDetails.TypeName#> data)
-<# } else { #>
-            protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, <#= componentDetails.TypeName#> data)
-<# } #>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 if (update.<#= fieldDetails.PascalCaseName #>.HasValue)

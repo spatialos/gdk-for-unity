@@ -53,7 +53,7 @@ namespace Generated.Improbable.Gdk.Tests
         }
 
         internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -216,7 +216,7 @@ namespace Generated.Improbable.Gdk.Tests
                 DispatchWithErrorHandling(update.Field16, field16Delegates);
                 DispatchWithErrorHandling(update.Field17, field17Delegates);
             }
-            protected override void ApplyUpdate(SpatialOSExhaustiveSingular.Update update, SpatialOSExhaustiveSingular data)
+            protected override void ApplyUpdate(SpatialOSExhaustiveSingular.Update update, ref SpatialOSExhaustiveSingular data)
             {
                 if (update.Field1.HasValue)
                 {

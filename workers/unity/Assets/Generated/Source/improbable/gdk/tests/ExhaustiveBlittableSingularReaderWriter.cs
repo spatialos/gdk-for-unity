@@ -51,7 +51,7 @@ namespace Generated.Improbable.Gdk.Tests
         }
 
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
