@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Worker;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace Playground.EditmodeTests
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
             var position = Vector3.one * 1337;
             var rotation = new Quaternion(0, 0, 1, 0);
-            const long spatialEntityId = 1;
+            var spatialEntityId = new EntityId(1);
             testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, position,
                 rotation, spatialEntityId);
 
@@ -59,7 +60,7 @@ namespace Playground.EditmodeTests
             var entity = world.GetOrCreateManager<EntityManager>().CreateEntity();
             var position = Vector3.zero;
             var rotation = Quaternion.identity;
-            const long spatialEntityId = 1;
+            var spatialEntityId = new EntityId(1);
             Assert.Throws<PrefabNotFoundException>(() =>
             {
                 testGameObject =

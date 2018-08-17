@@ -2,201 +2,370 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
-using Improbable.Worker;
+using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Components;
-using Improbable.Gdk.Tests.ComponentsWithNoFields;
+using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.Core.Commands;
 
 namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFields
     {
-        public class Translation : ComponentTranslation, IDispatcherCallbacks<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields>
+        public class DispatcherHandler : ComponentDispatcherHandler
         {
-            private const string LoggerName = "ComponentWithNoFields.Translation";
-        
-            public override ComponentType TargetComponentType => targetComponentType;
-            private static readonly ComponentType targetComponentType = typeof(SpatialOSComponentWithNoFields);
+            public override uint ComponentId => 1003;
 
-            public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(SpatialOSComponentWithNoFields), typeof(Authoritative<SpatialOSComponentWithNoFields>), typeof(SpatialEntityId)};
+            private readonly EntityManager entityManager;
 
-            public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
-            private static readonly ComponentType[] cleanUpComponentTypes = 
-            { 
-                typeof(AuthoritiesChanged<SpatialOSComponentWithNoFields>),
-                typeof(ComponentAdded<SpatialOSComponentWithNoFields>),
-                typeof(ComponentRemoved<SpatialOSComponentWithNoFields>),
+            private const string LoggerName = "ComponentWithNoFields.DispatcherHandler";
+
+
+            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            {
+                entityManager = world.GetOrCreateManager<EntityManager>();
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+            }
+
+            public override void Dispose()
+            {
+            }
+
+            public override void OnAddComponent(AddComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
+                {
+                    return;
+                }
+
+                var data = global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.SpatialOSComponentWithNoFields.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                data.DirtyBit = false;
+                entityManager.AddComponentData(entity, data);
+                entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
+
+                if (entityManager.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentAdded<SpatialOSComponentWithNoFields>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "SpatialOSComponentWithNoFields")
+                    );
+                }
+            }
+
+            public override void OnRemoveComponent(RemoveComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
+                {
+                    return;
+                }
+
+                entityManager.RemoveComponent<SpatialOSComponentWithNoFields>(entity);
+
+                if (entityManager.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSComponentWithNoFields>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "SpatialOSComponentWithNoFields")
+                    );
+                }
+            }
+
+            public override void OnComponentUpdate(ComponentUpdateOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
+                {
+                    return;
+                }
+
+                var data = entityManager.GetComponentData<SpatialOSComponentWithNoFields>(entity);
+
+                var update = global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.SpatialOSComponentWithNoFields.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                List<SpatialOSComponentWithNoFields.Update> updates;
+                if (entityManager.HasComponent<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new SpatialOSComponentWithNoFields.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSComponentWithNoFields.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
+
+                data.DirtyBit = false;
+                entityManager.SetComponentData(entity, data);
+            }
+
+            public override void OnAuthorityChange(AuthorityChangeOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
+                {
+                    return;
+                }
+
+                ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+            }
+
+            public override void OnCommandRequest(CommandRequestOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
+                {
+                    return;
+                }
+
+                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+                switch (commandIndex)
+                {
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "SpatialOSComponentWithNoFields")
+                        );
+                        break;
+                }
+            }
+
+            public override void OnCommandResponse(CommandResponseOp op)
+            {
+                var commandIndex = op.Response.CommandIndex;
+                switch (commandIndex)
+                {
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "SpatialOSComponentWithNoFields")
+                        );
+                        break;
+                }
+            }
+
+            public override void AddCommandComponents(Unity.Entities.Entity entity)
+            {
+            }
+
+            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
+            {
+                switch (authority)
+                {
+                    case Authority.Authoritative:
+                        if (!entityManager.HasComponent<NotAuthoritative<SpatialOSComponentWithNoFields>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.RemoveComponent<NotAuthoritative<SpatialOSComponentWithNoFields>>(entity);
+                        entityManager.AddComponentData(entity, new Authoritative<SpatialOSComponentWithNoFields>());
+
+                        // Add event senders
+                        break;
+                    case Authority.AuthorityLossImminent:
+                        if (!entityManager.HasComponent<Authoritative<SpatialOSComponentWithNoFields>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFields>());
+                        break;
+                    case Authority.NotAuthoritative:
+                        if (!entityManager.HasComponent<Authoritative<SpatialOSComponentWithNoFields>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        if (entityManager.HasComponent<AuthorityLossImminent<SpatialOSComponentWithNoFields>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminent<SpatialOSComponentWithNoFields>>(entity);
+                        }
+
+                        entityManager.RemoveComponent<Authoritative<SpatialOSComponentWithNoFields>>(entity);
+                        entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
+
+                        // Remove event senders
+                        break;
+                }
+
+                List<Authority> authorityChanges;
+                if (entityManager.HasComponent<AuthorityChanges<SpatialOSComponentWithNoFields>>(entity))
+                {
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<SpatialOSComponentWithNoFields>>(entity).Changes;
+
+                }
+                else
+                {
+                    var changes = new AuthorityChanges<SpatialOSComponentWithNoFields>
+                    {
+                        Handle = AuthorityChangesProvider.Allocate(World)
+                    };
+                    AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
+                    authorityChanges = changes.Changes;
+                    entityManager.AddComponentData(entity, changes);
+                }
+
+                authorityChanges.Add(authority);
+            }
+
+            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
+            {
+                if (!Worker.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, entityId.Id)
+                        .WithField("Op", opType)
+                        .WithField("Component", "SpatialOSComponentWithNoFields")
+                    );
+                    return false;
+                }
+
+                return true;
+            }
+
+            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId.Id)
+                    .WithField("New Authority", newAuthority)
+                    .WithField("Expected Old Authority", expectedOldAuthority)
+                    .WithField("Component", "SpatialOSComponentWithNoFields")
+                );
+            }
+
+        }
+
+        public class ComponentReplicator : ComponentReplicationHandler
+        {
+            public override uint ComponentId => 1003;
+
+            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
+                ComponentType.Create<SpatialOSComponentWithNoFields>(),
+                ComponentType.ReadOnly<Authoritative<SpatialOSComponentWithNoFields>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            };
+
+            public override ComponentType[] CommandTypes => new ComponentType[] {
             };
 
 
-            private static readonly ComponentPool<AuthoritiesChanged<SpatialOSComponentWithNoFields>> AuthsPool =
-                new ComponentPool<AuthoritiesChanged<SpatialOSComponentWithNoFields>>(
-                    () => new AuthoritiesChanged<SpatialOSComponentWithNoFields>(),
-                    (component) => component.Buffer.Clear());
-
-
-            public Translation(MutableView view) : base(view)
+            public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             }
 
-            public override void RegisterWithDispatcher(Dispatcher dispatcher)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
-                dispatcher.OnAddComponent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields>(OnAddComponent);
-                dispatcher.OnComponentUpdate<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields>(OnComponentUpdate);
-                dispatcher.OnRemoveComponent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields>(OnRemoveComponent);
-                dispatcher.OnAuthorityChange<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields>(OnAuthorityChange);
-
-            }
-
-            public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
-            {
-            }
-
-            public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSComponentWithNoFields"));
-                    return;
-                }
-
-                var spatialOSComponentWithNoFields = new SpatialOSComponentWithNoFields();
-                spatialOSComponentWithNoFields.DirtyBit = false;
-
-                View.AddComponent(entity, spatialOSComponentWithNoFields);
-                View.AddComponent(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
-
-                if (View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
-                {
-                    View.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity);
-                }
-                else if (!View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentAdded<SpatialOSComponentWithNoFields>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSComponentWithNoFields"));
-                }
-            }
-
-            public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSComponentWithNoFields"));
-                    return;
-                }
-
-                var componentData = View.GetComponent<SpatialOSComponentWithNoFields>(entity);
-
-
-                componentData.DirtyBit = false;
-
-                View.SetComponentData(entity, componentData);
-
-            }
-
-            public void OnRemoveComponent(RemoveComponentOp op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSComponentWithNoFields"));
-                    return;
-                }
-
-                View.RemoveComponent<SpatialOSComponentWithNoFields>(entity);
-
-                if (View.HasComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity))
-                {
-                    View.RemoveComponent<ComponentAdded<SpatialOSComponentWithNoFields>>(entity);
-                }
-                else if (!View.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentRemoved<SpatialOSComponentWithNoFields>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSComponentWithNoFields"));
-                }
-            }
-
-            public void OnAuthorityChange(AuthorityChangeOp op)
-            {
-                var entityId = op.EntityId.Id;
-                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
-            }
-
-            public override void ExecuteReplication(Connection connection)
-            {
-                var componentDataArray = ReplicationComponentGroup.GetComponentDataArray<SpatialOSComponentWithNoFields>();
-                var spatialEntityIdData = ReplicationComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<SpatialOSComponentWithNoFields>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
                 {
-                    var componentData = componentDataArray[i];
-                    var entityId = spatialEntityIdData[i].EntityId;
-                    var hasPendingEvents = false;
+                    var data = componentDataArray[i];
+                    var dirtyEvents = 0;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update();
-                        SendComponentUpdate(connection, entityId, update);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1003);
+                        SpatialOSComponentWithNoFields.Serialization.Serialize(data, update.GetFields());
 
-                        componentData.DirtyBit = false;
-                        componentDataArray[i] = componentData;
+                        // Send serialized update over the wire
+                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
+                        data.DirtyBit = false;
+                        componentDataArray[i] = data;
                     }
                 }
             }
 
-            public static void SendComponentUpdate(Connection connection, long entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update update)
-            {
-                connection.SendComponentUpdate(new global::Improbable.EntityId(entityId), update);
-            }
-
-            public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
-            {
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents<ComponentAdded<SpatialOSComponentWithNoFields>>(ref entityCommandBuffer, groupIndex: 1);
-                RemoveComponents<ComponentRemoved<SpatialOSComponentWithNoFields>>(ref entityCommandBuffer, groupIndex: 2);
-                
-                
-            }
-
-            public override void SendCommands(Connection connection)
+            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
             }
 
-            public static ComponentWithNoFields.Translation GetTranslation(uint internalHandleToTranslation)
+        }
+
+        public class ComponentCleanup : ComponentCleanupHandler
+        {
+            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
+                typeof(ComponentAdded<SpatialOSComponentWithNoFields>),
+                typeof(ComponentRemoved<SpatialOSComponentWithNoFields>),
+            };
+
+            public override ComponentType[] EventComponentTypes => new ComponentType[] {
+            };
+
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSComponentWithNoFields.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<SpatialOSComponentWithNoFields>>();
+
+            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
+            };
+
+            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
-                return (ComponentWithNoFields.Translation) ComponentTranslation.HandleToTranslation[internalHandleToTranslation];
+                var entities = updateGroup.GetEntityArray();
+                var data = updateGroup.GetComponentDataArray<SpatialOSComponentWithNoFields.ReceivedUpdates>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<SpatialOSComponentWithNoFields.ReceivedUpdates>(entities[i]);
+                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
+                }
+            }
+
+            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = authorityChangeGroup.GetEntityArray();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFields>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<AuthorityChanges<SpatialOSComponentWithNoFields>>(entities[i]);
+                    AuthorityChangesProvider.Free(data[i].Handle);
+                }
+            }
+
+            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
+            {
+            }
+
+            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
+            {
             }
         }
     }
-
 
 }

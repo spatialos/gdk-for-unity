@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 
@@ -12,12 +14,28 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class ViewCommandBuffer
     {
-        private readonly Queue<BufferedCommand> bufferedCommands = new Queue<BufferedCommand>();
-
         private const string LoggerName = nameof(ViewCommandBuffer);
 
         private const string UnknownErrorEncountered =
             "ViewCommandBuffer encountered unknown command type during buffer flush.";
+
+        private readonly EntityManager EntityManager;
+        private readonly ILogDispatcher LogDispatcher;
+        private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
+        private readonly Queue<BufferedCommand> bufferedCommands = new Queue<BufferedCommand>();
+
+        private static readonly MethodInfo setComponentObjectMethodInfo =
+            typeof(EntityManager).GetMethod("SetComponentObject", BindingFlags.Instance | BindingFlags.NonPublic, null,
+                new Type[] { typeof(Entity), typeof(ComponentType), typeof(object) },
+                new ParameterModifier[] { });
+
+        public ViewCommandBuffer(EntityManager entityManager, ILogDispatcher logDispatcher)
+        {
+            EntityManager = entityManager;
+            LogDispatcher = logDispatcher;
+            setComponentObjectAction = (Action<Entity, ComponentType, object>) Delegate.CreateDelegate(
+                typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
+        }
 
         public void AddComponent<T>(Entity entity, T component) where T : Component
         {
@@ -46,23 +64,23 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void FlushBuffer(MutableView view)
+        public void FlushBuffer()
         {
             foreach (var bufferedCommand in bufferedCommands)
             {
                 switch (bufferedCommand.CommandType)
                 {
                     case CommandType.AddComponent:
-                        view.SetComponentObject(bufferedCommand.Entity,
+                        SetComponentObject(bufferedCommand.Entity,
                             bufferedCommand.ComponentType,
                             bufferedCommand.ComponentObj);
                         break;
                     case CommandType.RemoveComponent:
-                        view.RemoveComponent(bufferedCommand.Entity,
+                        EntityManager.RemoveComponent(bufferedCommand.Entity,
                             bufferedCommand.ComponentType);
                         break;
                     default:
-                        view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnknownErrorEncountered)
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField("CommandType", bufferedCommand.CommandType));
                         break;
@@ -70,6 +88,16 @@ namespace Improbable.Gdk.Core
             }
 
             bufferedCommands.Clear();
+        }
+
+        private void SetComponentObject(Entity entity, ComponentType componentType, object component)
+        {
+            if (!EntityManager.HasComponent(entity, componentType))
+            {
+                EntityManager.AddComponent(entity, componentType);
+            }
+
+            setComponentObjectAction(entity, componentType, component);
         }
 
         private struct BufferedCommand

@@ -1,5 +1,7 @@
 using Generated.Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -7,12 +9,12 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public class PositionSendSystem : CustomSpatialOSSendSystem<SpatialOSPosition>
     {
-        public struct PositionData
+        private struct PositionData
         {
             public readonly int Length;
             public ComponentDataArray<SpatialOSPosition> Position;
-            public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
-            public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
         }
 
         [Inject] private PositionData positionData;
@@ -26,7 +28,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             // Send update at SendRateHz.
             timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < (1.0f / SendRateHz))
+            if (timeSinceLastSend < 1.0f / SendRateHz)
             {
                 return;
             }
@@ -43,9 +45,10 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
-                var update = new global::Improbable.Position.Update();
-                update.SetCoords(global::Generated.Improbable.Coordinates.ToSpatial(component.Coords));
-                Generated.Improbable.Position.Translation.SendComponentUpdate(Worker.Connection, entityId, update);
+
+                var update = new SchemaComponentUpdate(component.ComponentId);
+                Generated.Improbable.SpatialOSPosition.Serialization.Serialize(component, update.GetFields());
+                worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
                 positionData.Position[i] = component;

@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             const string host = "myhost";
             const short port = 10;
-            string networkType = NetworkConnectionType.Tcp.ToString();
+            var networkType = NetworkConnectionType.Tcp.ToString();
 
             var parsedArgs = new Dictionary<string, string>
             {

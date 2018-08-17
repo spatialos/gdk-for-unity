@@ -1,5 +1,6 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -29,11 +30,13 @@ namespace Playground
             public EntityArray Entities;
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
         }
 
         [Inject] private Data data;
+
+        private static EntityId EmptyEntityId = new EntityId(0);
 
         protected override void OnUpdate()
         {
@@ -50,30 +53,24 @@ namespace Playground
                 var secondLauncher = secondLaunchable.MostRecentLauncher;
                 if (firstLauncher == secondLauncher)
                 {
-                    if (firstLauncher != 0)
+                    if (firstLauncher != EmptyEntityId)
                     {
-                        data.Sender[i].SendIncreaseScoreRequest(firstLauncher,
-                            new Generated.Playground.ScoreIncreaseRequest
-                            {
-                                Amount = 1
-                            });
+                        data.Sender[i].RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                            firstLauncher, new Generated.Playground.ScoreIncreaseRequest { Amount = 1 }));
                     }
                 }
-                else if (secondLauncher != 0)
+                else if (secondLauncher != EmptyEntityId)
                 {
                     var launchable = data.Launchable[i];
-                    if (firstLauncher == 0)
+                    if (firstLauncher == EmptyEntityId)
                     {
                         launchable.MostRecentLauncher = secondLauncher;
-                        data.Sender[i].SendIncreaseScoreRequest(secondLauncher,
-                            new Generated.Playground.ScoreIncreaseRequest
-                            {
-                                Amount = 1
-                            });
+                        data.Sender[i].RequestsToSend.Add(new Launcher.IncreaseScore.Request(secondLauncher,
+                            new ScoreIncreaseRequest { Amount = 1 }));
                     }
                     else
                     {
-                        launchable.MostRecentLauncher = 0;
+                        launchable.MostRecentLauncher = EmptyEntityId;
                     }
 
                     PostUpdateCommands.SetComponent(data.Entities[i], launchable);

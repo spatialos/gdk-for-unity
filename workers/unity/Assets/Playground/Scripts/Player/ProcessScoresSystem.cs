@@ -22,7 +22,7 @@ namespace Playground
             public ComponentDataArray<SpatialOSScore> Score;
 
             [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.IncreaseScore.Request>> CommandRequests;
+            public ComponentDataArray<Generated.Playground.Launcher.CommandRequests.IncreaseScore> CommandRequests;
         }
 
         [Inject] private ScoringData scoringData;
@@ -32,7 +32,7 @@ namespace Playground
             for (var i = 0; i < scoringData.Length; i++)
             {
                 var playerScore = scoringData.Score[i];
-                foreach (var request in scoringData.CommandRequests[i].Buffer)
+                foreach (var request in scoringData.CommandRequests[i].Requests)
                 {
                     playerScore.Score += request.RawRequest.Amount;
                 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
 {
@@ -8,22 +9,23 @@ namespace Improbable.Gdk.Core
         public const string EntityId = "EntityId";
         public const string LoggerName = "LoggerName";
 
-        public static Collections.Option<EntityId> ExtractEntityId(Dictionary<string, object> data)
+        public static EntityId? ExtractEntityId(Dictionary<string, object> data)
         {
-            if (!data.TryGetValue(EntityId, out var dataEntityId))
+            object dataEntityId;
+            if (data.TryGetValue(EntityId, out dataEntityId))
             {
-                return new Collections.Option<EntityId>();
+                if (dataEntityId is EntityId)
+                {
+                    return (EntityId) dataEntityId;
+                }
+
+                if (dataEntityId is long)
+                {
+                    return new EntityId((long) dataEntityId);
+                }
             }
 
-            switch (dataEntityId)
-            {
-                case EntityId asEntityId:
-                    return asEntityId;
-                case long asLong:
-                    return new EntityId(asLong);
-            }
-
-            return new Collections.Option<EntityId>();
+            return null;
         }
 
         public static string ExtractLoggerName(Dictionary<string, object> data)

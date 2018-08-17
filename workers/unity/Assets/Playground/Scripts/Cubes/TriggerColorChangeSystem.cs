@@ -18,10 +18,10 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class TriggerColorChangeSystem : ComponentSystem
     {
-        public struct CubeColorData
+        private struct CubeColorData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<EventSender<SpatialOSCubeColor>> EventSenders;
+            [ReadOnly] public ComponentDataArray<CubeColor.EventSender.ChangeColor> EventSenders;
         }
 
         [Inject] private CubeColorData cubeColorData;
@@ -51,7 +51,7 @@ namespace Playground
                     Color = newColor
                 };
 
-                cubeColorData.EventSenders[i].SendChangeColorEvent(colorData);
+                cubeColorData.EventSenders[i].Events.Add(colorData);
             }
         }
     }

@@ -3,7 +3,4 @@
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=2758F942C4A4DD459D3716DC6E1E1819/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File2758F942C4A4DD459D3716DC6E1E1819/@KeyIndexDefined">True</s:Boolean>
 	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File2758F942C4A4DD459D3716DC6E1E1819/RelativePriority/@EntryValue">1</s:Double>
-	<s:Boolean x:Key="/Default/Housekeeping/ExcludedProjects/ProjectMasksToIgnore/=Improbable_002EGdk_002EGenerated_002Ecsproj/@EntryIndexedValue">True</s:Boolean>
-	
-	<s:Boolean x:Key="/Default/Housekeeping/ExcludedProjects/ProjectMasksToIgnore/=Improbable_002EGenerated_002ENetworkTypes_002Ecsproj/@EntryIndexedValue">True</s:Boolean>
-	</wpf:ResourceDictionary>
+		</wpf:ResourceDictionary>

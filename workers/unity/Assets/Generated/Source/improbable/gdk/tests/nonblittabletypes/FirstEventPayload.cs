@@ -13,20 +13,21 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         public BlittableBool Field1;
         public string Field2;
     
-        public static FirstEventPayload ToNative(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload spatialType)
+        public static class Serialization
         {
-            var nativeType = new FirstEventPayload();
-            nativeType.Field1 = spatialType.field1;
-            nativeType.Field2 = spatialType.field2;
-            return nativeType;
-        }
+            public static void Serialize(FirstEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                obj.AddBool(1, instance.Field1);
+                obj.AddString(2, instance.Field2);
+            }
     
-        public static global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload ToSpatial(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload();
-            spatialType.field1 = nativeType.Field1;
-            spatialType.field2 = nativeType.Field2;
-            return spatialType;
+            public static FirstEventPayload Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new FirstEventPayload();
+                instance.Field1 = obj.GetBool(1);
+                instance.Field2 = obj.GetString(2);
+                return instance;
+            }
         }
     }
     

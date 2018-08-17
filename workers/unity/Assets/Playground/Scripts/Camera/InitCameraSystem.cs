@@ -20,9 +20,9 @@ namespace Playground
         private struct Data
         {
             public readonly int Length;
-            public EntityArray Entities;
+            public EntityArray Entites;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
-            [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthority;
         }
 
         [Inject] private Data data;
@@ -31,8 +31,9 @@ namespace Playground
         {
             for (var i = 0; i < data.Length; i++)
             {
-                PostUpdateCommands.AddComponent(data.Entities[i], CameraComponentDefaults.Input);
-                PostUpdateCommands.AddComponent(data.Entities[i], CameraComponentDefaults.Transform);
+                var entity = data.Entites[i];
+                PostUpdateCommands.AddComponent(entity, CameraComponentDefaults.Input);
+                PostUpdateCommands.AddComponent(entity, CameraComponentDefaults.Transform);
 
                 Cursor.lockState = CursorLockMode.Locked;
             }

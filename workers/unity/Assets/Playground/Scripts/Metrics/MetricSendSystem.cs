@@ -7,7 +7,7 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
+        private Worker worker;
 
         private float timeElapsedSinceUpdate;
 
@@ -18,7 +18,7 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.GetWorkerFromWorld(World);
         }
 
         protected override void OnUpdate()
@@ -32,22 +32,20 @@ namespace Playground
 
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();
-            if (!(timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs))
+            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
-                return;
+                timeElapsedSinceUpdate = 0;
+                var fps = CalculateFps();
+                var load = DefaultLoadCalculation(fps);
+                var metrics = new Improbable.Worker.Metrics
+                {
+                    Load = load
+                };
+                connection.SendMetrics(metrics);
             }
-
-            timeElapsedSinceUpdate = 0;
-            var fps = CalculateFps();
-            var load = DefaultLoadCalculation(fps);
-            var metrics = new Improbable.Worker.Metrics
-            {
-                Load = load
-            };
-            connection.SendMetrics(metrics);
         }
 
-        private static float DefaultLoadCalculation(float fps)
+        private float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
             return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));

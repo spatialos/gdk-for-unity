@@ -31,24 +31,16 @@ namespace Playground
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
 
-        private MutableView view;
 
         private struct PlayerData
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
         [Inject] private PlayerData playerData;
-
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-
-            view = WorkerRegistry.GetWorkerForWorld(World).View;
-        }
 
         protected override void OnUpdate()
         {
@@ -87,7 +79,8 @@ namespace Playground
             var playerId = playerData.SpatialEntity[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
-            if (component == null || !view.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+
+            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
             {
                 return;
             }
@@ -95,14 +88,14 @@ namespace Playground
             var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
             var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
 
-            sender.SendLaunchEntityRequest(playerId, new Generated.Playground.LaunchCommandRequest
-            {
-                EntityToLaunch = component.SpatialEntityId,
-                ImpactPoint = impactPoint,
-                LaunchDirection = launchDirection,
-                LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
-                Player = playerId
-            });
+            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
+                new Generated.Playground.LaunchCommandRequest
+                {
+                    EntityToLaunch = component.SpatialEntityId,
+                    ImpactPoint = impactPoint,
+                    LaunchDirection = launchDirection,
+                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
+                }));
         }
     }
 }

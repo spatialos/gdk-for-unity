@@ -6,14 +6,6 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-
-#endregion
-
 namespace Playground
 {
     /// <summary>
@@ -22,17 +14,17 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        public struct AddedEntitiesData
+        private struct AddedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentArray<SpatialOSPrefab> PrefabNames;
+            [ReadOnly] public ComponentDataArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }
 
-        public struct RemovedEntitiesData
+        private struct RemovedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
@@ -43,24 +35,20 @@ namespace Playground
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
-        private MutableView view;
-        private WorkerBase worker;
-        private Vector3 origin;
-        private readonly ViewCommandBuffer viewCommandBuffer = new ViewCommandBuffer();
+        private Worker worker;
+        private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
-        private uint currentHandle;
+        private EntityGameObjectLinker entityGameObjectLinker;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
-
-        private const string LoggerName = nameof(GameObjectInitializationSystem);
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-            origin = worker.Origin;
+            worker = Worker.GetWorkerFromWorld(World);
+            viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
+            entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
         }
 
         protected override void OnUpdate()
@@ -72,20 +60,22 @@ namespace Playground
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                if (!(worker is UnityClient) && !(worker is UnityGameLogic))
+                if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
+                    !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Worker type isn't supported.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            "Worker type isn't supported by the GameObjectInitializationSystem.")
                         .WithField("WorldName", World.Name)
                         .WithField("WorkerType", worker));
                     continue;
                 }
 
-                var prefabName = worker is UnityGameLogic
+                var prefabName = SystemConfig.UnityGameLogic.Equals(worker.WorkerType)
                     ? prefabMapping.UnityGameLogic
                     : prefabMapping.UnityClient;
-                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) + origin;
+
+                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
+                    worker.Origin;
                 var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
 
@@ -98,30 +88,31 @@ namespace Playground
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
+
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                worker.EntityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
-                var entityIndex = removedEntitiesData.Entities[i].Index;
+                var entity = removedEntitiesData.Entities[i];
+                var entityIndex = entity.Index;
+
                 if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
                 {
-                    view.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("EntityIndex", entityIndex));
                     continue;
                 }
 
                 entityGameObjectCache.Remove(entityIndex);
                 UnityObjectDestroyer.Destroy(gameObject);
-                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(
-                    removedEntitiesData.Entities[i]);
+                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }
 
-            viewCommandBuffer.FlushBuffer(view);
+            viewCommandBuffer.FlushBuffer();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,6 +18,13 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessColorChangeSystem : ComponentSystem
     {
+        private struct Data
+        {
+            public readonly int Length;
+            [ReadOnly] public ComponentDataArray<CubeColor.ReceivedEvents.ChangeColor> EventUpdate;
+            public ComponentArray<MeshRenderer> Renderers;
+        }
+
         private static readonly Dictionary<Generated.Playground.Color, UnityEngine.Color> ColorMapping =
             new Dictionary<Generated.Playground.Color, UnityEngine.Color>
             {
@@ -25,13 +33,6 @@ namespace Playground
                 { Generated.Playground.Color.YELLOW, UnityEngine.Color.yellow },
                 { Generated.Playground.Color.RED, UnityEngine.Color.red }
             };
-
-        public struct Data
-        {
-            public readonly int Length;
-            public ComponentArray<EventsReceived<ChangeColorEvent>> EventUpdate;
-            public ComponentArray<MeshRenderer> Renderers;
-        }
 
         [Inject] private Data data;
 
@@ -49,10 +50,9 @@ namespace Playground
             {
                 var component = data.EventUpdate[i];
                 var renderer = data.Renderers[i];
-                foreach (var colorEvent in component.Buffer)
+                foreach (var colorEvent in component.Events)
                 {
-                    var materialPropertyBlock = materialPropertyBlocks[colorEvent.Payload.Color];
-                    renderer.SetPropertyBlock(materialPropertyBlock);
+                    renderer.SetPropertyBlock(materialPropertyBlocks[colorEvent.Color]);
                 }
             }
         }

@@ -9,501 +9,710 @@
 #>
 <#= generatedHeader #>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
-using Improbable.Worker;
+using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Components;
-using <#= spatialNamespace #>;
+using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.Core.Commands;
 
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class Translation : ComponentTranslation, IDispatcherCallbacks<<#= componentDetails.FullyQualifiedSpatialTypeName #>>
+        public class DispatcherHandler : ComponentDispatcherHandler
         {
-            private const string LoggerName = "<#= componentDetails.ComponentName #>.Translation";
-        
-            public override ComponentType TargetComponentType => targetComponentType;
-            private static readonly ComponentType targetComponentType = typeof(<#= componentDetails.TypeName #>);
+            public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(<#= componentDetails.TypeName #>), typeof(Authoritative<<#= componentDetails.TypeName #>>), typeof(SpatialEntityId)};
+            private readonly EntityManager entityManager;
 
-            public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
-            private static readonly ComponentType[] cleanUpComponentTypes = 
-            { 
-                typeof(AuthoritiesChanged<<#= componentDetails.TypeName #>>),
-                typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
-                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
-<# if (fieldDetailsList.Count > 0) { #>
-                typeof(ComponentsUpdated<<#= componentDetails.TypeName #>.Update>), 
+            private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
+
+<# foreach (var commandDetails in commandDetailsList) { #>
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
 <# } #>
+
+            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            {
+                entityManager = world.GetOrCreateManager<EntityManager>();
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+<# foreach (var commandDetails in commandDetailsList) { #>
+                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
+<# } #>
+            }
+
+            public override void Dispose()
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
+<# } #>
+<# } #>
+<# foreach (var eventDetails in eventDetailsList) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
+<# } #>
+            }
+
+            public override void OnAddComponent(AddComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
+                {
+                    return;
+                }
+
+                var data = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                data.DirtyBit = false;
+                entityManager.AddComponentData(entity, data);
+                entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+
+                if (entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
+                    );
+                }
+            }
+
+            public override void OnRemoveComponent(RemoveComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
+                {
+                    return;
+                }
+<# if (!componentDetails.IsBlittable) { #>
+
+                var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
+<# } #>
+<# } #>
+<# } #>
+
+                entityManager.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
+
+                if (entityManager.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
+                    );
+                }
+            }
+
+            public override void OnComponentUpdate(ComponentUpdateOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
+                {
+                    return;
+                }
+
+                var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
+
+                var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                List<<#= componentDetails.TypeName #>.Update> updates;
+                if (entityManager.HasComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentDetails.TypeName #>.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
+
+<# if (eventDetailsList.Count > 0) { #>
+                var eventsObject = op.Update.SchemaData.Value.GetEvents();
+<# foreach (var eventDetails in eventDetailsList) { #>
+                {
+                    var eventCount = eventsObject.GetObjectCount(<#= eventDetails.EventIndex #>);
+                    if (eventCount > 0)
+                    {
+                        // Create component to hold received events
+                        ReceivedEvents.<#= eventDetails.PascalCaseName #> eventsReceived;
+                        List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> eventList;
+                        if (!entityManager.HasComponent<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity))
+                        {
+                            eventsReceived = new ReceivedEvents.<#= eventDetails.PascalCaseName #>() {
+                                handle = ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Allocate(World)
+                            };
+                            eventList = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>((int) eventCount);
+                            ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(eventsReceived.handle, eventList);
+                            entityManager.AddComponentData(entity, eventsReceived);
+                        }
+                        else
+                        {
+                            eventsReceived = entityManager.GetComponentData<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity);
+                            eventList = eventsReceived.Events;
+                        }
+
+                        // Deserialize events onto component
+                        for (var i = 0; i < eventCount; i++)
+                        {
+                            var e = <#= eventDetails.FullyQualifiedPayloadTypeName #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
+                            eventList.Add(e);
+                        }
+                    }
+                }
+
+<# } #>
+<# } #>
+                data.DirtyBit = false;
+                entityManager.SetComponentData(entity, data);
+            }
+
+            public override void OnAuthorityChange(AuthorityChangeOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
+                {
+                    return;
+                }
+
+                ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+            }
+
+            public override void OnCommandRequest(CommandRequestOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
+                {
+                    return;
+                }
+
+                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+                switch (commandIndex)
+                {
 <# foreach(var commandDetails in commandDetailsList) { #>
-                typeof(CommandRequests<<#= commandDetails.CommandName #>.Request>), typeof(CommandResponses<<#= commandDetails.CommandName #>.Response>),
+                    case <#= commandDetails.CommandIndex #>:
+                        On<#= commandDetails.CommandName #>Request(op);
+                        break;
 <# } #>
-<# foreach(var eventDetails in eventDetailsList) { #>
-                typeof(EventsReceived<<#= eventDetails.EventName #>Event>),
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "<#= componentDetails.TypeName #>")
+                        );
+                        break;
+                }
+            }
+
+            public override void OnCommandResponse(CommandResponseOp op)
+            {
+                var commandIndex = op.Response.CommandIndex;
+                switch (commandIndex)
+                {
+<# foreach(var commandDetails in commandDetailsList) { #>
+                    case <#= commandDetails.CommandIndex #>:
+                        On<#= commandDetails.CommandName #>Response(op);
+                        break;
+<# } #>
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "<#= componentDetails.TypeName #>")
+                        );
+                        break;
+                }
+            }
+
+            public override void AddCommandComponents(Unity.Entities.Entity entity)
+            {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                {
+                    var commandSender = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>();
+                    commandSender.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.Allocate(World);
+                    commandSender.RequestsToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Request>();
+
+                    entityManager.AddComponentData(entity, commandSender);
+
+                    var commandResponder = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>();
+                    commandResponder.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponderProvider.Allocate(World);
+                    commandResponder.ResponsesToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Response>();
+
+                    entityManager.AddComponentData(entity, commandResponder);
+                }
+<# } #>
+            }
+
+            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
+            {
+                switch (authority)
+                {
+                    case Authority.Authoritative:
+                        if (!entityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.RemoveComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity);
+                        entityManager.AddComponentData(entity, new Authoritative<<#= componentDetails.TypeName #>>());
+
+                        // Add event senders
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        {
+                            var eventSender = new EventSender.<#= eventDetail.PascalCaseName #>()
+                            {
+                                handle = ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Allocate(World)
+                            };
+                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FullyQualifiedPayloadTypeName #>>());
+                            entityManager.AddComponentData(entity, eventSender);
+                        }
+<# } #>
+                        break;
+                    case Authority.AuthorityLossImminent:
+                        if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentDetails.TypeName #>>());
+                        break;
+                    case Authority.NotAuthoritative:
+                        if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        if (entityManager.HasComponent<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(entity);
+                        }
+
+                        entityManager.RemoveComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity);
+                        entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
+
+                        // Remove event senders
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        {
+                            var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
+                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Free(eventSender.handle);
+                            entityManager.RemoveComponent<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
+                        }
+<# } #>
+                        break;
+                }
+
+                List<Authority> authorityChanges;
+                if (entityManager.HasComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity))
+                {
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<<#= componentDetails.TypeName #>>>(entity).Changes;
+
+                }
+                else
+                {
+                    var changes = new AuthorityChanges<<#= componentDetails.TypeName #>>
+                    {
+                        Handle = AuthorityChangesProvider.Allocate(World)
+                    };
+                    AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
+                    authorityChanges = changes.Changes;
+                    entityManager.AddComponentData(entity, changes);
+                }
+
+                authorityChanges.Add(authority);
+            }
+
+            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
+            {
+                if (!Worker.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, entityId.Id)
+                        .WithField("Op", opType)
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
+                    );
+                    return false;
+                }
+
+                return true;
+            }
+
+            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId.Id)
+                    .WithField("New Authority", newAuthority)
+                    .WithField("Expected Old Authority", expectedOldAuthority)
+                    .WithField("Component", "<#= componentDetails.TypeName #>")
+                );
+            }
+
+<# foreach (var commandDetails in commandDetailsList) {
+    var wrappedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
+    var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
+
+    var wrappedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
+    var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{commandDetails.CommandName}";
+
+    var commandStorage = $"{commandDetails.CamelCaseName}Storage";
+#>
+            private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
+                {
+                    return;
+                }
+
+                var deserializedRequest = <#= commandDetails.RequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+
+                List<<#= wrappedCommandRequestType #>> requests;
+                if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
+                {
+                    requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
+                }
+                else
+                {
+                    var data = new <#= commandRequestBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Allocate(World)
+                    };
+                    requests = data.Requests = new List<<#= wrappedCommandRequestType #>>();
+                    entityManager.AddComponentData(entity, data);
+                }
+
+                requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId.Id,
+                    op.CallerWorkerId,
+                    op.CallerAttributeSet,
+                    deserializedRequest));
+            }
+
+            private void On<#= commandDetails.CommandName #>Response(CommandResponseOp op)
+            {
+                if (!<#= commandStorage #>.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+                {
+                    throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId.Id} and command <#= commandDetails.CommandName #>.");
+                }
+
+                var entity = requestBundle.Entity;
+                <#= commandStorage #>.CommandRequestsInFlight.Remove(op.RequestId.Id);
+                if (!entityManager.Exists(entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("Op", "CommandResponseOp - <#= commandDetails.CommandName #>")
+                        .WithField("Component", "<#= componentDetails.TypeName #>")
+                    );
+                    return;
+                }
+
+                <#= commandDetails.ResponseType #>? response = null;
+                if (op.StatusCode == StatusCode.Success)
+                {
+                    response = <#= commandDetails.ResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                }
+
+                List<<#= wrappedCommandResponseType #>> responses;
+                if (entityManager.HasComponent<<#= commandResponseBufferType #>>(entity))
+                {
+                    responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(entity).Responses;
+                }
+                else
+                {
+                    var data = new <#= commandResponseBufferType #>
+                    {
+                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Allocate(World)
+                    };
+                    responses = data.Responses = new List<<#= wrappedCommandResponseType #>>();
+                    entityManager.AddComponentData(entity, data);
+                }
+
+                responses.Add(new <#= wrappedCommandResponseType #>(op.EntityId,
+                    op.Message,
+                    op.StatusCode,
+                    response,
+                    requestBundle.Request));
+            }
+<# } #>
+        }
+
+        public class ComponentReplicator : ComponentReplicationHandler
+        {
+            public override uint ComponentId => <#= componentDetails.ComponentId #>;
+
+            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
+<# foreach (var eventDetail in eventDetailsList) { #>
+                ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
+<# } #>
+                ComponentType.Create<<#= componentDetails.TypeName #>>(),
+                ComponentType.ReadOnly<Authoritative<<#= componentDetails.TypeName #>>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            };
+
+            public override ComponentType[] CommandTypes => new ComponentType[] {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>>(),
+                ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>>(),
 <# } #>
             };
-<# if(commandDetailsList.Count > 0) { #>
 
-            private readonly Dictionary<uint, RequestContext> RequestIdToRequestContext = new Dictionary<uint, RequestContext>();
-
-<# foreach(var commandDetails in commandDetailsList) { #>
-            internal List<<#= commandDetails.CommandName #>.OutgoingRequest> <#= commandDetails.CommandName #>Requests = new List<<#= commandDetails.CommandName #>.OutgoingRequest>();
-            internal List<<#= commandDetails.CommandName #>.OutgoingResponse> <#= commandDetails.CommandName #>Responses = new List<<#= commandDetails.CommandName #>.OutgoingResponse>();
-            internal List<CommandFailure> <#= commandDetails.CommandName #>Failure = new List<CommandFailure>();
-            private static readonly ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>> <#= commandDetails.CommandName #>RequestPool =
-                new ComponentPool<CommandRequests<<#= commandDetails.CommandName #>.Request>>(
-                    () => new CommandRequests<<#= commandDetails.CommandName #>.Request>(),
-                    (component) => component.Buffer.Clear());
-            private static readonly ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>> <#= commandDetails.CommandName #>ResponsePool =
-                new ComponentPool<CommandResponses<<#= commandDetails.CommandName #>.Response>>(
-                    () => new CommandResponses<<#= commandDetails.CommandName #>.Response>(),
-                    (component) => component.Buffer.Clear());
-<# } #>
+<# foreach (var commandDetails in commandDetailsList) { #>
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
 <# } #>
 
-<# foreach(var eventDetails in eventDetailsList) { #>
-            internal readonly Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>> EntityIdTo<#= eventDetails.EventName#>Events = new Dictionary<long, List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>>();
-
-            private static readonly ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>> <#= eventDetails.EventName#>EventPool =
-                new ComponentPool<EventsReceived<<#= eventDetails.EventName#>Event>>(
-                    () => new EventsReceived<<#= eventDetails.EventName#>Event>(),
-                    (component) => component.Buffer.Clear());
-<# } #>
-
-            private static readonly ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>> AuthsPool =
-                new ComponentPool<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(
-                    () => new AuthoritiesChanged<<#= componentDetails.TypeName #>>(),
-                    (component) => component.Buffer.Clear());
-
-<# if (fieldDetailsList.Count > 0) { #>
-            private static readonly ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>(
-                    () => new ComponentsUpdated<<#= componentDetails.TypeName #>.Update>(),
-                    (component) => component.Buffer.Clear());
-<# } #>
-
-            public Translation(MutableView view) : base(view)
+            public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
-            }
-
-            public override void RegisterWithDispatcher(Dispatcher dispatcher)
-            {
-                dispatcher.OnAddComponent<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnAddComponent);
-                dispatcher.OnComponentUpdate<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnComponentUpdate);
-                dispatcher.OnRemoveComponent<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnRemoveComponent);
-                dispatcher.OnAuthorityChange<<#= componentDetails.FullyQualifiedSpatialTypeName #>>(OnAuthorityChange);
-
-<# foreach(var commandDetails in commandDetailsList) { #>
-                dispatcher.OnCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>(OnCommandRequest<#= commandDetails.CommandName #>);
-                dispatcher.OnCommandResponse<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>(OnCommandResponse<#= commandDetails.CommandName #>);
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+<# foreach (var commandDetails in commandDetailsList) { #>
+                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
 <# } #>
             }
 
-            public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
-<# if(commandDetailsList.Count > 0) { #>
-                View.AddComponent(entity, new CommandRequestSender<<#= componentDetails.TypeName #>>(entityId, TranslationHandle));
+                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
+<# foreach (var eventDetail in eventDetailsList) { #>
+                var event<#= eventDetail.EventName #>Array = replicationGroup.GetComponentDataArray<EventSender.<#= eventDetail.EventName #>>();
 <# } #>
-            }
-
-            public void OnAddComponent(AddComponentOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                    return;
-                }
-<# if(fieldDetailsList.Count > 0) { #>
-                var data = op.Data.Get().Value;
-<# } #>
-
-                var <#= componentDetails.CamelCaseTypeName #> = new <#= componentDetails.TypeName#>();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                <#= componentDetails.CamelCaseTypeName#>.<#= fieldDetails.PascalCaseName #> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "data." + fieldDetails.CamelCaseName, enumSet) #>;
-<# } #>
-                <#= componentDetails.CamelCaseTypeName#>.DirtyBit = false;
-
-<# if (componentDetails.IsBlittable) { #>
-                View.AddComponent(entity, <#= componentDetails.CamelCaseTypeName#>);
-<# } else { #>
-                View.SetComponentObject(entity, <#= componentDetails.CamelCaseTypeName #>);
-<# } #>
-                View.AddComponent(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
-
-                if (View.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
-                {
-                    View.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);
-                }
-                else if (!View.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentAdded<<#= componentDetails.TypeName #>>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                }
-            }
-
-            public void OnComponentUpdate(ComponentUpdateOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                    return;
-                }
-
-<# if (componentDetails.IsBlittable) { #>
-                var componentData = View.GetComponent<<#= componentDetails.TypeName #>>(entity);
-<# } else { #>
-                var componentData = View.GetComponentObject<<#= componentDetails.TypeName #>>(entity);
-<# } #>
-<# if(fieldDetailsList.Count > 0 || eventDetailsList.Count > 0) { #>
-                var update = op.Update.Get();
-<# } #>
-
-<# if(fieldDetailsList.Count > 0) { #>
-                if (View.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
-                {
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                    if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
-                    {
-                        componentData.<#= fieldDetails.PascalCaseName#> = <#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>;
-                    }
-<# } #>
-                }
-<# } #>
-
-<# foreach(var eventDetails in eventDetailsList) { #>
-                var <#= eventDetails.CamelCaseTypeName #>Events = update.<#= eventDetails.CamelCaseTypeName #>;
-                foreach (var spatialEvent in <#= eventDetails.CamelCaseTypeName #>Events)
-                {
-                    var nativeEvent = new <#= eventDetails.EventName #>Event
-                    {
-                        Payload = <#= eventDetails.FullyQualifiedPayloadTypeName #>.ToNative(spatialEvent)
-                    };
-
-                    View.AddEventReceived(entity, nativeEvent, <#= eventDetails.EventName #>EventPool);
-                }
-<# } #>
-                componentData.DirtyBit = false;
-
-<# if (componentDetails.IsBlittable) { #>
-                View.SetComponentData(entity, componentData);
-<# } else { #>
-                View.SetComponentObject(entity, componentData);
-<# } #>
-
-<# if (fieldDetailsList.Count > 0) { #>
-                var componentFieldsUpdated = false;
-                var gdkUpdate = new <#= componentDetails.TypeName #>.Update();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                if (update.<#= fieldDetails.CamelCaseName #>.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(<#= UnityTypeMappings.GetNativeTypeMethod(fieldDetails.RawFieldDefinition, "update." + fieldDetails.CamelCaseName + ".Value", enumSet) #>);
-                }
-<# } #>
-
-                if (componentFieldsUpdated)
-                {
-                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
-                }
-<# } #>
-            }
-
-            public void OnRemoveComponent(RemoveComponentOp op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                    return;
-                }
-
-                View.RemoveComponent<<#= componentDetails.TypeName #>>(entity);
-
-                if (View.HasComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity))
-                {
-                    View.RemoveComponent<ComponentAdded<<#= componentDetails.TypeName #>>>(entity);
-                }
-                else if (!View.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentRemoved<<#= componentDetails.TypeName #>>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                }
-            }
-
-            public void OnAuthorityChange(AuthorityChangeOp op)
-            {
-                var entityId = op.EntityId.Id;
-<# if(eventDetailsList.Count > 0) { #>
-                if (op.Authority == Authority.Authoritative)
-                {
-<# foreach(var eventDetails in eventDetailsList) { #>
-                    EntityIdTo<#= eventDetails.EventName #>Events[entityId] = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>();
-<# } #>
-                    View.AddComponent(entityId, new EventSender<<#= componentDetails.TypeName #>>(entityId, TranslationHandle));
-                }
-                else if (op.Authority == Authority.NotAuthoritative)
-                {
-<# foreach(var eventDetails in eventDetailsList) { #>
-                    EntityIdTo<#= eventDetails.EventName #>Events.Remove(entityId);
-<# } #>
-                    View.RemoveComponent<EventSender<<#= componentDetails.TypeName #>>>(entityId);
-                }
-<# } #>
-                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
-            }
-
-            public override void ExecuteReplication(Connection connection)
-            {
-<# if (componentDetails.IsBlittable) { #>
-                var componentDataArray = ReplicationComponentGroup.GetComponentDataArray<<#= componentDetails.TypeName #>>();
-<# } else { #>
-                var componentDataArray = ReplicationComponentGroup.GetComponentArray<<#= componentDetails.TypeName #>>();
-<# } #>
-                var spatialEntityIdData = ReplicationComponentGroup.GetComponentDataArray<SpatialEntityId>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
                 {
-                    var componentData = componentDataArray[i];
-                    var entityId = spatialEntityIdData[i].EntityId;
-                    var hasPendingEvents = false;
-<# foreach(var eventDetails in eventDetailsList) { #>
-                    var <#= eventDetails.CamelCaseTypeName #>Events = EntityIdTo<#= eventDetails.EventName #>Events[entityId];
-                    hasPendingEvents |= <#= eventDetails.CamelCaseTypeName #>Events.Count() > 0;
+                    var data = componentDataArray[i];
+                    var dirtyEvents = 0;
+<# foreach (var eventDetail in eventDetailsList) { #>
+                    var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
+                    dirtyEvents += events<#= eventDetail.EventName #>.Count;
 <# } #>
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Update();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                        update.Set<#= fieldDetails.PascalCaseName #>(<#= UnityTypeMappings.GetSpatialTypeMethod(fieldDetails.RawFieldDefinition, "componentData." + fieldDetails.PascalCaseName, enumSet) #>);
-<# } #>
-<# foreach(var eventDetails in eventDetailsList) { #>
-                        foreach (var nativeEvent in <#= eventDetails.CamelCaseTypeName #>Events)
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
+                        <#= componentDetails.TypeName #>.Serialization.Serialize(data, update.GetFields());
+
+<# if (eventDetailsList.Count > 0) { #>
+                        // Serialize events
+                        var eventsObject = update.GetEvents();
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        if (events<#= eventDetail.EventName #>.Count > 0)
                         {
-                            var spatialEvent = <#= eventDetails.FullyQualifiedPayloadTypeName #>.ToSpatial(nativeEvent);
-                            update.<#= eventDetails.CamelCaseTypeName #>.Add(spatialEvent);
+                            foreach (var e in events<#= eventDetail.EventName #>)
+                            {
+                                var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
+                                <#= eventDetail.FullyQualifiedPayloadTypeName #>.Serialization.Serialize(e, obj);
+                            }
+
+                            events<#= eventDetail.EventName #>.Clear();
                         }
-<# } #>
-                        SendComponentUpdate(connection, entityId, update);
 
-                        componentData.DirtyBit = false;
-<# if (componentDetails.IsBlittable) { #>
-                        componentDataArray[i] = componentData;
-<# } else { #>
-                        View.SetComponentObject(entityId, componentData);
 <# } #>
+<# } #>
+                        // Send serialized update over the wire
+                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-<# foreach(var eventDetails in eventDetailsList) { #>
-                        <#= eventDetails.CamelCaseTypeName #>Events.Clear();
-<# } #>
+                        data.DirtyBit = false;
+                        componentDataArray[i] = data;
                     }
                 }
             }
 
-            public static void SendComponentUpdate(Connection connection, long entityId, <#= componentDetails.FullyQualifiedSpatialTypeName #>.Update update)
+            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
-                connection.SendComponentUpdate(new global::Improbable.EntityId(entityId), update);
-            }
-
-            public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
-            {
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents<ComponentAdded<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 1);
-                RemoveComponents<ComponentRemoved<<#= componentDetails.TypeName #>>>(ref entityCommandBuffer, groupIndex: 2);
-<# if (fieldDetailsList.Count > 0) { #>
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
-<# } #>
-                
-<# for(var i = 0; i < commandDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>RequestPool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
-                RemoveComponents(ref entityCommandBuffer, <#= commandDetailsList[i].CommandName #>ResponsePool, groupIndex: <#= i * 2 + (fieldDetailsList.Count == 0 ? 4 : 5) #>);
-<# } #>
-<# for(var i = 0; i < eventDetailsList.Count; i++) { #>
-                RemoveComponents(ref entityCommandBuffer, <#= eventDetailsList[i].EventName #>EventPool, groupIndex: <#= i + commandDetailsList.Count * 2 + (fieldDetailsList.Count == 0 ? 3 : 4) #>);
-<# } #>                
-            }
-
-<# foreach (var commandDetails in commandDetailsList) { #>
-            public void OnCommandRequest<#= commandDetails.CommandName #>(CommandRequestOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
+<#
+for (var i = 0; i < commandDetailsList.Count; i++) {
+    var commandDetails = commandDetailsList[i];
+    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
+    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
+#>
+                if (!commandComponentGroups[<#= 2*i #>].IsEmptyIgnoreFilter)
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandRequest.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                    return;
+                    var componentGroup = commandComponentGroups[<#= 2*i #>];
+                    var commandSenderDataArray = componentGroup.GetComponentDataArray<<#= commandSenderType #>>();
+                    var entityArray = componentGroup.GetEntityArray();
+
+                    for (var j = 0; j < commandSenderDataArray.Length; j++)
+                    {
+                        var requests = commandSenderDataArray[j];
+                        for (var k = 0; k < requests.RequestsToSend.Count; k++)
+                        {
+                            var wrappedCommandRequest = requests.RequestsToSend[k];
+
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
+                            <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
+
+                            var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
+                                new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                                wrappedCommandRequest.TimeoutMillis,
+                                wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
+
+                            <#= commandDetails.CamelCaseName #>Storage.CommandRequestsInFlight[requestId.Id] =
+                                new CommandRequestStore<<#= commandDetails.RequestType #>>(entityArray[j], wrappedCommandRequest.RawRequest, null);
+                        }
+
+                        requests.RequestsToSend.Clear();
+                    }
                 }
-
-                var requestPayload = op.Request.Get().Value;
-                var unityRequestPayload = <#= commandDetails.RequestType #>.ToNative(requestPayload);
-                var request = new <#= commandDetails.CommandName #>.Request(op.RequestId.Id, this, op.CallerWorkerId, op.CallerAttributeSet, unityRequestPayload);
-
-                View.AddCommandRequest(entity, request, <#= commandDetails.CommandName #>RequestPool);
-            }
-
-            public void OnCommandResponse<#= commandDetails.CommandName #>(CommandResponseOp<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>> op)
-            {
-                var requestId = op.RequestId.Id;
-                RequestContext requestContext;
-                if (!RequestIdToRequestContext.TryGetValue(requestId, out requestContext))
+                if (!commandComponentGroups[<#= 2*i + 1 #>].IsEmptyIgnoreFilter)
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnCommandResponse.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "<#= componentDetails.TypeName #>"));
-                    return;
+                    var componentGroup = commandComponentGroups[<#= 2*i + 1 #>];
+                    var commandResponderDataArray = componentGroup.GetComponentDataArray<<#= commandResponderType #>>();
+
+                    for (var j = 0; j < commandResponderDataArray.Length; j++)
+                    {
+                        var responses = commandResponderDataArray[j];
+                        for (var k = 0; k < responses.ResponsesToSend.Count; k++)
+                        {
+                            var wrappedCommandResponse = responses.ResponsesToSend[k];
+                            var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
+
+                            if (wrappedCommandResponse.FailureMessage != null)
+                            {
+                                // Send a command failure if the string is non-null.
+                                connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
+                                continue;
+                            }
+
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
+                            <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
+
+                            connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                        }
+
+                        responses.ResponsesToSend.Clear();
+                    }
                 }
-
-                RequestIdToRequestContext.Remove(requestId);
-
-                Unity.Entities.Entity entity;
-                if (requestContext.EntityId == MutableView.WorkerEntityId)
-                {
-                    entity = View.WorkerEntity;
-                }
-                else if (!View.TryGetEntity(requestContext.EntityId, out entity))
-                {
-                    return;
-                }
-
-                var unityResponsePayload = op.Response.HasValue 
-                    ? <#= commandDetails.ResponseType #>.ToNative(op.Response.Value.Get().Value) 
-                    : (<#= commandDetails.ResponseType #>?) null;
-                var outgoingRequest = (<#= commandDetails.CommandName #>.OutgoingRequest) requestContext.Request;
-                var response = new <#= commandDetails.CommandName #>.Response(op.EntityId.Id, op.Message, (CommandStatusCode) op.StatusCode, unityResponsePayload, outgoingRequest.RawRequest);
-
-                View.AddCommandResponse(entity, response, <#= commandDetails.CommandName #>ResponsePool);
-            }
-
-            private void Send<#= commandDetails.CommandName #>Request(Connection connection, <#= commandDetails.CommandName #>.OutgoingRequest outgoingRequest)
-            {
-                var requestPayload = <#= commandDetails.RequestType #>.ToSpatial(outgoingRequest.RawRequest);
-                var request = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>.Request(requestPayload);
-
-                var requestId = connection.SendCommandRequest(new global::Improbable.EntityId(outgoingRequest.TargetEntityId), request, null);
-
-                RequestIdToRequestContext.Add(requestId.Id, new RequestContext(outgoingRequest.SenderEntityId, outgoingRequest));
-            }
-
-            private void Send<#= commandDetails.CommandName #>Response(Connection connection, <#= commandDetails.CommandName #>.OutgoingResponse outgoingResponse)
-            {
-                var responsePayload = <#= commandDetails.ResponseType #>.ToSpatial(outgoingResponse.RawResponse);
-                var response = new <#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>.Response(responsePayload);
-
-                var requestId = new RequestId<IncomingCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>>(
-                    outgoingResponse.RequestId);
-
-                connection.SendCommandResponse(requestId, response);
-            }
-
-            private void Send<#= commandDetails.CommandName #>Failure(Connection connection, CommandFailure failure) {
-                var requestId = new RequestId<IncomingCommandRequest<<#= componentDetails.FullyQualifiedSpatialTypeName #>.Commands.<#= commandDetails.CommandName #>>>(
-                    failure.RequestId);
-
-                connection.SendCommandFailure(requestId, failure.Message);
-            }
-<# } #>
-            public override void SendCommands(Connection connection)
-            {
-<# foreach (var commandDetails in commandDetailsList) { #>
-                foreach (var request in <#= commandDetails.CommandName #>Requests)
-                {
-                    Send<#= commandDetails.CommandName #>Request(connection, request);
-                }
-                <#= commandDetails.CommandName #>Requests.Clear();
-
-                foreach (var response in <#= commandDetails.CommandName #>Responses)
-                {
-                    Send<#= commandDetails.CommandName #>Response(connection, response);
-                }
-                <#= commandDetails.CommandName #>Responses.Clear();
-
-                foreach (var failure in <#= commandDetails.CommandName #>Failure)
-                {
-                    Send<#= commandDetails.CommandName #>Failure(connection, failure);
-                }
-                <#= commandDetails.CommandName #>Failure.Clear();
 <# } #>
             }
 
-            public static <#= componentDetails.ComponentName #>.Translation GetTranslation(uint internalHandleToTranslation)
-            {
-                return (<#= componentDetails.ComponentName #>.Translation) ComponentTranslation.HandleToTranslation[internalHandleToTranslation];
-            }
         }
-    }
 
-<# if(commandDetailsList.Count > 0) { #>
-    public static class <#= componentDetails.TypeName #>CommandRequestHandlers
-    {
-<# foreach (var commandDetails in commandDetailsList) { #>
-        public static void Send<#= commandDetails.CommandName #>Request(this CommandRequestSender<<#= componentDetails.TypeName #>> commandRequestSender,
-            long targetEntityId, <#= commandDetails.RequestType #> request)
+        public class ComponentCleanup : ComponentCleanupHandler
         {
-            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(commandRequestSender.InternalHandleToTranslation);
+            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
+                typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
+                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
+            };
 
-            translation.<#= commandDetails.CommandName #>Requests.Add(new <#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.OutgoingRequest(targetEntityId,
-                commandRequestSender.EntityId, request));
-        }
-
-<# } #>
-    }
-<# } #>
-
-<# if(eventDetailsList.Count > 0) { #>
-    public static class <#= componentDetails.TypeName #>EventHandlers
-    {
+            public override ComponentType[] EventComponentTypes => new ComponentType[] {
 <# foreach (var eventDetails in eventDetailsList) { #>
-        public static void Send<#= eventDetails.EventName #>Event(this EventSender<<#= componentDetails.TypeName #>> eventSender,
-            <#= eventDetails.FullyQualifiedPayloadTypeName #> eventData)
-        {
-            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
-            translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Add(eventData);
-        }
-
-        public static List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Get<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
-        {
-            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
-            return translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId];
-        }
-
-        public static void Clear<#= eventDetails.EventName #>Events(this EventSender<<#= componentDetails.TypeName #>> eventSender)
-        {
-            var translation = <#= componentDetails.ComponentName #>.Translation.GetTranslation(eventSender.InternalHandleToTranslation);
-            translation.EntityIdTo<#= eventDetails.EventName #>Events[eventSender.EntityId].Clear();
-        }
-
+                typeof(ReceivedEvents.<#= eventDetails.EventName #>),
 <# } #>
+            };
+
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+
+            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                ComponentType.ReadOnly<CommandRequests.<#= commandDetails.CommandName #>>(),
+                ComponentType.ReadOnly<CommandResponses.<#= commandDetails.CommandName #>>(),
+<# } #>
+            };
+
+            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = updateGroup.GetEntityArray();
+                var data = updateGroup.GetComponentDataArray<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entities[i]);
+                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
+                }
+            }
+
+            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = authorityChangeGroup.GetEntityArray();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<AuthorityChanges<<#= componentDetails.TypeName #>>>(entities[i]);
+                    AuthorityChangesProvider.Free(data[i].Handle);
+                }
+            }
+
+            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
+            {
+<# for (var i = 0; i < eventDetailsList.Count; i++) { #>
+<# var eventDetails = eventDetailsList[i]; #>
+                // Clean <#= eventDetails.EventName #>
+                {
+                    var group = eventGroups[<#= i #>];
+                    if (!group.IsEmptyIgnoreFilter)
+                    {
+                        var entities = group.GetEntityArray();
+                        var data = group.GetComponentDataArray<ReceivedEvents.<#= eventDetails.EventName #>>();
+                        for (var i = 0; i < entities.Length; i++)
+                        {
+                            buffer.RemoveComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entities[i]);
+                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Free(data[i].handle);
+                        }
+                    }
+                }
+<# } #>
+            }
+
+            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
+            {
+<#
+for (var j = 0; j < commandDetailsList.Count; j++) {
+    var commandDetails = commandDetailsList[j];
+#>
+                if (!commandCleanupGroups[<#= 2*j #>].IsEmptyIgnoreFilter)
+                {
+                    var requestsGroup = commandCleanupGroups[<#= 2*j #>];
+                    var entities = requestsGroup.GetEntityArray();
+                    var data = requestsGroup.GetComponentDataArray<CommandRequests.<#= commandDetails.CommandName #>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        buffer.RemoveComponent<CommandRequests.<#= commandDetails.CommandName #>>(entities[i]);
+                        ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Free(data[i].CommandListHandle);
+                    }
+                }
+
+                if (!commandCleanupGroups[<#= 2*j + 1 #>].IsEmptyIgnoreFilter)
+                {
+                    var responsesGroup = commandCleanupGroups[<#= 2*j + 1 #>];
+                    var entities = responsesGroup.GetEntityArray();
+                    var data = responsesGroup.GetComponentDataArray<CommandResponses.<#= commandDetails.CommandName #>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        buffer.RemoveComponent<CommandResponses.<#= commandDetails.CommandName #>>(entities[i]);
+                        ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Free(data[i].CommandListHandle);
+                    }
+                }
+<# } #>
+            }
+        }
     }
-<# } #>
+
 }

@@ -4,27 +4,30 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
-    public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData
+    public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData, new()
     {
-        private const string LoggerName = nameof(CustomSpatialOSSendSystem<T>);
+        private const string LoggerName = "CustomSpatialOSSendSystem";
 
         private const string CustomReplicationSystemAlreadyExists =
             "Custom Replication System for this component already exists.";
 
         private SpatialOSSendSystem spatialOSSendSystem;
 
-        protected WorkerBase Worker;
+        protected Worker worker;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            Worker = WorkerRegistry.GetWorkerForWorld(World);
+            worker = Worker.GetWorkerFromWorld(World);
 
             spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
-            if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(typeof(T)))
+
+            var component = new T();
+
+            if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
             {
-                Worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
                     .WithField("ComponentType", typeof(T)));
             }

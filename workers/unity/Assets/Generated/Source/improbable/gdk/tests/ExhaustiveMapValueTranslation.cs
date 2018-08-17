@@ -2,384 +2,406 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
-using Improbable.Worker;
+using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Components;
-using Improbable.Gdk.Tests;
+using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.Core.Commands;
 
 namespace Generated.Improbable.Gdk.Tests
 {
     public partial class ExhaustiveMapValue
     {
-        public class Translation : ComponentTranslation, IDispatcherCallbacks<global::Improbable.Gdk.Tests.ExhaustiveMapValue>
+        public class DispatcherHandler : ComponentDispatcherHandler
         {
-            private const string LoggerName = "ExhaustiveMapValue.Translation";
-        
-            public override ComponentType TargetComponentType => targetComponentType;
-            private static readonly ComponentType targetComponentType = typeof(SpatialOSExhaustiveMapValue);
+            public override uint ComponentId => 197718;
 
-            public override ComponentType[] ReplicationComponentTypes => replicationComponentTypes;
-            private static readonly ComponentType[] replicationComponentTypes = { typeof(SpatialOSExhaustiveMapValue), typeof(Authoritative<SpatialOSExhaustiveMapValue>), typeof(SpatialEntityId)};
+            private readonly EntityManager entityManager;
 
-            public override ComponentType[] CleanUpComponentTypes => cleanUpComponentTypes;
-            private static readonly ComponentType[] cleanUpComponentTypes = 
-            { 
-                typeof(AuthoritiesChanged<SpatialOSExhaustiveMapValue>),
-                typeof(ComponentAdded<SpatialOSExhaustiveMapValue>),
-                typeof(ComponentRemoved<SpatialOSExhaustiveMapValue>),
-                typeof(ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>), 
+            private const string LoggerName = "ExhaustiveMapValue.DispatcherHandler";
+
+
+            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            {
+                entityManager = world.GetOrCreateManager<EntityManager>();
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+            }
+
+            public override void Dispose()
+            {
+                ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(World);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(World);
+            }
+
+            public override void OnAddComponent(AddComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
+                {
+                    return;
+                }
+
+                var data = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveMapValue.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                data.DirtyBit = false;
+                entityManager.AddComponentData(entity, data);
+                entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveMapValue>());
+
+                if (entityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveMapValue>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "SpatialOSExhaustiveMapValue")
+                    );
+                }
+            }
+
+            public override void OnRemoveComponent(RemoveComponentOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
+                {
+                    return;
+                }
+
+                var data = entityManager.GetComponentData<SpatialOSExhaustiveMapValue>(entity);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.Free(data.field6Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.Free(data.field8Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.Free(data.field9Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.Free(data.field10Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.Free(data.field11Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.Free(data.field12Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.Free(data.field13Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.Free(data.field14Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
+                ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+
+                entityManager.RemoveComponent<SpatialOSExhaustiveMapValue>(entity);
+
+                if (entityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    entityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity);
+                }
+                else if (!entityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    entityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveMapValue>());
+                }
+                else
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField("Component", "SpatialOSExhaustiveMapValue")
+                    );
+                }
+            }
+
+            public override void OnComponentUpdate(ComponentUpdateOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
+                {
+                    return;
+                }
+
+                var data = entityManager.GetComponentData<SpatialOSExhaustiveMapValue>(entity);
+
+                var update = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveMapValue.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                List<SpatialOSExhaustiveMapValue.Update> updates;
+                if (entityManager.HasComponent<SpatialOSExhaustiveMapValue.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<SpatialOSExhaustiveMapValue.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new SpatialOSExhaustiveMapValue.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSExhaustiveMapValue.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
+
+                data.DirtyBit = false;
+                entityManager.SetComponentData(entity, data);
+            }
+
+            public override void OnAuthorityChange(AuthorityChangeOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
+                {
+                    return;
+                }
+
+                ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+            }
+
+            public override void OnCommandRequest(CommandRequestOp op)
+            {
+                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
+                {
+                    return;
+                }
+
+                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+                switch (commandIndex)
+                {
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "SpatialOSExhaustiveMapValue")
+                        );
+                        break;
+                }
+            }
+
+            public override void OnCommandResponse(CommandResponseOp op)
+            {
+                var commandIndex = op.Response.CommandIndex;
+                switch (commandIndex)
+                {
+                    default:
+                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
+                            .WithField(LoggingUtils.LoggerName, LoggerName)
+                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                            .WithField("CommandIndex", commandIndex)
+                            .WithField("Component", "SpatialOSExhaustiveMapValue")
+                        );
+                        break;
+                }
+            }
+
+            public override void AddCommandComponents(Unity.Entities.Entity entity)
+            {
+            }
+
+            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
+            {
+                switch (authority)
+                {
+                    case Authority.Authoritative:
+                        if (!entityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapValue>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.RemoveComponent<NotAuthoritative<SpatialOSExhaustiveMapValue>>(entity);
+                        entityManager.AddComponentData(entity, new Authoritative<SpatialOSExhaustiveMapValue>());
+
+                        // Add event senders
+                        break;
+                    case Authority.AuthorityLossImminent:
+                        if (!entityManager.HasComponent<Authoritative<SpatialOSExhaustiveMapValue>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSExhaustiveMapValue>());
+                        break;
+                    case Authority.NotAuthoritative:
+                        if (!entityManager.HasComponent<Authoritative<SpatialOSExhaustiveMapValue>>(entity))
+                        {
+                            LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
+                            return;
+                        }
+
+                        if (entityManager.HasComponent<AuthorityLossImminent<SpatialOSExhaustiveMapValue>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminent<SpatialOSExhaustiveMapValue>>(entity);
+                        }
+
+                        entityManager.RemoveComponent<Authoritative<SpatialOSExhaustiveMapValue>>(entity);
+                        entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveMapValue>());
+
+                        // Remove event senders
+                        break;
+                }
+
+                List<Authority> authorityChanges;
+                if (entityManager.HasComponent<AuthorityChanges<SpatialOSExhaustiveMapValue>>(entity))
+                {
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<SpatialOSExhaustiveMapValue>>(entity).Changes;
+
+                }
+                else
+                {
+                    var changes = new AuthorityChanges<SpatialOSExhaustiveMapValue>
+                    {
+                        Handle = AuthorityChangesProvider.Allocate(World)
+                    };
+                    AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
+                    authorityChanges = changes.Changes;
+                    entityManager.AddComponentData(entity, changes);
+                }
+
+                authorityChanges.Add(authority);
+            }
+
+            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
+            {
+                if (!Worker.TryGetEntity(entityId, out entity))
+                {
+                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField(LoggingUtils.EntityId, entityId.Id)
+                        .WithField("Op", opType)
+                        .WithField("Component", "SpatialOSExhaustiveMapValue")
+                    );
+                    return false;
+                }
+
+                return true;
+            }
+
+            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
+            {
+                LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField(LoggingUtils.EntityId, entityId.Id)
+                    .WithField("New Authority", newAuthority)
+                    .WithField("Expected Old Authority", expectedOldAuthority)
+                    .WithField("Component", "SpatialOSExhaustiveMapValue")
+                );
+            }
+
+        }
+
+        public class ComponentReplicator : ComponentReplicationHandler
+        {
+            public override uint ComponentId => 197718;
+
+            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
+                ComponentType.Create<SpatialOSExhaustiveMapValue>(),
+                ComponentType.ReadOnly<Authoritative<SpatialOSExhaustiveMapValue>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            };
+
+            public override ComponentType[] CommandTypes => new ComponentType[] {
             };
 
 
-            private static readonly ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveMapValue>> AuthsPool =
-                new ComponentPool<AuthoritiesChanged<SpatialOSExhaustiveMapValue>>(
-                    () => new AuthoritiesChanged<SpatialOSExhaustiveMapValue>(),
-                    (component) => component.Buffer.Clear());
-
-            private static readonly ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>> UpdatesPool =
-                new ComponentPool<ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>>(
-                    () => new ComponentsUpdated<SpatialOSExhaustiveMapValue.Update>(),
-                    (component) => component.Buffer.Clear());
-
-            public Translation(MutableView view) : base(view)
+            public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             }
 
-            public override void RegisterWithDispatcher(Dispatcher dispatcher)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
-                dispatcher.OnAddComponent<global::Improbable.Gdk.Tests.ExhaustiveMapValue>(OnAddComponent);
-                dispatcher.OnComponentUpdate<global::Improbable.Gdk.Tests.ExhaustiveMapValue>(OnComponentUpdate);
-                dispatcher.OnRemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveMapValue>(OnRemoveComponent);
-                dispatcher.OnAuthorityChange<global::Improbable.Gdk.Tests.ExhaustiveMapValue>(OnAuthorityChange);
-
-            }
-
-            public override void AddCommandRequestSender(Unity.Entities.Entity entity, long entityId)
-            {
-            }
-
-            public void OnAddComponent(AddComponentOp<global::Improbable.Gdk.Tests.ExhaustiveMapValue> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnAddComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
-                    return;
-                }
-                var data = op.Data.Get().Value;
-
-                var spatialOSExhaustiveMapValue = new SpatialOSExhaustiveMapValue();
-                spatialOSExhaustiveMapValue.Field2 = data.field2.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field4 = data.field4.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field5 = data.field5.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field6 = data.field6.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field7 = data.field7.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field8 = data.field8.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field9 = data.field9.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field10 = data.field10.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field11 = data.field11.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field12 = data.field12.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field13 = data.field13.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field14 = data.field14.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field15 = data.field15.ToDictionary(entry => entry.Key, entry => entry.Value);
-                spatialOSExhaustiveMapValue.Field16 = data.field16.ToDictionary(entry => entry.Key, entry => entry.Value.Id);
-                spatialOSExhaustiveMapValue.Field17 = data.field17.ToDictionary(entry => entry.Key, entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(entry.Value));
-                spatialOSExhaustiveMapValue.DirtyBit = false;
-
-                View.SetComponentObject(entity, spatialOSExhaustiveMapValue);
-                View.AddComponent(entity, new NotAuthoritative<SpatialOSExhaustiveMapValue>());
-
-                if (View.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
-                {
-                    View.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity);
-                }
-                else if (!View.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentAdded<SpatialOSExhaustiveMapValue>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentAdded but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
-                }
-            }
-
-            public void OnComponentUpdate(ComponentUpdateOp<global::Improbable.Gdk.Tests.ExhaustiveMapValue> op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnComponentUpdate.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
-                    return;
-                }
-
-                var componentData = View.GetComponentObject<SpatialOSExhaustiveMapValue>(entity);
-                var update = op.Update.Get();
-
-                if (View.HasComponent<NotAuthoritative<SpatialOSExhaustiveMapValue>>(entity))
-                {
-                    if (update.field2.HasValue)
-                    {
-                        componentData.Field2 = update.field2.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field4.HasValue)
-                    {
-                        componentData.Field4 = update.field4.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field5.HasValue)
-                    {
-                        componentData.Field5 = update.field5.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field6.HasValue)
-                    {
-                        componentData.Field6 = update.field6.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field7.HasValue)
-                    {
-                        componentData.Field7 = update.field7.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field8.HasValue)
-                    {
-                        componentData.Field8 = update.field8.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field9.HasValue)
-                    {
-                        componentData.Field9 = update.field9.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field10.HasValue)
-                    {
-                        componentData.Field10 = update.field10.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field11.HasValue)
-                    {
-                        componentData.Field11 = update.field11.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field12.HasValue)
-                    {
-                        componentData.Field12 = update.field12.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field13.HasValue)
-                    {
-                        componentData.Field13 = update.field13.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field14.HasValue)
-                    {
-                        componentData.Field14 = update.field14.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field15.HasValue)
-                    {
-                        componentData.Field15 = update.field15.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
-                    }
-                    if (update.field16.HasValue)
-                    {
-                        componentData.Field16 = update.field16.Value.ToDictionary(entry => entry.Key, entry => entry.Value.Id);
-                    }
-                    if (update.field17.HasValue)
-                    {
-                        componentData.Field17 = update.field17.Value.ToDictionary(entry => entry.Key, entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(entry.Value));
-                    }
-                }
-
-                componentData.DirtyBit = false;
-
-                View.SetComponentObject(entity, componentData);
-
-                var componentFieldsUpdated = false;
-                var gdkUpdate = new SpatialOSExhaustiveMapValue.Update();
-                if (update.field2.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field2 = new Option<global::System.Collections.Generic.Dictionary<string, float>>(update.field2.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field4.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field4 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field4.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field5.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field5 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field5.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field6.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field6 = new Option<global::System.Collections.Generic.Dictionary<string, double>>(update.field6.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field7.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field7 = new Option<global::System.Collections.Generic.Dictionary<string, string>>(update.field7.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field8.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field8 = new Option<global::System.Collections.Generic.Dictionary<string, uint>>(update.field8.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field9.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field9 = new Option<global::System.Collections.Generic.Dictionary<string, ulong>>(update.field9.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field10.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field10 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field10.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field11.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field11 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field11.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field12.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field12 = new Option<global::System.Collections.Generic.Dictionary<string, uint>>(update.field12.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field13.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field13 = new Option<global::System.Collections.Generic.Dictionary<string, ulong>>(update.field13.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field14.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field14 = new Option<global::System.Collections.Generic.Dictionary<string, int>>(update.field14.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field15.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field15 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field15.Value.ToDictionary(entry => entry.Key, entry => entry.Value));
-                }
-                if (update.field16.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field16 = new Option<global::System.Collections.Generic.Dictionary<string, long>>(update.field16.Value.ToDictionary(entry => entry.Key, entry => entry.Value.Id));
-                }
-                if (update.field17.HasValue)
-                {
-                    componentFieldsUpdated = true;
-                    gdkUpdate.Field17 = new Option<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>>(update.field17.Value.ToDictionary(entry => entry.Key, entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToNative(entry.Value)));
-                }
-
-                if (componentFieldsUpdated)
-                {
-                    View.AddComponentsUpdated(entity, gdkUpdate, UpdatesPool);
-                }
-            }
-
-            public void OnRemoveComponent(RemoveComponentOp op)
-            {
-                if (!View.TryGetEntity(op.EntityId.Id, out var entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent("Entity not found during OnRemoveComponent.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
-                    return;
-                }
-
-                View.RemoveComponent<SpatialOSExhaustiveMapValue>(entity);
-
-                if (View.HasComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity))
-                {
-                    View.RemoveComponent<ComponentAdded<SpatialOSExhaustiveMapValue>>(entity);
-                }
-                else if (!View.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapValue>>(entity))
-                {
-                    View.AddComponent(entity, new ComponentRemoved<SpatialOSExhaustiveMapValue>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Received ComponentRemoved but have already received one for this entity.")
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField(MutableView.Component, "SpatialOSExhaustiveMapValue"));
-                }
-            }
-
-            public void OnAuthorityChange(AuthorityChangeOp op)
-            {
-                var entityId = op.EntityId.Id;
-                View.HandleAuthorityChange(entityId, op.Authority, AuthsPool);
-            }
-
-            public override void ExecuteReplication(Connection connection)
-            {
-                var componentDataArray = ReplicationComponentGroup.GetComponentArray<SpatialOSExhaustiveMapValue>();
-                var spatialEntityIdData = ReplicationComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<SpatialOSExhaustiveMapValue>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
                 {
-                    var componentData = componentDataArray[i];
-                    var entityId = spatialEntityIdData[i].EntityId;
-                    var hasPendingEvents = false;
+                    var data = componentDataArray[i];
+                    var dirtyEvents = 0;
 
-                    if (componentData.DirtyBit || hasPendingEvents)
+                    if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Gdk.Tests.ExhaustiveMapValue.Update();
-                        update.SetField2(new global::Improbable.Collections.Map<string,float>(componentData.Field2.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField4(new global::Improbable.Collections.Map<string,int>(componentData.Field4.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField5(new global::Improbable.Collections.Map<string,long>(componentData.Field5.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField6(new global::Improbable.Collections.Map<string,double>(componentData.Field6.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField7(new global::Improbable.Collections.Map<string,string>(componentData.Field7.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField8(new global::Improbable.Collections.Map<string,uint>(componentData.Field8.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField9(new global::Improbable.Collections.Map<string,ulong>(componentData.Field9.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField10(new global::Improbable.Collections.Map<string,int>(componentData.Field10.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField11(new global::Improbable.Collections.Map<string,long>(componentData.Field11.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField12(new global::Improbable.Collections.Map<string,uint>(componentData.Field12.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField13(new global::Improbable.Collections.Map<string,ulong>(componentData.Field13.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField14(new global::Improbable.Collections.Map<string,int>(componentData.Field14.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField15(new global::Improbable.Collections.Map<string,long>(componentData.Field15.ToDictionary(entry => entry.Key, entry => entry.Value)));
-                        update.SetField16(new global::Improbable.Collections.Map<string,global::Improbable.EntityId>(componentData.Field16.ToDictionary(entry => entry.Key, entry => new global::Improbable.EntityId(entry.Value))));
-                        update.SetField17(new global::Improbable.Collections.Map<string,global::Improbable.Gdk.Tests.SomeType>(componentData.Field17.ToDictionary(entry => entry.Key, entry => global::Generated.Improbable.Gdk.Tests.SomeType.ToSpatial(entry.Value))));
-                        SendComponentUpdate(connection, entityId, update);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(197718);
+                        SpatialOSExhaustiveMapValue.Serialization.Serialize(data, update.GetFields());
 
-                        componentData.DirtyBit = false;
-                        View.SetComponentObject(entityId, componentData);
+                        // Send serialized update over the wire
+                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
+                        data.DirtyBit = false;
+                        componentDataArray[i] = data;
                     }
                 }
             }
 
-            public static void SendComponentUpdate(Connection connection, long entityId, global::Improbable.Gdk.Tests.ExhaustiveMapValue.Update update)
-            {
-                connection.SendComponentUpdate(new global::Improbable.EntityId(entityId), update);
-            }
-
-            public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
-            {
-                RemoveComponents(ref entityCommandBuffer, AuthsPool, groupIndex: 0);
-                RemoveComponents<ComponentAdded<SpatialOSExhaustiveMapValue>>(ref entityCommandBuffer, groupIndex: 1);
-                RemoveComponents<ComponentRemoved<SpatialOSExhaustiveMapValue>>(ref entityCommandBuffer, groupIndex: 2);
-                RemoveComponents(ref entityCommandBuffer, UpdatesPool, groupIndex: 3);
-                
-                
-            }
-
-            public override void SendCommands(Connection connection)
+            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
             }
 
-            public static ExhaustiveMapValue.Translation GetTranslation(uint internalHandleToTranslation)
+        }
+
+        public class ComponentCleanup : ComponentCleanupHandler
+        {
+            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
+                typeof(ComponentAdded<SpatialOSExhaustiveMapValue>),
+                typeof(ComponentRemoved<SpatialOSExhaustiveMapValue>),
+            };
+
+            public override ComponentType[] EventComponentTypes => new ComponentType[] {
+            };
+
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSExhaustiveMapValue.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<SpatialOSExhaustiveMapValue>>();
+
+            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
+            };
+
+            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
-                return (ExhaustiveMapValue.Translation) ComponentTranslation.HandleToTranslation[internalHandleToTranslation];
+                var entities = updateGroup.GetEntityArray();
+                var data = updateGroup.GetComponentDataArray<SpatialOSExhaustiveMapValue.ReceivedUpdates>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<SpatialOSExhaustiveMapValue.ReceivedUpdates>(entities[i]);
+                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
+                }
+            }
+
+            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
+            {
+                var entities = authorityChangeGroup.GetEntityArray();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<SpatialOSExhaustiveMapValue>>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    buffer.RemoveComponent<AuthorityChanges<SpatialOSExhaustiveMapValue>>(entities[i]);
+                    AuthorityChangesProvider.Free(data[i].Handle);
+                }
+            }
+
+            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
+            {
+            }
+
+            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
+            {
             }
         }
     }
-
 
 }

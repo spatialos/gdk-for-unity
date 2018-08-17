@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -61,19 +62,19 @@ namespace Improbable.Gdk.Core
                 {
                     // For exception types, Unity expects an exception object to be passed.
                     // Otherwise, it will not be displayed.
-                    Exception exception = logEvent.Exception ?? new Exception(logEvent.ToString());
+                    var exception = logEvent.Exception ?? new Exception(logEvent.ToString());
 
                     Debug.unityLogger.LogException(exception, logEvent.Context);
                 }
                 else
                 {
                     Debug.unityLogger.Log(
-                        logType: type,
-                        message: logEvent,
-                        context: logEvent.Context);
+                        type,
+                        logEvent,
+                        logEvent.Context);
                 }
 
-                LogLevel logLevel = LogTypeMapping[type];
+                var logLevel = LogTypeMapping[type];
 
                 if (connection == null || logLevel < minimumLogLevel)
                 {

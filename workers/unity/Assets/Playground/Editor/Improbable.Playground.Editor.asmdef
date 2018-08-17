@@ -2,8 +2,9 @@
     "name": "Improbable.Playground.Editor",
     "references": [
         "Improbable.Playground",
-        "Improbable.Generated.NetworkTypes",
-        "Improbable.Gdk.Legacy"
+        "Improbable.Gdk.Legacy",
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
