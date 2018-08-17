@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Generated.Improbable;
 using Generated.Improbable.PlayerLifecycle;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
 
@@ -19,7 +21,7 @@ namespace Playground.Editor.SnapshotGenerator
         }
 
         private static readonly List<string> UnityWorkers =
-            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient};
+            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient };
 
         public static void Generate(Arguments arguments)
         {
@@ -112,26 +114,31 @@ namespace Playground.Editor.SnapshotGenerator
 
         private static void AddSpinners(Snapshot snapshot)
         {
-            snapshot.AddEntity(CreateSpinner(new Coordinates(3, 0.5f, 0)));
-            snapshot.AddEntity(CreateSpinner(new Coordinates(-3, 0.5f, 0)));
+            snapshot.AddEntity(CreateSpinner(new Coordinates { X = 3, Y = 0.5f, Z = 0 }));
+            snapshot.AddEntity(CreateSpinner(new Coordinates { X = -3, Y = 0.5f, Z = 0 }));
         }
 
         private static Entity CreateSpinner(Coordinates coords)
         {
-            var transform = new Transform.Data(new Location((float) coords.x, (float) coords.y, (float) coords.z), new Quaternion(1, 0, 0, 0), 0);
-            var prefab = new Prefab.Data("Spinner");
-            var archetypeComponent = new ArchetypeComponent.Data("Spinner");
-            var collisions = new Collisions.Data();
+            var transform = SpatialOSTransform.CreateSchemaComponentData(
+                new Location { X = (float) coords.X, Y = (float) coords.Y, Z = (float) coords.Z },
+                new Quaternion { X = 1, Y = 0, Z = 0, W = 0 },
+                0);
+
+            var prefab = SpatialOSPrefab.CreateSchemaComponentData("Spinner");
+            var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData("Spinner");
+
+            var collisions = SpatialOSCollisions.CreateSchemaComponentData();
 
             return EntityBuilder.Begin()
-                .AddPositionComponent(coords, WorkerSet)
-                .AddComponent(new Metadata.Data("Spinner"), WorkerSet)
+                .AddPosition(coords.X, coords.Y, coords.Z, SystemConfig.UnityGameLogic)
+                .AddMetadata("Spinner", SystemConfig.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(AllWorkersSet)
-                .AddComponent(collisions, WorkerSet)
-                .AddComponent(transform, WorkerSet)
-                .AddComponent(prefab, WorkerSet)
-                .AddComponent(archetypeComponent, WorkerSet)
+                .SetReadAcl(UnityWorkers)
+                .AddComponent(collisions, SystemConfig.UnityGameLogic)
+                .AddComponent(transform, SystemConfig.UnityGameLogic)
+                .AddComponent(prefab, SystemConfig.UnityGameLogic)
+                .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
                 .Build();
         }
     }

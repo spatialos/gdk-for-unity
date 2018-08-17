@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                     StringField = "test string"
                 });
 
-                var data = entityManager.GetComponentObject<SpatialOSNonBlittableComponent>(entity);
+                var data = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity);
 
                 Assert.AreEqual(data, reader.Data);
                 Assert.AreEqual("test string", reader.Data.StringField);

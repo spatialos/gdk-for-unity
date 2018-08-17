@@ -44,7 +44,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         [ComponentId(1002)]
         public interface Writer : IWriter<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
         {
-            void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
+            void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
             void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
         }
 

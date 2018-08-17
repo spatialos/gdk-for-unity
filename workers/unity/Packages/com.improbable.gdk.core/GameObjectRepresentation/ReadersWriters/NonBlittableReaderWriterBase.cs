@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     internal abstract class NonBlittableReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
-        where TSpatialComponentData : Component, ISpatialComponentData
+        where TSpatialComponentData : struct, IComponentData, ISpatialComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
         protected NonBlittableReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(entity, entityManager, logDispatcher)
@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 try
                 {
-                    return EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
+                    return EntityManager.GetComponentData<TSpatialComponentData>(Entity);
                 }
                 catch (Exception e)
                 {
@@ -32,8 +32,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             try
             {
-                var data = EntityManager.GetComponentObject<TSpatialComponentData>(Entity);
+                var data = EntityManager.GetComponentData<TSpatialComponentData>(Entity);
                 ApplyUpdate(update, data);
+                EntityManager.SetComponentData(Entity, data);
             }
             catch (Exception e)
             {

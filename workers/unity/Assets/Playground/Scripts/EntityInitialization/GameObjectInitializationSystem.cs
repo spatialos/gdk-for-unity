@@ -41,7 +41,6 @@ namespace Playground
         private EntityGameObjectCreator entityGameObjectCreator;
         private EntityGameObjectLinker entityGameObjectLinker;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
-        private EntityGameObjectLinker entityGameObjectLinker;
 
         protected override void OnCreateManager(int capacity)
         {

@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 {
                     IntField = new Option<int>(42)
                 });
-                int valueRead = entityManager.GetComponentObject<SpatialOSNonBlittableComponent>(entity).IntField;
+                int valueRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).IntField;
                 Assert.AreEqual(42, valueRead);
             }
         }
@@ -53,9 +53,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                     })
                 });
 
-                double doubleRead = entityManager.GetComponentObject<SpatialOSNonBlittableComponent>(entity).DoubleField;
+                double doubleRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).DoubleField;
                 Assert.AreEqual(13.37, doubleRead);
-                string stringRead = entityManager.GetComponentObject<SpatialOSNonBlittableComponent>(entity).StringField;
+                string stringRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).StringField;
                 Assert.AreEqual("stringy", stringRead);
             }
         }
