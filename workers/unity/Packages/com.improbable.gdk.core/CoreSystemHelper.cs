@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
@@ -13,6 +14,7 @@ namespace Improbable.Gdk.TransformSynchronization
             world.GetOrCreateManager<WorldCommandsCleanSystem>();
             world.GetOrCreateManager<WorldCommandsSendSystem>();
             world.GetOrCreateManager<CommandRequestTrackerSystem>();
+            world.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
         }
     }
 }
