@@ -69,12 +69,12 @@ After post processing, a code generation job is run on each C# object that repre
 The process of editing the code generator is simple:
 
 1. Make the code and/or template changes.
-2. Run `ci/codegen.sh` to see your changes in action! The code generator will automatically be rebuilt.
+2. Reload scripts within Unity to see your changes in action! The code generator will automatically be rebuilt.
 
 
 #### Spatial Codegen configuration
 
-If any changes you make change the input parameters or add new ones, you should add them to `ci/codegen.sh` so it runs correctly!
+If any changes you make change the input parameters or add new ones, you should add them to `Packages/com.improbable.gdk.tools/GenerateCode.cs` so it runs correctly!
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

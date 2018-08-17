@@ -33,7 +33,7 @@ markEndOfBlock "Tools Testing"
 
 markStartOfBlock "Code Generator Testing"
 
-dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" "${PROJECT_DIR}/code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj"
+dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator Testing"

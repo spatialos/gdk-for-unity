@@ -17,8 +17,6 @@ if [ $? -ne 0 ]; then
 fi
 set -e
 
-ci/codegen.sh
-
 # Ensure that all dependencies are present for Resharper.
 dotnet restore code_generator/GdkCodeGenerator.sln
 dotnet restore tools/Tools.sln

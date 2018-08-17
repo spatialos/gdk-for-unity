@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Improbable.CodeGeneration.FileHandling;
-using System.Runtime.InteropServices;
+using Improbable.CodeGeneration.Jobs;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -17,7 +17,7 @@ namespace Improbable.Gdk.CodeGenerator
             try
             {
                 var options = CodeGeneratorOptions.ParseArguments(args);
-                var generator = new CodeGenerator(options, new FileSystem());
+                var generator = new CodeGenerator(options, new MetaDataCompatibleFileSystem());
 
                 return generator.Run();
             }
@@ -41,6 +41,7 @@ namespace Improbable.Gdk.CodeGenerator
             this.fileSystem = fileSystem;
         }
 
+
         public int Run()
         {
             if (options.ShouldShowHelp)
@@ -61,13 +62,10 @@ namespace Improbable.Gdk.CodeGenerator
             var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
             var globalEnumSet = ExtractEnums(schemaProcessor.ProcessedSchemaFiles);
 
-            foreach (var processedSchema in schemaProcessor.ProcessedSchemaFiles)
-            {
-                var job = new SingleGenerationJob(options.NativeOutputDirectory, processedSchema, fileSystem,
-                    globalEnumSet);
-                job.Run();
-            }
-
+            var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
+            var runner = new JobRunner(fileSystem);
+            runner.Run(new List<ICodegenJob> {aggegrateJob}, new [] {options.NativeOutputDirectory});
+           
             return 0;
         }
 
@@ -78,7 +76,6 @@ namespace Improbable.Gdk.CodeGenerator
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path={dir}");
 
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
-            SystemTools.EnsureDirectoryEmpty(options.NativeOutputDirectory);
 
             var arguments = new[]
             {

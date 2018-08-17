@@ -20,7 +20,7 @@ namespace Improbable
             var coreSdkVersion = args[0];
             var nativeDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Core");
             var managedDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Sdk");
-            var tempPath = Path.GetFullPath($"./CoreSdk/{coreSdkVersion}");
+            var tempPath = Path.GetFullPath($"./build/CoreSdk/{coreSdkVersion}");
             var projectPath = Path.GetFullPath("../../");
 
             var Packages = new List<Package>
@@ -104,8 +104,13 @@ namespace Improbable
                         {
                             var cleanPath = Path.Combine(package.TargetPath, path);
                             if (File.Exists(cleanPath))
+                            {
                                 File.Delete(cleanPath);
-                            else if (Directory.Exists(cleanPath)) Directory.Delete(cleanPath, true);
+                            }
+                            else if (Directory.Exists(cleanPath))
+                            {
+                                Directory.Delete(cleanPath, true);
+                            }
                         }
                 }
             }

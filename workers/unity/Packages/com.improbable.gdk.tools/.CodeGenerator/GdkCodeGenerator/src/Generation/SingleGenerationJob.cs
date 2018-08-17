@@ -40,16 +40,24 @@ namespace Improbable.Gdk.CodeGenerator
             }
 
             componentsToGenerate = schemaFile.ComponentDefinitions;
-            foreach (var unityComponentDefinition in componentsToGenerate)
+            foreach (var component in componentsToGenerate)
             {
-                var fileName = Path.ChangeExtension(unityComponentDefinition.Name, fileExtension);
-                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(component.Name, fileExtension)));
 
-                fileName = Path.ChangeExtension(unityComponentDefinition.Name + "Translation", fileExtension);
-                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                if (component.CommandDefinitions.Count > 0)
+                {
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
+                }
 
-                fileName = Path.ChangeExtension($"{unityComponentDefinition.Name}Providers", fileExtension);
-                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                if (component.EventDefinitions.Count > 0)
+                {
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Events", fileExtension)));
+                }
+
+                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
             }
 
             enumsToGenerate = new List<EnumDefinitionRaw>();
@@ -94,7 +102,6 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentFileName = Path.ChangeExtension(component.Name, fileExtension);
                 var componentCode = blittableComponentGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
-
 
                 if (component.CommandDefinitions.Count > 0)
                 {

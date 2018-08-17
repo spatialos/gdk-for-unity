@@ -4,23 +4,26 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-[InitializeOnLoad]
-public static class DownloadCoreSdk
+namespace Improbable.Gdk.Tools
 {
-    static DownloadCoreSdk()
+    [InitializeOnLoad]
+    public static class DownloadCoreSdk
     {
-        try
+        static DownloadCoreSdk()
         {
-            var projectPath = Path.GetFullPath(Path.Combine(Application.dataPath,
-                "../Packages/com.improbable.gdk.tools/.DownloadCoreSdk/DownloadCoreSdk.csproj"));
+            try
+            {
+                var projectPath = Path.GetFullPath(Path.Combine(Application.dataPath,
+                    "../Packages/com.improbable.gdk.tools/.DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
-            Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", Common.CoreSdkVersion);
+                Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", Common.CoreSdkVersion);
 
-            AssetDatabase.Refresh();
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
+                AssetDatabase.Refresh();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
     }
 }

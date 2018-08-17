@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Improbable.CodeGeneration.Model;
 
@@ -8,6 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     /// <summary>
     ///     Represents a schema file.
     /// </summary>
+    [DebuggerDisplay("{CanonicalName}")]
     public class UnitySchemaFile
     {
         public readonly string CanonicalName;
