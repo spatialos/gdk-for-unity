@@ -11,12 +11,6 @@ public class ScoreCollision : MonoBehaviour
     private void Start()
     {
         component = GetComponent<SpatialOSComponent>();
-        if (!component)
-        {
-            Debug.LogError("Could not get SpatialOSComponent.");
-            return;
-        }
-
         entityManager = component.World.GetExistingManager<EntityManager>();
     }
 

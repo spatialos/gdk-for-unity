@@ -89,7 +89,7 @@ namespace Playground.Editor.SnapshotGenerator
                     );
 
                     var cubeColor = SpatialOSCubeColor.CreateSchemaComponentData();
-                    var cube = SpatialOSCube.CreateSchemaComponentData(new Vector3f { X = -2.0f });
+                    var cubeTargetVelocity = SpatialOSCubeTargetVelocity.CreateSchemaComponentData(new Vector3f { X = -2.0f });
                     var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
                     var launchable = SpatialOSLaunchable.CreateSchemaComponentData(new EntityId(0));
                     var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
@@ -101,7 +101,7 @@ namespace Playground.Editor.SnapshotGenerator
                         .SetReadAcl(UnityWorkers)
                         .AddComponent(transform, SystemConfig.UnityGameLogic)
                         .AddComponent(cubeColor, SystemConfig.UnityGameLogic)
-                        .AddComponent(cube, SystemConfig.UnityGameLogic)
+                        .AddComponent(cubeTargetVelocity, SystemConfig.UnityGameLogic)
                         .AddComponent(prefab, SystemConfig.UnityGameLogic)
                         .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
                         .AddComponent(launchable, SystemConfig.UnityGameLogic)

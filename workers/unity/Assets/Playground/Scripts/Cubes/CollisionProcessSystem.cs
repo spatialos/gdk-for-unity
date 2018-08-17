@@ -34,7 +34,9 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable; // Gets updated through PostUpdate
+            
+            // Gets updated through PostUpdate
+            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
             [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
@@ -73,7 +75,7 @@ namespace Playground
                         sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(secondLauncher,
                             new ScoreIncreaseRequest { Amount = 1 }));
                         data.Sender[i] = sender;
-                        
+
                         launchable.MostRecentLauncher = secondLauncher;
                     }
                     else

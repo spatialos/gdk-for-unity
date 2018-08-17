@@ -22,8 +22,8 @@ namespace Playground
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<SpatialOSCube> Cube;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSCube>> TransformAuthority;
+            public ComponentDataArray<SpatialOSCubeTargetVelocity> Cube;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSCubeTargetVelocity>> DenoteAuthority;
         }
 
         [Inject] private Data data;
@@ -44,18 +44,18 @@ namespace Playground
                 var rigidbodyComponent = data.Rigidbody[i];
                 var cubeComponent = data.Cube[i];
 
-                if (cubeComponent.Velocity.X > 0 && rigidbodyComponent.position.x - worker.Origin.x > 10)
+                if (cubeComponent.TargetVelocity.X > 0 && rigidbodyComponent.position.x - worker.Origin.x > 10)
                 {
-                    cubeComponent.Velocity = new Vector3f { X = -2.0f };
+                    cubeComponent.TargetVelocity = new Vector3f { X = -2.0f };
                     data.Cube[i] = cubeComponent;
                 }
-                else if (cubeComponent.Velocity.X < 0 && rigidbodyComponent.position.x - worker.Origin.x < -10)
+                else if (cubeComponent.TargetVelocity.X < 0 && rigidbodyComponent.position.x - worker.Origin.x < -10)
                 {
-                    cubeComponent.Velocity = new Vector3f { X = 2.0f };
+                    cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
                     data.Cube[i] = cubeComponent;
                 }
 
-                var velocity = new Vector3(cubeComponent.Velocity.X, cubeComponent.Velocity.Y, cubeComponent.Velocity.Z);
+                var velocity = new Vector3(cubeComponent.TargetVelocity.X, cubeComponent.TargetVelocity.Y, cubeComponent.TargetVelocity.Z);
                 rigidbodyComponent.MovePosition(rigidbodyComponent.position + Time.fixedDeltaTime * velocity);
             }
         }
