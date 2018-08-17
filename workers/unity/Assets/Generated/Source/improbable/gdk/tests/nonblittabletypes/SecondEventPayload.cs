@@ -28,10 +28,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 var instance = new SecondEventPayload();
                 instance.Field1 = obj.GetFloat(1);
-                instance.Field2 = new global::System.Collections.Generic.List<double>();
+                var field2 = instance.Field2 = new global::System.Collections.Generic.List<double>();
                 for (var i = 0; i < obj.GetDoubleCount(2); i++)
                 {
-                    instance.Field2.Add(obj.IndexDouble(2, (uint) i));
+                    field2.Add(obj.IndexDouble(2, (uint) i));
                 }
     
                 return instance;
