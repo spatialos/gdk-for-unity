@@ -72,6 +72,7 @@ namespace Improbable.Gdk.CodeGenerator
             var nonBlittableComponentGenerator = new UnityComponentGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
+            var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
             var readerWriterGenerator = new UnityReaderWriterGenerator();
 
             foreach (var enumType in enumsToGenerate)
@@ -128,6 +129,15 @@ namespace Improbable.Gdk.CodeGenerator
                 var readerWriterCode =
                     readerWriterGenerator.Generate(component, package);
                 Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
+
+                if (component.CommandDefinitions.Count > 0)
+                {
+                    var monobehaviourCommandHandlerFileName =
+                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension);
+                    var monobehaviourCommandHandlerCode =
+                        gameObjectCommandHandlersGenerator.Generate(component, package);
+                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName), monobehaviourCommandHandlerCode);
+                }
             }
         }
     }

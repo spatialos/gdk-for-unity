@@ -1,0 +1,82 @@
+
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
+    var fieldDetailsList = GetFieldDetailsList();
+    var eventDetailsList = GetEventDetailsList();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
+using Unity.Entities;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# for (var j = 0; j < commandDetailsList.Count; j++) {
+        var commandName = commandDetailsList[j].CommandName;
+        var requestType = commandDetailsList[j].RequestType;
+        var responseType = commandDetailsList[j].ResponseType;
+#>
+        internal class <#= commandName #>CommandSenderCreator : IInjectableCreator
+        {
+            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+                return new <#= commandName #>CommandSender(entity, entityManager, logDispatcher);
+            }
+        }
+
+        [InjectableId(InjectableType.CommandSender, <#= unityComponentDefinition.Id #>, <#= j #>)]
+        [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+        public class <#= commandName #>CommandSender : IInjectable
+        {
+            public <#= commandName #>CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+            {
+
+            }
+        }
+
+        internal class <#= commandName #>CommandRequestHandlerCreator : IInjectableCreator
+        {
+            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+                return new <#= commandName #>CommandRequestHandler(entity, entityManager, logDispatcher);
+            }
+        }
+
+        [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>, <#= j #>)]
+        [InjectionCondition(InjectionCondition.RequireNothing)]
+        public class <#= commandName #>CommandRequestHandler : IInjectable
+        {
+            public <#= commandName #>CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+            {
+
+            }
+        }
+
+        internal class <#= commandName #>CommandResponseHandlerCreator : IInjectableCreator
+        {
+            public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            {
+                return new <#= commandName #>CommandResponseHandler(entity, entityManager, logDispatcher);
+            }
+        }
+
+        [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>, <#= j #>)]
+        [InjectionCondition(InjectionCondition.RequireNothing)]
+        public class <#= commandName #>CommandResponseHandler : IInjectable
+        {
+            public <#= commandName #>CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+            {
+
+            }
+        }
+
+<# } #>
+    }
+}
