@@ -6,14 +6,14 @@
 
 # Writing a new unit test
 
-This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS Unity GDK). It walks through creating tests for a made-up class to explain how you can test parts of the Unity GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.
+This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS GDK for Unity). It walks through creating tests for a made-up class to explain how you can test parts of the GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.
 
 ## Prerequisites
 
 Please look through and understand the follow documentation and videos before writing a new test:
-* SpatialOS Unity GDK documentation - [Testing overview](./testing-overview.md)
-* SpatialOS Unity GDK documentation - [How to run tests](./how-to-run-tests.md)
-* SptialOS Unity GDK documentation - [Testing guidelines](./testing-guidelines.md)
+* SpatialOS GDK for Unity documentation - [Testing overview](./testing-overview.md)
+* SpatialOS GDK for Unity documentation - [How to run tests](./how-to-run-tests.md)
+* SptialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
