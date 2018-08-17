@@ -6,15 +6,15 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public string ComponentName;
         public string TypeName;
-        public string CamelCaseName;
+        public string CamelCaseTypeName;
         public int ComponentId;
         public bool IsBlittable;
-
+        
         public UnityComponentDetails(UnityComponentDefinition componentDefinition)
         {
             ComponentName = Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);
             TypeName = "SpatialOS" + ComponentName;
-            CamelCaseName = "spatialOS" + ComponentName;
+            CamelCaseTypeName = "spatialOS" + ComponentName;
             ComponentId = componentDefinition.Id;
             IsBlittable = componentDefinition.IsBlittable;
         }

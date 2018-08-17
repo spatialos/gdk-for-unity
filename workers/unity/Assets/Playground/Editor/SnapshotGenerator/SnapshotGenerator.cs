@@ -81,7 +81,7 @@ namespace Playground.Editor.SnapshotGenerator
                     // Exit when we've hit our cube limit
                     if (--cubesToSpawn <= 0)
                     {
-                        break;
+                        return;
                     }
 
                     var transform = SpatialOSTransform.CreateSchemaComponentData(

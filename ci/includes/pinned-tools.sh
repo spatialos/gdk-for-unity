@@ -29,13 +29,6 @@ if isMacOS; then
   fi
 fi
 
-# Ensure for the Mac TC agents that dotnet is on the path.
-if isMacOS; then
-  if ! which dotnet; then
-    export PATH="${PATH}:/usr/local/share/dotnet/"
-  fi
-fi
-
 # Print the .NETCore version to aid debugging,
 # as well as ensuring that later calls to the tool don't print the welcome message on first run.
 dotnet --version
