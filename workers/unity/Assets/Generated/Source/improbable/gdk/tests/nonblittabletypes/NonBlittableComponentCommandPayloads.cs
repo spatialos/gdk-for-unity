@@ -80,7 +80,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest CorrespondingRequestPayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest CorrespondingRequest { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -92,7 +92,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Message = message;
                     StatusCode = statusCode;
                     Payload = response;
-                    CorrespondingRequestPayload = request;
+                    CorrespondingRequest = request;
                 }
             }
         }
@@ -166,7 +166,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest CorrespondingRequestPayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest CorrespondingRequest { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -178,7 +178,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Message = message;
                     StatusCode = statusCode;
                     Payload = response;
-                    CorrespondingRequestPayload = request;
+                    CorrespondingRequest = request;
                 }
             }
         }

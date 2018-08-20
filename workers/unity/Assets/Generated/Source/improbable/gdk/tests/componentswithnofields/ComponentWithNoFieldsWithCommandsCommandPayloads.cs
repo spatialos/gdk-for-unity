@@ -80,7 +80,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty CorrespondingRequestPayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty CorrespondingRequest { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -92,7 +92,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     Message = message;
                     StatusCode = statusCode;
                     Payload = response;
-                    CorrespondingRequestPayload = request;
+                    CorrespondingRequest = request;
                 }
             }
         }
