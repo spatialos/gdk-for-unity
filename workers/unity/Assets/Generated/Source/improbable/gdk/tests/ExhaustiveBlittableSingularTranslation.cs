@@ -201,7 +201,10 @@ namespace Generated.Improbable.Gdk.Tests
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSExhaustiveBlittableSingular>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSExhaustiveBlittableSingular> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<SpatialOSExhaustiveBlittableSingular>>(entity))
@@ -273,8 +276,6 @@ namespace Generated.Improbable.Gdk.Tests
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 197720;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.Create<SpatialOSExhaustiveBlittableSingular>(),
                 ComponentType.ReadOnly<Authoritative<SpatialOSExhaustiveBlittableSingular>>(),
@@ -282,6 +283,11 @@ namespace Generated.Improbable.Gdk.Tests
             };
 
             public override ComponentType[] CommandTypes => new ComponentType[] {
+            };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.Create<AuthorityLossImminent<SpatialOSExhaustiveBlittableSingular>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
             };
 
 
@@ -310,6 +316,22 @@ namespace Generated.Improbable.Gdk.Tests
 
                         data.DirtyBit = false;
                         componentDataArray[i] = data;
+                    }
+                }
+            }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSExhaustiveBlittableSingular>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 197720);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
                     }
                 }
             }

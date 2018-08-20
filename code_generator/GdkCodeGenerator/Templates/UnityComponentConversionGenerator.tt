@@ -302,7 +302,10 @@ namespace <#= qualifiedNamespace #>
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentDetails.TypeName #>>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentDetails.TypeName #>> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity))
@@ -467,8 +470,6 @@ namespace <#= qualifiedNamespace #>
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => <#= componentDetails.ComponentId #>;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
 <# foreach (var eventDetail in eventDetailsList) { #>
                 ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
@@ -483,6 +484,11 @@ namespace <#= qualifiedNamespace #>
                 ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>>(),
                 ComponentType.ReadOnly<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>>(),
 <# } #>
+            };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.Create<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
             };
 
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -544,6 +550,22 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
             }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<<#= componentDetails.TypeName #>>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, <#= componentDetails.ComponentId #>);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
+                    }
+                }
+            }
 
             public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
@@ -566,7 +588,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(<#= componentDetails.ComponentId #>, <#= commandDetails.CommandIndex #>);
                             <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -601,7 +623,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(<#= componentDetails.ComponentId #>, <#= commandDetails.CommandIndex #>);
                             <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));

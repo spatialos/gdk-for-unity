@@ -222,7 +222,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithCommands>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithCommands> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<SpatialOSComponentWithNoFieldsWithCommands>>(entity))
@@ -370,8 +373,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 1005;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.Create<SpatialOSComponentWithNoFieldsWithCommands>(),
                 ComponentType.ReadOnly<Authoritative<SpatialOSComponentWithNoFieldsWithCommands>>(),
@@ -381,6 +382,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public override ComponentType[] CommandTypes => new ComponentType[] {
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
+            };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.Create<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithCommands>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
             };
 
             private CommandStorages.Cmd CmdStorage;
@@ -414,6 +420,22 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
             }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithCommands>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1005);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
+                    }
+                }
+            }
 
             public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
@@ -430,7 +452,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(1005, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -465,7 +487,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(1005, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));

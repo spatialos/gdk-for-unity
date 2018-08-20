@@ -324,7 +324,10 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSBlittableComponent>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSBlittableComponent> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<SpatialOSBlittableComponent>>(entity))
@@ -558,8 +561,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 1001;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.FirstEvent>(),
                 ComponentType.ReadOnly<EventSender.SecondEvent>(),
@@ -573,6 +574,11 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.FirstCommand>(),
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.SecondCommand>(),
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.SecondCommand>(),
+            };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.Create<AuthorityLossImminent<SpatialOSBlittableComponent>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
             };
 
             private CommandStorages.FirstCommand FirstCommandStorage;
@@ -638,6 +644,22 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
             }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSBlittableComponent>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1001);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
+                    }
+                }
+            }
 
             public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
             {
@@ -654,7 +676,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(1001, 1);
                             global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -689,7 +711,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(1001, 1);
                             global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
@@ -711,7 +733,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 2);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(1001, 2);
                             global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -746,7 +768,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 2);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(1001, 2);
                             global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
