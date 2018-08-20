@@ -12,7 +12,7 @@ namespace Playground
     {
         public GameObject Level;
 
-        private const int TargetFrameRate = -1; // Turns off VSync
+        [SerializeField] private int targetFrameRate = 60;
 
         private static readonly List<Worker> Workers = new List<Worker>();
 
@@ -22,10 +22,13 @@ namespace Playground
             SetupInjectionHooks(); // Register hybrid injection hooks
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
-            Application.targetFrameRate = TargetFrameRate;
+            Application.targetFrameRate = targetFrameRate;
             Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
             Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
+
+            // Setup template to use for player on connecting client
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
+
             if (Application.isEditor)
             {
                 var config = new ReceptionistConfig
@@ -41,7 +44,7 @@ namespace Playground
             }
             else
             {
-                var commandLineArguments = System.Environment.GetCommandLineArgs();
+                var commandLineArguments = Environment.GetCommandLineArgs();
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 var config = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
@@ -63,14 +66,16 @@ namespace Playground
 
         public static void SetupInjectionHooks()
         {
+            var hybridAssembly = typeof(GameObjectEntity).Assembly;
+
             // Reflection to get internal hook classes. Doesn't seem to be a proper way to do this.
             var gameObjectArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType("Unity.Entities.GameObjectArrayInjectionHook");
+                hybridAssembly.GetType("Unity.Entities.GameObjectArrayInjectionHook");
             var transformAccessArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType(
+                hybridAssembly.GetType(
                     "Unity.Entities.TransformAccessArrayInjectionHook");
             var componentArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
+                hybridAssembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
 
             InjectionHookSupport.RegisterHook(
                 (InjectionHook) Activator.CreateInstance(gameObjectArrayInjectionHookType));
