@@ -17,7 +17,9 @@ namespace Improbable.Gdk.Core
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
-        private readonly List<(ComponentGroup, Type)> componentGroupsToRemove = new List<(ComponentGroup, Type)>();
+        
+        private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
+        private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -58,7 +60,7 @@ namespace Improbable.Gdk.Core
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
                             typesToRemove.Add(componentType.GetManagedType());
-                            componentGroupsToRemove.Add((GetComponentGroup(componentType), componentType.GetManagedType()));
+                            componentGroupsToRemove.Add((GetComponentGroup(componentType), componentType));
                         }
 
                         // Updates group
@@ -104,8 +106,8 @@ namespace Improbable.Gdk.Core
 
         private void RemoveComponents()
         {
-            var componentsToRemove = new List<(Entity, Type)>();
-            foreach ((ComponentGroup componentGroup, Type type) in componentGroupsToRemove)
+            componentsToRemove.Clear();
+            foreach ((ComponentGroup componentGroup, ComponentType type) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
                 {
@@ -119,7 +121,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            foreach ((Entity entity, Type type) in componentsToRemove)
+            foreach ((Entity entity, ComponentType type) in componentsToRemove)
             {
                 EntityManager.RemoveComponent(entity, type);
             }
