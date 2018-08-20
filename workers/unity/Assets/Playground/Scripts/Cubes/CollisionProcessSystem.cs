@@ -63,7 +63,6 @@ namespace Playground
                 {
                     if (ourOwner.IsValid())
                     {
-                        Debug.Log("Another score increase requested");
                         sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
                             ourOwner, new ScoreIncreaseRequest { Amount = 1 }));
                         data.Sender[i] = sender;
@@ -73,7 +72,6 @@ namespace Playground
                 {
                     if (!ourOwner.IsValid())
                     {
-                        Debug.Log("3333 Another score increase requested");
                         sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(otherOwner,
                             new ScoreIncreaseRequest { Amount = 1 }));
                         data.Sender[i] = sender;

@@ -62,7 +62,7 @@ namespace Playground
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
                     sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch,
-                        new Generated.Playground.LaunchMeCommandRequest
+                        new LaunchMeCommandRequest
                         {
                             ImpactPoint = info.ImpactPoint,
                             LaunchDirection = info.LaunchDirection,
@@ -105,7 +105,6 @@ namespace Playground
                     );
                     launchable.MostRecentLauncher = info.Player;
 
-                    Debug.Log($"Requesting Score increase to {info.Player}");
                     sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
                         launchable.MostRecentLauncher,
                         new ScoreIncreaseRequest { Amount = 1.0f }));

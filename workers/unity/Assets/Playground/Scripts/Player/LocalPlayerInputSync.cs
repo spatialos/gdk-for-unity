@@ -16,7 +16,7 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class LocalPlayerInputSync : ComponentSystem
     {
-        public struct PlayerInputData
+        private struct PlayerInputData
         {
             public readonly int Length;
             public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
