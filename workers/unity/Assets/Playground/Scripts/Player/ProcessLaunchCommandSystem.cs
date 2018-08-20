@@ -1,6 +1,5 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -27,7 +26,7 @@ namespace Playground
             [ReadOnly] public EntityArray Entity;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
             [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
-            [ReadOnly] public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
+            public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
         }
 
         private struct LaunchableData
@@ -36,7 +35,7 @@ namespace Playground
             public ComponentDataArray<SpatialOSLaunchable> Launchable;
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
+            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -62,12 +61,14 @@ namespace Playground
                 {
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
-                    {
-                        ImpactPoint = info.ImpactPoint,
-                        LaunchDirection = info.LaunchDirection,
-                        LaunchEnergy = energy
-                    }));
+                    sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch,
+                        new LaunchMeCommandRequest
+                        {
+                            ImpactPoint = info.ImpactPoint,
+                            LaunchDirection = info.LaunchDirection,
+                            LaunchEnergy = energy,
+                            Player = info.Player,
+                        }));
                     energyLeft -= energy;
                     j++;
                 }
@@ -93,6 +94,7 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
+
                 foreach (var request in launchableData.Requests[i].Requests)
                 {
                     var info = request.RawRequest;
@@ -102,12 +104,13 @@ namespace Playground
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
                     launchable.MostRecentLauncher = info.Player;
+
+                    sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                        launchable.MostRecentLauncher,
+                        new ScoreIncreaseRequest { Amount = 1.0f }));
                 }
 
-                sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
-                    launchable.MostRecentLauncher,
-                    new ScoreIncreaseRequest { Amount = 1.0f }));
-
+                launchableData.Sender[i] = sender;
                 launchableData.Launchable[i] = launchable;
             }
         }

@@ -8,35 +8,25 @@ public class ScoreCollision : MonoBehaviour
     private EntityManager entityManager;
     private SpatialOSComponent component;
 
+    private void Start()
+    {
+        component = GetComponent<SpatialOSComponent>();
+        entityManager = component.World.GetExistingManager<EntityManager>();
+    }
+
     public void OnCollisionEnter(Collision col)
     {
-        if (entityManager == null)
-        {
-            component = GetComponent<SpatialOSComponent>();
-            if (!component)
-            {
-                Debug.LogError("Could not get SpatialOSComponent.");
-                return;
-            }
-
-            entityManager = component.World.GetExistingManager<EntityManager>();
-        }
-
         if (!col.gameObject || !col.gameObject.CompareTag("Cube"))
         {
             return;
         }
 
-        var otherComponent = col.gameObject.GetComponent<SpatialOSComponent>();
-        if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
-            && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent))
+        var otherComponent = col.gameObject.GetComponentInParent<SpatialOSComponent>();
+        if (entityManager.HasComponent<SpatialOSLaunchable>(component.Entity)
+            && !entityManager.HasComponent<Playground.CollisionComponent>(component.Entity)
             && otherComponent)
         {
-            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
-            {
-                OwnEntity = component.Entity,
-                OtherEntity = otherComponent.Entity
-            });
+            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent(otherComponent.Entity));
         }
     }
 }

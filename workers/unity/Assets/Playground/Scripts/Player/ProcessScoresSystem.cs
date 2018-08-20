@@ -2,6 +2,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 #region Diagnostic control
 
@@ -22,7 +23,7 @@ namespace Playground
             public ComponentDataArray<SpatialOSScore> Score;
 
             [ReadOnly]
-            public ComponentDataArray<Generated.Playground.Launcher.CommandRequests.IncreaseScore> CommandRequests;
+            public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;
         }
 
         [Inject] private ScoringData scoringData;
