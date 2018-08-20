@@ -322,7 +322,7 @@ namespace Generated.Improbable.Gdk.Tests
             };
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSExhaustiveMapValue>>(),
+                ComponentType.Create<AuthorityLossImminent<SpatialOSExhaustiveMapValue>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 

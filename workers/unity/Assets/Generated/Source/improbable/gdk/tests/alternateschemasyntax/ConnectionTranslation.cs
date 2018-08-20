@@ -333,7 +333,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             };
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSConnection>>(),
+                ComponentType.Create<AuthorityLossImminent<SpatialOSConnection>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 

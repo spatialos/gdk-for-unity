@@ -577,7 +577,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             };
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSBlittableComponent>>(),
+                ComponentType.Create<AuthorityLossImminent<SpatialOSBlittableComponent>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
