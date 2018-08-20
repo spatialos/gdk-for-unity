@@ -4,7 +4,7 @@ namespace Improbable.Gdk.Core
 {
     public struct BlittableBool : IEquatable<BlittableBool>
     {
-        private byte value;
+        private readonly byte value;
 
         public BlittableBool(bool value)
         {
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            return obj is BlittableBool && Equals((BlittableBool) obj);
+            return obj is BlittableBool b && Equals(b);
         }
 
         public override int GetHashCode()

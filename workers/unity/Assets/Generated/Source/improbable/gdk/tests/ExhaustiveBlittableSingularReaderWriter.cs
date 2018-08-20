@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<ulong> Field13Updated;
             event Action<int> Field14Updated;
             event Action<long> Field15Updated;
-            event Action<long> Field16Updated;
+            event Action<global::Improbable.Worker.EntityId> Field16Updated;
             event Action<global::Generated.Improbable.Gdk.Tests.SomeType> Field17Updated;
         }
 
@@ -51,7 +51,7 @@ namespace Generated.Improbable.Gdk.Tests
         }
 
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSExhaustiveBlittableSingular, SpatialOSExhaustiveBlittableSingular.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -162,9 +162,9 @@ namespace Generated.Improbable.Gdk.Tests
                 remove => field15Delegates.Remove(value);
             }
 
-            private readonly List<Action<long>> field16Delegates = new List<Action<long>>();
+            private readonly List<Action<global::Improbable.Worker.EntityId>> field16Delegates = new List<Action<global::Improbable.Worker.EntityId>>();
 
-            public event Action<long> Field16Updated
+            public event Action<global::Improbable.Worker.EntityId> Field16Updated
             {
                 add => field16Delegates.Add(value);
                 remove => field16Delegates.Remove(value);

@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SetProjectName_should_update_ProjectName_property()
         {
             var config = GetDefaultWorkingConfig();
-            var projectName = "myproject";
+            const string projectName = "myproject";
             config.SetProjectName(projectName);
 
             Assert.AreEqual(projectName, config.LocatorParameters.ProjectName);
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void SetLoginToken_should_update_LoginToken_and_CredentialsType_properties()
         {
             var config = GetDefaultWorkingConfig();
-            var loginToken = "mylogintoken";
+            const string loginToken = "mylogintoken";
             config.SetLoginToken(loginToken);
 
             Assert.AreEqual(loginToken, config.LocatorParameters.LoginToken.Token);
@@ -87,10 +87,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void CreateConnectionConfigFromCommandLine_should_parse_correctly()
         {
-            string loginToken = "myToken";
-            string projectName = "myproject";
-            string host = "myhost";
-            string networkType = NetworkConnectionType.Tcp.ToString();
+            const string loginToken = "myToken";
+            const string projectName = "myproject";
+            const string host = "myhost";
+            var networkType = NetworkConnectionType.Tcp.ToString();
 
             var parsedArgs = new Dictionary<string, string>
             {

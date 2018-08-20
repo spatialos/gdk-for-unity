@@ -24,18 +24,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 ComponentType.ReadOnly<ComponentRemoved<SpatialOSComponentWithNoFieldsWithEvents>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
-            public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
+            public override ComponentType[] AuthorityChangesComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSComponentWithNoFieldsWithEvents>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
             };
 
-            public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
+            public override ComponentType[][] ReceivedEventsComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<EvtEvent>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.Evt>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
@@ -76,19 +76,19 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                if (AuthorityChangesComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>();
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                var authoritiesChangedTags = AuthorityChangesComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFieldsWithEvents>>();
+                var entities = AuthorityChangesComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -99,10 +99,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
-                if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
+                if (!ReceivedEventsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
-                    var entities = EventsReceivedComponentGroups[0].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<EvtEvent>>();
+                    var entities = ReceivedEventsComponentGroups[0].GetEntityArray();
+                    var eventLists = ReceivedEventsComponentGroups[0].GetComponentDataArray<ReceivedEvents.Evt>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -115,7 +115,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 reader.OnEvtEvent(e);
                             }
@@ -130,13 +130,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                if (AuthorityChangesComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithEvents>>();
+                var entities = AuthorityChangesComponentGroup.GetEntityArray();
+                var authChangeLists = AuthorityChangesComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFieldsWithEvents>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -148,7 +148,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

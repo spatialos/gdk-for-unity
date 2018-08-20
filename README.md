@@ -40,9 +40,6 @@ See the [Known issues](docs/known-issues.md) documentation.
 ## Questions? 
 Check out our [FAQs](docs/content/faqs/faqs.md) or head over to our discussion forums, listed below.
 
-## Questions? 
-Check out our [FAQs](docs/content/faqs/faqs.md) or head over to our discussion forums, listed below.
-
 ## Give us feedback
 
 We have released the Unity GDK this early in development because we want your feedback. Please come and talk to us about the software and the documentation via:

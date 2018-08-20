@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    public delegate Worker.Entity GetPlayerEntityTemplateDelegate(List<string> clientAttributeSet,
+    public delegate Worker.Core.Entity GetPlayerEntityTemplateDelegate(List<string> clientAttributeSet,
         Generated.Improbable.Vector3f position);
 
     public static class PlayerLifecycleConfig
@@ -13,13 +13,13 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
 
-        public static void RegisterClientSystems(World world)
+        public static void AddClientSystems(World world)
         {
             world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }
 
-        public static void RegisterServerSystems(World world)
+        public static void AddServerSystems(World world)
         {
             world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();
             world.GetOrCreateManager<SendPlayerHeartbeatRequestSystem>();

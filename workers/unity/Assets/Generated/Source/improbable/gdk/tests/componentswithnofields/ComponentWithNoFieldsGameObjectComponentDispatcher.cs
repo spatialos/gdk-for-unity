@@ -24,16 +24,16 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 ComponentType.ReadOnly<ComponentRemoved<SpatialOSComponentWithNoFields>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
-            public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
+            public override ComponentType[] AuthorityChangesComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSComponentWithNoFields>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSComponentWithNoFields>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
             };
 
-            public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
+            public override ComponentType[][] ReceivedEventsComponentTypeArrays => new ComponentType[][]
             {
             };
 
@@ -75,19 +75,19 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                if (AuthorityChangesComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                var authoritiesChangedTags = AuthorityChangesComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFields>>();
+                var entities = AuthorityChangesComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -106,13 +106,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                if (AuthorityChangesComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
+                var entities = AuthorityChangesComponentGroup.GetEntityArray();
+                var authChangeLists = AuthorityChangesComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -124,7 +124,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

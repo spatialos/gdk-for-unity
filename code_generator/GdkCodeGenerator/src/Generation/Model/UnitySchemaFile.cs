@@ -48,6 +48,7 @@ namespace Improbable.Gdk.CodeGenerator
         public readonly EnumDefinitionRaw[] EnumDefinitions;
         public readonly List<UnityTypeDefinition> TypeDefinitions;
         public readonly List<UnityFieldDefinition> FieldDefinitions;
+        public readonly SourceReferenceRaw SourceReference;
         public bool IsBlittable;
         public bool IsEventPayload;
         public bool IsCommandRequestPayload;
@@ -65,6 +66,7 @@ namespace Improbable.Gdk.CodeGenerator
                 ? rawTypeDefinition.fieldDefinitions
                     .Select(rawFieldDefinition => new UnityFieldDefinition(rawFieldDefinition)).ToList()
                 : new List<UnityFieldDefinition>();
+            SourceReference = rawTypeDefinition.sourceReference;
             IsBlittable = false;
             IsEventPayload = false;
             IsCommandRequestPayload = false;
@@ -86,6 +88,8 @@ namespace Improbable.Gdk.CodeGenerator
         internal readonly TypeReferenceRaw RawValueType;
         public UnityTypeReference KeyType;
         public UnityTypeReference ValueType;
+
+        public bool IsBlittable;
 
         public readonly FieldDefinitionRaw RawFieldDefinition;
 
@@ -140,6 +144,7 @@ namespace Improbable.Gdk.CodeGenerator
             public readonly string Name;
             internal readonly TypeReferenceRaw RawType;
             public UnityTypeReference Type;
+            public uint EventIndex;
 
             internal UnityEventDefinition(ComponentDefinitionRaw.EventDefinitionRaw rawEventDefinition)
             {
@@ -150,6 +155,8 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     Type = new UnityTypeReference(RawType.TypeName, null, null);
                 }
+
+                EventIndex = rawEventDefinition.eventIndex;
             }
         }
 
@@ -163,6 +170,7 @@ namespace Improbable.Gdk.CodeGenerator
             internal readonly TypeReferenceRaw RawResponseType;
             public UnityTypeReference RequestType;
             public UnityTypeReference ResponseType;
+            public uint CommandIndex;
 
             internal UnityCommandDefinition(ComponentDefinitionRaw.CommandDefinitionRaw rawCommandDefinition)
             {
@@ -179,6 +187,8 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     ResponseType = new UnityTypeReference(RawResponseType.TypeName, null, null);
                 }
+
+                CommandIndex = rawCommandDefinition.commandIndex;
             }
         }
 
@@ -197,7 +207,6 @@ namespace Improbable.Gdk.CodeGenerator
             QualifiedName = rawComponentDefinition.qualifiedName;
             Id = rawComponentDefinition.Id;
             RawDataDefinition = rawComponentDefinition.dataDefinition;
-            IsBlittable = false;
             if (RawDataDefinition != null && RawDataDefinition.IsBuiltInType)
             {
                 DataDefinition = new UnityTypeReference(RawDataDefinition.TypeName, null, null);

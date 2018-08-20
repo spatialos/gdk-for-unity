@@ -22,7 +22,6 @@ function cleanUnity() {
   rm -rf "$(pwd)/workers/unity/Temp/"
 }
 
-
 # Ensure for the Mac TC agents that dotnet is on the path.
 if isMacOS; then
   if ! which dotnet; then

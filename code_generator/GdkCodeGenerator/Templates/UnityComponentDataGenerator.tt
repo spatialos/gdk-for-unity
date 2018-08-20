@@ -11,30 +11,402 @@ using Unity.Entities;
 using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
-{ 
+{
     public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
     {
+        public uint ComponentId => <#= componentDetails.ComponentId #>;
+
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
-
+<# if (fieldDetails.IsBlittable) { #>
         private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
 
         public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
         {
-            get { return <#= fieldDetails.CamelCaseName #>; }
+            get => <#= fieldDetails.CamelCaseName #>;
             set
             {
                 DirtyBit = true;
                 <#= fieldDetails.CamelCaseName #> = value;
             }
         }
+<# } else { #>
+
+        internal uint <#= fieldDetails.CamelCaseName #>Handle;
+
+        public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
+        {
+            get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
+            set
+            {
+                DirtyBit = true;
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+            }
+        }
 <# } #>
+<# } #>
+
+<# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
+        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+<# foreach(var fieldDetails in fieldDetailsList) {
+    var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
+#>
+            <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
+<# } #>
+        )
+        {
+            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
+            var obj = schemaComponentData.GetFields();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
+<# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
+<# if (singularTypeInfo.IsEnum) { #>
+            obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) <#= fieldDetails.CamelCaseName #>);
+<# } else if (singularTypeInfo.IsPrimitive) { #>
+            obj.<#= singularTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, <#= fieldDetails.CamelCaseName #>);
+<# } else { #>
+            <#= singularTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.CamelCaseName #>, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+<# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
+<# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+            foreach (var value in <#= fieldDetails.CamelCaseName #>)
+            {
+<# if (listTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);
+<# } else if (listTypeInfo.IsPrimitive) { #>
+                obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
+<# } else { #>
+                <#= listTypeInfo.SerializationFunctions.Serialize #>(value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+            }
+<# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
+<# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
+            if (<#= fieldDetails.CamelCaseName #>.HasValue)
+            {
+<# if (optionTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.CamelCaseName #>, (uint) <#= fieldDetails.CamelCaseName #>.Value);
+<# } else if (optionTypeInfo.IsPrimitive) { #>
+                obj.<#= optionTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, <#= fieldDetails.CamelCaseName #>.Value);
+<# } else { #>
+                <#= optionTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.CamelCaseName #>.Value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+            }
+<# } else { #>
+<# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
+            foreach (var keyValuePair in <#= fieldDetails.CamelCaseName #>)
+            {
+                var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
+<# if (mapTypeInfo.Key.IsEnum) { #>
+                mapObj.AddEnum(1, (uint) keyValuePair.Key);
+<# } else if (mapTypeInfo.Key.IsPrimitive) { #>
+                mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
+<# } else { #>
+                <#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(keyValuePair.Key, mapObj.AddObject(1));
+<# } #>
+<# if (mapTypeInfo.Value.IsEnum) { #>
+                mapObj.AddEnum(2, (uint) keyValuePair.Value);
+<# } else if (mapTypeInfo.Value.IsPrimitive) { #>
+                mapObj.<#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(2, keyValuePair.Value);
+<# } else { #>
+                <#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(keyValuePair.Value, mapObj.AddObject(2));
+<# } #>
+            }
+<# } #>
+<# } #>
+
+            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+        }
+<# } #>
+
+
+        public static class Serialization
+        {
+            public static void Serialize(<#= componentDetails.TypeName #> component, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
+<# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
+<# if (singularTypeInfo.IsEnum) { #>
+                obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) component.<#= fieldDetails.PascalCaseName #>);
+<# } else if (singularTypeInfo.IsPrimitive) { #>
+                obj.<#= singularTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, component.<#= fieldDetails.PascalCaseName #>);
+<# } else { #>
+                <#= singularTypeInfo.SerializationFunctions.Serialize #>(component.<#= fieldDetails.PascalCaseName #>, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+<# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
+<# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+                foreach (var value in component.<#= fieldDetails.PascalCaseName #>)
+                {
+<# if (listTypeInfo.IsEnum) { #>
+                    obj.AddEnum(<#= fieldDetails.FieldNumber #>, (uint) value);
+<# } else if (listTypeInfo.IsPrimitive) { #>
+                    obj.<#= listTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, value);
+<# } else { #>
+                    <#= listTypeInfo.SerializationFunctions.Serialize #>(value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+                }
+<# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
+<# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
+                if (component.<#= fieldDetails.PascalCaseName #>.HasValue)
+                {
+<# if (optionTypeInfo.IsEnum) { #>
+                    obj.AddEnum(<#= fieldDetails.PascalCaseName #>, (uint) component.<#= fieldDetails.PascalCaseName #>.Value);
+<# } else if (optionTypeInfo.IsPrimitive) { #>
+                    obj.<#= optionTypeInfo.SerializationFunctions.Serialize #>(<#= fieldDetails.FieldNumber #>, component.<#= fieldDetails.PascalCaseName #>.Value);
+<# } else { #>
+                    <#= optionTypeInfo.SerializationFunctions.Serialize #>(component.<#= fieldDetails.PascalCaseName #>.Value, obj.AddObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+                }
+<# } else { #>
+<# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
+                foreach (var keyValuePair in component.<#= fieldDetails.PascalCaseName #>)
+                {
+                    var mapObj = obj.AddObject(<#= fieldDetails.FieldNumber #>);
+<# if (mapTypeInfo.Key.IsEnum) { #>
+                    mapObj.AddEnum(1, (uint) keyValuePair.Key);
+<# } else if (mapTypeInfo.Key.IsPrimitive) { #>
+                    mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(1, keyValuePair.Key);
+<# } else { #>
+                    <#= mapTypeInfo.Key.SerializationFunctions.Serialize #>(keyValuePair.Key, mapObj.AddObject(1));
+<# } #>
+<# if (mapTypeInfo.Value.IsEnum) { #>
+                    mapObj.AddEnum(2, (uint) keyValuePair.Value);
+<# } else if (mapTypeInfo.Value.IsPrimitive) { #>
+                    mapObj.<#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(2, keyValuePair.Value);
+<# } else { #>
+                    <#= mapTypeInfo.Value.SerializationFunctions.Serialize #>(keyValuePair.Value, mapObj.AddObject(2));
+<# } #>
+                }
+<# } #>
+<# } #>
+            }
+
+            public static <#= componentDetails.TypeName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new <#= componentDetails.TypeName #>();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
+<# } #>
+
+<# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
+<# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
+<# if (singularTypeInfo.IsEnum) { #>
+                component.<#= fieldDetails.PascalCaseName #> = (<#= fieldDetails.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+<# } else if (singularTypeInfo.IsPrimitive) { #>
+                component.<#= fieldDetails.PascalCaseName #> = obj.<#= singularTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+<# } else { #>
+                component.<#= fieldDetails.PascalCaseName #> = <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+<# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
+<# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+                component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+<# if (listTypeInfo.IsEnum) { #>
+                for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
+                {
+                    component.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i));
+                }
+<# } else if (listTypeInfo.IsPrimitive) { #>
+                for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
+                {
+                    component.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
+                }
+<# } else { #>
+                for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
+                {
+                    component.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
+                }
+<# } #>
+
+<# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
+<# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
+<# if (optionTypeInfo.IsEnum) { #>
+                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    component.<#= fieldDetails.PascalCaseName #> = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+                }
+<# } else if (optionTypeInfo.IsPrimitive) { #>
+                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    component.<#= fieldDetails.PascalCaseName #> = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+                }
+<# } else { #>
+                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    component.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+                }
+<# } #>
+<# } else { #>
+<# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
+                {
+                    component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i);
+<# if (mapTypeInfo.Key.IsEnum) { #>
+                        var key = (<#= mapTypeInfo.Key.Type #>) mapObj.GetEnum(1);
+<# } else if (mapTypeInfo.Key.IsPrimitive) { #>
+                        var key = mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Deserialize #>(1);
+<# } else { #>
+                        var key = <#= mapTypeInfo.Key.SerializationFunctions.Deserialize #>(mapObj.GetObject(1));
+<# } #>
+<# if (mapTypeInfo.Value.IsEnum) { #>
+                        var value = (<#= mapTypeInfo.Value.Type #>) mapObj.GetEnum(2);
+<# } else if (mapTypeInfo.Value.IsPrimitive) { #>
+                        var value = mapObj.<#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(2);
+<# } else { #>
+                        var value = <#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(mapObj.GetObject(2));
+<# } #>
+                        component.<#= fieldDetails.PascalCaseName #>.Add(key, value);
+                    }
+                }
+<# } #>
+<# } #>
+                return component;
+            }
+
+            public static <#= componentDetails.TypeName #>.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref <#= componentDetails.TypeName #> component)
+            {
+                var update = new <#= componentDetails.TypeName #>.Update();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
+<# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
+                if (obj.<#= singularTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+<# if (singularTypeInfo.IsEnum) { #>
+                    var value = (<#= fieldDetails.Type #>)obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+<# } else if (singularTypeInfo.IsPrimitive) { #>
+                    var value = obj.<#= singularTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+<# } else { #>
+                    var value = <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+<# } #>
+                    update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+                    component.<#= fieldDetails.PascalCaseName #> = value;
+                }
+<# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
+<# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
+                {
+<# if (listTypeInfo.IsEnum) { #>
+                    var listSize = obj.GetEnumCount(<#= fieldDetails.FieldNumber #>);
+                    if (listSize > 0)
+                    {
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
+                        component.<#= fieldDetails.PascalCaseName #>.Clear();
+                    }
+
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = (<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i);
+                        update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
+                        component.<#= fieldDetails.PascalCaseName #>.Add(value);
+                    }
+<# } else if (listTypeInfo.IsPrimitive) { #>
+                    var listSize = obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>);
+                    if (listSize > 0)
+                    {
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
+                        component.<#= fieldDetails.PascalCaseName #>.Clear();
+                    }
+
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i);
+                        update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
+                        component.<#= fieldDetails.PascalCaseName #>.Add(value);
+                    }
+<# } else { #>
+                    var listSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
+                    if (listSize > 0)
+                    {
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>());
+                        component.<#= fieldDetails.PascalCaseName #>.Clear();
+                    }
+
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = <#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i));
+                        update.<#= fieldDetails.PascalCaseName #>.Value.Add(value);
+                        component.<#= fieldDetails.PascalCaseName #>.Add(value);
+                    }
+<# } #>
+                }
+<# } else if (fieldDetails.SchemaTypeInfo.OptionTypeInfo.HasValue) { #>
+<# var optionTypeInfo = fieldDetails.SchemaTypeInfo.OptionTypeInfo.Value; #>
+<# if (optionTypeInfo.IsEnum) { #>
+                if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    var value = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+                    update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+                    component.<#= fieldDetails.PascalCaseName #> = value;
+                }
+<# } else if (optionTypeInfo.IsPrimitive) { #>
+                if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    var value = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+                    update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+                    component.<#= fieldDetails.PascalCaseName #> = value;
+                }
+<# } else { #>
+                if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
+                {
+                    var value = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+                    update.<#= fieldDetails.PascalCaseName #> = value;
+                    component.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+                }
+<# } #>
+<# } else { #>
+<# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
+                {
+                    var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
+                    if (mapSize > 0)
+                    {
+                        component.<#= fieldDetails.PascalCaseName #>.Clear();
+                        update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>, <#= mapTypeInfo.Value.Type #>>());
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i);
+<# if (mapTypeInfo.Key.IsEnum) { #>
+                        var key = (<#= mapTypeInfo.Key.Type #>) mapObj.GetEnum(1);
+<# } else if (mapTypeInfo.Key.IsPrimitive) { #>
+                        var key = mapObj.<#= mapTypeInfo.Key.SerializationFunctions.Deserialize #>(1);
+<# } else { #>
+                        var key = <#= mapTypeInfo.Key.SerializationFunctions.Deserialize #>(mapObj.GetObject(1));
+<# } #>
+<# if (mapTypeInfo.Value.IsEnum) { #>
+                        var value = (<#= mapTypeInfo.Value.Type #>) mapObj.GetEnum(2);
+<# } else if (mapTypeInfo.Value.IsPrimitive) { #>
+                        var value = mapObj.<#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(2);
+<# } else { #>
+                        var value = <#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(mapObj.GetObject(2));
+<# } #>
+                        update.<#= fieldDetails.PascalCaseName #>.Value.Add(key, value);
+                        component.<#= fieldDetails.PascalCaseName #>.Add(key, value);
+                    }
+                }
+<# } #>
+<# } #>
+                return update;
+            }
+        }
 
         public struct Update : ISpatialComponentUpdate
         {
 <# foreach(var fieldDetails in fieldDetailsList) { #>
             public Option<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>;
 <# } #>
+        }
+
+        public struct ReceivedUpdates : IComponentData
+        {
+            internal uint handle;
+            public global::System.Collections.Generic.List<Update> Updates
+            {
+                get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+            }
         }
     }
 }

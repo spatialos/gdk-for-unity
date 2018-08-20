@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -14,6 +13,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<int, MonoBehaviourActivationManager> entityIndexToActivationManager =
             new Dictionary<int, MonoBehaviourActivationManager>();
+
         private readonly Dictionary<int, ReaderWriterStore> entityIndexToReaderWriterStore =
             new Dictionary<int, ReaderWriterStore>();
 
@@ -27,7 +27,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (!entityIndexToActivationManager.ContainsKey(entityIndex))
             {
-                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entityIndex {entityIndex}.");
+                throw new ActivationManagerNotFoundException(
+                    $"MonoBehaviourActivationManager not found for entityIndex {entityIndex}.");
             }
 
             entityIndexToActivationManager.Remove(entityIndex);
@@ -42,7 +43,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             GenerateComponentGroups();
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
-            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
+            logger = Worker.GetWorkerFromWorld(World).LogDispatcher;
             injector = new RequiredFieldInjector(entityManager, logger);
         }
 
@@ -65,22 +66,22 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentAddedComponentTypes);
                 gameObjectComponentDispatcher.ComponentRemovedComponentGroup =
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentRemovedComponentTypes);
-                gameObjectComponentDispatcher.AuthoritiesChangedComponentGroup =
-                    GetComponentGroup(gameObjectComponentDispatcher.AuthoritiesChangedComponentTypes);
+                gameObjectComponentDispatcher.AuthorityChangesComponentGroup =
+                    GetComponentGroup(gameObjectComponentDispatcher.AuthorityChangesComponentTypes);
                 if (gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes.Length > 0)
                 {
                     gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup =
                         GetComponentGroup(gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes);
                 }
 
-                if (gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays.Length > 0)
+                if (gameObjectComponentDispatcher.ReceivedEventsComponentTypeArrays.Length > 0)
                 {
-                    gameObjectComponentDispatcher.EventsReceivedComponentGroups =
-                        new ComponentGroup[gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays.Length];
-                    for (var i = 0; i < gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays.Length; i++)
+                    gameObjectComponentDispatcher.ReceivedEventsComponentGroups =
+                        new ComponentGroup[gameObjectComponentDispatcher.ReceivedEventsComponentTypeArrays.Length];
+                    for (var i = 0; i < gameObjectComponentDispatcher.ReceivedEventsComponentTypeArrays.Length; i++)
                     {
-                        gameObjectComponentDispatcher.EventsReceivedComponentGroups[i] =
-                            GetComponentGroup(gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays[i]);
+                        gameObjectComponentDispatcher.ReceivedEventsComponentGroups[i] =
+                            GetComponentGroup(gameObjectComponentDispatcher.ReceivedEventsComponentTypeArrays[i]);
                     }
                 }
 
@@ -143,7 +144,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (entityIndexToActivationManager.ContainsKey(entity.Index))
             {
-                throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entityIndex {entity.Index}.");
+                throw new ActivationManagerAlreadyExistsException(
+                    $"MonoBehaviourActivationManager already exists for entityIndex {entity.Index}.");
             }
 
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;

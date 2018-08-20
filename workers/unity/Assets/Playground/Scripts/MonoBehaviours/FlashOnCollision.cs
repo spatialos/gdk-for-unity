@@ -15,12 +15,15 @@ public class FlashOnCollision : MonoBehaviour
 
     private MeshRenderer renderer;
 
-    private static MaterialPropertyBlock basicMaterial = new MaterialPropertyBlock();
-    private static MaterialPropertyBlock flashingMaterial = new MaterialPropertyBlock();
+    private static MaterialPropertyBlock basicMaterial ;
+    private static MaterialPropertyBlock flashingMaterial;
 
     [RuntimeInitializeOnLoadMethod]
     public static void SetupColors()
     {
+        basicMaterial = new MaterialPropertyBlock();
+        flashingMaterial = new MaterialPropertyBlock();
+
         basicMaterial.SetColor("_Color", Color.white);
         flashingMaterial.SetColor("_Color", Color.red);
     }
@@ -46,7 +49,7 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 
-    private void HandleCollisionEvent(PlayerCollidedEvent e)
+    private void HandleCollisionEvent(Empty empty)
     {
         collideTime = Time.time;
         flashing = true;

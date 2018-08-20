@@ -9,20 +9,22 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public ComponentGroup ComponentAddedComponentGroup { get; set; }
         public abstract ComponentType[] ComponentRemovedComponentTypes { get; }
         public ComponentGroup ComponentRemovedComponentGroup { get; set; }
-        public abstract ComponentType[] AuthoritiesChangedComponentTypes { get; }
-        public ComponentGroup AuthoritiesChangedComponentGroup { get; set; }
+        public abstract ComponentType[] AuthorityChangesComponentTypes { get; }
+        public ComponentGroup AuthorityChangesComponentGroup { get; set; }
 
         public abstract ComponentType[] ComponentsUpdatedComponentTypes { get; }
         public ComponentGroup ComponentsUpdatedComponentGroup { get; set; }
-        public abstract ComponentType[][] EventsReceivedComponentTypeArrays { get; }
-        public ComponentGroup[] EventsReceivedComponentGroups { get; set; }
+        public abstract ComponentType[][] ReceivedEventsComponentTypeArrays { get; }
+        public ComponentGroup[] ReceivedEventsComponentGroups { get; set; }
         public abstract ComponentType[][] CommandRequestsComponentTypeArrays { get; }
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
         public abstract void MarkComponentsAddedForActivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+
         public abstract void MarkComponentsRemovedForDeactivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+
         public abstract void MarkAuthorityChangesForActivation
             (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
 

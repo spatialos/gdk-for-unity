@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Unity.Entities;
 
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
             var setComponentObjectMethodInfo =
                 typeof(EntityManager).GetMethod("SetComponentObject", BindingFlags.Instance | BindingFlags.NonPublic,
                     null,
-                    new Type[] { typeof(Entity), typeof(ComponentType), typeof(object) },
+                    new[] { typeof(Entity), typeof(ComponentType), typeof(object) },
                     new ParameterModifier[] { });
 
             if (setComponentObjectMethodInfo == null)

@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class CommandLineUtilityTest
     {
-        enum TestEnum
+        private enum TestEnum
         {
             Zero = 0,
             ValueOne,
@@ -32,13 +32,13 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 { "bool-value", "false" },
                 { "int-value", "2" },
                 { "float-value", "3.0" },
-                { "double-value", "15.0" },
+                { "double-value", "15.0" }
             };
 
-            Assert.AreEqual(false, CommandLineUtility.GetCommandLineValue<bool>(dictionary, "bool-value", true));
-            Assert.AreEqual(2, CommandLineUtility.GetCommandLineValue<int>(dictionary, "int-value", 0));
-            Assert.AreEqual(3.0f, CommandLineUtility.GetCommandLineValue<float>(dictionary, "float-value", 0f));
-            Assert.AreEqual(15.0f, CommandLineUtility.GetCommandLineValue<double>(dictionary, "double-value", 0.0));
+            Assert.AreEqual(false, CommandLineUtility.GetCommandLineValue(dictionary, "bool-value", true));
+            Assert.AreEqual(2, CommandLineUtility.GetCommandLineValue(dictionary, "int-value", 0));
+            Assert.AreEqual(3.0f, CommandLineUtility.GetCommandLineValue(dictionary, "float-value", 0f));
+            Assert.AreEqual(15.0f, CommandLineUtility.GetCommandLineValue(dictionary, "double-value", 0.0));
         }
 
         [Test]
