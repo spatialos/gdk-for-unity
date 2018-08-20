@@ -201,7 +201,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFields>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFields> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<SpatialOSComponentWithNoFields>>(entity))
@@ -283,6 +286,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override ComponentType[] CommandTypes => new ComponentType[] {
             };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSComponentWithNoFields>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            };
 
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
@@ -302,7 +310,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1003);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
                         SpatialOSComponentWithNoFields.Serialization.Serialize(data, update.GetFields());
 
                         // Send serialized update over the wire
@@ -310,6 +318,22 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                         data.DirtyBit = false;
                         componentDataArray[i] = data;
+                    }
+                }
+            }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSComponentWithNoFields>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
                     }
                 }
             }

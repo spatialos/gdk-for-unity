@@ -334,7 +334,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSNonBlittableComponent>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSNonBlittableComponent> {
+                            AuthorityLossAcknowledged = false,
+                            AuthorityLossAcknowledgmentSent = false
+                        });
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<SpatialOSNonBlittableComponent>>(entity))
@@ -584,6 +587,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(),
                 ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(),
             };
+            
+            public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
+                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSNonBlittableComponent>>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            };
 
             private CommandStorages.FirstCommand FirstCommandStorage;
             private CommandStorages.SecondCommand SecondCommandStorage;
@@ -613,7 +621,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1002);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
                         SpatialOSNonBlittableComponent.Serialization.Serialize(data, update.GetFields());
 
                         // Serialize events
@@ -645,6 +653,22 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                         data.DirtyBit = false;
                         componentDataArray[i] = data;
+                    }
+                }
+            }
+            
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            {
+                var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSNonBlittableComponent>>();
+                var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                for (int i = 0; i < componentDataArray.Length; i++)
+                {
+                    var component = componentDataArray[i];
+                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    {
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        component.AuthorityLossAcknowledgmentSent = true;
+                        componentDataArray[i] = component;
                     }
                 }
             }
