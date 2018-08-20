@@ -51,11 +51,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithCommands.Update update, ref SpatialOSComponentWithNoFieldsWithCommands data)
                 {
                 }
-
-                public void OnCmdCommandRequest(Cmd.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
             }
         }
     }

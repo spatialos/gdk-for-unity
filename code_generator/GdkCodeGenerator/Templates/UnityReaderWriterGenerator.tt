@@ -121,13 +121,6 @@ namespace <#= qualifiedNamespace #>
                     sender.Send<#= eventDetails.EventName #>Event(payload);
                 }
 <# } #>
-<# foreach (var command in commandDetailsList) { #>
-
-                public void On<#= command.CommandName #>CommandRequest(<#= command.CommandName #>.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
-<# } #>
             }
         }
     }

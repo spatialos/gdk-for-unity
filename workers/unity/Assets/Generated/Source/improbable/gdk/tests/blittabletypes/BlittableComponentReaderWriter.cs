@@ -163,16 +163,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var sender = EntityManager.GetComponentData<EventSender<SpatialOSBlittableComponent>>(Entity);
                     sender.SendSecondEventEvent(payload);
                 }
-
-                public void OnFirstCommandCommandRequest(FirstCommand.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
-
-                public void OnSecondCommandCommandRequest(SecondCommand.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
             }
         }
     }

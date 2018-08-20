@@ -178,50 +178,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
-                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
-                {
-                    var entities = CommandRequestsComponentGroups[0].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
-                        {
-                            continue;
-                        }
-
-                        var commandList = commandLists[i];
-                        foreach (Accessors.ReaderWriterImpl reader in readers)
-                        {
-                            foreach (var req in commandList.Buffer)
-                            {
-                                reader.OnFirstCommandCommandRequest(req);
-                            }
-                        }
-                    }
-                }
-                if (!CommandRequestsComponentGroups[1].IsEmptyIgnoreFilter)
-                {
-                    var entities = CommandRequestsComponentGroups[1].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
-                        {
-                            continue;
-                        }
-
-                        var commandList = commandLists[i];
-                        foreach (Accessors.ReaderWriterImpl reader in readers)
-                        {
-                            foreach (var req in commandList.Buffer)
-                            {
-                                reader.OnSecondCommandCommandRequest(req);
-                            }
-                        }
-                    }
-                }
+                // TODO UTY-961 Command Req handlers
+                // TODO UTY-961 Command Req handlers
             }
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)

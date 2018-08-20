@@ -171,28 +171,7 @@ namespace <#= qualifiedNamespace #>
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
-                if (!CommandRequestsComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
-                {
-                    var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
-                        {
-                            continue;
-                        }
-
-                        var commandList = commandLists[i];
-                        foreach (Accessors.ReaderWriterImpl reader in readers)
-                        {
-                            foreach (var req in commandList.Buffer)
-                            {
-                                reader.On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
-                            }
-                        }
-                    }
-                }
+                // TODO UTY-961 Command Req handlers
 <# } #>
             }
 

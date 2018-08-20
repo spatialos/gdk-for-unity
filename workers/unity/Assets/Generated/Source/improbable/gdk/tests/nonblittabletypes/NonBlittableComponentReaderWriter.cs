@@ -219,16 +219,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     var sender = EntityManager.GetComponentData<EventSender<SpatialOSNonBlittableComponent>>(Entity);
                     sender.SendSecondEventEvent(payload);
                 }
-
-                public void OnFirstCommandCommandRequest(FirstCommand.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
-
-                public void OnSecondCommandCommandRequest(SecondCommand.Request request)
-                {
-                    throw new System.NotImplementedException();
-                }
             }
         }
     }
