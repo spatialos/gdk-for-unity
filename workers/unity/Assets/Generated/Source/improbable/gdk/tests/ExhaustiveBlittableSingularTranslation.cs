@@ -276,8 +276,6 @@ namespace Generated.Improbable.Gdk.Tests
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 197720;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.Create<SpatialOSExhaustiveBlittableSingular>(),
                 ComponentType.ReadOnly<Authoritative<SpatialOSExhaustiveBlittableSingular>>(),
@@ -310,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(197720);
                         SpatialOSExhaustiveBlittableSingular.Serialization.Serialize(data, update.GetFields());
 
                         // Send serialized update over the wire
@@ -331,7 +329,7 @@ namespace Generated.Improbable.Gdk.Tests
                     var component = componentDataArray[i];
                     if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
                     {
-                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 197720);
                         component.AuthorityLossAcknowledgmentSent = true;
                         componentDataArray[i] = component;
                     }

@@ -322,8 +322,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 1004;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.Evt>(),
                 ComponentType.Create<SpatialOSComponentWithNoFieldsWithEvents>(),
@@ -360,7 +358,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1004);
                         SpatialOSComponentWithNoFieldsWithEvents.Serialization.Serialize(data, update.GetFields());
 
                         // Serialize events
@@ -394,7 +392,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var component = componentDataArray[i];
                     if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
                     {
-                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1004);
                         component.AuthorityLossAcknowledgmentSent = true;
                         componentDataArray[i] = component;
                     }

@@ -373,8 +373,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => 1005;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.Create<SpatialOSComponentWithNoFieldsWithCommands>(),
                 ComponentType.ReadOnly<Authoritative<SpatialOSComponentWithNoFieldsWithCommands>>(),
@@ -411,7 +409,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1005);
                         SpatialOSComponentWithNoFieldsWithCommands.Serialization.Serialize(data, update.GetFields());
 
                         // Send serialized update over the wire
@@ -432,7 +430,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var component = componentDataArray[i];
                     if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
                     {
-                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1005);
                         component.AuthorityLossAcknowledgmentSent = true;
                         componentDataArray[i] = component;
                     }
@@ -454,7 +452,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(1005, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -489,7 +487,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(1005, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
