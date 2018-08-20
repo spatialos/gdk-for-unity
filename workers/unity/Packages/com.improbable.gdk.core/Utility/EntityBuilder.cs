@@ -18,8 +18,10 @@ namespace Improbable.Gdk.Core
         private const uint PositionComponentId = 54;
         private const uint PersistenceComponentId = 55;
 
+        // NOTE: We automatically build and add the EntityAcl, so the Position
+        // component is the only one required to be put on by the user.
         private static readonly HashSet<uint> requiredComponents =
-            new HashSet<uint> { EntityAclComponentId, PositionComponentId };
+            new HashSet<uint> { PositionComponentId };
 
 
         public static EntityBuilder Begin()
@@ -131,7 +133,7 @@ namespace Improbable.Gdk.Core
             if (!requiredComponents.All(c => componentsAdded.Contains(c)))
             {
                 throw new InvalidEntityException(
-                    "Entity is invalid. Missing one of required component: Position and EntityAcl");
+                    "Entity is invalid. Missing the Position component.");
             }
         }
 

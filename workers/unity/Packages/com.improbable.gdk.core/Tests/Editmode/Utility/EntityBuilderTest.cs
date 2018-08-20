@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -45,23 +45,36 @@ namespace Improbable.Gdk.Core.EditmodeTests
             builder.AddPosition(0, 0, 0, "write-access");
 
             Entity entity = new Entity(); // Stops IDE complaining about null check below.
-            Assert.DoesNotThrow(() => entity = builder.Build());
 
-            DisposeEntity(entity);
+            // Wrap in try - finally to ensure dispose gets called even if the assert fails.
+            try
+            {
+                Assert.DoesNotThrow(() => entity = builder.Build());
+            }
+            finally
+            {
+                DisposeEntity(entity);
+            }
         }
 
         [Test]
-        public void EntityBuilder_should_Build_if_arbitraty_components_are_added()
+        public void EntityBuilder_should_Build_if_arbitrary_components_are_added()
         {
             var builder = EntityBuilder.Begin();
             builder.AddPosition(0, 0, 0, "write-access");
             builder.AddComponent(GetComponentDataWithId(1000), "write-access");
             builder.AddComponent(GetComponentDataWithId(1001), "write-access");
+            var entity = new Entity(); // Stops IDE complaining about null check below.
 
-            Entity entity = new Entity(); // Stops IDE complaining about null check below.
-            Assert.DoesNotThrow(() => entity = builder.Build());
-
-            DisposeEntity(entity);
+            // Wrap in try - finally to ensure dispose gets called even if the assert fails.
+            try
+            {
+                Assert.DoesNotThrow(() => entity = builder.Build());
+            }
+            finally 
+            {
+                DisposeEntity(entity);
+            }
         }
 
         private ComponentData GetComponentDataWithId(uint componentId)
