@@ -470,8 +470,6 @@ namespace <#= qualifiedNamespace #>
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
-            public override uint ComponentId => <#= componentDetails.ComponentId #>;
-
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
 <# foreach (var eventDetail in eventDetailsList) { #>
                 ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
@@ -524,7 +522,7 @@ namespace <#= qualifiedNamespace #>
 
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(ComponentId);
+                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
                         <#= componentDetails.TypeName #>.Serialization.Serialize(data, update.GetFields());
 
 <# if (eventDetailsList.Count > 0) { #>
@@ -562,7 +560,7 @@ namespace <#= qualifiedNamespace #>
                     var component = componentDataArray[i];
                     if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
                     {
-                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, ComponentId);
+                        connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, <#= componentDetails.ComponentId #>);
                         component.AuthorityLossAcknowledgmentSent = true;
                         componentDataArray[i] = component;
                     }
@@ -590,7 +588,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(<#= componentDetails.ComponentId #>, <#= commandDetails.CommandIndex #>);
                             <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
@@ -625,7 +623,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 continue;
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
+                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(<#= componentDetails.ComponentId #>, <#= commandDetails.CommandIndex #>);
                             <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));

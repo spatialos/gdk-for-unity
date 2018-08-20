@@ -6,7 +6,6 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 {
     public abstract class ComponentReplicationHandler
     {
-        public abstract uint ComponentId { get; }
         public abstract ComponentType[] ReplicationComponentTypes { get; }
         public abstract ComponentType[] CommandTypes { get; }
         public abstract ComponentType[] AuthorityLossComponentTypes { get; }
