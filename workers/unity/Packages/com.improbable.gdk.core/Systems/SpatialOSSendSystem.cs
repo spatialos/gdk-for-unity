@@ -44,7 +44,9 @@ namespace Improbable.Gdk.Core
                     ReplicationComponentGroup =
                         GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
                     CommandReplicationGroups = componentReplicationHandler.CommandTypes
-                        .Select(componentType => GetComponentGroup(componentType)).ToList()
+                        .Select(componentType => GetComponentGroup(componentType)).ToList(),
+                    AuthorityLostComponentGroup =
+                        GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
                 });
             }
         }
@@ -79,12 +81,14 @@ namespace Improbable.Gdk.Core
             public uint ComponentId;
             public ComponentReplicationHandler Handler;
             public ComponentGroup ReplicationComponentGroup;
+            public ComponentGroup AuthorityLostComponentGroup;
             public List<ComponentGroup> CommandReplicationGroups;
 
             public void Execute(Connection connection)
             {
                 Handler.ExecuteReplication(ReplicationComponentGroup, connection);
                 Handler.SendCommands(CommandReplicationGroups, connection);
+                Handler.SendAuthorityLossImminentAcknowledgement(AuthorityLostComponentGroup, connection);
             }
         }
     }

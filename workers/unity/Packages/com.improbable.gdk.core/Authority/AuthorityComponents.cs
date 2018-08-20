@@ -12,5 +12,7 @@ namespace Improbable.Gdk.Core
 
     public struct AuthorityLossImminent<T> : IComponentData
     {
+        public BlittableBool AuthorityLossAcknowledged;
+        public BlittableBool AuthorityLossAcknowledgmentSent;
     }
 }
