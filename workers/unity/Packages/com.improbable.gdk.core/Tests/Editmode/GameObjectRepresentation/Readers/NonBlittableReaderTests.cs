@@ -18,8 +18,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-
-                var reader = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                var reader = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 var schemaComponentData = SpatialOSNonBlittableComponent.CreateSchemaComponentData(
                     boolField: false,
@@ -52,7 +51,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-                var reader = new NonBlittableComponent.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                var reader = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 string stringValue = null;
                 List<int> listValue = null;

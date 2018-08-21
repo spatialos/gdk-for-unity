@@ -43,6 +43,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             };
 
             private const uint componentId = 1005;
+            private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -93,41 +94,20 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
-                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
-                {
-                    var entities = CommandRequestsComponentGroups[0].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[0].GetComponentDataArray<CommandRequests.Cmd>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                        if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
-                        {
-                            continue;
-                        }
-
-                        var commandList = commandLists[i];
-                        foreach (ReaderWriterImpl reader in readers)
-                        {
-                            foreach (var req in commandList.Requests)
-                            {
-                                reader.OnCmdCommandRequest(req);
-                            }
-                        }
-                    }
-                }
+                // TODO UTY-961 Command Req handlers
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -138,18 +118,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var auth in authChanges.Changes)
                         {
-                            reader.OnAuthorityChange(auth);
+                            readerWriter.OnAuthorityChange(auth);
                         }
                     }
                 }

@@ -14,61 +14,64 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
-        [ComponentId(1105)]
-        internal class ReaderWriterCreator : IReaderWriterCreator
+        public partial class Requirables
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1105)]
+            internal class ReaderWriterCreator : IInjectableCreator
             {
-                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
-            }
-        }
-
-        [ReaderInterface]
-        [ComponentId(1105)]
-        public interface Reader : IReader<SpatialOSConnection, SpatialOSConnection.Update>
-        {
-            event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
-        }
-
-        [WriterInterface]
-        [ComponentId(1105)]
-        public interface Writer : IWriter<SpatialOSConnection, SpatialOSConnection.Update>
-        {
-            void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
-        }
-
-        internal class ReaderWriterImpl :
-            ReaderWriterBase<SpatialOSConnection, SpatialOSConnection.Update>, Reader, Writer
-        {
-            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
-            {
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                }
             }
 
-            protected override void TriggerFieldCallbacks(SpatialOSConnection.Update update)
+            [InjectableId(InjectableType.ReaderWriter, 1105)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
+            public interface Reader : IReader<SpatialOSConnection, SpatialOSConnection.Update>
             {
-            }
-            protected override void ApplyUpdate(SpatialOSConnection.Update update, ref SpatialOSConnection data)
-            {
-            }
-
-            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> myEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
-
-            public event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
-            {
-                add => myEventDelegates.Add(value);
-                remove => myEventDelegates.Remove(value);
+                event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
             }
 
-            public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+            [InjectableId(InjectableType.ReaderWriter, 1105)]
+            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+            public interface Writer : IWriter<SpatialOSConnection, SpatialOSConnection.Update>
             {
-                DispatchEventWithErrorHandling(payload, myEventDelegates);
+                void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
             }
 
-            public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+            internal class ReaderWriterImpl :
+                ReaderWriterBase<SpatialOSConnection, SpatialOSConnection.Update>, Reader, Writer
             {
-                var sender = EntityManager.GetComponentData<EventSender.MyEvent>(Entity);
-                sender.Events.Add(payload);
+                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                    : base(entity, entityManager, logDispatcher)
+                {
+                }
+
+                protected override void TriggerFieldCallbacks(SpatialOSConnection.Update update)
+                {
+                }
+                protected override void ApplyUpdate(SpatialOSConnection.Update update, ref SpatialOSConnection data)
+                {
+                }
+
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> myEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
+
+                public event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
+                {
+                    add => myEventDelegates.Add(value);
+                    remove => myEventDelegates.Remove(value);
+                }
+
+                public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+                {
+                    DispatchEventWithErrorHandling(payload, myEventDelegates);
+                }
+
+                public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+                {
+                    var sender = EntityManager.GetComponentData<EventSender.MyEvent>(Entity);
+                    sender.Events.Add(payload);
+                }
             }
         }
     }

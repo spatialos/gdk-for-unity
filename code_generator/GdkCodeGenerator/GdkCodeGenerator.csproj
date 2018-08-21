@@ -33,6 +33,7 @@
     <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />
     <T4Files Include="Templates\UnityGameObjectComponentDispatcherGenerator.tt" />
+    <T4Files Include="Templates\UnityGameObjectCommandHandlersGenerator.tt" />
     <T4Files Include="Templates\UnityReaderWriterGenerator.tt" />
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
@@ -40,6 +41,9 @@
     <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
     <T4Files Include="Templates\UnityCommandComponentsGenerator.tt" />
     <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">

@@ -6,7 +6,7 @@ using Color = UnityEngine.Color;
 
 public class FlashOnCollision : MonoBehaviour
 {
-    [Require] private Collisions.Reader reader;
+    [Require] private Collisions.Requirables.Reader reader;
 
     private float collideTime;
     private bool flashing = false;

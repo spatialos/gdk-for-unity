@@ -12,57 +12,63 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// </summary>
     internal class RequiredFieldInjector
     {
-        private readonly Dictionary<Type, Dictionary<uint, FieldInfo[]>> fieldInfoCache
-            = new Dictionary<Type, Dictionary<uint, FieldInfo[]>>();
-        private readonly Dictionary<Type, List<uint>> componentReaderIdsForBehaviours =
+        private readonly Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>> fieldInfoCache
+            = new Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>>();
+        private readonly Dictionary<Type, List<uint>> componentPresentRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
-        private readonly Dictionary<Type, List<uint>> componentWriterIdsForBehaviours =
+        private readonly Dictionary<Type, List<uint>> componentAuthRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
 
         private readonly ILogDispatcher logger;
-        private readonly ReaderWriterFactory readerWriterFactory;
+        private readonly InjectableFactory injectableFactory;
 
         private const string LoggerName = nameof(RequiredFieldInjector);
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Reader or Writer. This member will be ignored.";
-        private const string MalformedReaderOrWriter
-            = "Reader or Writer found without a Component ID attribute, this is invalid.";
+            = "[Require] attribute found on member that is not Injectable. This member will be ignored.";
+        private const string MalformedInjectable
+            = "Injectable found without required attributes, this is invalid.";
 
         public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
-            this.readerWriterFactory = new ReaderWriterFactory(entityManager, logger);
+            this.injectableFactory = new InjectableFactory(entityManager, logger);
         }
 
-        public Dictionary<uint, IReaderWriterInternal[]> InjectAllReadersWriters(MonoBehaviour behaviour, Entity entity)
+        public bool HasRequiredFields(Type behaviourType)
+        {
+            EnsureLoaded(behaviourType);
+            return fieldInfoCache[behaviourType].Count > 0;
+        }
+
+        public Dictionary<InjectableId, IInjectable[]> InjectAllRequiredFields(MonoBehaviour behaviour, Entity entity)
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
-            var createdReaderWriters = new Dictionary<uint, IReaderWriterInternal[]>();
+            var createdInjectables = new Dictionary<InjectableId, IInjectable[]>();
             foreach (var idToFields in fieldInfoCache[behaviourType])
             {
                 var id = idToFields.Key;
                 var fields = idToFields.Value;
-                var readerWritersArray = new IReaderWriterInternal[fields.Length];
+                var injectables = new IInjectable[fields.Length];
                 for (var i = 0; i < fields.Length; i++)
                 {
-                    readerWritersArray[i] = Inject(behaviour, id, entity, fields[i]);
+                    injectables[i] = Inject(behaviour, id, entity, fields[i]);
                 }
 
-                createdReaderWriters[id] = readerWritersArray;
+                createdInjectables[id] = injectables;
             }
 
-            return createdReaderWriters;
+            return createdInjectables;
         }
 
-        private IReaderWriterInternal Inject(MonoBehaviour behaviour, uint componentId, Entity entity, FieldInfo field)
+        private IInjectable Inject(MonoBehaviour behaviour, InjectableId injectableId, Entity entity, FieldInfo field)
         {
-            var readerWriter = readerWriterFactory.CreateReaderWriter(componentId, entity);
-            field.SetValue(behaviour, readerWriter);
-            return readerWriter;
+            var injectable = injectableFactory.CreateInjectable(injectableId, entity);
+            field.SetValue(behaviour, injectable);
+            return injectable;
         }
 
-        public void DeInjectAllReadersWriters(MonoBehaviour behaviour)
+        public void DeInjectAllRequiredFields(MonoBehaviour behaviour)
         {
             var behaviourType = behaviour.GetType();
             EnsureLoaded(behaviourType);
@@ -76,16 +82,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public List<uint> GetRequiredReaderComponentIds(Type behaviourType)
+        public List<uint> GetComponentPresenceRequirements(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return componentReaderIdsForBehaviours[behaviourType];
+            return componentPresentRequirementsForBehaviours[behaviourType];
         }
 
-        public List<uint> GetRequiredWriterComponentIds(Type behaviourType)
+        public List<uint> GetComponentAuthorityRequirements(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return componentWriterIdsForBehaviours[behaviourType];
+            return componentAuthRequirementsForBehaviours[behaviourType];
         }
 
         private void EnsureLoaded(Type behaviourType)
@@ -96,16 +102,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             var fieldInfos = GetFieldsWithRequireAttribute(behaviourType);
-            var componentIdsToFieldInfos = new Dictionary<uint, List<FieldInfo>>();
-            var readerComponentIds = new List<uint>();
-            var writerComponentIds = new List<uint>();
+            var injectableIdsToFieldInfos = new Dictionary<InjectableId, List<FieldInfo>>();
+            var componentsRequiredPresent = new HashSet<uint>();
+            var componentsRequiredWithAuthority = new HashSet<uint>();
             foreach (var field in fieldInfos)
             {
-                // Figure out if reader or writer
+                // Confirm it's IInjectable
                 Type requiredType = field.FieldType;
-                var isReader = Attribute.IsDefined(requiredType, typeof(ReaderInterfaceAttribute), false);
-                var isWriter = Attribute.IsDefined(requiredType, typeof(WriterInterfaceAttribute), false);
-                if (!isReader && !isWriter)
+                if (!typeof(IInjectable).IsAssignableFrom(requiredType))
                 {
                     logger.HandleLog(LogType.Warning, new LogEvent(BadRequiredMemberWarning)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -114,44 +118,55 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     continue;
                 }
 
-                // Get component ID
-                var componentIdAttribute =
-                    (ComponentIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(ComponentIdAttribute),
+                // Get injectable ID and injection condition
+                var injectableIdAttribute =
+                    (InjectableIdAttribute) Attribute.GetCustomAttribute(requiredType, typeof(InjectableIdAttribute),
                         false);
-                if (componentIdAttribute == null)
+                var conditionAttribute =
+                    (InjectionConditionAttribute) Attribute.GetCustomAttribute(requiredType,
+                        typeof(InjectionConditionAttribute), false);
+                if (injectableIdAttribute == null || conditionAttribute == null)
                 {
-                    logger.HandleLog(LogType.Error, new LogEvent(MalformedReaderOrWriter)
+                    logger.HandleLog(LogType.Error, new LogEvent(MalformedInjectable)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("MonoBehaviour", behaviourType.Name)
                         .WithField("RequiredType", requiredType.Name));
                     continue;
                 }
 
-                var componentId = componentIdAttribute.Id;
-
                 // Store in data structures
-                if (!componentIdsToFieldInfos.TryGetValue(componentId, out var fieldInfosForType))
+                var injectableId = injectableIdAttribute.Id;
+
+                if (!injectableIdsToFieldInfos.TryGetValue(injectableId, out var fieldInfosForType))
                 {
                     fieldInfosForType = new List<FieldInfo>();
-                    componentIdsToFieldInfos[componentId] = fieldInfosForType;
+                    injectableIdsToFieldInfos[injectableId] = fieldInfosForType;
                 }
 
                 fieldInfosForType.Add(field);
 
-                if (isReader)
+                switch (conditionAttribute.condition)
                 {
-                    readerComponentIds.Add(componentId);
-                }
-                else
-                {
-                    writerComponentIds.Add(componentId);
+                    case InjectionCondition.RequireComponentPresent:
+                        componentsRequiredPresent.Add(injectableId.componentId);
+                        break;
+                    case InjectionCondition.RequireComponentWithAuthority:
+                        componentsRequiredWithAuthority.Add(injectableId.componentId);
+                        break;
                 }
             }
 
-            fieldInfoCache[behaviourType] = componentIdsToFieldInfos.ToDictionary
+            fieldInfoCache[behaviourType] = injectableIdsToFieldInfos.ToDictionary
                 (kp => kp.Key, kp => kp.Value.ToArray());
-            componentReaderIdsForBehaviours[behaviourType] = readerComponentIds;
-            componentWriterIdsForBehaviours[behaviourType] = writerComponentIds;
+
+            // Only store stronger requirement
+            foreach (var authorityRequirement in componentsRequiredWithAuthority)
+            {
+                componentsRequiredPresent.Remove(authorityRequirement);
+            }
+
+            componentPresentRequirementsForBehaviours[behaviourType] = componentsRequiredPresent.ToList();
+            componentAuthRequirementsForBehaviours[behaviourType] = componentsRequiredWithAuthority.ToList();
         }
 
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |

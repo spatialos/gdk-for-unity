@@ -48,6 +48,18 @@ namespace Improbable.Gdk.CodeGenerator
                 fileName = Path.ChangeExtension(unityComponentDefinition.Name + "Translation", fileExtension);
                 OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
 
+                fileName = Path.ChangeExtension(unityComponentDefinition.Name + "GameObjectComponentDispatcher", fileExtension);
+                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                fileName = Path.ChangeExtension(unityComponentDefinition.Name + "ReaderWriter", fileExtension);
+                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                if (unityComponentDefinition.CommandDefinitions.Count > 0)
+                {
+                    fileName = Path.ChangeExtension(unityComponentDefinition.Name + "MonoBehaviourCommandHandlers", fileExtension);
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                }
+
                 fileName = Path.ChangeExtension($"{unityComponentDefinition.Name}Providers", fileExtension);
                 OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
             }
@@ -75,6 +87,7 @@ namespace Improbable.Gdk.CodeGenerator
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var commandStorageGenerator = new UnityCommandStorageGenerator();
             var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
+            var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
             var readerWriterGenerator = new UnityReaderWriterGenerator();
 
             foreach (var enumType in enumsToGenerate)
@@ -145,6 +158,15 @@ namespace Improbable.Gdk.CodeGenerator
                 var readerWriterCode =
                     readerWriterGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
+
+                if (component.CommandDefinitions.Count > 0)
+                {
+                    var monobehaviourCommandHandlerFileName =
+                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension);
+                    var monobehaviourCommandHandlerCode =
+                        gameObjectCommandHandlersGenerator.Generate(component, package);
+                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName), monobehaviourCommandHandlerCode);
+                }
             }
         }
 

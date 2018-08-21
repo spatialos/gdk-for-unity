@@ -14,61 +14,64 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithEvents
     {
-        [ComponentId(1004)]
-        internal class ReaderWriterCreator : IReaderWriterCreator
+        public partial class Requirables
         {
-            public IReaderWriterInternal CreateReaderWriter(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+            [InjectableId(InjectableType.ReaderWriter, 1004)]
+            internal class ReaderWriterCreator : IInjectableCreator
             {
-                return new ReaderWriterImpl(entity, entityManager, logDispatcher);
-            }
-        }
-
-        [ReaderInterface]
-        [ComponentId(1004)]
-        public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
-        {
-            event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
-        }
-
-        [WriterInterface]
-        [ComponentId(1004)]
-        public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
-        {
-            void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload);
-        }
-
-        internal class ReaderWriterImpl :
-            ReaderWriterBase<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>, Reader, Writer
-        {
-            public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
-                : base(entity, entityManager, logDispatcher)
-            {
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
+                }
             }
 
-            protected override void TriggerFieldCallbacks(SpatialOSComponentWithNoFieldsWithEvents.Update update)
+            [InjectableId(InjectableType.ReaderWriter, 1004)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
+            public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
             {
-            }
-            protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithEvents.Update update, ref SpatialOSComponentWithNoFieldsWithEvents data)
-            {
-            }
-
-            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> evtDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
-
-            public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
-            {
-                add => evtDelegates.Add(value);
-                remove => evtDelegates.Remove(value);
+                event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
             }
 
-            public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+            [InjectableId(InjectableType.ReaderWriter, 1004)]
+            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
+            public interface Writer : IWriter<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
             {
-                DispatchEventWithErrorHandling(payload, evtDelegates);
+                void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload);
             }
 
-            public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+            internal class ReaderWriterImpl :
+                ReaderWriterBase<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>, Reader, Writer
             {
-                var sender = EntityManager.GetComponentData<EventSender.Evt>(Entity);
-                sender.Events.Add(payload);
+                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                    : base(entity, entityManager, logDispatcher)
+                {
+                }
+
+                protected override void TriggerFieldCallbacks(SpatialOSComponentWithNoFieldsWithEvents.Update update)
+                {
+                }
+                protected override void ApplyUpdate(SpatialOSComponentWithNoFieldsWithEvents.Update update, ref SpatialOSComponentWithNoFieldsWithEvents data)
+                {
+                }
+
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> evtDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
+
+                public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
+                {
+                    add => evtDelegates.Add(value);
+                    remove => evtDelegates.Remove(value);
+                }
+
+                public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                {
+                    DispatchEventWithErrorHandling(payload, evtDelegates);
+                }
+
+                public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                {
+                    var sender = EntityManager.GetComponentData<EventSender.Evt>(Entity);
+                    sender.Events.Add(payload);
+                }
             }
         }
     }

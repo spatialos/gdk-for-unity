@@ -43,6 +43,7 @@ namespace Generated.Improbable.Gdk.Tests
             };
 
             private const uint componentId = 197717;
+            private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -93,7 +94,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -104,32 +105,32 @@ namespace Generated.Improbable.Gdk.Tests
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<SpatialOSExhaustiveRepeated.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
                     }
 
                     var updateList = updateLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var update in updateList.Updates)
                         {
-                            reader.OnComponentUpdate(update);
+                            readerWriter.OnComponentUpdate(update);
                         }
                     }
                 }
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, ReaderWriterStore> entityIdToReaderWriterStore)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -140,18 +141,18 @@ namespace Generated.Improbable.Gdk.Tests
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSExhaustiveRepeated>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
-                    if (!readerWriterStore.TryGetReaderWritersForComponent(componentId, out var readers))
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var auth in authChanges.Changes)
                         {
-                            reader.OnAuthorityChange(auth);
+                            readerWriter.OnAuthorityChange(auth);
                         }
                     }
                 }

@@ -8,7 +8,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 public class RotationBehaviour : MonoBehaviour
 {
-    [Require] private Transform.Writer writer;
+    [Require] private Transform.Requirables.Writer writer;
 
     private static SpatialQuaternion UnityToSpatialQuaternion(Quaternion q)
     {
