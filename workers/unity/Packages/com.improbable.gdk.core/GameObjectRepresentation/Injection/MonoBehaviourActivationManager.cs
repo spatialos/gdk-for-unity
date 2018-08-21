@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly Entity entity;
         private readonly long spatialId;
 
-        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsToRead
+        private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsPresent
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
 
         private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsWithAuth
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                     if (readRequirementCount > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsToRead);
+                        AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsPresent);
                     }
 
                     if (authRequirementCount > 0)
@@ -127,25 +127,25 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void AddComponent(uint componentId)
         {
-            if (!behavioursRequiringComponentsToRead.ContainsKey(componentId))
+            if (!behavioursRequiringComponentsPresent.ContainsKey(componentId))
             {
                 return;
             }
 
             // Mark reader components ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsToRead[componentId];
+            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsPresent[componentId];
             MarkComponentRequirementSatisfied(relevantReaderSpatialOSBehaviours);
         }
 
         public void RemoveComponent(uint componentId)
         {
-            if (!behavioursRequiringComponentsToRead.ContainsKey(componentId))
+            if (!behavioursRequiringComponentsPresent.ContainsKey(componentId))
             {
                 return;
             }
 
             // Mark reader components not ready in relevant SpatialOSBehaviours
-            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsToRead[componentId];
+            var relevantReaderSpatialOSBehaviours = behavioursRequiringComponentsPresent[componentId];
             MarkComponentRequirementUnsatisfied(relevantReaderSpatialOSBehaviours);
         }
 
