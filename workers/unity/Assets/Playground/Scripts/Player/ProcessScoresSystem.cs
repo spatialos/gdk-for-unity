@@ -2,6 +2,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 #region Diagnostic control
 
@@ -22,7 +23,7 @@ namespace Playground
             public ComponentDataArray<SpatialOSScore> Score;
 
             [ReadOnly]
-            public ComponentDataArray<Generated.Playground.Launcher.CommandRequests.IncreaseScore> CommandRequests;
+            public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;
         }
 
         [Inject] private ScoringData scoringData;
@@ -34,7 +35,7 @@ namespace Playground
                 var playerScore = scoringData.Score[i];
                 foreach (var request in scoringData.CommandRequests[i].Requests)
                 {
-                    playerScore.Score += request.RawRequest.Amount;
+                    playerScore.Score += request.Payload.Amount;
                 }
 
                 scoringData.Score[i] = playerScore;

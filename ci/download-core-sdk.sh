@@ -39,7 +39,7 @@ mkdir -p "${CORE_SDK_DIR}/worker_sdk"
 
 spatial package retrieve "worker_sdk" "c-dynamic-x86_64-msvc_mt-win32"        "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/c-dynamic-x86_64-msvc_mt-win32"
 spatial package retrieve "worker_sdk" "c-dynamic-x86_64-gcc_libstdcpp-linux"  "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/c-dynamic-x86_64-gcc_libstdcpp-linux"
-spatial package retrieve "worker_sdk" "c-dynamic-x86_64-clang_libcpp-macos"   "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/c-dynamic-x86_64-clang_libcpp-macos"
+spatial package retrieve "worker_sdk" "c-bundle-x86_64-clang_libcpp-macos"   "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/c-dynamic-x86_64-clang_libcpp-macos"
 spatial package retrieve "worker_sdk" "csharp_core"                           "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/worker_sdk/csharp"
 spatial package retrieve "tools"      "schema_compiler-x86_64-win32"          "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-win32"
 spatial package retrieve "tools"      "schema_compiler-x86_64-macos"          "${PINNED_CORE_SDK_VERSION}" "${CORE_SDK_DIR}/tools/schema_compiler-x86_64-macos"

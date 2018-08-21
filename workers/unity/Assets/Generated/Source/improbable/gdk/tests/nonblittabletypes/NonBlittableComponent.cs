@@ -207,23 +207,23 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
                 component.listFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
 
-                component.ListField = new global::System.Collections.Generic.List<int>();
+                var listField = component.ListField = new global::System.Collections.Generic.List<int>();
                 for (var i = 0; i < obj.GetInt32Count(8); i++)
                 {
-                    component.ListField.Add(obj.IndexInt32(8, (uint) i));
+                    listField.Add(obj.IndexInt32(8, (uint) i));
                 }
 
                 component.mapFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
 
                 {
-                    component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var mapField = component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
                     var mapSize = obj.GetObjectCount(9);
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(9, (uint) i);
                         var key = mapObj.GetInt32(1);
                         var value = mapObj.GetString(2);
-                        component.MapField.Add(key, value);
+                        mapField.Add(key, value);
                     }
                 }
                 return component;

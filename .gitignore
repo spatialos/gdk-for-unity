@@ -12,6 +12,7 @@ workers/unity/build/
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
 workers/unity/[Tt]emp/
+workers/unity/Logs/
 [Oo]bj/
 [Bb]in/
 workers/unity/ProjectSettings/UnityConnectSettings.asset

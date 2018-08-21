@@ -13,12 +13,13 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
-        private readonly List<Action> removeComponentActions = new List<Action>();
-
         private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
+        
+        private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
+        private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -28,17 +29,6 @@ namespace Improbable.Gdk.Core
 
         private void GenerateComponentGroups()
         {
-            // TODO: Remove workaround when UTY-936 is fixed
-            var addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod(nameof(AddRemoveComponentAction),
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if (addRemoveComponentActionMethod == null)
-            {
-                throw new MissingMethodException(nameof(CleanReactiveComponentsSystem),
-                    nameof(AddRemoveComponentAction));
-            }
-
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 // Find all components with the RemoveAtEndOfTick attribute
@@ -57,7 +47,7 @@ namespace Improbable.Gdk.Core
 
                     if (typesToRemove.Add(type))
                     {
-                        addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                        componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
                     }
                 }
 
@@ -70,8 +60,7 @@ namespace Improbable.Gdk.Core
                         foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
                         {
                             typesToRemove.Add(componentType.GetManagedType());
-                            addRemoveComponentActionMethod.MakeGenericMethod(componentType.GetManagedType())
-                                .Invoke(this, null);
+                            componentGroupsToRemove.Add((GetComponentGroup(componentType), componentType));
                         }
 
                         // Updates group
@@ -91,31 +80,8 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private void AddRemoveComponentAction<T>()
-        {
-            var componentGroup = GetComponentGroup(ComponentType.ReadOnly<T>());
-            removeComponentActions.Add(() =>
-            {
-                if (componentGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entityArray = componentGroup.GetEntityArray();
-                for (var i = 0; i < entityArray.Length; ++i)
-                {
-                    PostUpdateCommands.RemoveComponent<T>(entityArray[i]);
-                }
-            });
-        }
-
         protected override void OnUpdate()
         {
-            foreach (var removeComponentAction in removeComponentActions)
-            {
-                removeComponentAction();
-            }
-
             var buffer = PostUpdateCommands;
             foreach (var cleanup in componentCleanups)
             {
@@ -124,6 +90,9 @@ namespace Improbable.Gdk.Core
                 cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
                 cleanup.Handler.CleanupCommands(cleanup.CommandsGroups, ref buffer);
             }
+
+            // Clean components with RemoveAtEndOfTick attribute
+            RemoveComponents();
         }
 
         private struct ComponentCleanup
@@ -133,6 +102,29 @@ namespace Improbable.Gdk.Core
             public ComponentGroup AuthorityChangesGroup;
             public ComponentGroup[] EventGroups;
             public ComponentGroup[] CommandsGroups;
+        }
+
+        private void RemoveComponents()
+        {
+            componentsToRemove.Clear();
+            foreach ((ComponentGroup componentGroup, ComponentType type) in componentGroupsToRemove)
+            {
+                if (componentGroup.IsEmptyIgnoreFilter)
+                {
+                    continue;
+                }
+
+                var entityArray = componentGroup.GetEntityArray();
+                for (var i = 0; i < entityArray.Length; ++i)
+                {
+                    componentsToRemove.Add((entityArray[i], type));
+                }
+            }
+
+            foreach ((Entity entity, ComponentType type) in componentsToRemove)
+            {
+                EntityManager.RemoveComponent(entity, type);
+            }
         }
     }
 }

@@ -1,0 +1,5 @@
+<linker>
+	<assembly fullname="Improbable.Gdk.Core" preserve="all"/>
+	<assembly fullname="Improbable.Gdk.TransformSynchronization" preserve="all"/>
+	<assembly fullname="Improbable.Gdk.PlayerLifecycle" preserve="all"/>
+</linker>
