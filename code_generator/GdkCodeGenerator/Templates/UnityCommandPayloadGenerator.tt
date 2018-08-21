@@ -85,8 +85,8 @@ namespace <#= qualifiedNamespace #>
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public <#= commandDetails.ResponseType #>? Payload { get; }
-                public <#= commandDetails.RequestType #> CorrespondingRequest { get; }
+                public <#= commandDetails.ResponseType #>? ResponsePayload { get; }
+                public <#= commandDetails.RequestType #> RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -97,8 +97,8 @@ namespace <#= qualifiedNamespace #>
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    Payload = response;
-                    CorrespondingRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }

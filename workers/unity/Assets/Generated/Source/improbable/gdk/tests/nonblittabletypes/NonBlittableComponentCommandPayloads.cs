@@ -79,8 +79,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest CorrespondingRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -91,8 +91,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    Payload = response;
-                    CorrespondingRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }
@@ -165,8 +165,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest CorrespondingRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -177,8 +177,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    Payload = response;
-                    CorrespondingRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }
