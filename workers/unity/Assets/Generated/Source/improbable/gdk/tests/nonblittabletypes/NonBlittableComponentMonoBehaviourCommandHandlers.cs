@@ -11,116 +11,61 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
-        public partial class Accessors
+        public partial class Requirables
         {
-            internal class FirstCommandCommandSenderCreator : IInjectableCreator
+            internal class CommandSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new FirstCommandCommandSender(entity, entityManager, logDispatcher);
+                    return new CommandSender(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandSender, 1002, 0)]
+            [InjectableId(InjectableType.CommandSender, 1002)]
+            [InjectionCondition(InjectionCondition.RequireNothing)]
+            public class CommandSender : IInjectable
+            {
+                public CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                {
+
+                }
+            }
+
+            internal class CommandRequestHandlerCreator : IInjectableCreator
+            {
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                }
+            }
+
+            [InjectableId(InjectableType.CommandRequestHandler, 1002)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class FirstCommandCommandSender : IInjectable
+            public class CommandRequestHandler : IInjectable
             {
-                public FirstCommandCommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
 
-            internal class FirstCommandCommandRequestHandlerCreator : IInjectableCreator
+            internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new FirstCommandCommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, 1002, 0)]
+            [InjectableId(InjectableType.CommandResponseHandler, 1002)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class FirstCommandCommandRequestHandler : IInjectable
+            public class CommandResponseHandler : IInjectable
             {
-                public FirstCommandCommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
-
-            internal class FirstCommandCommandResponseHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new FirstCommandCommandResponseHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1002, 0)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class FirstCommandCommandResponseHandler : IInjectable
-            {
-                public FirstCommandCommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
-            internal class SecondCommandCommandSenderCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new SecondCommandCommandSender(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandSender, 1002, 1)]
-            [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class SecondCommandCommandSender : IInjectable
-            {
-                public SecondCommandCommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
-            internal class SecondCommandCommandRequestHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new SecondCommandCommandRequestHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandRequestHandler, 1002, 1)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class SecondCommandCommandRequestHandler : IInjectable
-            {
-                public SecondCommandCommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
-            internal class SecondCommandCommandResponseHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new SecondCommandCommandResponseHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1002, 1)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class SecondCommandCommandResponseHandler : IInjectable
-            {
-                public SecondCommandCommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
         }
     }
 }

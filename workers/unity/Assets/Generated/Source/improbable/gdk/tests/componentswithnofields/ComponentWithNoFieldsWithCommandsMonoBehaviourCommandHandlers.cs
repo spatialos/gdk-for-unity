@@ -11,62 +11,61 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
-        public partial class Accessors
+        public partial class Requirables
         {
-            internal class CmdCommandSenderCreator : IInjectableCreator
+            internal class CommandSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CmdCommandSender(entity, entityManager, logDispatcher);
+                    return new CommandSender(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandSender, 1005, 0)]
+            [InjectableId(InjectableType.CommandSender, 1005)]
+            [InjectionCondition(InjectionCondition.RequireNothing)]
+            public class CommandSender : IInjectable
+            {
+                public CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                {
+
+                }
+            }
+
+            internal class CommandRequestHandlerCreator : IInjectableCreator
+            {
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                }
+            }
+
+            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CmdCommandSender : IInjectable
+            public class CommandRequestHandler : IInjectable
             {
-                public CmdCommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
 
-            internal class CmdCommandRequestHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new CmdCommandRequestHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandRequestHandler, 1005, 0)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CmdCommandRequestHandler : IInjectable
-            {
-                public CmdCommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
-            internal class CmdCommandResponseHandlerCreator : IInjectableCreator
+            internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CmdCommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, 1005, 0)]
+            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CmdCommandResponseHandler : IInjectable
+            public class CommandResponseHandler : IInjectable
             {
-                public CmdCommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
-
         }
     }
 }

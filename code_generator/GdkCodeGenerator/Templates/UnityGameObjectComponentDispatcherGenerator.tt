@@ -128,7 +128,7 @@ namespace <#= qualifiedNamespace #>
                     }
 
                     var updateList = updateLists[i];
-                    foreach (Accessors.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl reader in readers)
                     {
                         foreach (var update in updateList.Buffer)
                         {
@@ -156,7 +156,7 @@ namespace <#= qualifiedNamespace #>
 
                         var eventList = eventLists[i];
 
-                        foreach (Accessors.ReaderWriterImpl reader in readers)
+                        foreach (Requirables.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -193,7 +193,7 @@ namespace <#= qualifiedNamespace #>
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (Accessors.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

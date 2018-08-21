@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
                 entityManager.SetComponentObject(entity, new SpatialOSNonBlittableComponent());
-                var writer = new NonBlittableComponent.Accessors.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                var writer = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
                 writer.Send(new SpatialOSNonBlittableComponent.Update
                 {
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                 newValues.StringField = "stringy";
                 entityManager.SetComponentObject(entity, newValues);
 
-                var writer = new NonBlittableComponent.Accessors.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                var writer = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
                 writer.Send(new SpatialOSNonBlittableComponent.Update
                 {
                     IntField = new Option<int>(42),

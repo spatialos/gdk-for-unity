@@ -114,7 +114,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                         var eventList = eventLists[i];
 
-                        foreach (Accessors.ReaderWriterImpl reader in readers)
+                        foreach (Requirables.ReaderWriterImpl reader in readers)
                         {
                             foreach (var e in eventList.Buffer)
                             {
@@ -147,7 +147,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (Accessors.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

@@ -14,7 +14,7 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class ExhaustiveMapKey
     {
-        public partial class Accessors
+        public partial class Requirables
         {
             [InjectableId(InjectableType.ReaderWriter, 197719)]
             internal class ReaderWriterCreator : IInjectableCreator

@@ -123,7 +123,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (Accessors.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl reader in readers)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {

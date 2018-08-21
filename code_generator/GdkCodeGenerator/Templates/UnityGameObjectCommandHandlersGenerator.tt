@@ -18,68 +18,61 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public partial class Accessors
+        public partial class Requirables
         {
-<# for (var j = 0; j < commandDetailsList.Count; j++) {
-        var commandName = commandDetailsList[j].CommandName;
-        var requestType = commandDetailsList[j].RequestType;
-        var responseType = commandDetailsList[j].ResponseType;
-#>
-            internal class <#= commandName #>CommandSenderCreator : IInjectableCreator
+            internal class CommandSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new <#= commandName #>CommandSender(entity, entityManager, logDispatcher);
+                    return new CommandSender(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandSender, <#= unityComponentDefinition.Id #>, <#= j #>)]
+            [InjectableId(InjectableType.CommandSender, <#= unityComponentDefinition.Id #>)]
+            [InjectionCondition(InjectionCondition.RequireNothing)]
+            public class CommandSender : IInjectable
+            {
+                public CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                {
+
+                }
+            }
+
+            internal class CommandRequestHandlerCreator : IInjectableCreator
+            {
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                {
+                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                }
+            }
+
+            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class <#= commandName #>CommandSender : IInjectable
+            public class CommandRequestHandler : IInjectable
             {
-                public <#= commandName #>CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
 
-            internal class <#= commandName #>CommandRequestHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new <#= commandName #>CommandRequestHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>, <#= j #>)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class <#= commandName #>CommandRequestHandler : IInjectable
-            {
-                public <#= commandName #>CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-
-                }
-            }
-
-            internal class <#= commandName #>CommandResponseHandlerCreator : IInjectableCreator
+            internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new <#= commandName #>CommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>, <#= j #>)]
+            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class <#= commandName #>CommandResponseHandler : IInjectable
+            public class CommandResponseHandler : IInjectable
             {
-                public <#= commandName #>CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
 
                 }
             }
-
-<# } #>
         }
     }
 }
