@@ -2,19 +2,63 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
-using Improbable.Gdk.Core;
 using System.Collections.Generic;
+using Unity.Entities;
 
 namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
-    public struct FirstEventEvent : ISpatialEvent
+    public partial class BlittableComponent
     {
-        public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload Payload;
-    }
+        public static class ReceivedEvents
+        {
+            public struct FirstEvent : IComponentData
+            {
+                internal uint handle;
 
-    public struct SecondEventEvent : ISpatialEvent
-    {
-        public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload Payload;
-    }
+                public List<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> Events
+                {
+                    get => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                }
+            }
 
+            public struct SecondEvent : IComponentData
+            {
+                internal uint handle;
+
+                public List<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> Events
+                {
+                    get => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                }
+            }
+
+        }
+
+        public static class EventSender
+        {
+            public struct FirstEvent : IComponentData
+            {
+                internal uint handle;
+
+                public List<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> Events
+                {
+                    get => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                }
+            }
+
+            public struct SecondEvent : IComponentData
+            {
+                internal uint handle;
+
+                public List<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> Events
+                {
+                    get => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                }
+            }
+
+        }
+    }
 }

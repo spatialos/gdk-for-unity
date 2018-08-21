@@ -1,0 +1,12 @@
+package improbable.gdk.tests.alternate_schema_syntax;
+
+type RandomDataType {
+
+}
+
+component Connection
+{
+    id = 1105;
+    data RandomDataType;
+    event RandomDataType my_event;
+}

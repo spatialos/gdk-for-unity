@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             bool callbackInvoked = false;
             readerPublic.OnEvt += (ev => callbackInvoked = true);
-            readerWriterInternal.OnEvtEvent(new EvtEvent());
+            readerWriterInternal.OnEvtEvent(new Empty());
             Assert.IsTrue(callbackInvoked);
         }
 
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             });
             bool thirdCallbackInvoked = false;
             readerPublic.OnEvt += (ev => thirdCallbackInvoked = true);
-            readerWriterInternal.OnEvtEvent(new EvtEvent());
+            readerWriterInternal.OnEvtEvent(new Empty());
             LogAssert.Expect(LogType.Exception,
                 new Regex(".*Exception propagated from user event callback.*", RegexOptions.Singleline));
             Assert.IsTrue(firstCallbackInvoked);

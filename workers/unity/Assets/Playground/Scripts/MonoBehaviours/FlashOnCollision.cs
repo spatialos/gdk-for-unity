@@ -46,7 +46,7 @@ public class FlashOnCollision : MonoBehaviour
         }
     }
 
-    private void HandleCollisionEvent(PlayerCollidedEvent e)
+    private void HandleCollisionEvent(Empty empty)
     {
         collideTime = Time.time;
         flashing = true;

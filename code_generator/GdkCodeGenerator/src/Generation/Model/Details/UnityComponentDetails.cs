@@ -7,16 +7,15 @@ namespace Improbable.Gdk.CodeGenerator
         public string ComponentName;
         public string TypeName;
         public string CamelCaseTypeName;
-        public string FullyQualifiedSpatialTypeName;
+        public int ComponentId;
         public bool IsBlittable;
-
+        
         public UnityComponentDetails(UnityComponentDefinition componentDefinition)
         {
             ComponentName = Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);
             TypeName = "SpatialOS" + ComponentName;
             CamelCaseTypeName = "spatialOS" + ComponentName;
-            FullyQualifiedSpatialTypeName =
-                "global::" + Formatting.CapitaliseQualifiedNameParts(componentDefinition.QualifiedName);
+            ComponentId = componentDefinition.Id;
             IsBlittable = componentDefinition.IsBlittable;
         }
     }

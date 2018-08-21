@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Constructor_with_parameters_creates_option_with_payload_for_value_types()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
             Assert.AreEqual(true, (bool) option.HasValue);
             Assert.AreEqual(payload, option.Value);
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Constructor_with_parameters_creates_option_with_payload_for_reference_types()
         {
-            var payload = "";
+            const string payload = "";
             var option = new Option<string>(payload);
             Assert.AreEqual(true, (bool) option.HasValue);
             Assert.AreEqual(payload, option.Value);
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             Assert.Throws<CreatedOptionWithNullPayloadException>(() =>
             {
-                var emptyOption = new Option<string>(null);
+                var _ = new Option<string>(null);
             });
         }
 
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var option = new Option<bool>();
             Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
-                var value = option.Value;
+                var _ = option.Value;
             });
         }
 
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var option = new Option<string>();
             Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
-                var value = option.Value;
+                var _ = option.Value;
             });
         }
 
@@ -84,8 +84,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void TryGetValue_returns_false_when_option_empty()
         {
             var option = new Option<bool>();
-            bool value;
-            var result = option.TryGetValue(out value);
+            var result = option.TryGetValue(out var value);
             Assert.AreEqual(false, result);
             Assert.AreEqual(default(bool), value);
         }
@@ -93,10 +92,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void TryGetValue_returns_true_when_option_has_payload()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
-            bool value;
-            var result = option.TryGetValue(out value);
+            var result = option.TryGetValue(out var value);
             Assert.AreEqual(true, result);
             Assert.AreEqual(payload, value);
         }
@@ -105,7 +103,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void GetValueOrDefault_returns_default_value_when_option_empty()
         {
             var option = new Option<bool>();
-            var defaultValue = false;
+            const bool defaultValue = false;
             var value = option.GetValueOrDefault(defaultValue);
             Assert.AreEqual(defaultValue, value);
         }
@@ -113,9 +111,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void GetValueOrDefault_returns_payload_when_option_has_payload()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
-            var defaultValue = false;
+            const bool defaultValue = false;
             var value = option.GetValueOrDefault(defaultValue);
             Assert.AreEqual(payload, value);
         }
@@ -123,7 +121,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Equality_comparison_with_equal_option_returns_true()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
             Assert.AreEqual(true, option.Equals(new Option<bool>(payload)));
         }
@@ -139,29 +137,31 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Equality_comparison_with_option_with_different_generic_parameter_returns_false()
         {
             var option = new Option<bool>(true);
-            Assert.AreEqual(false, option.Equals(new Option<int>(1)));
+            Assert.AreNotEqual(option, new Option<int>(1));
         }
 
         [Test]
         public void Equality_operator_works()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(true, option == option);
+            Assert.AreEqual(true, option == new Option<bool>(payload));
+            Assert.AreEqual(true, option == payload);
         }
 
         [Test]
         public void Inequality_operator_works()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(false, option != option);
+            Assert.AreEqual(false, option != new Option<bool>(payload));
+            Assert.AreEqual(false, option != payload);
         }
 
         [Test]
         public void Implicit_conversion_to_option_type_works()
         {
-            var payload = true;
+            const bool payload = true;
             Option<bool> option = payload;
             Assert.AreEqual(payload, option.Value);
         }
@@ -169,7 +169,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Implicit_conversion_to_payload_type_works()
         {
-            var payload = true;
+            const bool payload = true;
             var option = new Option<bool>(payload);
             bool value = option;
             Assert.AreEqual(payload, value);
@@ -181,7 +181,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var option = new Option<bool>();
             Assert.Throws<CalledValueOnEmptyOptionException>(() =>
             {
-                bool value = option.Value;
+                var _ = option.Value;
             });
         }
     }

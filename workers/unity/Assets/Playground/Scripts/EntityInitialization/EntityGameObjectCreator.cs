@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,10 +18,9 @@ namespace Playground
         }
 
         public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,
-            Quaternion rotation, long spatialEntityId)
+            Quaternion rotation, EntityId spatialEntityId)
         {
-            GameObject prefab;
-            if (!cachedPrefabs.TryGetValue(prefabPath, out prefab))
+            if (!cachedPrefabs.TryGetValue(prefabPath, out var prefab))
             {
                 prefab = Resources.Load<GameObject>(prefabPath);
                 if (prefab == null)

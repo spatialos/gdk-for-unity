@@ -12,6 +12,7 @@ workers/unity/build/
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
 workers/unity/[Tt]emp/
+workers/unity/Logs/
 [Oo]bj/
 [Bb]in/
 workers/unity/ProjectSettings/UnityConnectSettings.asset
@@ -26,6 +27,7 @@ workers/unity/*.sln
 *.userprefs
 *.svd
 *.DotSettings.user
+_ReSharper.Caches
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
@@ -41,12 +43,6 @@ workers/unity/Assets/Generated/Source.meta
 workers/unity/Assets/Generated/Source/**/*.*
 !workers/unity/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
-
-workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated/**/*.cs
-workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated/**/*.meta
-
-# Include some example generated code so that changes to codegen templates are easier to track
-/workers/unity/Assets/Improbable.Generated.NetworkTypes/Generated/improbable/gdk/tests/*.cs
 
 code_generator/GdkCodeGenerator/Generated/
 

@@ -32,8 +32,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             event Action<long> LongFieldUpdated;
             event Action<float> FloatFieldUpdated;
             event Action<double> DoubleFieldUpdated;
-            event Action<FirstEventEvent> OnFirstEvent;
-            event Action<SecondEventEvent> OnSecondEvent;
+            event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> OnFirstEvent;
+            event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> OnSecondEvent;
         }
 
         [WriterInterface]
@@ -45,7 +45,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         }
 
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -124,50 +124,50 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
+            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>> firstEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>>();
 
-            public event Action<FirstEventEvent> OnFirstEvent
+            public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> OnFirstEvent
             {
                 add => firstEventDelegates.Add(value);
                 remove => firstEventDelegates.Remove(value);
             }
 
-            public void OnFirstEventEvent(FirstEventEvent payload)
+            public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
             {
                 DispatchEventWithErrorHandling(payload, firstEventDelegates);
             }
 
-            public void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
+            public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
             {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSBlittableComponent>>(Entity);
-                sender.SendFirstEventEvent(payload);
+                var sender = EntityManager.GetComponentData<EventSender.FirstEvent>(Entity);
+                sender.Events.Add(payload);
             }
 
-            private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
+            private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>> secondEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>>();
 
-            public event Action<SecondEventEvent> OnSecondEvent
+            public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> OnSecondEvent
             {
                 add => secondEventDelegates.Add(value);
                 remove => secondEventDelegates.Remove(value);
             }
 
-            public void OnSecondEventEvent(SecondEventEvent payload)
+            public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
             {
                 DispatchEventWithErrorHandling(payload, secondEventDelegates);
             }
 
-            public void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
+            public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
             {
-                var sender = EntityManager.GetComponentData<EventSender<SpatialOSBlittableComponent>>(Entity);
-                sender.SendSecondEventEvent(payload);
+                var sender = EntityManager.GetComponentData<EventSender.SecondEvent>(Entity);
+                sender.Events.Add(payload);
             }
 
-            public void OnFirstCommandCommandRequest(FirstCommand.Request request)
+            public void OnFirstCommandCommandRequest(FirstCommand.ReceivedRequest request)
             {
                 throw new System.NotImplementedException();
             }
 
-            public void OnSecondCommandCommandRequest(SecondCommand.Request request)
+            public void OnSecondCommandCommandRequest(SecondCommand.ReceivedRequest request)
             {
                 throw new System.NotImplementedException();
             }

@@ -1,18 +1,33 @@
 using System.Collections.Generic;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public static class ConnectionUtility
     {
-        public static Connection ConnectToSpatial(ReceptionistConfig config, string workerType, string workerId)
+        public static Connection Connect(ConnectionConfig config, string workerId)
+        {
+            switch (config)
+            {
+                case ReceptionistConfig receptionistConfig:
+                    return ConnectToSpatial(receptionistConfig, workerId);
+                case LocatorConfig locatorConfig:
+                    return LocatorConnectToSpatial(locatorConfig);
+            }
+
+            throw new InvalidConfigurationException($"Invalid connection config " +
+                $"was provided:\n '{config}' Only ReceptionistConfig and LocatorConfig are supported.");
+        }
+
+        public static Connection ConnectToSpatial(ReceptionistConfig config, string workerId)
         {
             config.Validate();
 
             Debug.Log("Attempting connection to SpatialOS...");
 
-            var parameters = CreateConnectionParameters(config, workerType);
+            var parameters = CreateConnectionParameters(config, config.WorkerType);
             using (var connectionFuture = Connection
                 .ConnectAsync(config.ReceptionistHost, config.ReceptionistPort,
                     workerId, parameters))
@@ -21,7 +36,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public static Connection LocatorConnectToSpatial(LocatorConfig config, string workerType)
+        public static Connection LocatorConnectToSpatial(LocatorConfig config)
         {
             config.Validate();
 
@@ -33,7 +48,7 @@ namespace Improbable.Gdk.Core
                 Debug.Log("Successfully obtained deployment name!");
 
                 Debug.Log("Attempting connection to SpatialOS with Locator...");
-                var parameters = CreateConnectionParameters(config, workerType);
+                var parameters = CreateConnectionParameters(config, config.WorkerType);
                 using (var connectionFuture = locator
                     .ConnectAsync(deploymentName, parameters, status => true))
                 {
@@ -64,7 +79,8 @@ namespace Improbable.Gdk.Core
                     ConnectionType = config.LinkProtocol,
                     UseExternalIp = config.UseExternalIp,
                 },
-                EnableProtocolLoggingAtStartup = config.EnableProtocolLoggingAtStartup
+                EnableProtocolLoggingAtStartup = config.EnableProtocolLoggingAtStartup,
+                DefaultComponentVtable = new PassthroughComponentVtable()
             };
             return connectionParameters;
         }
@@ -73,7 +89,7 @@ namespace Improbable.Gdk.Core
         {
             var connection = connectionFuture.Get(RuntimeConfigDefaults.ConnectionTimeout);
 
-            if (!connection.HasValue || !connection.Value.IsConnected)
+            if (connection == null)
             {
                 throw new ConnectionFailedException("Failed to connect to SpatialOS.",
                     ConnectionErrorReason.CannotEstablishConnection);
@@ -81,7 +97,7 @@ namespace Improbable.Gdk.Core
 
             Debug.Log("Successfully connected to SpatialOS!");
 
-            return connection.Value;
+            return connection;
         }
 
         private static string GetDeploymentName(Locator locator)
@@ -90,26 +106,20 @@ namespace Improbable.Gdk.Core
             {
                 var deployments = deploymentsFuture.Get(RuntimeConfigDefaults.ConnectionTimeout);
 
-                if (!deployments.HasValue)
-                {
-                    throw new ConnectionFailedException("Failed to retrieve deployment.",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                if (deployments.Value.Error != null)
+                if (deployments.Error != null)
                 {
                     throw new ConnectionFailedException(
-                        $"Failed to obtain deployment name with error: {deployments.Value.Error}.",
+                        $"Failed to obtain deployment list with error: {deployments.Error}.",
                         ConnectionErrorReason.DeploymentNotFound);
                 }
 
-                if (deployments.Value.Deployments.Count == 0)
+                if (deployments.Deployments.Count == 0)
                 {
                     throw new ConnectionFailedException("Received an empty list of deployments.",
                         ConnectionErrorReason.DeploymentNotFound);
                 }
 
-                return deployments.Value.Deployments[0].DeploymentName;
+                return deployments.Deployments[0].DeploymentName;
             }
         }
 

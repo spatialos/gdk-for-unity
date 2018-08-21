@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             GenerateComponentGroups();
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
-            logger = WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher;
+            logger = Worker.GetWorkerFromWorld(World).LogDispatcher;
             injector = new RequiredFieldInjector(entityManager, logger);
         }
 

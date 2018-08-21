@@ -12,18 +12,19 @@ namespace Generated.Improbable.Gdk.Tests
     {
         public global::Generated.Improbable.Gdk.Tests.TypeName.Other OtherType;
     
-        public static TypeName ToNative(global::Improbable.Gdk.Tests.TypeName spatialType)
+        public static class Serialization
         {
-            var nativeType = new TypeName();
-            nativeType.OtherType = global::Generated.Improbable.Gdk.Tests.TypeName.Other.ToNative(spatialType.otherType);
-            return nativeType;
-        }
+            public static void Serialize(TypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                global::Generated.Improbable.Gdk.Tests.TypeName.Other.Serialization.Serialize(instance.OtherType, obj.AddObject(1));
+            }
     
-        public static global::Improbable.Gdk.Tests.TypeName ToSpatial(global::Generated.Improbable.Gdk.Tests.TypeName nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.TypeName();
-            spatialType.otherType = global::Generated.Improbable.Gdk.Tests.TypeName.Other.ToSpatial(nativeType.OtherType);
-            return spatialType;
+            public static TypeName Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new TypeName();
+                instance.OtherType = global::Generated.Improbable.Gdk.Tests.TypeName.Other.Serialization.Deserialize(obj.GetObject(1));
+                return instance;
+            }
         }
     
         
@@ -31,18 +32,19 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName SameName;
         
-            public static Other ToNative(global::Improbable.Gdk.Tests.TypeName.Other spatialType)
+            public static class Serialization
             {
-                var nativeType = new Other();
-                nativeType.SameName = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.ToNative(spatialType.sameName);
-                return nativeType;
-            }
+                public static void Serialize(Other instance, global::Improbable.Worker.Core.SchemaObject obj)
+                {
+                    global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Serialize(instance.SameName, obj.AddObject(1));
+                }
         
-            public static global::Improbable.Gdk.Tests.TypeName.Other ToSpatial(global::Generated.Improbable.Gdk.Tests.TypeName.Other nativeType)
-            {
-                var spatialType = new global::Improbable.Gdk.Tests.TypeName.Other();
-                spatialType.sameName = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.ToSpatial(nativeType.SameName);
-                return spatialType;
+                public static Other Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                {
+                    var instance = new Other();
+                    instance.SameName = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Deserialize(obj.GetObject(1));
+                    return instance;
+                }
             }
         
             
@@ -51,20 +53,21 @@ namespace Generated.Improbable.Gdk.Tests
                 public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 OtherZero;
                 public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum EnumField;
             
-                public static NestedTypeName ToNative(global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName spatialType)
+                public static class Serialization
                 {
-                    var nativeType = new NestedTypeName();
-                    nativeType.OtherZero = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.ToNative(spatialType.otherZero);
-                    nativeType.EnumField = (global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum) spatialType.enumField;
-                    return nativeType;
-                }
+                    public static void Serialize(NestedTypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
+                    {
+                        global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Serialize(instance.OtherZero, obj.AddObject(1));
+                        obj.AddEnum(2, (uint) instance.EnumField);
+                    }
             
-                public static global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName ToSpatial(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName nativeType)
-                {
-                    var spatialType = new global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName();
-                    spatialType.otherZero = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.ToSpatial(nativeType.OtherZero);
-                    spatialType.enumField = (global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum) nativeType.EnumField;
-                    return spatialType;
+                    public static NestedTypeName Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                    {
+                        var instance = new NestedTypeName();
+                        instance.OtherZero = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Deserialize(obj.GetObject(1));
+                        instance.EnumField = (global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum) obj.GetEnum(2);
+                        return instance;
+                    }
                 }
             
                 
@@ -72,18 +75,19 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     public int Foo;
                 
-                    public static Other0 ToNative(global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 spatialType)
+                    public static class Serialization
                     {
-                        var nativeType = new Other0();
-                        nativeType.Foo = spatialType.foo;
-                        return nativeType;
-                    }
+                        public static void Serialize(Other0 instance, global::Improbable.Worker.Core.SchemaObject obj)
+                        {
+                            obj.AddInt32(1, instance.Foo);
+                        }
                 
-                    public static global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 ToSpatial(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 nativeType)
-                    {
-                        var spatialType = new global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0();
-                        spatialType.foo = nativeType.Foo;
-                        return spatialType;
+                        public static Other0 Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                        {
+                            var instance = new Other0();
+                            instance.Foo = obj.GetInt32(1);
+                            return instance;
+                        }
                     }
                 }
                 
