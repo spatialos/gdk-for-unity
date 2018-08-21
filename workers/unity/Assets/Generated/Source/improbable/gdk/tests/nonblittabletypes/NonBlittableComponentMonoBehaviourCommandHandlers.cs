@@ -13,6 +13,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public partial class Requirables
         {
+            [InjectableId(InjectableType.CommandSender, 1002)]
             internal class CommandSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -31,6 +32,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
+            [InjectableId(InjectableType.CommandRequestHandler, 1002)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -49,6 +51,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
+            [InjectableId(InjectableType.CommandResponseHandler, 1002)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)

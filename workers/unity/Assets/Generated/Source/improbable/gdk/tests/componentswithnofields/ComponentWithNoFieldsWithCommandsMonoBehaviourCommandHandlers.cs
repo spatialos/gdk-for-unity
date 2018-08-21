@@ -13,6 +13,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Requirables
         {
+            [InjectableId(InjectableType.CommandSender, 1005)]
             internal class CommandSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -31,6 +32,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
+            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -49,6 +51,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
+            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
