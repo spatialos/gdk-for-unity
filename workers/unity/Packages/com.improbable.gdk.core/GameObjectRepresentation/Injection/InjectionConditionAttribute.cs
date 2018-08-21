@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     internal enum InjectionCondition
     {
         RequireNothing,
-        RequireComponentToRead,
+        RequireComponentPresent,
         RequireComponentWithAuthority
     }
 

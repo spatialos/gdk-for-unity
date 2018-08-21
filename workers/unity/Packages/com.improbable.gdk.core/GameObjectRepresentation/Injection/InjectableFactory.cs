@@ -12,9 +12,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     public class InjectableFactory
     {
         private const string InjectableIdAttributeNotFoundError
-            = "ReaderWriterCreator found with no Injectable ID attribute.";
-        private const string NoReaderWriterCreatorFoundForComponentIdError
-            = "No ReaderWriterCreator found for given ComponentId.";
+            = "InjectableCreator found with no Injectable ID attribute.";
+        private const string NoReaderWriterCreatorFoundForInjectableIdError
+            = "No InjectableCreator found for given InjectableId.";
 
         private readonly EntityManager entityManager;
         private readonly ILogDispatcher logger;
@@ -48,8 +48,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var injectableId = injectableIdAttribute.Id;
-                var readerWriterCreator = (IInjectableCreator) Activator.CreateInstance(creatorType);
-                injectableIdToReaderWriterCreator[injectableId] = readerWriterCreator;
+                var IInjectableCreator = (IInjectableCreator) Activator.CreateInstance(creatorType);
+                injectableIdToReaderWriterCreator[injectableId] = IInjectableCreator;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (!injectableIdToReaderWriterCreator.ContainsKey(injectableId))
             {
-                logger.HandleLog(LogType.Error, new LogEvent(NoReaderWriterCreatorFoundForComponentIdError)
+                logger.HandleLog(LogType.Error, new LogEvent(NoReaderWriterCreatorFoundForInjectableIdError)
                     .WithField(LoggingUtils.LoggerName, GetType())
                     .WithField("ComponentId", injectableId));
                 return null;

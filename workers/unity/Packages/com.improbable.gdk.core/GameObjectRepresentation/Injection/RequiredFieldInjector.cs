@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>>();
-        private readonly Dictionary<Type, List<uint>> componentReadRequirementsForBehaviours =
+        private readonly Dictionary<Type, List<uint>> componentPresentRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
         private readonly Dictionary<Type, List<uint>> componentAuthRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public List<uint> GetComponentPresenceRequirements(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return componentReadRequirementsForBehaviours[behaviourType];
+            return componentPresentRequirementsForBehaviours[behaviourType];
         }
 
         public List<uint> GetComponentAuthorityRequirements(Type behaviourType)
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var fieldInfos = GetFieldsWithRequireAttribute(behaviourType);
             var injectableIdsToFieldInfos = new Dictionary<InjectableId, List<FieldInfo>>();
-            var componentsRequiredToRead = new HashSet<uint>();
+            var componentsRequiredPresent = new HashSet<uint>();
             var componentsRequiredWithAuthority = new HashSet<uint>();
             foreach (var field in fieldInfos)
             {
@@ -147,8 +147,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 switch (conditionAttribute.condition)
                 {
-                    case InjectionCondition.RequireComponentToRead:
-                        componentsRequiredToRead.Add(injectableId.componentId);
+                    case InjectionCondition.RequireComponentPresent:
+                        componentsRequiredPresent.Add(injectableId.componentId);
                         break;
                     case InjectionCondition.RequireComponentWithAuthority:
                         componentsRequiredWithAuthority.Add(injectableId.componentId);
@@ -162,10 +162,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             // Only store stronger requirement
             foreach (var authorityRequirement in componentsRequiredWithAuthority)
             {
-                componentsRequiredToRead.Remove(authorityRequirement);
+                componentsRequiredPresent.Remove(authorityRequirement);
             }
 
-            componentReadRequirementsForBehaviours[behaviourType] = componentsRequiredToRead.ToList();
+            componentPresentRequirementsForBehaviours[behaviourType] = componentsRequiredPresent.ToList();
             componentAuthRequirementsForBehaviours[behaviourType] = componentsRequiredWithAuthority.ToList();
         }
 

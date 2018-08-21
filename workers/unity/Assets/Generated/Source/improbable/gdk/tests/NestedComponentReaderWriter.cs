@@ -26,11 +26,11 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
             {
                 event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]

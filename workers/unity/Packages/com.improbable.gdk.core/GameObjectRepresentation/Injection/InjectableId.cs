@@ -21,13 +21,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         public readonly InjectableType type;
         public readonly uint componentId;
-        public readonly int index;
 
-        public InjectableId(InjectableType type, uint componentId, int index = -1)
+        public InjectableId(InjectableType type, uint componentId)
         {
             this.type = type;
             this.componentId = componentId;
-            this.index = index;
         }
     }
 }

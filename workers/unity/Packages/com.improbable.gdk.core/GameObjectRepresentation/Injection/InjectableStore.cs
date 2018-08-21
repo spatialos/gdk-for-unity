@@ -10,24 +10,24 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// </summary>
     internal class InjectableStore
     {
-        private readonly Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>> behaviourToInjectables
+        private readonly Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>> injectablesForBehaviours
             = new Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>>();
 
-        private readonly Dictionary<InjectableId, HashSet<IInjectable>> injectablesFromId =
+        private readonly Dictionary<InjectableId, HashSet<IInjectable>> injectablesForIds =
             new Dictionary<InjectableId, HashSet<IInjectable>>();
 
         public void AddInjectablesForBehaviour(MonoBehaviour behaviour,
             Dictionary<InjectableId, IInjectable[]> incomingInjectableArraysFromIds)
         {
-            behaviourToInjectables.Add(behaviour, incomingInjectableArraysFromIds);
+            injectablesForBehaviours.Add(behaviour, incomingInjectableArraysFromIds);
             foreach (var idToIncomingInjectables in incomingInjectableArraysFromIds)
             {
                 var id = idToIncomingInjectables.Key;
                 var incomingInjectables = idToIncomingInjectables.Value;
-                if (!injectablesFromId.TryGetValue(id, out var allInjectablesForId))
+                if (!injectablesForIds.TryGetValue(id, out var allInjectablesForId))
                 {
                     allInjectablesForId = new HashSet<IInjectable>();
-                    injectablesFromId.Add(id, allInjectablesForId);
+                    injectablesForIds.Add(id, allInjectablesForId);
                 }
 
                 foreach (var injectable in incomingInjectables)
@@ -39,23 +39,23 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void RemoveInjectablesForBehaviour(MonoBehaviour behaviour)
         {
-            foreach (var idToInjectableArray in behaviourToInjectables[behaviour])
+            foreach (var idToInjectableArray in injectablesForBehaviours[behaviour])
             {
                 var id = idToInjectableArray.Key;
                 var injectables = idToInjectableArray.Value;
-                var allInjectablesForId = injectablesFromId[id];
+                var allInjectablesForId = injectablesForIds[id];
                 foreach (var injectable in injectables)
                 {
                     allInjectablesForId.Remove(injectable);
                 }
             }
 
-            behaviourToInjectables.Remove(behaviour);
+            injectablesForBehaviours.Remove(behaviour);
         }
 
         public bool TryGetInjectablesForComponent(InjectableId injectableId, out HashSet<IInjectable> injectables)
         {
-            return injectablesFromId.TryGetValue(injectableId, out injectables);
+            return injectablesForIds.TryGetValue(injectableId, out injectables);
         }
     }
 }

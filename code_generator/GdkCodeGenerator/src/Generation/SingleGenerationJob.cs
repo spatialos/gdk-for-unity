@@ -49,6 +49,18 @@ namespace Improbable.Gdk.CodeGenerator
 
                 fileName = Path.ChangeExtension(unityComponentDefinition.Name + "Translation", fileExtension);
                 OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                fileName = Path.ChangeExtension(unityComponentDefinition.Name + "GameObjectComponentDispatcher", fileExtension);
+                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                fileName = Path.ChangeExtension(unityComponentDefinition.Name + "ReaderWriter", fileExtension);
+                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+
+                if (unityComponentDefinition.CommandDefinitions.Count > 0)
+                {
+                    fileName = Path.ChangeExtension(unityComponentDefinition.Name + "MonoBehaviourCommandHandlers", fileExtension);
+                    OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                }
             }
 
             enumsToGenerate = new List<EnumDefinitionRaw>();

@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1002)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>
             {
                 event Action<BlittableBool> BoolFieldUpdated;
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 event Action<global::System.Collections.Generic.Dictionary<int, string>> MapFieldUpdated;
                 event Action<FirstEventEvent> OnFirstEvent;
                 event Action<SecondEventEvent> OnSecondEvent;
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, 1002)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]

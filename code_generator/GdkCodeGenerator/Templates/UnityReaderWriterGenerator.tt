@@ -33,7 +33,7 @@ namespace <#= qualifiedNamespace #>
             }
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
@@ -44,7 +44,7 @@ namespace <#= qualifiedNamespace #>
 #>
                 event Action<<#= eventType #>> On<#= eventDetails.EventName #>;
 <# } #>
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]

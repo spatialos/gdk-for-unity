@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1001)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>
             {
                 event Action<BlittableBool> BoolFieldUpdated;
@@ -36,7 +36,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 event Action<double> DoubleFieldUpdated;
                 event Action<FirstEventEvent> OnFirstEvent;
                 event Action<SecondEventEvent> OnSecondEvent;
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, 1001)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]

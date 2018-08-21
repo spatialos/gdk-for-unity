@@ -72,7 +72,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     }
 
                     numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
-                    
+
                     behaviour.enabled = false;
                 }
             }
@@ -97,8 +97,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var behaviour in behavioursToEnable)
             {
-                var injectablesFromIds = injector.InjectAllRequiredFields(behaviour, entity);
-                store.AddInjectablesForBehaviour(behaviour, injectablesFromIds);
+                var injectedInjectables = injector.InjectAllRequiredFields(behaviour, entity);
+                store.AddInjectablesForBehaviour(behaviour, injectedInjectables);
             }
 
             foreach (var behaviour in behavioursToEnable)

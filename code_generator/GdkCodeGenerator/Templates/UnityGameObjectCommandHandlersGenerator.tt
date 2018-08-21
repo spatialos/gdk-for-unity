@@ -4,8 +4,6 @@
 <#
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var componentDetails = GetComponentDetails();
-    var fieldDetailsList = GetFieldDetailsList();
-    var eventDetailsList = GetEventDetailsList();
     var commandDetailsList = GetCommandDetailsList();
 #>
 <#= generatedHeader #>

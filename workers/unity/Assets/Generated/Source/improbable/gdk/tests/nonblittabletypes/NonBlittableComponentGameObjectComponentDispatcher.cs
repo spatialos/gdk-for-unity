@@ -47,7 +47,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             };
 
             private const uint componentId = 1002;
-            private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -98,7 +98,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -109,24 +109,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSNonBlittableComponent.Update>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
                     }
 
                     var updateList = updateLists[i];
-                    foreach (Requirables.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var update in updateList.Buffer)
                         {
-                            reader.OnComponentUpdate(update);
+                            readerWriter.OnComponentUpdate(update);
                         }
                     }
                 }
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
+            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
@@ -134,19 +134,19 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
+                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                         {
                             continue;
                         }
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl reader in readers)
+                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Buffer)
                             {
-                                reader.OnFirstEventEvent(e);
+                                readerWriter.OnFirstEventEvent(e);
                             }
                         }
                     }
@@ -157,32 +157,32 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
+                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                         {
                             continue;
                         }
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl reader in readers)
+                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Buffer)
                             {
-                                reader.OnSecondEventEvent(e);
+                                readerWriter.OnSecondEventEvent(e);
                             }
                         }
                     }
                 }
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 // TODO UTY-961 Command Req handlers
                 // TODO UTY-961 Command Req handlers
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
+            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
                 if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -193,18 +193,18 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSNonBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var injectableStore = entityIdToInjectableStore[entities[i].Index];
-                    if (!injectableStore.TryGetInjectablesForComponent(reaederWriterInjectableId, out var readers))
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
                     }
 
                     var authChanges = authChangeLists[i];
-                    foreach (Requirables.ReaderWriterImpl reader in readers)
+                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var auth in authChanges.Buffer)
                         {
-                            reader.OnAuthorityChange(auth);
+                            readerWriter.OnAuthorityChange(auth);
                         }
                     }
                 }

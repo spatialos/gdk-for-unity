@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>
             {
                 event Action<global::System.Nullable<float>> Field2Updated;
@@ -43,7 +43,7 @@ namespace Generated.Improbable.Gdk.Tests
                 event Action<global::System.Nullable<long>> Field15Updated;
                 event Action<global::System.Nullable<long>> Field16Updated;
                 event Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]

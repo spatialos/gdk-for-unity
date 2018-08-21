@@ -26,11 +26,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1004)]
-            [InjectionCondition(InjectionCondition.RequireComponentToRead)]
+            [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>
             {
                 event Action<EvtEvent> OnEvt;
-        }
+            }
 
             [InjectableId(InjectableType.ReaderWriter, 1004)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
