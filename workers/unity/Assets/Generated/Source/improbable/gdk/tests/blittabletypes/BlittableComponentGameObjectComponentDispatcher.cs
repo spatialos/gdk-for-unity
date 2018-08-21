@@ -26,24 +26,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<SpatialOSBlittableComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<FirstEventEvent>>(), ComponentType.ReadOnly<GameObjectReference>() },
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<SecondEventEvent>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<FirstCommand.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<SecondCommand.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.FirstCommand>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.SecondCommand>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             private const uint componentId = 1001;
@@ -86,14 +86,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSBlittableComponent.Update>>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<SpatialOSBlittableComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -118,7 +118,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var updateList = updateLists[i];
                     foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
-                        foreach (var update in updateList.Buffer)
+                        foreach (var update in updateList.Updates)
                         {
                             readerWriter.OnComponentUpdate(update);
                         }
@@ -131,7 +131,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
+                    var eventLists = EventsReceivedComponentGroups[0].GetComponentDataArray<ReceivedEvents.FirstEvent>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -144,7 +144,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 readerWriter.OnFirstEventEvent(e);
                             }
@@ -154,7 +154,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!EventsReceivedComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[1].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
+                    var eventLists = EventsReceivedComponentGroups[1].GetComponentDataArray<ReceivedEvents.SecondEvent>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -167,7 +167,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 readerWriter.OnSecondEventEvent(e);
                             }
@@ -190,7 +190,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -202,7 +202,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var authChanges = authChangeLists[i];
                     foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             readerWriter.OnAuthorityChange(auth);
                         }

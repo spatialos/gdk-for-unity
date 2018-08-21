@@ -31,6 +31,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 event Action<BlittableBool> Field1Updated;
                 event Action<float> Field2Updated;
+                event Action<byte[]> Field3Updated;
                 event Action<int> Field4Updated;
                 event Action<long> Field5Updated;
                 event Action<double> Field6Updated;
@@ -43,7 +44,7 @@ namespace Generated.Improbable.Gdk.Tests
                 event Action<ulong> Field13Updated;
                 event Action<int> Field14Updated;
                 event Action<long> Field15Updated;
-                event Action<long> Field16Updated;
+                event Action<global::Improbable.Worker.EntityId> Field16Updated;
                 event Action<global::Generated.Improbable.Gdk.Tests.SomeType> Field17Updated;
             }
 
@@ -54,7 +55,7 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
             internal class ReaderWriterImpl :
-                NonBlittableReaderWriterBase<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>, Reader, Writer
+                ReaderWriterBase<SpatialOSExhaustiveSingular, SpatialOSExhaustiveSingular.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -75,6 +76,14 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add => field2Delegates.Add(value);
                     remove => field2Delegates.Remove(value);
+                }
+
+                private readonly List<Action<byte[]>> field3Delegates = new List<Action<byte[]>>();
+
+                public event Action<byte[]> Field3Updated
+                {
+                    add => field3Delegates.Add(value);
+                    remove => field3Delegates.Remove(value);
                 }
 
                 private readonly List<Action<int>> field4Delegates = new List<Action<int>>();
@@ -173,9 +182,9 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => field15Delegates.Remove(value);
                 }
 
-                private readonly List<Action<long>> field16Delegates = new List<Action<long>>();
+                private readonly List<Action<global::Improbable.Worker.EntityId>> field16Delegates = new List<Action<global::Improbable.Worker.EntityId>>();
 
-                public event Action<long> Field16Updated
+                public event Action<global::Improbable.Worker.EntityId> Field16Updated
                 {
                     add => field16Delegates.Add(value);
                     remove => field16Delegates.Remove(value);
@@ -193,6 +202,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
+                    DispatchWithErrorHandling(update.Field3, field3Delegates);
                     DispatchWithErrorHandling(update.Field4, field4Delegates);
                     DispatchWithErrorHandling(update.Field5, field5Delegates);
                     DispatchWithErrorHandling(update.Field6, field6Delegates);
@@ -208,7 +218,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
-                protected override void ApplyUpdate(SpatialOSExhaustiveSingular.Update update, SpatialOSExhaustiveSingular data)
+                protected override void ApplyUpdate(SpatialOSExhaustiveSingular.Update update, ref SpatialOSExhaustiveSingular data)
                 {
                     if (update.Field1.HasValue)
                     {
@@ -217,6 +227,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (update.Field2.HasValue)
                     {
                         data.Field2 = update.Field2.Value;
+                    }
+                    if (update.Field3.HasValue)
+                    {
+                        data.Field3 = update.Field3.Value;
                     }
                     if (update.Field4.HasValue)
                     {

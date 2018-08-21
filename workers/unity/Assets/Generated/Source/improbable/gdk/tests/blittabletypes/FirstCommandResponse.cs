@@ -12,18 +12,19 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public BlittableBool Response;
     
-        public static FirstCommandResponse ToNative(global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse spatialType)
+        public static class Serialization
         {
-            var nativeType = new FirstCommandResponse();
-            nativeType.Response = spatialType.response;
-            return nativeType;
-        }
+            public static void Serialize(FirstCommandResponse instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                obj.AddBool(1, instance.Response);
+            }
     
-        public static global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse ToSpatial(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse();
-            spatialType.response = nativeType.Response;
-            return spatialType;
+            public static FirstCommandResponse Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new FirstCommandResponse();
+                instance.Response = obj.GetBool(1);
+                return instance;
+            }
         }
     }
     

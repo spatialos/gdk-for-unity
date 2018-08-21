@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSComponentWithNoFields>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSComponentWithNoFields>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
@@ -81,14 +81,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFields>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -113,7 +113,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFields>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFields>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -125,7 +125,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var authChanges = authChangeLists[i];
                     foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             readerWriter.OnAuthorityChange(auth);
                         }

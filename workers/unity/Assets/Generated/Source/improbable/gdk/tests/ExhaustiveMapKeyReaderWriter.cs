@@ -29,7 +29,9 @@ namespace Generated.Improbable.Gdk.Tests
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<SpatialOSExhaustiveMapKey, SpatialOSExhaustiveMapKey.Update>
             {
+                event Action<global::System.Collections.Generic.Dictionary<BlittableBool, string>> Field1Updated;
                 event Action<global::System.Collections.Generic.Dictionary<float, string>> Field2Updated;
+                event Action<global::System.Collections.Generic.Dictionary<byte[], string>> Field3Updated;
                 event Action<global::System.Collections.Generic.Dictionary<int, string>> Field4Updated;
                 event Action<global::System.Collections.Generic.Dictionary<long, string>> Field5Updated;
                 event Action<global::System.Collections.Generic.Dictionary<double, string>> Field6Updated;
@@ -42,7 +44,7 @@ namespace Generated.Improbable.Gdk.Tests
                 event Action<global::System.Collections.Generic.Dictionary<ulong, string>> Field13Updated;
                 event Action<global::System.Collections.Generic.Dictionary<int, string>> Field14Updated;
                 event Action<global::System.Collections.Generic.Dictionary<long, string>> Field15Updated;
-                event Action<global::System.Collections.Generic.Dictionary<long, string>> Field16Updated;
+                event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>> Field16Updated;
                 event Action<global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string>> Field17Updated;
             }
 
@@ -53,11 +55,19 @@ namespace Generated.Improbable.Gdk.Tests
             }
 
             internal class ReaderWriterImpl :
-                NonBlittableReaderWriterBase<SpatialOSExhaustiveMapKey, SpatialOSExhaustiveMapKey.Update>, Reader, Writer
+                ReaderWriterBase<SpatialOSExhaustiveMapKey, SpatialOSExhaustiveMapKey.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
+                }
+
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<BlittableBool, string>>> field1Delegates = new List<Action<global::System.Collections.Generic.Dictionary<BlittableBool, string>>>();
+
+                public event Action<global::System.Collections.Generic.Dictionary<BlittableBool, string>> Field1Updated
+                {
+                    add => field1Delegates.Add(value);
+                    remove => field1Delegates.Remove(value);
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.Dictionary<float, string>>> field2Delegates = new List<Action<global::System.Collections.Generic.Dictionary<float, string>>>();
@@ -66,6 +76,14 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add => field2Delegates.Add(value);
                     remove => field2Delegates.Remove(value);
+                }
+
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<byte[], string>>> field3Delegates = new List<Action<global::System.Collections.Generic.Dictionary<byte[], string>>>();
+
+                public event Action<global::System.Collections.Generic.Dictionary<byte[], string>> Field3Updated
+                {
+                    add => field3Delegates.Add(value);
+                    remove => field3Delegates.Remove(value);
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.Dictionary<int, string>>> field4Delegates = new List<Action<global::System.Collections.Generic.Dictionary<int, string>>>();
@@ -164,9 +182,9 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => field15Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<long, string>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<long, string>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<long, string>> Field16Updated
+                public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>> Field16Updated
                 {
                     add => field16Delegates.Add(value);
                     remove => field16Delegates.Remove(value);
@@ -182,7 +200,9 @@ namespace Generated.Improbable.Gdk.Tests
 
                 protected override void TriggerFieldCallbacks(SpatialOSExhaustiveMapKey.Update update)
                 {
+                    DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
+                    DispatchWithErrorHandling(update.Field3, field3Delegates);
                     DispatchWithErrorHandling(update.Field4, field4Delegates);
                     DispatchWithErrorHandling(update.Field5, field5Delegates);
                     DispatchWithErrorHandling(update.Field6, field6Delegates);
@@ -198,11 +218,19 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
-                protected override void ApplyUpdate(SpatialOSExhaustiveMapKey.Update update, SpatialOSExhaustiveMapKey data)
+                protected override void ApplyUpdate(SpatialOSExhaustiveMapKey.Update update, ref SpatialOSExhaustiveMapKey data)
                 {
+                    if (update.Field1.HasValue)
+                    {
+                        data.Field1 = update.Field1.Value;
+                    }
                     if (update.Field2.HasValue)
                     {
                         data.Field2 = update.Field2.Value;
+                    }
+                    if (update.Field3.HasValue)
+                    {
+                        data.Field3 = update.Field3.Value;
                     }
                     if (update.Field4.HasValue)
                     {

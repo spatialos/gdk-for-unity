@@ -1,5 +1,6 @@
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
@@ -7,25 +8,29 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatRequestSystem : ComponentSystem
     {
-        public struct Data
+        private struct HeartbeatData
         {
             public readonly int Length;
 
-            public ComponentArray<CommandRequests<PlayerHeartbeatClient.PlayerHeartbeat.Request>>
-                PlayerHeartbeatRequests;
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>
+                HeartbeatRequests;
+
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>
+                HeartbeatResponders;
         }
 
-        [Inject] private Data data;
+        [Inject] private HeartbeatData heartbeatData;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            for (var i = 0; i < heartbeatData.Length; i++)
             {
-                var requests = data.PlayerHeartbeatRequests[i].Buffer;
+                var requests = heartbeatData.HeartbeatRequests[i].Requests;
+                var responder = heartbeatData.HeartbeatResponders[i].ResponsesToSend;
 
                 foreach (var request in requests)
                 {
-                    request.SendPlayerHeartbeatResponse(new Empty());
+                    responder.Add(PlayerHeartbeatClient.PlayerHeartbeat.Response.CreateResponse(request, new Empty()));
                 }
             }
         }

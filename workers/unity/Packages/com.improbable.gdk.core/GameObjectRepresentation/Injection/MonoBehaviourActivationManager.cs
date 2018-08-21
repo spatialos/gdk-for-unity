@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
@@ -14,7 +15,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     internal class MonoBehaviourActivationManager
     {
         private readonly Entity entity;
-        private readonly long spatialId;
+        private readonly EntityId spatialId;
 
         private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsPresent
             = new Dictionary<uint, HashSet<MonoBehaviour>>();

@@ -29,7 +29,6 @@
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
     <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
-    <T4Files Include="Templates\UnityComponentGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
     <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />
@@ -38,6 +37,10 @@
     <T4Files Include="Templates\UnityReaderWriterGenerator.tt" />
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
+    <T4Files Include="Templates\UnityReferenceTypeProviderGenerator.tt" />
+    <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
+    <T4Files Include="Templates\UnityCommandComponentsGenerator.tt" />
+    <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />

@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
 
 namespace Playground
 {
@@ -15,66 +12,43 @@ namespace Playground
     {
         public GameObject Level;
 
-        private const int TargetFrameRate = -1; // Turns off VSync
+        [SerializeField] private int targetFrameRate = 60;
 
-        public const string LoggerName = "Bootstrap";
-
-        private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
-
-        private static ConnectionConfig connectionConfig;
+        private static readonly List<Worker> Workers = new List<Worker>();
 
         public void Awake()
         {
-            InitializeWorkerTypes();
             // Taken from DefaultWorldInitalization.cs
             SetupInjectionHooks(); // Register hybrid injection hooks
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
-            Application.targetFrameRate = TargetFrameRate;
+            Application.targetFrameRate = targetFrameRate;
+            Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
+            Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
+
+            // Setup template to use for player on connecting client
+            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
+
             if (Application.isEditor)
             {
-#if UNITY_EDITOR
-                var workerConfigurations =
-                    AssetDatabase.LoadAssetAtPath<ScriptableWorkerConfiguration>(ScriptableWorkerConfiguration
-                        .AssetPath);
-                foreach (var workerConfig in workerConfigurations.WorkerConfigurations)
+                var config = new ReceptionistConfig
                 {
-                    if (!workerConfig.IsEnabled)
-                    {
-                        continue;
-                    }
-
-                    var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
-                        workerConfig.Origin);
-                    Workers.Add(worker);
-                }
-
-                connectionConfig = new ReceptionistConfig();
-                connectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
-#endif
+                    WorkerType = SystemConfig.UnityGameLogic,
+                };
+                CreateWorker(config, new Vector3(500, 0, 0));
+                config = new ReceptionistConfig
+                {
+                    WorkerType = SystemConfig.UnityClient,
+                };
+                CreateWorker(config, Vector3.zero);
             }
             else
             {
-                var commandLineArguments = System.Environment.GetCommandLineArgs();
+                var commandLineArguments = Environment.GetCommandLineArgs();
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-                var workerType =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerType,
-                        string.Empty);
-                var workerId =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerId,
-                        string.Empty);
-
-                // because the launcher does not pass in the worker type as an argument
-                var worker = workerType.Equals(string.Empty)
-                    ? WorkerRegistry.CreateWorker<UnityClient>(
-                        workerId: null, // The worker id for the UnityClient will be auto-generated.
-                        origin: new Vector3(0, 0, 0))
-                    : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
-
-                Workers.Add(worker);
-
-                connectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                var config = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                CreateWorker(config, Vector3.zero);
             }
 
             if (World.AllWorlds.Count <= 0)
@@ -90,41 +64,18 @@ namespace Playground
             World.Active = worlds[0];
         }
 
-        public void Start()
-        {
-            foreach (var worker in Workers)
-            {
-                LoadLevel(worker);
-
-                try
-                {
-                    worker.Connect(connectionConfig);
-                }
-                catch (ConnectionFailedException exception)
-                {
-                    worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("Reason", exception.Reason));
-                }
-            }
-        }
-
-        public static void InitializeWorkerTypes()
-        {
-            WorkerRegistry.RegisterWorkerType<UnityClient>();
-            WorkerRegistry.RegisterWorkerType<UnityGameLogic>();
-        }
-
         public static void SetupInjectionHooks()
         {
+            var hybridAssembly = typeof(GameObjectEntity).Assembly;
+
             // Reflection to get internal hook classes. Doesn't seem to be a proper way to do this.
             var gameObjectArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType("Unity.Entities.GameObjectArrayInjectionHook");
+                hybridAssembly.GetType("Unity.Entities.GameObjectArrayInjectionHook");
             var transformAccessArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType(
+                hybridAssembly.GetType(
                     "Unity.Entities.TransformAccessArrayInjectionHook");
             var componentArrayInjectionHookType =
-                typeof(Unity.Entities.GameObjectEntity).Assembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
+                hybridAssembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
 
             InjectionHookSupport.RegisterHook(
                 (InjectionHook) Activator.CreateInstance(gameObjectArrayInjectionHookType));
@@ -136,13 +87,21 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            foreach (var worker in Workers)
+            {
+                worker.Dispose();
+            }
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
 
-        private void LoadLevel(WorkerBase worker)
+        private void CreateWorker(ConnectionConfig config, Vector3 origin)
         {
-            Instantiate(Level, worker.Origin, Quaternion.identity);
+            var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
+            Instantiate(Level, origin, Quaternion.identity);
+            SystemConfig.AddSystems(worker.World, config.WorkerType);
+            Workers.Add(worker);
         }
     }
 }
