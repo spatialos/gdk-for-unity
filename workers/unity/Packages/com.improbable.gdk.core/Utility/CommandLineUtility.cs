@@ -8,8 +8,7 @@ namespace Improbable.Gdk.Core
         public static T GetCommandLineValue<T>(Dictionary<string, string> commandLineDictionary, string configKey,
             T defaultValue)
         {
-            T configValue;
-            if (TryGetConfigValue(commandLineDictionary, configKey, out configValue))
+            if (TryGetConfigValue(commandLineDictionary, configKey, out T configValue))
             {
                 return configValue;
             }
@@ -20,7 +19,7 @@ namespace Improbable.Gdk.Core
         public static T GetCommandLineValue<T>(IList<string> arguments, string configKey, T defaultValue)
         {
             var dict = ParseCommandLineArgs(arguments);
-            return GetCommandLineValue<T>(dict, configKey, defaultValue);
+            return GetCommandLineValue(dict, configKey, defaultValue);
         }
 
         public static bool TryGetCommandLineValue<T>(IList<string> arguments, string configKey, out T configValue)
@@ -31,9 +30,8 @@ namespace Improbable.Gdk.Core
 
         public static bool TryGetConfigValue<T>(Dictionary<string, string> dictionary, string configName, out T value)
         {
-            string strValue;
             var desiredType = typeof(T);
-            if (dictionary.TryGetValue(configName, out strValue))
+            if (dictionary.TryGetValue(configName, out var strValue))
             {
                 if (desiredType.IsEnum)
                 {

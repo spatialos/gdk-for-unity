@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 using Improbable.Gdk.Core;
+using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
+using UnityEngine.UI;
 
 namespace Playground
 {
@@ -17,70 +19,98 @@ namespace Playground
 
         private const int TargetFrameRate = -1; // Turns off VSync
 
-        public const string LoggerName = "Bootstrap";
+        private static readonly List<Worker> Workers = new List<Worker>();
 
-        private static readonly List<WorkerBase> Workers = new List<WorkerBase>();
+        private const string ipRegEx =
+            @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+
+        private GameObject connectionPanel;
+        private InputField connectParamInputField;
+        private Button connectButton;
+        private bool connectionRequested;
+        private Text errorField;
 
         public void Awake()
         {
-            InitializeWorkerTypes();
             // Taken from DefaultWorldInitalization.cs
             SetupInjectionHooks(); // Register hybrid injection hooks
             PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
 
             Application.targetFrameRate = TargetFrameRate;
+            Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
+            Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
+            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
+
+            connectionPanel = GameObject.FindGameObjectWithTag("ConnectionPanel");
+            connectParamInputField = connectionPanel.transform.Find("ConnectParam").GetComponent<InputField>();
+            connectParamInputField.text = PlayerPrefs.GetString("cachedIp");
+            connectButton = connectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
+            connectButton.onClick.AddListener(Connect);
+            errorField = connectionPanel.transform.Find("ConnectionError").GetComponent<Text>();
+            if (!Application.isMobilePlatform)
+            {
+                connectParamInputField.gameObject.SetActive(false);
+            }
+
             if (Application.isEditor)
             {
-#if UNITY_EDITOR
-                var workerConfigurations =
-                    AssetDatabase.LoadAssetAtPath<ScriptableWorkerConfiguration>(ScriptableWorkerConfiguration
-                        .AssetPath);
-                foreach (var workerConfig in workerConfigurations.WorkerConfigurations)
+                var config = new ReceptionistConfig
                 {
-                    if (!workerConfig.IsEnabled)
-                    {
-                        continue;
-                    }
-
-                    var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
-                        workerConfig.Origin);
-                    Workers.Add(worker);
-                    worker.ConnectionConfig = new ReceptionistConfig();
-                    worker.ConnectionConfig.UseExternalIp = workerConfigurations.UseExternalIp;
-                }
-#endif
+                    WorkerType = SystemConfig.UnityGameLogic,
+                };
+                CreateWorker(config, new Vector3(500, 0, 0));
             }
-#if UNITY_ANDROID
-            else if (Application.isMobilePlatform)
-            {
-                var worker = WorkerRegistry.CreateWorker<UnityClient>($"Client-{Guid.NewGuid()}", new Vector3(0, 0, 0));
-                Workers.Add(worker);
-            }
-#endif
-            else
+            else if (!Application.isMobilePlatform)
             {
                 var commandLineArguments = System.Environment.GetCommandLineArgs();
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-                var workerType =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerType,
-                        string.Empty);
-                var workerId =
-                    CommandLineUtility.GetCommandLineValue(commandLineArgs, RuntimeConfigNames.WorkerId,
-                        string.Empty);
+                var config = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                CreateWorker(config, Vector3.zero);
+                if (World.AllWorlds.Count <= 0)
+                {
+                    throw new InvalidConfigurationException(
+                        "No worlds have been created, due to invalid worker types being specified. Check the config in" +
+                        "Improbable -> Configure editor workers.");
+                }
 
-                // because the launcher does not pass in the worker type as an argument
-                var worker = workerType.Equals(string.Empty)
-                    ? WorkerRegistry.CreateWorker<UnityClient>(
-                        workerId: null, // The worker id for the UnityClient will be auto-generated.
-                        origin: new Vector3(0, 0, 0))
-                    : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
-
-
-                Workers.Add(worker);
-
-                worker.ConnectionConfig = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                var worlds = World.AllWorlds.ToArray();
+                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(worlds);
+                // Systems don't tick if World.Active isn't set
+                World.Active = worlds[0];
             }
+        }
+
+        private void Connect()
+        {
+            if (Application.isEditor)
+            {
+                var config = new ReceptionistConfig
+                {
+                    WorkerType = SystemConfig.UnityClient,
+                };
+                CreateWorker(config, Vector3.zero);
+            }
+#if UNITY_ANDROID
+            else if (Application.isMobilePlatform)
+            {
+                ConnectionConfig config;
+                if (DeviceInfo.IsAndroidStudioEmulator() && connectParamInputField.text.Equals(string.Empty))
+                {
+                    config = ReceptionistConfig.CreateConnectionConfigForAndroidEmulator();
+                    config.WorkerType = SystemConfig.UnityClient;
+                }
+                else
+                {
+                    config = SetConnectionParameters(connectParamInputField.text);
+                    config.WorkerType = SystemConfig.UnityClient;
+                    PlayerPrefs.SetString("cachedIp", connectParamInputField.text);
+                    PlayerPrefs.Save();
+                }
+
+                CreateWorker(config, Vector3.zero);
+            }
+#endif
 
             if (World.AllWorlds.Count <= 0)
             {
@@ -93,37 +123,29 @@ namespace Playground
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop(worlds);
             // Systems don't tick if World.Active isn't set
             World.Active = worlds[0];
+
+            connectionPanel.gameObject.SetActive(false);
         }
 
-        public void Start()
+        private ConnectionConfig SetConnectionParameters(string param)
         {
-            foreach (var worker in Workers)
+            if (IsIpAddress(param))
             {
-                LoadLevel(worker);
-
-                // Don't connect the client when the game starts as we want that to happen on a button click
-                if (worker is UnityClient)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    worker.Connect(worker.ConnectionConfig);
-                }
-                catch (ConnectionFailedException exception)
-                {
-                    worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(exception.Message)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("Reason", exception.Reason));
-                }
+                return ReceptionistConfig.CreateConnectionConfigForPhysicalAndroid(param);
             }
+            else
+            {
+                connectionRequested = false;
+                errorField.text = "Entered text is not a valid IP address.";
+            }
+
+            return null;
+            // TODO: UTY-558 else -> cloud connection
         }
 
-        public static void InitializeWorkerTypes()
+        private static bool IsIpAddress(string param)
         {
-            WorkerRegistry.RegisterWorkerType<UnityClient>();
-            WorkerRegistry.RegisterWorkerType<UnityGameLogic>();
+            return Regex.Match(param, ipRegEx).Success;
         }
 
         public static void SetupInjectionHooks()
@@ -147,13 +169,21 @@ namespace Playground
 
         public static void DomainUnloadShutdown()
         {
+            foreach (var worker in Workers)
+            {
+                worker.Dispose();
+            }
+
             World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
         }
 
-        private void LoadLevel(WorkerBase worker)
+        private void CreateWorker(ConnectionConfig config, Vector3 origin)
         {
-            Instantiate(Level, worker.Origin, Quaternion.identity);
+            var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
+            Instantiate(Level, origin, Quaternion.identity);
+            SystemConfig.AddSystems(worker.World, config.WorkerType);
+            Workers.Add(worker);
         }
     }
 }

@@ -123,11 +123,11 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
                 continue;
             }
 
-            var update = new global::DemoGame.CubeColor.Update();
+            var update = new global::Playground.CubeColor.Update();
 
             foreach(var event in changeColorEvents)
             {
-                update.changeColor.Add(global::Generated.DemoGame.ColorData.ToSpatial(event));
+                update.changeColor.Add(global::Generated.Playground.ColorData.ToSpatial(event));
             }
 
             SpatialOSCubeColorTranslation.SendComponentUpdate(worker.Connection, entityId, update);

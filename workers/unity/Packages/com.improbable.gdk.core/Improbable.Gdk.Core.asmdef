@@ -1,7 +1,6 @@
 {
     "name": "Improbable.Gdk.Core",
     "references": [
-        "Improbable.Generated.NetworkTypes",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics"

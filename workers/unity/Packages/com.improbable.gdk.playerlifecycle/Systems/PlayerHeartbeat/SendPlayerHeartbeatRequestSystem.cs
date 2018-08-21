@@ -9,10 +9,10 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     public class SendPlayerHeartbeatRequestSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSPlayerHeartbeatClient>> RequestSenders;
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat> RequestSenders;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerHeartbeatServer>> AuthorityMarkers;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             public EntityArray Entities;
@@ -35,7 +35,8 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < data.Length; i++)
             {
                 var entityId = data.SpatialEntityIds[i].EntityId;
-                data.RequestSenders[i].SendPlayerHeartbeatRequest(entityId, new Empty());
+                data.RequestSenders[i].RequestsToSend
+                    .Add(new PlayerHeartbeatClient.PlayerHeartbeat.Request(entityId, new Empty()));
 
                 var entity = data.Entities[i];
                 PostUpdateCommands.AddComponent(entity, new AwaitingHeartbeatResponseTag());

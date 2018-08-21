@@ -19,12 +19,12 @@ In addition, the following components are added to your entity as well:
 
 ### Performing Setup Logic on Entities
 
-An Archetype initialization feature is provided as part of the `DemoGame` project. This optional feature allows you to automatically add pre-specified Unity ECS components to newly checked-out entities based on the `ArchetypeComponent` schema component.
+An Archetype initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically add pre-specified Unity ECS components to newly checked-out entities based on the `ArchetypeComponent` schema component.
 
 To use this feature:
 1. Add the `ArchetypeInitializationSystem` to your Worker's world.
 2. Add an `ArchetypeComponent` schema component to SpatialOS entities that should make use of this feature. Set the `archetype_name` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `archetype_name = "MyArchetype"`).
-3. Specify a list of components to be added to entities in `workers\unity\Assets\DemoGame\Config\ArchetypeConfig.cs`:
+3. Specify a list of components to be added to entities in `workers\unity\Assets\Playground\Config\ArchetypeConfig.cs`:
 ```csharp
 public static class ArchetypeConfig
 {
@@ -56,14 +56,14 @@ To perform more complex setup logic, you can add components that themselves act 
 
 ### Representing your Entity with a GameObject
 
-A GameObject initialization feature is provided as part of the `DemoGame` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the `Prefab` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
+A GameObject initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the `Prefab` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
 
 To use this feature:
 1. Add the `GameObjectInitializationSystem` to your Worker's world.
 2. Add an `Prefab` schema component to SpatialOS entities that should make use of this feature. Set the `prefab` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `prefab = "MyPrefab"`).
 3. Add a `Transform` schema component to SpatialOS entities that should make use of this feature. This is to help the feature determine where the corresponding GameObject shall be spawned in the scene.
 4. Create a prefab for representing your entity in the `Resources` folder of your Unity project. Give it a name, e.g. `MyPrefabClient`, `MyPrefabServer`.
-5. Specify a prefab mapping for matching entities with their corresponding prefabs in `workers\unity\Assets\DemoGame\Config\PrefabConfig.cs`:
+5. Specify a prefab mapping for matching entities with their corresponding prefabs in `workers\unity\Assets\Playground\Config\PrefabConfig.cs`:
 ```csharp
 public static class PrefabConfig
     {

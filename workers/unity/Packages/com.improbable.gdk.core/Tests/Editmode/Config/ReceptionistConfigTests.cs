@@ -43,9 +43,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void CreateConnectionConfigFromCommandLine_should_parse_correctly()
         {
-            string host = "myhost";
-            short port = 10;
-            string networkType = NetworkConnectionType.Tcp.ToString();
+            const string host = "myhost";
+            const short port = 10;
+            var networkType = NetworkConnectionType.Tcp.ToString();
 
             var parsedArgs = new Dictionary<string, string>
             {
