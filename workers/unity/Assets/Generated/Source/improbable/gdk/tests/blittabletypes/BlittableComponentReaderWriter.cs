@@ -126,7 +126,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                private readonly List<Action<FirstEventEvent>> firstEventDelegates = new System.Collections.Generic.List<System.Action<FirstEventEvent>>();
+                private readonly List<Action<FirstEventEvent>> firstEventDelegates = new List<Action<FirstEventEvent>>();
 
                 public event Action<FirstEventEvent> OnFirstEvent
                 {
@@ -145,7 +145,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     sender.SendFirstEventEvent(payload);
                 }
 
-                private readonly List<Action<SecondEventEvent>> secondEventDelegates = new System.Collections.Generic.List<System.Action<SecondEventEvent>>();
+                private readonly List<Action<SecondEventEvent>> secondEventDelegates = new List<Action<SecondEventEvent>>();
 
                 public event Action<SecondEventEvent> OnSecondEvent
                 {

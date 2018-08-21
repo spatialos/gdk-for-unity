@@ -102,7 +102,7 @@ namespace <#= qualifiedNamespace #>
                 var eventType = eventDetails.EventName + "Event";
 #>
 
-                private readonly List<Action<<#= eventType #>>> <#= delegateList #> = new System.Collections.Generic.List<System.Action<<#= eventType #>>>();
+                private readonly List<Action<<#= eventType #>>> <#= delegateList #> = new List<Action<<#= eventType #>>>();
 
                 public event Action<<#= eventType #>> On<#= eventDetails.EventName #>
                 {

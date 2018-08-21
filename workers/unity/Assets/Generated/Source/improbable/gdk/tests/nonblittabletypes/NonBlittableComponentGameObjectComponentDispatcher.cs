@@ -48,6 +48,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             private const uint componentId = 1002;
             private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -151,6 +152,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+
                 if (!EventsReceivedComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[1].GetEntityArray();
@@ -174,12 +176,59 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)
             {
-                // TODO UTY-961 Command Req handlers
-                // TODO UTY-961 Command Req handlers
+                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
+                {
+                    var entities = CommandRequestsComponentGroups[0].GetEntityArray();
+                    var commandRequestLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestHandlerInjectableId, out var commandRequestHandlers))
+                        {
+                            continue;
+                        }
+
+                        var commandRequestList = commandRequestLists[i];
+
+                        foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                        {
+                            foreach (var commandRequest in commandRequestList.Buffer)
+                            {
+                                commandRequestHandler.OnFirstCommandRequestInternal(commandRequest);
+                            }
+                        }
+                    }
+                }
+
+                if (!CommandRequestsComponentGroups[1].IsEmptyIgnoreFilter)
+                {
+                    var entities = CommandRequestsComponentGroups[1].GetEntityArray();
+                    var commandRequestLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        var injectableStore = entityIdToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestHandlerInjectableId, out var commandRequestHandlers))
+                        {
+                            continue;
+                        }
+
+                        var commandRequestList = commandRequestLists[i];
+
+                        foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                        {
+                            foreach (var commandRequest in commandRequestList.Buffer)
+                            {
+                                commandRequestHandler.OnSecondCommandRequestInternal(commandRequest);
+                            }
+                        }
+                    }
+                }
+
             }
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIdToInjectableStore)

@@ -43,6 +43,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private const uint componentId = 1003;
             private static readonly InjectableId reaederWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {

@@ -54,7 +54,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                 }
 
-                private readonly List<Action<EvtEvent>> evtDelegates = new System.Collections.Generic.List<System.Action<EvtEvent>>();
+                private readonly List<Action<EvtEvent>> evtDelegates = new List<Action<EvtEvent>>();
 
                 public event Action<EvtEvent> OnEvt
                 {
