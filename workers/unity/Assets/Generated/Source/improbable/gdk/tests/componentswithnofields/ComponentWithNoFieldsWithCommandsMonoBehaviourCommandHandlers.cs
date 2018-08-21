@@ -3,9 +3,14 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
+using System.Collections.Generic;
+using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Worker;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
@@ -13,23 +18,42 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Requirables
         {
-            [InjectableId(InjectableType.CommandSender, 1005)]
-            internal class CommandSenderCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandRequestSender, 1005)]
+            internal class CommandRequestSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandSender(entity, entityManager, logDispatcher);
+                    return new CommandRequestSender(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandSender, 1005)]
+            [InjectableId(InjectableType.CommandRequestSender, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandSender : IInjectable
+            public class CommandRequestSender : IInjectable
             {
-                public CommandSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
+                private Entity entity;
+                private readonly EntityManager entityManager;
 
+                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
                 }
+
+                public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
+                {
+                    try
+                    {
+                        var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
+                        ecsCommandRequestSender.RequestsToSend.Add(new Cmd.Request(entityId, request));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new SendCommandRequestFailedException(e, entity.Index);
+                    }
+                    
+                }
+
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
@@ -45,9 +69,38 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
             public class CommandRequestHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private ILogDispatcher logger;
+
                 public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
+                }
 
+                private readonly List<Action<Cmd.ReceivedRequest>> CmdDelegates = new List<Action<Cmd.ReceivedRequest>>();
+                public event Action<Cmd.ReceivedRequest> OnCmdRequest
+                {
+                    add => CmdDelegates.Add(value);
+                    remove => CmdDelegates.Remove(value);
+                }
+
+                public void OnCmdRequestInternal(Cmd.ReceivedRequest request)
+                {
+                    foreach (var callback in CmdDelegates)
+                    {
+                        try
+                        {
+                            callback(request);
+                        }
+                        catch (Exception e)
+                        {
+                            // Log the exception but do not rethrow it, as other delegates should still get called
+                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        }
+                    }
                 }
             }
 
