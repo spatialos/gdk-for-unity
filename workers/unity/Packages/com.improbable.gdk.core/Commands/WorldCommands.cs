@@ -72,13 +72,13 @@ namespace Improbable.Gdk.Core.Commands
             public struct ReceivedResponse
             {
                 public CreateEntityResponseOp Op { get; }
-                public Request RawRequest { get; }
+                public Request RequestPayload { get; }
                 public object Context { get; }
 
                 internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context)
                 {
                     Op = op;
-                    RawRequest = req;
+                    RequestPayload = req;
                     Context = context;
                 }
             }
@@ -252,13 +252,13 @@ namespace Improbable.Gdk.Core.Commands
             public struct ReceivedResponse
             {
                 public DeleteEntityResponseOp Op { get; }
-                public Request RawRequest { get; }
+                public Request RequestPayload { get; }
                 public object Context { get; }
 
                 internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context)
                 {
                     Op = op;
-                    RawRequest = req;
+                    RequestPayload = req;
                     Context = context;
                 }
             }
@@ -432,13 +432,13 @@ namespace Improbable.Gdk.Core.Commands
             public struct ReceivedResponse
             {
                 public ReserveEntityIdsResponseOp Op { get; }
-                public Request RawRequest { get; }
+                public Request RequestPayload { get; }
                 public object Context { get; }
 
                 internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context)
                 {
                     Op = op;
-                    RawRequest = req;
+                    RequestPayload = req;
                     Context = context;
                 }
             }
@@ -612,13 +612,13 @@ namespace Improbable.Gdk.Core.Commands
             public struct ReceivedResponse
             {
                 public EntityQueryResponseOp Op { get; }
-                public Request RawRequest { get; }
+                public Request RequestPayload { get; }
                 public object Context { get; }
 
                 internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context)
                 {
                     Op = op;
-                    RawRequest = req;
+                    RequestPayload = req;
                     Context = context;
                 }
             }

@@ -59,7 +59,7 @@ namespace Playground
                 var j = 0;
                 while (energyLeft > 0f && j < requests.Count)
                 {
-                    var info = requests[j].RawRequest;
+                    var info = requests[j].Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
                     sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch,
                         new LaunchMeCommandRequest
@@ -97,7 +97,7 @@ namespace Playground
 
                 foreach (var request in launchableData.Requests[i].Requests)
                 {
-                    var info = request.RawRequest;
+                    var info = request.Payload;
                     rigidbody.AddForceAtPosition(
                         new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z) *
                         info.LaunchEnergy * 100.0f,

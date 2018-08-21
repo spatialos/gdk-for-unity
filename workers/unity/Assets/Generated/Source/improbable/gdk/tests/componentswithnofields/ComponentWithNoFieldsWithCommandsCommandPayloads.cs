@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; }
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
@@ -25,7 +25,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     bool allowShortCircuiting = false)
                 {
                     TargetEntityId = targetEntityId;
-                    RawRequest = request;
+                    Payload = request;
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
@@ -36,7 +36,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public uint RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; }
 
                 public ReceivedRequest(uint requestId,
                     string callerWorkerId,
@@ -46,20 +46,20 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
-                    RawRequest = request;
+                    Payload = request;
                 }
             }
 
             public struct Response
             {
                 public uint RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? RawResponse { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; }
                 public string FailureMessage { get; }
 
                 internal Response(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? payload, string failureMessage)
                 {
                     RequestId = req.RequestId;
-                    RawResponse = payload;
+                    Payload = payload;
                     FailureMessage = failureMessage;
                 }
 
@@ -79,8 +79,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? RawResponse { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? ResponsePayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -91,8 +91,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    RawResponse = response;
-                    RawRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }
