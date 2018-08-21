@@ -33,27 +33,27 @@ namespace <#= qualifiedNamespace #>
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
 <# if (fieldDetailsList.Count > 0) { #>
-                ComponentType.ReadOnly<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
 <# } #>
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var eventDetails in eventDetailsList) { #>
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<<#= eventDetails.EventName #>Event>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.<#= eventDetails.EventName #>>(), ComponentType.ReadOnly<GameObjectReference>() },
 <# } #>
             };
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
 <# foreach(var commandDetails in commandDetailsList) { #>
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<<#= commandDetails.CommandName #>.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.<#= commandDetails.CommandName #>>(), ComponentType.ReadOnly<GameObjectReference>() },
 <# } #>
             };
 
@@ -96,14 +96,14 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -117,7 +117,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<<#= componentDetails.TypeName #>.Update>>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<<#= componentDetails.TypeName #>.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -129,7 +129,7 @@ namespace <#= qualifiedNamespace #>
                     var updateList = updateLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var update in updateList.Buffer)
+                        foreach (var update in updateList.Updates)
                         {
                             reader.OnComponentUpdate(update);
                         }
@@ -144,7 +144,7 @@ namespace <#= qualifiedNamespace #>
                 if (!EventsReceivedComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[<#= j #>].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentArray<EventsReceived<<#= eventDetailsList[j].EventName #>Event>>();
+                    var eventLists = EventsReceivedComponentGroups[<#= j #>].GetComponentDataArray<ReceivedEvents.<#= eventDetailsList[j].EventName #>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -157,7 +157,7 @@ namespace <#= qualifiedNamespace #>
 
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 reader.On<#= eventDetailsList[j].EventName #>Event(e);
                             }
@@ -173,7 +173,7 @@ namespace <#= qualifiedNamespace #>
                 if (!CommandRequestsComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentArray<CommandRequests<<#= commandDetailsList[j].CommandName #>.Request>>();
+                    var commandLists = CommandRequestsComponentGroups[<#= j #>].GetComponentDataArray<CommandRequests.<#= commandDetailsList[j].CommandName #>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -185,7 +185,7 @@ namespace <#= qualifiedNamespace #>
                         var commandList = commandLists[i];
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var req in commandList.Buffer)
+                            foreach (var req in commandList.Requests)
                             {
                                 reader.On<#= commandDetailsList[j].CommandName #>CommandRequest(req);
                             }
@@ -203,7 +203,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<<#= componentDetails.TypeName #>>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -215,7 +215,7 @@ namespace <#= qualifiedNamespace #>
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

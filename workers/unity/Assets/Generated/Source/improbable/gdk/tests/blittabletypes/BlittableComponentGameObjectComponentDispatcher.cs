@@ -26,24 +26,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentsUpdated<SpatialOSBlittableComponent.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<SpatialOSBlittableComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<FirstEventEvent>>(), ComponentType.ReadOnly<GameObjectReference>() },
-                new ComponentType[] { ComponentType.ReadOnly<EventsReceived<SecondEventEvent>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<FirstCommand.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<SecondCommand.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.FirstCommand>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.SecondCommand>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             private const uint componentId = 1001;
@@ -85,14 +85,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -105,7 +105,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSBlittableComponent.Update>>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<SpatialOSBlittableComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -117,7 +117,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var updateList = updateLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var update in updateList.Buffer)
+                        foreach (var update in updateList.Updates)
                         {
                             reader.OnComponentUpdate(update);
                         }
@@ -130,7 +130,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[0].GetComponentArray<EventsReceived<FirstEventEvent>>();
+                    var eventLists = EventsReceivedComponentGroups[0].GetComponentDataArray<ReceivedEvents.FirstEvent>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -143,7 +143,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 reader.OnFirstEventEvent(e);
                             }
@@ -153,7 +153,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!EventsReceivedComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[1].GetEntityArray();
-                    var eventLists = EventsReceivedComponentGroups[1].GetComponentArray<EventsReceived<SecondEventEvent>>();
+                    var eventLists = EventsReceivedComponentGroups[1].GetComponentDataArray<ReceivedEvents.SecondEvent>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -166,7 +166,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var e in eventList.Buffer)
+                            foreach (var e in eventList.Events)
                             {
                                 reader.OnSecondEventEvent(e);
                             }
@@ -180,7 +180,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<FirstCommand.Request>>();
+                    var commandLists = CommandRequestsComponentGroups[0].GetComponentDataArray<CommandRequests.FirstCommand>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -192,7 +192,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         var commandList = commandLists[i];
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var req in commandList.Buffer)
+                            foreach (var req in commandList.Requests)
                             {
                                 reader.OnFirstCommandCommandRequest(req);
                             }
@@ -202,7 +202,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 if (!CommandRequestsComponentGroups[1].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[1].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[1].GetComponentArray<CommandRequests<SecondCommand.Request>>();
+                    var commandLists = CommandRequestsComponentGroups[1].GetComponentDataArray<CommandRequests.SecondCommand>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -214,7 +214,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         var commandList = commandLists[i];
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var req in commandList.Buffer)
+                            foreach (var req in commandList.Requests)
                             {
                                 reader.OnSecondCommandCommandRequest(req);
                             }
@@ -231,7 +231,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSBlittableComponent>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -243,7 +243,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

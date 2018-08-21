@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -11,44 +13,28 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
-        private MutableView view;
-
-        private readonly List<Action> removeComponentActions = new List<Action>();
+        private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
+        
+        private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
+        private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
-            var worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
-
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var translationUnit in view.TranslationUnits.Values)
-            {
-                translationUnit.CleanUpComponentGroups = new List<ComponentGroup>();
-                foreach (ComponentType componentType in translationUnit.CleanUpComponentTypes)
-                {
-                    translationUnit.CleanUpComponentGroups.Add(GetComponentGroup(componentType));
-                }
-            }
-
-            MethodInfo addRemoveComponentActionMethod =
-                typeof(CleanReactiveComponentsSystem).GetMethod("AddRemoveComponentAction",
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-
-            // Find all components with the RemoveAtEndOfTick attribute
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
+                // Find all components with the RemoveAtEndOfTick attribute
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTick>(false) == null)
+                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
                     {
                         continue;
                     }
@@ -59,49 +45,85 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    if (typesToRemove.Contains(type))
+                    if (typesToRemove.Add(type))
                     {
-                        continue;
+                        componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
                     }
+                }
 
-                    typesToRemove.Add(type);
-                    addRemoveComponentActionMethod.MakeGenericMethod(type).Invoke(this, null);
+                // Find all ComponentCleanupHandlers
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
+                        foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
+                        {
+                            typesToRemove.Add(componentType.GetManagedType());
+                            componentGroupsToRemove.Add((GetComponentGroup(componentType), componentType));
+                        }
+
+                        // Updates group
+                        componentCleanups.Add(new ComponentCleanup
+                        {
+                            Handler = componentCleanupHandler,
+                            UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
+                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
+                            EventGroups =
+                                componentCleanupHandler.EventComponentTypes
+                                    .Select(eventType => GetComponentGroup(eventType)).ToArray(),
+                            CommandsGroups = componentCleanupHandler.CommandReactiveTypes
+                                .Select(t => GetComponentGroup(t)).ToArray()
+                        });
+                    }
                 }
             }
         }
 
-        private void AddRemoveComponentAction<T>()
+        protected override void OnUpdate()
         {
-            var componentGroup = GetComponentGroup(ComponentType.ReadOnly<T>());
-            removeComponentActions.Add(() =>
+            var buffer = PostUpdateCommands;
+            foreach (var cleanup in componentCleanups)
+            {
+                cleanup.Handler.CleanupUpdates(cleanup.UpdateGroup, ref buffer);
+                cleanup.Handler.CleanupEvents(cleanup.EventGroups, ref buffer);
+                cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
+                cleanup.Handler.CleanupCommands(cleanup.CommandsGroups, ref buffer);
+            }
+
+            // Clean components with RemoveAtEndOfTick attribute
+            RemoveComponents();
+        }
+
+        private struct ComponentCleanup
+        {
+            public ComponentCleanupHandler Handler;
+            public ComponentGroup UpdateGroup;
+            public ComponentGroup AuthorityChangesGroup;
+            public ComponentGroup[] EventGroups;
+            public ComponentGroup[] CommandsGroups;
+        }
+
+        private void RemoveComponents()
+        {
+            componentsToRemove.Clear();
+            foreach ((ComponentGroup componentGroup, ComponentType type) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
                 {
-                    return;
+                    continue;
                 }
 
                 var entityArray = componentGroup.GetEntityArray();
                 for (var i = 0; i < entityArray.Length; ++i)
                 {
-                    PostUpdateCommands.RemoveComponent<T>(entityArray[i]);
+                    componentsToRemove.Add((entityArray[i], type));
                 }
-            });
-        }
-
-        protected override void OnUpdate()
-        {
-            var commandBuffer = PostUpdateCommands;
-
-            // Clean generated components
-            foreach (var translationUnit in view.TranslationUnits.Values)
-            {
-                translationUnit.CleanUpComponents(ref commandBuffer);
             }
 
-            // Clean components with RemoveAtEndOfTick attribute
-            foreach (var removeComponentAction in removeComponentActions)
+            foreach ((Entity entity, ComponentType type) in componentsToRemove)
             {
-                removeComponentAction();
+                EntityManager.RemoveComponent(entity, type);
             }
         }
     }

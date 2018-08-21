@@ -12,18 +12,19 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public long Field;
     
-        public static SecondCommandRequest ToNative(global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest spatialType)
+        public static class Serialization
         {
-            var nativeType = new SecondCommandRequest();
-            nativeType.Field = spatialType.field;
-            return nativeType;
-        }
+            public static void Serialize(SecondCommandRequest instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                obj.AddInt64(1, instance.Field);
+            }
     
-        public static global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest ToSpatial(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest();
-            spatialType.field = nativeType.Field;
-            return spatialType;
+            public static SecondCommandRequest Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new SecondCommandRequest();
+                instance.Field = obj.GetInt64(1);
+                return instance;
+            }
         }
     }
     

@@ -36,7 +36,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         }
 
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<SpatialOSComponentWithNoFields, SpatialOSComponentWithNoFields.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSComponentWithNoFields, SpatialOSComponentWithNoFields.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)

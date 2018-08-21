@@ -26,12 +26,12 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSExhaustiveSingular>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSExhaustiveSingular>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentsUpdated<SpatialOSExhaustiveSingular.Update>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<SpatialOSExhaustiveSingular.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
@@ -81,14 +81,14 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveSingular>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSExhaustiveSingular>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -101,7 +101,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentArray<ComponentsUpdated<SpatialOSExhaustiveSingular.Update>>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<SpatialOSExhaustiveSingular.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -113,7 +113,7 @@ namespace Generated.Improbable.Gdk.Tests
                     var updateList = updateLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var update in updateList.Buffer)
+                        foreach (var update in updateList.Updates)
                         {
                             reader.OnComponentUpdate(update);
                         }
@@ -137,7 +137,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSExhaustiveSingular>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSExhaustiveSingular>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -149,7 +149,7 @@ namespace Generated.Improbable.Gdk.Tests
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

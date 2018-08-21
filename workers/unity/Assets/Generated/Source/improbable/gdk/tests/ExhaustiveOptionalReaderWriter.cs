@@ -27,10 +27,13 @@ namespace Generated.Improbable.Gdk.Tests
         [ComponentId(197716)]
         public interface Reader : IReader<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>
         {
+            event Action<global::System.Nullable<BlittableBool>> Field1Updated;
             event Action<global::System.Nullable<float>> Field2Updated;
+            event Action<global::Improbable.Gdk.Core.Option<byte[]>> Field3Updated;
             event Action<global::System.Nullable<int>> Field4Updated;
             event Action<global::System.Nullable<long>> Field5Updated;
             event Action<global::System.Nullable<double>> Field6Updated;
+            event Action<global::Improbable.Gdk.Core.Option<string>> Field7Updated;
             event Action<global::System.Nullable<uint>> Field8Updated;
             event Action<global::System.Nullable<ulong>> Field9Updated;
             event Action<global::System.Nullable<int>> Field10Updated;
@@ -39,7 +42,7 @@ namespace Generated.Improbable.Gdk.Tests
             event Action<global::System.Nullable<ulong>> Field13Updated;
             event Action<global::System.Nullable<int>> Field14Updated;
             event Action<global::System.Nullable<long>> Field15Updated;
-            event Action<global::System.Nullable<long>> Field16Updated;
+            event Action<global::System.Nullable<global::Improbable.Worker.EntityId>> Field16Updated;
             event Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
         }
 
@@ -50,11 +53,19 @@ namespace Generated.Improbable.Gdk.Tests
         }
 
         internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>, Reader, Writer
+            ReaderWriterBase<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
             {
+            }
+
+            private readonly List<Action<global::System.Nullable<BlittableBool>>> field1Delegates = new List<Action<global::System.Nullable<BlittableBool>>>();
+
+            public event Action<global::System.Nullable<BlittableBool>> Field1Updated
+            {
+                add => field1Delegates.Add(value);
+                remove => field1Delegates.Remove(value);
             }
 
             private readonly List<Action<global::System.Nullable<float>>> field2Delegates = new List<Action<global::System.Nullable<float>>>();
@@ -63,6 +74,14 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 add => field2Delegates.Add(value);
                 remove => field2Delegates.Remove(value);
+            }
+
+            private readonly List<Action<global::Improbable.Gdk.Core.Option<byte[]>>> field3Delegates = new List<Action<global::Improbable.Gdk.Core.Option<byte[]>>>();
+
+            public event Action<global::Improbable.Gdk.Core.Option<byte[]>> Field3Updated
+            {
+                add => field3Delegates.Add(value);
+                remove => field3Delegates.Remove(value);
             }
 
             private readonly List<Action<global::System.Nullable<int>>> field4Delegates = new List<Action<global::System.Nullable<int>>>();
@@ -87,6 +106,14 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 add => field6Delegates.Add(value);
                 remove => field6Delegates.Remove(value);
+            }
+
+            private readonly List<Action<global::Improbable.Gdk.Core.Option<string>>> field7Delegates = new List<Action<global::Improbable.Gdk.Core.Option<string>>>();
+
+            public event Action<global::Improbable.Gdk.Core.Option<string>> Field7Updated
+            {
+                add => field7Delegates.Add(value);
+                remove => field7Delegates.Remove(value);
             }
 
             private readonly List<Action<global::System.Nullable<uint>>> field8Delegates = new List<Action<global::System.Nullable<uint>>>();
@@ -153,9 +180,9 @@ namespace Generated.Improbable.Gdk.Tests
                 remove => field15Delegates.Remove(value);
             }
 
-            private readonly List<Action<global::System.Nullable<long>>> field16Delegates = new List<Action<global::System.Nullable<long>>>();
+            private readonly List<Action<global::System.Nullable<global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Nullable<global::Improbable.Worker.EntityId>>>();
 
-            public event Action<global::System.Nullable<long>> Field16Updated
+            public event Action<global::System.Nullable<global::Improbable.Worker.EntityId>> Field16Updated
             {
                 add => field16Delegates.Add(value);
                 remove => field16Delegates.Remove(value);
@@ -171,10 +198,13 @@ namespace Generated.Improbable.Gdk.Tests
 
             protected override void TriggerFieldCallbacks(SpatialOSExhaustiveOptional.Update update)
             {
+                DispatchWithErrorHandling(update.Field1, field1Delegates);
                 DispatchWithErrorHandling(update.Field2, field2Delegates);
+                DispatchWithErrorHandling(update.Field3, field3Delegates);
                 DispatchWithErrorHandling(update.Field4, field4Delegates);
                 DispatchWithErrorHandling(update.Field5, field5Delegates);
                 DispatchWithErrorHandling(update.Field6, field6Delegates);
+                DispatchWithErrorHandling(update.Field7, field7Delegates);
                 DispatchWithErrorHandling(update.Field8, field8Delegates);
                 DispatchWithErrorHandling(update.Field9, field9Delegates);
                 DispatchWithErrorHandling(update.Field10, field10Delegates);
@@ -186,11 +216,19 @@ namespace Generated.Improbable.Gdk.Tests
                 DispatchWithErrorHandling(update.Field16, field16Delegates);
                 DispatchWithErrorHandling(update.Field17, field17Delegates);
             }
-            protected override void ApplyUpdate(SpatialOSExhaustiveOptional.Update update, SpatialOSExhaustiveOptional data)
+            protected override void ApplyUpdate(SpatialOSExhaustiveOptional.Update update, ref SpatialOSExhaustiveOptional data)
             {
+                if (update.Field1.HasValue)
+                {
+                    data.Field1 = update.Field1.Value;
+                }
                 if (update.Field2.HasValue)
                 {
                     data.Field2 = update.Field2.Value;
+                }
+                if (update.Field3.HasValue)
+                {
+                    data.Field3 = update.Field3.Value;
                 }
                 if (update.Field4.HasValue)
                 {
@@ -203,6 +241,10 @@ namespace Generated.Improbable.Gdk.Tests
                 if (update.Field6.HasValue)
                 {
                     data.Field6 = update.Field6.Value;
+                }
+                if (update.Field7.HasValue)
+                {
+                    data.Field7 = update.Field7.Value;
                 }
                 if (update.Field8.HasValue)
                 {

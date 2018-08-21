@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        /// Sets additional information to be displayed with the log message.
+        ///     Sets additional information to be displayed with the log message.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
@@ -32,7 +32,8 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        /// Adds a context object to be passed as the second parameter into <see cref="UnityEngine.Debug.Log(object, UnityEngine.Object)"/>
+        ///     Adds a context object to be passed as the second parameter into
+        ///     <see cref="UnityEngine.Debug.Log(object, UnityEngine.Object)" />
         /// </summary>
         /// <param name="context">The context object</param>
         /// <returns>itself</returns>

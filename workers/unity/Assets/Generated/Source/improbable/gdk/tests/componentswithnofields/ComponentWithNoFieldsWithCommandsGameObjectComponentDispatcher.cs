@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithCommands>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
@@ -39,7 +39,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override ComponentType[][] CommandRequestsComponentTypeArrays => new ComponentType[][]
             {
-                new ComponentType[] { ComponentType.ReadOnly<CommandRequests<Cmd.Request>>(), ComponentType.ReadOnly<GameObjectReference>() },
+                new ComponentType[] { ComponentType.ReadOnly<CommandRequests.Cmd>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
             private const uint componentId = 1005;
@@ -81,14 +81,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithCommands>>();
+                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands>>();
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Buffer.Count; j++)
+                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Buffer[j]);
+                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
-                    var commandLists = CommandRequestsComponentGroups[0].GetComponentArray<CommandRequests<Cmd.Request>>();
+                    var commandLists = CommandRequestsComponentGroups[0].GetComponentDataArray<CommandRequests.Cmd>();
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -118,7 +118,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         var commandList = commandLists[i];
                         foreach (ReaderWriterImpl reader in readers)
                         {
-                            foreach (var req in commandList.Buffer)
+                            foreach (var req in commandList.Requests)
                             {
                                 reader.OnCmdCommandRequest(req);
                             }
@@ -135,7 +135,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentArray<AuthoritiesChanged<SpatialOSComponentWithNoFieldsWithCommands>>();
+                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var readerWriterStore = entityIdToReaderWriterStore[entities[i].Index];
@@ -147,7 +147,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var authChanges = authChangeLists[i];
                     foreach (ReaderWriterImpl reader in readers)
                     {
-                        foreach (var auth in authChanges.Buffer)
+                        foreach (var auth in authChanges.Changes)
                         {
                             reader.OnAuthorityChange(auth);
                         }

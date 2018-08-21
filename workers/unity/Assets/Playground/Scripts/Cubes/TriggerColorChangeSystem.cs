@@ -1,24 +1,34 @@
 using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
-using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
+using Color = Generated.Playground.Color;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+
+#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class TriggerColorChangeSystem : ComponentSystem
     {
-        public struct CubeColorData
+        private struct CubeColorData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<EventSender<SpatialOSCubeColor>> EventSenders;
+            public ComponentDataArray<CubeColor.EventSender.ChangeColor> EventSenders;
         }
 
         [Inject] private CubeColorData cubeColorData;
 
         private Array colorValues;
+        private int colorIndex = 0;
+        private float nextColorChange = 0;
 
         protected override void OnCreateManager(int capacity)
         {
@@ -29,22 +39,27 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (World.GetExistingManager<TickSystem>().GlobalTick % 100 != 0)
+            if (Time.time < nextColorChange)
             {
                 return;
             }
 
-            var newColor = (Generated.Playground.Color) colorValues.GetValue(new Random().Next(colorValues.Length));
+            nextColorChange = Time.time + 2;
+
+            var colorEventData = new ColorData
+            {
+                Color = (Color) colorValues.GetValue(colorIndex),
+            };
 
             for (var i = 0; i < cubeColorData.Length; i++)
             {
-                var colorData = new Generated.Playground.ColorData
-                {
-                    Color = newColor
-                };
+                var eventSender = cubeColorData.EventSenders[i];
 
-                cubeColorData.EventSenders[i].SendChangeColorEvent(colorData);
+                eventSender.Events.Add(colorEventData);
+                cubeColorData.EventSenders[i] = eventSender;
             }
+
+            colorIndex = (colorIndex + 1) % colorValues.Length;
         }
     }
 }

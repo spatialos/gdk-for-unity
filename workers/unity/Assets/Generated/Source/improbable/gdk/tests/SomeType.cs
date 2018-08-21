@@ -11,16 +11,17 @@ namespace Generated.Improbable.Gdk.Tests
     public struct SomeType
     {
     
-        public static SomeType ToNative(global::Improbable.Gdk.Tests.SomeType spatialType)
+        public static class Serialization
         {
-            var nativeType = new SomeType();
-            return nativeType;
-        }
+            public static void Serialize(SomeType instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+            }
     
-        public static global::Improbable.Gdk.Tests.SomeType ToSpatial(global::Generated.Improbable.Gdk.Tests.SomeType nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.SomeType();
-            return spatialType;
+            public static SomeType Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new SomeType();
+                return instance;
+            }
         }
     }
     

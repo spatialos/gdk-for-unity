@@ -25,7 +25,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 it has ComponentArray<> fields, and not its contents.
                 */
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
-
                 public ComponentDataArray<TestPreparation> PreparationStruct;
             }
 

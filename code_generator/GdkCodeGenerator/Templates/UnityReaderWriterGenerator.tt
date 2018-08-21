@@ -38,9 +38,9 @@ namespace <#= qualifiedNamespace #>
             event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
 <# } #>
 <# foreach (var eventDetails in eventDetailsList) {
-            var eventType = eventDetails.EventName + "Event";
+            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
 #>
-            event Action<<#= eventType #>> On<#= eventDetails.EventName #>;
+            event Action<<#= payloadType #>> On<#= eventDetails.EventName #>;
 <# } #>
         }
 
@@ -53,13 +53,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-<# if (componentDetails.IsBlittable) { #>
         internal class ReaderWriterImpl :
-            BlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } else { #>
-        internal class ReaderWriterImpl :
-            NonBlittableReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
-<# } #>
+            ReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
         {
             public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
                 : base(entity, entityManager, logDispatcher)
@@ -82,11 +77,7 @@ namespace <#= qualifiedNamespace #>
                 DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
             }
-<# if (componentDetails.IsBlittable) { #>
             protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, ref <#= componentDetails.TypeName#> data)
-<# } else { #>
-            protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, <#= componentDetails.TypeName#> data)
-<# } #>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
@@ -96,32 +87,32 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 <# foreach (var eventDetails in eventDetailsList) {
-            var delegateList = eventDetails.CamelCaseTypeName + "Delegates";
-            var eventType = eventDetails.EventName + "Event";
+            var delegateList = eventDetails.CamelCaseName + "Delegates";
+            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
 #>
 
-            private readonly List<Action<<#= eventType #>>> <#= delegateList #> = new System.Collections.Generic.List<System.Action<<#= eventType #>>>();
+            private readonly List<Action<<#= payloadType #>>> <#= delegateList #> = new System.Collections.Generic.List<System.Action<<#= payloadType #>>>();
 
-            public event Action<<#= eventType #>> On<#= eventDetails.EventName #>
+            public event Action<<#= payloadType #>> On<#= eventDetails.EventName #>
             {
                 add => <#= delegateList #>.Add(value);
                 remove => <#= delegateList #>.Remove(value);
             }
 
-            public void On<#= eventType #>(<#= eventType #> payload)
+            public void On<#= eventDetails.EventName #>Event(<#= payloadType #> payload)
             {
                 DispatchEventWithErrorHandling(payload, <#= delegateList #>);
             }
 
-            public void Send<#= eventDetails.EventName #>( <#= eventDetails.FullyQualifiedPayloadTypeName #> payload)
+            public void Send<#= eventDetails.EventName #>(<#= eventDetails.FullyQualifiedPayloadTypeName #> payload)
             {
-                var sender = EntityManager.GetComponentData<EventSender<<#= componentDetails.TypeName #>>>(Entity);
-                sender.Send<#= eventDetails.EventName #>Event(payload);
+                var sender = EntityManager.GetComponentData<EventSender.<#= eventDetails.EventName #>>(Entity);
+                sender.Events.Add(payload);
             }
 <# } #>
 <# foreach (var command in commandDetailsList) { #>
 
-            public void On<#= command.CommandName #>CommandRequest(<#= command.CommandName #>.Request request)
+            public void On<#= command.CommandName #>CommandRequest(<#= command.CommandName #>.ReceivedRequest request)
             {
                 throw new System.NotImplementedException();
             }

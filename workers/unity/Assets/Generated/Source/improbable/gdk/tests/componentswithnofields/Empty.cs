@@ -11,16 +11,17 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     public struct Empty
     {
     
-        public static Empty ToNative(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty spatialType)
+        public static class Serialization
         {
-            var nativeType = new Empty();
-            return nativeType;
-        }
+            public static void Serialize(Empty instance, global::Improbable.Worker.Core.SchemaObject obj)
+            {
+            }
     
-        public static global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty ToSpatial(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty nativeType)
-        {
-            var spatialType = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty();
-            return spatialType;
+            public static Empty Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            {
+                var instance = new Empty();
+                return instance;
+            }
         }
     }
     
