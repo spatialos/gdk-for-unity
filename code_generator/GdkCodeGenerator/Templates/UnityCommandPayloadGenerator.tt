@@ -18,6 +18,9 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var commandDetails in commandDetailsList) {#>
         public class <#= commandDetails.CommandName #>
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            /// </summary>
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
@@ -25,7 +28,7 @@ namespace <#= qualifiedNamespace #>
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
-                public Request(EntityId targetEntityId,
+                internal Request(EntityId targetEntityId,
                     <#= commandDetails.RequestType #> request,
                     uint? timeoutMillis = null,
                     bool allowShortCircuiting = false)
@@ -35,6 +38,14 @@ namespace <#= qualifiedNamespace #>
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
+            }
+
+            public static Request CreateRequest(EntityId targetEntityId,
+                <#= commandDetails.RequestType #> request,
+                uint? timeoutMillis = null,
+                bool allowShortCircuiting = false)
+            {
+                return new Request(targetEntityId, request, timeoutMillis, allowShortCircuiting);
             }
 
             public struct ReceivedRequest
@@ -56,6 +67,9 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            /// </summary>
             public struct Response
             {
                 public uint RequestId { get; }
@@ -68,16 +82,16 @@ namespace <#= qualifiedNamespace #>
                     Payload = payload;
                     FailureMessage = failureMessage;
                 }
+            }
 
-                public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.ResponseType #> payload)
-                {
-                    return new Response(req, payload, null);
-                }
+            public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.ResponseType #> payload)
+            {
+                return new Response(req, payload, null);
+            }
 
-                public static Response CreateFailure(ReceivedRequest req, string failureMessage)
-                {
-                    return new Response(req, null, failureMessage);
-                }
+            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
+            {
+                return new Response(req, null, failureMessage);
             }
 
             public struct ReceivedResponse

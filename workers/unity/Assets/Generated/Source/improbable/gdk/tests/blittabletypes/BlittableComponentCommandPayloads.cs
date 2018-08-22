@@ -12,6 +12,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public class FirstCommand
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            /// </summary>
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
@@ -19,7 +22,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
-                public Request(EntityId targetEntityId,
+                internal Request(EntityId targetEntityId,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
                     uint? timeoutMillis = null,
                     bool allowShortCircuiting = false)
@@ -29,6 +32,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
+            }
+
+            public static Request CreateRequest(EntityId targetEntityId,
+                global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
+                uint? timeoutMillis = null,
+                bool allowShortCircuiting = false)
+            {
+                return new Request(targetEntityId, request, timeoutMillis, allowShortCircuiting);
             }
 
             public struct ReceivedRequest
@@ -50,6 +61,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            /// </summary>
             public struct Response
             {
                 public uint RequestId { get; }
@@ -62,16 +76,16 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = payload;
                     FailureMessage = failureMessage;
                 }
+            }
 
-                public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload)
-                {
-                    return new Response(req, payload, null);
-                }
+            public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload)
+            {
+                return new Response(req, payload, null);
+            }
 
-                public static Response CreateFailure(ReceivedRequest req, string failureMessage)
-                {
-                    return new Response(req, null, failureMessage);
-                }
+            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
+            {
+                return new Response(req, null, failureMessage);
             }
 
             public struct ReceivedResponse
@@ -98,6 +112,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         }
         public class SecondCommand
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            /// </summary>
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
@@ -105,7 +122,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
-                public Request(EntityId targetEntityId,
+                internal Request(EntityId targetEntityId,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
                     uint? timeoutMillis = null,
                     bool allowShortCircuiting = false)
@@ -115,6 +132,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
+            }
+
+            public static Request CreateRequest(EntityId targetEntityId,
+                global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
+                uint? timeoutMillis = null,
+                bool allowShortCircuiting = false)
+            {
+                return new Request(targetEntityId, request, timeoutMillis, allowShortCircuiting);
             }
 
             public struct ReceivedRequest
@@ -136,6 +161,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            /// </summary>
             public struct Response
             {
                 public uint RequestId { get; }
@@ -148,16 +176,16 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = payload;
                     FailureMessage = failureMessage;
                 }
+            }
 
-                public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload)
-                {
-                    return new Response(req, payload, null);
-                }
+            public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload)
+            {
+                return new Response(req, payload, null);
+            }
 
-                public static Response CreateFailure(ReceivedRequest req, string failureMessage)
-                {
-                    return new Response(req, null, failureMessage);
-                }
+            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
+            {
+                return new Response(req, null, failureMessage);
             }
 
             public struct ReceivedResponse
