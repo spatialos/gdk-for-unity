@@ -20,7 +20,7 @@ When a worker sends a SpatialOS event, the Unity GDK puts the event object into 
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T` and ensure the system is ran at the correct point in the update lifecycle. 
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T` and ensure the system runs at the correct point in the update lifecycle. 
 
 * Handle replication of properties:
 

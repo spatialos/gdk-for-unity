@@ -13,7 +13,7 @@ Events are for broadcasting information between worker instances about a transie
 
 ### Sending events
 
-A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component (where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema).
+A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema.
 
 For each SpatialOS component containing an event, the Unity GDK automatically attaches an `ComponentName.EventSenders.EventName` ECS component when (and only when) the worker instance has authority over the SpatialOS component `ComponentName`.
 
@@ -48,7 +48,7 @@ Given the example schema, the Unity GDK generates these types:
 
 The Unity GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority](authority.md) for more on how authority works in the Unity GDK.
 
-On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of type `ColorData`. To send an event, add an object to the list.
+On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of type `ColorData`. To send an event, add a `ColorData` struct to the list.
 
 ```csharp
 public class SendChangeColorEvent : ComponentSystem
@@ -85,7 +85,7 @@ public class SendChangeColorEvent : ComponentSystem
 
 When a worker instance receives an event, this is represented with reactive ECS components. 
 
-For SpatialOS entity that the event was sent on, the Unity GDK attaches an `ComponentName.ReceivedEvents.EventName` component to the corresponding ECS entity (where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema).
+For the SpatialOS entity that the event was sent on, the Unity GDK attaches an `ComponentName.ReceivedEvents.EventName` component to the corresponding ECS entity, where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema.
 
 Given the same schema as above, `change_color` events are stored in a list of `ColorData`s on a `CubeColor.ReceivedEvents.ChangeColor` component.
 

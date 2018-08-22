@@ -14,7 +14,7 @@ For each of your entity's SpatialOS components, the following Unity ECS componen
 In addition, the following components are added to your entity as well:
 - `SpatialEntityId`: Holds the corresponding SpatialOS EntityId of an entity.
 - `NewlyAddedSpatialOSEntity`: Tag component for marking entities that were just checked-out. This component is automatically removed from your entity at the end of the frame it was created.
-- World Command Senders: Components that exposes the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
+- World command senders: A set of components that expose the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
 - A `ComponentName.CommandSenders.CommandName` for every SpatialOS schema command: Component that exposes the API for [sending schema commands](commands.md#sending-command-requests).
 
 ### Performing Setup Logic on Entities
