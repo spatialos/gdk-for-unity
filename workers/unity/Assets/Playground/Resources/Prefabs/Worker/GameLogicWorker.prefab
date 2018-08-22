@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4869995793827456}
-  - component: {fileID: 114683898239095492}
   m_Layer: 0
   m_Name: WorkerLevel
   m_TagString: Untagged
@@ -168,14 +167,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
---- !u!114 &114683898239095492
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1020770433854806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d52e956f3477848bea09a77f96ecc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Level: {fileID: 1020770433854806}
+  ConnectionAttempts: 3
