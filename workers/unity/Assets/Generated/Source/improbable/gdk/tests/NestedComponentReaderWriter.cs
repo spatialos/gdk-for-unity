@@ -41,7 +41,7 @@ namespace Generated.Improbable.Gdk.Tests
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }

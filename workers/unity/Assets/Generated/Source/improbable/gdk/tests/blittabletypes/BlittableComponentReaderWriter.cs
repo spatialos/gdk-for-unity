@@ -49,7 +49,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
@@ -126,7 +126,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>> firstEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>> firstEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> OnFirstEvent
                 {
@@ -145,7 +145,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     sender.Events.Add(payload);
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>> secondEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>> secondEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> OnSecondEvent
                 {

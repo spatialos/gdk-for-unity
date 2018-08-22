@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 {
                     var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
                     var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
-                    var readRequirementCount = componentAuthRequirements.Count;
+                    var readRequirementCount = componentReadRequirements.Count;
                     var authRequirementCount = componentAuthRequirements.Count;
 
                     if (readRequirementCount == 0 && authRequirementCount == 0)
