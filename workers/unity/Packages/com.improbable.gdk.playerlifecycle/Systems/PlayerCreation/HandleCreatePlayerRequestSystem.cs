@@ -14,8 +14,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<PlayerCreator.CommandRequests.CreatePlayer> CreatePlayerRequests;
-            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
-            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+            public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
+            public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
         }
 
         [Inject] private CreatePlayerData createPlayerData;
@@ -25,7 +25,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < createPlayerData.Length; i++)
             {
                 var requests = createPlayerData.CreatePlayerRequests[i].Requests;
-                var responders = createPlayerData.CreatePlayerResponders[i].ResponsesToSend;
+                var responder = createPlayerData.CreatePlayerResponders[i];
+
+                var createEntitySender = createPlayerData.CreateEntitySender[i];
 
                 foreach (var request in requests)
                 {
@@ -36,14 +38,17 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                     var playerEntity = PlayerLifecycleConfig.CreatePlayerEntityTemplate(request.CallerAttributeSet,
                         request.Payload.Position);
-                    createPlayerData.CreateEntitySender[i].RequestsToSend.Add(new WorldCommands.CreateEntity.Request
+                    createEntitySender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
                     {
                         Entity = playerEntity
                     });
 
-                    responders.Add(
+                    responder.ResponsesToSend.Add(
                         PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType()));
                 }
+
+                createPlayerData.CreatePlayerResponders[i] = responder;
+                createPlayerData.CreateEntitySender[i] = createEntitySender;
             }
         }
 

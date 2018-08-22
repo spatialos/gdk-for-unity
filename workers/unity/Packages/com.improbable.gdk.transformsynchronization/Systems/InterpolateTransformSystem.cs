@@ -1,5 +1,6 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -17,12 +18,12 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private Vector3 origin;
 
-        public struct TransformData
+        private struct TransformData
         {
             public readonly int Length;
             public ComponentArray<BufferedTransform> BufferedTransform;
             public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> transformAuthority;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> transformAuthority;
         }
 
         [Inject] private TransformData transformData;
