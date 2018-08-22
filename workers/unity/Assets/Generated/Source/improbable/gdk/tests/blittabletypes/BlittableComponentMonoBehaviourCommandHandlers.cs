@@ -33,11 +33,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
 
                 public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
+                    this.logger = logger;
                 }
 
                 public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
@@ -85,7 +87,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
-                private ILogDispatcher logger;
+                private readonly ILogDispatcher logger;
 
                 public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {

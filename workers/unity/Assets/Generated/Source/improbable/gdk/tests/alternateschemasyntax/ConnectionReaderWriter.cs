@@ -42,7 +42,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSConnection, SpatialOSConnection.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }

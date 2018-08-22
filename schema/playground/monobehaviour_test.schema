@@ -1,0 +1,9 @@
+package playground;
+
+type Void {}
+
+component MonoBehaviourTest
+{
+    id = 12002;
+    command Void spinner_toggle_rotation(Void);
+}

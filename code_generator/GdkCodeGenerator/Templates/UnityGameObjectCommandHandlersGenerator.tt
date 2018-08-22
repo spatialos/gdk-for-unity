@@ -38,11 +38,13 @@ namespace <#= qualifiedNamespace #>
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
 
                 public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
+                    this.logger = logger;
                 }
 
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -78,7 +80,7 @@ namespace <#= qualifiedNamespace #>
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
-                private ILogDispatcher logger;
+                private readonly ILogDispatcher logger;
 
                 public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
