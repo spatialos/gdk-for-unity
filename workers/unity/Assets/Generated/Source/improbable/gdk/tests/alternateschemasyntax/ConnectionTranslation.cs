@@ -243,8 +243,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                         }
 
                         entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSConnection> {
-                            AuthorityLossAcknowledged = false,
-                            AuthorityLossAcknowledgmentSent = false
+                            AuthorityLossAcknowledged = false
                         });
                         break;
                     case Authority.NotAuthoritative:
@@ -257,6 +256,11 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                         if (entityManager.HasComponent<AuthorityLossImminent<SpatialOSConnection>>(entity))
                         {
                             entityManager.RemoveComponent<AuthorityLossImminent<SpatialOSConnection>>(entity);
+                        }
+                        
+                        if (entityManager.HasComponent<AuthorityLossImminentSent<SpatialOSConnection>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminentSent<SpatialOSConnection>>(entity);
                         }
 
                         entityManager.RemoveComponent<Authoritative<SpatialOSConnection>>(entity);
@@ -322,6 +326,8 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
+            public override uint ComponentId => 1105;
+
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.MyEvent>(),
                 ComponentType.Create<SpatialOSConnection>(),
@@ -334,7 +340,8 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
                 ComponentType.Create<AuthorityLossImminent<SpatialOSConnection>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.Subtractive<AuthorityLossImminentSent<SpatialOSConnection>>()
             };
 
 
@@ -383,17 +390,19 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 }
             }
             
-            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection, ref EntityCommandBuffer buffer)
             {
                 var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSConnection>>();
                 var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                var entities = authorityLossComponentGroup.GetEntityArray();
+                
                 for (int i = 0; i < componentDataArray.Length; i++)
                 {
                     var component = componentDataArray[i];
-                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    if (componentDataArray[i].AuthorityLossAcknowledged)
                     {
                         connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1105);
-                        component.AuthorityLossAcknowledgmentSent = true;
+                        buffer.AddComponent(entities[i], new AuthorityLossImminentSent<SpatialOSConnection>());
                         componentDataArray[i] = component;
                     }
                 }

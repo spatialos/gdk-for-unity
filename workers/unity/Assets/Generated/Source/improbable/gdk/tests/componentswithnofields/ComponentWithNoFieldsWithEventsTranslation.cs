@@ -243,8 +243,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
 
                         entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithEvents> {
-                            AuthorityLossAcknowledged = false,
-                            AuthorityLossAcknowledgmentSent = false
+                            AuthorityLossAcknowledged = false
                         });
                         break;
                     case Authority.NotAuthoritative:
@@ -257,6 +256,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         if (entityManager.HasComponent<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithEvents>>(entity))
                         {
                             entityManager.RemoveComponent<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithEvents>>(entity);
+                        }
+                        
+                        if (entityManager.HasComponent<AuthorityLossImminentSent<SpatialOSComponentWithNoFieldsWithEvents>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminentSent<SpatialOSComponentWithNoFieldsWithEvents>>(entity);
                         }
 
                         entityManager.RemoveComponent<Authoritative<SpatialOSComponentWithNoFieldsWithEvents>>(entity);
@@ -322,6 +326,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
+            public override uint ComponentId => 1004;
+
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.Evt>(),
                 ComponentType.Create<SpatialOSComponentWithNoFieldsWithEvents>(),
@@ -334,7 +340,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
                 ComponentType.Create<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithEvents>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.Subtractive<AuthorityLossImminentSent<SpatialOSComponentWithNoFieldsWithEvents>>()
             };
 
 
@@ -383,17 +390,19 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
             
-            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection, ref EntityCommandBuffer buffer)
             {
                 var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<SpatialOSComponentWithNoFieldsWithEvents>>();
                 var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                var entities = authorityLossComponentGroup.GetEntityArray();
+                
                 for (int i = 0; i < componentDataArray.Length; i++)
                 {
                     var component = componentDataArray[i];
-                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    if (componentDataArray[i].AuthorityLossAcknowledged)
                     {
                         connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, 1004);
-                        component.AuthorityLossAcknowledgmentSent = true;
+                        buffer.AddComponent(entities[i], new AuthorityLossImminentSent<SpatialOSComponentWithNoFieldsWithEvents>());
                         componentDataArray[i] = component;
                     }
                 }
