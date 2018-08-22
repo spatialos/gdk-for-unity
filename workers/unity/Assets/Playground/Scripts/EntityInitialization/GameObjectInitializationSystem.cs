@@ -36,7 +36,7 @@ namespace Playground
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
-        private Worker worker;
+        private WorkerSystem worker;
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
         private EntityGameObjectLinker entityGameObjectLinker;
@@ -46,7 +46,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
+            worker = World.GetExistingManager<WorkerSystem>();
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
             entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);

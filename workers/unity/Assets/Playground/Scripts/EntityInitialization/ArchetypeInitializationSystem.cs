@@ -33,7 +33,7 @@ namespace Playground
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
+            worker = World.GetExistingManager<WorkerSystem>();
             if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
                 !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
             {
