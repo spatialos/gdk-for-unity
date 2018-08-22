@@ -359,8 +359,8 @@ namespace Generated.Improbable.Gdk.Tests
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSExhaustiveOptional>),
-                typeof(ComponentRemoved<SpatialOSExhaustiveOptional>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSExhaustiveOptional>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSExhaustiveOptional>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {

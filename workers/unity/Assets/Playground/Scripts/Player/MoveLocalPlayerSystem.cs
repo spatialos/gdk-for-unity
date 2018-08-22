@@ -1,6 +1,7 @@
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -23,22 +24,22 @@ namespace Playground
             public float SpeedSmoothVelocity;
         }
 
-        public struct NewPlayerData
+        private struct NewPlayerData
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
         }
 
-        public struct PlayerInputData
+        private struct PlayerInputData
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
             public ComponentDataArray<Speed> SpeedData;
+            [ReadOnly] public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
         }
 
         [Inject] private NewPlayerData newPlayerData;
@@ -69,9 +70,9 @@ namespace Playground
             for (var i = 0; i < playerInputData.Length; i++)
             {
                 var rigidBody = playerInputData.Rigidbody[i];
+                var playerInput = playerInputData.PlayerInput[i];
 
-                var input = new Vector2(playerInputData.PlayerInput[i].Horizontal,
-                    playerInputData.PlayerInput[i].Vertical);
+                var input = new Vector2(playerInput.Horizontal, playerInput.Vertical);
                 var inputDir = input.normalized;
 
                 if (inputDir != Vector2.zero)
@@ -82,8 +83,7 @@ namespace Playground
                         ref turnSmoothVelocity, TurnSmoothTime);
                 }
 
-                var running = playerInputData.PlayerInput[i].Running;
-                var targetSpeed = (running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
+                var targetSpeed = (playerInput.Running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
                 var speed = playerInputData.SpeedData[i];
                 var currentSpeed = speed.CurrentSpeed;
                 var speedSmoothVelocity = speed.SpeedSmoothVelocity;

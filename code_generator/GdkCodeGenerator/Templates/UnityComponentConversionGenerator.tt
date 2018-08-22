@@ -567,7 +567,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
                             var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
-                            <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
+                            <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
                                 new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
@@ -575,7 +575,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             <#= commandDetails.CamelCaseName #>Storage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<<#= commandDetails.RequestType #>>(entityArray[j], wrappedCommandRequest.RawRequest, null);
+                                new CommandRequestStore<<#= commandDetails.RequestType #>>(entityArray[j], wrappedCommandRequest.Payload, null);
                         }
 
                         requests.RequestsToSend.Clear();
@@ -602,7 +602,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             }
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
-                            <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
+                            <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                         }
@@ -618,13 +618,13 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
-                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
+                ComponentType.ReadOnly<ComponentAdded<<#= componentDetails.TypeName #>>>(),
+                ComponentType.ReadOnly<ComponentRemoved<<#= componentDetails.TypeName #>>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
 <# foreach (var eventDetails in eventDetailsList) { #>
-                typeof(ReceivedEvents.<#= eventDetails.EventName #>),
+                ComponentType.ReadOnly<ReceivedEvents.<#= eventDetails.EventName #>>(),
 <# } #>
             };
 

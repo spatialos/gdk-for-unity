@@ -1,5 +1,6 @@
 using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 

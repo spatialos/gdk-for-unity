@@ -39,8 +39,8 @@ namespace Playground
         private Worker worker;
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
-        private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
         private EntityGameObjectLinker entityGameObjectLinker;
+        private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
         protected override void OnCreateManager(int capacity)
         {

@@ -29,9 +29,5 @@ namespace Improbable.Gdk.Core
                     logEvent.Context);
             }
         }
-
-        public void Dispose()
-        {
-        }
     }
 }
