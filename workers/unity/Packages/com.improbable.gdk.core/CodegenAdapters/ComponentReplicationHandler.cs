@@ -6,6 +6,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 {
     public abstract class ComponentReplicationHandler
     {
+        public abstract uint ComponentId { get; }
         public abstract ComponentType[] ReplicationComponentTypes { get; }
         public abstract ComponentType[] CommandTypes { get; }
         public abstract ComponentType[] AuthorityLossComponentTypes { get; }
@@ -14,7 +15,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void SendCommands(List<ComponentGroup> commandComponentGroups, Connection connection);
 
         public abstract void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup,
-            Connection connection);
+            Connection connection, ref EntityCommandBuffer buffer);
 
         protected EntityManager EntityManager;
         protected readonly CommandParameters ShortCircuitParameters;

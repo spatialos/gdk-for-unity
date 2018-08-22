@@ -303,8 +303,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentDetails.TypeName #>> {
-                            AuthorityLossAcknowledged = false,
-                            AuthorityLossAcknowledgmentSent = false
+                            AuthorityLossAcknowledged = false
                         });
                         break;
                     case Authority.NotAuthoritative:
@@ -317,6 +316,11 @@ namespace <#= qualifiedNamespace #>
                         if (entityManager.HasComponent<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(entity))
                         {
                             entityManager.RemoveComponent<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(entity);
+                        }
+                        
+                        if (entityManager.HasComponent<AuthorityLossImminentSent<<#= componentDetails.TypeName #>>>(entity))
+                        {
+                            entityManager.RemoveComponent<AuthorityLossImminentSent<<#= componentDetails.TypeName #>>>(entity);
                         }
 
                         entityManager.RemoveComponent<Authoritative<<#= componentDetails.TypeName #>>>(entity);
@@ -470,6 +474,8 @@ namespace <#= qualifiedNamespace #>
 
         public class ComponentReplicator : ComponentReplicationHandler
         {
+            public override uint ComponentId => <#= componentDetails.ComponentId #>;
+
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
 <# foreach (var eventDetail in eventDetailsList) { #>
                 ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
@@ -488,7 +494,8 @@ namespace <#= qualifiedNamespace #>
             
             public override ComponentType[] AuthorityLossComponentTypes => new ComponentType[] {
                 ComponentType.Create<AuthorityLossImminent<<#= componentDetails.TypeName #>>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.Subtractive<AuthorityLossImminentSent<<#= componentDetails.TypeName #>>>()
             };
 
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -551,17 +558,19 @@ namespace <#= qualifiedNamespace #>
                 }
             }
             
-            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void SendAuthorityLossImminentAcknowledgement(ComponentGroup authorityLossComponentGroup, global::Improbable.Worker.Core.Connection connection, ref EntityCommandBuffer buffer)
             {
                 var componentDataArray = authorityLossComponentGroup.GetComponentDataArray<AuthorityLossImminent<<#= componentDetails.TypeName #>>>();
                 var spatialEntityIdData = authorityLossComponentGroup.GetComponentDataArray<SpatialEntityId>();
+                var entities = authorityLossComponentGroup.GetEntityArray();
+                
                 for (int i = 0; i < componentDataArray.Length; i++)
                 {
                     var component = componentDataArray[i];
-                    if (componentDataArray[i].AuthorityLossAcknowledged && !component.AuthorityLossAcknowledgmentSent)
+                    if (componentDataArray[i].AuthorityLossAcknowledged)
                     {
                         connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdData[i].EntityId, <#= componentDetails.ComponentId #>);
-                        component.AuthorityLossAcknowledgmentSent = true;
+                        buffer.AddComponent(entities[i], new AuthorityLossImminentSent<<#= componentDetails.TypeName #>>());
                         componentDataArray[i] = component;
                     }
                 }

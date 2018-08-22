@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
                     CommandReplicationGroups = componentReplicationHandler.CommandTypes
                         .Select(componentType => GetComponentGroup(componentType)).ToList(),
                     AuthorityLostComponentGroup =
-                        GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
+                        GetComponentGroup(componentReplicationHandler.AuthorityLossComponentTypes),
                 });
             }
         }
@@ -70,9 +70,10 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            var buffer = PostUpdateCommands;
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(worker.Connection);
+                replicator.Execute(worker.Connection, ref buffer);
             }
         }
 
@@ -84,11 +85,11 @@ namespace Improbable.Gdk.Core
             public ComponentGroup AuthorityLostComponentGroup;
             public List<ComponentGroup> CommandReplicationGroups;
 
-            public void Execute(Connection connection)
+            public void Execute(Connection connection, ref EntityCommandBuffer buffer)
             {
                 Handler.ExecuteReplication(ReplicationComponentGroup, connection);
                 Handler.SendCommands(CommandReplicationGroups, connection);
-                Handler.SendAuthorityLossImminentAcknowledgement(AuthorityLostComponentGroup, connection);
+                Handler.SendAuthorityLossImminentAcknowledgement(AuthorityLostComponentGroup, connection, ref buffer);
             }
         }
     }
