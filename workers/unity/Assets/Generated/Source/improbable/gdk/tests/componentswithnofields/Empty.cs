@@ -11,6 +11,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     public struct Empty
     {
     
+    
+    
+    
         public static class Serialization
         {
             public static void Serialize(Empty instance, global::Improbable.Worker.Core.SchemaObject obj)

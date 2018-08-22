@@ -11,6 +11,9 @@ namespace Generated.Improbable.Gdk.Tests
     public struct SomeType
     {
     
+    
+    
+    
         public static class Serialization
         {
             public static void Serialize(SomeType instance, global::Improbable.Worker.Core.SchemaObject obj)

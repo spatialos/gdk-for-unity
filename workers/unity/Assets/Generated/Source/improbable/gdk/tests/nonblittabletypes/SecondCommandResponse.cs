@@ -12,6 +12,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public string Response;
     
+    
+        public SecondCommandResponse(string response)
+        {
+            Response = response;
+        }
+    
+    
         public static class Serialization
         {
             public static void Serialize(SecondCommandResponse instance, global::Improbable.Worker.Core.SchemaObject obj)

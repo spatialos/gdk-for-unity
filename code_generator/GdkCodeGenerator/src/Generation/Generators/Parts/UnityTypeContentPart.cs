@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.CodeGeneration.Model;
@@ -29,6 +30,12 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return typeDefinition.FieldDefinitions
                 .Select((fieldDefinition) => new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet)).ToList();
+        }
+
+        private string GetConstructorArgs()
+        {
+            var constructorArgsList = GetFieldDetailsList().Select(fieldDetails => $"{fieldDetails.Type} {fieldDetails.CamelCaseName}");
+            return string.Join(", ", constructorArgsList);
         }
     }
 }

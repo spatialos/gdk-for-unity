@@ -12,6 +12,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public int Field;
     
+    
+        public FirstCommandRequest(int field)
+        {
+            Field = field;
+        }
+    
+    
         public static class Serialization
         {
             public static void Serialize(FirstCommandRequest instance, global::Improbable.Worker.Core.SchemaObject obj)
