@@ -386,12 +386,12 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSConnection>),
-                typeof(ComponentRemoved<SpatialOSConnection>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSConnection>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSConnection>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                typeof(ReceivedEvents.MyEvent),
+                ComponentType.ReadOnly<ReceivedEvents.MyEvent>(),
             };
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSConnection.ReceivedUpdates>();

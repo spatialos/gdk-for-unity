@@ -323,8 +323,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSComponentWithNoFields>),
-                typeof(ComponentRemoved<SpatialOSComponentWithNoFields>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSComponentWithNoFields>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSComponentWithNoFields>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {

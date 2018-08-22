@@ -618,13 +618,13 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<<#= componentDetails.TypeName #>>),
-                typeof(ComponentRemoved<<#= componentDetails.TypeName #>>),
+                ComponentType.ReadOnly<ComponentAdded<<#= componentDetails.TypeName #>>>(),
+                ComponentType.ReadOnly<ComponentRemoved<<#= componentDetails.TypeName #>>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
 <# foreach (var eventDetails in eventDetailsList) { #>
-                typeof(ReceivedEvents.<#= eventDetails.EventName #>),
+                ComponentType.ReadOnly<ReceivedEvents.<#= eventDetails.EventName #>>(),
 <# } #>
             };
 

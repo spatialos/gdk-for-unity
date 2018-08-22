@@ -1,5 +1,6 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -24,8 +25,8 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<Recharging> Reloading;
             public ComponentDataArray<SpatialOSLauncher> Launcher;
+            [ReadOnly] public ComponentDataArray<Recharging> Reloading;
         }
 
         [Inject] private Data data;
