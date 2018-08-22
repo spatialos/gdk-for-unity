@@ -25,11 +25,12 @@ namespace Playground.MonoBehaviours
             runningMaterial.SetColor("_Color", Color.yellow);
         }
 
-        [SerializeField] private float flashTime = 0.05f;
+        [SerializeField] private float flashDurationSeconds = 0.05f;
 
         [Require] PlayerInput.Requirables.Reader reader;
 
         private MeshRenderer renderer;
+        private ILogDispatcher logger;
         private bool isRunning = false;
         private bool isFlashing = false;
         private float flashStartTime;
@@ -54,34 +55,31 @@ namespace Playground.MonoBehaviours
 
         private void Awake()
         {
-            renderer = transform.Find("Shape").GetComponent<MeshRenderer>();
-            Debug.Log(renderer);
+            logger = GetComponent<SpatialOSComponent>()?.LogDispatcher;
+            renderer = transform.Find("Shape")?.GetComponent<MeshRenderer>();
+            if (logger == null)
+            {
+                Debug.LogError("PlayerColor behaviour on GameObject that is not connected to Spatial systems properly");
+            }
+            else if (renderer == null)
+            {
+                logger.HandleLog(LogType.Error, new LogEvent(
+                    "PlayerColor behaviour not on player character of expected structure")
+                    .WithField("GameObject", gameObject));
+            }
         }
 
         private void OnRunningChanged(BlittableBool isRunningUpdate)
         {
-            Debug.Log("Running update received");
-            if (isRunningUpdate)
+            isRunning = isRunningUpdate;
+            if (!isFlashing)
             {
-                isRunning = true;
-                if (!isFlashing)
-                {
-                    renderer.SetPropertyBlock(runningMaterial);
-                }
-            }
-            else
-            {
-                isRunning = false;
-                if (!isFlashing)
-                {
-                    renderer.SetPropertyBlock(basicMaterial);
-                }
+                renderer.SetPropertyBlock(isRunning ? runningMaterial : basicMaterial);
             }
         }
 
         private void OnUpdateReceived(SpatialOSPlayerInput.Update updatedata)
         {
-            Debug.Log("Update received");
             isFlashing = true;
             flashStartTime = Time.time;
             renderer.SetPropertyBlock(flashingMaterial);
@@ -89,17 +87,10 @@ namespace Playground.MonoBehaviours
 
         private void Update()
         {
-            if (isFlashing && Time.time - flashStartTime > flashTime)
+            if (isFlashing && Time.time - flashStartTime > flashDurationSeconds)
             {
                 isFlashing = false;
-                if (isRunning)
-                {
-                    renderer.SetPropertyBlock(runningMaterial);
-                }
-                else
-                {
-                    renderer.SetPropertyBlock(basicMaterial);
-                }
+                renderer.SetPropertyBlock(isRunning ? runningMaterial : basicMaterial);
             }
         }
     }

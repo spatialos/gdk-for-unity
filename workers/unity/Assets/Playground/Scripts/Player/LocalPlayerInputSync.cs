@@ -27,6 +27,8 @@ namespace Playground
 
         [Inject] private PlayerInputData playerInputData;
 
+        private const float MinInputChange = 0.01f;
+
         protected override void OnUpdate()
         {
             for (var i = 0; i < playerInputData.Length; i++)
@@ -39,8 +41,8 @@ namespace Playground
 
                 var oldPlayerInput = playerInputData.PlayerInput[i];
 
-                if (Math.Abs(oldPlayerInput.Horizontal - input.x) > 0.01f
-                    || Math.Abs(oldPlayerInput.Vertical - input.z) > 0.01f
+                if (Math.Abs(oldPlayerInput.Horizontal - input.x) > MinInputChange
+                    || Math.Abs(oldPlayerInput.Vertical - input.z) > MinInputChange
                     || oldPlayerInput.Running != isShiftDown)
                 {
                     var newPlayerInput = new SpatialOSPlayerInput
