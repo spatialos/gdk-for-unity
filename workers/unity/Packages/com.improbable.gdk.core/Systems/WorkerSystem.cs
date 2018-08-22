@@ -9,7 +9,6 @@ namespace Improbable.Gdk.Core
 {
     public class WorkerSystem : ComponentSystem
     {
-        public Worker Worker;
         public Vector3 Origin;
         public Connection Connection;
         public ILogDispatcher LogDispatcher;

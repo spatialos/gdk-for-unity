@@ -37,6 +37,7 @@ namespace Improbable.Gdk.Core
             logDispatcher.Connection = Connection;
 
             World = new World(Connection.GetWorkerId());
+            AddCoreSystems();
 
             // This isn't a core system, this is for an easy disconnect event
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
@@ -58,7 +59,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
-                worker.AddcoreSystems();
+                worker.AddCoreSystems();
                 return worker;
             }
         }
@@ -83,7 +84,7 @@ namespace Improbable.Gdk.Core
                     }
 
                     var worker = new Worker(config.WorkerType, connection, logger, origin);
-                    worker.AddcoreSystems();
+                    worker.AddCoreSystems();
                     return worker;
                 }
             }
@@ -127,10 +128,9 @@ namespace Improbable.Gdk.Core
             return connectionFailureReason;
         }
 
-        private void AddcoreSystems()
+        private void AddCoreSystems()
         {
             var workerSystem = World.GetOrCreateManager<WorkerSystem>();
-            workerSystem.Worker = this;
             workerSystem.Connection = Connection;
             workerSystem.LogDispatcher = LogDispatcher;
             workerSystem.Origin = Origin;

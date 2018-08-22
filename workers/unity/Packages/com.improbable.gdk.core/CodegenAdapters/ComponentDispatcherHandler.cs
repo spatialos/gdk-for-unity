@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         protected ILogDispatcher LogDispatcher;
         protected World World;
-        protected Worker Worker;
+        protected WorkerSystem Worker;
 
         protected const string ReceivedDuplicateComponentAdded =
             "Received ComponentAdded, but already received one for this entity.";
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         protected const string CommandIndexNotFound = "Command index not found.";
         protected const string InvalidAuthorityChange = "Invalid authority state change received.";
 
-        protected ComponentDispatcherHandler(Worker worker, World world)
+        protected ComponentDispatcherHandler(WorkerSystem worker, World world)
         {
             LogDispatcher = worker.LogDispatcher;
             World = world;

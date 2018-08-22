@@ -394,7 +394,7 @@ namespace Improbable.Gdk.Core
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
                 var componentDispatcher =
-                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker.Worker, World);
+                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker, World);
                 componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
                 AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
                 componentDispatcher.AddCommandComponents(worker.WorkerEntity);
