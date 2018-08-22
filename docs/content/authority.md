@@ -72,11 +72,9 @@ This means entities _may_ initially have `NotAuthoritative<T>` attached for a ti
 
 ### What happens when a worker instance gains or loses authority over a SpatialOS entity
 
-When authority changes over a SpatialOS component the Unity GDK automatically adds an `AuthoritiesChanged<T>` reactive ECS component to the corresponding ECS entity (for `T`, the component that changed authority).
+When authority changes over a SpatialOS component the Unity GDK automatically adds an `AuthorityChanges<T>` reactive ECS component to the corresponding ECS entity (for `T`, the component that changed authority).
 
-`AuthoritiesChanged<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
-
-> **Note**: `AuthoritiesChanged<T>` is a `Component`, not an `IComponentData`. This means you must use a `ComponentArray<T>` for injection rather than a `ComponentDataArray<T>`.
+`AuthorityChanges<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
 
 Here's an example of doing something when a worker instance gets authority over a SpatialOS component:
 
@@ -90,7 +88,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
         public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
         
         // This system will only run when there has been a change of authority over PlayerInput in the last tick
-        public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
+        public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
     }
 
     [Inject] Data data;
