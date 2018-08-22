@@ -53,9 +53,10 @@ namespace Improbable.Gdk.Core
         {
             var schemaData = new SchemaComponentData(PositionComponentId);
             var fields = schemaData.GetFields();
-            fields.AddDouble(1, x);
-            fields.AddDouble(2, y);
-            fields.AddDouble(3, z);
+            var coordinatesObj = fields.AddObject(1);
+            coordinatesObj.AddDouble(1, x);
+            coordinatesObj.AddDouble(2, y);
+            coordinatesObj.AddDouble(3, z);
 
             return AddComponent(new ComponentData(schemaData), writeAccess);
         }
