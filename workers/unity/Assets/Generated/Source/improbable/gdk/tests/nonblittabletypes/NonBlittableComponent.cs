@@ -202,7 +202,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 component.optionalFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
                 if (obj.GetInt32Count(7) == 1)
                 {
-                    component.OptionalField = obj.GetInt32(7);
+                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Set(component.optionalFieldHandle, obj.GetInt32(7));                
                 }
 
                 component.listFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
@@ -274,7 +274,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var value = obj.GetInt32(7);
                     update.OptionalField = new Option<global::System.Nullable<int>>(value);
-                    component.OptionalField = value;
+                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Set(component.optionalFieldHandle, value);                
                 }
                 {
                     var listSize = obj.GetInt32Count(8);
