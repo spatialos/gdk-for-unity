@@ -100,31 +100,35 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSNestedComponent>(entity);
-
-                var update = global::Generated.Improbable.Gdk.Tests.SpatialOSNestedComponent.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<SpatialOSNestedComponent.Update> updates;
-                if (entityManager.HasComponent<SpatialOSNestedComponent.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<SpatialOSNestedComponent>>(entity))
                 {
-                    updates = entityManager.GetComponentData<SpatialOSNestedComponent.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<SpatialOSNestedComponent>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new SpatialOSNestedComponent.ReceivedUpdates
+                    var update = global::Generated.Improbable.Gdk.Tests.SpatialOSNestedComponent.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<SpatialOSNestedComponent.Update> updates;
+                    if (entityManager.HasComponent<SpatialOSNestedComponent.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSNestedComponent.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
+                        updates = entityManager.GetComponentData<SpatialOSNestedComponent.ReceivedUpdates>(entity).Updates;
+
+                    }
+                    else
+                    {
+                        var updatesComponent = new SpatialOSNestedComponent.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSNestedComponent.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
                 }
 
-                updates.Add(update);
-
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
