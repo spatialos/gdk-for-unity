@@ -202,7 +202,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-                var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+                var <#= fieldDetails.CamelCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName #>Handle, <#= fieldDetails.CamelCaseName #>);
 <# if (listTypeInfo.IsEnum) { #>
                 for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
@@ -241,7 +242,8 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
                 {
-                    var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    var <#= fieldDetails.CamelCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName #>Handle, <#= fieldDetails.CamelCaseName #>);
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     for (var i = 0; i < mapSize; i++)
                     {

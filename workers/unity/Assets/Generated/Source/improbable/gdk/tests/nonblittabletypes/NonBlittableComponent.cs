@@ -207,7 +207,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
                 component.listFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
 
-                var listField = component.ListField = new global::System.Collections.Generic.List<int>();
+                var listField = new global::System.Collections.Generic.List<int>();
+                Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Set(component.listFieldHandle, listField);
                 for (var i = 0; i < obj.GetInt32Count(8); i++)
                 {
                     listField.Add(obj.IndexInt32(8, (uint) i));
@@ -216,7 +217,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 component.mapFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
 
                 {
-                    var mapField = component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var mapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(component.mapFieldHandle, mapField);
                     var mapSize = obj.GetObjectCount(9);
                     for (var i = 0; i < mapSize; i++)
                     {
