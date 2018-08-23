@@ -19,7 +19,7 @@ namespace <#= qualifiedNamespace #>
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
-        private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
+        internal <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
 
         public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
         {

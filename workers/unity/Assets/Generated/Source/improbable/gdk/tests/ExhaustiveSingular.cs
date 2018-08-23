@@ -12,7 +12,7 @@ namespace Generated.Improbable.Gdk.Tests
         public uint ComponentId => 197715;
 
         public BlittableBool DirtyBit { get; set; }
-        private BlittableBool field1;
+        internal BlittableBool field1;
 
         public BlittableBool Field1
         {
@@ -23,7 +23,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field1 = value;
             }
         }
-        private float field2;
+        internal float field2;
 
         public float Field2
         {
@@ -46,7 +46,7 @@ namespace Generated.Improbable.Gdk.Tests
                 Generated.Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
             }
         }
-        private int field4;
+        internal int field4;
 
         public int Field4
         {
@@ -57,7 +57,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field4 = value;
             }
         }
-        private long field5;
+        internal long field5;
 
         public long Field5
         {
@@ -68,7 +68,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field5 = value;
             }
         }
-        private double field6;
+        internal double field6;
 
         public double Field6
         {
@@ -91,7 +91,7 @@ namespace Generated.Improbable.Gdk.Tests
                 Generated.Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
             }
         }
-        private uint field8;
+        internal uint field8;
 
         public uint Field8
         {
@@ -102,7 +102,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field8 = value;
             }
         }
-        private ulong field9;
+        internal ulong field9;
 
         public ulong Field9
         {
@@ -113,7 +113,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field9 = value;
             }
         }
-        private int field10;
+        internal int field10;
 
         public int Field10
         {
@@ -124,7 +124,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field10 = value;
             }
         }
-        private long field11;
+        internal long field11;
 
         public long Field11
         {
@@ -135,7 +135,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field11 = value;
             }
         }
-        private uint field12;
+        internal uint field12;
 
         public uint Field12
         {
@@ -146,7 +146,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field12 = value;
             }
         }
-        private ulong field13;
+        internal ulong field13;
 
         public ulong Field13
         {
@@ -157,7 +157,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field13 = value;
             }
         }
-        private int field14;
+        internal int field14;
 
         public int Field14
         {
@@ -168,7 +168,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field14 = value;
             }
         }
-        private long field15;
+        internal long field15;
 
         public long Field15
         {
@@ -179,7 +179,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field15 = value;
             }
         }
-        private global::Improbable.Worker.EntityId field16;
+        internal global::Improbable.Worker.EntityId field16;
 
         public global::Improbable.Worker.EntityId Field16
         {
@@ -190,7 +190,7 @@ namespace Generated.Improbable.Gdk.Tests
                 field16 = value;
             }
         }
-        private global::Generated.Improbable.Gdk.Tests.SomeType field17;
+        internal global::Generated.Improbable.Gdk.Tests.SomeType field17;
 
         public global::Generated.Improbable.Gdk.Tests.SomeType Field17
         {

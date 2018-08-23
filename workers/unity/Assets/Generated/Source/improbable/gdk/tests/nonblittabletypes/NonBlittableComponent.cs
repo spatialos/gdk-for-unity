@@ -12,7 +12,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         public uint ComponentId => 1002;
 
         public BlittableBool DirtyBit { get; set; }
-        private BlittableBool boolField;
+        internal BlittableBool boolField;
 
         public BlittableBool BoolField
         {
@@ -23,7 +23,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 boolField = value;
             }
         }
-        private int intField;
+        internal int intField;
 
         public int IntField
         {
@@ -34,7 +34,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 intField = value;
             }
         }
-        private long longField;
+        internal long longField;
 
         public long LongField
         {
@@ -45,7 +45,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 longField = value;
             }
         }
-        private float floatField;
+        internal float floatField;
 
         public float FloatField
         {
@@ -56,7 +56,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 floatField = value;
             }
         }
-        private double doubleField;
+        internal double doubleField;
 
         public double DoubleField
         {

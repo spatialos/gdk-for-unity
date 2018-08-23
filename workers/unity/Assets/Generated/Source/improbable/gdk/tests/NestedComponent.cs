@@ -12,7 +12,7 @@ namespace Generated.Improbable.Gdk.Tests
         public uint ComponentId => 20152;
 
         public BlittableBool DirtyBit { get; set; }
-        private global::Generated.Improbable.Gdk.Tests.TypeName nestedType;
+        internal global::Generated.Improbable.Gdk.Tests.TypeName nestedType;
 
         public global::Generated.Improbable.Gdk.Tests.TypeName NestedType
         {
