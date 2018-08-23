@@ -6,7 +6,7 @@ namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
-        [Require] private MonoBehaviourTest.Requirables.CommandRequestHandler requestHandler;
+        [Require] private SpinnerRotation.Requirables.CommandRequestHandler requestHandler;
         private RotationBehaviour rotationBehaviour;
 
         private void OnEnable()
@@ -18,7 +18,7 @@ namespace Playground.MonoBehaviours
             }
         }
 
-        private void OnSpinnerToggleRotationRequest(MonoBehaviourTest.SpinnerToggleRotation.ReceivedRequest request)
+        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ReceivedRequest request)
         {
             rotationBehaviour.RotatingClockWise = !rotationBehaviour.RotatingClockWise;
         }

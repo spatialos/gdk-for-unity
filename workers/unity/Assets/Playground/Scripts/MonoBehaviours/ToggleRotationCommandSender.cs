@@ -8,8 +8,8 @@ namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandSender : MonoBehaviour
     {
-        [Require] private MonoBehaviourTest.Requirables.Reader reader;
-        [Require] private MonoBehaviourTest.Requirables.CommandRequestSender requestSender;
+        [Require] private SpinnerRotation.Requirables.Reader reader;
+        [Require] private SpinnerRotation.Requirables.CommandRequestSender requestSender;
         private EntityId ownEntityId;
 
         private void OnEnable()
