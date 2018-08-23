@@ -104,16 +104,16 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             {
                 var component = new SpatialOSBlittableComponent();
 
+                component.boolField = obj.GetBool(1);
 
-                component.BoolField = obj.GetBool(1);
+                component.intField = obj.GetInt32(2);
 
-                component.IntField = obj.GetInt32(2);
+                component.longField = obj.GetInt64(3);
 
-                component.LongField = obj.GetInt64(3);
+                component.floatField = obj.GetFloat(4);
 
-                component.FloatField = obj.GetFloat(4);
+                component.doubleField = obj.GetDouble(5);
 
-                component.DoubleField = obj.GetDouble(5);
                 return component;
             }
 
@@ -124,31 +124,31 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     var value = obj.GetBool(1);
                     update.BoolField = new Option<BlittableBool>(value);
-                    component.BoolField = value;
+                    component.boolField = value;
                 }
                 if (obj.GetInt32Count(2) == 1)
                 {
                     var value = obj.GetInt32(2);
                     update.IntField = new Option<int>(value);
-                    component.IntField = value;
+                    component.intField = value;
                 }
                 if (obj.GetInt64Count(3) == 1)
                 {
                     var value = obj.GetInt64(3);
                     update.LongField = new Option<long>(value);
-                    component.LongField = value;
+                    component.longField = value;
                 }
                 if (obj.GetFloatCount(4) == 1)
                 {
                     var value = obj.GetFloat(4);
                     update.FloatField = new Option<float>(value);
-                    component.FloatField = value;
+                    component.floatField = value;
                 }
                 if (obj.GetDoubleCount(5) == 1)
                 {
                     var value = obj.GetDouble(5);
                     update.DoubleField = new Option<double>(value);
-                    component.DoubleField = value;
+                    component.doubleField = value;
                 }
                 return update;
             }

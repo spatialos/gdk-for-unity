@@ -48,8 +48,8 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 var component = new SpatialOSNestedComponent();
 
+                component.nestedType = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
 
-                component.NestedType = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
                 return component;
             }
 
@@ -60,7 +60,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var value = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
                     update.NestedType = new Option<global::Generated.Improbable.Gdk.Tests.TypeName>(value);
-                    component.NestedType = value;
+                    component.nestedType = value;
                 }
                 return update;
             }

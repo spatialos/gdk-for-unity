@@ -392,107 +392,107 @@ namespace Generated.Improbable.Gdk.Tests
                 var component = new SpatialOSExhaustiveOptional();
 
                 component.field1Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Allocate(world);
-
                 if (obj.GetBoolCount(1) == 1)
                 {
                     component.Field1 = obj.GetBool(1);
                 }
-                component.field2Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Allocate(world);
 
+                component.field2Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Allocate(world);
                 if (obj.GetFloatCount(2) == 1)
                 {
                     component.Field2 = obj.GetFloat(2);
                 }
-                component.field3Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Allocate(world);
 
+                component.field3Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 if (obj.GetBytesCount(3) == 1)
                 {
                     component.Field3 = obj.GetBytes(3);
                 }
-                component.field4Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Allocate(world);
 
+                component.field4Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Allocate(world);
                 if (obj.GetInt32Count(4) == 1)
                 {
                     component.Field4 = obj.GetInt32(4);
                 }
-                component.field5Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Allocate(world);
 
+                component.field5Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Allocate(world);
                 if (obj.GetInt64Count(5) == 1)
                 {
                     component.Field5 = obj.GetInt64(5);
                 }
-                component.field6Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Allocate(world);
 
+                component.field6Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Allocate(world);
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     component.Field6 = obj.GetDouble(6);
                 }
-                component.field7Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Allocate(world);
 
+                component.field7Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 if (obj.GetStringCount(7) == 1)
                 {
                     component.Field7 = obj.GetString(7);
                 }
-                component.field8Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Allocate(world);
 
+                component.field8Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Allocate(world);
                 if (obj.GetUint32Count(8) == 1)
                 {
                     component.Field8 = obj.GetUint32(8);
                 }
-                component.field9Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Allocate(world);
 
+                component.field9Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Allocate(world);
                 if (obj.GetUint64Count(9) == 1)
                 {
                     component.Field9 = obj.GetUint64(9);
                 }
-                component.field10Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Allocate(world);
 
+                component.field10Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Allocate(world);
                 if (obj.GetSint32Count(10) == 1)
                 {
                     component.Field10 = obj.GetSint32(10);
                 }
-                component.field11Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Allocate(world);
 
+                component.field11Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Allocate(world);
                 if (obj.GetSint64Count(11) == 1)
                 {
                     component.Field11 = obj.GetSint64(11);
                 }
-                component.field12Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Allocate(world);
 
+                component.field12Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Allocate(world);
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     component.Field12 = obj.GetFixed32(12);
                 }
-                component.field13Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Allocate(world);
 
+                component.field13Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Allocate(world);
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     component.Field13 = obj.GetFixed64(13);
                 }
-                component.field14Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Allocate(world);
 
+                component.field14Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Allocate(world);
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     component.Field14 = obj.GetSfixed32(14);
                 }
-                component.field15Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Allocate(world);
 
+                component.field15Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Allocate(world);
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     component.Field15 = obj.GetSfixed64(15);
                 }
-                component.field16Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Allocate(world);
 
+                component.field16Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     component.Field16 = obj.GetEntityId(16);
                 }
-                component.field17Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Allocate(world);
 
+                component.field17Handle = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Allocate(world);
                 if (obj.GetObjectCount(17) == 1)
                 {
                     component.Field17 = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 }
+
                 return component;
             }
 

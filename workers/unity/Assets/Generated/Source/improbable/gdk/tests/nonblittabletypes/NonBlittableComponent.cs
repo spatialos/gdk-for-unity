@@ -186,27 +186,26 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 var component = new SpatialOSNonBlittableComponent();
 
+                component.boolField = obj.GetBool(1);
 
-                component.BoolField = obj.GetBool(1);
+                component.intField = obj.GetInt32(2);
 
-                component.IntField = obj.GetInt32(2);
+                component.longField = obj.GetInt64(3);
 
-                component.LongField = obj.GetInt64(3);
+                component.floatField = obj.GetFloat(4);
 
-                component.FloatField = obj.GetFloat(4);
+                component.doubleField = obj.GetDouble(5);
 
-                component.DoubleField = obj.GetDouble(5);
                 component.stringFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
+                Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Set(component.stringFieldHandle, obj.GetString(6));                
 
-                component.StringField = obj.GetString(6);
                 component.optionalFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
-
                 if (obj.GetInt32Count(7) == 1)
                 {
                     component.OptionalField = obj.GetInt32(7);
                 }
-                component.listFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
 
+                component.listFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
                 var listField = new global::System.Collections.Generic.List<int>();
                 Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Set(component.listFieldHandle, listField);
                 for (var i = 0; i < obj.GetInt32Count(8); i++)
@@ -214,8 +213,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     listField.Add(obj.IndexInt32(8, (uint) i));
                 }
 
-                component.mapFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
 
+                component.mapFieldHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
                 {
                     var mapField = new global::System.Collections.Generic.Dictionary<int,string>();
                     Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(component.mapFieldHandle, mapField);
@@ -228,6 +227,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         mapField.Add(key, value);
                     }
                 }
+
                 return component;
             }
 
@@ -238,37 +238,37 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var value = obj.GetBool(1);
                     update.BoolField = new Option<BlittableBool>(value);
-                    component.BoolField = value;
+                    component.boolField = value;
                 }
                 if (obj.GetInt32Count(2) == 1)
                 {
                     var value = obj.GetInt32(2);
                     update.IntField = new Option<int>(value);
-                    component.IntField = value;
+                    component.intField = value;
                 }
                 if (obj.GetInt64Count(3) == 1)
                 {
                     var value = obj.GetInt64(3);
                     update.LongField = new Option<long>(value);
-                    component.LongField = value;
+                    component.longField = value;
                 }
                 if (obj.GetFloatCount(4) == 1)
                 {
                     var value = obj.GetFloat(4);
                     update.FloatField = new Option<float>(value);
-                    component.FloatField = value;
+                    component.floatField = value;
                 }
                 if (obj.GetDoubleCount(5) == 1)
                 {
                     var value = obj.GetDouble(5);
                     update.DoubleField = new Option<double>(value);
-                    component.DoubleField = value;
+                    component.doubleField = value;
                 }
                 if (obj.GetStringCount(6) == 1)
                 {
                     var value = obj.GetString(6);
                     update.StringField = new Option<string>(value);
-                    component.StringField = value;
+                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Set(component.stringFieldHandle, value);                
                 }
                 if (obj.GetInt32Count(7) == 1)
                 {

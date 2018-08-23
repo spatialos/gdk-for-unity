@@ -244,36 +244,36 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 var component = new SpatialOSExhaustiveBlittableSingular();
 
+                component.field1 = obj.GetBool(1);
 
-                component.Field1 = obj.GetBool(1);
+                component.field2 = obj.GetFloat(2);
 
-                component.Field2 = obj.GetFloat(2);
+                component.field4 = obj.GetInt32(4);
 
-                component.Field4 = obj.GetInt32(4);
+                component.field5 = obj.GetInt64(5);
 
-                component.Field5 = obj.GetInt64(5);
+                component.field6 = obj.GetDouble(6);
 
-                component.Field6 = obj.GetDouble(6);
+                component.field8 = obj.GetUint32(8);
 
-                component.Field8 = obj.GetUint32(8);
+                component.field9 = obj.GetUint64(9);
 
-                component.Field9 = obj.GetUint64(9);
+                component.field10 = obj.GetSint32(10);
 
-                component.Field10 = obj.GetSint32(10);
+                component.field11 = obj.GetSint64(11);
 
-                component.Field11 = obj.GetSint64(11);
+                component.field12 = obj.GetFixed32(12);
 
-                component.Field12 = obj.GetFixed32(12);
+                component.field13 = obj.GetFixed64(13);
 
-                component.Field13 = obj.GetFixed64(13);
+                component.field14 = obj.GetSfixed32(14);
 
-                component.Field14 = obj.GetSfixed32(14);
+                component.field15 = obj.GetSfixed64(15);
 
-                component.Field15 = obj.GetSfixed64(15);
+                component.field16 = obj.GetEntityId(16);
 
-                component.Field16 = obj.GetEntityId(16);
+                component.field17 = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
 
-                component.Field17 = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 return component;
             }
 
@@ -284,91 +284,91 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var value = obj.GetBool(1);
                     update.Field1 = new Option<BlittableBool>(value);
-                    component.Field1 = value;
+                    component.field1 = value;
                 }
                 if (obj.GetFloatCount(2) == 1)
                 {
                     var value = obj.GetFloat(2);
                     update.Field2 = new Option<float>(value);
-                    component.Field2 = value;
+                    component.field2 = value;
                 }
                 if (obj.GetInt32Count(4) == 1)
                 {
                     var value = obj.GetInt32(4);
                     update.Field4 = new Option<int>(value);
-                    component.Field4 = value;
+                    component.field4 = value;
                 }
                 if (obj.GetInt64Count(5) == 1)
                 {
                     var value = obj.GetInt64(5);
                     update.Field5 = new Option<long>(value);
-                    component.Field5 = value;
+                    component.field5 = value;
                 }
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     var value = obj.GetDouble(6);
                     update.Field6 = new Option<double>(value);
-                    component.Field6 = value;
+                    component.field6 = value;
                 }
                 if (obj.GetUint32Count(8) == 1)
                 {
                     var value = obj.GetUint32(8);
                     update.Field8 = new Option<uint>(value);
-                    component.Field8 = value;
+                    component.field8 = value;
                 }
                 if (obj.GetUint64Count(9) == 1)
                 {
                     var value = obj.GetUint64(9);
                     update.Field9 = new Option<ulong>(value);
-                    component.Field9 = value;
+                    component.field9 = value;
                 }
                 if (obj.GetSint32Count(10) == 1)
                 {
                     var value = obj.GetSint32(10);
                     update.Field10 = new Option<int>(value);
-                    component.Field10 = value;
+                    component.field10 = value;
                 }
                 if (obj.GetSint64Count(11) == 1)
                 {
                     var value = obj.GetSint64(11);
                     update.Field11 = new Option<long>(value);
-                    component.Field11 = value;
+                    component.field11 = value;
                 }
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     var value = obj.GetFixed32(12);
                     update.Field12 = new Option<uint>(value);
-                    component.Field12 = value;
+                    component.field12 = value;
                 }
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     var value = obj.GetFixed64(13);
                     update.Field13 = new Option<ulong>(value);
-                    component.Field13 = value;
+                    component.field13 = value;
                 }
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     var value = obj.GetSfixed32(14);
                     update.Field14 = new Option<int>(value);
-                    component.Field14 = value;
+                    component.field14 = value;
                 }
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     var value = obj.GetSfixed64(15);
                     update.Field15 = new Option<long>(value);
-                    component.Field15 = value;
+                    component.field15 = value;
                 }
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     var value = obj.GetEntityId(16);
                     update.Field16 = new Option<global::Improbable.Worker.EntityId>(value);
-                    component.Field16 = value;
+                    component.field16 = value;
                 }
                 if (obj.GetObjectCount(17) == 1)
                 {
                     var value = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
                     update.Field17 = new Option<global::Generated.Improbable.Gdk.Tests.SomeType>(value);
-                    component.Field17 = value;
+                    component.field17 = value;
                 }
                 return update;
             }
