@@ -393,138 +393,138 @@ namespace Generated.Improbable.Gdk.Tests
 
                 component.field1Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Allocate(world);
 
-                component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                var field1 = component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
                 for (var i = 0; i < obj.GetBoolCount(1); i++)
                 {
-                    component.Field1.Add(obj.IndexBool(1, (uint) i));
+                    field1.Add(obj.IndexBool(1, (uint) i));
                 }
 
                 component.field2Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Allocate(world);
 
-                component.Field2 = new global::System.Collections.Generic.List<float>();
+                var field2 = component.Field2 = new global::System.Collections.Generic.List<float>();
                 for (var i = 0; i < obj.GetFloatCount(2); i++)
                 {
-                    component.Field2.Add(obj.IndexFloat(2, (uint) i));
+                    field2.Add(obj.IndexFloat(2, (uint) i));
                 }
 
                 component.field3Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Allocate(world);
 
-                component.Field3 = new global::System.Collections.Generic.List<byte[]>();
+                var field3 = component.Field3 = new global::System.Collections.Generic.List<byte[]>();
                 for (var i = 0; i < obj.GetBytesCount(3); i++)
                 {
-                    component.Field3.Add(obj.IndexBytes(3, (uint) i));
+                    field3.Add(obj.IndexBytes(3, (uint) i));
                 }
 
                 component.field4Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Allocate(world);
 
-                component.Field4 = new global::System.Collections.Generic.List<int>();
+                var field4 = component.Field4 = new global::System.Collections.Generic.List<int>();
                 for (var i = 0; i < obj.GetInt32Count(4); i++)
                 {
-                    component.Field4.Add(obj.IndexInt32(4, (uint) i));
+                    field4.Add(obj.IndexInt32(4, (uint) i));
                 }
 
                 component.field5Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Allocate(world);
 
-                component.Field5 = new global::System.Collections.Generic.List<long>();
+                var field5 = component.Field5 = new global::System.Collections.Generic.List<long>();
                 for (var i = 0; i < obj.GetInt64Count(5); i++)
                 {
-                    component.Field5.Add(obj.IndexInt64(5, (uint) i));
+                    field5.Add(obj.IndexInt64(5, (uint) i));
                 }
 
                 component.field6Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Allocate(world);
 
-                component.Field6 = new global::System.Collections.Generic.List<double>();
+                var field6 = component.Field6 = new global::System.Collections.Generic.List<double>();
                 for (var i = 0; i < obj.GetDoubleCount(6); i++)
                 {
-                    component.Field6.Add(obj.IndexDouble(6, (uint) i));
+                    field6.Add(obj.IndexDouble(6, (uint) i));
                 }
 
                 component.field7Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Allocate(world);
 
-                component.Field7 = new global::System.Collections.Generic.List<string>();
+                var field7 = component.Field7 = new global::System.Collections.Generic.List<string>();
                 for (var i = 0; i < obj.GetStringCount(7); i++)
                 {
-                    component.Field7.Add(obj.IndexString(7, (uint) i));
+                    field7.Add(obj.IndexString(7, (uint) i));
                 }
 
                 component.field8Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Allocate(world);
 
-                component.Field8 = new global::System.Collections.Generic.List<uint>();
+                var field8 = component.Field8 = new global::System.Collections.Generic.List<uint>();
                 for (var i = 0; i < obj.GetUint32Count(8); i++)
                 {
-                    component.Field8.Add(obj.IndexUint32(8, (uint) i));
+                    field8.Add(obj.IndexUint32(8, (uint) i));
                 }
 
                 component.field9Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Allocate(world);
 
-                component.Field9 = new global::System.Collections.Generic.List<ulong>();
+                var field9 = component.Field9 = new global::System.Collections.Generic.List<ulong>();
                 for (var i = 0; i < obj.GetUint64Count(9); i++)
                 {
-                    component.Field9.Add(obj.IndexUint64(9, (uint) i));
+                    field9.Add(obj.IndexUint64(9, (uint) i));
                 }
 
                 component.field10Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Allocate(world);
 
-                component.Field10 = new global::System.Collections.Generic.List<int>();
+                var field10 = component.Field10 = new global::System.Collections.Generic.List<int>();
                 for (var i = 0; i < obj.GetSint32Count(10); i++)
                 {
-                    component.Field10.Add(obj.IndexSint32(10, (uint) i));
+                    field10.Add(obj.IndexSint32(10, (uint) i));
                 }
 
                 component.field11Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Allocate(world);
 
-                component.Field11 = new global::System.Collections.Generic.List<long>();
+                var field11 = component.Field11 = new global::System.Collections.Generic.List<long>();
                 for (var i = 0; i < obj.GetSint64Count(11); i++)
                 {
-                    component.Field11.Add(obj.IndexSint64(11, (uint) i));
+                    field11.Add(obj.IndexSint64(11, (uint) i));
                 }
 
                 component.field12Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Allocate(world);
 
-                component.Field12 = new global::System.Collections.Generic.List<uint>();
+                var field12 = component.Field12 = new global::System.Collections.Generic.List<uint>();
                 for (var i = 0; i < obj.GetFixed32Count(12); i++)
                 {
-                    component.Field12.Add(obj.IndexFixed32(12, (uint) i));
+                    field12.Add(obj.IndexFixed32(12, (uint) i));
                 }
 
                 component.field13Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Allocate(world);
 
-                component.Field13 = new global::System.Collections.Generic.List<ulong>();
+                var field13 = component.Field13 = new global::System.Collections.Generic.List<ulong>();
                 for (var i = 0; i < obj.GetFixed64Count(13); i++)
                 {
-                    component.Field13.Add(obj.IndexFixed64(13, (uint) i));
+                    field13.Add(obj.IndexFixed64(13, (uint) i));
                 }
 
                 component.field14Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Allocate(world);
 
-                component.Field14 = new global::System.Collections.Generic.List<int>();
+                var field14 = component.Field14 = new global::System.Collections.Generic.List<int>();
                 for (var i = 0; i < obj.GetSfixed32Count(14); i++)
                 {
-                    component.Field14.Add(obj.IndexSfixed32(14, (uint) i));
+                    field14.Add(obj.IndexSfixed32(14, (uint) i));
                 }
 
                 component.field15Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Allocate(world);
 
-                component.Field15 = new global::System.Collections.Generic.List<long>();
+                var field15 = component.Field15 = new global::System.Collections.Generic.List<long>();
                 for (var i = 0; i < obj.GetSfixed64Count(15); i++)
                 {
-                    component.Field15.Add(obj.IndexSfixed64(15, (uint) i));
+                    field15.Add(obj.IndexSfixed64(15, (uint) i));
                 }
 
                 component.field16Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Allocate(world);
 
-                component.Field16 = new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>();
+                var field16 = component.Field16 = new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>();
                 for (var i = 0; i < obj.GetEntityIdCount(16); i++)
                 {
-                    component.Field16.Add(obj.IndexEntityId(16, (uint) i));
+                    field16.Add(obj.IndexEntityId(16, (uint) i));
                 }
 
                 component.field17Handle = Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Allocate(world);
 
-                component.Field17 = new global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>();
+                var field17 = component.Field17 = new global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>();
                 for (var i = 0; i < obj.GetObjectCount(17); i++)
                 {
-                    component.Field17.Add(global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i)));
+                    field17.Add(global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i)));
                 }
 
                 return component;

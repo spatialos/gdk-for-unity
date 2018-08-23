@@ -14,11 +14,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct Data
         {
             public readonly int Length;
-
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>
-                PlayerHeartbeatResponses;
-
-            [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
+            public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;
             public EntityArray Entities;
@@ -33,6 +30,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var entityId = data.SpatialEntityIds[i].EntityId;
                 var responses = data.PlayerHeartbeatResponses[i].Responses;
                 var entity = data.Entities[i];
+                var entityDeleteSender = data.WorldCommandSenders[i];
 
                 foreach (var response in responses)
                 {
@@ -59,10 +57,11 @@ namespace Improbable.Gdk.PlayerLifecycle
                             PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
                         {
                             Debug.LogFormat(Messages.DeletingPlayer, entityId);
-                            data.WorldCommandSenders[i].RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
+                            entityDeleteSender.RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
                             {
                                 EntityId = entityId,
                             });
+                            data.WorldCommandSenders[i] = entityDeleteSender;
                         }
                     }
                     else

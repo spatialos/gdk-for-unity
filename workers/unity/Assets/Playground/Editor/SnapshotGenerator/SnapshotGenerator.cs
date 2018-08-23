@@ -79,7 +79,7 @@ namespace Playground.Editor.SnapshotGenerator
                     }
 
                     // Exit when we've hit our cube limit
-                    if (--cubesToSpawn <= 0)
+                    if (cubesToSpawn-- <= 0)
                     {
                         return;
                     }

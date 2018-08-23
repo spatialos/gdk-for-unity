@@ -18,8 +18,10 @@ namespace Improbable.Gdk.Core
         private const uint PositionComponentId = 54;
         private const uint PersistenceComponentId = 55;
 
+        // NOTE: We automatically build and add the EntityAcl, so the Position
+        // component is the only one required to be put on by the user.
         private static readonly HashSet<uint> requiredComponents =
-            new HashSet<uint> { EntityAclComponentId, PositionComponentId };
+            new HashSet<uint> { PositionComponentId };
 
 
         public static EntityBuilder Begin()
@@ -51,9 +53,10 @@ namespace Improbable.Gdk.Core
         {
             var schemaData = new SchemaComponentData(PositionComponentId);
             var fields = schemaData.GetFields();
-            fields.AddDouble(1, x);
-            fields.AddDouble(2, y);
-            fields.AddDouble(3, z);
+            var coordinatesObj = fields.AddObject(1);
+            coordinatesObj.AddDouble(1, x);
+            coordinatesObj.AddDouble(2, y);
+            coordinatesObj.AddDouble(3, z);
 
             return AddComponent(new ComponentData(schemaData), writeAccess);
         }
@@ -114,9 +117,15 @@ namespace Improbable.Gdk.Core
 
         public Entity Build()
         {
+            if (hasBuiltOnce)
+            {
+                throw new InvalidOperationException("Cannot call Build() multiple times on the same EntityBuilder instance.");
+            }
+
             entity.Add(acl.Build());
             componentsAdded.Add(EntityAclComponentId);
             CheckRequiredComponents();
+            hasBuiltOnce = true;
             return entity;
         }
 
@@ -125,14 +134,7 @@ namespace Improbable.Gdk.Core
             if (!requiredComponents.All(c => componentsAdded.Contains(c)))
             {
                 throw new InvalidEntityException(
-                    "Entity is invalid. Missing one of required component: Position and EntityAcl");
-            }
-        }
-
-        private class InvalidEntityException : Exception
-        {
-            public InvalidEntityException(string message) : base(message)
-            {
+                    "Entity is invalid. Missing the Position component.");
             }
         }
 
@@ -177,6 +179,13 @@ namespace Improbable.Gdk.Core
 
                 return new ComponentData(schemaComponentData);
             }
+        }
+    }
+
+    public class InvalidEntityException : Exception
+    {
+        public InvalidEntityException(string message) : base(message)
+        {
         }
     }
 }

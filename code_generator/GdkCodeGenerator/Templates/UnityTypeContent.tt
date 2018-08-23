@@ -88,21 +88,21 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-            instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+            var <#= fieldDetails.CamelCaseName #> = instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
 <# if (listTypeInfo.IsEnum) { #>
             for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.EnumIndex(<#= fieldDetails.FieldNumber #>, (uint) i));
+                <#= fieldDetails.CamelCaseName #>.Add((<#= listTypeInfo.Type #>) obj.EnumIndex(<#= fieldDetails.FieldNumber #>, (uint) i));
             }
 <# } else if (listTypeInfo.IsPrimitive) { #>
             for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
+                <#= fieldDetails.CamelCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
             }
 <# } else { #>
             for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
             {
-                instance.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
+                <#= fieldDetails.CamelCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
             }
 <# } #>
 
@@ -127,7 +127,7 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
             {
-                instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                var <#= fieldDetails.CamelCaseName #> = instance.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
                 var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                 for (var i = 0; i < mapSize; i++)
                 {
@@ -146,7 +146,7 @@ public struct <#= typeDetails.CapitalisedName #>
 <# } else { #>
                     var value = <#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(mapObj.GetObject(2));
 <# } #>
-                    instance.<#= fieldDetails.PascalCaseName #>.Add(key, value);
+                    <#= fieldDetails.CamelCaseName #>.Add(key, value);
                 }
             }
 <# } #>
