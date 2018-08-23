@@ -130,28 +130,34 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
-
-                var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<<#= componentDetails.TypeName #>.Update> updates;
-                if (entityManager.HasComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<<#= componentDetails.TypeName #>>>(entity))
                 {
-                    updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<<#= componentDetails.TypeName #>>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                    var update = global::<#= qualifiedNamespace #>.<#= componentDetails.TypeName #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<<#= componentDetails.TypeName #>.Update> updates;
+                    if (entityManager.HasComponent<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentDetails.TypeName #>.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
-                }
+                        updates = entityManager.GetComponentData<<#= componentDetails.TypeName #>.ReceivedUpdates>(entity).Updates;
 
-                updates.Add(update);
+                    }
+                    else
+                    {
+                        var updatesComponent = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentDetails.TypeName #>.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
+                }
 
 <# if (eventDetailsList.Count > 0) { #>
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
@@ -189,8 +195,6 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
 <# } #>
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
