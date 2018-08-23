@@ -30,7 +30,6 @@ namespace Playground.MonoBehaviours
 
             if (Input.GetKeyDown(KeyCode.T))
             {
-                Debug.Log("Sending command for " + gameObject.name);
                 requestSender.SendSpinnerToggleRotationRequest(ownEntityId, new Void());
             }
         }

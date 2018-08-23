@@ -100,7 +100,7 @@ namespace <#= qualifiedNamespace #>
                     remove => <#= delegateList #>.Remove(value);
                 }
 
-                public void On<#= commandDetails.CommandName #>RequestInternal(<#= commandRequestType #> request)
+                internal void On<#= commandDetails.CommandName #>RequestInternal(<#= commandRequestType #> request)
                 {
                     foreach (var callback in <#= delegateList #>)
                     {

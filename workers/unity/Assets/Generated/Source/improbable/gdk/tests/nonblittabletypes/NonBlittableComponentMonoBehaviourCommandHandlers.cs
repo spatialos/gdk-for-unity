@@ -103,7 +103,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     remove => FirstCommandDelegates.Remove(value);
                 }
 
-                public void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
+                internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
                     foreach (var callback in FirstCommandDelegates)
                     {
@@ -125,7 +125,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     remove => SecondCommandDelegates.Remove(value);
                 }
 
-                public void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
+                internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
                     foreach (var callback in SecondCommandDelegates)
                     {

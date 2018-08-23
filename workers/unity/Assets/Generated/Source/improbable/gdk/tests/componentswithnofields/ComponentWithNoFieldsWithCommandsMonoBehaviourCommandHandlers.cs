@@ -89,7 +89,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     remove => CmdDelegates.Remove(value);
                 }
 
-                public void OnCmdRequestInternal(Cmd.ReceivedRequest request)
+                internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
                     foreach (var callback in CmdDelegates)
                     {

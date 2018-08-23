@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 114269369599588928}
   - component: {fileID: 114279928377325580}
   - component: {fileID: 114446978971394342}
+  - component: {fileID: 114216147432097732}
+  - component: {fileID: 114682284772451974}
   m_Layer: 0
   m_Name: Spinner
   m_TagString: Untagged
@@ -100,6 +102,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114216147432097732
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1198430049189278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87aeae8878193d4598e29d429b8221b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114269369599588928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,7 +136,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashTime: 0.2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &114446978971394342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +145,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee79fdb7354ad6742bc3d66b795ac402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114682284772451974
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1198430049189278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97050c84d476d1140885175fda462f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114749002643581954
@@ -146,3 +169,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c6f4a65d31e884ba3f035255fec5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RotatingClockWise: 1

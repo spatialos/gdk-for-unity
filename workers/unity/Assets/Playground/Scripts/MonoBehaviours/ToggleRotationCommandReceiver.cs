@@ -20,7 +20,6 @@ namespace Playground.MonoBehaviours
 
         private void OnSpinnerToggleRotationRequest(MonoBehaviourTest.SpinnerToggleRotation.ReceivedRequest request)
         {
-            Debug.Log("Changed rotation for " + gameObject.name);
             rotationBehaviour.RotatingClockWise = !rotationBehaviour.RotatingClockWise;
         }
     }
