@@ -2,7 +2,6 @@
 using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Playground;
-using UnityEditor;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 
