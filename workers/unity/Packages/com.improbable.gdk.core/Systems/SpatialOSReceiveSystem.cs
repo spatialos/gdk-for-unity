@@ -94,9 +94,9 @@ namespace Improbable.Gdk.Core
             });
             EntityManager.AddComponentData(entity, new NewlyAddedSpatialOSEntity());
 
-            foreach (var AddCommandCompoent in AddAllCommandComponents)
+            foreach (var addCommandComponentAction in AddAllCommandComponents)
             {
-                AddCommandCompoent(entity);
+                addCommandComponentAction(entity);
             }
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
