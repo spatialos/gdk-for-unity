@@ -59,7 +59,6 @@ namespace Improbable.Gdk.Core
                 }
 
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
-                worker.AddCoreSystems();
                 return worker;
             }
         }
@@ -95,15 +94,6 @@ namespace Improbable.Gdk.Core
             return World.GetExistingManager<WorkerSystem>().TryGetEntity(entityId, out entity);
         }
 
-        public void Dispose()
-        {
-            LogDispatcher.Dispose();
-            World?.Dispose();
-            World = null;
-            Connection?.Dispose();
-            Connection = null;
-        }
-
         private static async Task<DeploymentList> GetDeploymentList(Locator locator)
         {
             using (var deploymentsFuture = locator.GetDeploymentListAsync())
@@ -130,12 +120,7 @@ namespace Improbable.Gdk.Core
 
         private void AddCoreSystems()
         {
-            var workerSystem = World.GetOrCreateManager<WorkerSystem>();
-            workerSystem.Connection = Connection;
-            workerSystem.LogDispatcher = LogDispatcher;
-            workerSystem.Origin = Origin;
-            workerSystem.WorkerType = WorkerType;
-
+            World.CreateManager<WorkerSystem>(Connection, LogDispatcher, WorkerType, Origin);
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
@@ -146,6 +131,15 @@ namespace Improbable.Gdk.Core
             // Monobehaviour stuff
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
+        }
+
+        public void Dispose()
+        {
+            World?.Dispose();
+            World = null;
+            LogDispatcher.Dispose();
+            Connection?.Dispose();
+            Connection = null;
         }
     }
 }

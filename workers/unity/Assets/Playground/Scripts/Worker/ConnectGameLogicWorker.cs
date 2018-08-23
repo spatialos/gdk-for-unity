@@ -7,7 +7,7 @@ using Playground;
 using Unity.Entities;
 using UnityEngine;
 
-public class ConnectGameLogicWorker : MonoBehaviour
+public class ConnectGameLogicWorker : MonoBehaviour, IDisposable
 {
     public Vector3 Origin = Vector3.zero;
     public GameObject Level;
@@ -15,66 +15,77 @@ public class ConnectGameLogicWorker : MonoBehaviour
 
     public Worker GameLogicWorker;
 
-    protected void Start()
+    protected async void Start()
     {
-        CreateWorker(ConnectionAttempts);
+        await CreateWorkerAsync(ConnectionAttempts);
     }
 
     protected void OnApplicationQuit()
     {
-        GameLogicWorker?.Dispose();
+        Dispose();
     }
 
-    private void CreateWorker(int attempts)
+    private async Task CreateWorkerAsync(int attempts)
     {
-        Task<Worker> workerTask;
         const string workerType = SystemConfig.UnityGameLogic;
+        ReceptionistConfig config;
         if (Application.isEditor)
         {
-            var config = new ReceptionistConfig
+            config = new ReceptionistConfig
             {
                 WorkerType = workerType,
                 WorkerId = $"{workerType}-{Guid.NewGuid()}"
             };
-            workerTask = Worker.CreateWorkerAsync(config, new ForwardingDispatcher(), Origin);
         }
         else
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
-            Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-            var config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
+            config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
             if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
             {
                 config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
             }
-
-            workerTask = Worker.CreateWorkerAsync(config, new ForwardingDispatcher(), Origin);
         }
 
-        StartCoroutine(CheckForWorkerReady(workerTask, attempts - 1));
+        try
+        {
+            var worker = await ConnectWithRetriesAsync(config, new ForwardingDispatcher(), Origin, attempts);
+            InitializeWorker(worker);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to create worker {config.WorkerId} with error:{Environment.NewLine}{e.Message}");
+            Dispose();
+        }
     }
 
-    private IEnumerator CheckForWorkerReady(Task<Worker> workerTask, int attempts)
+    private async Task<Worker> ConnectWithRetriesAsync(ReceptionistConfig config, ILogDispatcher dispatcher, Vector3 origin,
+        int attempts)
     {
-        while (!workerTask.IsCompleted)
+        while (attempts > 0)
         {
-            yield return null;
-        }
-
-        if (workerTask.IsFaulted)
-        {
-            Debug.LogError(
-                $"Failed to create game logic worker with error: {workerTask.Exception.InnerException.Message}");
-            if (attempts > 0)
+            try
             {
-                CreateWorker(attempts);
+                var worker = await Worker.CreateWorkerAsync(config, dispatcher, origin);
+                return worker;
             }
-
-            yield break;
+            catch (ConnectionFailedException e)
+            {
+                Debug.LogError(
+                    $"Failed attempt to create game logic worker with error:{Environment.NewLine}{e.Message}");
+                attempts--;
+            }
         }
 
-        GameLogicWorker = workerTask.Result;
+        throw new ConnectionFailedException(
+            $"Exceeded maximum connection attempts ",
+            ConnectionErrorReason.ExceededMaximumRetries);
+    }
+
+    private void InitializeWorker(Worker worker)
+    {
+        GameLogicWorker = worker;
         SystemConfig.AddGameLogicSystems(GameLogicWorker.World);
         InstantiateLevel();
         GameLogicWorker.OnDisconnect += OnDisconnected;
@@ -94,16 +105,22 @@ public class ConnectGameLogicWorker : MonoBehaviour
 
     private void OnDisconnected(string reason)
     {
-        GameLogicWorker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent($"Worker disconnected")
+        GameLogicWorker.LogDispatcher.HandleLog(LogType.Log, new LogEvent($"Worker disconnected")
             .WithField("WorkerId", GameLogicWorker.WorkerId)
             .WithField("Reason", reason));
-        StartCoroutine(DefferedDisposeWorker());
+        StartCoroutine(DeferredDisposeWorker());
     }
 
-    private IEnumerator DefferedDisposeWorker()
+    private IEnumerator DeferredDisposeWorker()
     {
         yield return null;
-        GameLogicWorker.Dispose();
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        GameLogicWorker?.Dispose();
+        GameLogicWorker = null;
         Destroy(this);
     }
 }

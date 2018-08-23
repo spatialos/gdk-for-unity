@@ -9,13 +9,22 @@ namespace Improbable.Gdk.Core
 {
     public class WorkerSystem : ComponentSystem
     {
-        public Vector3 Origin;
-        public Connection Connection;
-        public ILogDispatcher LogDispatcher;
+        public readonly Connection Connection;
+        public readonly ILogDispatcher LogDispatcher;
+        public readonly string WorkerType;
+        public readonly Vector3 Origin;
+
         public Entity WorkerEntity;
-        public string WorkerType;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
+
+        public WorkerSystem(Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
+        {
+            Connection = connection;
+            LogDispatcher = logDispatcher;
+            WorkerType = workerType;
+            Origin = origin;
+        }
 
         public bool TryGetEntity(EntityId entityId, out Entity entity)
         {

@@ -6,7 +6,8 @@ namespace Improbable.Gdk.Core
     {
         CannotEstablishConnection,
         DeploymentNotFound,
-        InvalidConfig
+        InvalidConfig,
+        ExceededMaximumRetries
     }
 
     public class ConnectionFailedException : Exception

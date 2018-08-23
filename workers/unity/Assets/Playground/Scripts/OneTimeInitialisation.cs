@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public static class PlaygroundOneTimeInitialisation
+    public static class OneTimeInitialisation
     {
         private static bool initialized = false;
 
@@ -18,9 +18,8 @@ namespace Playground
             }
 
             initialized = true;
-            // Taken from DefaultWorldInitalization.cs
-            SetupInjectionHooks(); // Register hybrid injection hooks
-            PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 1000); // Clean up worlds and player loop
+            SetupInjectionHooks();
+            PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 1000);
 
             // Setup template to use for player on connecting client
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;

@@ -11,11 +11,27 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class ForwardingDispatcher : ILogDispatcher
     {
-        public Connection Connection { get; set; }
-
         private readonly LogLevel minimumLogLevel;
 
         private bool inHandleLog;
+
+        private Connection connection;
+
+        public Connection Connection
+        {
+            get => connection;
+            set
+            {
+                if (connection == null)
+                {
+                    Application.logMessageReceived += LogCallback;
+                }
+                else if (value == null)
+                {
+                    Application.logMessageReceived -= LogCallback;
+                }
+            }
+        }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
@@ -29,7 +45,6 @@ namespace Improbable.Gdk.Core
         public ForwardingDispatcher(LogLevel minimumLogLevel = LogLevel.Warn)
         {
             this.minimumLogLevel = minimumLogLevel;
-            Application.logMessageReceived += LogCallback;
         }
 
         // This method catches exceptions coming from the engine, or third party code.
@@ -46,11 +61,6 @@ namespace Improbable.Gdk.Core
             {
                 Connection.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
-        }
-
-        public void SetConnection(Connection newConnection)
-        {
-            Connection = newConnection;
         }
 
         public void HandleLog(LogType type, LogEvent logEvent)

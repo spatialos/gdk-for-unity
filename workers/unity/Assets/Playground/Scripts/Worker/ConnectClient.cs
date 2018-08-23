@@ -8,7 +8,7 @@ using Playground;
 using Unity.Entities;
 using UnityEngine;
 
-public class ConnectClient : MonoBehaviour
+public class ConnectClient : MonoBehaviour, IDisposable
 {
     public Vector3 Origin = Vector3.zero;
     public GameObject Level;
@@ -23,7 +23,7 @@ public class ConnectClient : MonoBehaviour
 
     protected void OnApplicationQuit()
     {
-        ClientWorker?.Dispose();
+        Dispose();
     }
 
     private static string SelectDeploymentName(DeploymentList deploymentList)
@@ -52,7 +52,6 @@ public class ConnectClient : MonoBehaviour
         else
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
-            Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
             if (commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken))
             {
@@ -112,16 +111,22 @@ public class ConnectClient : MonoBehaviour
 
     private void OnDisconnected(string reason)
     {
-        ClientWorker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent($"Worker disconnected")
+        ClientWorker.LogDispatcher.HandleLog(LogType.Log, new LogEvent($"Worker disconnected")
             .WithField("WorkerId", ClientWorker.WorkerId)
             .WithField("Reason", reason));
-        StartCoroutine(DefferedDisposeWorker());
+        StartCoroutine(DeferredDisposeWorker());
     }
 
-    private IEnumerator DefferedDisposeWorker()
+    private IEnumerator DeferredDisposeWorker()
     {
         yield return null;
-        ClientWorker.Dispose();
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        ClientWorker?.Dispose();
+        ClientWorker = null;
         Destroy(this);
     }
 }

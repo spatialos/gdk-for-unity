@@ -13,7 +13,7 @@ namespace Playground
 
         public static void AddClientSystems(World world)
         {
-            AddCommonSystems(world);
+            AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
@@ -28,7 +28,7 @@ namespace Playground
 
         public static void AddGameLogicSystems(World world)
         {
-            AddCommonSystems(world);
+            AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
             world.GetOrCreateManager<CubeMovementSystem>();
@@ -41,9 +41,8 @@ namespace Playground
             world.GetOrCreateManager<CollisionProcessSystem>();
         }
 
-        private static void AddCommonSystems(World world)
+        private static void AddLifecycleSystems(World world)
         {
-            world.GetOrCreateManager<EntityManager>();
             world.GetOrCreateManager<GameObjectInitializationSystem>();
             world.GetOrCreateManager<ArchetypeInitializationSystem>();
             world.GetOrCreateManager<DisconnectSystem>();
