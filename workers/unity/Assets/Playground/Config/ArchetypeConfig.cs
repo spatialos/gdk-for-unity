@@ -8,6 +8,7 @@ namespace Playground
     {
         public const string CharacterArchetype = "Character";
         public const string CubeArchetype = "Cube";
+        public const string SpinnerArchetype = "Spinner";
 
         public static readonly Dictionary<string, Dictionary<string, ComponentType[]>>
             WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>
@@ -17,7 +18,8 @@ namespace Playground
                     new Dictionary<string, ComponentType[]>()
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }
+                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } },
+                        { SpinnerArchetype, new ComponentType[] { typeof(BufferedTransform) } }
                     }
                 },
                 {
@@ -25,7 +27,8 @@ namespace Playground
                     new Dictionary<string, ComponentType[]>()
                     {
                         { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } }
+                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } },
+                        { SpinnerArchetype, new ComponentType[] { typeof(BufferedTransform) } }
                     }
                 }
             };

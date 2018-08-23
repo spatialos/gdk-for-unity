@@ -14,10 +14,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct Data
         {
             public readonly int Length;
-
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>
-                PlayerHeartbeatResponses;
-
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
             public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;
