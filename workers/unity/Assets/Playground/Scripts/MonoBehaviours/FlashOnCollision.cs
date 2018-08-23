@@ -1,12 +1,15 @@
-﻿using Generated.Playground;
+﻿using System.Collections.Generic;
+using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Playground;
 using UnityEditor;
 using UnityEngine;
-using Color = UnityEngine.Color;
+using Color = Generated.Playground.Color;
 
 public class FlashOnCollision : MonoBehaviour
 {
-    [Require] private Collisions.Requirables.Reader reader;
+    [Require] private Collisions.Requirables.Reader collisionsReader;
+    [Require] private SpinnerColor.Requirables.Reader colorReader;
 
     private float collideTime;
     private bool flashing = false;
@@ -15,24 +18,23 @@ public class FlashOnCollision : MonoBehaviour
 
     private MeshRenderer renderer;
 
-    private static MaterialPropertyBlock basicMaterial;
+    private static Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
     private static MaterialPropertyBlock flashingMaterial;
 
     [RuntimeInitializeOnLoadMethod]
     public static void SetupColors()
     {
-        basicMaterial = new MaterialPropertyBlock();
-        basicMaterial.SetColor("_Color", Color.white);
-
         flashingMaterial = new MaterialPropertyBlock();
-        flashingMaterial.SetColor("_Color", Color.red);
+        flashingMaterial.SetColor("_Color", UnityEngine.Color.magenta);
+        ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
     }
 
     private void OnEnable()
     {
-        if (reader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
+        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
         {
-            reader.OnPlayerCollided += HandleCollisionEvent;
+            collisionsReader.OnPlayerCollided += HandleCollisionEvent;
+            colorReader.ColorUpdated += HandleColorChange;
         }
     }
 
@@ -43,9 +45,10 @@ public class FlashOnCollision : MonoBehaviour
 
     private void OnDisable()
     {
-        if (reader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
+        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
         {
-            reader.OnPlayerCollided -= HandleCollisionEvent;
+            collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
+            colorReader.ColorUpdated -= HandleColorChange;
         }
     }
 
@@ -56,11 +59,19 @@ public class FlashOnCollision : MonoBehaviour
         renderer.SetPropertyBlock(flashingMaterial);
     }
 
+    private void HandleColorChange(Color color)
+    {
+        if (!flashing)
+        {
+            renderer.SetPropertyBlock(materialPropertyBlocks[color]);
+        }
+    }
+
     private void Update()
     {
         if (flashing && Time.time - collideTime > flashTime)
         {
-            renderer.SetPropertyBlock(basicMaterial);
+            renderer.SetPropertyBlock(materialPropertyBlocks[colorReader.Data.Color]);
             flashing = false;
         }
     }
