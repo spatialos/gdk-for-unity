@@ -102,7 +102,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
                     // Call once except if flip-flopped back to starting state
-                    if (isFirstAuthChange(Authority.Authoritative, authoritiesChangedTags[i]))
+                    if (IsFirstAuthChange(Authority.Authoritative, authoritiesChangedTags[i]))
                     {
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
@@ -122,7 +122,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
                     // Call once except if flip-flopped back to starting state
-                    if (isFirstAuthChange(Authority.NotAuthoritative, authoritiesChangedTags[i]))
+                    if (IsFirstAuthChange(Authority.NotAuthoritative, authoritiesChangedTags[i]))
                     {
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
@@ -166,7 +166,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         continue;
                     }
 
-                    if (isFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
+                    if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
                     {
                         foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
@@ -195,7 +195,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         continue;
                     }
 
-                    if (isFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
+                    if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
                     {
                         foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                         {
@@ -205,7 +205,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            private bool isFirstAuthChange(Authority authToMatch, AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands> changeOps)
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<SpatialOSComponentWithNoFieldsWithCommands> changeOps)
             {
                 foreach (var auth in changeOps.Changes)
                 {
