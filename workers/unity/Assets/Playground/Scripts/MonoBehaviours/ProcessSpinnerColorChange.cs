@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 
-public class FlashOnCollision : MonoBehaviour
+public class ProcessSpinnerColorChange : MonoBehaviour
 {
     [Require] private Collisions.Requirables.Reader collisionsReader;
     [Require] private SpinnerColor.Requirables.Reader colorReader;
