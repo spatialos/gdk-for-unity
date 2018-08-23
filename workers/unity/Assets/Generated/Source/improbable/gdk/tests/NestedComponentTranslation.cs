@@ -48,6 +48,24 @@ namespace Generated.Improbable.Gdk.Tests
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSNestedComponent>());
 
+                var update = new SpatialOSNestedComponent.Update 
+                {
+                    NestedType = data.NestedType,
+                };
+                
+                var updates = new List<SpatialOSNestedComponent.Update>
+                {
+                    update
+                };
+                
+                var updatesComponent = new SpatialOSNestedComponent.ReceivedUpdates
+                {
+                    handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                };
+                
+                ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
+                entityManager.AddComponentData(entity, updatesComponent);
+                
                 if (entityManager.HasComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity))
                 {
                     entityManager.RemoveComponent<ComponentRemoved<SpatialOSNestedComponent>>(entity);

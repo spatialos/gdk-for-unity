@@ -58,6 +58,32 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSNonBlittableComponent>());
 
+                var update = new SpatialOSNonBlittableComponent.Update 
+                {
+                    BoolField = data.BoolField,
+                    IntField = data.IntField,
+                    LongField = data.LongField,
+                    FloatField = data.FloatField,
+                    DoubleField = data.DoubleField,
+                    StringField = data.StringField,
+                    OptionalField = data.OptionalField,
+                    ListField = data.ListField,
+                    MapField = data.MapField,
+                };
+                
+                var updates = new List<SpatialOSNonBlittableComponent.Update>
+                {
+                    update
+                };
+                
+                var updatesComponent = new SpatialOSNonBlittableComponent.ReceivedUpdates
+                {
+                    handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                };
+                
+                ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
+                entityManager.AddComponentData(entity, updatesComponent);
+                
                 if (entityManager.HasComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity))
                 {
                     entityManager.RemoveComponent<ComponentRemoved<SpatialOSNonBlittableComponent>>(entity);

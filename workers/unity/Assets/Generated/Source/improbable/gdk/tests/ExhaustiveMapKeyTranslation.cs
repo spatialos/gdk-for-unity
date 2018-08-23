@@ -65,6 +65,40 @@ namespace Generated.Improbable.Gdk.Tests
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveMapKey>());
 
+                var update = new SpatialOSExhaustiveMapKey.Update 
+                {
+                    Field1 = data.Field1,
+                    Field2 = data.Field2,
+                    Field3 = data.Field3,
+                    Field4 = data.Field4,
+                    Field5 = data.Field5,
+                    Field6 = data.Field6,
+                    Field7 = data.Field7,
+                    Field8 = data.Field8,
+                    Field9 = data.Field9,
+                    Field10 = data.Field10,
+                    Field11 = data.Field11,
+                    Field12 = data.Field12,
+                    Field13 = data.Field13,
+                    Field14 = data.Field14,
+                    Field15 = data.Field15,
+                    Field16 = data.Field16,
+                    Field17 = data.Field17,
+                };
+                
+                var updates = new List<SpatialOSExhaustiveMapKey.Update>
+                {
+                    update
+                };
+                
+                var updatesComponent = new SpatialOSExhaustiveMapKey.ReceivedUpdates
+                {
+                    handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                };
+                
+                ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
+                entityManager.AddComponentData(entity, updatesComponent);
+                
                 if (entityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity))
                 {
                     entityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveMapKey>>(entity);
