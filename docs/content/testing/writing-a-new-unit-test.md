@@ -73,7 +73,7 @@ The package for this class would be: `workers/Unity/Packages/com.improbable.gdk.
 
 The path within the package would be: `Utility/MyClass.cs`.
 
-Following the [package directory structure instructions](./testing-guidelines.md#package-directory-structure), the test filename would be:
+Following the [test directory structure instructions](./testing-guidelines.md#test-directory-structure-and-file-names), the test filename would be:
 
 `workers/Unity/Assets/Gdk/Core/Tests/EditMode/Utility/MyClassTests.cs`.
 
