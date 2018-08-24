@@ -25,13 +25,13 @@ For example:
   - `workers\unity\Assets\Gdk\Core\Tests`
   - `workers\unity\Assets\Gdk\PlayerLifecycle\Tests`
 
-Find out more about the GDK Unity project test directory structure and file names in [Test guidelines](./testing-guidelines.md#test-directory-structure-and-file-names).
+Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines](./testing-guidelines.md#test-directory-structure-and-file-names).
 
 ## Further information
 
 * [How to run tests](./how-to-run-tests.md)
-* [Testing guidelines](./testing-guidelines.md) - covers Unity tests only (contains information on the GDK Unity project test directory structure and file names) 
-* [Writing a new test](./writing-a-new-unit-test.md) covers Unity tests only
+* [Testing guidelines](./testing-guidelines.md) - covers Unity tests only (contains information on the GDK Unity project test directory structure and file names).
+* [Writing a new test](./writing-a-new-unit-test.md) covers Unity tests only.
 
 [//]: # (Editorial review status: Full review 2018-07-13)
 
