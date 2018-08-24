@@ -90,12 +90,5 @@ namespace Improbable
                     $"Exit code {exitCode} while running:\n{command}\n\t{string.Join("\n\t", arguments)}");
             }
         }
-
-        public static void WriteHeading(string format, params object[] args)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(format, args);
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
     }
 }

@@ -1,15 +1,25 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEditor;
 
 namespace Improbable.Gdk.Tools
 {
     public static class DownloadCoreSdk
     {
+        [MenuItem("Improbable/Download CoreSdk")]
+        public static void DownloadMenu()
+        {
+            Download();
+            AssetDatabase.Refresh();
+        }
+
         public static void Download()
         {
             try
             {
+                EditorApplication.LockReloadAssemblies();
+
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
@@ -20,9 +30,9 @@ namespace Improbable.Gdk.Tools
                     Debug.LogError("Failed to download the SpatialOS Core Sdk.");
                 }
             }
-            catch (Exception e)
+            finally
             {
-                Debug.LogException(e);
+                EditorApplication.UnlockReloadAssemblies();
             }
         }
     }

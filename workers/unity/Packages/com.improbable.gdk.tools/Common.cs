@@ -34,7 +34,14 @@ namespace Improbable.Gdk.Tools
         public static string GetThisPackagePath()
         {
             const string gdkTools = "com.improbable.gdk.tools";
-            var path = GetManifestDependencies()[gdkTools];
+            var manifest = GetManifestDependencies();
+
+            if (!manifest.ContainsKey(gdkTools))
+            {
+                throw new Exception($"The project manifest must reference '{gdkTools}'.");
+            }
+
+            var path = manifest[gdkTools];
 
             if (!path.StartsWith("file:"))
             {
