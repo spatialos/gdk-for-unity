@@ -12,12 +12,10 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public BlittableBool Response;
     
-    
         public FirstCommandResponse(BlittableBool response)
         {
             Response = response;
         }
-    
     
         public static class Serialization
         {

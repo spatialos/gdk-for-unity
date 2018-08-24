@@ -12,12 +12,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public string Response;
     
-    
         public FirstCommandResponse(string response)
         {
             Response = response;
         }
-    
     
         public static class Serialization
         {

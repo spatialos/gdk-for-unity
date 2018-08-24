@@ -12,12 +12,10 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public double Response;
     
-    
         public SecondCommandResponse(double response)
         {
             Response = response;
         }
-    
     
         public static class Serialization
         {

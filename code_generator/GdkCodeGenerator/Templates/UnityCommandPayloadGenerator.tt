@@ -20,24 +20,14 @@ namespace <#= qualifiedNamespace #>
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
             /// </summary>
             public struct Request
             {
-                public EntityId TargetEntityId { get; }
-                public <#= commandDetails.RequestType #> Payload { get; }
-                public uint? TimeoutMillis { get; }
-                public bool AllowShortCircuiting { get; }
-
-                internal Request(EntityId targetEntityId,
-                    <#= commandDetails.RequestType #> request,
-                    uint? timeoutMillis = null,
-                    bool allowShortCircuiting = false)
-                {
-                    TargetEntityId = targetEntityId;
-                    Payload = request;
-                    TimeoutMillis = timeoutMillis;
-                    AllowShortCircuiting = allowShortCircuiting;
-                }
+                public EntityId TargetEntityId { get; internal set; }
+                public <#= commandDetails.RequestType #> Payload { get; internal set; }
+                public uint? TimeoutMillis { get; internal set; }
+                public bool AllowShortCircuiting { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -45,7 +35,14 @@ namespace <#= qualifiedNamespace #>
                 uint? timeoutMillis = null,
                 bool allowShortCircuiting = false)
             {
-                return new Request(targetEntityId, request, timeoutMillis, allowShortCircuiting);
+                return new Request 
+                {
+                    TargetEntityId = targetEntityId,
+                    Payload = request,
+                    TimeoutMillis = timeoutMillis,
+                    AllowShortCircuiting = allowShortCircuiting,
+                
+                };
             }
 
             public struct ReceivedRequest
@@ -69,29 +66,33 @@ namespace <#= qualifiedNamespace #>
 
             /// <summary>
             ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
             /// </summary>
             public struct Response
             {
-                public uint RequestId { get; }
-                public <#= commandDetails.ResponseType #>? Payload { get; }
-                public string FailureMessage { get; }
-
-                internal Response(ReceivedRequest req, <#= commandDetails.ResponseType #>? payload, string failureMessage)
-                {
-                    RequestId = req.RequestId;
-                    Payload = payload;
-                    FailureMessage = failureMessage;
-                }
+                public uint RequestId { get; internal set; }
+                public <#= commandDetails.ResponseType #>? Payload { get; internal set;}
+                public string FailureMessage { get; internal set; }
             }
 
             public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.ResponseType #> payload)
             {
-                return new Response(req, payload, null);
+                return new Response 
+                {
+                    RequestId = req.RequestId,
+                    Payload = payload,
+                    FailureMessage = null,
+                };
             }
 
             public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
             {
-                return new Response(req, null, failureMessage);
+                return new Response 
+                {
+                    RequestId = req.RequestId,
+                    Payload = null,
+                    FailureMessage = failureMessage,
+                };
             }
 
             public struct ReceivedResponse

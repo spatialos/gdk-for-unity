@@ -11,9 +11,6 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
     public struct RandomDataType
     {
     
-    
-    
-    
         public static class Serialization
         {
             public static void Serialize(RandomDataType instance, global::Improbable.Worker.Core.SchemaObject obj)

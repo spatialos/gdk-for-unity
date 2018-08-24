@@ -14,24 +14,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
             /// </summary>
             public struct Request
             {
-                public EntityId TargetEntityId { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; }
-                public uint? TimeoutMillis { get; }
-                public bool AllowShortCircuiting { get; }
-
-                internal Request(EntityId targetEntityId,
-                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request,
-                    uint? timeoutMillis = null,
-                    bool allowShortCircuiting = false)
-                {
-                    TargetEntityId = targetEntityId;
-                    Payload = request;
-                    TimeoutMillis = timeoutMillis;
-                    AllowShortCircuiting = allowShortCircuiting;
-                }
+                public EntityId TargetEntityId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; internal set; }
+                public uint? TimeoutMillis { get; internal set; }
+                public bool AllowShortCircuiting { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -39,7 +29,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 uint? timeoutMillis = null,
                 bool allowShortCircuiting = false)
             {
-                return new Request(targetEntityId, request, timeoutMillis, allowShortCircuiting);
+                return new Request 
+                {
+                    TargetEntityId = targetEntityId,
+                    Payload = request,
+                    TimeoutMillis = timeoutMillis,
+                    AllowShortCircuiting = allowShortCircuiting,
+                
+                };
             }
 
             public struct ReceivedRequest
@@ -63,29 +60,33 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             /// <summary>
             ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
             /// </summary>
             public struct Response
             {
-                public uint RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; }
-                public string FailureMessage { get; }
-
-                internal Response(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? payload, string failureMessage)
-                {
-                    RequestId = req.RequestId;
-                    Payload = payload;
-                    FailureMessage = failureMessage;
-                }
+                public uint RequestId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set;}
+                public string FailureMessage { get; internal set; }
             }
 
             public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
             {
-                return new Response(req, payload, null);
+                return new Response 
+                {
+                    RequestId = req.RequestId,
+                    Payload = payload,
+                    FailureMessage = null,
+                };
             }
 
             public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
             {
-                return new Response(req, null, failureMessage);
+                return new Response 
+                {
+                    RequestId = req.RequestId,
+                    Payload = null,
+                    FailureMessage = failureMessage,
+                };
             }
 
             public struct ReceivedResponse

@@ -10,13 +10,12 @@ public struct <#= typeDetails.CapitalisedName #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
     public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
 <# } #>
-
-
 <#
 if (fieldDetailsList.Count > 0)
 { 
     var constructorArgs = GetConstructorArgs();
 #>
+
     public <#= typeDetails.CapitalisedName #>(<#= constructorArgs #>)
     {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
@@ -24,7 +23,6 @@ if (fieldDetailsList.Count > 0)
 <# } #>
     }
 <# } #>
-
 
     public static class Serialization
     {

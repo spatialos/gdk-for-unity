@@ -12,12 +12,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public long Field;
     
-    
         public SecondCommandRequest(long field)
         {
             Field = field;
         }
-    
     
         public static class Serialization
         {
