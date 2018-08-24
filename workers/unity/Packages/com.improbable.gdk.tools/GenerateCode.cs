@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Tools
 
         static GenerateCode()
         {
-         //   Generate();
+            Generate();
         }
 
         [MenuItem("Improbable/Generate code")]
@@ -27,6 +27,8 @@ namespace Improbable.Gdk.Tools
             try
             {
                 EditorApplication.LockReloadAssemblies();
+
+                DownloadCoreSdk.Download();
 
                 CopySchema(SchemaRoot);
 
@@ -45,6 +47,9 @@ namespace Improbable.Gdk.Tools
                     "--json-dir=build/ImprobableJson",
                     $"--native-output-dir={AssetsGeneratedSource}",
                     $"--schema-compiler-path=\"{schemaCompilerPath}\"");
+
+                AssetDatabase.ImportAsset(AssetsGeneratedSource, ImportAssetOptions.ImportRecursive);
+                AssetDatabase.ImportAsset("Assets/Plugins/Improbable", ImportAssetOptions.ImportRecursive);
             }
             catch (Exception e)
             {
@@ -54,8 +59,6 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.UnlockReloadAssemblies();
             }
-
-            AssetDatabase.ImportAsset(AssetsGeneratedSource, ImportAssetOptions.ImportRecursive);
         }
 
         private static void CopySchema(string schemaRoot)

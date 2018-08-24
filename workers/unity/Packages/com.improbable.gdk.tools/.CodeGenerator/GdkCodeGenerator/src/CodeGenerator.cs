@@ -23,7 +23,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine("Code generation failed with exception: {0}", e.Message);
+                Console.Error.WriteLine("Code generation failed with exception: {0}", e);
                 if (e.InnerException != null)
                 {
                     Console.Error.WriteLine(e.InnerException);
@@ -65,7 +65,7 @@ namespace Improbable.Gdk.CodeGenerator
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
             var runner = new JobRunner(fileSystem);
             runner.Run(new List<ICodegenJob> {aggegrateJob}, new [] {options.NativeOutputDirectory});
-           
+
             return 0;
         }
 
@@ -128,12 +128,6 @@ namespace Improbable.Gdk.CodeGenerator
             if (string.IsNullOrEmpty(options.NativeOutputDirectory))
             {
                 Console.WriteLine("Native output directory not specified");
-                return false;
-            }
-
-            if (options.SchemaCompiler == null)
-            {
-                Console.WriteLine("Schema compiler path not specified");
                 return false;
             }
 

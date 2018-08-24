@@ -11,11 +11,9 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public string JsonDirectory { get; private set; }
         public string NativeOutputDirectory { get; private set; }
-        public string SchemaCompiler { get; private set; }
         public bool ShouldShowHelp { get; private set; }
         public string HelpText { get; private set; }
         public List<string> SchemaInputDirs { get; } = new List<string>();
-
         public string SchemaCompilerPath { get; private set; }
 
         public static CodeGeneratorOptions ParseArguments(ICollection<string> args)
@@ -30,10 +28,6 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     "native-output-dir=", "REQUIRED: the directory to output generated components and structs to",
                     u => options.NativeOutputDirectory = u
-                },
-                {
-                    "schema-compiler-path=", "REQUIRED: the schema compiler executable to use",
-                    s => options.SchemaCompiler = s
                 },
                 {
                     "schema-path=", "REQUIRED: a comma-separated list of directories that contain schema files",

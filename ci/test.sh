@@ -20,6 +20,11 @@ CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-result
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 
+rm "${TOOLS_TEST_RESULTS_FILES}" \
+    "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
+    "${EDITMODE_TEST_RESULTS_FILE}" \
+    "${PLAYMODE_TEST_RESULTS_FILE}"
+
 markEndOfBlock "Setup variables"
 
 cleanUnity
