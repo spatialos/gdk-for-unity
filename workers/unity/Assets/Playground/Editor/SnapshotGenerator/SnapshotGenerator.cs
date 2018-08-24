@@ -126,8 +126,8 @@ namespace Playground.Editor.SnapshotGenerator
 
             var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
             var collisions = SpatialOSCollisions.CreateSchemaComponentData();
-            var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
-            var monoBehaviourTestComponent = SpatialOSSpinnerRotation.CreateSchemaComponentData();
+            var archetype = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
+            var spinnerRotation = SpatialOSSpinnerRotation.CreateSchemaComponentData();
 
             var entity = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, SystemConfig.UnityGameLogic)
@@ -137,8 +137,8 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddComponent(collisions, SystemConfig.UnityGameLogic)
                 .AddComponent(transform, SystemConfig.UnityGameLogic)
                 .AddComponent(prefab, SystemConfig.UnityGameLogic)
-                .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
-                .AddComponent(monoBehaviourTestComponent, SystemConfig.UnityGameLogic)
+                .AddComponent(archetype, SystemConfig.UnityGameLogic)
+                .AddComponent(spinnerRotation, SystemConfig.UnityGameLogic)
                 .Build();
 
             snapshot.AddEntity(entity);
