@@ -58,7 +58,7 @@ namespace <#= qualifiedNamespace #>
             internal class ReaderWriterImpl :
                 ReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
@@ -93,7 +93,7 @@ namespace <#= qualifiedNamespace #>
             var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
 #>
 
-                private readonly List<Action<<#= payloadType #>>> <#= delegateList #> = new System.Collections.Generic.List<System.Action<<#= payloadType #>>>();
+                private readonly List<Action<<#= payloadType #>>> <#= delegateList #> = new List<Action<<#= payloadType #>>>();
 
                 public event Action<<#= payloadType #>> On<#= eventDetails.EventName #>
                 {

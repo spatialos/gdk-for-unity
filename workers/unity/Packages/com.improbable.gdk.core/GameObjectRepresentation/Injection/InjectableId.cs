@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     public enum InjectableType
     {
         ReaderWriter,
-        CommandSender,
+        CommandRequestSender,
         CommandRequestHandler,
         CommandResponseHandler
     }

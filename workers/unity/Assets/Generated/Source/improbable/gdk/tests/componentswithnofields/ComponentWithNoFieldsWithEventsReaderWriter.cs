@@ -42,7 +42,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSComponentWithNoFieldsWithEvents, SpatialOSComponentWithNoFieldsWithEvents.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
@@ -54,7 +54,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> evtDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> evtDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
                 {

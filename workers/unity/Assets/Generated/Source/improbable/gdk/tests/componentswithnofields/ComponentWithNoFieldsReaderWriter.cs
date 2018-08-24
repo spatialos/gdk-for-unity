@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSComponentWithNoFields, SpatialOSComponentWithNoFields.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
