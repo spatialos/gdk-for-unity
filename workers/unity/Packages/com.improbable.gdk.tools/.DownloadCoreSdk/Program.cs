@@ -42,7 +42,7 @@ namespace Improbable
                 new Package
                 {
                     Type = "worker_sdk",
-                    Name = "c-dynamic-x86_64-clang_libcpp-macos",
+                    Name = "c-bundle-x86_64-clang_libcpp-macos",
                     TargetPath = $"{nativeDependenciesPath}/OSX",
                     CleanPaths = new List<string> {"include"}
                 },

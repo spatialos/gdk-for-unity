@@ -32,6 +32,9 @@
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
     <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />
+    <T4Files Include="Templates\UnityGameObjectComponentDispatcherGenerator.tt" />
+    <T4Files Include="Templates\UnityGameObjectCommandHandlersGenerator.tt" />
+    <T4Files Include="Templates\UnityReaderWriterGenerator.tt" />
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
     <T4Files Include="Templates\UnityReferenceTypeProviderGenerator.tt" />

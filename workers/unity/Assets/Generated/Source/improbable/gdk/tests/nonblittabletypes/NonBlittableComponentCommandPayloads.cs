@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload { get; }
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
@@ -25,7 +25,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     bool allowShortCircuiting = false)
                 {
                     TargetEntityId = targetEntityId;
-                    RawRequest = request;
+                    Payload = request;
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
@@ -36,7 +36,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public uint RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload { get; }
 
                 public ReceivedRequest(uint requestId,
                     string callerWorkerId,
@@ -46,20 +46,20 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
-                    RawRequest = request;
+                    Payload = request;
                 }
             }
 
             public struct Response
             {
                 public uint RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? RawResponse { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; }
                 public string FailureMessage { get; }
 
                 internal Response(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? payload, string failureMessage)
                 {
                     RequestId = req.RequestId;
-                    RawResponse = payload;
+                    Payload = payload;
                     FailureMessage = failureMessage;
                 }
 
@@ -79,8 +79,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? RawResponse { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -91,8 +91,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    RawResponse = response;
-                    RawRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload { get; }
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
@@ -111,7 +111,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     bool allowShortCircuiting = false)
                 {
                     TargetEntityId = targetEntityId;
-                    RawRequest = request;
+                    Payload = request;
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
@@ -122,7 +122,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public uint RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload { get; }
 
                 public ReceivedRequest(uint requestId,
                     string callerWorkerId,
@@ -132,20 +132,20 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
-                    RawRequest = request;
+                    Payload = request;
                 }
             }
 
             public struct Response
             {
                 public uint RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? RawResponse { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; }
                 public string FailureMessage { get; }
 
                 internal Response(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? payload, string failureMessage)
                 {
                     RequestId = req.RequestId;
-                    RawResponse = payload;
+                    Payload = payload;
                     FailureMessage = failureMessage;
                 }
 
@@ -165,8 +165,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? RawResponse { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RawRequest { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload { get; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -177,8 +177,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    RawResponse = response;
-                    RawRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }

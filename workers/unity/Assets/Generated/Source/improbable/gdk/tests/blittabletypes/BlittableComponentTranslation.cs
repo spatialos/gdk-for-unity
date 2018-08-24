@@ -106,28 +106,34 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSBlittableComponent>(entity);
-
-                var update = global::Generated.Improbable.Gdk.Tests.BlittableTypes.SpatialOSBlittableComponent.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<SpatialOSBlittableComponent.Update> updates;
-                if (entityManager.HasComponent<SpatialOSBlittableComponent.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<SpatialOSBlittableComponent>>(entity))
                 {
-                    updates = entityManager.GetComponentData<SpatialOSBlittableComponent.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<SpatialOSBlittableComponent>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new SpatialOSBlittableComponent.ReceivedUpdates
+                    var update = global::Generated.Improbable.Gdk.Tests.BlittableTypes.SpatialOSBlittableComponent.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<SpatialOSBlittableComponent.Update> updates;
+                    if (entityManager.HasComponent<SpatialOSBlittableComponent.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSBlittableComponent.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
-                }
+                        updates = entityManager.GetComponentData<SpatialOSBlittableComponent.ReceivedUpdates>(entity).Updates;
 
-                updates.Add(update);
+                    }
+                    else
+                    {
+                        var updatesComponent = new SpatialOSBlittableComponent.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSBlittableComponent.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
+                }
 
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
                 {
@@ -192,8 +198,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
@@ -655,7 +659,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
                             var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
-                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
                                 new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
@@ -663,7 +667,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             FirstCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.RawRequest, null);
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
                         }
 
                         requests.RequestsToSend.Clear();
@@ -690,7 +694,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             }
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
-                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                         }
@@ -712,7 +716,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             var wrappedCommandRequest = requests.RequestsToSend[k];
 
                             var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 2);
-                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(wrappedCommandRequest.RawRequest, schemaCommandRequest.GetObject());
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
                                 new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
@@ -720,7 +724,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             SecondCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.RawRequest, null);
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
                         }
 
                         requests.RequestsToSend.Clear();
@@ -747,7 +751,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             }
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 2);
-                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse.Serialization.Serialize(wrappedCommandResponse.RawResponse.Value, schemaCommandResponse.GetObject());
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                         }
@@ -762,13 +766,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSBlittableComponent>),
-                typeof(ComponentRemoved<SpatialOSBlittableComponent>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSBlittableComponent>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSBlittableComponent>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                typeof(ReceivedEvents.FirstEvent),
-                typeof(ReceivedEvents.SecondEvent),
+                ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(),
+                ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(),
             };
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSBlittableComponent.ReceivedUpdates>();

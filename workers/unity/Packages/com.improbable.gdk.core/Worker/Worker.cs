@@ -37,10 +37,7 @@ namespace Improbable.Gdk.Core
             Connection = ConnectionUtility.Connect(config, WorkerId);
             LogDispatcher = logDispatcher;
             WorkerType = config.WorkerType;
-            if (LogDispatcher is ForwardingDispatcher dispatcher)
-            {
-                dispatcher.SetConnection(Connection);
-            }
+            logDispatcher.Connection = Connection;
 
             World = new World(WorkerId);
             World.CreateManager<WorkerSystem>(this);
@@ -77,6 +74,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            LogDispatcher.Dispose();
             EntityMapping.Clear();
             World?.Dispose();
             World = null;

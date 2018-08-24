@@ -202,21 +202,21 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-                component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+                var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
 <# if (listTypeInfo.IsEnum) { #>
                 for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add((<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i));
+                    <#= fieldDetails.CamelCaseName #>.Add((<#= listTypeInfo.Type #>) obj.IndexEnum(<#= fieldDetails.FieldNumber #>, (uint) i));
                 }
 <# } else if (listTypeInfo.IsPrimitive) { #>
                 for (var i = 0; i < obj.<#= listTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
+                    <#= fieldDetails.CamelCaseName #>.Add(obj.<#= listTypeInfo.SerializationFunctions.DeserializeIndex #>(<#= fieldDetails.FieldNumber #>, (uint) i));
                 }
 <# } else { #>
                 for (var i = 0; i < obj.GetObjectCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
-                    component.<#= fieldDetails.PascalCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
+                    <#= fieldDetails.CamelCaseName #>.Add(<#= listTypeInfo.SerializationFunctions.Deserialize #>(obj.IndexObject(<#= fieldDetails.FieldNumber #>, (uint) i)));
                 }
 <# } #>
 
@@ -241,7 +241,7 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
                 {
-                    component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -260,7 +260,7 @@ namespace <#= qualifiedNamespace #>
 <# } else { #>
                         var value = <#= mapTypeInfo.Value.SerializationFunctions.Deserialize #>(mapObj.GetObject(2));
 <# } #>
-                        component.<#= fieldDetails.PascalCaseName #>.Add(key, value);
+                        <#= fieldDetails.CamelCaseName #>.Add(key, value);
                     }
                 }
 <# } #>

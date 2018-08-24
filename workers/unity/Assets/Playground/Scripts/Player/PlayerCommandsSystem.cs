@@ -2,6 +2,7 @@ using System;
 using Generated.Improbable;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
@@ -37,7 +38,7 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
-            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
+            public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
         [Inject] private PlayerData playerData;
@@ -89,13 +90,16 @@ namespace Playground
             var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
 
             sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
-                new Generated.Playground.LaunchCommandRequest
+                new LaunchCommandRequest
                 {
                     EntityToLaunch = component.SpatialEntityId,
                     ImpactPoint = impactPoint,
                     LaunchDirection = launchDirection,
-                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy
+                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
+                    Player = playerId,
                 }));
+
+            playerData.Sender[0] = sender;
         }
     }
 }

@@ -9,9 +9,9 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Forwards logEvents and exceptions to the SpatialOS Console and logs locally.
     /// </summary>
-    public class ForwardingDispatcher : ILogDispatcher, IDisposable
+    public class ForwardingDispatcher : ILogDispatcher
     {
-        private Connection connection;
+        public Connection Connection { get; set; }
 
         private readonly LogLevel minimumLogLevel;
 
@@ -44,13 +44,13 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                connection.SendLogMessage(LogLevel.Error, connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Connection.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
         }
 
         public void SetConnection(Connection newConnection)
         {
-            connection = newConnection;
+            Connection = newConnection;
         }
 
         public void HandleLog(LogType type, LogEvent logEvent)
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.Core
 
                 var logLevel = LogTypeMapping[type];
 
-                if (connection == null || logLevel < minimumLogLevel)
+                if (Connection == null || logLevel < minimumLogLevel)
                 {
                     return;
                 }
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
             }
             finally
             {

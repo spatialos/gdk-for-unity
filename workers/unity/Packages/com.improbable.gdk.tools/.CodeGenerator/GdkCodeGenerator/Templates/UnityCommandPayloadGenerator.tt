@@ -21,7 +21,7 @@ namespace <#= qualifiedNamespace #>
             public struct Request
             {
                 public EntityId TargetEntityId { get; }
-                public <#= commandDetails.RequestType #> RawRequest { get; }
+                public <#= commandDetails.RequestType #> Payload { get; }
                 public uint? TimeoutMillis { get; }
                 public bool AllowShortCircuiting { get; }
 
@@ -31,7 +31,7 @@ namespace <#= qualifiedNamespace #>
                     bool allowShortCircuiting = false)
                 {
                     TargetEntityId = targetEntityId;
-                    RawRequest = request;
+                    Payload = request;
                     TimeoutMillis = timeoutMillis;
                     AllowShortCircuiting = allowShortCircuiting;
                 }
@@ -42,7 +42,7 @@ namespace <#= qualifiedNamespace #>
                 public uint RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
-                public <#= commandDetails.RequestType #> RawRequest { get; }
+                public <#= commandDetails.RequestType #> Payload { get; }
 
                 public ReceivedRequest(uint requestId,
                     string callerWorkerId,
@@ -52,20 +52,20 @@ namespace <#= qualifiedNamespace #>
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
-                    RawRequest = request;
+                    Payload = request;
                 }
             }
 
             public struct Response
             {
                 public uint RequestId { get; }
-                public <#= commandDetails.ResponseType #>? RawResponse { get; }
+                public <#= commandDetails.ResponseType #>? Payload { get; }
                 public string FailureMessage { get; }
 
                 internal Response(ReceivedRequest req, <#= commandDetails.ResponseType #>? payload, string failureMessage)
                 {
                     RequestId = req.RequestId;
-                    RawResponse = payload;
+                    Payload = payload;
                     FailureMessage = failureMessage;
                 }
 
@@ -85,8 +85,8 @@ namespace <#= qualifiedNamespace #>
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public <#= commandDetails.ResponseType #>? RawResponse { get; }
-                public <#= commandDetails.RequestType #> RawRequest { get; }
+                public <#= commandDetails.ResponseType #>? ResponsePayload { get; }
+                public <#= commandDetails.RequestType #> RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -97,8 +97,8 @@ namespace <#= qualifiedNamespace #>
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
-                    RawResponse = response;
-                    RawRequest = request;
+                    ResponsePayload = response;
+                    RequestPayload = request;
                 }
             }
         }

@@ -1,6 +1,7 @@
 using Generated.Improbable;
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
@@ -10,15 +11,15 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
     public class LocalTransformSyncSystem : ComponentSystem
     {
-        public struct TransformData
+        private struct TransformData
         {
             public readonly int Length;
             public ComponentDataArray<SpatialOSTransform> Transform;
             public ComponentDataArray<SpatialOSPosition> Position;
-            public ComponentArray<Rigidbody> GameObjectRigidBody;
+            [ReadOnly] public ComponentArray<Rigidbody> GameObjectRigidBody;
 
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-            public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
         }
 
         [Inject] private TransformData transformData;
@@ -88,7 +89,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var newPosition = new SpatialOSPosition
                 {
-                    Coords = new global::Generated.Improbable.Coordinates
+                    Coords = new Coordinates
                     {
                         X = newTransform.Location.X,
                         Y = newTransform.Location.Y,
