@@ -22,8 +22,9 @@ public class FlashOnCollision : MonoBehaviour
     public static void SetupColors()
     {
         basicMaterial = new MaterialPropertyBlock();
-        flashingMaterial = new MaterialPropertyBlock();
         basicMaterial.SetColor("_Color", Color.white);
+
+        flashingMaterial = new MaterialPropertyBlock();
         flashingMaterial.SetColor("_Color", Color.red);
     }
 

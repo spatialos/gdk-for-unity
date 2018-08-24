@@ -1,3 +1,4 @@
+using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
@@ -34,15 +35,22 @@ namespace Playground
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
                 var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
+                var isShiftDown = Input.GetKey(KeyCode.LeftShift);
 
-                var newPlayerInput = new SpatialOSPlayerInput
+                var oldPlayerInput = playerInputData.PlayerInput[i];
+
+                if (Math.Abs(oldPlayerInput.Horizontal - input.x) > 0.01f
+                    || Math.Abs(oldPlayerInput.Vertical - input.z) > 0.01f
+                    || oldPlayerInput.Running != isShiftDown)
                 {
-                    Horizontal = input.x,
-                    Vertical = input.z,
-                    Running = Input.GetKey(KeyCode.LeftShift)
-                };
-
-                playerInputData.PlayerInput[i] = newPlayerInput;
+                    var newPlayerInput = new SpatialOSPlayerInput
+                    {
+                        Horizontal = input.x,
+                        Vertical = input.z,
+                        Running = isShiftDown
+                    };
+                    playerInputData.PlayerInput[i] = newPlayerInput;
+                }
             }
         }
     }
