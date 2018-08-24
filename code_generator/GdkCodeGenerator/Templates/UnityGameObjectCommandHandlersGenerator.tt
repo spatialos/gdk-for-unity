@@ -50,15 +50,8 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var commandDetails in commandDetailsList) { #>
                 public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.RequestType #> request)
                 {
-                    try
-                    {
-                        var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
-                        ecsCommandRequestSender.RequestsToSend.Add(new <#= commandDetails.CommandName #>.Request(entityId, request));
-                    }
-                    catch (Exception e)
-                    {
-                        throw new SendCommandRequestFailedException(e, entity.Index);
-                    }
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
+                    ecsCommandRequestSender.RequestsToSend.Add(new <#= commandDetails.CommandName #>.Request(entityId, request));
                 }
 
 <# } #>

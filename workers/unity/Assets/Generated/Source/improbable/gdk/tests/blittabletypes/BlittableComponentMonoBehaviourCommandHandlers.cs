@@ -44,28 +44,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
                 {
-                    try
-                    {
-                        var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
-                        ecsCommandRequestSender.RequestsToSend.Add(new FirstCommand.Request(entityId, request));
-                    }
-                    catch (Exception e)
-                    {
-                        throw new SendCommandRequestFailedException(e, entity.Index);
-                    }
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
+                    ecsCommandRequestSender.RequestsToSend.Add(new FirstCommand.Request(entityId, request));
                 }
 
                 public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
                 {
-                    try
-                    {
-                        var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
-                        ecsCommandRequestSender.RequestsToSend.Add(new SecondCommand.Request(entityId, request));
-                    }
-                    catch (Exception e)
-                    {
-                        throw new SendCommandRequestFailedException(e, entity.Index);
-                    }
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
+                    ecsCommandRequestSender.RequestsToSend.Add(new SecondCommand.Request(entityId, request));
                 }
 
             }
