@@ -43,7 +43,8 @@ namespace Playground.Editor
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Where(assetPath => assetPath.Contains("Resources"))
                 .Select(AssetDatabase.LoadAssetAtPath<GameObject>)
-                .Where(prefabObject => prefabObject != null);
+                .Where(prefabObject => prefabObject != null)
+                .ToArray();
 
             foreach (var prefabObject in allPrefabObjectsInResources)
             {
