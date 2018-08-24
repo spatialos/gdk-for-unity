@@ -106,7 +106,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198430049189278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5acf7b07e53f47be81fa9afc4f0f2712, type: 3}
   m_Name: 
@@ -117,13 +117,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198430049189278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3474cc00af7642447b37f09cd4cd4cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flashTime: 0.2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &114446978971394342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,7 +140,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198430049189278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c6f4a65d31e884ba3f035255fec5d6, type: 3}
   m_Name: 
