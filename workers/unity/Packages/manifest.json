@@ -6,8 +6,8 @@
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",
     "com.unity.burst": "0.2.4-preview.18",
-    "com.unity.entities": "0.0.12-preview.10",
-    "com.unity.incrementalcompiler": "0.0.42-preview.18",
+    "com.unity.entities": "0.0.12-preview.11",
+    "com.unity.incrementalcompiler": "0.0.42-preview.19",
     "com.unity.package-manager-ui": "1.9.9",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0"
