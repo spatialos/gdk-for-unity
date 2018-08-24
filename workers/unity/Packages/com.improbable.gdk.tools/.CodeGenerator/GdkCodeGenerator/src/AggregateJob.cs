@@ -5,8 +5,8 @@ using Improbable.CodeGeneration.Jobs;
 namespace Improbable.Gdk.CodeGenerator
 {
     /// <summary>
-    /// A job that wrapps the SingleGenerationJob to enable use with the JobRunner.
-    /// This should be refactored away.
+    ///     A job that wrapps the SingleGenerationJob to enable use with the JobRunner.
+    ///     This should be refactored away.
     /// </summary>
     public class AggregateJob : CodegenJob
     {

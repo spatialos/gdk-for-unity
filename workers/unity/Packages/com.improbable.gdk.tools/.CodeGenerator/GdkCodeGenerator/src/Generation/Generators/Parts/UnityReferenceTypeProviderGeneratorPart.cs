@@ -29,7 +29,9 @@ namespace Improbable.Gdk.CodeGenerator
         private List<UnityFieldDetails> GetFieldDetailsList()
         {
             return unityComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
-                .Select(fieldDefinition => new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet)).ToList();
+                .Select(fieldDefinition =>
+                    new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
+                .ToList();
         }
 
         private List<UnityEventDetails> GetEventDetailsList()
@@ -37,7 +39,7 @@ namespace Improbable.Gdk.CodeGenerator
             return unityComponentDefinition.EventDefinitions
                 .Select(eventDefinition => new UnityEventDetails(eventDefinition)).ToList();
         }
-        
+
         private List<UnityCommandDetails> GetCommandDetailsList()
         {
             return unityComponentDefinition.CommandDefinitions

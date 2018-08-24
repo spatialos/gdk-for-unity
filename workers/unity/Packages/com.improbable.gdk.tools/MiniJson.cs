@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Tools.MiniJSON
         /// </summary>
         /// <param name="json">A JSON string.</param>
         /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
-        public static Dictionary<string,object> Deserialize(string json)
+        public static Dictionary<string, object> Deserialize(string json)
         {
             // save the string for debug information
             if (string.IsNullOrEmpty(json))
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Tools.MiniJSON
                 return null;
             }
 
-            return (Dictionary<string,object>)Parser.Parse(json);
+            return (Dictionary<string, object>) Parser.Parse(json);
         }
 
         sealed class Parser : IDisposable

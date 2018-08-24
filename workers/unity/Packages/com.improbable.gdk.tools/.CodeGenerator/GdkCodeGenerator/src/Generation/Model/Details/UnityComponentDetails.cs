@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseTypeName;
         public int ComponentId;
         public bool IsBlittable;
-        
+
         public UnityComponentDetails(UnityComponentDefinition componentDefinition)
         {
             ComponentName = Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);

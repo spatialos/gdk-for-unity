@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,24 +45,33 @@ namespace Improbable.Gdk.CodeGenerator
 
                 if (component.CommandDefinitions.Count > 0)
                 {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
                 }
 
                 if (component.EventDefinitions.Count > 0)
                 {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Events", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}Events", fileExtension)));
                 }
 
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension)));
 
                 if (component.CommandDefinitions.Count > 0)
                 {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension)));
                 }
             }
 
@@ -147,7 +155,8 @@ namespace Improbable.Gdk.CodeGenerator
                 var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
                 var referenceProviderTranslationCode =
                     referenceTypeProviderGenerator.Generate(component, package, enumSet);
-                Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName), referenceProviderTranslationCode);
+                Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
+                    referenceProviderTranslationCode);
 
                 var gameObjectComponentDispatcherFileName =
                     Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension);
@@ -168,7 +177,8 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension);
                     var monobehaviourCommandHandlerCode =
                         gameObjectCommandHandlersGenerator.Generate(component, package);
-                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName), monobehaviourCommandHandlerCode);
+                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName),
+                        monobehaviourCommandHandlerCode);
                 }
             }
         }

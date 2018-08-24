@@ -1,4 +1,4 @@
-using System; 
+using System;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
         public static string GetGeneratedHeader()
         {
             return $"// ==========={System.Environment.NewLine}// DO NOT EDIT - this file is automatically " +
-            $"regenerated.{System.Environment.NewLine}// ===========";
+                $"regenerated.{System.Environment.NewLine}// ===========";
         }
 
         public static string IndentEveryNewline(string input)

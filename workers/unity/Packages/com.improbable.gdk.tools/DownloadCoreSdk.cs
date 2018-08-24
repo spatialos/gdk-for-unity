@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Debug = UnityEngine.Debug;
+using UnityEngine;
 
 namespace Improbable.Gdk.Tools
 {
@@ -13,7 +13,8 @@ namespace Improbable.Gdk.Tools
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
-                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", Common.CoreSdkVersion);
+                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
+                    Common.CoreSdkVersion);
                 if (exitCode != 0)
                 {
                     Debug.LogError("Failed to download the SpatialOS Core Sdk.");

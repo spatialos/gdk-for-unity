@@ -64,7 +64,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
             var runner = new JobRunner(fileSystem);
-            runner.Run(new List<ICodegenJob> {aggegrateJob}, new [] {options.NativeOutputDirectory});
+            runner.Run(new List<ICodegenJob> { aggegrateJob }, new[] { options.NativeOutputDirectory });
 
             return 0;
         }

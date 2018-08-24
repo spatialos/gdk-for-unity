@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        /// Finds the "file:" reference path from the package manifest.
+        ///     Finds the "file:" reference path from the package manifest.
         /// </summary>
         public static string GetThisPackagePath()
         {
@@ -48,10 +48,11 @@ namespace Improbable.Gdk.Tools
         }
 
         public static Dictionary<string, string> GetManifestDependencies()
-        {            
+        {
             try
             {
-                var manifest = MiniJSON.Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
+                var manifest =
+                    MiniJSON.Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
                 return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
@@ -76,7 +77,8 @@ namespace Improbable.Gdk.Tools
             {
                 if (process == null)
                 {
-                    throw new Exception($"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
+                    throw new Exception(
+                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
                 }
 
                 process.EnableRaisingEvents = true;

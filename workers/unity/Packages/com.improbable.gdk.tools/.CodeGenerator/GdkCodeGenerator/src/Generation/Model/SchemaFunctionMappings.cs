@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.CodeGeneration.Model;
 
@@ -8,7 +7,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public static Dictionary<string, string> BuiltInTypeToAddSchemaFunction = new Dictionary<string, string>
         {
-            { BuiltInTypeConstants.builtInBool, "AddBool"},
+            { BuiltInTypeConstants.builtInBool, "AddBool" },
             { BuiltInTypeConstants.builtInBytes, "AddBytes" },
             { BuiltInTypeConstants.builtInDouble, "AddDouble" },
             { BuiltInTypeConstants.builtInEntityId, "AddEntityId" },
@@ -28,7 +27,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static Dictionary<string, string> BuiltInTypeToGetSchemaFunction = new Dictionary<string, string>
         {
-            { BuiltInTypeConstants.builtInBool, "GetBool"},
+            { BuiltInTypeConstants.builtInBool, "GetBool" },
             { BuiltInTypeConstants.builtInBytes, "GetBytes" },
             { BuiltInTypeConstants.builtInDouble, "GetDouble" },
             { BuiltInTypeConstants.builtInEntityId, "GetEntityId" },
@@ -48,7 +47,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static Dictionary<string, string> BuiltInTypeToGetCountSchemaFunction = new Dictionary<string, string>
         {
-            { BuiltInTypeConstants.builtInBool, "GetBoolCount"},
+            { BuiltInTypeConstants.builtInBool, "GetBoolCount" },
             { BuiltInTypeConstants.builtInBytes, "GetBytesCount" },
             { BuiltInTypeConstants.builtInDouble, "GetDoubleCount" },
             { BuiltInTypeConstants.builtInEntityId, "GetEntityIdCount" },
@@ -68,7 +67,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static Dictionary<string, string> BuiltInTypeToIndexSchemaFunction = new Dictionary<string, string>
         {
-            { BuiltInTypeConstants.builtInBool, "IndexBool"},
+            { BuiltInTypeConstants.builtInBool, "IndexBool" },
             { BuiltInTypeConstants.builtInBytes, "IndexBytes" },
             { BuiltInTypeConstants.builtInDouble, "IndexDouble" },
             { BuiltInTypeConstants.builtInEntityId, "IndexEntityId" },

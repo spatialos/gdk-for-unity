@@ -5,11 +5,12 @@ using Improbable.CodeGeneration.FileHandling;
 namespace Improbable.Gdk.CodeGenerator
 {
     /// <summary>
-    /// A FileSystem implementation that ignores the existence of ".meta" files when listing directory contents.
+    ///     A FileSystem implementation that ignores the existence of ".meta" files when listing directory contents.
     /// </summary>
     class MetaDataCompatibleFileSystem : IFileSystem
     {
         private readonly FileSystem fileSystem = new FileSystem();
+
         public IEnumerable<IFile> GetFilesInDirectory(string path, string searchPattern = "*.*", bool recursive = true)
         {
             var files = fileSystem.GetFilesInDirectory(path, searchPattern, recursive);

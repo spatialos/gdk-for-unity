@@ -42,7 +42,8 @@ namespace Improbable.Gdk.Tools
                     schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
                 }
 
-                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", $"--schema-path=\"{SchemaRoot}\"",
+                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
+                    $"--schema-path=\"{SchemaRoot}\"",
                     "--schema-path=../../build/dependencies/schema/standard_library",
                     "--json-dir=build/ImprobableJson",
                     $"--native-output-dir={AssetsGeneratedSource}",

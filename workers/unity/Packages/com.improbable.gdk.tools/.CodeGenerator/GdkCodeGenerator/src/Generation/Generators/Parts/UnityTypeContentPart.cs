@@ -28,7 +28,9 @@ namespace Improbable.Gdk.CodeGenerator
         private List<UnityFieldDetails> GetFieldDetailsList()
         {
             return typeDefinition.FieldDefinitions
-                .Select((fieldDefinition) => new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet)).ToList();
+                .Select((fieldDefinition) =>
+                    new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
+                .ToList();
         }
     }
 }
