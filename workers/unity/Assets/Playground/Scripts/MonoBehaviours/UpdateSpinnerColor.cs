@@ -12,7 +12,7 @@ namespace Playground.MonoBehaviours
 
         private Array colorValues;
         private int colorIndex = 0;
-        private float nextColorChange = 0;
+        private float nextColorChangeTime = 0;
 
         void Awake()
         {
@@ -21,13 +21,13 @@ namespace Playground.MonoBehaviours
 
         void Update()
         {
-            if (Time.time < nextColorChange)
+            if (Time.time < nextColorChangeTime)
             {
                 return;
             }
 
             colorIndex = (colorIndex + 1) % colorValues.Length;
-            nextColorChange = Time.time + 2;
+            nextColorChangeTime = Time.time + 2;
 
             writer.Send(new SpatialOSSpinnerColor.Update
             {

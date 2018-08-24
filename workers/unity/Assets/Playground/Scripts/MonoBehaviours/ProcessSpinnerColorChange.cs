@@ -40,6 +40,10 @@ public class ProcessSpinnerColorChange : MonoBehaviour
     private void Awake()
     {
         renderer = gameObject.GetComponent<MeshRenderer>();
+        if (renderer == null)
+        {
+            Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
+        }
     }
 
     private void OnDisable()
