@@ -3,7 +3,7 @@
     "tasks": [
       {
         "name": "Codegen",
-        "steps": [{"name": "** Run ci/codegen.sh instead **", "command": "echo", "arguments": ["No-op."]}]
+        "steps": [{"name": "** Load Unity to generate code **", "command": "echo", "arguments": ["No-op."]}]
       },
       {
         "name": "build",
