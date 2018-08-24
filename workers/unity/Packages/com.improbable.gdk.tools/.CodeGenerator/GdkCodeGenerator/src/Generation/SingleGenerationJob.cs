@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension)));
 
-                if (unityComponentDefinition.CommandDefinitions.Count > 0)
+                if (component.CommandDefinitions.Count > 0)
                 {
                     OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension)));
                 }
