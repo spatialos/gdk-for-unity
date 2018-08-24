@@ -11,7 +11,9 @@ namespace Improbable.Gdk.Tools
 {
     static class Common
     {
-        public static string CoreSdkVersion { get; private set; }
+        public static string CoreSdkVersion { get; }
+
+        private const string PackagesDir = "Packages";
 
         static Common()
         {
@@ -26,13 +28,21 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        /// <summary>
+        /// Finds the "file:" reference path from the package manifest.
+        /// </summary>
         public static string GetThisPackagePath()
         {
             const string gdkTools = "com.improbable.gdk.tools";
             var path = GetManifestDependencies()[gdkTools];
-            path = path.Replace("file:", string.Empty);
 
-            path = "Packages/" + path;
+            if (!path.StartsWith("file:"))
+            {
+                throw new Exception($"The '{gdkTools}' package must exist on disk.");
+            }
+
+            path = path.Replace("file:", string.Empty);
+            path = $"{PackagesDir}/{path}";
 
             return path;
         }
@@ -41,7 +51,7 @@ namespace Improbable.Gdk.Tools
         {            
             try
             {
-                var manifest = MiniJSON.Json.Deserialize(File.ReadAllText("Packages/manifest.json", Encoding.UTF8));
+                var manifest = MiniJSON.Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
                 return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
@@ -51,44 +61,34 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static void RunProcess(string command, params string[] arguments)
+        public static int RunProcess(string command, params string[] arguments)
         {
-            try
+            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
             {
-                var info = new ProcessStartInfo(command, string.Join(" ", arguments))
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                WorkingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."))
+            };
+
+            using (var process = Process.Start(info))
+            {
+                if (process == null)
                 {
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WorkingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."))
-                };
-
-                using (var process = Process.Start(info))
-                {
-                    if (process == null)
-                    {
-                        throw new Exception("Failed to start process. Is the .NET Core SDK installed?");
-                    }
-
-                    process.EnableRaisingEvents = true;
-
-                    process.OutputDataReceived += OnReceived;
-                    process.ErrorDataReceived += OnErrorReceived;
-
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-
-                    process.WaitForExit();
-                    if (process.ExitCode != 0)
-                    {
-                        throw new Exception($"Exit code {process.ExitCode}");
-                    }
+                    throw new Exception($"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
+
+                process.EnableRaisingEvents = true;
+
+                process.OutputDataReceived += OnReceived;
+                process.ErrorDataReceived += OnErrorReceived;
+
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                process.WaitForExit();
+                return process.ExitCode;
             }
         }
 

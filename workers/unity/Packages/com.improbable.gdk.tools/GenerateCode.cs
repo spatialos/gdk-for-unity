@@ -42,14 +42,18 @@ namespace Improbable.Gdk.Tools
                     schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
                 }
 
-                Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", $"--schema-path=\"{SchemaRoot}\"",
+                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--", $"--schema-path=\"{SchemaRoot}\"",
                     "--schema-path=../../build/dependencies/schema/standard_library",
                     "--json-dir=build/ImprobableJson",
                     $"--native-output-dir={AssetsGeneratedSource}",
                     $"--schema-compiler-path=\"{schemaCompilerPath}\"");
 
-                AssetDatabase.ImportAsset(AssetsGeneratedSource, ImportAssetOptions.ImportRecursive);
-                AssetDatabase.ImportAsset("Assets/Plugins/Improbable", ImportAssetOptions.ImportRecursive);
+                if (exitCode != 0)
+                {
+                    Debug.LogError("Failed to generate code.");
+                }
+
+                AssetDatabase.Refresh();
             }
             catch (Exception e)
             {
