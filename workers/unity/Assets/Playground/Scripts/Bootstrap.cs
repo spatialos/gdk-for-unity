@@ -18,10 +18,6 @@ namespace Playground
 
         public void Awake()
         {
-            // Taken from DefaultWorldInitalization.cs
-            SetupInjectionHooks(); // Register hybrid injection hooks
-            PlayerLoopManager.RegisterDomainUnload(DomainUnloadShutdown, 10000); // Clean up worlds and player loop
-
             Application.targetFrameRate = targetFrameRate;
             Worker.OnConnect += w => Debug.Log($"{w.WorkerId} is connecting");
             Worker.OnDisconnect += w => Debug.Log($"{w.WorkerId} is disconnecting");
@@ -68,44 +64,20 @@ namespace Playground
             World.Active = worlds[0];
         }
 
-        public static void SetupInjectionHooks()
-        {
-            var hybridAssembly = typeof(GameObjectEntity).Assembly;
-
-            // Reflection to get internal hook classes. Doesn't seem to be a proper way to do this.
-            var gameObjectArrayInjectionHookType =
-                hybridAssembly.GetType("Unity.Entities.GameObjectArrayInjectionHook");
-            var transformAccessArrayInjectionHookType =
-                hybridAssembly.GetType(
-                    "Unity.Entities.TransformAccessArrayInjectionHook");
-            var componentArrayInjectionHookType =
-                hybridAssembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
-
-            InjectionHookSupport.RegisterHook(
-                (InjectionHook) Activator.CreateInstance(gameObjectArrayInjectionHookType));
-            InjectionHookSupport.RegisterHook(
-                (InjectionHook) Activator.CreateInstance(transformAccessArrayInjectionHookType));
-            InjectionHookSupport.RegisterHook(
-                (InjectionHook) Activator.CreateInstance(componentArrayInjectionHookType));
-        }
-
-        public static void DomainUnloadShutdown()
-        {
-            foreach (var worker in Workers)
-            {
-                worker.Dispose();
-            }
-
-            World.DisposeAllWorlds();
-            ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
-        }
-
         private void CreateWorker(ConnectionConfig config, Vector3 origin)
         {
             var worker = Worker.Connect(config, new ForwardingDispatcher(), origin);
             Instantiate(Level, origin, Quaternion.identity);
             SystemConfig.AddSystems(worker.World, config.WorkerType);
             Workers.Add(worker);
+        }
+
+        private void OnApplicationQuit()
+        {
+            foreach (var worker in Workers)
+            {
+                worker.Dispose();
+            }
         }
     }
 }
