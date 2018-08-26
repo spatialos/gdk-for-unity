@@ -12,6 +12,7 @@ namespace Playground
     /// <summary>
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
     /// </summary>
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {

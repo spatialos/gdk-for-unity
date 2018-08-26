@@ -15,6 +15,7 @@ using UnityEngine;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitUISystem : ComponentSystem
     {

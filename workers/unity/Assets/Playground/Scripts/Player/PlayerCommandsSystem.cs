@@ -18,6 +18,7 @@ using UnityEngine;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class PlayerCommandsSystem : ComponentSystem
     {

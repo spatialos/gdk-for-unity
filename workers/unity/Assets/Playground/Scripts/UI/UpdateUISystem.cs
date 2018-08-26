@@ -14,6 +14,7 @@ using Unity.Entities;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class UpdateUISystem : ComponentSystem
     {

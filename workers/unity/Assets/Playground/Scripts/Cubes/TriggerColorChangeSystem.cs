@@ -15,6 +15,7 @@ using Color = Generated.Playground.Color;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class TriggerColorChangeSystem : ComponentSystem
     {

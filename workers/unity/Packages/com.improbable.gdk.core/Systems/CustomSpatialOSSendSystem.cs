@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
     public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData, new()
     {

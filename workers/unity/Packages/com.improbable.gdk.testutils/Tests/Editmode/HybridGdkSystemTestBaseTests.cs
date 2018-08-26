@@ -12,6 +12,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             public int Value;
         }
 
+        [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
             private struct PreparationData

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     public class MetricSendSystem : ComponentSystem
     {
         private Worker worker;

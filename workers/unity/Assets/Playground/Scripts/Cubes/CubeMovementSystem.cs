@@ -15,6 +15,7 @@ using UnityEngine;
 
 namespace Playground
 {
+    [DisableAutoCreation]
     [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
