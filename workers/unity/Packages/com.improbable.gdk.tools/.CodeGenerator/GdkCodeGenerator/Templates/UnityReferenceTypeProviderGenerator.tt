@@ -30,7 +30,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } #>
 <# foreach(var eventDetails in eventDetailsList) { #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(eventDetails.PascalCaseName, $"List<{eventDetails.FullyQualifiedPayloadTypeName}>"), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(eventDetails.EventName, $"List<{eventDetails.FqnPayloadType}>"), 3) #>
 <# } #>
 <# foreach (var commandDetails in commandDetailsList) { #>
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Sender", $"List<{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Request>"), 3) #>

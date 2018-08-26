@@ -40,7 +40,7 @@ namespace <#= qualifiedNamespace #>
                 event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
 <# } #>
 <# foreach (var eventDetails in eventDetailsList) {
-            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
+            var payloadType = eventDetails.FqnPayloadType;
 #>
                 event Action<<#= payloadType #>> On<#= eventDetails.EventName #>;
 <# } #>
@@ -51,7 +51,7 @@ namespace <#= qualifiedNamespace #>
             public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
             {
 <# foreach (var eventDetails in eventDetailsList) { #>
-                void Send<#= eventDetails.EventName #>( <#= eventDetails.FullyQualifiedPayloadTypeName #> payload);
+                void Send<#= eventDetails.EventName #>( <#= eventDetails.FqnPayloadType #> payload);
 <# } #>
             }
 
@@ -89,8 +89,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                 }
 <# foreach (var eventDetails in eventDetailsList) {
-            var delegateList = eventDetails.CamelCaseName + "Delegates";
-            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
+            var delegateList = eventDetails.EventName + "Delegates";
+            var payloadType = eventDetails.FqnPayloadType;
 #>
 
                 private readonly List<Action<<#= payloadType #>>> <#= delegateList #> = new List<Action<<#= payloadType #>>>();
@@ -106,7 +106,7 @@ namespace <#= qualifiedNamespace #>
                     DispatchEventWithErrorHandling(payload, <#= delegateList #>);
                 }
 
-                public void Send<#= eventDetails.EventName #>(<#= eventDetails.FullyQualifiedPayloadTypeName #> payload)
+                public void Send<#= eventDetails.EventName #>(<#= eventDetails.FqnPayloadType #> payload)
                 {
                     var sender = EntityManager.GetComponentData<EventSender.<#= eventDetails.EventName #>>(Entity);
                     sender.Events.Add(payload);

@@ -33,7 +33,7 @@ namespace <#= qualifiedNamespace #>
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
 <# foreach (var commandDetails in commandDetailsList) { #>
-            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
             public DispatcherHandler(Worker worker, World world) : base(worker, world)
@@ -41,19 +41,27 @@ namespace <#= qualifiedNamespace #>
                 entityManager = world.GetOrCreateManager<EntityManager>();
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
 <# foreach (var commandDetails in commandDetailsList) { #>
-                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
+                <#= commandDetails.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName #>>();
 <# } #>
             }
 
             public override void Dispose()
             {
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(World);
+
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
                 <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
 <# } #>
 <# } #>
 <# foreach (var eventDetails in eventDetailsList) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.CleanDataInWorld(World);
+<# } #>
+<# foreach (var commandDetails in commandDetailsList) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.CleanDataInWorld(World);
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.CleanDataInWorld(World);
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponderProvider.CleanDataInWorld(World);
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.CleanDataInWorld(World);
 <# } #>
             }
 
@@ -187,27 +195,27 @@ namespace <#= qualifiedNamespace #>
                     if (eventCount > 0)
                     {
                         // Create component to hold received events
-                        ReceivedEvents.<#= eventDetails.PascalCaseName #> eventsReceived;
-                        List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> eventList;
-                        if (!entityManager.HasComponent<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity))
+                        ReceivedEvents.<#= eventDetails.EventName #> eventsReceived;
+                        List<<#= eventDetails.FqnPayloadType #>> eventList;
+                        if (!entityManager.HasComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entity))
                         {
-                            eventsReceived = new ReceivedEvents.<#= eventDetails.PascalCaseName #>() {
-                                handle = ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Allocate(World)
+                            eventsReceived = new ReceivedEvents.<#= eventDetails.EventName #>() {
+                                handle = ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Allocate(World)
                             };
-                            eventList = new List<<#= eventDetails.FullyQualifiedPayloadTypeName #>>((int) eventCount);
-                            ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(eventsReceived.handle, eventList);
+                            eventList = new List<<#= eventDetails.FqnPayloadType #>>((int) eventCount);
+                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(eventsReceived.handle, eventList);
                             entityManager.AddComponentData(entity, eventsReceived);
                         }
                         else
                         {
-                            eventsReceived = entityManager.GetComponentData<ReceivedEvents.<#= eventDetails.PascalCaseName #>>(entity);
+                            eventsReceived = entityManager.GetComponentData<ReceivedEvents.<#= eventDetails.EventName #>>(entity);
                             eventList = eventsReceived.Events;
                         }
 
                         // Deserialize events onto component
                         for (var i = 0; i < eventCount; i++)
                         {
-                            var e = <#= eventDetails.FullyQualifiedPayloadTypeName #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
+                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
                             eventList.Add(e);
                         }
                     }
@@ -310,11 +318,11 @@ namespace <#= qualifiedNamespace #>
                         // Add event senders
 <# foreach (var eventDetail in eventDetailsList) { #>
                         {
-                            var eventSender = new EventSender.<#= eventDetail.PascalCaseName #>()
+                            var eventSender = new EventSender.<#= eventDetail.EventName #>()
                             {
-                                handle = ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Allocate(World)
+                                handle = ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Allocate(World)
                             };
-                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FullyQualifiedPayloadTypeName #>>());
+                            ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FqnPayloadType #>>());
                             entityManager.AddComponentData(entity, eventSender);
                         }
 <# } #>
@@ -346,9 +354,9 @@ namespace <#= qualifiedNamespace #>
                         // Remove event senders
 <# foreach (var eventDetail in eventDetailsList) { #>
                         {
-                            var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
-                            ReferenceTypeProviders.<#= eventDetail.PascalCaseName #>Provider.Free(eventSender.handle);
-                            entityManager.RemoveComponent<EventSender.<#= eventDetail.PascalCaseName #>>(entity);
+                            var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.EventName #>>(entity);
+                            ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Free(eventSender.handle);
+                            entityManager.RemoveComponent<EventSender.<#= eventDetail.EventName #>>(entity);
                         }
 <# } #>
                         break;
@@ -408,7 +416,7 @@ namespace <#= qualifiedNamespace #>
     var wrappedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
     var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{commandDetails.CommandName}";
 
-    var commandStorage = $"{commandDetails.CamelCaseName}Storage";
+    var commandStorage = $"{commandDetails.CamelCaseCommandName}Storage";
 #>
             private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
             {
@@ -417,7 +425,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var deserializedRequest = <#= commandDetails.RequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+                var deserializedRequest = <#= commandDetails.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
                 List<<#= wrappedCommandRequestType #>> requests;
                 if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
@@ -459,10 +467,10 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                <#= commandDetails.ResponseType #>? response = null;
+                <#= commandDetails.FqnResponseType #>? response = null;
                 if (op.StatusCode == StatusCode.Success)
                 {
-                    response = <#= commandDetails.ResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                    response = <#= commandDetails.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
                 List<<#= wrappedCommandResponseType #>> responses;
@@ -510,14 +518,14 @@ namespace <#= qualifiedNamespace #>
             };
 
 <# foreach (var commandDetails in commandDetailsList) { #>
-            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseName #>Storage;
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
 <# foreach (var commandDetails in commandDetailsList) { #>
-                <#= commandDetails.CamelCaseName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
+                <#= commandDetails.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
 <# } #>
             }
 
@@ -552,7 +560,7 @@ namespace <#= qualifiedNamespace #>
                             foreach (var e in events<#= eventDetail.EventName #>)
                             {
                                 var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
-                                <#= eventDetail.FullyQualifiedPayloadTypeName #>.Serialization.Serialize(e, obj);
+                                <#= eventDetail.FqnPayloadType #>.Serialization.Serialize(e, obj);
                             }
 
                             events<#= eventDetail.EventName #>.Clear();
@@ -599,15 +607,15 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             var wrappedCommandRequest = requests[k];
 
                             var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
-                            <#= commandDetails.RequestType #>.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
+                            <#= commandDetails.FqnRequestType #>.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
 
                             var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
                                 new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
                                 wrappedCommandRequest.TimeoutMillis,
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
-                            <#= commandDetails.CamelCaseName #>Storage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<<#= commandDetails.RequestType #>>(entityArray[j], wrappedCommandRequest.Payload, null);
+                            <#= commandDetails.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId.Id] =
+                                new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entityArray[j], wrappedCommandRequest.Payload, null);
                         }
 
                         requests.Clear();
@@ -642,7 +650,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             }
 
                             var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
-                            <#= commandDetails.ResponseType #>.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
+                            <#= commandDetails.FqnResponseType #>.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
 
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                         }
