@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Playground
 {
@@ -9,28 +10,32 @@ namespace Playground
         public const string CharacterArchetype = "Character";
         public const string CubeArchetype = "Cube";
         public const string SpinnerArchetype = "Spinner";
+        
+        private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
+        private const string LoggerName = "ArchetypeConfig";
 
-        public static readonly Dictionary<string, Dictionary<string, ComponentType[]>>
-            WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>
+        public static void AddComponentDataForArchetype(Worker worker, string archetype, 
+            EntityCommandBuffer commandBuffer, Entity entity)
+        {
+            switch (worker.WorkerType)
             {
-                {
-                    SystemConfig.UnityGameLogic,
-                    new Dictionary<string, ComponentType[]>()
-                    {
-                        { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { SpinnerArchetype, new ComponentType[] { typeof(BufferedTransform) } }
-                    }
-                },
-                {
-                    SystemConfig.UnityClient,
-                    new Dictionary<string, ComponentType[]>()
-                    {
-                        { CharacterArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { CubeArchetype, new ComponentType[] { typeof(BufferedTransform) } },
-                        { SpinnerArchetype, new ComponentType[] { typeof(BufferedTransform) } }
-                    }
-                }
-            };
+                case SystemConfig.UnityClient when archetype == CharacterArchetype:
+                case SystemConfig.UnityClient when archetype == CubeArchetype:
+                case SystemConfig.UnityClient when archetype == SpinnerArchetype:
+                    commandBuffer.AddBuffer<BufferedTransform>(entity);
+                    break;
+                case SystemConfig.UnityGameLogic when archetype == CharacterArchetype:
+                case SystemConfig.UnityGameLogic when archetype == CubeArchetype:
+                case SystemConfig.UnityGameLogic when archetype == SpinnerArchetype:
+                    commandBuffer.AddBuffer<BufferedTransform>(entity);
+                    break;
+                default:
+                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                        .WithField(LoggingUtils.LoggerName, LoggerName)
+                        .WithField("ArchetypeName", archetype)
+                        .WithField("WorkerType", worker.WorkerType));
+                    break;
+            }
+        }
     }
 }

@@ -25,15 +25,13 @@ namespace Improbable.Gdk.TransformSynchronization
             for (var i = 0; i < transformUpdateData.Length; i++)
             {
                 var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
-                var bufferedTransform = transformUpdateData.BufferedTransform[i];
-                var lastTransformSnapshot = bufferedTransform.LastTransformSnapshot;
-
-                if (!bufferedTransform.IsInitialised)
+                var lastTransformSnapshot = new SpatialOSTransform();
+                var bufferLength = transformUpdateData.BufferedTransform[i].Length;
+                if (bufferLength > 0)
                 {
-                    lastTransformSnapshot = transformUpdateData.Transform[i];
-                    bufferedTransform.IsInitialised = true;
+                    lastTransformSnapshot = transformUpdateData.BufferedTransform[i][bufferLength - 1].transformUpdate;
                 }
-
+                
                 foreach (var update in transformUpdates)
                 {
                     if (update.Location.HasValue)
@@ -51,10 +49,13 @@ namespace Improbable.Gdk.TransformSynchronization
                         lastTransformSnapshot.Tick = update.Tick.Value;
                     }
 
-                    transformUpdateData.BufferedTransform[i].TransformUpdates.Add(lastTransformSnapshot);
+                    var bufferedTransform = new BufferedTransform
+                    {
+                        transformUpdate = lastTransformSnapshot
+                    };
+                    
+                    transformUpdateData.BufferedTransform[i].Add(bufferedTransform);
                 }
-
-                transformUpdateData.BufferedTransform[i].LastTransformSnapshot = lastTransformSnapshot;
             }
         }
     }
