@@ -12,10 +12,11 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformUpdateData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<Transform.ReceivedUpdates> TransformUpdate;
-            public ComponentArray<BufferedTransform> BufferedTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> TransformAuthority;
-            [ReadOnly] public ComponentDataArray<Transform.Component> Transform;
+            public BufferArray<BufferedTransform> BufferedTransform;
+            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
+            [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;
@@ -25,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
             for (var i = 0; i < transformUpdateData.Length; i++)
             {
                 var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
-                var lastTransformSnapshot = new SpatialOSTransform();
+                var lastTransformSnapshot = transformUpdateData.Transform[i];
                 var bufferLength = transformUpdateData.BufferedTransform[i].Length;
                 if (bufferLength > 0)
                 {

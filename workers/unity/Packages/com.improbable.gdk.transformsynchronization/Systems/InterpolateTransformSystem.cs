@@ -80,6 +80,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                 }
 
+                nextTransform = transformQueue[0].transformUpdate;
                 var serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
 
                 // Our time is too far ahead need to reset to server tick
@@ -90,7 +91,6 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 // Apply update if update tick matches local tick, otherwise interpolate
-                
                 var rigidBody = transformData.Rigidbody[i];
 
                 if (nextTransform.Tick == serverTickToApply)
