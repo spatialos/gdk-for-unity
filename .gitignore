@@ -5,6 +5,7 @@
 .idea/
 .vs/
 .DS_Store
+*.orig
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
