@@ -19,8 +19,8 @@ $RESHARPER_CLI_VERSION="2018.1.2"
 $SPATIAL_VERSION="1.1.9"
 
 # From https://public-cdn.cloud.unity3d.com/hub/prod/releases-win32.json
-$UNITY_VERSION="2018.2.1f1"
-$UNITY_RELEASE_HASH="1a9968d9f99c"
+$UNITY_VERSION="2018.2.0f2"
+$UNITY_RELEASE_HASH="787658998520"
 
 # Direct link to installer at https://my.visualstudio.com/Downloads?q=Visual%20Studio%202017
 # VS Professional 15.7
