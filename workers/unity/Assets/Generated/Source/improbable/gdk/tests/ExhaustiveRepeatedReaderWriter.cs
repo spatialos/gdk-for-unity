@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197717)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSExhaustiveRepeated, SpatialOSExhaustiveRepeated.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component, Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update>
             {
                 event Action<global::System.Collections.Generic.List<BlittableBool>> Field1Updated;
                 event Action<global::System.Collections.Generic.List<float>> Field2Updated;
@@ -50,12 +50,12 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197717)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSExhaustiveRepeated, SpatialOSExhaustiveRepeated.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component, Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSExhaustiveRepeated, SpatialOSExhaustiveRepeated.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component, Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -198,7 +198,7 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => field17Delegates.Remove(value);
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSExhaustiveRepeated.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
@@ -218,7 +218,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
-                protected override void ApplyUpdate(SpatialOSExhaustiveRepeated.Update update, ref SpatialOSExhaustiveRepeated data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component data)
                 {
                     if (update.Field1.HasValue)
                     {

@@ -21,13 +21,17 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         {
             public static void Serialize(FirstCommandRequest instance, global::Improbable.Worker.Core.SchemaObject obj)
             {
-                obj.AddInt32(1, instance.Field);
+                {
+                    obj.AddInt32(1, instance.Field);
+                }
             }
     
             public static FirstCommandRequest Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var instance = new FirstCommandRequest();
-                instance.Field = obj.GetInt32(1);
+                {
+                    instance.Field = obj.GetInt32(1);
+                }
                 return instance;
             }
         }

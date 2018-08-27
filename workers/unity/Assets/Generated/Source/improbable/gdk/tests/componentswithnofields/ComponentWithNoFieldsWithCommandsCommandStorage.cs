@@ -10,7 +10,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
             public class Cmd : CommandStorage
             {

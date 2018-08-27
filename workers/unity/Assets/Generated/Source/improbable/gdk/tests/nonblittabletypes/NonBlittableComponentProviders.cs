@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSNonBlittableComponent.Update>> Storage = new Dictionary<uint, List<SpatialOSNonBlittableComponent.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSNonBlittableComponent.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSNonBlittableComponent.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSNonBlittableComponent.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -149,7 +149,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public static class OptionalFieldProvider 
             {
-                private static readonly Dictionary<uint, global::System.Nullable<int>> Storage = new Dictionary<uint, global::System.Nullable<int>>();
+                private static readonly Dictionary<uint, int?> Storage = new Dictionary<uint, int?>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -158,13 +158,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Nullable<int>));
+                    Storage.Add(handle, default(int?));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Nullable<int> Get(uint handle)
+                public static int? Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -174,7 +174,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Nullable<int> value)
+                public static void Set(uint handle, int? value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -283,7 +283,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             public static class MapFieldProvider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -292,13 +292,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<int, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<int,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -308,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

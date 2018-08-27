@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.ReaderWriter, 1001)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>
             {
                 event Action<BlittableBool> BoolFieldUpdated;
                 event Action<int> IntFieldUpdated;
@@ -40,14 +40,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.ReaderWriter, 1001)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>
             {
                 void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload);
                 void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload);
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSBlittableComponent, SpatialOSBlittableComponent.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -94,7 +94,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     remove => doubleFieldDelegates.Remove(value);
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSBlittableComponent.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update)
                 {
                     DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
                     DispatchWithErrorHandling(update.IntField, intFieldDelegates);
@@ -102,7 +102,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
                     DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
                 }
-                protected override void ApplyUpdate(SpatialOSBlittableComponent.Update update, ref SpatialOSBlittableComponent data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component data)
                 {
                     if (update.BoolField.HasValue)
                     {
@@ -126,17 +126,17 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>> firstEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>> FirstEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> OnFirstEvent
                 {
-                    add => firstEventDelegates.Add(value);
-                    remove => firstEventDelegates.Remove(value);
+                    add => FirstEventDelegates.Add(value);
+                    remove => FirstEventDelegates.Remove(value);
                 }
 
                 public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
                 {
-                    DispatchEventWithErrorHandling(payload, firstEventDelegates);
+                    DispatchEventWithErrorHandling(payload, FirstEventDelegates);
                 }
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
@@ -145,17 +145,17 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     sender.Events.Add(payload);
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>> secondEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>> SecondEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> OnSecondEvent
                 {
-                    add => secondEventDelegates.Add(value);
-                    remove => secondEventDelegates.Remove(value);
+                    add => SecondEventDelegates.Add(value);
+                    remove => SecondEventDelegates.Remove(value);
                 }
 
                 public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
                 {
-                    DispatchEventWithErrorHandling(payload, secondEventDelegates);
+                    DispatchEventWithErrorHandling(payload, SecondEventDelegates);
                 }
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
