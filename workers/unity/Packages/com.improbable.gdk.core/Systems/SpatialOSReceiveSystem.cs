@@ -122,6 +122,7 @@ namespace Improbable.Gdk.Core
         private void OnDisconnect(DisconnectOp op)
         {
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
+            WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             EntityManager.AddSharedComponentData(worker.WorkerEntity,
                 new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
