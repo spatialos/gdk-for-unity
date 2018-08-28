@@ -34,8 +34,8 @@ namespace Playground
             base.OnCreateManager(capacity);
 
             worker = World.GetExistingManager<WorkerSystem>();
-            if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
-                !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
+            if (!WorkerUtils.UnityClient.Equals(worker.WorkerType) &&
+                !WorkerUtils.UnityGameLogic.Equals(worker.WorkerType))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)

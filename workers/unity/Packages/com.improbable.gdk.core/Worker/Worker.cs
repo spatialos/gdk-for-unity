@@ -43,7 +43,13 @@ namespace Improbable.Gdk.Core
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
         }
 
-        public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger, Vector3 origin)
+        public bool TryGetEntity(EntityId entityId, out Entity entity)
+        {
+            return World.GetExistingManager<WorkerSystem>().TryGetEntity(entityId, out entity);
+        }
+
+        public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger,
+            Vector3 origin)
         {
             var connectionParams = config.CreateConnectionParameters();
             connectionParams.Network.ConnectionTimeoutMillis = 5000;
@@ -59,13 +65,15 @@ namespace Improbable.Gdk.Core
                 }
 
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
+                logger.HandleLog(LogType.Log, new LogEvent("Successfully create worker")
+                    .WithField("WorkerType", worker.WorkerType)
+                    .WithField("WorkerId", worker.WorkerId));
                 return worker;
             }
         }
 
         public static async Task<Worker> CreateWorkerAsync(LocatorConfig config,
-            Func<DeploymentList, string> deploymentListCallback, Func<QueueStatus, bool> queueCallback,
-            ILogDispatcher logger, Vector3 origin)
+            Func<DeploymentList, string> deploymentListCallback, ILogDispatcher logger, Vector3 origin)
         {
             using (var locator = new Locator(config.LocatorHost, config.LocatorParameters))
             {
@@ -73,7 +81,7 @@ namespace Improbable.Gdk.Core
 
                 var deploymentName = deploymentListCallback(deploymentList);
                 var connectionParams = config.CreateConnectionParameters();
-                using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParams, queueCallback))
+                using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParams, (_) => true))
                 {
                     var connection = await Task.Run(() => connectionFuture.Get());
                     if (!connection.IsConnected)
@@ -83,22 +91,19 @@ namespace Improbable.Gdk.Core
                     }
 
                     var worker = new Worker(config.WorkerType, connection, logger, origin);
-                    worker.AddCoreSystems();
+                    logger.HandleLog(LogType.Log, new LogEvent("Successfully create worker")
+                        .WithField("WorkerType", worker.WorkerType)
+                        .WithField("WorkerId", worker.WorkerId));
                     return worker;
                 }
             }
-        }
-
-        public bool TryGetEntity(EntityId entityId, out Entity entity)
-        {
-            return World.GetExistingManager<WorkerSystem>().TryGetEntity(entityId, out entity);
         }
 
         private static async Task<DeploymentList> GetDeploymentList(Locator locator)
         {
             using (var deploymentsFuture = locator.GetDeploymentListAsync())
             {
-                var deploymentList = await Task.Run(() => deploymentsFuture.Get());
+                var deploymentList = await Task.Run(() => deploymentsFuture.Get()).ConfigureAwait(false);
                 if (!string.IsNullOrEmpty(deploymentList.Error))
                 {
                     throw new ConnectionFailedException(deploymentList.Error, ConnectionErrorReason.DeploymentNotFound);

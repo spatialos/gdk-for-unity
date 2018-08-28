@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Connection.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
         }
 

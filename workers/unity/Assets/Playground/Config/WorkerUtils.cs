@@ -1,12 +1,10 @@
-using System;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 
 namespace Playground
 {
-    public static class SystemConfig
+    public static class WorkerUtils
     {
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
