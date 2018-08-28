@@ -83,18 +83,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
-                    foreach (var callback in cmdDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(request, cmdDelegates, logger);
                 }
 
                 public void SendCmdResponse(Cmd.Response response)
@@ -137,20 +126,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     remove => cmdDelegates.Remove(value);
                 }
 
-                internal void OnCmdResponseInternal(Cmd.ReceivedResponse request)
+                internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)
                 {
-                    foreach (var callback in cmdDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(response, cmdDelegates, logger);
                 }
             }
         }

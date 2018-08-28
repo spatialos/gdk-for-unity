@@ -95,25 +95,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         /// <param name="payload">The value for the property update.</param>
         /// <param name="callbacks">The property update handlers.</param>
         /// <typeparam name="T">The property update type.</typeparam>
-        protected void DispatchWithErrorHandling<T>(Option<T> payload, IEnumerable<Action<T>> callbacks)
+        protected void DispatchWithErrorHandling<T>(Option<T> payload, List<Action<T>> callbacks)
         {
             if (!payload.HasValue)
             {
                 return;
             }
 
-            foreach (var callback in callbacks)
-            {
-                try
-                {
-                    callback(payload.Value);
-                }
-                catch (Exception e)
-                {
-                    // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                }
-            }
+            GameObjectDelegates.DispatchWithErrorHandling(payload.Value, callbacks, logDispatcher);
         }
 
         public void OnAuthorityChange(Authority authority)
@@ -123,22 +112,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 try
                 {
                     callback(authority);
-                }
-                catch (Exception e)
-                {
-                    // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                }
-            }
-        }
-
-        protected void DispatchEventWithErrorHandling<T>(T payload, List<Action<T>> callbacks)
-        {
-            foreach (var callback in callbacks)
-            {
-                try
-                {
-                    callback(payload);
                 }
                 catch (Exception e)
                 {

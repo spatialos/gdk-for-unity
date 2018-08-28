@@ -95,18 +95,7 @@ namespace <#= qualifiedNamespace #>
 
                 internal void On<#= commandDetails.CommandName #>RequestInternal(<#= commandRequestType #> request)
                 {
-                    foreach (var callback in <#= delegateList #>)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(request, <#= delegateList #>, logger);
                 }
 
                 public void Send<#= commandDetails.CommandName #>Response(<#= commandResponseType #> response)
@@ -154,20 +143,9 @@ namespace <#= qualifiedNamespace #>
                     remove => <#= delegateList #>.Remove(value);
                 }
 
-                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> request)
+                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> response)
                 {
-                    foreach (var callback in <#= delegateList #>)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(response, <#= delegateList #>, logger);
                 }
 <# } #>
             }

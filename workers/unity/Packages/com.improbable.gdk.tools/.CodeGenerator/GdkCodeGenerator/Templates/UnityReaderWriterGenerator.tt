@@ -104,7 +104,7 @@ namespace <#= qualifiedNamespace #>
 
                 public void On<#= eventDetails.EventName #>Event(<#= payloadType #> payload)
                 {
-                    DispatchEventWithErrorHandling(payload, <#= delegateList #>);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, <#= delegateList #>, logDispatcher);
                 }
 
                 public void Send<#= eventDetails.EventName #>(<#= eventDetails.FqnPayloadType #> payload)

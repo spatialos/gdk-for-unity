@@ -89,18 +89,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in firstCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(request, firstCommandDelegates, logger);
                 }
 
                 public void SendFirstCommandResponse(FirstCommand.Response response)
@@ -120,18 +109,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in secondCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(request, secondCommandDelegates, logger);
                 }
 
                 public void SendSecondCommandResponse(SecondCommand.Response response)
@@ -174,20 +152,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     remove => firstCommandDelegates.Remove(value);
                 }
 
-                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse request)
+                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
                 {
-                    foreach (var callback in firstCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(response, firstCommandDelegates, logger);
                 }
 
                 private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
@@ -197,20 +164,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     remove => secondCommandDelegates.Remove(value);
                 }
 
-                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse request)
+                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)
                 {
-                    foreach (var callback in secondCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(response, secondCommandDelegates, logger);
                 }
             }
         }
