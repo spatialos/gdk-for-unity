@@ -72,7 +72,7 @@ namespace Playground
             Workers.Add(worker);
         }
 
-        private void OnApplicationQuit()
+        private void OnDisable()
         {
             foreach (var worker in Workers)
             {
