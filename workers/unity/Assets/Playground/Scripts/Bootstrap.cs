@@ -48,7 +48,7 @@ namespace Playground
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 var config = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
-                if (string.Empty.Equals(config.WorkerType))
+                if (string.IsNullOrEmpty(config.WorkerType))
                 {
                     config.WorkerType = SystemConfig.UnityClient;
                 }
