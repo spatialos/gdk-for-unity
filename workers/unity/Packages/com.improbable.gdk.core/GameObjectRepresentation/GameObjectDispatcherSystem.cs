@@ -141,12 +141,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.MarkAuthorityGainedForActivation(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityIndexToActivationManager);
-            }
-
-            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
-            {
                 gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(entityIndexToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityIndexToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(entityIndexToReaderWriterStore);
