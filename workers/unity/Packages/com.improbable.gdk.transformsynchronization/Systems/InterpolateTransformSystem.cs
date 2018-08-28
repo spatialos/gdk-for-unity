@@ -11,7 +11,6 @@ namespace Improbable.Gdk.TransformSynchronization
     public class InterpolateTransformSystem : ComponentSystem
     {
         private const uint TargetTickOffset = 2;
-        private const uint MaxBufferSize = 4;
 
         private TickSystem tickSystem;
         private long serverTickOffset;
@@ -74,7 +73,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 // Recieved too many updates. Drop to latest update and interpolate from there.
-                if (transformQueue.Length >= MaxBufferSize)
+                if (transformQueue.Length >= TransformSynchronizationSystemHelper.MaxBufferSize)
                 {
                     transformQueue.RemoveRange(0, transformQueue.Length - 1);
                     serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;

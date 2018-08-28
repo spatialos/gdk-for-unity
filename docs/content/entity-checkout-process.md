@@ -24,32 +24,35 @@ An Archetype initialization feature is provided as part of the `Playground` proj
 To use this feature:
 1. Add the `ArchetypeInitializationSystem` to your Worker's world.
 2. Add an `ArchetypeComponent` schema component to SpatialOS entities that should make use of this feature. Set the `archetype_name` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `archetype_name = "MyArchetype"`).
-3. Specify a list of components to be added to entities in `workers\unity\Assets\Playground\Config\ArchetypeConfig.cs`:
+3. Specify which components should be added to the entities in the `OnUpdate` method of the `ArchetypeInitializationSystem`:
 ```csharp
-public static class ArchetypeConfig
+protected override void OnUpdate()
 {
-    public static readonly Dictionary<string, Dictionary<string, ComponentType[]>>
-        WorkerTypeToArchetypeNameToComponentTypes = new Dictionary<string, Dictionary<string, ComponentType[]>>
+    for (var i = 0; i < data.Length; i++)
+    {
+        var archetype = data.ArchetypeComponents[i].ArchetypeName;
+        var entity = data.Entities[i];
+
+        switch (worker.WorkerType)
         {
-            {
-                UnityGameLogic.WorkerType,
-                new Dictionary<string, ComponentType[]>()
-                {
-                    { "MyArchetype", new ComponentType[] { typeof(ComponentToBeAdded), typeof(AnotherComponentToBeAdded) } }
-                }
-            },
-            {
-                UnityClient.WorkerType,
-                new Dictionary<string, ComponentType[]>()
-                {
-                    { "MyArchetype", new ComponentType[] { typeof(ComponentToBeAdded), typeof(AnotherComponentToBeAdded) } }
-                }
-            }
-        };
+            case SystemConfig.UnityClient when archetype == ArchetypeConfig.CharacterArchetype:
+            case SystemConfig.UnityClient when archetype == ArchetypeConfig.CubeArchetype:
+            case SystemConfig.UnityClient when archetype == ArchetypeConfig.SpinnerArchetype:
+            case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.CharacterArchetype:
+            case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.CubeArchetype:
+            case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.SpinnerArchetype:
+                PostUpdateCommands.AddBuffer<BufferedTransform>(entity);
+                break;
+            default:
+                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
+                    .WithField(LoggingUtils.LoggerName, LoggerName)
+                    .WithField("ArchetypeName", archetype)
+                    .WithField("WorkerType", worker.WorkerType));
+                break;
+        }
+    }            
 }
 ```
-The components specified in `WorkerTypeToArchetypeNameToComponentTypes` are automatically added to entities that have an `ArchetypeComponent` with a matching `archetype_name`.
-
 To perform more complex setup logic, you can add components that themselves act as temporary markers for performing additional setup logic. E.g. you could add a `NeedsHelperChildEntity` ECS component as part of the Archetype initialization feature and have an additional `CreateHelperChildEntitySystem` inject that component.
 
 **Note:** It is currently not possible to set the initial field values of the ECS components that were added through this feature. Those fields need to be set manually in a follow-up setup step, e.g. with a system that also injects the `NewlyAddedSpatialOSEntity` component and is run after the `ArchetypeInitializationSystem`.
