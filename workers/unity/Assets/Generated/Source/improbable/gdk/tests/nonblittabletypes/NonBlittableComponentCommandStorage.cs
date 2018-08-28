@@ -14,13 +14,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public class FirstCommand : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>>();
             }
             public class SecondCommand : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>>();
             }
         }
     }

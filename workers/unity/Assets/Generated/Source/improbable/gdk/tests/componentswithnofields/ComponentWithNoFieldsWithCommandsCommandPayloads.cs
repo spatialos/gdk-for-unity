@@ -29,24 +29,23 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 uint? timeoutMillis = null,
                 bool allowShortCircuiting = false)
             {
-                return new Request 
+                return new Request
                 {
                     TargetEntityId = targetEntityId,
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
-                
                 };
             }
 
             public struct ReceivedRequest
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
                 public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; }
 
-                public ReceivedRequest(uint requestId,
+                public ReceivedRequest(long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
@@ -64,14 +63,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             /// </summary>
             public struct Response
             {
-                public uint RequestId { get; internal set; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set;}
+                public long RequestId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
 
             public static Response CreateResponse(ReceivedRequest req, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
             {
-                return new Response 
+                return new Response
                 {
                     RequestId = req.RequestId,
                     Payload = payload,
@@ -81,7 +80,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
             {
-                return new Response 
+                return new Response
                 {
                     RequestId = req.RequestId,
                     Payload = null,

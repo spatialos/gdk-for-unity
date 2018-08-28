@@ -245,7 +245,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
@@ -295,7 +295,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -425,7 +425,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
@@ -475,7 +475,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -605,7 +605,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
@@ -655,7 +655,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -785,7 +785,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
     }

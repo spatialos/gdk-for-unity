@@ -20,8 +20,8 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var commandDetails in commandDetailsList) { #>
             public class <#= commandDetails.CommandName #> : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<<#= commandDetails.RequestType #>>> CommandRequestsInFlight =
-                    new Dictionary<uint, CommandRequestStore<<#= commandDetails.RequestType #>>>();
+                public Dictionary<long, CommandRequestStore<<#= commandDetails.RequestType #>>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<<#= commandDetails.RequestType #>>>();
             }
 <# } #>
         }
