@@ -460,9 +460,9 @@ namespace Generated.Improbable.Gdk.Tests
                 var component = new SpatialOSExhaustiveMapKey();
 
                 component.field1Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field1Provider.Allocate(world);
-
                 {
-                    var field1 = component.Field1 = new global::System.Collections.Generic.Dictionary<BlittableBool,string>();
+                    var field1 = new global::System.Collections.Generic.Dictionary<BlittableBool,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field1Provider.Set(component.field1Handle, field1);
                     var mapSize = obj.GetObjectCount(1);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -472,10 +472,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field1.Add(key, value);
                     }
                 }
-                component.field2Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field2Provider.Allocate(world);
 
+                component.field2Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field2Provider.Allocate(world);
                 {
-                    var field2 = component.Field2 = new global::System.Collections.Generic.Dictionary<float,string>();
+                    var field2 = new global::System.Collections.Generic.Dictionary<float,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field2Provider.Set(component.field2Handle, field2);
                     var mapSize = obj.GetObjectCount(2);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -485,10 +486,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field2.Add(key, value);
                     }
                 }
-                component.field3Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field3Provider.Allocate(world);
 
+                component.field3Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 {
-                    var field3 = component.Field3 = new global::System.Collections.Generic.Dictionary<byte[],string>();
+                    var field3 = new global::System.Collections.Generic.Dictionary<byte[],string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field3Provider.Set(component.field3Handle, field3);
                     var mapSize = obj.GetObjectCount(3);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -498,10 +500,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field3.Add(key, value);
                     }
                 }
-                component.field4Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field4Provider.Allocate(world);
 
+                component.field4Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field4Provider.Allocate(world);
                 {
-                    var field4 = component.Field4 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var field4 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field4Provider.Set(component.field4Handle, field4);
                     var mapSize = obj.GetObjectCount(4);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -511,10 +514,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field4.Add(key, value);
                     }
                 }
-                component.field5Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field5Provider.Allocate(world);
 
+                component.field5Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field5Provider.Allocate(world);
                 {
-                    var field5 = component.Field5 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    var field5 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field5Provider.Set(component.field5Handle, field5);
                     var mapSize = obj.GetObjectCount(5);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -524,10 +528,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field5.Add(key, value);
                     }
                 }
-                component.field6Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field6Provider.Allocate(world);
 
+                component.field6Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field6Provider.Allocate(world);
                 {
-                    var field6 = component.Field6 = new global::System.Collections.Generic.Dictionary<double,string>();
+                    var field6 = new global::System.Collections.Generic.Dictionary<double,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field6Provider.Set(component.field6Handle, field6);
                     var mapSize = obj.GetObjectCount(6);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -537,10 +542,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field6.Add(key, value);
                     }
                 }
-                component.field7Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field7Provider.Allocate(world);
 
+                component.field7Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 {
-                    var field7 = component.Field7 = new global::System.Collections.Generic.Dictionary<string,string>();
+                    var field7 = new global::System.Collections.Generic.Dictionary<string,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field7Provider.Set(component.field7Handle, field7);
                     var mapSize = obj.GetObjectCount(7);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -550,10 +556,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field7.Add(key, value);
                     }
                 }
-                component.field8Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field8Provider.Allocate(world);
 
+                component.field8Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field8Provider.Allocate(world);
                 {
-                    var field8 = component.Field8 = new global::System.Collections.Generic.Dictionary<uint,string>();
+                    var field8 = new global::System.Collections.Generic.Dictionary<uint,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field8Provider.Set(component.field8Handle, field8);
                     var mapSize = obj.GetObjectCount(8);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -563,10 +570,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field8.Add(key, value);
                     }
                 }
-                component.field9Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field9Provider.Allocate(world);
 
+                component.field9Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field9Provider.Allocate(world);
                 {
-                    var field9 = component.Field9 = new global::System.Collections.Generic.Dictionary<ulong,string>();
+                    var field9 = new global::System.Collections.Generic.Dictionary<ulong,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field9Provider.Set(component.field9Handle, field9);
                     var mapSize = obj.GetObjectCount(9);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -576,10 +584,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field9.Add(key, value);
                     }
                 }
-                component.field10Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field10Provider.Allocate(world);
 
+                component.field10Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field10Provider.Allocate(world);
                 {
-                    var field10 = component.Field10 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var field10 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field10Provider.Set(component.field10Handle, field10);
                     var mapSize = obj.GetObjectCount(10);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -589,10 +598,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field10.Add(key, value);
                     }
                 }
-                component.field11Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field11Provider.Allocate(world);
 
+                component.field11Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field11Provider.Allocate(world);
                 {
-                    var field11 = component.Field11 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    var field11 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field11Provider.Set(component.field11Handle, field11);
                     var mapSize = obj.GetObjectCount(11);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -602,10 +612,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field11.Add(key, value);
                     }
                 }
-                component.field12Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field12Provider.Allocate(world);
 
+                component.field12Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field12Provider.Allocate(world);
                 {
-                    var field12 = component.Field12 = new global::System.Collections.Generic.Dictionary<uint,string>();
+                    var field12 = new global::System.Collections.Generic.Dictionary<uint,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field12Provider.Set(component.field12Handle, field12);
                     var mapSize = obj.GetObjectCount(12);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -615,10 +626,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field12.Add(key, value);
                     }
                 }
-                component.field13Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field13Provider.Allocate(world);
 
+                component.field13Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field13Provider.Allocate(world);
                 {
-                    var field13 = component.Field13 = new global::System.Collections.Generic.Dictionary<ulong,string>();
+                    var field13 = new global::System.Collections.Generic.Dictionary<ulong,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field13Provider.Set(component.field13Handle, field13);
                     var mapSize = obj.GetObjectCount(13);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -628,10 +640,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field13.Add(key, value);
                     }
                 }
-                component.field14Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field14Provider.Allocate(world);
 
+                component.field14Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field14Provider.Allocate(world);
                 {
-                    var field14 = component.Field14 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var field14 = new global::System.Collections.Generic.Dictionary<int,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field14Provider.Set(component.field14Handle, field14);
                     var mapSize = obj.GetObjectCount(14);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -641,10 +654,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field14.Add(key, value);
                     }
                 }
-                component.field15Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field15Provider.Allocate(world);
 
+                component.field15Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field15Provider.Allocate(world);
                 {
-                    var field15 = component.Field15 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    var field15 = new global::System.Collections.Generic.Dictionary<long,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field15Provider.Set(component.field15Handle, field15);
                     var mapSize = obj.GetObjectCount(15);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -654,10 +668,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field15.Add(key, value);
                     }
                 }
-                component.field16Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field16Provider.Allocate(world);
 
+                component.field16Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 {
-                    var field16 = component.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>();
+                    var field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field16Provider.Set(component.field16Handle, field16);
                     var mapSize = obj.GetObjectCount(16);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -667,10 +682,11 @@ namespace Generated.Improbable.Gdk.Tests
                         field16.Add(key, value);
                     }
                 }
-                component.field17Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field17Provider.Allocate(world);
 
+                component.field17Handle = Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field17Provider.Allocate(world);
                 {
-                    var field17 = component.Field17 = new global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string>();
+                    var field17 = new global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string>();
+                    Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field17Provider.Set(component.field17Handle, field17);
                     var mapSize = obj.GetObjectCount(17);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -680,6 +696,7 @@ namespace Generated.Improbable.Gdk.Tests
                         field17.Add(key, value);
                     }
                 }
+
                 return component;
             }
 

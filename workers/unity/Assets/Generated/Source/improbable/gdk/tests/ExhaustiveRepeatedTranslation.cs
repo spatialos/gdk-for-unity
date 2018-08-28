@@ -61,7 +61,6 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var data = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveRepeated.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveRepeated>());
 

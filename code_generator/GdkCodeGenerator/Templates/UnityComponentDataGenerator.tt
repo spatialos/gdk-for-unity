@@ -19,7 +19,7 @@ namespace <#= qualifiedNamespace #>
         public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
-        private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
+        internal <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
 
         public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
         {
@@ -190,19 +190,27 @@ namespace <#= qualifiedNamespace #>
 <# if (!fieldDetails.IsBlittable) { #>
                 component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
-
 <# if (fieldDetails.SchemaTypeInfo.SingularTypeInfo.HasValue) { #>
 <# var singularTypeInfo = fieldDetails.SchemaTypeInfo.SingularTypeInfo.Value; #>
 <# if (singularTypeInfo.IsEnum) { #>
-                component.<#= fieldDetails.PascalCaseName #> = (<#= fieldDetails.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+                component.<#= fieldDetails.CamelCaseName #> = (<#= fieldDetails.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
 <# } else if (singularTypeInfo.IsPrimitive) { #>
-                component.<#= fieldDetails.PascalCaseName #> = obj.<#= singularTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+<# if (fieldDetails.IsBlittable) { #>
+                component.<#= fieldDetails.CamelCaseName #> = obj.<#= singularTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
 <# } else { #>
-                component.<#= fieldDetails.PascalCaseName #> = <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, obj.<#= singularTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));                
+<# } #>
+<# } else { #>
+<# if (fieldDetails.IsBlittable) { #>
+                component.<#= fieldDetails.CamelCaseName #> = <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+<# } else { #>
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));                
+<# } #>
 <# } #>
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
-                var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+                var <#= fieldDetails.CamelCaseName #> = new global::System.Collections.Generic.List<<#= listTypeInfo.Type #>>();
+                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName #>Handle, <#= fieldDetails.CamelCaseName #>);
 <# if (listTypeInfo.IsEnum) { #>
                 for (var i = 0; i < obj.GetEnumCount(<#= fieldDetails.FieldNumber #>); i++)
                 {
@@ -225,23 +233,32 @@ namespace <#= qualifiedNamespace #>
 <# if (optionTypeInfo.IsEnum) { #>
                 if (obj.GetEnumCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
-                    component.<#= fieldDetails.PascalCaseName #> = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
+                    component.<#= fieldDetails.CamelCaseName #> = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
                 }
 <# } else if (optionTypeInfo.IsPrimitive) { #>
                 if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
                 {
-                    component.<#= fieldDetails.PascalCaseName #> = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+<# if (fieldDetails.IsBlittable) { #>
+                    component.<#= fieldDetails.CamelCaseName #> = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
+<# } else { #>
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>));                
+<# } #>
                 }
 <# } else { #>
                 if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
-                    component.<#= fieldDetails.PascalCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+<# if (fieldDetails.IsBlittable) { #>
+                    component.<#= fieldDetails.CamelCaseName #> = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
+<# } else { #>
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>)));                
+<# } #>
                 }
 <# } #>
 <# } else { #>
 <# var mapTypeInfo = fieldDetails.SchemaTypeInfo.MapTypeInfo; #>
                 {
-                    var <#= fieldDetails.CamelCaseName #> = component.<#= fieldDetails.PascalCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    var <#= fieldDetails.CamelCaseName #> = new global::System.Collections.Generic.Dictionary<<#= mapTypeInfo.Key.Type #>,<#= mapTypeInfo.Value.Type #>>();
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName #>Handle, <#= fieldDetails.CamelCaseName #>);
                     var mapSize = obj.GetObjectCount(<#= fieldDetails.FieldNumber #>);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -264,6 +281,7 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
 <# } #>
+
 <# } #>
                 return component;
             }
@@ -284,7 +302,11 @@ namespace <#= qualifiedNamespace #>
                     var value = <#= singularTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
 <# } #>
                     update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
-                    component.<#= fieldDetails.PascalCaseName #> = value;
+<# if (fieldDetails.IsBlittable) { #>
+                    component.<#= fieldDetails.CamelCaseName #> = value;
+<# } else { #>
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, value);                
+<# } #>
                 }
 <# } else if (fieldDetails.SchemaTypeInfo.ListTypeInfo.HasValue) { #>
 <# var listTypeInfo = fieldDetails.SchemaTypeInfo.ListTypeInfo.Value; #>
@@ -340,21 +362,29 @@ namespace <#= qualifiedNamespace #>
                 {
                     var value = (<#= optionTypeInfo.Type #>) obj.GetEnum(<#= fieldDetails.FieldNumber #>);
                     update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
-                    component.<#= fieldDetails.PascalCaseName #> = value;
+                    component.<#= fieldDetails.CamelCaseName #> = value;
                 }
 <# } else if (optionTypeInfo.IsPrimitive) { #>
                 if (obj.<#= optionTypeInfo.SerializationFunctions.GetCount #>(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     var value = obj.<#= optionTypeInfo.SerializationFunctions.Deserialize #>(<#= fieldDetails.FieldNumber #>);
                     update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
-                    component.<#= fieldDetails.PascalCaseName #> = value;
+<# if (fieldDetails.IsBlittable) { #>
+                    component.<#= fieldDetails.CamelCaseName #> = value;
+<# } else { #>
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, value);                
+<# } #>
                 }
 <# } else { #>
                 if (obj.GetObjectCount(<#= fieldDetails.FieldNumber #>) == 1)
                 {
                     var value = <#= optionTypeInfo.SerializationFunctions.Deserialize #>(obj.GetObject(<#= fieldDetails.FieldNumber #>));
-                    update.<#= fieldDetails.PascalCaseName #> = value;
-                    component.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+                    update.<#= fieldDetails.PascalCaseName #> = new Option<<#= fieldDetails.Type #>>(value);
+<# if (fieldDetails.IsBlittable) { #>
+                    component.<#= fieldDetails.CamelCaseName #> = value;
+<# } else { #>
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(component.<#= fieldDetails.CamelCaseName#>Handle, value);                
+<# } #>
                 }
 <# } #>
 <# } else { #>

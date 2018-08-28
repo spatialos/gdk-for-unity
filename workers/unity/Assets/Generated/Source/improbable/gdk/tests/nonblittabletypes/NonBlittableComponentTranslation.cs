@@ -54,7 +54,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
 
                 var data = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SpatialOSNonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSNonBlittableComponent>());
 
