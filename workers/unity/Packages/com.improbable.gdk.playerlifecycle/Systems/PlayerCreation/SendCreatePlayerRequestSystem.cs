@@ -1,3 +1,4 @@
+using Generated.Improbable;
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
@@ -23,12 +24,9 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         protected override void OnUpdate()
         {
-            var request = new CreatePlayerRequestType
-            {
-                Position = new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 }
-            };
+            var request = new CreatePlayerRequestType(new Vector3f(0, 0, 0));
             data.RequestSenders[0].RequestsToSend
-                .Add(new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request));
+                .Add(PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request));
         }
     }
 }

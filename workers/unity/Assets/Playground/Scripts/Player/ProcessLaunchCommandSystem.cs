@@ -61,14 +61,9 @@ namespace Playground
                 {
                     var info = requests[j].Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch,
-                        new LaunchMeCommandRequest
-                        {
-                            ImpactPoint = info.ImpactPoint,
-                            LaunchDirection = info.LaunchDirection,
-                            LaunchEnergy = energy,
-                            Player = info.Player,
-                        }));
+                    sender.RequestsToSend.Add(Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
+                        new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
+                            energy, info.Player)));
                     energyLeft -= energy;
                     j++;
                 }
@@ -105,9 +100,9 @@ namespace Playground
                     );
                     launchable.MostRecentLauncher = info.Player;
 
-                    sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
+                    sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(
                         launchable.MostRecentLauncher,
-                        new ScoreIncreaseRequest { Amount = 1.0f }));
+                        new ScoreIncreaseRequest(1.0f)));
                 }
 
                 launchableData.Sender[i] = sender;

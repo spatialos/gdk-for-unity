@@ -13,6 +13,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         public float Field1;
         public global::System.Collections.Generic.List<double> Field2;
     
+        public SecondEventPayload(float field1, global::System.Collections.Generic.List<double> field2)
+        {
+            Field1 = field1;
+            Field2 = field2;
+        }
+    
         public static class Serialization
         {
             public static void Serialize(SecondEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
