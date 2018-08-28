@@ -33,12 +33,12 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public struct ReceivedRequest
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest Payload { get; }
 
-                public ReceivedRequest(uint requestId,
+                public ReceivedRequest(long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
@@ -52,7 +52,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public struct Response
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? Payload { get; }
                 public string FailureMessage { get; }
 
@@ -119,12 +119,12 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public struct ReceivedRequest
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest Payload { get; }
 
-                public ReceivedRequest(uint requestId,
+                public ReceivedRequest(long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
@@ -138,7 +138,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             public struct Response
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? Payload { get; }
                 public string FailureMessage { get; }
 

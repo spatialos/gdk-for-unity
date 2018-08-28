@@ -39,12 +39,12 @@ namespace <#= qualifiedNamespace #>
 
             public struct ReceivedRequest
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
                 public <#= commandDetails.RequestType #> Payload { get; }
 
-                public ReceivedRequest(uint requestId,
+                public ReceivedRequest(long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     <#= commandDetails.RequestType #> request)
@@ -58,7 +58,7 @@ namespace <#= qualifiedNamespace #>
 
             public struct Response
             {
-                public uint RequestId { get; }
+                public long RequestId { get; }
                 public <#= commandDetails.ResponseType #>? Payload { get; }
                 public string FailureMessage { get; }
 
