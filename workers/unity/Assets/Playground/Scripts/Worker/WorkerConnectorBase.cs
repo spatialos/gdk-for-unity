@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public abstract class AbstractWorkerConnector : MonoBehaviour, IDisposable
+    public abstract class WorkerConnectorBase : MonoBehaviour, IDisposable
     {
         private delegate Task<Worker> ConnectionDelegate();
 
@@ -20,15 +20,13 @@ namespace Playground
 
         public Worker Worker;
 
-        protected AbstractWorkerConnector[] RequiredWorkerConnection;
+        protected WorkerConnectorBase[] RequiredWorkerConnection;
 
         private GameObject levelInstance;
 
         private bool hasFinishedConnectionAttempt = false;
         private static readonly object FinishedConnectionAttemptLock = new object();
         private Task connectionAttemptFinishedTask;
-
-        protected abstract void AddWorkerSystems();
 
         private void Awake()
         {
@@ -103,6 +101,10 @@ namespace Playground
                 hasFinishedConnectionAttempt = true;
                 Monitor.PulseAll(FinishedConnectionAttemptLock);
             }
+        }
+
+        protected virtual void AddWorkerSystems()
+        {
         }
 
         protected virtual string SelectDeploymentName(DeploymentList deployments)

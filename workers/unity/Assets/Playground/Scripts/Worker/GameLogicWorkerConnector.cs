@@ -1,7 +1,7 @@
 ﻿using Improbable.Gdk.Core;
 using Playground;
 
-public class GameLogicWorkerConnector : AbstractWorkerConnector
+public class GameLogicWorkerConnector : WorkerConnectorBase
 {
     private async void Start()
     {
