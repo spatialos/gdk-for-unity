@@ -8,7 +8,7 @@
 For every entity we receive from SpatialOS, an ECS entity representing the SpatialOS entity is automatically created in the Worker's world through the `SpatialOSReceiveSystem`.
 
 For each of your entity's SpatialOS components, the following Unity ECS components are automatically added:
-- `SpatialOS<name of schema component>`: Codegenerated struct of type `ISpatialComponentData` for accessing component field values. Fields of these components are automatically kept up-to-date.
+- `SpatialOS[name of schema component]`: Codegenerated struct of type `ISpatialComponentData` for accessing component field values. Fields of these components are automatically kept up-to-date.
 - An [authority maker tag](authority.md) (`Authoritative<T>`, `NotAuthoritative<T>` or `AuthorityLostImminent<T>`) based on the Worker's component write authority.
 
 In addition, the following components are added to your entity as well:

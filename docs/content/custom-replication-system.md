@@ -20,7 +20,7 @@ When a worker sends a SpatialOS event, the Unity GDK puts the event object into 
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T` and ensure the system runs at the correct point in the update lifecycle. 
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T` and ensure the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order](./system-update-order.md).
 
 * Handle replication of properties:
 
@@ -106,7 +106,7 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
     {
         public readonly int Length;
         public ComponentDataArray<SpatialOSCubeColor> CubeColors;
-        public ComponentDataArray<CuberColor.EventSenders.ChangeColor> ChangeColorEventSenders;
+        public ComponentDataArray<CuberColor.EventSender.ChangeColor> ChangeColorEventSenders;
         public ComponentDataArray<Authoritative<SpatialOSCubeColor>> CubeColorAuthority;
         public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
