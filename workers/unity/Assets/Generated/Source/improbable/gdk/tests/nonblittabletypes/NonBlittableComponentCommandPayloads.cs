@@ -63,8 +63,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             /// </summary>
             public struct Response
             {
-                public long RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; internal set;}
+                public long RequestId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
 
@@ -163,8 +163,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             /// </summary>
             public struct Response
             {
-                public long RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; internal set;}
+                public long RequestId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
 

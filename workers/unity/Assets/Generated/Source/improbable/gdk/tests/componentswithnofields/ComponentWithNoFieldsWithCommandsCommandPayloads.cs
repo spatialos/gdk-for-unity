@@ -63,8 +63,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             /// </summary>
             public struct Response
             {
-                public long RequestId { get; }
-                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set;}
+                public long RequestId { get; internal set; }
+                public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
 
