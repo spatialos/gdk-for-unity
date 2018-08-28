@@ -24,23 +24,7 @@ namespace Playground
 
         private GameObject levelInstance;
 
-        private bool hasFinishedConnectionAttempt = false;
-        private static readonly object FinishedConnectionAttemptLock = new object();
-        private Task connectionAttemptFinishedTask;
-
-        private void Awake()
-        {
-            connectionAttemptFinishedTask = Task.Run(() =>
-            {
-                lock (FinishedConnectionAttemptLock)
-                {
-                    while (!hasFinishedConnectionAttempt)
-                    {
-                        Monitor.Wait(FinishedConnectionAttemptLock);
-                    }
-                }
-            });
-        }
+        private readonly TaskCompletionSource<bool> connectionAttemptFinishedTask = new TaskCompletionSource<bool>();
 
         // Important run in this step as otherwise it can interfere with the the domain unloading logic
         private void OnApplicationQuit()
@@ -56,12 +40,25 @@ namespace Playground
         public async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts
-            // This prevents races on the workers starting and races on when we start ticking systems
+            // This prevents races on the workers starting and races on when we start icking systems
             if (RequiredWorkerConnection != null)
             {
                 Task[] requiredWorkers = RequiredWorkerConnection
-                    .Select(connection => connection.connectionAttemptFinishedTask).ToArray();
-                await Task.WhenAll(requiredWorkers);
+                    .Select(connection => connection.connectionAttemptFinishedTask.Task).ToArray();
+                try
+                {
+                    await Task.WhenAll(requiredWorkers);
+                }
+                catch (Exception e)
+                {
+                    logger.HandleLog(LogType.Error,
+                        new LogEvent("Cancelling connection attempt")
+                            .WithField("WorkerType", workerType)
+                            .WithField("Reason", "Required worker failed to connect"));
+                    connectionAttemptFinishedTask.SetException(e);
+                    Dispose();
+                    return;
+                }
             }
 
             try
@@ -93,14 +90,12 @@ namespace Playground
                     .WithException(e)
                     .WithField("WorkerType", workerType)
                     .WithField("Message", e.Message));
+                connectionAttemptFinishedTask.SetException(e);
                 Dispose();
+                return;
             }
 
-            lock (FinishedConnectionAttemptLock)
-            {
-                hasFinishedConnectionAttempt = true;
-                Monitor.PulseAll(FinishedConnectionAttemptLock);
-            }
+            connectionAttemptFinishedTask.SetResult(true);
         }
 
         protected virtual void AddWorkerSystems()
