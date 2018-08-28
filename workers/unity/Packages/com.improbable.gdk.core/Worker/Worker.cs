@@ -52,8 +52,6 @@ namespace Improbable.Gdk.Core
             Vector3 origin)
         {
             var connectionParams = config.CreateConnectionParameters();
-            connectionParams.Network.ConnectionTimeoutMillis = 5000;
-            connectionParams.Network.UseExternalIp = false;
             using (var connectionFuture = Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort,
                 config.WorkerId, connectionParams))
             {
