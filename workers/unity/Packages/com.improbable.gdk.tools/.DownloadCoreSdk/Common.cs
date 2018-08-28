@@ -27,7 +27,7 @@ namespace Improbable
             Directory.CreateDirectory(dir);
         }
 
-        public static int RunRedirectedWithExitCode(string command, IEnumerable<string> arguments)
+        public static int RunRedirectedWithExitCode(string command, params string[] arguments)
         {
             command = Environment.ExpandEnvironmentVariables(command);
             arguments = arguments.Select(Environment.ExpandEnvironmentVariables).ToArray();
@@ -81,7 +81,7 @@ namespace Improbable
             return 1;
         }
 
-        public static void RunRedirected(string command, IEnumerable<string> arguments)
+        public static void RunRedirected(string command, params string[] arguments)
         {
             var exitCode = RunRedirectedWithExitCode(command, arguments);
             if (exitCode != 0)

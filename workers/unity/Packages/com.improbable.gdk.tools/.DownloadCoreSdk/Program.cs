@@ -32,6 +32,7 @@ namespace Improbable
                 new Package(tempPath, "schema", "standard_library", $"{spatialProjectPath}/build/dependencies/schema/standard_library"),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
+                new Package(tempPath, "tools", "schema_compiler-x86_64-linux", $"{tempPath}/schema_compiler", null, OSPlatform.Linux),
             }.Where(p => p.InstallOnThisPlatform).ToList();
 
             try
@@ -52,7 +53,7 @@ namespace Improbable
             }
         }
 
-        private static void ExtractPackages(List<Package> packages)
+        private static void ExtractPackages(IEnumerable<Package> packages)
         {
             foreach (var package in packages)
             {
@@ -74,19 +75,25 @@ namespace Improbable
             }
         }
 
-        private static void DownloadPackages(List<Package> packages, string coreSdkVersion)
+        private static void DownloadPackages(IEnumerable<Package> packages, string coreSdkVersion)
         {
-            foreach (var package in packages.Where(p => !File.Exists(p.SourceFile)))
+            var toDownload = packages.Where(p => !File.Exists(p.SourceFile)).ToArray();
+            if (!toDownload.Any())
+            {
+                Console.Out.WriteLine("All packages are up to date. Skipping download.");
+                return;
+            }
+
+            foreach (var package in toDownload)
             {
                 Console.Out.WriteLine($"Downloading {package.Name} to {package.SourceFile}...");
 
-                Common.RunRedirected("spatial",
-                    new[] {"package", "retrieve", package.Type, package.Name, coreSdkVersion, package.SourceFile});
+                Common.RunRedirected("spatial", "package", "retrieve", package.Type, package.Name, coreSdkVersion, package.SourceFile);
 
                 try
                 {
                     // Open the new archive and ensure that it's a valid zip file.
-                    using (var _ = ZipFile.OpenRead(package.SourceFile))
+                    using (ZipFile.OpenRead(package.SourceFile))
                     {
                     }
 
@@ -109,23 +116,22 @@ namespace Improbable
 
         private class Package
         {
-            public Package(string tempPath, string type, string name, string targetPath, List<string> cleanPaths = null,  OSPlatform? platform = null)
+            public Package(string tempPath, string type, string name, string targetPath, List<string> cleanPaths = null, OSPlatform? platform = null)
             {
                 Type = type;
                 Name = name;
                 TargetPath = targetPath;
-                Platform = platform;
                 CleanPaths = cleanPaths ?? new List<string>();
                 SourceFile = Path.Combine(tempPath, $"{Name}.zip");
+                InstallOnThisPlatform = !platform.HasValue || RuntimeInformation.IsOSPlatform(platform.Value);
             }
 
             public string Type { get; }
             public string Name { get; }
             public string SourceFile { get; }
             public string TargetPath { get; }
-            public OSPlatform? Platform { get; }
             public List<string> CleanPaths { get; }
-            public bool InstallOnThisPlatform => !Platform.HasValue || RuntimeInformation.IsOSPlatform(Platform.Value);
+            public bool InstallOnThisPlatform { get; }
         }
     }
 }

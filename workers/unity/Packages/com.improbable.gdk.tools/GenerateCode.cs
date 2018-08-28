@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,17 +10,21 @@ namespace Improbable.Gdk.Tools
     [InitializeOnLoad]
     internal static class GenerateCode
     {
-        private const string AssetsGeneratedSource = "Assets/Generated/Source";
+        private const string AssetsGeneratedSourceDir = "Assets/Generated/Source";
+        private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
         private const string FromGdkPackagesDir = "from_gdk_packages";
-        private const string SchemaRoot = "../../schema";
+        private const string ImprobableJsonDir = "build/ImprobableJson";
+        private const string SchemaRootDir = "../../schema";
+        private const string SchemaStandardLibraryDir = "../../build/dependencies/schema/standard_library";
 
+        private static readonly string schemaCompilerRelativePath = $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
         static GenerateCode()
         {
             Generate();
         }
 
-        [MenuItem("Improbable/Generate code")]
+        [MenuItem("Improbable/Generate code", false, 38)]
         private static void Generate()
         {
             try
@@ -30,23 +33,33 @@ namespace Improbable.Gdk.Tools
 
                 DownloadCoreSdk.Download();
 
-                CopySchema(SchemaRoot);
+                CopySchema(SchemaRootDir);
 
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
-                    ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj"));
-                var schemaCompilerPath = Path.GetFullPath(Path.Combine(Application.dataPath,
-                    $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler"));
+                    CsProjectFile));
 
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                var schemaCompilerPath =
+                    Path.GetFullPath(Path.Combine(Application.dataPath, schemaCompilerRelativePath));
+
+                switch (Application.platform)
                 {
-                    schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
+                    case RuntimePlatform.WindowsEditor:
+                        schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
+                        break;
+                    case RuntimePlatform.LinuxEditor:
+                    case RuntimePlatform.OSXEditor:
+                        // Ensure the schema compiler is executable.
+                        var _ = Common.RunProcess("chmod", "+x", schemaCompilerPath);
+                        break;
+                    default:
+                        throw new PlatformNotSupportedException($"The {Application.platform} platform does not support code generation.");
                 }
 
                 var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
-                    $"--schema-path=\"{SchemaRoot}\"",
-                    "--schema-path=../../build/dependencies/schema/standard_library",
-                    "--json-dir=build/ImprobableJson",
-                    $"--native-output-dir={AssetsGeneratedSource}",
+                    $"--schema-path=\"{SchemaRootDir}\"",
+                    $"--schema-path={SchemaStandardLibraryDir}",
+                    $"--json-dir={ImprobableJsonDir}",
+                    $"--native-output-dir={AssetsGeneratedSourceDir}",
                     $"--schema-compiler-path=\"{schemaCompilerPath}\"");
 
                 if (exitCode != 0)
@@ -64,6 +77,17 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.UnlockReloadAssemblies();
             }
+        }
+
+        [MenuItem("Improbable/Generate code (force)", false, 39)]
+        private static void ForceGenerate()
+        {
+            if (Directory.Exists(AssetsGeneratedSourceDir))
+            {
+                Directory.Delete(AssetsGeneratedSourceDir, true);
+            }
+
+            Generate();
         }
 
         private static void CopySchema(string schemaRoot)
