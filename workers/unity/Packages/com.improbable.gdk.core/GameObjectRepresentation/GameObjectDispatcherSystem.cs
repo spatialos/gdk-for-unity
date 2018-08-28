@@ -99,6 +99,17 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                             GetComponentGroup(gameObjectComponentDispatcher.CommandRequestsComponentTypeArrays[i]);
                     }
                 }
+
+                if (gameObjectComponentDispatcher.CommandResponsesComponentTypeArrays.Length > 0)
+                {
+                    gameObjectComponentDispatcher.CommandResponsesComponentGroups =
+                        new ComponentGroup[gameObjectComponentDispatcher.CommandResponsesComponentTypeArrays.Length];
+                    for (var i = 0; i < gameObjectComponentDispatcher.CommandResponsesComponentTypeArrays.Length; i++)
+                    {
+                        gameObjectComponentDispatcher.CommandResponsesComponentGroups[i] =
+                            GetComponentGroup(gameObjectComponentDispatcher.CommandResponsesComponentTypeArrays[i]);
+                    }
+                }
             }
         }
 

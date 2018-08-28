@@ -103,6 +103,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
+                public void SendFirstCommandResponse(FirstCommand.Response response)
+                {
+                    entityManager
+                        .GetComponentData<CommandResponders.FirstCommand>(entity)
+                        .ResponsesToSend
+                        .Add(response);
+                }
+
                 private readonly List<Action<SecondCommand.ReceivedRequest>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedRequest>>();
                 public event Action<SecondCommand.ReceivedRequest> OnSecondCommandRequest
                 {
@@ -126,6 +134,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
+                public void SendSecondCommandResponse(SecondCommand.Response response)
+                {
+                    entityManager
+                        .GetComponentData<CommandResponders.SecondCommand>(entity)
+                        .ResponsesToSend
+                        .Add(response);
+                }
             }
 
             [InjectableId(InjectableType.CommandResponseHandler, 1001)]
@@ -141,9 +156,61 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
+
                 public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
+                }
 
+                private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
+                public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
+                {
+                    add => firstCommandDelegates.Add(value);
+                    remove => firstCommandDelegates.Remove(value);
+                }
+
+                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse request)
+                {
+                    foreach (var callback in firstCommandDelegates)
+                    {
+                        try
+                        {
+                            callback(request);
+                        }
+                        catch (Exception e)
+                        {
+                            // Log the exception but do not rethrow it, as other delegates should still get called
+                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        }
+                    }
+                }
+
+                private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
+                public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
+                {
+                    add => secondCommandDelegates.Add(value);
+                    remove => secondCommandDelegates.Remove(value);
+                }
+
+                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse request)
+                {
+                    foreach (var callback in secondCommandDelegates)
+                    {
+                        try
+                        {
+                            callback(request);
+                        }
+                        catch (Exception e)
+                        {
+                            // Log the exception but do not rethrow it, as other delegates should still get called
+                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        }
+                    }
                 }
             }
         }

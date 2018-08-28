@@ -80,11 +80,12 @@ namespace <#= qualifiedNamespace #>
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-
 <# foreach(var commandDetails in commandDetailsList) {
            var commandRequestType = commandDetails.CommandName + ".ReceivedRequest";
            var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+           var commandResponseType = commandDetails.CommandName + ".Response";
 #>
+
                 private readonly List<Action<<#= commandRequestType #>>> <#= delegateList #> = new List<Action<<#= commandRequestType #>>>();
                 public event Action<<#= commandRequestType #>> On<#= commandDetails.CommandName #>Request
                 {
@@ -108,6 +109,13 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
 
+                public void Send<#= commandDetails.CommandName #>Response(<#= commandResponseType #> response)
+                {
+                    entityManager
+                        .GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity)
+                        .ResponsesToSend
+                        .Add(response);
+                }
 <# } #>
             }
 
@@ -124,10 +132,44 @@ namespace <#= qualifiedNamespace #>
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
+
                 public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
-
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
                 }
+<# foreach(var commandDetails in commandDetailsList) {
+   var commandResponseType = commandDetails.CommandName + ".ReceivedResponse";
+   var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+#>
+
+                private readonly List<Action<<#= commandResponseType #>>> <#= delegateList #> = new List<Action<<#= commandResponseType #>>>();
+                public event Action<<#= commandResponseType #>> On<#= commandDetails.CommandName #>Response
+                {
+                    add => <#= delegateList #>.Add(value);
+                    remove => <#= delegateList #>.Remove(value);
+                }
+
+                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> request)
+                {
+                    foreach (var callback in <#= delegateList #>)
+                    {
+                        try
+                        {
+                            callback(request);
+                        }
+                        catch (Exception e)
+                        {
+                            // Log the exception but do not rethrow it, as other delegates should still get called
+                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                        }
+                    }
+                }
+<# } #>
             }
         }
     }
