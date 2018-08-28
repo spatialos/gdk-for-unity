@@ -10,6 +10,7 @@ namespace Playground.EditmodeTests
     public class EntityGameObjectCreatorTests
     {
         private const string TestPrefabName = "testPrefab";
+        private const string TestWorkerName = "testWorker";
         private World world;
         private GameObject testPrefab;
         private EntityGameObjectCreator entityGameObjectCreator;
@@ -22,7 +23,7 @@ namespace Playground.EditmodeTests
             testPrefab = new GameObject();
             var initialCachedPrefabs = new Dictionary<string, GameObject>
             {
-                { TestPrefabName, testPrefab }
+                { TestWorkerName + "\\" + TestPrefabName, testPrefab }
             };
             entityGameObjectCreator = new EntityGameObjectCreator(world, initialCachedPrefabs);
         }
@@ -46,8 +47,8 @@ namespace Playground.EditmodeTests
             var position = Vector3.one * 1337;
             var rotation = new Quaternion(0, 0, 1, 0);
             var spatialEntityId = new EntityId(1);
-            testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, position,
-                rotation, spatialEntityId);
+            testGameObject = entityGameObjectCreator.CreateEntityGameObject(entity, TestPrefabName, TestWorkerName,
+                position, rotation, spatialEntityId);
 
             Assert.NotNull(testGameObject);
             Assert.AreEqual(position, testGameObject.transform.position);
@@ -64,7 +65,7 @@ namespace Playground.EditmodeTests
             Assert.Throws<PrefabNotFoundException>(() =>
             {
                 testGameObject =
-                    entityGameObjectCreator.CreateEntityGameObject(entity, "foobar", position, rotation,
+                    entityGameObjectCreator.CreateEntityGameObject(entity, "foobar", TestWorkerName, position, rotation,
                         spatialEntityId);
             });
         }

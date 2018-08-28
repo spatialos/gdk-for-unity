@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
         private readonly ILogDispatcher logDispatcher;
 
-        public EntityGameObjectLinker(World world, ILogDispatcher logDispatcher)
+        internal EntityGameObjectLinker(World world, ILogDispatcher logDispatcher)
         {
             this.world = world;
             this.logDispatcher = logDispatcher;

@@ -17,18 +17,26 @@ namespace Playground
             cachedPrefabs = initialCachedPrefabs ?? new Dictionary<string, GameObject>();
         }
 
-        public GameObject CreateEntityGameObject(Entity entity, string prefabPath, Vector3 position,
+        public GameObject CreateEntityGameObject(Entity entity, string prefabName, string workerType, Vector3 position,
             Quaternion rotation, EntityId spatialEntityId)
         {
-            if (!cachedPrefabs.TryGetValue(prefabPath, out var prefab))
+            string workerSpecificPath = "Prefabs\\" + workerType + "\\" + prefabName;
+            string commonPath = "Prefabs\\Common\\" + prefabName;
+            if (!cachedPrefabs.TryGetValue(workerSpecificPath, out var prefab)
+                && !cachedPrefabs.TryGetValue(commonPath, out prefab))
             {
-                prefab = Resources.Load<GameObject>(prefabPath);
+                prefab = Resources.Load<GameObject>(workerSpecificPath);
                 if (prefab == null)
                 {
-                    throw new PrefabNotFoundException($"Prefab for prefabPath {prefabPath} not found.");
+                    prefab = Resources.Load<GameObject>(commonPath);
                 }
 
-                cachedPrefabs[prefabPath] = prefab;
+                if (prefab == null)
+                {
+                    throw new PrefabNotFoundException($"Prefab for prefabPaths {workerSpecificPath} or {commonPath} not found.");
+                }
+
+                cachedPrefabs[prefabName] = prefab;
             }
 
             var gameObject = GameObject.Instantiate(prefab, position, rotation);

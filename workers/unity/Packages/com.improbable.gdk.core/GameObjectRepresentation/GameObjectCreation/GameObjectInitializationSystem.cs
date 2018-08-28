@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Generated.Improbable;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
@@ -40,6 +41,7 @@ namespace Playground
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectCreator entityGameObjectCreator;
         private EntityGameObjectLinker entityGameObjectLinker;
+        private EntityManager entityManager;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
 
         protected override void OnCreateManager(int capacity)
@@ -49,31 +51,18 @@ namespace Playground
             worker = Worker.GetWorkerFromWorld(World);
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityGameObjectCreator = new EntityGameObjectCreator(World);
-            entityGameObjectLinker = new EntityGameObjectLinker(World, worker.LogDispatcher);
+            entityManager = World.GetOrCreateManager<EntityManager>();
+            entityGameObjectLinker = World.GetOrCreateManager<EntityGameObjectLinkerSystem>().Linker;
         }
 
         protected override void OnUpdate()
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
-                var prefabMapping = PrefabConfig.PrefabMappings[addedEntitiesData.PrefabNames[i].Prefab];
+                var prefabName = entityManager.GetComponentData<SpatialOSMetadata>(addedEntitiesData.Entities[i]).EntityType;
                 var transform = addedEntitiesData.Transforms[i];
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
-
-                if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
-                    !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
-                {
-                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "Worker type isn't supported by the GameObjectInitializationSystem.")
-                        .WithField("WorldName", World.Name)
-                        .WithField("WorkerType", worker));
-                    continue;
-                }
-
-                var prefabName = SystemConfig.UnityGameLogic.Equals(worker.WorkerType)
-                    ? prefabMapping.UnityGameLogic
-                    : prefabMapping.UnityClient;
 
                 var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
                     worker.Origin;
@@ -81,8 +70,8 @@ namespace Playground
                     transform.Rotation.Z, transform.Rotation.W);
 
                 var gameObject =
-                    entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
-                        spatialEntityId);
+                    entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, worker.WorkerType,
+                        position, rotation, spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
                 var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();

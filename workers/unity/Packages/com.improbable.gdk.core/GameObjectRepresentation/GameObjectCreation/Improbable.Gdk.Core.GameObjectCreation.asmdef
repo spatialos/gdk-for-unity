@@ -1,14 +1,11 @@
 {
-    "name": "Improbable.Playground",
+    "name": "Improbable.Gdk.Core.GameObjectCreation",
     "references": [
-        "Improbable.Gdk.Core",
-        "Improbable.Gdk.TransformSynchronization",
-        "Improbable.Gdk.PlayerLifecycle",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
         "Improbable.Gdk.Generated",
-        "Improbable.Gdk.Core.GameObjectCreation"
+        "Improbable.Gdk.Core"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

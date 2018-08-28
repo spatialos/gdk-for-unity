@@ -1,4 +1,6 @@
 using System;
+using Generated.Improbable;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
@@ -28,7 +30,6 @@ namespace Playground
         public static void AddCommonSystems(World world)
         {
             world.GetOrCreateManager<EntityManager>();
-            world.GetOrCreateManager<GameObjectInitializationSystem>();
             world.GetOrCreateManager<ArchetypeInitializationSystem>();
             world.GetOrCreateManager<DisconnectSystem>();
         }
@@ -39,6 +40,8 @@ namespace Playground
             CoreSystemHelper.AddSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
+            GameObjectSystemHelper.AddSystems(world);
+            GameObjectCreationSystemHelper.AddSystems(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
             world.GetOrCreateManager<InitCameraSystem>();
@@ -55,6 +58,8 @@ namespace Playground
             CoreSystemHelper.AddSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
+            GameObjectSystemHelper.AddSystems(world);
+            GameObjectCreationSystemHelper.AddSystems(world);
             world.GetOrCreateManager<CubeMovementSystem>();
             world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();

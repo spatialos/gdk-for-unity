@@ -5,7 +5,8 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Gdk.TestUtils",
-        "Improbable.Gdk.Generated"
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Core.GameObjectCreation"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
