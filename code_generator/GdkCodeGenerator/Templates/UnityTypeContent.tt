@@ -10,6 +10,19 @@ public struct <#= typeDetails.CapitalisedName #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
     public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
 <# } #>
+<#
+if (fieldDetailsList.Count > 0)
+{ 
+    var constructorArgs = GetConstructorArgs();
+#>
+
+    public <#= typeDetails.CapitalisedName #>(<#= constructorArgs #>)
+    {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+        <#= fieldDetails.PascalCaseName #> = <#= fieldDetails.CamelCaseName #>;
+<# } #>
+    }
+<# } #>
 
     public static class Serialization
     {

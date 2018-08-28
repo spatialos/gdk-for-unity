@@ -36,7 +36,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 var entityId = data.SpatialEntityIds[i].EntityId;
                 data.RequestSenders[i].RequestsToSend
-                    .Add(new PlayerHeartbeatClient.PlayerHeartbeat.Request(entityId, new Empty()));
+                    .Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateRequest(entityId, new Empty()));
 
                 var entity = data.Entities[i];
                 PostUpdateCommands.AddComponent(entity, new AwaitingHeartbeatResponseTag());

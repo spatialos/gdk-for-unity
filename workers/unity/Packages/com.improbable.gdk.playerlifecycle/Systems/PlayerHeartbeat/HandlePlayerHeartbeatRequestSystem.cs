@@ -30,7 +30,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                 foreach (var request in requests)
                 {
-                    responder.Add(PlayerHeartbeatClient.PlayerHeartbeat.Response.CreateResponse(request, new Empty()));
+                    responder.Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateResponse(request, new Empty()));
                 }
             }
         }
