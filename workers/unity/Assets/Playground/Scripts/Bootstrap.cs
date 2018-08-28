@@ -48,6 +48,10 @@ namespace Playground
                 Debug.LogFormat("Command line {0}", string.Join(" ", commandLineArguments.ToArray()));
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 var config = ConnectionUtility.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                if (string.Empty.Equals(config.WorkerType))
+                {
+                    config.WorkerType = SystemConfig.UnityClient;
+                }
                 CreateWorker(config, Vector3.zero);
             }
 
