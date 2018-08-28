@@ -44,7 +44,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                     });
 
                     responder.ResponsesToSend.Add(
-                        PlayerCreator.CreatePlayer.Response.CreateResponse(request, new CreatePlayerResponseType()));
+                        PlayerCreator.CreatePlayer.CreateResponse(request, new CreatePlayerResponseType()));
                 }
 
                 createPlayerData.CreatePlayerResponders[i] = responder;

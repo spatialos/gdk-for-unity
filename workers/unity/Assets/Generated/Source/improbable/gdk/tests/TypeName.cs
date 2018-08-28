@@ -12,6 +12,11 @@ namespace Generated.Improbable.Gdk.Tests
     {
         public global::Generated.Improbable.Gdk.Tests.TypeName.Other OtherType;
     
+        public TypeName(global::Generated.Improbable.Gdk.Tests.TypeName.Other otherType)
+        {
+            OtherType = otherType;
+        }
+    
         public static class Serialization
         {
             public static void Serialize(TypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
@@ -31,6 +36,11 @@ namespace Generated.Improbable.Gdk.Tests
         public struct Other
         {
             public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName SameName;
+        
+            public Other(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName sameName)
+            {
+                SameName = sameName;
+            }
         
             public static class Serialization
             {
@@ -53,6 +63,12 @@ namespace Generated.Improbable.Gdk.Tests
                 public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 OtherZero;
                 public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum EnumField;
             
+                public NestedTypeName(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 otherZero, global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum enumField)
+                {
+                    OtherZero = otherZero;
+                    EnumField = enumField;
+                }
+            
                 public static class Serialization
                 {
                     public static void Serialize(NestedTypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
@@ -74,6 +90,11 @@ namespace Generated.Improbable.Gdk.Tests
                 public struct Other0
                 {
                     public int Foo;
+                
+                    public Other0(int foo)
+                    {
+                        Foo = foo;
+                    }
                 
                     public static class Serialization
                     {

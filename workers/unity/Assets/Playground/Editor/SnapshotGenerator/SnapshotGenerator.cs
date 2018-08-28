@@ -7,6 +7,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
 using UnityEngine;
+using Color = Generated.Playground.Color;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
 
 namespace Playground.Editor.SnapshotGenerator
@@ -37,8 +38,8 @@ namespace Playground.Editor.SnapshotGenerator
 
             AddPlayerSpawner(snapshot);
             AddCubeGrid(snapshot, cubeCount);
-            CreateSpinner(snapshot, new Coordinates { X = 3, Y = 0.5f, Z = 0 });
-            CreateSpinner(snapshot, new Coordinates { X = -3, Y = 0.5f, Z = 0 });
+            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = 5.5 });
+            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = -5.5 });
 
             return snapshot;
         }
@@ -127,6 +128,7 @@ namespace Playground.Editor.SnapshotGenerator
             var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
             var collisions = SpatialOSCollisions.CreateSchemaComponentData();
             var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
+            var color = SpatialOSSpinnerColor.CreateSchemaComponentData(Color.BLUE);
 
             var entity = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, SystemConfig.UnityGameLogic)
@@ -137,6 +139,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddComponent(transform, SystemConfig.UnityGameLogic)
                 .AddComponent(prefab, SystemConfig.UnityGameLogic)
                 .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
+                .AddComponent(color, SystemConfig.UnityGameLogic)
                 .Build();
 
             snapshot.AddEntity(entity);
