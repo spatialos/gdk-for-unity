@@ -17,14 +17,17 @@ namespace Improbable.Gdk.Tools
         private const string SchemaRootDir = "../../schema";
         private const string SchemaStandardLibraryDir = "../../build/dependencies/schema/standard_library";
 
-        private static readonly string schemaCompilerRelativePath = $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
+        private const int GenerateCodePriority = 38;
+        private const int GenerateCodeForcePriority = 39;
+
+        private static readonly string SchemaCompilerRelativePath = $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
         static GenerateCode()
         {
             Generate();
         }
 
-        [MenuItem("Improbable/Generate code", false, 38)]
+        [MenuItem("Improbable/Generate code", false, GenerateCodePriority)]
         private static void Generate()
         {
             try
@@ -39,7 +42,7 @@ namespace Improbable.Gdk.Tools
                     CsProjectFile));
 
                 var schemaCompilerPath =
-                    Path.GetFullPath(Path.Combine(Application.dataPath, schemaCompilerRelativePath));
+                    Path.GetFullPath(Path.Combine(Application.dataPath, SchemaCompilerRelativePath));
 
                 switch (Application.platform)
                 {
@@ -79,7 +82,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        [MenuItem("Improbable/Generate code (force)", false, 39)]
+        [MenuItem("Improbable/Generate code (force)", false, GenerateCodeForcePriority)]
         private static void ForceGenerate()
         {
             if (Directory.Exists(AssetsGeneratedSourceDir))

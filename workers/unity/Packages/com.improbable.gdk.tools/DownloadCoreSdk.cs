@@ -6,14 +6,17 @@ namespace Improbable.Gdk.Tools
 {
     public static class DownloadCoreSdk
     {
-        [MenuItem("Improbable/Download CoreSdk", false, 50)]
+        private const int DownloadPriority = 50;
+        private const int DownloadForcePriority = 51;
+
+        [MenuItem("Improbable/Download CoreSdk", false, DownloadPriority)]
         public static void DownloadMenu()
         {
             Download();
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Improbable/Download CoreSdk (force)", false, 51)]
+        [MenuItem("Improbable/Download CoreSdk (force)", false, DownloadForcePriority)]
         public static void DownloadForceMenu()
         {
             var path = Path.Combine("build", "CoreSdk");
