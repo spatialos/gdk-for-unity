@@ -65,13 +65,6 @@ type Coordinates {
   double z = 3;
 }
 
-// A type representing the dimensions of a cuboid.
-type EdgeLength {
-  double x = 1;
-  double y = 2;
-  double z = 3;
-}
-
 // The Position component defines the canonical position of an entity inside a SpatialOS simulation.
 // This is used by SpatialOS for load-balancing, authority delegation, and spatial queries. Note
 // that although this component can be used to represent an entity's position on workers, it doesn't
@@ -88,68 +81,4 @@ component Position {
 // snapshot is taken.
 component Persistence {
   id = 55;
-}
-
-// An entity's interest is a map of Component IDs to a list of Entity queries, where the queries define other Entities
-// needed to simulate the component.
-//
-// If a Worker is authoritative over a Component ID present in the map, it will be provided with updates for Entities
-// which match the corresponding queries.
-component Interest {
-  id = 58;
-  map<uint32, ComponentInterest> component_interest = 1;
-}
-
-type ComponentInterest {
-  type Query {
-    QueryConstraint constraint = 1;
-
-    // Either full_snapshot_result or a list of result_component_id should be provided. Providing both is invalid.
-    option<bool> full_snapshot_result = 2;
-    list<uint32> result_component_id = 3;
-  }
-
-  type QueryConstraint {
-    // Only one constraint should be provided. Providing more than one is invalid.
-
-    option<SphereConstraint> sphere_constraint = 1;
-    option<CylinderConstraint> cylinder_constraint = 2;
-    option<BoxConstraint> box_constraint = 3;
-    option<RelativeSphereConstraint> relative_sphere_constraint = 4;
-    option<RelativeCylinderConstraint> relative_cylinder_constraint = 5;
-    option<RelativeBoxConstraint> relative_box_constraint = 6;
-    option<int64> entity_id_constraint = 7;
-    option<uint32> component_constraint = 8;
-    list<QueryConstraint> and_constraint = 9;
-    list<QueryConstraint> or_constraint = 10;
-  }
-
-  type SphereConstraint {
-    Coordinates center = 1;
-    double radius = 2;
-  }
-
-  type CylinderConstraint {
-    Coordinates center = 1;
-    double radius = 2;
-  }
-
-  type BoxConstraint {
-    Coordinates center = 1;
-    EdgeLength edge_length = 2;
-  }
-
-  type RelativeSphereConstraint {
-    double radius = 1;
-  }
-
-  type RelativeCylinderConstraint {
-    double radius = 1;
-  }
-
-  type RelativeBoxConstraint {
-    EdgeLength edge_length = 1;
-  }
-
-  list<Query> queries = 1;
 }

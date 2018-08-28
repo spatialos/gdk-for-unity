@@ -167,6 +167,16 @@
             Invokes the global client error hook to handle an exception.
             </summary>
         </member>
+        <member name="T:Improbable.Worker.Constants">
+            <summary>
+            A struct to contain constants that can be shared in Improbable.Worker.
+            </summary>
+        </member>
+        <member name="F:Improbable.Worker.Constants.WorkerDll">
+            <summary>
+            Constant used to alter between static/dynamic linking.
+            </summary>
+        </member>
         <member name="T:Improbable.Worker.EntityId">
             <summary>
             A unique identifier used to look up entity in SpatialOS.
