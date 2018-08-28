@@ -86,7 +86,7 @@ public class BuildSystem : ComponentSystem
             };
 
             
-            requestSender.Add(request);
+            requestSender.RequestsToSend.Add(request);
         }
     }
 }
@@ -250,7 +250,7 @@ public class CreateEntitySystem : ComponentSystem
                 Entity = entity
             };
 
-            data.CreateEntitySender[i].Add(request);
+            data.CreateEntitySender[i].RequestsToSend.Add(request);
         }
     }
 }
