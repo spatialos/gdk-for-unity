@@ -101,28 +101,34 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSConnection>(entity);
-
-                var update = global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.SpatialOSConnection.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<SpatialOSConnection.Update> updates;
-                if (entityManager.HasComponent<SpatialOSConnection.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<SpatialOSConnection>>(entity))
                 {
-                    updates = entityManager.GetComponentData<SpatialOSConnection.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<SpatialOSConnection>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new SpatialOSConnection.ReceivedUpdates
+                    var update = global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.SpatialOSConnection.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<SpatialOSConnection.Update> updates;
+                    if (entityManager.HasComponent<SpatialOSConnection.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSConnection.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
-                }
+                        updates = entityManager.GetComponentData<SpatialOSConnection.ReceivedUpdates>(entity).Updates;
 
-                updates.Add(update);
+                    }
+                    else
+                    {
+                        var updatesComponent = new SpatialOSConnection.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSConnection.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
+                }
 
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
                 {
@@ -156,8 +162,6 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
                 }
 
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
@@ -386,12 +390,12 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSConnection>),
-                typeof(ComponentRemoved<SpatialOSConnection>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSConnection>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSConnection>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                typeof(ReceivedEvents.MyEvent),
+                ComponentType.ReadOnly<ReceivedEvents.MyEvent>(),
             };
 
             public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSConnection.ReceivedUpdates>();

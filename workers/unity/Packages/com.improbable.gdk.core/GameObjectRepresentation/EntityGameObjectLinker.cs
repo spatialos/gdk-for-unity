@@ -4,7 +4,7 @@ using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public class EntityGameObjectLinker
     {
@@ -42,6 +42,7 @@ namespace Improbable.Gdk.Core
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
             spatialOSComponent.World = world;
+            spatialOSComponent.LogDispatcher = logDispatcher;
         }
     }
 }

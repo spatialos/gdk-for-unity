@@ -1,0 +1,9 @@
+package playground;
+
+type Empty {}
+
+component Collisions
+{
+	id = 12009;
+	event Empty player_collided;
+}

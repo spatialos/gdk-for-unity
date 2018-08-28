@@ -1,3 +1,4 @@
+using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
@@ -28,6 +29,8 @@ namespace Playground
 
         [Inject] private PlayerInputData playerInputData;
 
+        private const float MinInputChange = 0.01f;
+
         protected override void OnUpdate()
         {
             for (var i = 0; i < playerInputData.Length; i++)
@@ -37,13 +40,22 @@ namespace Playground
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
                 var input = localInput.LeftStick.x * right + localInput.LeftStick.y * forward;
-                var newPlayerInput = new SpatialOSPlayerInput
+                var isShiftDown = localInput.Running;
+
+                var oldPlayerInput = playerInputData.PlayerInput[i];
+
+                if (Math.Abs(oldPlayerInput.Horizontal - input.x) > MinInputChange
+                    || Math.Abs(oldPlayerInput.Vertical - input.z) > MinInputChange
+                    || oldPlayerInput.Running != isShiftDown)
                 {
-                    Horizontal = input.x,
-                    Vertical = input.z,
-                    Running = localInput.Running
-                };
-                playerInputData.PlayerInput[i] = newPlayerInput;
+                    var newPlayerInput = new SpatialOSPlayerInput
+                    {
+                        Horizontal = input.x,
+                        Vertical = input.z,
+                        Running = isShiftDown
+                    };
+                    playerInputData.PlayerInput[i] = newPlayerInput;
+                }
             }
         }
     }

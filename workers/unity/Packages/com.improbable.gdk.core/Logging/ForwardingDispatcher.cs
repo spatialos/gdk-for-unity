@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Forwards logEvents and exceptions to the SpatialOS Console and logs locally.
     /// </summary>
-    public class ForwardingDispatcher : ILogDispatcher, IDisposable
+    public class ForwardingDispatcher : ILogDispatcher
     {
         public Connection Connection { get; set; }
 

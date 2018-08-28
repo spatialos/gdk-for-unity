@@ -74,6 +74,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            LogDispatcher.Dispose();
             EntityMapping.Clear();
             World?.Dispose();
             World = null;

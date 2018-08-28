@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -84,10 +85,15 @@ namespace Playground
                         spatialEntityId);
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
+                var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();
+
                 entityGameObjectCache[entity.Index] = gameObject;
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
+
+                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
+                    requiresSpatialOSBehaviourManagerComponent);
 
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
                 entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,

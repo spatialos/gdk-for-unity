@@ -16,7 +16,6 @@ TARGET=${1:-cloud}
 
 # Back-compat: we need to run this to generate the bridge configurations.
 spatial build build-config UnityGameLogic
-ci/codegen.sh
 
 pushd "${UNITY_PROJECT_DIR}"
     dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \

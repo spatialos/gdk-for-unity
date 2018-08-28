@@ -100,31 +100,35 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSComponentWithNoFields>(entity);
-
-                var update = global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.SpatialOSComponentWithNoFields.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<SpatialOSComponentWithNoFields.Update> updates;
-                if (entityManager.HasComponent<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<SpatialOSComponentWithNoFields>>(entity))
                 {
-                    updates = entityManager.GetComponentData<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<SpatialOSComponentWithNoFields>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new SpatialOSComponentWithNoFields.ReceivedUpdates
+                    var update = global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.SpatialOSComponentWithNoFields.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<SpatialOSComponentWithNoFields.Update> updates;
+                    if (entityManager.HasComponent<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSComponentWithNoFields.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
+                        updates = entityManager.GetComponentData<SpatialOSComponentWithNoFields.ReceivedUpdates>(entity).Updates;
+
+                    }
+                    else
+                    {
+                        var updatesComponent = new SpatialOSComponentWithNoFields.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSComponentWithNoFields.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
                 }
 
-                updates.Add(update);
-
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
@@ -323,8 +327,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         public class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                typeof(ComponentAdded<SpatialOSComponentWithNoFields>),
-                typeof(ComponentRemoved<SpatialOSComponentWithNoFields>),
+                ComponentType.ReadOnly<ComponentAdded<SpatialOSComponentWithNoFields>>(),
+                ComponentType.ReadOnly<ComponentRemoved<SpatialOSComponentWithNoFields>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {

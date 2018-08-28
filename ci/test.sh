@@ -20,6 +20,11 @@ CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-result
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 
+rm "${TOOLS_TEST_RESULTS_FILES}" \
+    "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
+    "${EDITMODE_TEST_RESULTS_FILE}" \
+    "${PLAYMODE_TEST_RESULTS_FILE}"
+
 markEndOfBlock "Setup variables"
 
 cleanUnity
@@ -33,7 +38,7 @@ markEndOfBlock "Tools Testing"
 
 markStartOfBlock "Code Generator Testing"
 
-dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" "${PROJECT_DIR}/code_generator/GdkCodeGenerator/GdkCodeGenerator.csproj"
+dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
 
 markEndOfBlock "Code Generator Testing"
@@ -97,5 +102,8 @@ if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
    [ $TOOLS_TEST_RESULT -ne 0 ]
 then
+    >&2 echo "Tests failed! See above for more information."
     exit 1
 fi
+
+echo "All tests passed!"
