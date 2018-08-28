@@ -306,6 +306,11 @@ Prefab:
       propertyPath: WorkerType
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114958075083198408, guid: 5857884d058555d4282a1beb501099b9,
+        type: 2}
+      propertyPath: UseExternalIp
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114445236242016868, guid: 5857884d058555d4282a1beb501099b9, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 5857884d058555d4282a1beb501099b9, type: 2}

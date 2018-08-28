@@ -136,12 +136,12 @@ namespace Playground
         {
             if (Application.isEditor)
             {
-                var commandLineArguments = Environment.GetCommandLineArgs();
-                var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-                return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
+                return false;
             }
 
-            return false;
+            var commandLineArguments = Environment.GetCommandLineArgs();
+            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
+            return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
         }
 
         private ReceptionistConfig GetReceptionistConfig(string workerType)
@@ -162,7 +162,10 @@ namespace Playground
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
                 config.UseExternalIp = UseExternalIp;
-                config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
+                if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
+                {
+                    config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
+                }
             }
 
             return config;
