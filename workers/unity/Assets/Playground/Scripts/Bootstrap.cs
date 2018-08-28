@@ -95,7 +95,15 @@ namespace Playground
                 };
                 CreateWorker(config, Vector3.zero);
             }
-#if UNITY_ANDROID
+#if UNITY_IOS
+            else
+            {
+                ConnectionConfig config;
+                config = ReceptionistConfig.CreateConnectionConfigForiOS();
+                config.WorkerType = SystemConfig.UnityClient;
+                CreateWorker(config, Vector3.zero);
+            }
+#elif UNITY_ANDROID
             else if (Application.isMobilePlatform)
             {
                 ConnectionConfig config;

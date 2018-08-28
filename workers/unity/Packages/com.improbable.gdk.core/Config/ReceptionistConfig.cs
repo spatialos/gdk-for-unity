@@ -48,5 +48,16 @@ namespace Improbable.Gdk.Core
                 UseExternalIp = true
             };
         }
+
+        public static ReceptionistConfig CreateConnectionConfigForiOS()
+        {
+            return new ReceptionistConfig
+            {
+                // By default this config only connects to local IP (127.0.0.1)
+                // Uncomment the following line with hardcoded IP to connect to non-local deployment
+                // ReceptionistHost = "Your IP address",
+                UseExternalIp = true,
+            };
+        }
     }
 }
