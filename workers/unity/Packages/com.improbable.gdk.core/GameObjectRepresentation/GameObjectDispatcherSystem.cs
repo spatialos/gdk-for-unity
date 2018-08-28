@@ -71,9 +71,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     GetComponentGroup(gameObjectComponentDispatcher.AuthorityLostComponentTypes);
                 gameObjectComponentDispatcher.AuthorityLossImminentComponentGroup =
                     GetComponentGroup(gameObjectComponentDispatcher.AuthorityLossImminentComponentTypes);
-                gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup =
-                    GetComponentGroup(gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes);
 
+                if (gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes.Length > 0)
+                {
+                    gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup =
+                        GetComponentGroup(gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes);
+                }
 
                 if (gameObjectComponentDispatcher.EventsReceivedComponentTypeArrays.Length > 0)
                 {
