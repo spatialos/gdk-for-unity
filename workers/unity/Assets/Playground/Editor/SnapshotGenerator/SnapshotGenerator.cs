@@ -133,16 +133,16 @@ namespace Playground.Editor.SnapshotGenerator
             var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
 
             var entity = EntityBuilder.Begin()
-                .AddPosition(coords.X, coords.Y, coords.Z, SystemConfig.UnityGameLogic)
-                .AddMetadata(entityType, SystemConfig.UnityGameLogic)
+                .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
+                .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
                 .SetReadAcl(UnityWorkers)
-                .AddComponent(collisions, SystemConfig.UnityGameLogic)
-                .AddComponent(transform, SystemConfig.UnityGameLogic)
-                .AddComponent(prefab, SystemConfig.UnityGameLogic)
-                .AddComponent(archetype, SystemConfig.UnityGameLogic)
-                .AddComponent(color, SystemConfig.UnityGameLogic)
-                .AddComponent(spinnerRotation, SystemConfig.UnityGameLogic)
+                .AddComponent(collisions, WorkerUtils.UnityGameLogic)
+                .AddComponent(transform, WorkerUtils.UnityGameLogic)
+                .AddComponent(prefab, WorkerUtils.UnityGameLogic)
+                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
+                .AddComponent(color, WorkerUtils.UnityGameLogic)
+                .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
                 .Build();
 
             snapshot.AddEntity(entity);

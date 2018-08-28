@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Core
 
         private bool inHandleLog;
 
+        private bool handlingUnityLogMessages;
         private Connection connection;
 
         public Connection Connection
@@ -24,10 +25,12 @@ namespace Improbable.Gdk.Core
             {
                 if (connection == null)
                 {
+                    handlingUnityLogMessages = true;
                     Application.logMessageReceived += LogCallback;
                 }
                 else if (value == null)
                 {
+                    handlingUnityLogMessages = false;
                     Application.logMessageReceived -= LogCallback;
                 }
             }
@@ -111,7 +114,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
-            Application.logMessageReceived -= LogCallback;
+            Connection = null;
         }
     }
 }
