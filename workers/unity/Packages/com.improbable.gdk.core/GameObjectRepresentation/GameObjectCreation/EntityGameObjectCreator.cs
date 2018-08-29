@@ -33,7 +33,7 @@ namespace Playground
 
                 if (prefab == null)
                 {
-                    throw new PrefabNotFoundException($"Prefab for prefabPaths {workerSpecificPath} or {commonPath} not found.");
+                    throw new PrefabNotFoundException($"Prefab for {prefabName} not found in {workerSpecificPath} or {commonPath}");
                 }
 
                 cachedPrefabs[prefabName] = prefab;

@@ -20,10 +20,10 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialOSPrefab> PrefabNames;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
+            [ReadOnly] public ComponentDataArray<SpatialOSMetadata> Metadata;
         }
 
         private struct RemovedEntitiesData
@@ -59,7 +59,7 @@ namespace Playground
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
-                var prefabName = entityManager.GetComponentData<SpatialOSMetadata>(addedEntitiesData.Entities[i]).EntityType;
+                var prefabName = addedEntitiesData.Metadata[i].EntityType;
                 var transform = addedEntitiesData.Transforms[i];
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;

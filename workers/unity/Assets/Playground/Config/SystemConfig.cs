@@ -1,5 +1,4 @@
 using System;
-using Generated.Improbable;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;

@@ -29,7 +29,6 @@ namespace Playground
                 SpatialOSTransform.CreateSchemaComponentData(new Location(),
                     new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, 0);
             var playerInput = SpatialOSPlayerInput.CreateSchemaComponentData(0, 0, false);
-            var prefab = SpatialOSPrefab.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var archetype = SpatialOSArchetypeComponent.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var launcher = SpatialOSLauncher.CreateSchemaComponentData(100, 0);
             var clientHeartbeat = SpatialOSPlayerHeartbeatClient.CreateSchemaComponentData();
@@ -44,7 +43,6 @@ namespace Playground
                 .SetEntityAclComponentWriteAccess(SystemConfig.UnityGameLogic)
                 .AddComponent(transform, SystemConfig.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)
-                .AddComponent(prefab, SystemConfig.UnityGameLogic)
                 .AddComponent(archetype, SystemConfig.UnityGameLogic)
                 .AddComponent(launcher, SystemConfig.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)

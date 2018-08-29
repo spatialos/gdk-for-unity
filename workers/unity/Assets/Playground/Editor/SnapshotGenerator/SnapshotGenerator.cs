@@ -93,7 +93,6 @@ namespace Playground.Editor.SnapshotGenerator
 
                     var cubeColor = SpatialOSCubeColor.CreateSchemaComponentData();
                     var cubeTargetVelocity = SpatialOSCubeTargetVelocity.CreateSchemaComponentData(new Vector3f { X = -2.0f });
-                    var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
                     var launchable = SpatialOSLaunchable.CreateSchemaComponentData(new EntityId(0));
                     var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
 
@@ -105,7 +104,6 @@ namespace Playground.Editor.SnapshotGenerator
                         .AddComponent(transform, SystemConfig.UnityGameLogic)
                         .AddComponent(cubeColor, SystemConfig.UnityGameLogic)
                         .AddComponent(cubeTargetVelocity, SystemConfig.UnityGameLogic)
-                        .AddComponent(prefab, SystemConfig.UnityGameLogic)
                         .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
                         .AddComponent(launchable, SystemConfig.UnityGameLogic)
                         .Build();
@@ -125,7 +123,6 @@ namespace Playground.Editor.SnapshotGenerator
                 0
             );
 
-            var prefab = SpatialOSPrefab.CreateSchemaComponentData(entityType);
             var collisions = SpatialOSCollisions.CreateSchemaComponentData();
             var archetypeComponent = SpatialOSArchetypeComponent.CreateSchemaComponentData(entityType);
             var color = SpatialOSSpinnerColor.CreateSchemaComponentData(Color.BLUE);
@@ -137,7 +134,6 @@ namespace Playground.Editor.SnapshotGenerator
                 .SetReadAcl(UnityWorkers)
                 .AddComponent(collisions, SystemConfig.UnityGameLogic)
                 .AddComponent(transform, SystemConfig.UnityGameLogic)
-                .AddComponent(prefab, SystemConfig.UnityGameLogic)
                 .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
                 .AddComponent(color, SystemConfig.UnityGameLogic)
                 .Build();
