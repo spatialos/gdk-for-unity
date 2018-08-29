@@ -5,17 +5,11 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
 {
     internal static class SpatialCommands
     {
-        #region Build Configuration
-
         internal static void GenerateBuildConfiguration()
         {
-            SpatialCommandRunner.RunSpatialCommand("build build-config", "generate build configuration");
+         //   SpatialCommandRunner.RunSpatialCommand("build build-config", "generate build configuration");
         }
-
-        #endregion Build Configuration
-
-        #region Zip
-
+    
         internal static void Zip(string zipAbsolutePath, string basePath, PlayerCompression compression)
         {
             ZipThroughSpatial(zipAbsolutePath, basePath, compression);
@@ -25,8 +19,8 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
         {
             var zipFileFullPath = Path.GetFullPath(zipAbsolutePath);
 
-            SpatialCommandRunner.RunSpatialCommand(ZipArgs(basePath, zipFileFullPath, useCompression),
-                string.Format("package the folder {0}", basePath));
+            // SpatialCommandRunner.RunSpatialCommand(ZipArgs(basePath, zipFileFullPath, useCompression),
+            //     string.Format("package the folder {0}", basePath));
         }
 
         private static string ZipArgs(string basePath, string zipFileFullPath,
@@ -35,14 +29,8 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
             var filePattern = "**";
             var subFolder = "";
 
-            return string.Format(
-                "file zip --output=\"{0}\" --basePath=\"{1}\" --relativePath=. \"{2}\" --compression={3}",
-                zipFileFullPath,
-                Path.GetFullPath(basePath),
-                PathUtil.EnsureTrailingSlash(subFolder) + filePattern,
-                useCompression == PlayerCompression.Enabled);
+            return
+                $"file zip --output=\"{zipFileFullPath}\" --basePath=\"{Path.GetFullPath(basePath)}\" --relativePath=. \"{PathUtil.EnsureTrailingSlash(subFolder) + filePattern}\" --compression={useCompression == PlayerCompression.Enabled}";
         }
-
-        #endregion Zip
     }
 }

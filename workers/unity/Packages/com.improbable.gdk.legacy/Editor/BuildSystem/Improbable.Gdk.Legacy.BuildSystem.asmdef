@@ -1,7 +1,8 @@
 {
     "name": "Improbable.Gdk.Legacy.BuildSystem",
     "references": [
-        "Improbable.Gdk.Core"
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Tools"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

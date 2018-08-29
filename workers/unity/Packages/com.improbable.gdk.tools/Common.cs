@@ -4,16 +4,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Improbable.Gdk.Tools.MiniJSON;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Tools
 {
-    static class Common
+    internal static class Common
     {
         public static string CoreSdkVersion { get; }
 
         private const string PackagesDir = "Packages";
+        private const string UsrLocalBinDir = "/usr/local/bin";
+        public static string SpatialBinary => DiscoverSpatialLocation();
+
 
         static Common()
         {
@@ -57,7 +61,7 @@ namespace Improbable.Gdk.Tools
             try
             {
                 var manifest =
-                    MiniJSON.Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
+                    Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
                 return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
@@ -69,13 +73,18 @@ namespace Improbable.Gdk.Tools
 
         public static int RunProcess(string command, params string[] arguments)
         {
+            return RunProcessIn(Path.GetFullPath(Path.Combine(Application.dataPath, "..")), command, arguments);
+        }
+
+        public static int RunProcessIn(string workingDirectory, string command, params string[] arguments)
+        {
             var info = new ProcessStartInfo(command, string.Join(" ", arguments))
             {
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                WorkingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."))
+                WorkingDirectory = workingDirectory
             };
 
             using (var process = Process.Start(info))
@@ -88,31 +97,97 @@ namespace Improbable.Gdk.Tools
 
                 process.EnableRaisingEvents = true;
 
+                var processOutput = new StringBuilder();
+
+                void OnReceived(object sender, DataReceivedEventArgs args)
+                {
+                    if (string.IsNullOrEmpty(args.Data))
+                    {
+                        return;
+                    }
+
+                    lock (processOutput)
+                    {
+                        processOutput.AppendLine(ProcessSpatialOutput(args.Data));
+                    }
+                }
+
                 process.OutputDataReceived += OnReceived;
-                process.ErrorDataReceived += OnErrorReceived;
+                process.ErrorDataReceived += OnReceived;
 
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
                 process.WaitForExit();
+
+                if (process.ExitCode == 0)
+                {
+                    Debug.Log(processOutput);
+                }
+                else
+                {
+                    Debug.LogError(processOutput);
+                }
+
+
                 return process.ExitCode;
             }
         }
 
-        private static void OnReceived(object sender, DataReceivedEventArgs args)
+        private static string ProcessSpatialOutput(string argsData)
         {
-            if (!string.IsNullOrEmpty(args.Data))
+            if (!argsData.StartsWith("{") || !argsData.EndsWith("}"))
             {
-                Debug.Log(args.Data);
+                return argsData;
             }
+
+            try
+            {
+                var logEvent = Json.Deserialize(argsData);
+                if (logEvent.TryGetValue("msg", out var message))
+                {
+                    return (string) message;
+                }
+            }
+            catch
+            {
+                return argsData;
+            }
+
+            return argsData;
         }
 
-        private static void OnErrorReceived(object sender, DataReceivedEventArgs args)
+        private static string DiscoverSpatialLocation()
         {
-            if (!string.IsNullOrEmpty(args.Data))
+            var pathValue = Environment.GetEnvironmentVariable("PATH");
+            if (pathValue == null)
             {
-                Debug.LogError(args.Data);
+                return string.Empty;
             }
+
+            var fileName = "spatial";
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                fileName = Path.ChangeExtension(fileName, ".exe");
+            }
+
+            var splitPath = pathValue.Split(Path.PathSeparator);
+
+            if (Application.platform == RuntimePlatform.OSXEditor && !splitPath.Contains(UsrLocalBinDir))
+            {
+                splitPath = splitPath.Union(new[] { UsrLocalBinDir }).ToArray();
+            }
+
+            foreach (var path in splitPath)
+            {
+                var testPath = Path.Combine(path, fileName);
+                if (File.Exists(testPath))
+                {
+                    return testPath;
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -20,7 +20,8 @@ namespace Improbable.Gdk.Tools
         private const int GenerateCodePriority = 38;
         private const int GenerateCodeForcePriority = 39;
 
-        private static readonly string SchemaCompilerRelativePath = $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
+        private static readonly string SchemaCompilerRelativePath =
+            $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
         static GenerateCode()
         {
@@ -34,7 +35,11 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.LockReloadAssemblies();
 
-                DownloadCoreSdk.Download();
+                // Ensure that all dependencies are in place.
+                if (DownloadCoreSdk.TryDownload() == DownloadResult.Error)
+                {
+                    return;
+                }
 
                 CopySchema(SchemaRootDir);
 
@@ -55,19 +60,23 @@ namespace Improbable.Gdk.Tools
                         var _ = Common.RunProcess("chmod", "+x", schemaCompilerPath);
                         break;
                     default:
-                        throw new PlatformNotSupportedException($"The {Application.platform} platform does not support code generation.");
+                        throw new PlatformNotSupportedException(
+                            $"The {Application.platform} platform does not support code generation.");
                 }
 
-                var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
-                    $"--schema-path=\"{SchemaRootDir}\"",
-                    $"--schema-path={SchemaStandardLibraryDir}",
-                    $"--json-dir={ImprobableJsonDir}",
-                    $"--native-output-dir={AssetsGeneratedSourceDir}",
-                    $"--schema-compiler-path=\"{schemaCompilerPath}\"");
-
-                if (exitCode != 0)
+                using (new ShowProgressBarScope("Generating code..."))
                 {
-                    Debug.LogError("Failed to generate code.");
+                    var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
+                        $"--schema-path=\"{SchemaRootDir}\"",
+                        $"--schema-path={SchemaStandardLibraryDir}",
+                        $"--json-dir={ImprobableJsonDir}",
+                        $"--native-output-dir={AssetsGeneratedSourceDir}",
+                        $"--schema-compiler-path=\"{schemaCompilerPath}\"");
+
+                    if (exitCode != 0)
+                    {
+                        Debug.LogError("Failed to generate code.");
+                    }
                 }
 
                 AssetDatabase.Refresh();
