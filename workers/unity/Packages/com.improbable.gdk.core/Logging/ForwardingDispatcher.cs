@@ -15,26 +15,7 @@ namespace Improbable.Gdk.Core
 
         private bool inHandleLog;
 
-        private bool handlingUnityLogMessages;
-        private Connection connection;
-
-        public Connection Connection
-        {
-            get => connection;
-            set
-            {
-                if (connection == null)
-                {
-                    handlingUnityLogMessages = true;
-                    Application.logMessageReceived += LogCallback;
-                }
-                else if (value == null)
-                {
-                    handlingUnityLogMessages = false;
-                    Application.logMessageReceived -= LogCallback;
-                }
-            }
-        }
+        public Connection Connection { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {

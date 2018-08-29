@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public abstract class WorkerConnectorBase : MonoBehaviour, IDisposable
+    public class WorkerConnectorBase : MonoBehaviour, IDisposable
     {
         private delegate Task<Worker> ConnectionDelegate();
 
@@ -40,7 +40,7 @@ namespace Playground
         public async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts
-            // This prevents races on the workers starting and races on when we start icking systems
+            // This prevents races on the workers starting and races on when we start ticking systems
             if (RequiredWorkerConnection != null)
             {
                 Task[] requiredWorkers = RequiredWorkerConnection
@@ -64,25 +64,23 @@ namespace Playground
             try
             {
                 var origin = transform.position;
+                ConnectionDelegate connectionDelegate;
                 if (ShouldUseLocator())
                 {
                     var config = GetLocatorConfig(workerType);
-                    ConnectionDelegate connectionDelegate = async () =>
+                    connectionDelegate = async () =>
                         await Worker.CreateWorkerAsync(config, SelectDeploymentName, logger, origin)
                             .ConfigureAwait(false);
-                    var worker =
-                        await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
-                    InitializeWorker(worker);
                 }
                 else
                 {
                     var config = GetReceptionistConfig(workerType);
-                    ConnectionDelegate connectionDelegate = async () =>
+                    connectionDelegate = async () =>
                         await Worker.CreateWorkerAsync(config, logger, origin).ConfigureAwait(false);
-                    var worker =
-                        await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
-                    InitializeWorker(worker);
                 }
+
+                var worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
+                InitializeWorker(worker);
             }
             catch (Exception e)
             {
@@ -104,47 +102,10 @@ namespace Playground
 
         protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
-            return deployments.Deployments[0].DeploymentName;
+            return null;
         }
 
-        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int attempts,
-            ILogDispatcher logger, string workerType)
-        {
-            while (attempts > 0)
-            {
-                try
-                {
-                    var worker = await connectionDelegate();
-                    return worker;
-                }
-                catch (ConnectionFailedException e)
-                {
-                    logger.HandleLog(LogType.Error,
-                        new LogEvent($"Failed attempt to create worker")
-                            .WithField("WorkerType", workerType)
-                            .WithField("Message", e.Message));
-                    attempts--;
-                }
-            }
-
-            throw new ConnectionFailedException(
-                $"Exceeded maximum connection attempts ({attempts})",
-                ConnectionErrorReason.ExceededMaximumRetries);
-        }
-
-        private bool ShouldUseLocator()
-        {
-            if (Application.isEditor)
-            {
-                return false;
-            }
-
-            var commandLineArguments = Environment.GetCommandLineArgs();
-            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-            return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
-        }
-
-        private ReceptionistConfig GetReceptionistConfig(string workerType)
+        protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
         {
             ReceptionistConfig config;
             if (Application.isEditor)
@@ -171,7 +132,7 @@ namespace Playground
             return config;
         }
 
-        private LocatorConfig GetLocatorConfig(string workerType)
+        protected virtual LocatorConfig GetLocatorConfig(string workerType)
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
@@ -179,6 +140,42 @@ namespace Playground
             config.WorkerType = workerType;
             config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
             return config;
+        }
+
+        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int attempts,
+            ILogDispatcher logger, string workerType)
+        {
+            while (attempts > 0)
+            {
+                try
+                {
+                    return await connectionDelegate();
+                }
+                catch (ConnectionFailedException e)
+                {
+                    logger.HandleLog(LogType.Error,
+                        new LogEvent($"Failed attempt to create worker")
+                            .WithField("WorkerType", workerType)
+                            .WithField("Message", e.Message));
+                    attempts--;
+                }
+            }
+
+            throw new ConnectionFailedException(
+                $"Exceeded maximum connection attempts ({attempts})",
+                ConnectionErrorReason.ExceededMaximumRetries);
+        }
+
+        private bool ShouldUseLocator()
+        {
+            if (Application.isEditor)
+            {
+                return false;
+            }
+
+            var commandLineArguments = Environment.GetCommandLineArgs();
+            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
+            return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
         }
 
         private void InitializeWorker(Worker worker)

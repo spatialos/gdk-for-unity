@@ -14,7 +14,8 @@ namespace Improbable.Gdk.Core
         public readonly Vector3 Origin;
         public readonly string WorkerType;
         public readonly string WorkerId;
-        public readonly ILogDispatcher LogDispatcher;
+
+        public ILogDispatcher LogDispatcher;
 
         public Connection Connection { get; private set; }
         public World World { get; private set; }
@@ -79,6 +80,12 @@ namespace Improbable.Gdk.Core
                 var deploymentList = await GetDeploymentList(locator);
 
                 var deploymentName = deploymentListCallback(deploymentList);
+                if (String.IsNullOrEmpty(deploymentName))
+                {
+                    throw new ConnectionFailedException("No deployment name chosen",
+                        ConnectionErrorReason.DeploymentNotFound);
+                }
+
                 var connectionParams = config.CreateConnectionParameters();
                 using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParams, (_) => true))
                 {
@@ -141,7 +148,8 @@ namespace Improbable.Gdk.Core
         {
             World?.Dispose();
             World = null;
-            LogDispatcher.Dispose();
+            LogDispatcher?.Dispose();
+            LogDispatcher = null;
             Connection?.Dispose();
             Connection = null;
         }
