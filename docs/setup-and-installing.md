@@ -6,20 +6,18 @@
 
 ## Short version
 
-1. Set up your machine by installing: 
+1. Set up your machine by installing:
 
 * (For Windows) [Unity 2018.2.0f2](https://unity3d.com/get-unity/download/archive) with Linux and Mac build support, [Visual Studio 2017](https://www.visualstudio.com/downloads/), [.NET Core 2.1.302 (x64)](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win), [ReSharper](https://www.jetbrains.com/resharper/) (optional), and [ReSharper Command Line Tools](https://www.jetbrains.com/resharper/download/index.html#section=resharper-clt) (optional).
 * (For Mac) [Unity 2018.2.0f2](https://unity3d.com/get-unity/download/archive) with Linux and Windows build support, [Rider](https://www.jetbrains.com/rider/) (optional; alternatively [Visual Studio 2017](https://www.visualstudio.com/downloads/)), [.NET Core 2.1.302 (x64)](https://www.microsoft.com/net/download/), [SpatialOS](https://console.improbable.io/installer/download/stable/latest/mac).
 
 1. Clone the repository: `git clone git@github.com:spatialos/UnityGDK.git`  or `git clone  https://github.com/spatialos/UnityGDK.git`
 
-2. Run `bash prepare-workspace.sh`.
-
-1. Run `spatial local launch`.
-
 1. Open the `workers/unity` project in your Unity Editor.
 
-1. In the Editor, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
+2. Choose **Improbable** > **Spatial** > **Local launch**
+
+3. In the Editor, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
 
 ## Full version
 
@@ -78,20 +76,17 @@ You can now run a game from your Unity Editor, either using SpatialOS locally, o
 
 Currently, you can try this out using the `Playground`.
 
-#### 1. Get your workspace ready
-
-1. Open a terminal and navigate to the `UnityGDK` directory (the repository you’ve just cloned).
-1. Run `bash prepare-workspace.sh`.
-<br>This fetches additional packages and generates the code for the SpatialOS workers.
-
 #### 2. Run the `Playground` locally using SpatialOS
 
-1. In the same terminal window, run `spatial local launch`.
-<br>This launches a SpatialOS deployment locally. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
-    > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in your console output.
-
 1. Open Unity, and open the `unity` project.
-<br>This causes Unity to generate a Visual Studio solution, `unity.sln`, within `UnityGDK/workers/unity`.
+<br>Unity will automatically download several required SpatialOS libraries.
+Unity may open a browser window prompting you to login to your SpatialOS account.
+If this happens, please login.
+This will only happen the first time you open you project, or if the version of the required libraries changes.
+
+1. Choose **Improbable** > **Spatial** > **Local launch**.
+<br>This launches a SpatialOS deployment locally in a new console window. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
+    > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in the new console indow
 
 1. In the Unity Editor's Project window, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
 
@@ -116,7 +111,8 @@ Currently, you can try this out using the `Playground`.
 
 1. Upload the assembly to the cloud
 
-    In the same terminal window as before, run `spatial cloud upload <assembly name>`.
+Open a terminal and navigate to the `UnityGDK` directory (the repository you’ve cloned).
+    Run `spatial cloud upload <assembly name>`.
     > The `<assembly name>` is just a label so you can identify this assembly in the next step - for example, `MyGDKAssembly`.
 
      **It’s done when:** You see `spatial upload MyGDKAssembly succeeded` printed in your console output.
