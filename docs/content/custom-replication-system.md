@@ -95,7 +95,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 }
 ```
 
-> **Note**: You need to create the `SchemaComponentUpdate` object with the correct component id. We provide Serialization methods to add data to this object automatically.
+> **Note**: You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
 
 Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData` and has no fields.
 

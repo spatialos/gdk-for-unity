@@ -6,7 +6,7 @@
 
 Commands are SpatialOS's equivalent of remote procedure calls.
 
-> For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/13.0/shared/design/commands#component-commands) in the SpatialOS documentation.
+> For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/latest/shared/design/commands#component-commands) in the SpatialOS documentation.
 
 ### Sending command requests
 
@@ -61,7 +61,7 @@ public class BuildSystem : ComponentSystem
     public struct Data
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSBuilder> Builders;
+        public ComponentDataArray<ShouldSendBuildWallCommand> DenotesShouldSendCommand; // Non-SpatialOS component
         public ComponentDataArray<Builder.CommandSenders.BuildWall> BuildWallSender;
         public ComponentDataArray<SpatialEntityId> EntityIds;
     }
@@ -92,7 +92,7 @@ public class BuildSystem : ComponentSystem
 }
 ```
 
-This system runs on a client. It injects all SpatialOS entities in the client's view that have the `Builder` SpatialOS component, and sends a `build_wall` command to each SpatialOS entity (which will be received by the managed worker).
+This system is an example of sending command requests. Unity injects all ECS entities which have the `ShouldSendBuildWallCommand`, `Builder.CommandSenders.BuildWall`, and `SpatialEntityId` components into this system before `OnUpdate`. This system iterates over the injected entities and sends a build_wall command request to each of them.
 
 To send a `build_wall` command in a system, you need to inject `Builder.CommandSenders.BuildWall` into the system like any other ECS component.
 
@@ -102,7 +102,7 @@ When a worker instance receives a command request, the command request is repres
 
 The Unity GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The Unity GDK cleans it up at the end of the tick.
 
-To respond to the request, use `ComponentName.CommandResponders.CommandName` for that given command. This contains a list of type `ComponentName.CommandName.Response`. Create and add a `ComponentName.CommandName.Response` object to this list and the GDK will automatically send the response for you.
+To respond to the request, use `ComponentName.CommandResponders.CommandName` for that given command. This contains a list of type `ComponentName.CommandName.Response`. Create and add a `ComponentName.CommandName.Response` object to this list and the GDK will send the response for you.
 
 Here's an example of receiving a command request and acting on it, using the same schema as above:
 
@@ -151,7 +151,7 @@ Like requests, when an ECS entity receives a command response, the Unity GDK att
 
 `ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that originally was sent with the command. **This payload is null** when the command fails.
 
-The ECS entity that sent the request receives the response. The response object.
+The ECS entity that sent the request receives the response.
 
 Here's an example of receiving a command response, using the same schema as above:
 
@@ -196,7 +196,7 @@ public class BuildWallResponseHandler : ComponentSystem
 
 World commands are RPCs to request specific things from the SpatialOS. 
 
-> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/13.0/shared/design/commands#world-commands)in the SpatialOS documentation.
+> They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands)in the SpatialOS documentation.
 
 Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response.
 
@@ -212,10 +212,10 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
 * DeleteEntity
     * Sending a request - `WorldCommands.DeleteEntity.CommandSender`. This contains a list of `WorldCommands.DeleteEntity.Request` structs. Add a struct to the list to send the command.
         * `TimeoutMillis` is optional.
-    *Receiving a response - `WorldCommands.DeleteEntity.CommandResponses`. This contains a list of `WorldCommands.DeleteEntity.ReceivedResponse`.
+    * Receiving a response - `WorldCommands.DeleteEntity.CommandResponses`. This contains a list of `WorldCommands.DeleteEntity.ReceivedResponse`.
 * EntityQuery
     * Sending a request - `WorldCommands.EntityQuery.CommandSender`. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command
-        * For more information, see [entity queries](https://docs.improbable.io/reference/13.0/shared/glossary#queries) in the SpatialOS documentation.
+        * For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
         * `TimeoutMillis` is optional.
     * Receiving a response - `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 

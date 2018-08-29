@@ -5,17 +5,17 @@
 
 ## Sending and receiving events
 
-Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
+Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
 Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event.
 
-> For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/13.0/shared/design/object-interaction#events) in the SpatialOS documentation.
+> For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) in the SpatialOS documentation.
 
 ### Sending events
 
-A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema.
+A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
 
-For each SpatialOS component containing an event, the Unity GDK automatically attaches an `ComponentName.EventSenders.EventName` ECS component when (and only when) the worker instance has authority over the SpatialOS component `ComponentName`.
+For each SpatialOS component containing an event, the Unity GDK attaches a `ComponentName.EventSenders.EventName` ECS component when (and only when) the worker instance has authority over the SpatialOS component `ComponentName`.
 
 For each event in the SpatialOS component, there will be a corresponding method to send that event.
 
@@ -44,7 +44,7 @@ component CubeColor {
 Given the example schema, the Unity GDK generates these types:
 
 * `ColorData` - Equivalent of the schema type.
-* `CubeColor.EventSenders.ChangeColor` - The event sender type
+* `CubeColor.EventSenders.ChangeColor` - The event sender type.
 
 The Unity GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority](authority.md) for more on how authority works in the Unity GDK.
 
@@ -85,7 +85,7 @@ public class SendChangeColorEvent : ComponentSystem
 
 When a worker instance receives an event, this is represented with reactive ECS components. 
 
-For the SpatialOS entity that the event was sent on, the Unity GDK attaches an `ComponentName.ReceivedEvents.EventName` component to the corresponding ECS entity, where `ComponentName` is the name of the component that the event is defined in and `EventName` is the name of the event in schema.
+For the SpatialOS entity that the event was sent on, the Unity GDK attaches a `ComponentName.ReceivedEvents.EventName` component to the corresponding ECS entity, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
 
 Given the same schema as above, `change_color` events are stored in a list of `ColorData`s on a `CubeColor.ReceivedEvents.ChangeColor` component.
 
