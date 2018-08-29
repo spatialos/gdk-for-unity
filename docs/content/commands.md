@@ -92,7 +92,7 @@ public class BuildSystem : ComponentSystem
 }
 ```
 
-This system is an example of sending command requests. Unity injects all ECS entities which have the `ShouldSendBuildWallCommand`, `Builder.CommandSenders.BuildWall`, and `SpatialEntityId` components into this system before `OnUpdate`. This system iterates over the injected entities and sends a build_wall command request to each of them.
+This system is an example of sending command requests. Unity injects all ECS entities which have the `ShouldSendBuildWallCommand`, `Builder.CommandSenders.BuildWall`, and `SpatialEntityId` components into this system before `OnUpdate`. This system iterates over the injected entities and sends a `build_wall` command request to each of them.
 
 To send a `build_wall` command in a system, you need to inject `Builder.CommandSenders.BuildWall` into the system like any other ECS component.
 
