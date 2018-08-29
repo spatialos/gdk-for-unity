@@ -22,12 +22,14 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -35,6 +37,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context
                 };
             }
 

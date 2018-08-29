@@ -28,12 +28,14 @@ namespace <#= qualifiedNamespace #>
                 public <#= commandDetails.FqnRequestType #> Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 <#= commandDetails.FqnRequestType #> request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -41,6 +43,7 @@ namespace <#= qualifiedNamespace #>
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context
                 };
             }
 

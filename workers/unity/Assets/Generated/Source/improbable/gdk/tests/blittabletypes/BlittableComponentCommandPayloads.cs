@@ -22,12 +22,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -35,6 +37,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context
                 };
             }
 
@@ -122,12 +125,14 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -135,6 +140,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context
                 };
             }
 
