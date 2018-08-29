@@ -1,0 +1,121 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using System.Collections.Generic;
+using Improbable.Worker;
+using Improbable.Worker.Core;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# foreach (var commandDetails in commandDetailsList) {#>
+        public class <#= commandDetails.CommandName #>
+        {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
+            public struct Request
+            {
+                public EntityId TargetEntityId { get; internal set; }
+                public <#= commandDetails.RequestType #> Payload { get; internal set; }
+                public uint? TimeoutMillis { get; internal set; }
+                public bool AllowShortCircuiting { get; internal set; }
+            }
+
+            public static Request CreateRequest(EntityId targetEntityId,
+                <#= commandDetails.RequestType #> request,
+                uint? timeoutMillis = null,
+                bool allowShortCircuiting = false)
+            {
+                return new Request
+                {
+                    TargetEntityId = targetEntityId,
+                    Payload = request,
+                    TimeoutMillis = timeoutMillis,
+                    AllowShortCircuiting = allowShortCircuiting,
+                };
+            }
+
+            public struct ReceivedRequest
+            {
+                public long RequestId { get; }
+                public string CallerWorkerId { get; }
+                public List<string> CallerAttributeSet { get; }
+                public <#= commandDetails.RequestType #> Payload { get; }
+
+                public ReceivedRequest(long requestId,
+                    string callerWorkerId,
+                    List<string> callerAttributeSet,
+                    <#= commandDetails.RequestType #> request)
+                {
+                    RequestId = requestId;
+                    CallerWorkerId = callerWorkerId;
+                    CallerAttributeSet = callerAttributeSet;
+                    Payload = request;
+                }
+            }
+
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
+            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
+            /// </summary>
+            public struct Response
+            {
+                public long RequestId { get; internal set; }
+                public <#= commandDetails.ResponseType #>? Payload { get; internal set; }
+                public string FailureMessage { get; internal set; }
+            }
+
+            public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.ResponseType #> payload)
+            {
+                return new Response
+                {
+                    RequestId = req.RequestId,
+                    Payload = payload,
+                    FailureMessage = null,
+                };
+            }
+
+            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
+            {
+                return new Response
+                {
+                    RequestId = req.RequestId,
+                    Payload = null,
+                    FailureMessage = failureMessage,
+                };
+            }
+
+            public struct ReceivedResponse
+            {
+                public EntityId EntityId { get; }
+                public string Message { get; }
+                public StatusCode StatusCode { get; }
+                public <#= commandDetails.ResponseType #>? ResponsePayload { get; }
+                public <#= commandDetails.RequestType #> RequestPayload { get; }
+
+                public ReceivedResponse(EntityId entityId,
+                    string message,
+                    StatusCode statusCode,
+                    <#= commandDetails.ResponseType #>? response,
+                    <#= commandDetails.RequestType #> request)
+                {
+                    EntityId = entityId;
+                    Message = message;
+                    StatusCode = statusCode;
+                    ResponsePayload = response;
+                    RequestPayload = request;
+                }
+            }
+        }
+<# } #>
+    }
+}

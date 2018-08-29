@@ -42,6 +42,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
             spatialOSComponent.World = world;
+            spatialOSComponent.LogDispatcher = logDispatcher;
         }
     }
 }

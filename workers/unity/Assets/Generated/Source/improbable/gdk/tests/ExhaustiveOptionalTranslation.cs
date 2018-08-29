@@ -136,31 +136,35 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSExhaustiveOptional>(entity);
-
-                var update = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveOptional.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                List<SpatialOSExhaustiveOptional.Update> updates;
-                if (entityManager.HasComponent<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
                 {
-                    updates = entityManager.GetComponentData<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity).Updates;
+                    var data = entityManager.GetComponentData<SpatialOSExhaustiveOptional>(entity);
 
-                }
-                else
-                {
-                    var updatesComponent = new SpatialOSExhaustiveOptional.ReceivedUpdates
+                    var update = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveOptional.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+
+                    List<SpatialOSExhaustiveOptional.Update> updates;
+                    if (entityManager.HasComponent<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity))
                     {
-                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                    };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSExhaustiveOptional.Update>());
-                    updates = updatesComponent.Updates;
-                    entityManager.AddComponentData(entity, updatesComponent);
+                        updates = entityManager.GetComponentData<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity).Updates;
+
+                    }
+                    else
+                    {
+                        var updatesComponent = new SpatialOSExhaustiveOptional.ReceivedUpdates
+                        {
+                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                        };
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSExhaustiveOptional.Update>());
+                        updates = updatesComponent.Updates;
+                        entityManager.AddComponentData(entity, updatesComponent);
+                    }
+
+                    updates.Add(update);
+
+                    data.DirtyBit = false;
+                    entityManager.SetComponentData(entity, data);
                 }
 
-                updates.Add(update);
-
-                data.DirtyBit = false;
-                entityManager.SetComponentData(entity, data);
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
