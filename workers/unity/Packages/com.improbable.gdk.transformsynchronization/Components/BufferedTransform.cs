@@ -1,4 +1,5 @@
 using Generated.Improbable.Transform;
+using Improbable.Gdk.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
@@ -7,6 +8,7 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         public System.Collections.Generic.List<SpatialOSTransform> TransformUpdates;
         public SpatialOSTransform LastTransformSnapshot;
+        public BlittableBool IsInitialised;
 
         public BufferedTransform()
         {

@@ -14,6 +14,7 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
             public ComponentArray<BufferedTransform> BufferedTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;
@@ -23,7 +24,15 @@ namespace Improbable.Gdk.TransformSynchronization
             for (var i = 0; i < transformUpdateData.Length; i++)
             {
                 var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
-                var lastTransformSnapshot = transformUpdateData.BufferedTransform[i].LastTransformSnapshot;
+                var bufferedTransform = transformUpdateData.BufferedTransform[i];
+                var lastTransformSnapshot = bufferedTransform.LastTransformSnapshot;
+
+                if (!bufferedTransform.IsInitialised)
+                {
+                    lastTransformSnapshot = transformUpdateData.Transform[i];
+                    bufferedTransform.IsInitialised = true;
+                }
+
                 foreach (var update in transformUpdates)
                 {
                     if (update.Location.HasValue)
