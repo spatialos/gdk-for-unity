@@ -391,7 +391,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     op.Message,
                     op.StatusCode,
                     response,
-                    requestBundle.Request));
+                    requestBundle.Request,
+                    requestBundle.Context,
+                    requestBundle.RequestId));
             }
         }
 
@@ -474,7 +476,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             cmdStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>(entityArray[j], wrappedCommandRequest.Payload, null);
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
                         }
 
                         requests.Clear();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
@@ -32,28 +33,56 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         [Inject] private ResponseData responseData;
 
+        private readonly Dictionary<long, float> requestTimeMap = new Dictionary<long, float>();
+        private ILogDispatcher logDispatcher;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+
+            logDispatcher = Improbable.Gdk.Core.Worker.GetWorkerFromWorld(World).LogDispatcher;
+        }
+
         protected override void OnUpdate()
         {
             for (var i = 0; i < sendData.Length; ++i)
             {
-                var request = new CreatePlayerRequestType
-                {
-                    Position = new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 }
-                };
+                var request = new CreatePlayerRequestType(new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
+
+                var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
+
+                requestTimeMap[createPlayerRequest.RequestId] = Time.realtimeSinceStartup;
 
                 sendData.RequestSenders[i].RequestsToSend
-                    .Add(PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request));
+                    .Add(createPlayerRequest);
             }
 
             for (var i = 0; i < responseData.Length; ++i)
             {
                 foreach (var receivedResponse in responseData.Responses[i].Responses)
                 {
-                    Debug.Log($"Create player response code: {receivedResponse.StatusCode}");
+                    var requestId = receivedResponse.RequestId;
+
+                    if (requestTimeMap.TryGetValue(requestId, out var requestTime))
+                    {
+                        requestTimeMap.Remove(requestId);
+
+                        logDispatcher.HandleLog(LogType.Log,
+                            new LogEvent(
+                                $"Time taken to be spawned : {Time.realtimeSinceStartup - requestTime:0.00}s."));
+
+                        continue;
+                    }
+                    else
+                    {
+                        logDispatcher.HandleLog(LogType.Error,
+                            new LogEvent($"Failed to get timing information for request with ID {requestId}."));
+                    }
 
                     if (receivedResponse.StatusCode != StatusCode.Success)
                     {
-                        Debug.LogError($"Create player failed: {receivedResponse.Message}");
+                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            $"Create player request (with id {requestId}) failed: {receivedResponse.Message}"));
                     }
                 }
             }

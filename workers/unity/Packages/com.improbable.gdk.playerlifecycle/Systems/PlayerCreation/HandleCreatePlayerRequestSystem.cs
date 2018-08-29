@@ -23,16 +23,16 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         [Inject] private CreatePlayerData createPlayerData;
 
-        private struct EntityCreationResponses
+        private struct EntityCreationResponseData
         {
             public readonly int Length;
             public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
             public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> CreateEntityResponses;
         }
 
-        [Inject] private EntityCreationResponses entityCreationResponseData;
+        [Inject] private EntityCreationResponseData entityCreationResponseData;
 
-        private class EntityCreationRequestContext
+        private class PlayerCreationRequestContext
         {
             public PlayerCreator.CreatePlayer.ReceivedRequest createPlayerRequest;
         }
@@ -54,14 +54,14 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                     var playerEntity = PlayerLifecycleConfig.CreatePlayerEntityTemplate(request.CallerAttributeSet,
                         request.Payload.Position);
-                    createEntitySender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
-                    {
-                        Entity = playerEntity,
-                        Context = new EntityCreationRequestContext
+                    createEntitySender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
+                    (
+                        playerEntity,
+                        context: new PlayerCreationRequestContext
                         {
                             createPlayerRequest = request
                         }
-                    });
+                    ));
                 }
 
                 createPlayerData.CreateEntitySender[i] = createEntitySender;
@@ -74,7 +74,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                 foreach (var receivedResponse in entityCreationResponses.Responses)
                 {
-                    if (!(receivedResponse.Context is EntityCreationRequestContext requestContext))
+                    if (!(receivedResponse.Context is PlayerCreationRequestContext requestContext))
                     {
                         // Ignore non-player entity creation requests
                         continue;

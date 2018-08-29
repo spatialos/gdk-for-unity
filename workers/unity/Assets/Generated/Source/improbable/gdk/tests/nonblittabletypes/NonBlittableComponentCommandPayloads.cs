@@ -23,6 +23,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
                 public System.Object Context { get; internal set; }
+                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -37,7 +38,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
-                    Context = context
+                    Context = context,
+                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 
@@ -98,18 +100,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload { get; }
+                public System.Object Context { get; }
+                public long RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response,
-                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request)
+                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request,
+                    System.Object context,
+                    long requestId)
                 {
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
+                    Context = context;
+                    RequestId = requestId;
                 }
             }
         }
@@ -126,6 +134,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
                 public System.Object Context { get; internal set; }
+                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -140,7 +149,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
-                    Context = context
+                    Context = context,
+                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 
@@ -201,18 +211,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload { get; }
                 public global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload { get; }
+                public System.Object Context { get; }
+                public long RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response,
-                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request)
+                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request,
+                    System.Object context,
+                    long requestId)
                 {
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
+                    Context = context;
+                    RequestId = requestId;
                 }
             }
         }

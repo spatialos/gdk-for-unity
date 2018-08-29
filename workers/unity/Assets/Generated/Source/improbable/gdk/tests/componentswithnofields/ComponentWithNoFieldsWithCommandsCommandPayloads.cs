@@ -23,6 +23,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
                 public System.Object Context { get; internal set; }
+                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -37,7 +38,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
-                    Context = context
+                    Context = context,
+                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 
@@ -98,18 +100,24 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? ResponsePayload { get; }
                 public global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RequestPayload { get; }
+                public System.Object Context { get; }
+                public long RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? response,
-                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
+                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request,
+                    System.Object context,
+                    long requestId)
                 {
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
+                    Context = context;
+                    RequestId = requestId;
                 }
             }
         }
