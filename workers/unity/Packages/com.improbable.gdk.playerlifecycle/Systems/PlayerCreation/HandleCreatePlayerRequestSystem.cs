@@ -15,10 +15,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct CreatePlayerData
         {
             public readonly int Length;
-
             [ReadOnly] public ComponentDataArray<PlayerCreator.CommandRequests.CreatePlayer> CreatePlayerRequests;
-
-            public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
         }
 
         [Inject] private CreatePlayerData createPlayerData;
@@ -26,8 +24,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct EntityCreationResponseData
         {
             public readonly int Length;
-            public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
-            public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> CreateEntityResponses;
+            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> CreateEntityResponses;
+            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
         }
 
         [Inject] private EntityCreationResponseData entityCreationResponseData;
@@ -42,7 +40,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < createPlayerData.Length; i++)
             {
                 var requests = createPlayerData.CreatePlayerRequests[i].Requests;
-
                 var createEntitySender = createPlayerData.CreateEntitySender[i];
 
                 foreach (var request in requests)
@@ -63,8 +60,6 @@ namespace Improbable.Gdk.PlayerLifecycle
                         }
                     ));
                 }
-
-                createPlayerData.CreateEntitySender[i] = createEntitySender;
             }
 
             for (var i = 0; i < entityCreationResponseData.Length; ++i)

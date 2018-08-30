@@ -48,7 +48,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < sendData.Length; ++i)
             {
                 var request = new CreatePlayerRequestType(new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
-
                 var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
 
                 requestTimeMap[createPlayerRequest.RequestId] = Time.realtimeSinceStartup;
