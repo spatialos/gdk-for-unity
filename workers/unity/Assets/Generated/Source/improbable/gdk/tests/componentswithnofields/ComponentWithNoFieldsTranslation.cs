@@ -48,6 +48,23 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSComponentWithNoFields>());
 
+                var update = new SpatialOSComponentWithNoFields.Update 
+                {
+                };
+                
+                var updates = new List<SpatialOSComponentWithNoFields.Update>
+                {
+                    update
+                };
+                
+                var updatesComponent = new SpatialOSComponentWithNoFields.ReceivedUpdates
+                {
+                    handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                };
+                
+                ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
+                entityManager.AddComponentData(entity, updatesComponent);
+                
                 if (entityManager.HasComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity))
                 {
                     entityManager.RemoveComponent<ComponentRemoved<SpatialOSComponentWithNoFields>>(entity);

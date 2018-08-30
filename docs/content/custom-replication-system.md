@@ -20,7 +20,7 @@ When a worker sends a SpatialOS event, the Unity GDK puts the event object into 
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this will disable the standard replication for `T`.
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order](./system-update-order.md).
 
 * Handle replication of properties:
 
@@ -44,26 +44,33 @@ If some ECS components need more complex replication logic, you can create custo
 Here's an example of a custom replication system for a `Transform` component:
 
 ```csharp
-[UpdateInGroup(typeof(UpdateGroupSpatialOSSend))]
-[UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
 public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 {
-    public struct TransformData
+    private struct TransformData
     {
         public readonly int Length;
         public ComponentDataArray<SpatialOSTransform> Transforms;
-        public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-        public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
+        [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+        [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
 
     [Inject] private TransformData transformData;
 
+    // Number of transform sends per second.
+    private const float SendRateHz = 30.0f;
+
+    private float timeSinceLastSend = 0.0f;
+
     protected override void OnUpdate()
     {
-        if (World.GetExistingManager<TickSystem>().GlobalTick % 2 != 0) //Update every other tick
+        // Send update at SendRateHz.
+        timeSinceLastSend += Time.deltaTime;
+        if (timeSinceLastSend < 1.0f / SendRateHz)
         {
             return;
         }
+
+        timeSinceLastSend = 0.0f;
 
         for (var i = 0; i < transformData.Length; i++)
         {
@@ -76,12 +83,10 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 
             var entityId = transformData.SpatialEntityIds[i].EntityId;
 
-            var update = new global::Improbable.Transform.Transform.Update(); // Generated type from Worker SDK 
-            update.SetLocation(global::Generated.Improbable.Transform.Location.ToSpatial(component.Location));
-            update.SetRotation(global::Generated.Improbable.Transform.Quaternion.ToSpatial(component.Rotation));
-            update.SetTick(component.Tick);
-
-            SpatialOSTransformTranslation.SendComponentUpdate(worker.Connection, entityId, update);
+            var update = new SchemaComponentUpdate(component.ComponentId);
+            Generated.Improbable.Transform.SpatialOSTransform.Serialization.Serialize(component,
+                update.GetFields());
+            worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
             component.DirtyBit = false;
             transformData.Transforms[i] = component;
@@ -90,20 +95,18 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 }
 ```
 
-> **Note**: The update objects are generated types from the [SpatialOS C# SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction).
+> **Note**: You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
 
-Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData`.
+Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData` and has no fields.
 
 ```csharp
-[UpdateInGroup(typeof(UpdateGroupSpatialOSSend))]
-[UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
 public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 {
     public struct ColorData
     {
         public readonly int Length;
         public ComponentDataArray<SpatialOSCubeColor> CubeColors;
-        public ComponentDataArray<EventSender<SpatialOSCubeColor>> CubeColorEventSenders;
+        public ComponentDataArray<CuberColor.EventSender.ChangeColor> ChangeColorEventSenders;
         public ComponentDataArray<Authoritative<SpatialOSCubeColor>> CubeColorAuthority;
         public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
@@ -115,24 +118,24 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
         for (var i = 0; i < cubeColorData.Length; i++)
         {
             var entityId = cubeColorData.SpatialEntityIds[i];
-            var eventSender = cubeColorData.CubeColorEventSenders[i];
-            var changeColorEvents = eventSender.GetChangeColorEvents();
+            var component = cubeColorData.CubeColors[i];
+            var changeColorEvents = cubeColorData.ChangeColorEventSenders[i].Events;
 
             if(changeColorEvents.Count == 0)
             {
                 continue;
             }
 
-            var update = new global::Playground.CubeColor.Update();
-
+            var update = new SchemaComponentUpdate(component.ComponentId);
+            var eventsObj = update.GetEvents();
             foreach(var event in changeColorEvents)
             {
-                update.changeColor.Add(global::Generated.Playground.ColorData.ToSpatial(event));
+                var eventObj = eventsObj.AddObject(1); // NOTE: 1 corresponds to the event index in schema. 
+                global::Generated.Playground.ColorData.Serialization.Serialize(event, eventObj)
             }
 
-            SpatialOSCubeColorTranslation.SendComponentUpdate(worker.Connection, entityId, update);
-
-            eventSender.ClearChangeColorEvents();
+            worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+            changeColorEvents.Clear();
         }
     }
 }

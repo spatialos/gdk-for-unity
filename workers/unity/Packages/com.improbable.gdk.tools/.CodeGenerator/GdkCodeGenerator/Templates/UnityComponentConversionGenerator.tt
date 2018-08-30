@@ -69,6 +69,26 @@ namespace <#= qualifiedNamespace #>
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentDetails.TypeName #>>());
 
+                var update = new <#= componentDetails.TypeName #>.Update 
+                {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                    <#= fieldDetails.PascalCaseName #> = data.<#= fieldDetails.PascalCaseName #>,
+<# } #>
+                };
+                
+                var updates = new List<<#= componentDetails.TypeName #>.Update>
+                {
+                    update
+                };
+                
+                var updatesComponent = new <#= componentDetails.TypeName #>.ReceivedUpdates
+                {
+                    handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                };
+                
+                ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
+                entityManager.AddComponentData(entity, updatesComponent);
+                
                 if (entityManager.HasComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity))
                 {
                     entityManager.RemoveComponent<ComponentRemoved<<#= componentDetails.TypeName #>>>(entity);

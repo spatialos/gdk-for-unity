@@ -64,7 +64,7 @@ public class ApplyTransformUpdatesSystem : ComponentSystem
     public struct TransformUpdateData
     {
         public readonly int Length;
-        [ReadOnly] public ComponentArray<ComponentsUpdated<SpatialOSTransform.Update>> TransformUpdate;
+        [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
         public ComponentArray<BufferedTransform> BufferedTransform;
         [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
     }
@@ -75,7 +75,7 @@ public class ApplyTransformUpdatesSystem : ComponentSystem
     {
         for (var i = 0; i < transformUpdateData.Length; i++)
         {
-            var transformUpdates = transformUpdateData.TransformUpdate[i].Buffer;
+            var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
             var lastTransformSnapshot = transformUpdateData.BufferedTransform[i].LastTransformSnapshot;
             foreach (var update in transformUpdates)
             {
