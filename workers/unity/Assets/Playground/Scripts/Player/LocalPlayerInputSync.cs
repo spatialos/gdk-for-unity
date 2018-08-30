@@ -14,7 +14,6 @@ using UnityEngine;
 
 namespace Playground
 {
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class LocalPlayerInputSync : ComponentSystem
     {

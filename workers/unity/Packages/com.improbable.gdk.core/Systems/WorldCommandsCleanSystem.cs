@@ -4,7 +4,6 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class WorldCommandsCleanSystem : ComponentSystem
     {

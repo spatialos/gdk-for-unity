@@ -15,7 +15,6 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Playground
 {
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class MoveLocalPlayerSystem : ComponentSystem
     {

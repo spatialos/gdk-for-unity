@@ -10,7 +10,6 @@ namespace Playground
     /// <summary>
     ///     Adds a list of components to newly spawned entities according to an archetype definition.
     /// </summary>
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     public class ArchetypeInitializationSystem : ComponentSystem
     {

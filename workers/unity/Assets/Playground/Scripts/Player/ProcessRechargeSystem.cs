@@ -18,7 +18,6 @@ namespace Playground
     {
     }
 
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessRechargeSystem : ComponentSystem
     {

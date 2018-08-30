@@ -26,7 +26,6 @@ namespace Playground
         }
     }
 
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class CollisionProcessSystem : ComponentSystem
     {

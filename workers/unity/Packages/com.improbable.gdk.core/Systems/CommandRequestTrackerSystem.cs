@@ -6,7 +6,6 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    [DisableAutoCreation]
     public class CommandRequestTrackerSystem : ComponentSystem
     {
         private readonly Dictionary<Type, CommandStorage> commandStorageInstances =

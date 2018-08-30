@@ -2,7 +2,6 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    [DisableAutoCreation]
     internal class WorkerSystem : ComponentSystem
     {
         public readonly Worker Worker;

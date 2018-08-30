@@ -5,7 +5,6 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ApplyTransformUpdatesSystem : ComponentSystem
     {

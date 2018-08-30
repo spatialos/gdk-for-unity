@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    [DisableAutoCreation]
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     public class SendPlayerHeartbeatRequestSystem : ComponentSystem
     {
