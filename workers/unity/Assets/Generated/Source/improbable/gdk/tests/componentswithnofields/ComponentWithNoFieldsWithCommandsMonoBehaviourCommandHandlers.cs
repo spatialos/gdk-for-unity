@@ -45,7 +45,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(new Cmd.Request(entityId, request));
+                    ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
                 }
 
             }

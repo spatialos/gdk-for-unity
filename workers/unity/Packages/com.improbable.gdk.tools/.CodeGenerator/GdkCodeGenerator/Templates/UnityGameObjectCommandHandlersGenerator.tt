@@ -51,7 +51,7 @@ namespace <#= qualifiedNamespace #>
                 public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.RequestType #> request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.Request.CreateRequest(entityId, request));
+                    ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.CreateRequest(entityId, request));
                 }
 
 <# } #>

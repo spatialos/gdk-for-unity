@@ -45,13 +45,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(new FirstCommand.Request(entityId, request));
+                    ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
                 }
 
                 public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(new SecondCommand.Request(entityId, request));
+                    ecsCommandRequestSender.RequestsToSend.Add(SecondCommand.CreateRequest(entityId, request));
                 }
 
             }
