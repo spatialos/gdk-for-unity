@@ -29,7 +29,7 @@ namespace Playground.MonoBehaviours
             colorIndex = (colorIndex + 1) % colorValues.Length;
             nextColorChangeTime = Time.time + 2;
 
-            writer.Send(new SpatialOSSpinnerColor.Update
+            writer.Send(new SpinnerColor.Update
             {
                 Color = (Color) colorValues.GetValue(colorIndex)
             });

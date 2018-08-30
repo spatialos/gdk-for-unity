@@ -1,8 +1,8 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -23,7 +23,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             public ComponentArray<BufferedTransform> BufferedTransform;
             public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> transformAuthority;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> transformAuthority;
         }
 
         [Inject] private TransformData transformData;
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
                         nextTransform.Location.Z);
-                    var newRotation = new UnityEngine.Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
+                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
                         nextTransform.Rotation.Z, nextTransform.Rotation.W);
 
                     rigidBody.MovePosition(newPosition + origin);
@@ -111,11 +111,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
                         nextTransform.Location.Z);
-                    var newRotation = new UnityEngine.Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
+                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
                         nextTransform.Rotation.Z, nextTransform.Rotation.W);
 
                     var interpolateLocation = Vector3.Lerp(currentLocation, newPosition, t);
-                    var interpolateRotation = UnityEngine.Quaternion.Slerp(currentRotation, newRotation, t);
+                    var interpolateRotation = Quaternion.Slerp(currentRotation, newRotation, t);
 
                     rigidBody.MovePosition(interpolateLocation + origin);
                     rigidBody.MoveRotation(interpolateRotation);

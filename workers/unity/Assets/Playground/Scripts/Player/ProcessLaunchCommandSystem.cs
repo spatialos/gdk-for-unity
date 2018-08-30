@@ -24,7 +24,7 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<SpatialOSLauncher> Launcher;
+            public ComponentDataArray<Launcher.Component> Launcher;
             public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
             [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
         }
@@ -32,7 +32,7 @@ namespace Playground
         private struct LaunchableData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            public ComponentDataArray<Launchable.Component> Launchable;
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
