@@ -446,10 +446,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     for (var j = 0; j < commandSenderDataArray.Length; j++)
                     {
-                        var requests = commandSenderDataArray[j];
-                        for (var k = 0; k < requests.RequestsToSend.Count; k++)
+                        var requests = commandSenderDataArray[j].RequestsToSend;
+                        var count = requests.Count;
+
+                        // Skip processing requests if that are none.
+                        if (count == 0)
                         {
-                            var wrappedCommandRequest = requests.RequestsToSend[k];
+                            continue;
+                        }
+
+                        for (var k = 0; k < count; k++)
+                        {
+                            var wrappedCommandRequest = requests[k];
 
                             var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
                             global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
@@ -463,7 +471,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                                 new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>(entityArray[j], wrappedCommandRequest.Payload, null);
                         }
 
-                        requests.RequestsToSend.Clear();
+                        requests.Clear();
                     }
                 }
                 if (!commandComponentGroups[1].IsEmptyIgnoreFilter)
@@ -473,10 +481,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     for (var j = 0; j < commandResponderDataArray.Length; j++)
                     {
-                        var responses = commandResponderDataArray[j];
-                        for (var k = 0; k < responses.ResponsesToSend.Count; k++)
+                        var responses = commandResponderDataArray[j].ResponsesToSend;
+                        var count = responses.Count;
+
+                        // Skip processing responses if that are none.
+                        if (count == 0)
                         {
-                            var wrappedCommandResponse = responses.ResponsesToSend[k];
+                            continue;
+                        }
+
+                        for (var k = 0; k < count; k++)
+                        {
+                            var wrappedCommandResponse = responses[k];
                             var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
 
                             if (wrappedCommandResponse.FailureMessage != null)
@@ -492,7 +508,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                             connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                         }
 
-                        responses.ResponsesToSend.Clear();
+                        responses.Clear();
                     }
                 }
             }
