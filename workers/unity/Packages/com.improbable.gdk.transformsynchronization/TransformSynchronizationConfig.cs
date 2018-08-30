@@ -1,6 +1,6 @@
 namespace Improbable.Gdk.TransformSynchronization
 {
-    class TransformSynchronizationConfig
+    public class TransformSynchronizationConfig
     {
         public const int MaxBufferSize = 4;
     }
