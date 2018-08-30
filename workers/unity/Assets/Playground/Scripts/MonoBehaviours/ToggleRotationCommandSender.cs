@@ -19,6 +19,11 @@ namespace Playground.MonoBehaviours
             responseHandler.OnSpinnerToggleRotationResponse += ResponseHandlerOnOnSpinnerToggleRotationResponse;
         }
 
+        public void OnDisable()
+        {
+            responseHandler.OnSpinnerToggleRotationResponse -= ResponseHandlerOnOnSpinnerToggleRotationResponse;
+        }
+
         private void ResponseHandlerOnOnSpinnerToggleRotationResponse(
             SpinnerRotation.SpinnerToggleRotation.ReceivedResponse obj)
         {
@@ -35,6 +40,7 @@ namespace Playground.MonoBehaviours
                 // Perform sending logic only on non-authoritative workers.
                 return;
             }
+
             if (Input.GetKeyDown(KeyCode.T))
             {
                 requestSender.SendSpinnerToggleRotationRequest(ownEntityId, new Void());
