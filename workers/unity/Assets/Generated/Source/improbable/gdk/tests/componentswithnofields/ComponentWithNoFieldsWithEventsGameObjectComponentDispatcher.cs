@@ -123,6 +123,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
+
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)

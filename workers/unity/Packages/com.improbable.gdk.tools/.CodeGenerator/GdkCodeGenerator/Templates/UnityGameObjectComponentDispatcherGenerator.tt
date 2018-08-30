@@ -59,6 +59,9 @@ namespace <#= qualifiedNamespace #>
 
             private const uint componentId = <#= unityComponentDefinition.Id #>;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+<# if (commandDetailsList.Count > 0) { #>
+            private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
+<# } #>
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -165,13 +168,35 @@ namespace <#= qualifiedNamespace #>
                         }
                     }
                 }
+
 <# } #>
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
-                // TODO UTY-961 Command Req handlers
+                if (!CommandRequestsComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
+                {
+                    var entities = CommandRequestsComponentGroups[<#= j #>].GetEntityArray();
+                    var commandRequestLists = CommandRequestsComponentGroups[<#= j #>].GetComponentDataArray<CommandRequests.<#= commandDetailsList[j].CommandName #>>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestHandlerInjectableId, out var commandRequestHandlers))
+                        {
+                            continue;
+                        }
+                         var commandRequestList = commandRequestLists[i];
+                         foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                        {
+                            foreach (var commandRequest in commandRequestList.Requests)
+                            {
+                                commandRequestHandler.On<#= commandDetailsList[j].CommandName #>RequestInternal(commandRequest);
+                            }
+                        }
+                    }
+                }
+
 <# } #>
             }
 

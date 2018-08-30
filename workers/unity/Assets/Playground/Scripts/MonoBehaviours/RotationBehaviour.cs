@@ -8,6 +8,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 public class RotationBehaviour : MonoBehaviour
 {
+    public bool RotatingClockWise = true;
     [Require] private Transform.Requirables.Writer writer;
 
     private static SpatialQuaternion UnityToSpatialQuaternion(Quaternion q)
@@ -27,7 +28,7 @@ public class RotationBehaviour : MonoBehaviour
     {
         SpatialQuaternion rot = writer.Data.Rotation;
         uRot.Set(rot.X, rot.Y, rot.Z, rot.W);
-        uRot *= Quaternion.Euler(Vector3.up * Time.deltaTime * 20);
+        uRot *= Quaternion.Euler((RotatingClockWise ? Vector3.up : Vector3.down) * Time.deltaTime * 20);
         writer.Send(new SpatialOSTransform.Update()
             { Rotation = new Option<SpatialQuaternion>(UnityToSpatialQuaternion(uRot)) });
     }

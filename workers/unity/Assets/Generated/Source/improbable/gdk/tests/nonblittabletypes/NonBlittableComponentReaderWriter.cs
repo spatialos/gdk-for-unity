@@ -53,7 +53,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             internal class ReaderWriterImpl :
                 ReaderWriterBase<SpatialOSNonBlittableComponent, SpatialOSNonBlittableComponent.Update>, Reader, Writer
             {
-                public ReaderWriterImpl(Entity entity,EntityManager entityManager,ILogDispatcher logDispatcher)
+                public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
@@ -182,7 +182,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>> firstEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>> firstEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent
                 {
@@ -201,7 +201,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     sender.Events.Add(payload);
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>> secondEventDelegates = new System.Collections.Generic.List<System.Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>> secondEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent
                 {

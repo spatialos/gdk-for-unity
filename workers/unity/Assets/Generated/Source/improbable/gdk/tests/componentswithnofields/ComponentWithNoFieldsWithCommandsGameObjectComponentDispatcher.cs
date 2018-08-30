@@ -44,6 +44,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private const uint componentId = 1005;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
+            private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
@@ -104,7 +105,28 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
-                // TODO UTY-961 Command Req handlers
+                if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
+                {
+                    var entities = CommandRequestsComponentGroups[0].GetEntityArray();
+                    var commandRequestLists = CommandRequestsComponentGroups[0].GetComponentDataArray<CommandRequests.Cmd>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestHandlerInjectableId, out var commandRequestHandlers))
+                        {
+                            continue;
+                        }
+                         var commandRequestList = commandRequestLists[i];
+                         foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                        {
+                            foreach (var commandRequest in commandRequestList.Requests)
+                            {
+                                commandRequestHandler.OnCmdRequestInternal(commandRequest);
+                            }
+                        }
+                    }
+                }
+
             }
 
             public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
