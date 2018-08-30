@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Tools
 {
-    public enum DownloadResult
+    internal enum DownloadResult
     {
         Success,
         AlreadyInstalled,
         Error
     }
 
-    public static class DownloadCoreSdk
+    internal static class DownloadCoreSdk
     {
         private const int DownloadForcePriority = 50;
 
@@ -28,16 +28,34 @@ namespace Improbable.Gdk.Tools
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()
         {
+            if (!CanDownload())
+            {
+                EditorUtility.DisplayDialog(Common.ProductName,
+                    $"Files in the {Common.ProductName} libraries have been locked by Unity.\n\nPlease restart the Unity editor and try again.",
+                    "Ok");
+                return;
+            }
+
             Download();
             AssetDatabase.Refresh();
+        }
+
+        private static void RemoveMarkerFile()
+        {
+            try
+            {
+                File.Delete(InstallMarkerFile);
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>
         ///     Windows only: Ensures that the user can't try to force a download if any of Improbable's native plugins are loaded
         ///     by Unity.
         /// </summary>
-        [MenuItem(DownloadForceMenuItem, true, DownloadForcePriority)]
-        private static bool DownloadForceValidate()
+        private static bool CanDownload()
         {
             var failedPlugins = new List<PluginImporter>();
 
@@ -74,7 +92,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Downloads the Core Sdk only if it has not already been downloaded and unzipped.
         /// </summary>
-        public static DownloadResult TryDownload()
+        internal static DownloadResult TryDownload()
         {
             if (File.Exists(InstallMarkerFile))
             {
@@ -87,15 +105,9 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Downloads and extracts the Core Sdk and associated libraries and tools.
         /// </summary>
-        public static DownloadResult Download()
+        internal static DownloadResult Download()
         {
-            try
-            {
-                File.Delete(InstallMarkerFile);
-            }
-            catch
-            {
-            }
+            RemoveMarkerFile();
 
             int exitCode;
             try

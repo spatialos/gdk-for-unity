@@ -24,6 +24,7 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         public static string SpatialBinary => DiscoverSpatialLocation();
 
+        public const string ProductName = "SpatialOS for Unity";
 
         private const string PackagesDir = "Packages";
         private const string UsrLocalBinDir = "/usr/local/bin";
@@ -102,16 +103,9 @@ namespace Improbable.Gdk.Tools
                 splitPath = splitPath.Union(new[] { UsrLocalBinDir }).ToArray();
             }
 
-            foreach (var path in splitPath)
-            {
-                var testPath = Path.Combine(path, fileName);
-                if (File.Exists(testPath))
-                {
-                    return testPath;
-                }
-            }
-
-            return string.Empty;
+            return splitPath
+                .Select(p => Path.Combine(p, fileName))
+                .FirstOrDefault(File.Exists) ?? string.Empty;
         }
     }
 }

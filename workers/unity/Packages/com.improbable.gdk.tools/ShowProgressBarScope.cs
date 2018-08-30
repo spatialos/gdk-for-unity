@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Tools
     {
         public ShowProgressBarScope(string name)
         {
-            EditorUtility.DisplayProgressBar("SpatialOS for Unity", name, 0.5f);
+            EditorUtility.DisplayProgressBar(Common.ProductName, name, 0.5f);
         }
 
         public void Dispose()

@@ -83,8 +83,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var content = File.ReadAllText(latestLogFile.FullName);
-                var message = $"Loaded from {latestLogFile.FullName}\n{content}";
+                var message = $"Spatial local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
@@ -92,6 +91,9 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
+                    var content = File.ReadAllText(latestLogFile.FullName);
+                    message = $"{message}\n{content}";
+
                     Debug.LogError(message);
                 }
 
