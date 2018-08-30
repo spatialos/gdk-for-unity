@@ -15,7 +15,6 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
             [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
-            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;

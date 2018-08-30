@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    [InternalBufferCapacity(TransformSynchronizationSystemHelper.MaxBufferSize)]
+    [InternalBufferCapacity(TransformSynchronizationConfig.MaxBufferSize)]
     public struct BufferedTransform : IBufferElementData
     {
         public SpatialOSTransform transformUpdate;

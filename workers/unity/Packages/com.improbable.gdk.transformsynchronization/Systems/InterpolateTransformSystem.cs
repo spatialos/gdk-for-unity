@@ -72,7 +72,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 // Recieved too many updates. Drop to latest update and interpolate from there.
-                if (transformQueue.Length >= TransformSynchronizationSystemHelper.MaxBufferSize)
+                if (transformQueue.Length >= TransformSynchronizationConfig.MaxBufferSize)
                 {
                     transformQueue.RemoveRange(0, transformQueue.Length - 1);
                     serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
