@@ -1,22 +1,32 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Tools
 {
-    internal static class Common
+    /// <summary>
+    ///     Catch-all class for common helpers and utilities.
+    /// </summary>
+    public static class Common
     {
+        /// <summary>
+        ///     The version of the CoreSdk the GDK is pinned to.
+        ///     Modify the core-sdk.version file in this source file's directory to change the version.
+        /// </summary>
         public static string CoreSdkVersion { get; }
+
+        /// <summary>
+        ///     The absolute path to the `spatial` binary, or the empty string if it doesn't exist.
+        /// </summary>
+        public static string SpatialBinary => DiscoverSpatialLocation();
+
 
         private const string PackagesDir = "Packages";
         private const string UsrLocalBinDir = "/usr/local/bin";
-        public static string SpatialBinary => DiscoverSpatialLocation();
 
 
         static Common()
@@ -35,7 +45,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Finds the "file:" reference path from the package manifest.
         /// </summary>
-        public static string GetThisPackagePath()
+        internal static string GetThisPackagePath()
         {
             const string gdkTools = "com.improbable.gdk.tools";
             var manifest = GetManifestDependencies();
@@ -56,7 +66,7 @@ namespace Improbable.Gdk.Tools
             return path;
         }
 
-        public static Dictionary<string, string> GetManifestDependencies()
+        internal static Dictionary<string, string> GetManifestDependencies()
         {
             try
             {
@@ -69,92 +79,6 @@ namespace Improbable.Gdk.Tools
             {
                 throw new ArgumentException($"Failed to parse manifest file: {e.Message}");
             }
-        }
-
-        public static int RunProcess(string command, params string[] arguments)
-        {
-            return RunProcessIn(Path.GetFullPath(Path.Combine(Application.dataPath, "..")), command, arguments);
-        }
-
-        public static int RunProcessIn(string workingDirectory, string command, params string[] arguments)
-        {
-            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
-            {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = workingDirectory
-            };
-
-            using (var process = Process.Start(info))
-            {
-                if (process == null)
-                {
-                    throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
-                }
-
-                process.EnableRaisingEvents = true;
-
-                var processOutput = new StringBuilder();
-
-                void OnReceived(object sender, DataReceivedEventArgs args)
-                {
-                    if (string.IsNullOrEmpty(args.Data))
-                    {
-                        return;
-                    }
-
-                    lock (processOutput)
-                    {
-                        processOutput.AppendLine(ProcessSpatialOutput(args.Data));
-                    }
-                }
-
-                process.OutputDataReceived += OnReceived;
-                process.ErrorDataReceived += OnReceived;
-
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                process.WaitForExit();
-
-                if (process.ExitCode == 0)
-                {
-                    Debug.Log(processOutput);
-                }
-                else
-                {
-                    Debug.LogError(processOutput);
-                }
-
-
-                return process.ExitCode;
-            }
-        }
-
-        private static string ProcessSpatialOutput(string argsData)
-        {
-            if (!argsData.StartsWith("{") || !argsData.EndsWith("}"))
-            {
-                return argsData;
-            }
-
-            try
-            {
-                var logEvent = Json.Deserialize(argsData);
-                if (logEvent.TryGetValue("msg", out var message))
-                {
-                    return (string) message;
-                }
-            }
-            catch
-            {
-                return argsData;
-            }
-
-            return argsData;
         }
 
         private static string DiscoverSpatialLocation()

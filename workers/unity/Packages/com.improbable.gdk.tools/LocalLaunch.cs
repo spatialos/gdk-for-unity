@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Tools
 {
@@ -14,15 +15,33 @@ namespace Improbable.Gdk.Tools
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.
         private const int WindowsCtrlCExitCode = -1073741510;
 
-        // Unixy: The exit code is 128 + SIGINT (2).
+        // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
+
+        [MenuItem("Improbable/Spatial/Build worker configs")]
+        private static void BuildConfigMenu()
+        {
+            Debug.Log("Building worker configs...");
+            EditorApplication.delayCall += BuildConfig;
+        }
+
+        [MenuItem("Improbable/Spatial/Local launch")]
+        private static void LaunchMenu()
+        {
+            Debug.Log("Launching SpatialOS locally...");
+            EditorApplication.delayCall += () =>
+            {
+                BuildConfig();
+                Launch();
+            };
+        }
 
         public static void BuildConfig()
         {
             using (new ShowProgressBarScope("Building worker configs..."))
             {
                 // Run from the root of the project to build all available worker configs.
-                Common.RunProcessIn(SpatialProjectRootDir, Common.SpatialBinary, "build", "build-config",
+                RedirectedProcess.RunIn(SpatialProjectRootDir, Common.SpatialBinary, "build", "build-config",
                     "--json_output");
             }
         }
@@ -60,7 +79,7 @@ namespace Improbable.Gdk.Tools
 
                 if (latestLogFile == null)
                 {
-                    UnityEngine.Debug.LogError($"Could not find a spatial log file in {logPath}.");
+                    Debug.LogError($"Could not find a spatial log file in {logPath}.");
                     return;
                 }
 
@@ -69,29 +88,16 @@ namespace Improbable.Gdk.Tools
 
                 if (WasProcessKilled(process))
                 {
-                    UnityEngine.Debug.Log(message);
+                    Debug.Log(message);
                 }
                 else
                 {
-                    UnityEngine.Debug.LogError(message);
+                    Debug.LogError(message);
                 }
 
                 process.Dispose();
                 process = null;
             };
-        }
-
-        [MenuItem("Improbable/Spatial/Build worker configs")]
-        private static void BuildConfigMenu()
-        {
-            BuildConfig();
-        }
-
-        [MenuItem("Improbable/Spatial/Local launch")]
-        private static void LauncMenu()
-        {
-            BuildConfig();
-            Launch();
         }
 
         private static bool WasProcessKilled(Process process)

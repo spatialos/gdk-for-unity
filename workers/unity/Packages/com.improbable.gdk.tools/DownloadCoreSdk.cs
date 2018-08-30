@@ -17,8 +17,11 @@ namespace Improbable.Gdk.Tools
     {
         private const int DownloadForcePriority = 50;
 
-        private static readonly string InstallMarkerFile = Path.GetFullPath($"build/CoreSdk/{Common.CoreSdkVersion}.installed");
-        private static readonly string ProjectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
+        private static readonly string InstallMarkerFile =
+            Path.GetFullPath($"build/CoreSdk/{Common.CoreSdkVersion}.installed");
+
+        private static readonly string ProjectPath =
+            Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
         private const string DownloadForceMenuItem = "Improbable/Download CoreSdk (force)";
 
@@ -30,7 +33,8 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        /// Windows only: Ensures that the user can't try to force a download if any of Improbable's native plugins are loaded byu Unit 
+        ///     Windows only: Ensures that the user can't try to force a download if any of Improbable's native plugins are loaded
+        ///     by Unity.
         /// </summary>
         [MenuItem(DownloadForceMenuItem, true, DownloadForcePriority)]
         private static bool DownloadForceValidate()
@@ -59,14 +63,19 @@ namespace Improbable.Gdk.Tools
 
         private static bool ShouldCheckPluginForLock(PluginImporter p)
         {
-            return p.isNativePlugin && p.assetPath.StartsWith("Assets/Plugins/Improbable") && File.Exists(p.assetPath);
+            if (!p.assetPath.StartsWith("Assets/Plugins/Improbable"))
+            {
+                return false;
+            }
+
+            return p.isNativePlugin && File.Exists(p.assetPath);
         }
 
         /// <summary>
-        /// Downloads the Core Sdk only if it has not already been downloaded and unzipped.
+        ///     Downloads the Core Sdk only if it has not already been downloaded and unzipped.
         /// </summary>
         public static DownloadResult TryDownload()
-        {            
+        {
             if (File.Exists(InstallMarkerFile))
             {
                 return DownloadResult.AlreadyInstalled;
@@ -76,7 +85,7 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        /// Downloads and extracts the Core Sdk and associated libraries and tools.
+        ///     Downloads and extracts the Core Sdk and associated libraries and tools.
         /// </summary>
         public static DownloadResult Download()
         {
@@ -85,16 +94,17 @@ namespace Improbable.Gdk.Tools
                 File.Delete(InstallMarkerFile);
             }
             catch
-            {}
+            {
+            }
 
             int exitCode;
             try
             {
                 EditorApplication.LockReloadAssemblies();
-                
+
                 using (new ShowProgressBarScope($"Installing SpatialOS libraries, version {Common.CoreSdkVersion}..."))
                 {
-                    exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{ProjectPath}\"", "--",
+                    exitCode = RedirectedProcess.Run("dotnet", "run", "-p", $"\"{ProjectPath}\"", "--",
                         Common.SpatialBinary, Common.CoreSdkVersion);
                     if (exitCode != 0)
                     {

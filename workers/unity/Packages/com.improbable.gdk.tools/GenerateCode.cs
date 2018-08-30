@@ -23,12 +23,27 @@ namespace Improbable.Gdk.Tools
         private static readonly string SchemaCompilerRelativePath =
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
+        /// <summary>
+        ///     Ensure that code is generated on editor startup.
+        /// </summary>
         static GenerateCode()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                // Don't generate code when entering PlayMode.
+                return;
+            }
+
             Generate();
         }
 
         [MenuItem("Improbable/Generate code", false, GenerateCodePriority)]
+        private static void GenerateMenu()
+        {
+            Debug.Log("Generating code...");
+            EditorApplication.delayCall += Generate;
+        }
+
         private static void Generate()
         {
             try
@@ -57,7 +72,7 @@ namespace Improbable.Gdk.Tools
                     case RuntimePlatform.LinuxEditor:
                     case RuntimePlatform.OSXEditor:
                         // Ensure the schema compiler is executable.
-                        var _ = Common.RunProcess("chmod", "+x", schemaCompilerPath);
+                        var _ = RedirectedProcess.Run("chmod", "+x", schemaCompilerPath);
                         break;
                     default:
                         throw new PlatformNotSupportedException(
@@ -66,7 +81,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var exitCode = Common.RunProcess("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
+                    var exitCode = RedirectedProcess.Run("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
                         $"--schema-path=\"{SchemaRootDir}\"",
                         $"--schema-path={SchemaStandardLibraryDir}",
                         $"--json-dir={ImprobableJsonDir}",
@@ -92,6 +107,12 @@ namespace Improbable.Gdk.Tools
         }
 
         [MenuItem("Improbable/Generate code (force)", false, GenerateCodeForcePriority)]
+        private static void ForceGenerateMenu()
+        {
+            Debug.Log("Generating code (forced rebuild)...");
+            EditorApplication.delayCall += ForceGenerate;
+        }
+
         private static void ForceGenerate()
         {
             if (Directory.Exists(AssetsGeneratedSourceDir))
@@ -161,7 +182,6 @@ namespace Improbable.Gdk.Tools
         {
             return kv.Value.Replace("file:", string.Empty);
         }
-
 
         private static void CleanDestination(string schemaDirectory)
         {

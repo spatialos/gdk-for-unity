@@ -11,7 +11,7 @@ namespace Improbable
     {
         private static void Main(string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length != 2)
             {
                 Console.Error.WriteLine("<path_to_spatial> <coresdk_version>");
                 Environment.Exit(1);

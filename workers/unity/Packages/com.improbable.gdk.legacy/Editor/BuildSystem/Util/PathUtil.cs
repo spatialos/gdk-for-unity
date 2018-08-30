@@ -25,19 +25,6 @@ namespace Improbable.Gdk.Legacy.BuildSystem.Util
         }
 
         /// <summary>
-        ///     Ensures a path is terminated with a <c>Path.DirectorySeparatorChar</c> .
-        /// </summary>
-        public static string EnsureTrailingSlash(string path)
-        {
-            if (string.IsNullOrEmpty(path) || path[path.Length - 1] == Path.DirectorySeparatorChar)
-            {
-                return path;
-            }
-
-            return path + Path.DirectorySeparatorChar;
-        }
-
-        /// <summary>
         ///     Converts the path in platform-native format to Unity path format "Foo/Bar".
         /// </summary>
         public static string ToUnityPath(this string nativePath)

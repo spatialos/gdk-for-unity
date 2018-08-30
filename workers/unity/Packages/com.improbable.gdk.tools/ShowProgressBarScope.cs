@@ -3,7 +3,10 @@ using UnityEditor;
 
 namespace Improbable.Gdk.Tools
 {
-    internal struct ShowProgressBarScope : IDisposable
+    /// <summary>
+    /// Use to avoid boilerplate try/finally just to ensure the progress bar is properly cleared.
+    /// </summary>
+    public struct ShowProgressBarScope : IDisposable
     {
         public ShowProgressBarScope(string name)
         {
