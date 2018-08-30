@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEditorInternal;
 
 namespace Improbable.Gdk.Tools
 {
@@ -12,7 +13,22 @@ namespace Improbable.Gdk.Tools
         [MenuItem("Improbable/Download CoreSdk", false, DownloadPriority)]
         public static void DownloadMenu()
         {
-            Download();
+            if (InternalEditorUtility.isHumanControllingUs)
+            {
+                EditorUtility.DisplayProgressBar("SpatialOS: Downloading Core SDK", "", 0);
+
+                EditorApplication.delayCall += () =>
+                {
+                    EditorUtility.DisplayProgressBar("SpatialOS: Downloading Core SDK", "", 5);
+                    Download();
+                    EditorUtility.ClearProgressBar();
+                };
+            }
+            else
+            {
+                Download();
+            }
+
             AssetDatabase.Refresh();
         }
 
