@@ -12,9 +12,9 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             public BufferArray<BufferedTransform> BufferedTransform;
-            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transform;
-            [ReadOnly] public ComponentDataArray<SpatialOSTransform.ReceivedUpdates> TransformUpdate;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Transform.Component> Transform;
+            [ReadOnly] public ComponentDataArray<Transform.ReceivedUpdates> TransformUpdate;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> TransformAuthority;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;

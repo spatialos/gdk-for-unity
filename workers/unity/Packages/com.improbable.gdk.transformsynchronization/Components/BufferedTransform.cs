@@ -6,6 +6,6 @@ namespace Improbable.Gdk.TransformSynchronization
     [InternalBufferCapacity(TransformSynchronizationConfig.MaxBufferSize)]
     public struct BufferedTransform : IBufferElementData
     {
-        public SpatialOSTransform transformUpdate;
+        public Transform.Component transformUpdate;
     }
 }
