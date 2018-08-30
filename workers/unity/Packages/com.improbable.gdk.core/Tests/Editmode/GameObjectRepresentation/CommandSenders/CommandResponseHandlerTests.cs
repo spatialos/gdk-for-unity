@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
     public class CommandResponseHandlerTests
     {
         [Test]
-        public void OnCmdResponseInternal_calls_OnCMdResponse_delegates()
+        public void OnCmdResponseInternal_calls_OnCmdResponse_delegates()
         {
             using (var world = new World("test-world"))
             {
