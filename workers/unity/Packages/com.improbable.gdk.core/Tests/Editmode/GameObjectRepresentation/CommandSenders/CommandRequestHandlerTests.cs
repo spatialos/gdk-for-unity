@@ -29,7 +29,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
 
                 commandRequestHandler.SendCmdResponse(ComponentWithNoFieldsWithCommands
                     .Cmd
-                    .Response
                     .CreateResponse(
                         new ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest(),
                         new Empty()));
