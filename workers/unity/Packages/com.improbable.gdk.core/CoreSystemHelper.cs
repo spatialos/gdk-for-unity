@@ -14,7 +14,6 @@ namespace Improbable.Gdk.TransformSynchronization
             world.GetOrCreateManager<WorldCommandsCleanSystem>();
             world.GetOrCreateManager<WorldCommandsSendSystem>();
             world.GetOrCreateManager<CommandRequestTrackerSystem>();
-
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
         }
