@@ -37,7 +37,7 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
             [ReadOnly] public ComponentDataArray<LocalInput> ShootInput;
             [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }

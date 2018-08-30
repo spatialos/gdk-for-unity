@@ -22,9 +22,9 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<LocalInput> LocalInput;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
+            public ComponentDataArray<PlayerInput.Component> PlayerInput;
             [ReadOnly] public ComponentDataArray<CameraTransform> CameraTransform;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
         }
 
         [Inject] private PlayerInputData playerInputData;
