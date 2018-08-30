@@ -65,8 +65,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentAddedComponentTypes);
                 gameObjectComponentDispatcher.ComponentRemovedComponentGroup =
                     GetComponentGroup(gameObjectComponentDispatcher.ComponentRemovedComponentTypes);
-                gameObjectComponentDispatcher.AuthoritiesChangedComponentGroup =
-                    GetComponentGroup(gameObjectComponentDispatcher.AuthoritiesChangedComponentTypes);
+                gameObjectComponentDispatcher.AuthorityGainedComponentGroup =
+                    GetComponentGroup(gameObjectComponentDispatcher.AuthorityGainedComponentTypes);
+                gameObjectComponentDispatcher.AuthorityLostComponentGroup =
+                    GetComponentGroup(gameObjectComponentDispatcher.AuthorityLostComponentTypes);
+                gameObjectComponentDispatcher.AuthorityLossImminentComponentGroup =
+                    GetComponentGroup(gameObjectComponentDispatcher.AuthorityLossImminentComponentTypes);
+
                 if (gameObjectComponentDispatcher.ComponentsUpdatedComponentTypes.Length > 0)
                 {
                     gameObjectComponentDispatcher.ComponentsUpdatedComponentGroup =
@@ -101,9 +106,35 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityIndexToActivationManager);
                 gameObjectComponentDispatcher.MarkComponentsRemovedForDeactivation(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.MarkAuthorityChangesForActivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkAuthorityLostForDeactivation(entityIndexToActivationManager);
+            }
+
+            foreach (var indexManagerPair in entityIndexToActivationManager)
+            {
+                indexManagerPair.Value.DisableSpatialOSBehaviours();
+            }
+
+            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
+            {
+                gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(entityIndexToReaderWriterStore);
+            }
+
+            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
+            {
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityIndexToReaderWriterStore);
+            }
+
+            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
+            {
+                gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(entityIndexToReaderWriterStore);
+            }
+
+            foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
+            {
+                gameObjectComponentDispatcher.MarkAuthorityGainedForActivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityIndexToActivationManager);
             }
 
             foreach (var indexManagerPair in entityIndexToActivationManager)
@@ -113,15 +144,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityChangeCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(entityIndexToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityIndexToReaderWriterStore);
-            }
-
-            foreach (var indexManagerPair in entityIndexToActivationManager)
-            {
-                indexManagerPair.Value.DisableSpatialOSBehaviours();
+                gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(entityIndexToReaderWriterStore);
             }
         }
 

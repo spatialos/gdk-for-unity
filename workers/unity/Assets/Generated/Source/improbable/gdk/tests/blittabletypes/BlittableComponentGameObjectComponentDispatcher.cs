@@ -7,6 +7,7 @@ using System.Linq;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Worker.Core;
 
 namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
@@ -24,9 +25,22 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 ComponentType.ReadOnly<ComponentRemoved<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
-            public override ComponentType[] AuthoritiesChangedComponentTypes => new ComponentType[]
+            public override ComponentType[] AuthorityGainedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<Authoritative<SpatialOSBlittableComponent>>()
+            };
+
+            public override ComponentType[] AuthorityLostComponentTypes => new ComponentType[]
+            {
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<NotAuthoritative<SpatialOSBlittableComponent>>()
+            };
+
+            public override ComponentType[] AuthorityLossImminentComponentTypes => new ComponentType[]
+            {
+                ComponentType.ReadOnly<AuthorityChanges<SpatialOSBlittableComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSBlittableComponent>>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
@@ -80,21 +94,42 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public override void MarkAuthorityChangesForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkAuthorityGainedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                if (AuthorityGainedComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var authoritiesChangedTags = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
+                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
+                var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityIndexToManagers[entities[i].Index];
-                    for (var j = 0; j < authoritiesChangedTags[i].Changes.Count; j++)
+                    // Call once except if flip-flopped back to starting state
+                    if (IsFirstAuthChange(Authority.Authoritative, authoritiesChangedTags[i]))
                     {
-                        activationManager.ChangeAuthority(componentId, authoritiesChangedTags[i].Changes[j]);
+                        activationManager.ChangeAuthority(componentId, Authority.Authoritative);
+                    }
+                }
+            }
+
+            public override void MarkAuthorityLostForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            {
+                if (AuthorityLostComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
+                var entities = AuthorityLostComponentGroup.GetEntityArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    // Call once except if flip-flopped back to starting state
+                    if (IsFirstAuthChange(Authority.NotAuthoritative, authoritiesChangedTags[i]))
+                    {
+                        activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
             }
@@ -227,15 +262,22 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             }
 
-            public override void InvokeOnAuthorityChangeCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnCommandResponseCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
             {
-                if (AuthoritiesChangedComponentGroup.IsEmptyIgnoreFilter)
+                // TODO UTY-542 Command Response handlers
+            }
+
+            public override void InvokeOnAuthorityGainedCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            {
+                if (AuthorityGainedComponentGroup.IsEmptyIgnoreFilter)
                 {
                     return;
                 }
 
-                var entities = AuthoritiesChangedComponentGroup.GetEntityArray();
-                var authChangeLists = AuthoritiesChangedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
+                var entities = AuthorityGainedComponentGroup.GetEntityArray();
+                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
+
+                // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -244,13 +286,77 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         continue;
                     }
 
-                    var authChanges = authChangeLists[i];
+                    if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
+                    {
+                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        {
+                            readerWriter.OnAuthorityChange(Authority.Authoritative);
+                        }
+                    }
+                }
+            }
+
+            public override void InvokeOnAuthorityLostCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            {
+                if (AuthorityLostComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var entities = AuthorityLostComponentGroup.GetEntityArray();
+                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSBlittableComponent>>();
+
+                // Call once on all entities unless they flip-flopped back into the state they started in
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
+                    {
+                        continue;
+                    }
+
+                    if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
+                    {
+                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        {
+                            readerWriter.OnAuthorityChange(Authority.NotAuthoritative);
+                        }
+                    }
+                }
+            }
+
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<SpatialOSBlittableComponent> changeOps)
+            {
+                foreach (var auth in changeOps.Changes)
+                {
+                    if (auth != Authority.AuthorityLossImminent) // not relevant
+                    {
+                        return auth == authToMatch;
+                    }
+                }
+                return false;
+            }
+
+            public override void InvokeOnAuthorityLossImminentCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            {
+                if (AuthorityLossImminentComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
+
+                // Call once on all entities
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
+                    {
+                        continue;
+                    }
                     foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
                     {
-                        foreach (var auth in authChanges.Changes)
-                        {
-                            readerWriter.OnAuthorityChange(auth);
-                        }
+                        readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
             }
