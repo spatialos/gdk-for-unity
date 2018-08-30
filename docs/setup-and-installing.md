@@ -87,7 +87,7 @@ Currently, you can try this out using the `Playground`.
 #### 2. Run the `Playground` locally using SpatialOS
 
 1. Open Unity and open the Unity project located at`UnityGDK\workers\unity`.
-<br>This causes Unity to generate a Visual Studio solution, `unity.sln`, within `UnityGDK/workers/unity`. It also runs `spatial auth login`, which may open browser window prompting you to login to your SpatialOS account. If this happens please login.
+<br>Unity will automatically download several required SpatialOS libraries. Unity may open a browser window prompting you to login to your SpatialOS account. If this happens, please login. This will only happen the first time you open you project, or if the version of the required libraries changes.
 
 1. In the same terminal window, run `spatial local launch`.
 <br>This launches a SpatialOS deployment locally. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
