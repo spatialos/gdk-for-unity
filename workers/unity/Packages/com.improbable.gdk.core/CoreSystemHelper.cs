@@ -14,12 +14,8 @@ namespace Improbable.Gdk.TransformSynchronization
             world.GetOrCreateManager<WorldCommandsCleanSystem>();
             world.GetOrCreateManager<WorldCommandsSendSystem>();
             world.GetOrCreateManager<CommandRequestTrackerSystem>();
-<<<<<<< HEAD
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
-            world.GetOrCreateManager<ReactiveComponentAdditionSystem>();
-=======
->>>>>>> 6ed01da8... Revert "Add ComponentUpdated when a component is added."
         }
     }
 }
