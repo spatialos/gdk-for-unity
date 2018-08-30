@@ -100,7 +100,7 @@ To send a `build_wall` command in a system, you need to inject `Builder.CommandS
 
 When a worker instance receives a command request, the command request is represented with reactive ECS components. 
 
-The Unity GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The Unity GDK cleans it up at the end of the tick.
+The Unity GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity: where `ComponentName` is the SpatialOS component the command is defined in, `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The Unity GDK cleans it up at the end of the tick.
 
 To respond to the request, use `ComponentName.CommandResponders.CommandName` for that given command. This contains a list of type `ComponentName.CommandName.Response`. Create and add a `ComponentName.CommandName.Response` object to this list and the GDK will send the response for you.
 
@@ -149,7 +149,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 Like requests, when an ECS entity receives a command response, the Unity GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
-`ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that originally was sent with the command. **This payload is null** when the command fails.
+`ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that was originally sent with the command. **This payload is null** when the command fails.
 
 The ECS entity that sent the request receives the response.
 
@@ -220,7 +220,7 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
     * Receiving a response - `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
 
-When a response is received, the Unity GDK attaches the corresponding responses ECS component to the ECS entity that originally sent the request. 
+When a response is received, the Unity GDK attaches an ECS component to the ECS entity that originally sent the request. The ECS component it attaches corresponds to the response it receives.
 
 Here's an example of creating a SpatialOS entity:
 

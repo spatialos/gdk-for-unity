@@ -6,7 +6,7 @@
 ## Component Data
 The [code generator](./code-generator.md) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-> Note that code generation is run when you open Unity or by pressing Improbable > Generate Code in the Unity menu.
+> Note that code generation runs when you open the Unity Editor or when you select Improbable > Generate Code from the Editor menu.
 
 ### Overview
 
