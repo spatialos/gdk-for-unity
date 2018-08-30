@@ -22,7 +22,9 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     The absolute path to the `spatial` binary, or the empty string if it doesn't exist.
         /// </summary>
-        public static string SpatialBinary => DiscoverSpatialLocation();
+        public static string SpatialBinary => DiscoverLocation("spatial");
+
+        public static string DotNetBinary => DiscoverLocation("dotnet");
 
         public const string ProductName = "SpatialOS for Unity";
 
@@ -82,7 +84,14 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static string DiscoverSpatialLocation()
+        /// <summary>
+        ///     Tries to find the full path to a binary in the system PATH.
+        ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
+        ///     don't always have that in the PATH provided to them.
+        /// </summary>
+        /// <param name="binarybaseName">The base name of the binary to find (without an extension).</param>
+        /// <returns></returns>
+        private static string DiscoverLocation(string binarybaseName)
         {
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
@@ -90,10 +99,14 @@ namespace Improbable.Gdk.Tools
                 return string.Empty;
             }
 
-            var fileName = "spatial";
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                fileName = Path.ChangeExtension(fileName, ".exe");
+                binarybaseName = Path.ChangeExtension(binarybaseName, ".exe");
+
+                if (binarybaseName == null)
+                {
+                    return string.Empty;
+                }
             }
 
             var splitPath = pathValue.Split(Path.PathSeparator);
@@ -104,7 +117,7 @@ namespace Improbable.Gdk.Tools
             }
 
             return splitPath
-                .Select(p => Path.Combine(p, fileName))
+                .Select(p => Path.Combine(p, binarybaseName))
                 .FirstOrDefault(File.Exists) ?? string.Empty;
         }
     }

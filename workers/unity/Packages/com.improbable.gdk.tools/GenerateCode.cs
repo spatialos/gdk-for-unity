@@ -81,7 +81,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var exitCode = RedirectedProcess.Run("dotnet", "run", "-p", $"\"{projectPath}\"", "--",
+                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary, "run", "-p", $"\"{projectPath}\"", "--",
                         $"--schema-path=\"{SchemaRootDir}\"",
                         $"--schema-path={SchemaStandardLibraryDir}",
                         $"--json-dir={ImprobableJsonDir}",

@@ -116,7 +116,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope($"Installing SpatialOS libraries, version {Common.CoreSdkVersion}..."))
                 {
-                    exitCode = RedirectedProcess.Run("dotnet", "run", "-p", $"\"{ProjectPath}\"", "--",
+                    exitCode = RedirectedProcess.Run(Common.DotNetBinary, "run", "-p", $"\"{ProjectPath}\"", "--",
                         Common.SpatialBinary, Common.CoreSdkVersion);
                     if (exitCode != 0)
                     {

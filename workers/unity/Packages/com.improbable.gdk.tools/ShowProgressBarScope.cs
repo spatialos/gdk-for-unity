@@ -4,7 +4,7 @@ using UnityEditor;
 namespace Improbable.Gdk.Tools
 {
     /// <summary>
-    /// Use to avoid boilerplate try/finally just to ensure the progress bar is properly cleared.
+    ///     Use to avoid boilerplate try/finally just to ensure the progress bar is properly cleared.
     /// </summary>
     public struct ShowProgressBarScope : IDisposable
     {
