@@ -18,41 +18,28 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Cmd
         {
-            public class RequestResponder :
-                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
-                    Cmd.ReceivedRequest,
-                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty,
-                    CommandResponders.Cmd
-                >
-            {
-                internal RequestResponder(
-                    EntityManager entityManager,
-                    Entity entity,
-                    Cmd.ReceivedRequest rawRequest
-                ) : base(
-                    entityManager,
-                    entity,
-                    rawRequest
-                )
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public Cmd.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
                 }
 
-                protected override void SendResponseInternal
-                (
-                    CommandResponders.Cmd componentData,
-                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload
-                )
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
-                    componentData.ResponsesToSend.Add(Cmd.CreateResponse(Request, payload));
+                    entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
+                        .Add(Cmd.CreateResponse(Request, payload));
                 }
 
-                protected override void SendResponseFailureInternal
-                (
-                    CommandResponders.Cmd componentData,
-                    string message
-                )
+                public void SendResponseFailure(string message)
                 {
-                    componentData.ResponsesToSend.Add(Cmd.CreateResponseFailure(Request, message));
+                    entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
+                        .Add(Cmd.CreateResponseFailure(Request, message));
                 }
             }
         }

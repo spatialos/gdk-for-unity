@@ -43,32 +43,5 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
                     .CommandListHandle);
             }
         }
-
-        [Test]
-        public void SendResponse_throws_exception_when_called_multiple_times_for_same_request()
-        {
-            using (var world = new World("test-world"))
-            {
-                var entityManager = world.GetOrCreateManager<EntityManager>();
-                var entity = entityManager.CreateEntity();
-
-                var commandResponder = new ComponentWithNoFieldsWithCommands.CommandResponders.Cmd();
-
-                commandResponder.CommandListHandle =
-                    ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Allocate(world);
-                commandResponder.ResponsesToSend = new List<ComponentWithNoFieldsWithCommands.Cmd.Response>();
-
-                entityManager.AddComponentData(entity, commandResponder);
-
-                var receivedRequest = new ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest();
-
-                var cmdRequestResponder =
-                    new ComponentWithNoFieldsWithCommands.Cmd.RequestResponder(entityManager, entity, receivedRequest);
-
-                cmdRequestResponder.SendResponse(new Empty());
-
-                Assert.Throws<CommandResponseSendFailure>(() => { cmdRequestResponder.SendResponse(new Empty()); });
-            }
-        }
     }
 }

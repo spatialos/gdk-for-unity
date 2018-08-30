@@ -18,81 +18,55 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public partial class FirstCommand
         {
-            public class RequestResponder :
-                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
-                    FirstCommand.ReceivedRequest,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse,
-                    CommandResponders.FirstCommand
-                >
-            {
-                internal RequestResponder(
-                    EntityManager entityManager,
-                    Entity entity,
-                    FirstCommand.ReceivedRequest rawRequest
-                ) : base(
-                    entityManager,
-                    entity,
-                    rawRequest
-                )
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public FirstCommand.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, FirstCommand.ReceivedRequest request)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
                 }
 
-                protected override void SendResponseInternal
-                (
-                    CommandResponders.FirstCommand componentData,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload
-                )
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload)
                 {
-                    componentData.ResponsesToSend.Add(FirstCommand.CreateResponse(Request, payload));
+                    entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
+                        .Add(FirstCommand.CreateResponse(Request, payload));
                 }
 
-                protected override void SendResponseFailureInternal
-                (
-                    CommandResponders.FirstCommand componentData,
-                    string message
-                )
+                public void SendResponseFailure(string message)
                 {
-                    componentData.ResponsesToSend.Add(FirstCommand.CreateResponseFailure(Request, message));
+                    entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
+                        .Add(FirstCommand.CreateResponseFailure(Request, message));
                 }
             }
         }
         public partial class SecondCommand
         {
-            public class RequestResponder :
-                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
-                    SecondCommand.ReceivedRequest,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse,
-                    CommandResponders.SecondCommand
-                >
-            {
-                internal RequestResponder(
-                    EntityManager entityManager,
-                    Entity entity,
-                    SecondCommand.ReceivedRequest rawRequest
-                ) : base(
-                    entityManager,
-                    entity,
-                    rawRequest
-                )
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public SecondCommand.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, SecondCommand.ReceivedRequest request)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
                 }
 
-                protected override void SendResponseInternal
-                (
-                    CommandResponders.SecondCommand componentData,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload
-                )
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload)
                 {
-                    componentData.ResponsesToSend.Add(SecondCommand.CreateResponse(Request, payload));
+                    entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
+                        .Add(SecondCommand.CreateResponse(Request, payload));
                 }
 
-                protected override void SendResponseFailureInternal
-                (
-                    CommandResponders.SecondCommand componentData,
-                    string message
-                )
+                public void SendResponseFailure(string message)
                 {
-                    componentData.ResponsesToSend.Add(SecondCommand.CreateResponseFailure(Request, message));
+                    entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
+                        .Add(SecondCommand.CreateResponseFailure(Request, message));
                 }
             }
         }

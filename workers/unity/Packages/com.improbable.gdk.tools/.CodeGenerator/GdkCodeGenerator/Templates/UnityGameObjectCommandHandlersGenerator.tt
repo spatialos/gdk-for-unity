@@ -28,41 +28,28 @@ namespace <#= qualifiedNamespace #>
 #>
         public partial class <#= commandDetails.CommandName #>
         {
-            public class RequestResponder :
-                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
-                    <#= rawRequestType #>,
-                    <#= responsePayloadType #>,
-                    CommandResponders.<#= commandDetails.CommandName #>
-                >
-            {
-                internal RequestResponder(
-                    EntityManager entityManager,
-                    Entity entity,
-                    <#= rawRequestType #> rawRequest
-                ) : base(
-                    entityManager,
-                    entity,
-                    rawRequest
-                )
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public <#= rawRequestType #> Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
                 }
 
-                protected override void SendResponseInternal
-                (
-                    CommandResponders.<#= commandDetails.CommandName #> componentData,
-                    <#= responsePayloadType #> payload
-                )
+                public void SendResponse(<#= responsePayloadType #> payload)
                 {
-                    componentData.ResponsesToSend.Add(<#= commandDetails.CommandName #>.CreateResponse(Request, payload));
+                    entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
+                        .Add(<#= commandDetails.CommandName #>.CreateResponse(Request, payload));
                 }
 
-                protected override void SendResponseFailureInternal
-                (
-                    CommandResponders.<#= commandDetails.CommandName #> componentData,
-                    string message
-                )
+                public void SendResponseFailure(string message)
                 {
-                    componentData.ResponsesToSend.Add(<#= commandDetails.CommandName #>.CreateResponseFailure(Request, message));
+                    entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
+                        .Add(<#= commandDetails.CommandName #>.CreateResponseFailure(Request, message));
                 }
             }
         }
