@@ -30,6 +30,7 @@ namespace Improbable.Gdk.Tools
 
         private const string PackagesDir = "Packages";
         private const string UsrLocalBinDir = "/usr/local/bin";
+        private const string UsrLocalShareDir = "/usr/local/share";
 
 
         static Common()
@@ -96,6 +97,7 @@ namespace Improbable.Gdk.Tools
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
             {
+                Debug.LogError($"PATH has not been specified in the system environment.");
                 return string.Empty;
             }
 
@@ -111,14 +113,29 @@ namespace Improbable.Gdk.Tools
 
             var splitPath = pathValue.Split(Path.PathSeparator);
 
-            if (Application.platform == RuntimePlatform.OSXEditor && !splitPath.Contains(UsrLocalBinDir))
+            if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                splitPath = splitPath.Union(new[] { UsrLocalBinDir }).ToArray();
+                if (!splitPath.Contains(UsrLocalBinDir))
+                {
+                    var usrLocalBinPaths = new[] { UsrLocalBinDir, Path.Combine(UsrLocalBinDir, binarybaseName) };
+                    splitPath = splitPath.Union(usrLocalBinPaths).ToArray();
+                }
+
+                if (!splitPath.Contains(UsrLocalShareDir))
+                {
+                    var usrLocalSharePaths = new[] { UsrLocalShareDir, Path.Combine(UsrLocalShareDir, binarybaseName) };
+                    splitPath = splitPath.Union(usrLocalSharePaths).ToArray();
+                }
             }
 
-            return splitPath
-                .Select(p => Path.Combine(p, binarybaseName))
-                .FirstOrDefault(File.Exists) ?? string.Empty;
+            var location = splitPath.Select(p => Path.Combine(p, binarybaseName)).FirstOrDefault(File.Exists);
+            if (location != null)
+            {
+                return location;
+            }
+
+            Debug.LogError($"Could not discover location for {binarybaseName}");
+            return string.Empty;
         }
     }
 }

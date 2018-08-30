@@ -105,7 +105,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Downloads and extracts the Core Sdk and associated libraries and tools.
         /// </summary>
-        internal static DownloadResult Download()
+        private static DownloadResult Download()
         {
             RemoveMarkerFile();
 
