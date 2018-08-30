@@ -655,26 +655,30 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     {
                         var requests = commandSenderDataArray[j].RequestsToSend;
                         var count = requests.Count;
-                        if (count > 0)
+
+                        // Skip processing requests if that are none.
+                        if (count == 0)
                         {
-                            for (var k = 0; k < count; k++)
-                            {
-                                var wrappedCommandRequest = requests[k];
-
-                                var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
-                                global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
-
-                                var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
-                                    new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
-                                    wrappedCommandRequest.TimeoutMillis,
-                                    wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
-
-                                FirstCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                    new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
-                            }
-
-                            requests.Clear();
+                            continue;
                         }
+
+                        for (var k = 0; k < count; k++)
+                        {
+                            var wrappedCommandRequest = requests[k];
+
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
+
+                            var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
+                                new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                                wrappedCommandRequest.TimeoutMillis,
+                                wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
+
+                            FirstCommandStorage.CommandRequestsInFlight[requestId.Id] =
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
+                        }
+
+                        requests.Clear();
                     }
                 }
                 if (!commandComponentGroups[1].IsEmptyIgnoreFilter)
@@ -685,7 +689,15 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     for (var j = 0; j < commandResponderDataArray.Length; j++)
                     {
                         var responses = commandResponderDataArray[j].ResponsesToSend;
-                        for (var k = 0; k < responses.Count; k++)
+                        var count = responses.Count;
+
+                        // Skip processing responses if that are none.
+                        if (count == 0)
+                        {
+                            continue;
+                        }
+
+                        for (var k = 0; k < count; k++)
                         {
                             var wrappedCommandResponse = responses[k];
                             var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
@@ -716,26 +728,30 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     {
                         var requests = commandSenderDataArray[j].RequestsToSend;
                         var count = requests.Count;
-                        if (count > 0)
+
+                        // Skip processing requests if that are none.
+                        if (count == 0)
                         {
-                            for (var k = 0; k < count; k++)
-                            {
-                                var wrappedCommandRequest = requests[k];
-
-                                var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 2);
-                                global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
-
-                                var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
-                                    new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
-                                    wrappedCommandRequest.TimeoutMillis,
-                                    wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
-
-                                SecondCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                    new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
-                            }
-
-                            requests.Clear();
+                            continue;
                         }
+
+                        for (var k = 0; k < count; k++)
+                        {
+                            var wrappedCommandRequest = requests[k];
+
+                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 2);
+                            global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
+
+                            var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
+                                new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                                wrappedCommandRequest.TimeoutMillis,
+                                wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
+
+                            SecondCommandStorage.CommandRequestsInFlight[requestId.Id] =
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
+                        }
+
+                        requests.Clear();
                     }
                 }
                 if (!commandComponentGroups[3].IsEmptyIgnoreFilter)
@@ -746,7 +762,15 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     for (var j = 0; j < commandResponderDataArray.Length; j++)
                     {
                         var responses = commandResponderDataArray[j].ResponsesToSend;
-                        for (var k = 0; k < responses.Count; k++)
+                        var count = responses.Count;
+
+                        // Skip processing responses if that are none.
+                        if (count == 0)
+                        {
+                            continue;
+                        }
+
+                        for (var k = 0; k < count; k++)
                         {
                             var wrappedCommandResponse = responses[k];
                             var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
