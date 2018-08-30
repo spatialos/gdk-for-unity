@@ -12,10 +12,12 @@ namespace Playground.MonoBehaviours
         private void OnEnable()
         {
             rotationBehaviour = GetComponent<RotationBehaviour>();
-            if (requestHandler != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-            {
-                requestHandler.OnSpinnerToggleRotationRequest += OnSpinnerToggleRotationRequest;
-            }
+            requestHandler.OnSpinnerToggleRotationRequest += OnSpinnerToggleRotationRequest;
+        }
+
+        private void OnDisable()
+        {
+            requestHandler.OnSpinnerToggleRotationRequest -= OnSpinnerToggleRotationRequest;
         }
 
         private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ReceivedRequest request)

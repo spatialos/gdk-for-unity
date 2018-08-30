@@ -14,10 +14,7 @@ namespace Playground.MonoBehaviours
 
         private void OnEnable()
         {
-            if (reader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-            {
-                ownEntityId = GetComponent<SpatialOSComponent>().SpatialEntityId;
-            }
+            ownEntityId = GetComponent<SpatialOSComponent>().SpatialEntityId;
         }
 
         private void Update()
