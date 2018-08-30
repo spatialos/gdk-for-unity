@@ -5,7 +5,6 @@ namespace Improbable.Gdk.CodeGenerator
     public class UnityComponentDetails
     {
         public string ComponentName => Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);
-        public string TypeName => $"SpatialOS{ComponentName}";
         public int ComponentId => componentDefinition.Id;
         public bool IsBlittable => componentDefinition.IsBlittable;
 

@@ -7,6 +7,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -34,7 +35,7 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+            public interface Reader : IReader<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
@@ -48,7 +49,7 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+            public interface Writer : IWriter<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
 <# foreach (var eventDetails in eventDetailsList) { #>
                 void Send<#= eventDetails.EventName #>( <#= eventDetails.FqnPayloadType #> payload);
@@ -56,7 +57,7 @@ namespace <#= qualifiedNamespace #>
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+                ReaderWriterBase<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -73,13 +74,13 @@ namespace <#= qualifiedNamespace #>
                 }
 <# } #>
 
-                protected override void TriggerFieldCallbacks(<#= componentDetails.TypeName#>.Update update)
+                protected override void TriggerFieldCallbacks(<#= componentNamespace #>.Update update)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
                 }
-                protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, ref <#= componentDetails.TypeName#> data)
+                protected override void ApplyUpdate(<#= componentNamespace #>.Update update, ref <#= componentNamespace #>.Component data)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.PascalCaseName #>.HasValue)

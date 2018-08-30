@@ -6,6 +6,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -24,36 +25,36 @@ namespace <#= qualifiedNamespace #>
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentAdded<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentAdded<<#= componentNamespace #>.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentRemoved<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentRemoved<<#= componentNamespace #>.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthorityGainedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<Authoritative<<#= componentDetails.TypeName #>>>()
+                ComponentType.ReadOnly<AuthorityChanges<<#= componentNamespace #>.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<Authoritative<<#= componentNamespace #>.Component>>()
             };
 
             public override ComponentType[] AuthorityLostComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<NotAuthoritative<<#= componentDetails.TypeName #>>>()
+                ComponentType.ReadOnly<AuthorityChanges<<#= componentNamespace #>.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<NotAuthoritative<<#= componentNamespace #>.Component>>()
             };
 
             public override ComponentType[] AuthorityLossImminentComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<<#= componentDetails.TypeName #>>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<AuthorityLossImminent<<#= componentDetails.TypeName #>>>()
+                ComponentType.ReadOnly<AuthorityChanges<<#= componentNamespace #>.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<AuthorityLossImminent<<#= componentNamespace #>.Component>>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
 <# if (fieldDetailsList.Count > 0) { #>
-                ComponentType.ReadOnly<<#= componentDetails.TypeName #>.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<<#= componentNamespace #>.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
 <# } #>
             };
 
@@ -114,7 +115,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -134,7 +135,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -156,7 +157,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<<#= componentDetails.TypeName #>.ReceivedUpdates>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<<#= componentNamespace #>.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -248,7 +249,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -277,7 +278,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentDetails.TypeName #>>>();
+                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -298,7 +299,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<<#= componentDetails.TypeName #>> changeOps)
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<<#= componentNamespace #>.Component> changeOps)
             {
                 foreach (var auth in changeOps.Changes)
                 {

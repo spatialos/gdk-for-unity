@@ -4,6 +4,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -12,63 +13,67 @@ using Improbable.Gdk.Core;
 
 namespace <#= qualifiedNamespace #>
 {
-    public struct <#= componentDetails.TypeName #> : IComponentData, ISpatialComponentData
+    public partial class <#= componentDetails.ComponentName  #>
     {
-        public uint ComponentId => <#= componentDetails.ComponentId #>;
+        public struct Component : IComponentData, ISpatialComponentData
+        {
+            public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-        public BlittableBool DirtyBit { get; set; }
+            public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
-        private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
 
-        public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
-        {
-            get => <#= fieldDetails.CamelCaseName #>;
-            set
+            private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
+
+            public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
             {
-                DirtyBit = true;
-                <#= fieldDetails.CamelCaseName #> = value;
+                get => <#= fieldDetails.CamelCaseName #>;
+                set
+                {
+                    DirtyBit = true;
+                    <#= fieldDetails.CamelCaseName #> = value;
+                }
             }
-        }
 <# } else { #>
 
-        internal uint <#= fieldDetails.CamelCaseName #>Handle;
+            internal uint <#= fieldDetails.CamelCaseName #>Handle;
 
-        public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
-        {
-            get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
-            set
+            public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
             {
-                DirtyBit = true;
-                <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+                get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
+                set
+                {
+                    DirtyBit = true;
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+                }
             }
-        }
 <# } #>
 <# } #>
 
 <# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
-        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
 <# foreach(var fieldDetails in fieldDetailsList) {
     var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
 #>
-            <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
+                <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
 <# } #>
         )
-        {
-            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
-            var obj = schemaComponentData.GetFields();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
             {
-                <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
+                var obj = schemaComponentData.GetFields();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                }
+<# } #>
+                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
 <# } #>
-            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
         }
-<# } #>
 
         public static class Serialization
         {
-            public static void Serialize(<#= componentDetails.TypeName #> component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaObject obj)
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
@@ -77,9 +82,9 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public static <#= componentDetails.TypeName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new <#= componentDetails.TypeName #>();
+                var component = new <#= componentNamespace #>.Component();
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
@@ -92,9 +97,9 @@ namespace <#= qualifiedNamespace #>
                 return component;
             }
 
-            public static <#= componentDetails.TypeName #>.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref <#= componentDetails.TypeName #> component)
+            public static <#= componentNamespace #>.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref <#= componentNamespace #>.Component component)
             {
-                var update = new <#= componentDetails.TypeName #>.Update();
+                var update = new <#= componentNamespace #>.Update();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "update." + fieldDetails.PascalCaseName, "obj", 5) #>
