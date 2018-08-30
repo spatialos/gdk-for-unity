@@ -49,7 +49,16 @@ namespace Improbable.Gdk.Tools
         public static void Launch()
         {
             BuildConfig();
-            var processInfo = new ProcessStartInfo("spatial", "local launch")
+
+            var command = Common.SpatialBinary;
+            var commandArgs = "local launch";
+            if(Application.platform == RuntimePlatform.OSXEditor)
+            {
+                command = "osascript";
+                commandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} local launch\"\nend tell'";
+            }
+
+            var processInfo = new ProcessStartInfo(command, commandArgs)
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
@@ -60,6 +69,7 @@ namespace Improbable.Gdk.Tools
 
             if (process == null)
             {
+                Debug.LogError("Failed to start SpatialOS locally.");
                 return;
             }
 
