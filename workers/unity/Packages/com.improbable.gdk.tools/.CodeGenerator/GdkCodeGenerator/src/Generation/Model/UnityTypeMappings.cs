@@ -43,23 +43,5 @@ namespace Improbable.Gdk.CodeGenerator
                 { BuiltInTypeConstants.builtInVector3d, "global::Generated.Improbable.Vector3d" },
                 { BuiltInTypeConstants.builtInVector3f, "global::Generated.Improbable.Vector3f" }
             };
-
-        public static readonly HashSet<string> SchemaTypesThatRequireNoConversion = new HashSet<string>
-        {
-            BuiltInTypeConstants.builtInDouble,
-            BuiltInTypeConstants.builtInFloat,
-            BuiltInTypeConstants.builtInInt32,
-            BuiltInTypeConstants.builtInInt64,
-            BuiltInTypeConstants.builtInUint32,
-            BuiltInTypeConstants.builtInUint64,
-            BuiltInTypeConstants.builtInSint32,
-            BuiltInTypeConstants.builtInSint64,
-            BuiltInTypeConstants.builtInFixed32,
-            BuiltInTypeConstants.builtInFixed64,
-            BuiltInTypeConstants.builtInSfixed32,
-            BuiltInTypeConstants.builtInSfixed64,
-            BuiltInTypeConstants.builtInString,
-            BuiltInTypeConstants.builtInBool
-        };
     }
 }

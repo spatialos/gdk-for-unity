@@ -7,60 +7,69 @@ using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.Gdk.Tests
 {
-    public struct SpatialOSNestedComponent : IComponentData, ISpatialComponentData
+    public partial class NestedComponent
     {
-        public uint ComponentId => 20152;
-
-        public BlittableBool DirtyBit { get; set; }
-        private global::Generated.Improbable.Gdk.Tests.TypeName nestedType;
-
-        public global::Generated.Improbable.Gdk.Tests.TypeName NestedType
+        public struct Component : IComponentData, ISpatialComponentData
         {
-            get => nestedType;
-            set
+            public uint ComponentId => 20152;
+
+            public BlittableBool DirtyBit { get; set; }
+
+            private global::Generated.Improbable.Gdk.Tests.TypeName nestedType;
+
+            public global::Generated.Improbable.Gdk.Tests.TypeName NestedType
             {
-                DirtyBit = true;
-                nestedType = value;
+                get => nestedType;
+                set
+                {
+                    DirtyBit = true;
+                    nestedType = value;
+                }
+            }
+
+            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+                global::Generated.Improbable.Gdk.Tests.TypeName nestedType
+        )
+            {
+                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(20152);
+                var obj = schemaComponentData.GetFields();
+                {
+                    global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Serialize(nestedType, obj.AddObject(1));
+                }
+                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
         }
-
-        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
-            global::Generated.Improbable.Gdk.Tests.TypeName nestedType
-        )
-        {
-            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(20152);
-            var obj = schemaComponentData.GetFields();
-
-            global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Serialize(nestedType, obj.AddObject(1));
-
-            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
-        }
-
 
         public static class Serialization
         {
-            public static void Serialize(SpatialOSNestedComponent component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(Generated.Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.Core.SchemaObject obj)
             {
-                global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
+                {
+                    global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
+                }
             }
 
-            public static SpatialOSNestedComponent Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Generated.Improbable.Gdk.Tests.NestedComponent.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new SpatialOSNestedComponent();
+                var component = new Generated.Improbable.Gdk.Tests.NestedComponent.Component();
 
-
-                component.NestedType = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
+                {
+                    component.NestedType = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
+                }
                 return component;
             }
 
-            public static SpatialOSNestedComponent.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref SpatialOSNestedComponent component)
+            public static Generated.Improbable.Gdk.Tests.NestedComponent.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component component)
             {
-                var update = new SpatialOSNestedComponent.Update();
-                if (obj.GetObjectCount(1) == 1)
+                var update = new Generated.Improbable.Gdk.Tests.NestedComponent.Update();
                 {
-                    var value = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
-                    update.NestedType = new Option<global::Generated.Improbable.Gdk.Tests.TypeName>(value);
-                    component.NestedType = value;
+                    if (obj.GetObjectCount(1) == 1)
+                    {
+                        var value = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
+                        component.NestedType = value;
+                        update.NestedType = new global::Improbable.Gdk.Core.Option<global::Generated.Improbable.Gdk.Tests.TypeName>(value);
+                    }
+                    
                 }
                 return update;
             }

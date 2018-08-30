@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSConnection.Update>> Storage = new Dictionary<uint, List<SpatialOSConnection.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSConnection.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSConnection.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSConnection.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

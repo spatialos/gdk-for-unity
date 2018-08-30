@@ -10,7 +10,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
             public class FirstCommand : CommandStorage
             {

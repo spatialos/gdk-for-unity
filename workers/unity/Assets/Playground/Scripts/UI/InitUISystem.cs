@@ -22,10 +22,10 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entites;
-            [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
-            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<Launcher.Component> Launcher;
+            [ReadOnly] public ComponentDataArray<Score.Component> Score;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInput;
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthority;
         }
 
         [Inject] private Data data;

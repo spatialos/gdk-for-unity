@@ -11,13 +11,14 @@ namespace Improbable
     {
         private static void Main(string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length != 2)
             {
-                Console.Error.WriteLine("Specify the version of the CoreSdk to download.");
+                Console.Error.WriteLine("Usage: <path_to_spatial> <coresdk_version>");
                 Environment.Exit(1);
             }
 
-            var coreSdkVersion = args[0];
+            var spatialPath = args[0];
+            var coreSdkVersion = args[1];
             var nativeDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Core");
             var managedDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Sdk");
             var tempPath = Path.GetFullPath($"./build/CoreSdk/{coreSdkVersion}");
@@ -42,7 +43,7 @@ namespace Improbable
                     Directory.CreateDirectory(tempPath);
                 }
 
-                DownloadPackages(packages, coreSdkVersion);
+                DownloadPackages(packages, spatialPath, coreSdkVersion);
 
                 ExtractPackages(packages);
             }
@@ -75,20 +76,15 @@ namespace Improbable
             }
         }
 
-        private static void DownloadPackages(IEnumerable<Package> packages, string coreSdkVersion)
+        private static void DownloadPackages(IEnumerable<Package> packages, string spatialPath, string coreSdkVersion)
         {
-            var toDownload = packages.Where(p => !File.Exists(p.SourceFile)).ToArray();
-            if (!toDownload.Any())
-            {
-                Console.Out.WriteLine("All packages are up to date. Skipping download.");
-                return;
-            }
-
-            foreach (var package in toDownload)
+            foreach (var package in packages)
             {
                 Console.Out.WriteLine($"Downloading {package.Name} to {package.SourceFile}...");
 
-                Common.RunRedirected("spatial", "package", "retrieve", package.Type, package.Name, coreSdkVersion, package.SourceFile);
+                File.Delete(package.SourceFile);
+
+                Common.RunRedirected(spatialPath, "--json_output", "package", "retrieve", package.Type, package.Name, coreSdkVersion, package.SourceFile);
 
                 try
                 {

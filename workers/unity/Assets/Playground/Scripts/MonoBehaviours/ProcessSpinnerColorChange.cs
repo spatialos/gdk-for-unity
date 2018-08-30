@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Playground;
@@ -30,11 +30,8 @@ public class ProcessSpinnerColorChange : MonoBehaviour
 
     private void OnEnable()
     {
-        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-        {
-            collisionsReader.OnPlayerCollided += HandleCollisionEvent;
-            colorReader.ColorUpdated += HandleColorChange;
-        }
+        collisionsReader.OnPlayerCollided += HandleCollisionEvent;
+        colorReader.ColorUpdated += HandleColorChange;
     }
 
     private void Awake()
@@ -48,11 +45,8 @@ public class ProcessSpinnerColorChange : MonoBehaviour
 
     private void OnDisable()
     {
-        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-        {
-            collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
-            colorReader.ColorUpdated -= HandleColorChange;
-        }
+        collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
+        colorReader.ColorUpdated -= HandleColorChange;
     }
 
     private void HandleCollisionEvent(Empty empty)

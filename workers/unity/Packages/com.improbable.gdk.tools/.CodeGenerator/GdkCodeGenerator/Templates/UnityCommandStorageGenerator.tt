@@ -15,13 +15,13 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
 <# foreach (var commandDetails in commandDetailsList) { #>
             public class <#= commandDetails.CommandName #> : CommandStorage
             {
-                public Dictionary<long, CommandRequestStore<<#= commandDetails.RequestType #>>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<<#= commandDetails.RequestType #>>>();
+                public Dictionary<long, CommandRequestStore<<#= commandDetails.FqnRequestType #>>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<<#= commandDetails.FqnRequestType #>>>();
             }
 <# } #>
         }

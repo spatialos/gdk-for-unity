@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -8,6 +8,6 @@
     <DefineSymbols Condition="'$(TargetFramework)'!='netstandard2.0'">$(DefineSymbols);FEATURE_APPDOMAINS</DefineSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.CodeDom" Version="4.5.0" Condition="'$(TargetFramework)'=='netstandard2.0'" />
+    <PackageReference Include="System.CodeDom" Version="4.4.0" Condition="'$(TargetFramework)'=='netstandard2.0'" />
   </ItemGroup>
 </Project>

@@ -35,10 +35,10 @@ namespace Playground
             public EntityArray Entities;
 
             // Gets updated through PostUpdate
-            [ReadOnly] public ComponentDataArray<SpatialOSLaunchable> Launchable;
+            [ReadOnly] public ComponentDataArray<Launchable.Component> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
             public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<Launchable.Component>> DenotesAuthority;
         }
 
         [Inject] private Data data;
@@ -55,7 +55,7 @@ namespace Playground
                 var collision = data.Collision[i];
                 var sender = data.Sender[i];
 
-                var otherLaunchable = EntityManager.GetComponentData<SpatialOSLaunchable>(collision.OtherEntity);
+                var otherLaunchable = EntityManager.GetComponentData<Launchable.Component>(collision.OtherEntity);
                 var ourOwner = launchable.MostRecentLauncher;
                 var otherOwner = otherLaunchable.MostRecentLauncher;
 

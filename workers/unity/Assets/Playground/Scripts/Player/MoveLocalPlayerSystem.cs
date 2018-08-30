@@ -1,9 +1,9 @@
-using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Transform = Generated.Improbable.Transform.Transform;
 
 #region Diagnostic control
 
@@ -28,8 +28,8 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entity;
-            [ReadOnly] public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
         }
 
@@ -38,8 +38,8 @@ namespace Playground
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<Speed> SpeedData;
-            [ReadOnly] public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
         }
 
         [Inject] private NewPlayerData newPlayerData;

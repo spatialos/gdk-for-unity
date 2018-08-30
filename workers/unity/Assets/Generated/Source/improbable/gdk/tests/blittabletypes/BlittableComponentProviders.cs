@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSBlittableComponent.Update>> Storage = new Dictionary<uint, List<SpatialOSBlittableComponent.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSBlittableComponent.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSBlittableComponent.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSBlittableComponent.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

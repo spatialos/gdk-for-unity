@@ -78,7 +78,7 @@ namespace Playground
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
 
-            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(Launchable.Component)))
             {
                 return;
             }

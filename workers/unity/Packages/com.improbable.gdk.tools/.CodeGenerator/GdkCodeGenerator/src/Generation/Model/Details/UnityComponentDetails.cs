@@ -4,19 +4,15 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityComponentDetails
     {
-        public string ComponentName;
-        public string TypeName;
-        public string CamelCaseTypeName;
-        public int ComponentId;
-        public bool IsBlittable;
+        public string ComponentName => Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);
+        public int ComponentId => componentDefinition.Id;
+        public bool IsBlittable => componentDefinition.IsBlittable;
+
+        private UnityComponentDefinition componentDefinition;
 
         public UnityComponentDetails(UnityComponentDefinition componentDefinition)
         {
-            ComponentName = Formatting.QualifiedNameToCapitalisedCamelCase(componentDefinition.Name);
-            TypeName = "SpatialOS" + ComponentName;
-            CamelCaseTypeName = "spatialOS" + ComponentName;
-            ComponentId = componentDefinition.Id;
-            IsBlittable = componentDefinition.IsBlittable;
+            this.componentDefinition = componentDefinition;
         }
     }
 }

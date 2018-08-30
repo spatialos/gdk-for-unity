@@ -22,8 +22,8 @@ namespace Playground
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<SpatialOSCubeTargetVelocity> Cube;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSCubeTargetVelocity>> DenoteAuthority;
+            public ComponentDataArray<CubeTargetVelocity.Component> Cube;
+            [ReadOnly] public ComponentDataArray<Authoritative<CubeTargetVelocity.Component>> DenoteAuthority;
         }
 
         [Inject] private Data data;

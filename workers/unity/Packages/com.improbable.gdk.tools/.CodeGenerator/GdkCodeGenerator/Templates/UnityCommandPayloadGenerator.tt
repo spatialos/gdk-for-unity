@@ -25,13 +25,13 @@ namespace <#= qualifiedNamespace #>
             public struct Request
             {
                 public EntityId TargetEntityId { get; internal set; }
-                public <#= commandDetails.RequestType #> Payload { get; internal set; }
+                public <#= commandDetails.FqnRequestType #> Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
-                <#= commandDetails.RequestType #> request,
+                <#= commandDetails.FqnRequestType #> request,
                 uint? timeoutMillis = null,
                 bool allowShortCircuiting = false)
             {
@@ -49,12 +49,12 @@ namespace <#= qualifiedNamespace #>
                 public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
-                public <#= commandDetails.RequestType #> Payload { get; }
+                public <#= commandDetails.FqnRequestType #> Payload { get; }
 
                 public ReceivedRequest(long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
-                    <#= commandDetails.RequestType #> request)
+                    <#= commandDetails.FqnRequestType #> request)
                 {
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
@@ -70,11 +70,11 @@ namespace <#= qualifiedNamespace #>
             public struct Response
             {
                 public long RequestId { get; internal set; }
-                public <#= commandDetails.ResponseType #>? Payload { get; internal set; }
+                public <#= commandDetails.FqnResponseType #>? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
 
-            public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.ResponseType #> payload)
+            public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.FqnResponseType #> payload)
             {
                 return new Response
                 {
@@ -99,14 +99,14 @@ namespace <#= qualifiedNamespace #>
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
-                public <#= commandDetails.ResponseType #>? ResponsePayload { get; }
-                public <#= commandDetails.RequestType #> RequestPayload { get; }
+                public <#= commandDetails.FqnResponseType #>? ResponsePayload { get; }
+                public <#= commandDetails.FqnRequestType #> RequestPayload { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
-                    <#= commandDetails.ResponseType #>? response,
-                    <#= commandDetails.RequestType #> request)
+                    <#= commandDetails.FqnResponseType #>? response,
+                    <#= commandDetails.FqnRequestType #> request)
                 {
                     EntityId = entityId;
                     Message = message;

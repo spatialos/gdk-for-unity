@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Legacy.BuildSystem.Configuration;
-using Improbable.Gdk.Legacy.BuildSystem.Util;
+using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
 
@@ -63,8 +63,8 @@ namespace Improbable.Gdk.Legacy.BuildSystem
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
-                Debug.Log("Generating build configuration");
-                SpatialCommands.GenerateBuildConfiguration();
+                LocalLaunch.BuildConfig();
+
                 foreach (var platform in platforms)
                 {
                     WorkerBuilder.BuildWorkerForEnvironment(platform, environment);

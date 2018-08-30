@@ -10,7 +10,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
             public class FirstCommand : CommandStorage
             {

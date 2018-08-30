@@ -7,39 +7,39 @@ using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
-    public struct SpatialOSConnection : IComponentData, ISpatialComponentData
+    public partial class Connection
     {
-        public uint ComponentId => 1105;
-
-        public BlittableBool DirtyBit { get; set; }
-
-        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
-        )
+        public struct Component : IComponentData, ISpatialComponentData
         {
-            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1105);
-            var obj = schemaComponentData.GetFields();
+            public uint ComponentId => 1105;
 
+            public BlittableBool DirtyBit { get; set; }
 
-            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+        )
+            {
+                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1105);
+                var obj = schemaComponentData.GetFields();
+                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+            }
         }
-
 
         public static class Serialization
         {
-            public static void Serialize(SpatialOSConnection component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component, global::Improbable.Worker.Core.SchemaObject obj)
             {
             }
 
-            public static SpatialOSConnection Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new SpatialOSConnection();
+                var component = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component();
 
                 return component;
             }
 
-            public static SpatialOSConnection.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref SpatialOSConnection component)
+            public static Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component)
             {
-                var update = new SpatialOSConnection.Update();
+                var update = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update();
                 return update;
             }
         }

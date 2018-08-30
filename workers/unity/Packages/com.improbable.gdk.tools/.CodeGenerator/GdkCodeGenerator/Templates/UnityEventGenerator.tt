@@ -21,10 +21,10 @@ namespace <#= qualifiedNamespace #>
             {
                 internal uint handle;
 
-                public List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Events
+                public List<<#= eventDetails.FqnPayloadType #>> Events
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Get(handle);
-                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(handle, value);
+                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
                 }
             }
 
@@ -38,10 +38,10 @@ namespace <#= qualifiedNamespace #>
             {
                 internal uint handle;
 
-                public List<<#= eventDetails.FullyQualifiedPayloadTypeName #>> Events
+                public List<<#= eventDetails.FqnPayloadType #>> Events
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Get(handle);
-                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.PascalCaseName #>Provider.Set(handle, value);
+                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
                 }
             }
 

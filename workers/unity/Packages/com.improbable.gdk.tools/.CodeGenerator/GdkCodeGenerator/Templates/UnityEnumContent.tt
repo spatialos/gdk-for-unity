@@ -4,7 +4,7 @@
     var enumDetails = GetEnumDetails();
 #>
 
-public enum <#=  enumDetails.PascalCaseName #> : uint
+public enum <#=  enumDetails.TypeName #> : uint
 {
 <# foreach (var valueDefinition in enumDefinition.valueDefinitions) { #>
     <#= valueDefinition.name #> = <#= valueDefinition.value #>,

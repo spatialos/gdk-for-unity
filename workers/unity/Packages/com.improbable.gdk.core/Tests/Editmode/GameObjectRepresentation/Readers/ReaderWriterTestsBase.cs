@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         {
             world = new World("test-world");
             EntityManager = world.GetOrCreateManager<EntityManager>();
-            Entity = EntityManager.CreateEntity(typeof(SpatialOSBlittableComponent));
+            Entity = EntityManager.CreateEntity(typeof(BlittableComponent.Component));
             ReaderWriterInternal = new BlittableComponent.Requirables.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
             ReaderPublic = ReaderWriterInternal;
             WriterPublic = ReaderWriterInternal;

@@ -20,17 +20,17 @@ namespace Playground
         public struct PlayerDataLauncher
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
-            [ReadOnly] public ComponentDataArray<SpatialOSLauncher.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
+            [ReadOnly] public ComponentDataArray<Launcher.Component> Launcher;
+            [ReadOnly] public ComponentDataArray<Launcher.ReceivedUpdates> Updates;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerAuth;
         }
 
         public struct PlayerDataScore
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
-            [ReadOnly] public ComponentDataArray<SpatialOSScore.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerAuth;
+            [ReadOnly] public ComponentDataArray<Score.Component> Score;
+            [ReadOnly] public ComponentDataArray<Score.ReceivedUpdates> Updates;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerAuth;
         }
 
         [Inject] private PlayerDataLauncher playerDataLauncher;

@@ -48,7 +48,7 @@ namespace Playground
                     || Math.Abs(oldPlayerInput.Vertical - input.z) > MinInputChange
                     || oldPlayerInput.Running != isShiftDown)
                 {
-                    var newPlayerInput = new SpatialOSPlayerInput
+                    var newPlayerInput = new PlayerInput.Component
                     {
                         Horizontal = input.x,
                         Vertical = input.z,

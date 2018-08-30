@@ -22,36 +22,36 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
         [Test]
         public void Authority_returns_NotAuthoritative_when_NotAuthoritative_component_is_present()
         {
-            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
+            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<BlittableComponent.Component>));
             Assert.AreEqual(Authority.NotAuthoritative, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_returns_Authoritative_when_Authoritative_component_is_present()
         {
-            EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
+            EntityManager.AddComponent(Entity, typeof(Authoritative<BlittableComponent.Component>));
             Assert.AreEqual(Authority.Authoritative, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_returns_AuthorityLossImminent_when_AuthorityLossImminent_component_is_present()
         {
-            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
+            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<BlittableComponent.Component>));
             Assert.AreEqual(Authority.AuthorityLossImminent, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_returns_AuthorityLossImminent_when_Authoritative_And_AuthorityLossImminent_components_are_present()
         {
-            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<SpatialOSBlittableComponent>));
-            EntityManager.AddComponent(Entity, typeof(Authoritative<SpatialOSBlittableComponent>));
+            EntityManager.AddComponent(Entity, typeof(AuthorityLossImminent<BlittableComponent.Component>));
+            EntityManager.AddComponent(Entity, typeof(Authoritative<BlittableComponent.Component>));
             Assert.AreEqual(Authority.AuthorityLossImminent, ReaderPublic.Authority);
         }
 
         [Test]
         public void Authority_can_be_NotAuthoritative_if_another_component_is_authoritative()
         {
-            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<SpatialOSBlittableComponent>));
+            EntityManager.AddComponent(Entity, typeof(NotAuthoritative<BlittableComponent.Component>));
             EntityManager.AddComponent(Entity, typeof(Authoritative<SomeOtherComponent>));
             Assert.AreEqual(Authority.NotAuthoritative, ReaderPublic.Authority);
         }
