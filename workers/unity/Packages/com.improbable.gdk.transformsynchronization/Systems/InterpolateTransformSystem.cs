@@ -10,7 +10,6 @@ namespace Improbable.Gdk.TransformSynchronization
     public class InterpolateTransformSystem : ComponentSystem
     {
         private const uint TargetTickOffset = 2;
-        private const uint MaxBufferSize = 4;
 
         private TickSystem tickSystem;
         private long serverTickOffset;
@@ -21,7 +20,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformData
         {
             public readonly int Length;
-            public ComponentArray<BufferedTransform> BufferedTransform;
+            public BufferArray<BufferedTransform> BufferedTransform;
             public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> transformAuthority;
         }
@@ -58,36 +57,38 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             for (var i = 0; i < transformData.Length; i++)
             {
-                var transformQueue = transformData.BufferedTransform[i].TransformUpdates;
-                if (transformQueue.Count == 0)
+                var transformQueue = transformData.BufferedTransform[i];
+                if (transformQueue.Length == 0)
                 {
                     continue;
                 }
 
+                var nextTransform = transformQueue[0].transformUpdate;
+                
                 if (!tickOffsetSet)
                 {
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                     tickOffsetSet = true;
                 }
 
                 // Recieved too many updates. Drop to latest update and interpolate from there.
-                if (transformQueue.Count >= MaxBufferSize)
+                if (transformQueue.Length >= TransformSynchronizationConfig.MaxBufferSize)
                 {
-                    transformQueue.RemoveRange(0, transformQueue.Count - 1);
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    transformQueue.RemoveRange(0, transformQueue.Length - 1);
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                 }
 
+                nextTransform = transformQueue[0].transformUpdate;
                 var serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
 
                 // Our time is too far ahead need to reset to server tick
-                if (transformQueue[0].Tick < serverTickToApply)
+                if (nextTransform.Tick < serverTickToApply)
                 {
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                     serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
                 }
 
                 // Apply update if update tick matches local tick, otherwise interpolate
-                var nextTransform = transformQueue[0];
                 var rigidBody = transformData.Rigidbody[i];
 
                 if (nextTransform.Tick == serverTickToApply)

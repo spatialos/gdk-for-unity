@@ -11,10 +11,10 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformUpdateData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<Transform.ReceivedUpdates> TransformUpdate;
-            public ComponentArray<BufferedTransform> BufferedTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> TransformAuthority;
+            public BufferArray<BufferedTransform> BufferedTransform;
             [ReadOnly] public ComponentDataArray<Transform.Component> Transform;
+            [ReadOnly] public ComponentDataArray<Transform.ReceivedUpdates> TransformUpdate;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> TransformAuthority;
         }
 
         [Inject] private TransformUpdateData transformUpdateData;
@@ -24,15 +24,13 @@ namespace Improbable.Gdk.TransformSynchronization
             for (var i = 0; i < transformUpdateData.Length; i++)
             {
                 var transformUpdates = transformUpdateData.TransformUpdate[i].Updates;
-                var bufferedTransform = transformUpdateData.BufferedTransform[i];
-                var lastTransformSnapshot = bufferedTransform.LastTransformSnapshot;
-
-                if (!bufferedTransform.IsInitialised)
+                var lastTransformSnapshot = transformUpdateData.Transform[i];
+                var bufferLength = transformUpdateData.BufferedTransform[i].Length;
+                if (bufferLength > 0)
                 {
-                    lastTransformSnapshot = transformUpdateData.Transform[i];
-                    bufferedTransform.IsInitialised = true;
+                    lastTransformSnapshot = transformUpdateData.BufferedTransform[i][bufferLength - 1].transformUpdate;
                 }
-
+                
                 foreach (var update in transformUpdates)
                 {
                     if (update.Location.HasValue)
@@ -50,10 +48,13 @@ namespace Improbable.Gdk.TransformSynchronization
                         lastTransformSnapshot.Tick = update.Tick.Value;
                     }
 
-                    transformUpdateData.BufferedTransform[i].TransformUpdates.Add(lastTransformSnapshot);
+                    var bufferedTransform = new BufferedTransform
+                    {
+                        transformUpdate = lastTransformSnapshot
+                    };
+                    
+                    transformUpdateData.BufferedTransform[i].Add(bufferedTransform);
                 }
-
-                transformUpdateData.BufferedTransform[i].LastTransformSnapshot = lastTransformSnapshot;
             }
         }
     }
