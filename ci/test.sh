@@ -24,7 +24,7 @@ EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmode-test-results.xml"
 
-rm "${TOOLS_TEST_RESULTS_FILES}" \
+rm -f "${TOOLS_TEST_RESULTS_FILES}" \
     "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
     "${EDITMODE_TEST_RESULTS_FILE}" \
     "${PLAYMODE_TEST_RESULTS_FILE}"
