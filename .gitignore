@@ -1,5 +1,6 @@
 /build
 /workers/unity/build/
+/test-project/build
 /logs/
 .spatialos/
 .idea/
@@ -48,3 +49,14 @@ schema/from_gdk_packages
 _ReSharper.Caches
 
 workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Generated
+
+
+# Test project.
+test-project/*.csproj
+test-project/*.sln
+test-project/[Ll]ibrary/
+test-project/[Tt]emp/
+test-project/[Ll]ogs/
+test-project/Assets/Plugins/Improbable/
+test-project/Assets/Plugins/Improbable.meta
+test-project/ProjectSettings/UnityConnectSettings.asset
