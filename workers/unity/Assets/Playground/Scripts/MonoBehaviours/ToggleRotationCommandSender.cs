@@ -1,4 +1,5 @@
 using Generated.Playground;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
@@ -29,7 +30,8 @@ namespace Playground.MonoBehaviours
         {
             if (obj.StatusCode != StatusCode.Success)
             {
-                Debug.LogError($"Spin command request failed: {obj.StatusCode}, message: {obj.Message}");
+                GetComponent<SpatialOSComponent>().LogDispatcher.HandleLog(LogType.Error,
+                    new LogEvent($"Spin command request failed: {obj.StatusCode}, message: {obj.Message}"));
             }
         }
 
