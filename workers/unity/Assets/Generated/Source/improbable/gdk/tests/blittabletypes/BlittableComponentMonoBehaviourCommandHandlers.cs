@@ -16,6 +16,87 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
+        public partial class FirstCommand
+        {
+            public class RequestResponder :
+                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
+                    FirstCommand.ReceivedRequest,
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse,
+                    CommandResponders.FirstCommand
+                >
+            {
+                internal RequestResponder(
+                    EntityManager entityManager,
+                    Entity entity,
+                    FirstCommand.ReceivedRequest rawRequest
+                ) : base(
+                    entityManager,
+                    entity,
+                    rawRequest
+                )
+                {
+                }
+
+                protected override void SendResponseInternal
+                (
+                    CommandResponders.FirstCommand componentData,
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload
+                )
+                {
+                    componentData.ResponsesToSend.Add(FirstCommand.CreateResponse(Request, payload));
+                }
+
+                protected override void SendResponseFailureInternal
+                (
+                    CommandResponders.FirstCommand componentData,
+                    string message
+                )
+                {
+                    componentData.ResponsesToSend.Add(FirstCommand.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+        public partial class SecondCommand
+        {
+            public class RequestResponder :
+                global::Improbable.Gdk.Core.GameObjectRepresentation.CommandRequestWrapper<
+                    SecondCommand.ReceivedRequest,
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse,
+                    CommandResponders.SecondCommand
+                >
+            {
+                internal RequestResponder(
+                    EntityManager entityManager,
+                    Entity entity,
+                    SecondCommand.ReceivedRequest rawRequest
+                ) : base(
+                    entityManager,
+                    entity,
+                    rawRequest
+                )
+                {
+                }
+
+                protected override void SendResponseInternal
+                (
+                    CommandResponders.SecondCommand componentData,
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload
+                )
+                {
+                    componentData.ResponsesToSend.Add(SecondCommand.CreateResponse(Request, payload));
+                }
+
+                protected override void SendResponseFailureInternal
+                (
+                    CommandResponders.SecondCommand componentData,
+                    string message
+                )
+                {
+                    componentData.ResponsesToSend.Add(SecondCommand.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+
         public partial class Requirables
         {
             [InjectableId(InjectableType.CommandRequestSender, 1001)]
@@ -79,9 +160,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-
-                private readonly List<Action<FirstCommand.ReceivedRequest>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedRequest>>();
-                public event Action<FirstCommand.ReceivedRequest> OnFirstCommandRequest
+                private readonly List<Action<FirstCommand.RequestResponder>> firstCommandDelegates = new List<Action<FirstCommand.RequestResponder>>();
+                public event Action<FirstCommand.RequestResponder> OnFirstCommandRequest
                 {
                     add => firstCommandDelegates.Add(value);
                     remove => firstCommandDelegates.Remove(value);
@@ -89,19 +169,10 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(request, firstCommandDelegates, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new FirstCommand.RequestResponder(entityManager, entity, request), firstCommandDelegates, logger);
                 }
-
-                public void SendFirstCommandResponse(FirstCommand.Response response)
-                {
-                    entityManager
-                        .GetComponentData<CommandResponders.FirstCommand>(entity)
-                        .ResponsesToSend
-                        .Add(response);
-                }
-
-                private readonly List<Action<SecondCommand.ReceivedRequest>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedRequest>>();
-                public event Action<SecondCommand.ReceivedRequest> OnSecondCommandRequest
+                private readonly List<Action<SecondCommand.RequestResponder>> secondCommandDelegates = new List<Action<SecondCommand.RequestResponder>>();
+                public event Action<SecondCommand.RequestResponder> OnSecondCommandRequest
                 {
                     add => secondCommandDelegates.Add(value);
                     remove => secondCommandDelegates.Remove(value);
@@ -109,15 +180,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(request, secondCommandDelegates, logger);
-                }
-
-                public void SendSecondCommandResponse(SecondCommand.Response response)
-                {
-                    entityManager
-                        .GetComponentData<CommandResponders.SecondCommand>(entity)
-                        .ResponsesToSend
-                        .Add(response);
+                    GameObjectDelegates.DispatchWithErrorHandling(new SecondCommand.RequestResponder(entityManager, entity, request), secondCommandDelegates, logger);
                 }
             }
 

@@ -27,15 +27,11 @@ namespace Playground.MonoBehaviours
             nextAvailableSpinChangeTime = Time.time;
         }
 
-        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ReceivedRequest request)
+        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.RequestResponder spinnerToggleRotationRequest)
         {
-            SpinnerRotation.SpinnerToggleRotation.Response response;
-
             if (Time.time < nextAvailableSpinChangeTime)
             {
-                response = SpinnerRotation
-                    .SpinnerToggleRotation
-                    .CreateResponseFailure(request, "Cannot change spinning direction too frequently.");
+                spinnerToggleRotationRequest.SendResponseFailure("Cannot change spinning direction too frequently.");
             }
             else
             {
@@ -43,12 +39,8 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
 
-                response = SpinnerRotation
-                    .SpinnerToggleRotation
-                    .CreateResponse(request, new Void());
+                spinnerToggleRotationRequest.SendResponse(new Void());
             }
-
-            requestHandler.SendSpinnerToggleRotationResponse(response);
         }
     }
 }
