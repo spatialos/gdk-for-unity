@@ -12,10 +12,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {
-        private readonly Dictionary<int, MonoBehaviourActivationManager> entityIndexToActivationManager =
-            new Dictionary<int, MonoBehaviourActivationManager>();
-        private readonly Dictionary<int, InjectableStore> entityIndexToReaderWriterStore =
-            new Dictionary<int, InjectableStore>();
+        private readonly Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToActivationManager =
+            new Dictionary<Entity, MonoBehaviourActivationManager>();
+        private readonly Dictionary<Entity, InjectableStore> entityIndexToReaderWriterStore =
+            new Dictionary<Entity, InjectableStore>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
             new List<GameObjectComponentDispatcherBase>();
@@ -23,15 +23,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private RequiredFieldInjector injector;
         private ILogDispatcher logger;
 
-        internal void RemoveActivationManagerAndReaderWriterStore(int entityIndex)
+        internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
         {
-            if (!entityIndexToActivationManager.ContainsKey(entityIndex))
+            if (!entityIndexToActivationManager.ContainsKey(entity))
             {
-                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entityIndex {entityIndex}.");
+                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entityIndex {entity.Index}.");
             }
 
-            entityIndexToActivationManager.Remove(entityIndex);
-            entityIndexToReaderWriterStore.Remove(entityIndex);
+            entityIndexToActivationManager.Remove(entity);
+            entityIndexToReaderWriterStore.Remove(entity);
         }
 
         protected override void OnCreateManager(int capacity)
@@ -166,16 +166,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void CreateActivationManagerAndReaderWriterStore(Entity entity)
         {
-            if (entityIndexToActivationManager.ContainsKey(entity.Index))
+            if (entityIndexToActivationManager.ContainsKey(entity))
             {
                 throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entityIndex {entity.Index}.");
             }
 
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             var store = new InjectableStore();
-            entityIndexToReaderWriterStore[entity.Index] = store;
+            entityIndexToReaderWriterStore[entity] = store;
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
-            entityIndexToActivationManager[entity.Index] = manager;
+            entityIndexToActivationManager[entity] = manager;
         }
     }
 }

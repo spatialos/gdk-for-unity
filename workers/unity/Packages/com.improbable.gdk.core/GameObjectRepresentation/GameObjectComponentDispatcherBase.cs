@@ -24,20 +24,20 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public ComponentGroup[] CommandRequestsComponentGroups { get; set; }
 
         public abstract void MarkComponentsAddedForActivation
-            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+            (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
         public abstract void MarkComponentsRemovedForDeactivation
-            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+            (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
         public abstract void MarkAuthorityGainedForActivation
-            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+            (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
         public abstract void MarkAuthorityLostForDeactivation
-            (Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers);
+            (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
 
-        public abstract void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnCommandResponseCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnAuthorityGainedCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnAuthorityLostCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
-        public abstract void InvokeOnAuthorityLossImminentCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnComponentUpdateCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnEventCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnCommandRequestCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnCommandResponseCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnAuthorityGainedCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnAuthorityLostCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
+        public abstract void InvokeOnAuthorityLossImminentCallbacks(Dictionary<Entity, InjectableStore> entityIndexToInjectableStore);
     }
 }
