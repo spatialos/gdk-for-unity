@@ -526,7 +526,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     op.Message,
                     op.StatusCode,
                     response,
-                    requestBundle.Request));
+                    requestBundle.Request,
+                    requestBundle.Context,
+                    requestBundle.RequestId));
             }
             private void OnSecondCommandRequest(CommandRequestOp op)
             {
@@ -602,7 +604,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     op.Message,
                     op.StatusCode,
                     response,
-                    requestBundle.Request));
+                    requestBundle.Request,
+                    requestBundle.Context,
+                    requestBundle.RequestId));
             }
         }
 
@@ -721,7 +725,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             firstCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
                         }
 
                         requests.Clear();
@@ -794,7 +798,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             secondCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, null);
+                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
                         }
 
                         requests.Clear();
