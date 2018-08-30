@@ -1,19 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Improbable.Gdk.Tools.MiniJSON;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Tools
 {
-    static class Common
+    /// <summary>
+    ///     Catch-all class for common helpers and utilities.
+    /// </summary>
+    public static class Common
     {
+        /// <summary>
+        ///     The version of the CoreSdk the GDK is pinned to.
+        ///     Modify the core-sdk.version file in this source file's directory to change the version.
+        /// </summary>
         public static string CoreSdkVersion { get; }
 
+        /// <summary>
+        ///     The absolute path to the `spatial` binary, or the empty string if it doesn't exist.
+        /// </summary>
+        public static string SpatialBinary => DiscoverLocation("spatial");
+
+        public static string DotNetBinary => DiscoverLocation("dotnet");
+
+        public const string ProductName = "SpatialOS for Unity";
+
         private const string PackagesDir = "Packages";
+        private const string UsrLocalBinDir = "/usr/local/bin";
+
 
         static Common()
         {
@@ -31,7 +48,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Finds the "file:" reference path from the package manifest.
         /// </summary>
-        public static string GetThisPackagePath()
+        internal static string GetThisPackagePath()
         {
             const string gdkTools = "com.improbable.gdk.tools";
             var manifest = GetManifestDependencies();
@@ -52,12 +69,12 @@ namespace Improbable.Gdk.Tools
             return path;
         }
 
-        public static Dictionary<string, string> GetManifestDependencies()
+        internal static Dictionary<string, string> GetManifestDependencies()
         {
             try
             {
                 var manifest =
-                    MiniJSON.Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
+                    Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
                 return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
@@ -67,52 +84,41 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static int RunProcess(string command, params string[] arguments)
+        /// <summary>
+        ///     Tries to find the full path to a binary in the system PATH.
+        ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
+        ///     don't always have that in the PATH provided to them.
+        /// </summary>
+        /// <param name="binarybaseName">The base name of the binary to find (without an extension).</param>
+        /// <returns></returns>
+        private static string DiscoverLocation(string binarybaseName)
         {
-            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
+            var pathValue = Environment.GetEnvironmentVariable("PATH");
+            if (pathValue == null)
             {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."))
-            };
+                return string.Empty;
+            }
 
-            using (var process = Process.Start(info))
+            if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                if (process == null)
+                binarybaseName = Path.ChangeExtension(binarybaseName, ".exe");
+
+                if (binarybaseName == null)
                 {
-                    throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
+                    return string.Empty;
                 }
-
-                process.EnableRaisingEvents = true;
-
-                process.OutputDataReceived += OnReceived;
-                process.ErrorDataReceived += OnErrorReceived;
-
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                process.WaitForExit();
-                return process.ExitCode;
             }
-        }
 
-        private static void OnReceived(object sender, DataReceivedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(args.Data))
+            var splitPath = pathValue.Split(Path.PathSeparator);
+
+            if (Application.platform == RuntimePlatform.OSXEditor && !splitPath.Contains(UsrLocalBinDir))
             {
-                Debug.Log(args.Data);
+                splitPath = splitPath.Union(new[] { UsrLocalBinDir }).ToArray();
             }
-        }
 
-        private static void OnErrorReceived(object sender, DataReceivedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(args.Data))
-            {
-                Debug.LogError(args.Data);
-            }
+            return splitPath
+                .Select(p => Path.Combine(p, binarybaseName))
+                .FirstOrDefault(File.Exists) ?? string.Empty;
         }
     }
 }
