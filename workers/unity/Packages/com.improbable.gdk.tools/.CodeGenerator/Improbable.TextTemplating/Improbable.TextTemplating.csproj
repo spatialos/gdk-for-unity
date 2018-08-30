@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Mono.TextTemplating\Mono.TextTemplating.csproj" />
   </ItemGroup>
 
-  <Target Name="Copy CodeDom Dll" AfterTargets="AfterBuild">
-    <Copy SourceFiles="dependencies/System.CodeDom.dll" DestinationFolder="$(OutDir)" />
-  </Target>
-
 </Project>

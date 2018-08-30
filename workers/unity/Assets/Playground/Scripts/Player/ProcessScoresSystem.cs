@@ -20,7 +20,7 @@ namespace Playground
         private struct ScoringData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSScore> Score;
+            public ComponentDataArray<Score.Component> Score;
 
             [ReadOnly]
             public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;

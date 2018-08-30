@@ -23,15 +23,23 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         {
             public static void Serialize(SecondEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
             {
-                obj.AddFloat(1, instance.Field1);
-                obj.AddDouble(2, instance.Field2);
+                {
+                    obj.AddFloat(1, instance.Field1);
+                }
+                {
+                    obj.AddDouble(2, instance.Field2);
+                }
             }
     
             public static SecondEventPayload Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var instance = new SecondEventPayload();
-                instance.Field1 = obj.GetFloat(1);
-                instance.Field2 = obj.GetDouble(2);
+                {
+                    instance.Field1 = obj.GetFloat(1);
+                }
+                {
+                    instance.Field2 = obj.GetDouble(2);
+                }
                 return instance;
             }
         }

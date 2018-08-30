@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSComponentWithNoFieldsWithEvents.Update>> Storage = new Dictionary<uint, List<SpatialOSComponentWithNoFieldsWithEvents.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSComponentWithNoFieldsWithEvents.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSComponentWithNoFieldsWithEvents.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSComponentWithNoFieldsWithEvents.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

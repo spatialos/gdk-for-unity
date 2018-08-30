@@ -27,178 +27,178 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197718)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSExhaustiveMapValue, SpatialOSExhaustiveMapValue.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component, Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update>
             {
-                event Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>> Field1Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, float>> Field2Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, byte[]>> Field3Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, int>> Field4Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, long>> Field5Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, double>> Field6Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, string>> Field7Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, uint>> Field8Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, ulong>> Field9Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, int>> Field10Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, long>> Field11Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, uint>> Field12Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, ulong>> Field13Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, int>> Field14Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, long>> Field15Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>> Field16Updated;
-                event Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,BlittableBool>> Field1Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,float>> Field2Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,byte[]>> Field3Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,int>> Field4Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,long>> Field5Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,double>> Field6Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,string>> Field7Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,uint>> Field8Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,ulong>> Field9Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,int>> Field10Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,long>> Field11Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,uint>> Field12Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,ulong>> Field13Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,int>> Field14Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,long>> Field15Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>> Field16Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197718)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSExhaustiveMapValue, SpatialOSExhaustiveMapValue.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component, Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSExhaustiveMapValue, SpatialOSExhaustiveMapValue.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component, Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>>> field1Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,BlittableBool>>> field1Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,BlittableBool>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, BlittableBool>> Field1Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,BlittableBool>> Field1Updated
                 {
                     add => field1Delegates.Add(value);
                     remove => field1Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, float>>> field2Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, float>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,float>>> field2Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,float>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, float>> Field2Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,float>> Field2Updated
                 {
                     add => field2Delegates.Add(value);
                     remove => field2Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, byte[]>>> field3Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, byte[]>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,byte[]>>> field3Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,byte[]>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, byte[]>> Field3Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,byte[]>> Field3Updated
                 {
                     add => field3Delegates.Add(value);
                     remove => field3Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, int>>> field4Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, int>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,int>>> field4Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,int>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, int>> Field4Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,int>> Field4Updated
                 {
                     add => field4Delegates.Add(value);
                     remove => field4Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, long>>> field5Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, long>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,long>>> field5Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,long>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, long>> Field5Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,long>> Field5Updated
                 {
                     add => field5Delegates.Add(value);
                     remove => field5Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, double>>> field6Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, double>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,double>>> field6Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,double>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, double>> Field6Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,double>> Field6Updated
                 {
                     add => field6Delegates.Add(value);
                     remove => field6Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, string>>> field7Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, string>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,string>>> field7Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,string>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, string>> Field7Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,string>> Field7Updated
                 {
                     add => field7Delegates.Add(value);
                     remove => field7Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, uint>>> field8Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, uint>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,uint>>> field8Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,uint>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, uint>> Field8Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,uint>> Field8Updated
                 {
                     add => field8Delegates.Add(value);
                     remove => field8Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, ulong>>> field9Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, ulong>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,ulong>>> field9Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,ulong>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, ulong>> Field9Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,ulong>> Field9Updated
                 {
                     add => field9Delegates.Add(value);
                     remove => field9Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, int>>> field10Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, int>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,int>>> field10Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,int>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, int>> Field10Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,int>> Field10Updated
                 {
                     add => field10Delegates.Add(value);
                     remove => field10Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, long>>> field11Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, long>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,long>>> field11Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,long>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, long>> Field11Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,long>> Field11Updated
                 {
                     add => field11Delegates.Add(value);
                     remove => field11Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, uint>>> field12Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, uint>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,uint>>> field12Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,uint>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, uint>> Field12Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,uint>> Field12Updated
                 {
                     add => field12Delegates.Add(value);
                     remove => field12Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, ulong>>> field13Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, ulong>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,ulong>>> field13Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,ulong>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, ulong>> Field13Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,ulong>> Field13Updated
                 {
                     add => field13Delegates.Add(value);
                     remove => field13Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, int>>> field14Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, int>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,int>>> field14Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,int>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, int>> Field14Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,int>> Field14Updated
                 {
                     add => field14Delegates.Add(value);
                     remove => field14Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, long>>> field15Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, long>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,long>>> field15Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,long>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, long>> Field15Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,long>> Field15Updated
                 {
                     add => field15Delegates.Add(value);
                     remove => field15Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Worker.EntityId>> Field16Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>> Field16Updated
                 {
                     add => field16Delegates.Add(value);
                     remove => field16Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>>> field17Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>>> field17Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<string, global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated
+                public event Action<global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated
                 {
                     add => field17Delegates.Add(value);
                     remove => field17Delegates.Remove(value);
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSExhaustiveMapValue.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
@@ -218,7 +218,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
-                protected override void ApplyUpdate(SpatialOSExhaustiveMapValue.Update update, ref SpatialOSExhaustiveMapValue data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component data)
                 {
                     if (update.Field1.HasValue)
                     {

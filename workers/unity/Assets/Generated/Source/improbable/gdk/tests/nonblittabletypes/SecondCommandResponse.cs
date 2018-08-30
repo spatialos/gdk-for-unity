@@ -21,13 +21,17 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public static void Serialize(SecondCommandResponse instance, global::Improbable.Worker.Core.SchemaObject obj)
             {
-                obj.AddString(1, instance.Response);
+                {
+                    obj.AddString(1, instance.Response);
+                }
             }
     
             public static SecondCommandResponse Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var instance = new SecondCommandResponse();
-                instance.Response = obj.GetString(1);
+                {
+                    instance.Response = obj.GetString(1);
+                }
                 return instance;
             }
         }

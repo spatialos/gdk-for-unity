@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Playground
 {
@@ -19,8 +19,8 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialOSPrefab> PrefabNames;
-            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
+            [ReadOnly] public ComponentDataArray<Prefab.Component> PrefabNames;
+            [ReadOnly] public ComponentDataArray<Transform.Component> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }

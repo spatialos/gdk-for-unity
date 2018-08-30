@@ -27,44 +27,44 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSConnection, SpatialOSConnection.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
                 event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSConnection, SpatialOSConnection.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
                 void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSConnection, SpatialOSConnection.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSConnection.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update)
                 {
                 }
-                protected override void ApplyUpdate(SpatialOSConnection.Update update, ref SpatialOSConnection data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update, ref Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component data)
                 {
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> myEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> MyEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
                 {
-                    add => myEventDelegates.Add(value);
-                    remove => myEventDelegates.Remove(value);
+                    add => MyEventDelegates.Add(value);
+                    remove => MyEventDelegates.Remove(value);
                 }
 
                 public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
-                    DispatchEventWithErrorHandling(payload, myEventDelegates);
+                    DispatchEventWithErrorHandling(payload, MyEventDelegates);
                 }
 
                 public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)

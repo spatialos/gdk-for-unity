@@ -19,7 +19,7 @@ namespace Playground
         private struct Data
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<SpatialOSArchetypeComponent> ArchetypeComponents;
+            [ReadOnly] public ComponentDataArray<ArchetypeComponent.Component> ArchetypeComponents;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
         }

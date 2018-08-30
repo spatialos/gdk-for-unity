@@ -22,7 +22,7 @@ public class ScoreCollision : MonoBehaviour
         }
 
         var otherComponent = col.gameObject.GetComponentInParent<SpatialOSComponent>();
-        if (entityManager.HasComponent<SpatialOSLaunchable>(component.Entity)
+        if (entityManager.HasComponent<Launchable.Component>(component.Entity)
             && !entityManager.HasComponent<Playground.CollisionComponent>(component.Entity)
             && otherComponent)
         {

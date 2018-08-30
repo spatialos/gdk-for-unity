@@ -23,15 +23,23 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public static void Serialize(FirstEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
             {
-                obj.AddBool(1, instance.Field1);
-                obj.AddString(2, instance.Field2);
+                {
+                    obj.AddBool(1, instance.Field1);
+                }
+                {
+                    obj.AddString(2, instance.Field2);
+                }
             }
     
             public static FirstEventPayload Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var instance = new FirstEventPayload();
-                instance.Field1 = obj.GetBool(1);
-                instance.Field2 = obj.GetString(2);
+                {
+                    instance.Field1 = obj.GetBool(1);
+                }
+                {
+                    instance.Field2 = obj.GetString(2);
+                }
                 return instance;
             }
         }

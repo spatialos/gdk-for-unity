@@ -19,15 +19,15 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         [Test]
         public void component_should_implement_ISpatialComponentData()
         {
-            var component = new SpatialOSBlittableComponent();
+            var component = new BlittableComponent.Component();
             Assert.IsInstanceOf<ISpatialComponentData>(component,
-                "SpatialOSBlittableComponent implements ISpatialComponentData");
+                "BlittableComponent.Component implements ISpatialComponentData");
         }
 
         [Test]
         public void getters_should_return_values_set_in_constructor()
         {
-            var component = new SpatialOSBlittableComponent
+            var component = new BlittableComponent.Component
             {
                 BoolField = true,
                 DoubleField = DoubleValue,
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.CodeGenerator.End2EndTests
         [Test]
         public void setters_should_set_dirty_bit_to_true()
         {
-            var component = new SpatialOSBlittableComponent();
+            var component = new BlittableComponent.Component();
 
             Assert.AreEqual(BlittableBoolFalse, component.DirtyBit, "Dirty bit is initially false.");
 

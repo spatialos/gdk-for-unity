@@ -5,19 +5,14 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityEnumDetails
     {
-        public string PascalCaseName;
-        public string CamelCaseName;
-        public string FullyQualifiedSpatialTypeName;
-        public string FullyQualifiedTypeName;
+        public string TypeName => Formatting.SnakeCaseToCapitalisedCamelCase(enumDefinition.name);
+        public string FqnTypeName => CommonDetailsUtils.GetCapitalisedFqnTypename(enumDefinition.qualifiedName);
 
+        private readonly EnumDefinitionRaw enumDefinition;
+        
         public UnityEnumDetails(EnumDefinitionRaw enumDefinition)
         {
-            PascalCaseName = Formatting.SnakeCaseToCapitalisedCamelCase(enumDefinition.name);
-            CamelCaseName = Formatting.SnakeCaseToCamelCase(enumDefinition.name);
-            FullyQualifiedSpatialTypeName =
-                "global::" + Formatting.CapitaliseQualifiedNameParts(enumDefinition.qualifiedName);
-            FullyQualifiedTypeName = "global::" + UnityTypeMappings.PackagePrefix +
-                Formatting.CapitaliseQualifiedNameParts(enumDefinition.qualifiedName);
+            this.enumDefinition = enumDefinition;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# foreach(var commandDetails in commandDetailsList) { #>
-                public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.RequestType #> request)
+                public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.CreateRequest(entityId, request));
@@ -83,7 +83,7 @@ namespace <#= qualifiedNamespace #>
 
 <# foreach(var commandDetails in commandDetailsList) {
            var commandRequestType = commandDetails.CommandName + ".ReceivedRequest";
-           var delegateList = commandDetails.CamelCaseName + "Delegates";
+           var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
 #>
                 private readonly List<Action<<#= commandRequestType #>>> <#= delegateList #> = new List<Action<<#= commandRequestType #>>>();
                 public event Action<<#= commandRequestType #>> On<#= commandDetails.CommandName #>Request

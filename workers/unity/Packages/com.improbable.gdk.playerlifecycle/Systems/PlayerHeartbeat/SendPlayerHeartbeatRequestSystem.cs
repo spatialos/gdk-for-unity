@@ -13,7 +13,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat> RequestSenders;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerHeartbeatServer>> AuthorityMarkers;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerHeartbeatServer>> AuthorityMarkers;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             public EntityArray Entities;
             public SubtractiveComponent<AwaitingHeartbeatResponseTag> NotAwaitingHeartbeatResponse;

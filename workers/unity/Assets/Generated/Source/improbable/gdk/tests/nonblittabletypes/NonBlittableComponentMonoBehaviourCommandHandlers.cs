@@ -80,16 +80,16 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     this.logger = logger;
                 }
 
-                private readonly List<Action<FirstCommand.ReceivedRequest>> FirstCommandDelegates = new List<Action<FirstCommand.ReceivedRequest>>();
+                private readonly List<Action<FirstCommand.ReceivedRequest>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedRequest>>();
                 public event Action<FirstCommand.ReceivedRequest> OnFirstCommandRequest
                 {
-                    add => FirstCommandDelegates.Add(value);
-                    remove => FirstCommandDelegates.Remove(value);
+                    add => firstCommandDelegates.Add(value);
+                    remove => firstCommandDelegates.Remove(value);
                 }
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in FirstCommandDelegates)
+                    foreach (var callback in firstCommandDelegates)
                     {
                         try
                         {
@@ -103,16 +103,16 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                private readonly List<Action<SecondCommand.ReceivedRequest>> SecondCommandDelegates = new List<Action<SecondCommand.ReceivedRequest>>();
+                private readonly List<Action<SecondCommand.ReceivedRequest>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedRequest>>();
                 public event Action<SecondCommand.ReceivedRequest> OnSecondCommandRequest
                 {
-                    add => SecondCommandDelegates.Add(value);
-                    remove => SecondCommandDelegates.Remove(value);
+                    add => secondCommandDelegates.Add(value);
+                    remove => secondCommandDelegates.Remove(value);
                 }
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in SecondCommandDelegates)
+                    foreach (var callback in secondCommandDelegates)
                     {
                         try
                         {

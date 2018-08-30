@@ -17,35 +17,35 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentAdded<SpatialOSNestedComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentRemoved<SpatialOSNestedComponent>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthorityGainedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<SpatialOSNestedComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<Authoritative<SpatialOSNestedComponent>>()
+                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>()
             };
 
             public override ComponentType[] AuthorityLostComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<SpatialOSNestedComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<NotAuthoritative<SpatialOSNestedComponent>>()
+                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<NotAuthoritative<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>()
             };
 
             public override ComponentType[] AuthorityLossImminentComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<SpatialOSNestedComponent>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<AuthorityLossImminent<SpatialOSNestedComponent>>()
+                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<SpatialOSNestedComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.NestedComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
@@ -96,7 +96,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSNestedComponent>>();
+                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -116,7 +116,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSNestedComponent>>();
+                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -137,7 +137,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<SpatialOSNestedComponent.ReceivedUpdates>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.NestedComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityIndexToInjectableStore[entities[i].Index];
@@ -178,7 +178,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSNestedComponent>>();
+                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -207,7 +207,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
 
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<SpatialOSNestedComponent>>();
+                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -228,7 +228,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<SpatialOSNestedComponent> changeOps)
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Generated.Improbable.Gdk.Tests.NestedComponent.Component> changeOps)
             {
                 foreach (var auth in changeOps.Changes)
                 {

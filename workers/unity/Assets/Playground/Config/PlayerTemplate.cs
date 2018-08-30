@@ -26,15 +26,15 @@ namespace Playground
             }
 
             var transform =
-                SpatialOSTransform.CreateSchemaComponentData(new Location(),
+                Transform.Component.CreateSchemaComponentData(new Location(),
                     new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, 0);
-            var playerInput = SpatialOSPlayerInput.CreateSchemaComponentData(0, 0, false);
-            var prefab = SpatialOSPrefab.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
-            var archetype = SpatialOSArchetypeComponent.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
-            var launcher = SpatialOSLauncher.CreateSchemaComponentData(100, 0);
-            var clientHeartbeat = SpatialOSPlayerHeartbeatClient.CreateSchemaComponentData();
-            var serverHeartbeat = SpatialOSPlayerHeartbeatServer.CreateSchemaComponentData();
-            var score = SpatialOSScore.CreateSchemaComponentData(0);
+            var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
+            var prefab = Prefab.Component.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
+            var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
+            var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
+            var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
+            var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
+            var score = Score.Component.CreateSchemaComponentData(0);
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)

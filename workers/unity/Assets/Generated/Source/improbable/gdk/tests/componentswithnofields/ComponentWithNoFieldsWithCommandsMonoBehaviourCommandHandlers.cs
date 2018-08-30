@@ -74,16 +74,16 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.logger = logger;
                 }
 
-                private readonly List<Action<Cmd.ReceivedRequest>> CmdDelegates = new List<Action<Cmd.ReceivedRequest>>();
+                private readonly List<Action<Cmd.ReceivedRequest>> cmdDelegates = new List<Action<Cmd.ReceivedRequest>>();
                 public event Action<Cmd.ReceivedRequest> OnCmdRequest
                 {
-                    add => CmdDelegates.Add(value);
-                    remove => CmdDelegates.Remove(value);
+                    add => cmdDelegates.Add(value);
+                    remove => cmdDelegates.Remove(value);
                 }
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
-                    foreach (var callback in CmdDelegates)
+                    foreach (var callback in cmdDelegates)
                     {
                         try
                         {

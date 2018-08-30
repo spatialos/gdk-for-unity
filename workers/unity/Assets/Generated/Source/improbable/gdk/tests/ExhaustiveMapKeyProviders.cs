@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSExhaustiveMapKey.Update>> Storage = new Dictionary<uint, List<SpatialOSExhaustiveMapKey.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSExhaustiveMapKey.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSExhaustiveMapKey.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSExhaustiveMapKey.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.ExhaustiveMapKey.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -82,7 +82,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field1Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<BlittableBool, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<BlittableBool, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<BlittableBool,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<BlittableBool,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -91,13 +91,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<BlittableBool, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<BlittableBool,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<BlittableBool, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<BlittableBool,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -107,7 +107,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<BlittableBool, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<BlittableBool,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -149,7 +149,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field2Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<float, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<float, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<float,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<float,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -158,13 +158,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<float, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<float,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<float, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<float,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -174,7 +174,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<float, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<float,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -216,7 +216,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field3Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[], string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[], string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[],string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[],string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -225,13 +225,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<byte[], string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<byte[],string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<byte[], string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<byte[],string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -241,7 +241,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<byte[], string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<byte[],string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -283,7 +283,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field4Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -292,13 +292,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<int, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<int,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -308,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -350,7 +350,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field5Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -359,13 +359,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<long, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<long,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -375,7 +375,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -417,7 +417,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field6Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<double, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<double, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<double,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<double,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -426,13 +426,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<double, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<double,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<double, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<double,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -442,7 +442,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<double, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<double,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -484,7 +484,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field7Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -493,13 +493,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -509,7 +509,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -551,7 +551,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field8Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -560,13 +560,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<uint, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<uint,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<uint, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<uint,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -576,7 +576,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<uint, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<uint,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -618,7 +618,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field9Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -627,13 +627,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<ulong, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<ulong,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<ulong, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<ulong,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -643,7 +643,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<ulong, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<ulong,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -685,7 +685,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field10Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -694,13 +694,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<int, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<int,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -710,7 +710,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -752,7 +752,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field11Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -761,13 +761,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<long, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<long,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -777,7 +777,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -819,7 +819,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field12Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -828,13 +828,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<uint, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<uint,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<uint, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<uint,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -844,7 +844,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<uint, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<uint,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -886,7 +886,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field13Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -895,13 +895,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<ulong, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<ulong,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<ulong, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<ulong,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -911,7 +911,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<ulong, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<ulong,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -953,7 +953,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field14Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -962,13 +962,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<int,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<int, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<int,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -978,7 +978,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<int,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1020,7 +1020,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field15Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1029,13 +1029,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<long,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<long, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<long,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1045,7 +1045,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<long,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1087,7 +1087,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field16Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1096,13 +1096,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1112,7 +1112,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1154,7 +1154,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field17Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1163,13 +1163,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1179,7 +1179,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType, string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Generated.Improbable.Gdk.Tests.SomeType,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

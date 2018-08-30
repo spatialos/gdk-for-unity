@@ -20,9 +20,9 @@ namespace Playground
         private struct PlayerInputData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
+            public ComponentDataArray<PlayerInput.Component> PlayerInput;
             public ComponentDataArray<CameraTransform> CameraTransform;
-            public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
         }
 
         [Inject] private PlayerInputData playerInputData;
@@ -45,7 +45,7 @@ namespace Playground
                     || Math.Abs(oldPlayerInput.Vertical - input.z) > MinInputChange
                     || oldPlayerInput.Running != isShiftDown)
                 {
-                    var newPlayerInput = new SpatialOSPlayerInput
+                    var newPlayerInput = new PlayerInput.Component
                     {
                         Horizontal = input.x,
                         Vertical = input.z,

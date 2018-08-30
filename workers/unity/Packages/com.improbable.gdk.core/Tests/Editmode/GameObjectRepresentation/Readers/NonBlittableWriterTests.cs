@@ -15,16 +15,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             using (var world = new World("test-world"))
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
-                var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
-                entityManager.SetComponentData(entity, new SpatialOSNonBlittableComponent());
+                var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
+                entityManager.SetComponentData(entity, new NonBlittableComponent.Component());
                 var writer = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
 
-                writer.Send(new SpatialOSNonBlittableComponent.Update
+                writer.Send(new NonBlittableComponent.Update
                 {
                     IntField = new Option<int>(42)
                 });
 
-                int valueRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).IntField;
+                int valueRead = entityManager.GetComponentData<NonBlittableComponent.Component>(entity).IntField;
                 Assert.AreEqual(42, valueRead);
             }
         }
@@ -35,9 +35,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             using (var world = new World("test-world"))
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
-                var entity = entityManager.CreateEntity(typeof(SpatialOSNonBlittableComponent));
+                var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
 
-                var schemaComponentData = SpatialOSNonBlittableComponent.CreateSchemaComponentData(
+                var schemaComponentData = NonBlittableComponent.Component.CreateSchemaComponentData(
                     boolField: false,
                     intField: 0,
                     longField: 0,
@@ -50,12 +50,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
 
                 if (schemaComponentData != null)
                 {
-                    entityManager.SetComponentData(entity, SpatialOSNonBlittableComponent.Serialization.Deserialize(
+                    entityManager.SetComponentData(entity, NonBlittableComponent.Serialization.Deserialize(
                         schemaComponentData.Value.GetFields(), world));
                 }
 
                 var writer = new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
-                writer.Send(new SpatialOSNonBlittableComponent.Update
+                writer.Send(new NonBlittableComponent.Update
                 {
                     IntField = new Option<int>(42),
                     ListField = new Option<List<int>>(new List<int>
@@ -66,9 +66,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
                     })
                 });
 
-                double doubleRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).DoubleField;
+                double doubleRead = entityManager.GetComponentData<NonBlittableComponent.Component>(entity).DoubleField;
                 Assert.AreEqual(13.37, doubleRead);
-                string stringRead = entityManager.GetComponentData<SpatialOSNonBlittableComponent>(entity).StringField;
+                string stringRead = entityManager.GetComponentData<NonBlittableComponent.Component>(entity).StringField;
                 Assert.AreEqual("stringy", stringRead);
             }
         }

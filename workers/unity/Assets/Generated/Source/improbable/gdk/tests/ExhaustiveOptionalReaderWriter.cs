@@ -27,52 +27,52 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
             {
-                event Action<global::System.Nullable<BlittableBool>> Field1Updated;
-                event Action<global::System.Nullable<float>> Field2Updated;
+                event Action<BlittableBool?> Field1Updated;
+                event Action<float?> Field2Updated;
                 event Action<global::Improbable.Gdk.Core.Option<byte[]>> Field3Updated;
-                event Action<global::System.Nullable<int>> Field4Updated;
-                event Action<global::System.Nullable<long>> Field5Updated;
-                event Action<global::System.Nullable<double>> Field6Updated;
+                event Action<int?> Field4Updated;
+                event Action<long?> Field5Updated;
+                event Action<double?> Field6Updated;
                 event Action<global::Improbable.Gdk.Core.Option<string>> Field7Updated;
-                event Action<global::System.Nullable<uint>> Field8Updated;
-                event Action<global::System.Nullable<ulong>> Field9Updated;
-                event Action<global::System.Nullable<int>> Field10Updated;
-                event Action<global::System.Nullable<long>> Field11Updated;
-                event Action<global::System.Nullable<uint>> Field12Updated;
-                event Action<global::System.Nullable<ulong>> Field13Updated;
-                event Action<global::System.Nullable<int>> Field14Updated;
-                event Action<global::System.Nullable<long>> Field15Updated;
-                event Action<global::System.Nullable<global::Improbable.Worker.EntityId>> Field16Updated;
-                event Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated;
+                event Action<uint?> Field8Updated;
+                event Action<ulong?> Field9Updated;
+                event Action<int?> Field10Updated;
+                event Action<long?> Field11Updated;
+                event Action<uint?> Field12Updated;
+                event Action<ulong?> Field13Updated;
+                event Action<int?> Field14Updated;
+                event Action<long?> Field15Updated;
+                event Action<global::Improbable.Worker.EntityId?> Field16Updated;
+                event Action<global::Generated.Improbable.Gdk.Tests.SomeType?> Field17Updated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSExhaustiveOptional, SpatialOSExhaustiveOptional.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                private readonly List<Action<global::System.Nullable<BlittableBool>>> field1Delegates = new List<Action<global::System.Nullable<BlittableBool>>>();
+                private readonly List<Action<BlittableBool?>> field1Delegates = new List<Action<BlittableBool?>>();
 
-                public event Action<global::System.Nullable<BlittableBool>> Field1Updated
+                public event Action<BlittableBool?> Field1Updated
                 {
                     add => field1Delegates.Add(value);
                     remove => field1Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<float>>> field2Delegates = new List<Action<global::System.Nullable<float>>>();
+                private readonly List<Action<float?>> field2Delegates = new List<Action<float?>>();
 
-                public event Action<global::System.Nullable<float>> Field2Updated
+                public event Action<float?> Field2Updated
                 {
                     add => field2Delegates.Add(value);
                     remove => field2Delegates.Remove(value);
@@ -86,25 +86,25 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => field3Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<int>>> field4Delegates = new List<Action<global::System.Nullable<int>>>();
+                private readonly List<Action<int?>> field4Delegates = new List<Action<int?>>();
 
-                public event Action<global::System.Nullable<int>> Field4Updated
+                public event Action<int?> Field4Updated
                 {
                     add => field4Delegates.Add(value);
                     remove => field4Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<long>>> field5Delegates = new List<Action<global::System.Nullable<long>>>();
+                private readonly List<Action<long?>> field5Delegates = new List<Action<long?>>();
 
-                public event Action<global::System.Nullable<long>> Field5Updated
+                public event Action<long?> Field5Updated
                 {
                     add => field5Delegates.Add(value);
                     remove => field5Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<double>>> field6Delegates = new List<Action<global::System.Nullable<double>>>();
+                private readonly List<Action<double?>> field6Delegates = new List<Action<double?>>();
 
-                public event Action<global::System.Nullable<double>> Field6Updated
+                public event Action<double?> Field6Updated
                 {
                     add => field6Delegates.Add(value);
                     remove => field6Delegates.Remove(value);
@@ -118,87 +118,87 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => field7Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<uint>>> field8Delegates = new List<Action<global::System.Nullable<uint>>>();
+                private readonly List<Action<uint?>> field8Delegates = new List<Action<uint?>>();
 
-                public event Action<global::System.Nullable<uint>> Field8Updated
+                public event Action<uint?> Field8Updated
                 {
                     add => field8Delegates.Add(value);
                     remove => field8Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<ulong>>> field9Delegates = new List<Action<global::System.Nullable<ulong>>>();
+                private readonly List<Action<ulong?>> field9Delegates = new List<Action<ulong?>>();
 
-                public event Action<global::System.Nullable<ulong>> Field9Updated
+                public event Action<ulong?> Field9Updated
                 {
                     add => field9Delegates.Add(value);
                     remove => field9Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<int>>> field10Delegates = new List<Action<global::System.Nullable<int>>>();
+                private readonly List<Action<int?>> field10Delegates = new List<Action<int?>>();
 
-                public event Action<global::System.Nullable<int>> Field10Updated
+                public event Action<int?> Field10Updated
                 {
                     add => field10Delegates.Add(value);
                     remove => field10Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<long>>> field11Delegates = new List<Action<global::System.Nullable<long>>>();
+                private readonly List<Action<long?>> field11Delegates = new List<Action<long?>>();
 
-                public event Action<global::System.Nullable<long>> Field11Updated
+                public event Action<long?> Field11Updated
                 {
                     add => field11Delegates.Add(value);
                     remove => field11Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<uint>>> field12Delegates = new List<Action<global::System.Nullable<uint>>>();
+                private readonly List<Action<uint?>> field12Delegates = new List<Action<uint?>>();
 
-                public event Action<global::System.Nullable<uint>> Field12Updated
+                public event Action<uint?> Field12Updated
                 {
                     add => field12Delegates.Add(value);
                     remove => field12Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<ulong>>> field13Delegates = new List<Action<global::System.Nullable<ulong>>>();
+                private readonly List<Action<ulong?>> field13Delegates = new List<Action<ulong?>>();
 
-                public event Action<global::System.Nullable<ulong>> Field13Updated
+                public event Action<ulong?> Field13Updated
                 {
                     add => field13Delegates.Add(value);
                     remove => field13Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<int>>> field14Delegates = new List<Action<global::System.Nullable<int>>>();
+                private readonly List<Action<int?>> field14Delegates = new List<Action<int?>>();
 
-                public event Action<global::System.Nullable<int>> Field14Updated
+                public event Action<int?> Field14Updated
                 {
                     add => field14Delegates.Add(value);
                     remove => field14Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<long>>> field15Delegates = new List<Action<global::System.Nullable<long>>>();
+                private readonly List<Action<long?>> field15Delegates = new List<Action<long?>>();
 
-                public event Action<global::System.Nullable<long>> Field15Updated
+                public event Action<long?> Field15Updated
                 {
                     add => field15Delegates.Add(value);
                     remove => field15Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Nullable<global::Improbable.Worker.EntityId>>>();
+                private readonly List<Action<global::Improbable.Worker.EntityId?>> field16Delegates = new List<Action<global::Improbable.Worker.EntityId?>>();
 
-                public event Action<global::System.Nullable<global::Improbable.Worker.EntityId>> Field16Updated
+                public event Action<global::Improbable.Worker.EntityId?> Field16Updated
                 {
                     add => field16Delegates.Add(value);
                     remove => field16Delegates.Remove(value);
                 }
 
-                private readonly List<Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>>> field17Delegates = new List<Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>>>();
+                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>> field17Delegates = new List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>>();
 
-                public event Action<global::System.Nullable<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated
+                public event Action<global::Generated.Improbable.Gdk.Tests.SomeType?> Field17Updated
                 {
                     add => field17Delegates.Add(value);
                     remove => field17Delegates.Remove(value);
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSExhaustiveOptional.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
@@ -218,7 +218,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
-                protected override void ApplyUpdate(SpatialOSExhaustiveOptional.Update update, ref SpatialOSExhaustiveOptional data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component data)
                 {
                     if (update.Field1.HasValue)
                     {

@@ -37,7 +37,7 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
             public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
@@ -81,7 +81,7 @@ namespace Playground
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
 
-            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(Launchable.Component)))
             {
                 return;
             }

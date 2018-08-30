@@ -7,6 +7,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -34,13 +35,13 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+            public interface Reader : IReader<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
 <# } #>
 <# foreach (var eventDetails in eventDetailsList) {
-            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
+            var payloadType = eventDetails.FqnPayloadType;
 #>
                 event Action<<#= payloadType #>> On<#= eventDetails.EventName #>;
 <# } #>
@@ -48,15 +49,15 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>
+            public interface Writer : IWriter<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
 <# foreach (var eventDetails in eventDetailsList) { #>
-                void Send<#= eventDetails.EventName #>( <#= eventDetails.FullyQualifiedPayloadTypeName #> payload);
+                void Send<#= eventDetails.EventName #>( <#= eventDetails.FqnPayloadType #> payload);
 <# } #>
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<<#= componentDetails.TypeName #>, <#= componentDetails.TypeName #>.Update>, Reader, Writer
+                ReaderWriterBase<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -73,13 +74,13 @@ namespace <#= qualifiedNamespace #>
                 }
 <# } #>
 
-                protected override void TriggerFieldCallbacks(<#= componentDetails.TypeName#>.Update update)
+                protected override void TriggerFieldCallbacks(<#= componentNamespace #>.Update update)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
                 }
-                protected override void ApplyUpdate(<#= componentDetails.TypeName#>.Update update, ref <#= componentDetails.TypeName#> data)
+                protected override void ApplyUpdate(<#= componentNamespace #>.Update update, ref <#= componentNamespace #>.Component data)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                     if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
@@ -89,8 +90,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                 }
 <# foreach (var eventDetails in eventDetailsList) {
-            var delegateList = eventDetails.CamelCaseName + "Delegates";
-            var payloadType = eventDetails.FullyQualifiedPayloadTypeName;
+            var delegateList = eventDetails.EventName + "Delegates";
+            var payloadType = eventDetails.FqnPayloadType;
 #>
 
                 private readonly List<Action<<#= payloadType #>>> <#= delegateList #> = new List<Action<<#= payloadType #>>>();
@@ -106,7 +107,7 @@ namespace <#= qualifiedNamespace #>
                     DispatchEventWithErrorHandling(payload, <#= delegateList #>);
                 }
 
-                public void Send<#= eventDetails.EventName #>(<#= eventDetails.FullyQualifiedPayloadTypeName #> payload)
+                public void Send<#= eventDetails.EventName #>(<#= eventDetails.FqnPayloadType #> payload)
                 {
                     var sender = EntityManager.GetComponentData<EventSender.<#= eventDetails.EventName #>>(Entity);
                     sender.Events.Add(payload);

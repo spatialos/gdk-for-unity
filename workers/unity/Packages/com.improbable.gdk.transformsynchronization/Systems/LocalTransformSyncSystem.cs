@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
+using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -14,12 +15,12 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSTransform> Transform;
-            public ComponentDataArray<SpatialOSPosition> Position;
+            public ComponentDataArray<Transform.Component> Transform;
+            public ComponentDataArray<Position.Component> Position;
             [ReadOnly] public ComponentArray<Rigidbody> GameObjectRigidBody;
 
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
         }
 
         [Inject] private TransformData transformData;
@@ -80,14 +81,14 @@ namespace Improbable.Gdk.TransformSynchronization
                     Z = rigidbody.rotation.z
                 };
 
-                var newTransform = new SpatialOSTransform
+                var newTransform = new Transform.Component
                 {
                     Location = location,
                     Rotation = rotation,
                     Tick = tickSystem.GlobalTick
                 };
 
-                var newPosition = new SpatialOSPosition
+                var newPosition = new Position.Component
                 {
                     Coords = new Coordinates
                     {

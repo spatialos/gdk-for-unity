@@ -7,39 +7,39 @@ using Improbable.Gdk.Core;
 
 namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
-    public struct SpatialOSComponentWithNoFields : IComponentData, ISpatialComponentData
+    public partial class ComponentWithNoFields
     {
-        public uint ComponentId => 1003;
-
-        public BlittableBool DirtyBit { get; set; }
-
-        public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
-        )
+        public struct Component : IComponentData, ISpatialComponentData
         {
-            var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1003);
-            var obj = schemaComponentData.GetFields();
+            public uint ComponentId => 1003;
 
+            public BlittableBool DirtyBit { get; set; }
 
-            return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+        )
+            {
+                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1003);
+                var obj = schemaComponentData.GetFields();
+                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+            }
         }
-
 
         public static class Serialization
         {
-            public static void Serialize(SpatialOSComponentWithNoFields component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component, global::Improbable.Worker.Core.SchemaObject obj)
             {
             }
 
-            public static SpatialOSComponentWithNoFields Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new SpatialOSComponentWithNoFields();
+                var component = new Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component();
 
                 return component;
             }
 
-            public static SpatialOSComponentWithNoFields.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref SpatialOSComponentWithNoFields component)
+            public static Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component)
             {
-                var update = new SpatialOSComponentWithNoFields.Update();
+                var update = new Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update();
                 return update;
             }
         }

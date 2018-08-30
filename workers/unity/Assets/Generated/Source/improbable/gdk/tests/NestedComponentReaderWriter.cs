@@ -27,19 +27,19 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
+            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
             {
                 event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>
+            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<SpatialOSNestedComponent, SpatialOSNestedComponent.Update>, Reader, Writer
+                ReaderWriterBase<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -54,11 +54,11 @@ namespace Generated.Improbable.Gdk.Tests
                     remove => nestedTypeDelegates.Remove(value);
                 }
 
-                protected override void TriggerFieldCallbacks(SpatialOSNestedComponent.Update update)
+                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.NestedComponent.Update update)
                 {
                     DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
                 }
-                protected override void ApplyUpdate(SpatialOSNestedComponent.Update update, ref SpatialOSNestedComponent data)
+                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.NestedComponent.Update update, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component data)
                 {
                     if (update.NestedType.HasValue)
                     {

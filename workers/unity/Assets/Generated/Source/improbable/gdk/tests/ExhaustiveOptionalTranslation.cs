@@ -17,7 +17,7 @@ namespace Generated.Improbable.Gdk.Tests
 {
     public partial class ExhaustiveOptional
     {
-        public class DispatcherHandler : ComponentDispatcherHandler
+        internal class DispatcherHandler : ComponentDispatcherHandler
         {
             public override uint ComponentId => 197716;
 
@@ -34,6 +34,8 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override void Dispose()
             {
+                ExhaustiveOptional.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(World);
+
                 ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(World);
                 ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(World);
                 ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(World);
@@ -60,12 +62,12 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var data = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveOptional.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                var data = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
+                entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
 
-                var update = new SpatialOSExhaustiveOptional.Update 
+                var update = new Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update
                 {
                     Field1 = data.Field1,
                     Field2 = data.Field2,
@@ -85,34 +87,34 @@ namespace Generated.Improbable.Gdk.Tests
                     Field16 = data.Field16,
                     Field17 = data.Field17,
                 };
-                
-                var updates = new List<SpatialOSExhaustiveOptional.Update>
+
+                var updates = new List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
                 {
                     update
                 };
-                
-                var updatesComponent = new SpatialOSExhaustiveOptional.ReceivedUpdates
+
+                var updatesComponent = new Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates
                 {
                     handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                 };
-                
+
                 ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                 entityManager.AddComponentData(entity, updatesComponent);
-                
-                if (entityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+
+                if (entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity);
+                    entityManager.RemoveComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentAdded<SpatialOSExhaustiveOptional>());
+                    entityManager.AddComponentData(entity, new ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "SpatialOSExhaustiveOptional")
+                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                     );
                 }
             }
@@ -124,7 +126,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                var data = entityManager.GetComponentData<SpatialOSExhaustiveOptional>(entity);
+                var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>(entity);
                 ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
                 ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
                 ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
@@ -143,22 +145,22 @@ namespace Generated.Improbable.Gdk.Tests
                 ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
                 ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
 
-                entityManager.RemoveComponent<SpatialOSExhaustiveOptional>(entity);
+                entityManager.RemoveComponent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>(entity);
 
-                if (entityManager.HasComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity))
+                if (entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentAdded<SpatialOSExhaustiveOptional>>(entity);
+                    entityManager.RemoveComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentRemoved<SpatialOSExhaustiveOptional>>(entity))
+                else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentRemoved<SpatialOSExhaustiveOptional>());
+                    entityManager.AddComponentData(entity, new ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "SpatialOSExhaustiveOptional")
+                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                     );
                 }
             }
@@ -170,25 +172,25 @@ namespace Generated.Improbable.Gdk.Tests
                     return;
                 }
 
-                if (entityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    var data = entityManager.GetComponentData<SpatialOSExhaustiveOptional>(entity);
+                    var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>(entity);
 
-                    var update = global::Generated.Improbable.Gdk.Tests.SpatialOSExhaustiveOptional.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    var update = Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
 
-                    List<SpatialOSExhaustiveOptional.Update> updates;
-                    if (entityManager.HasComponent<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity))
+                    List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update> updates;
+                    if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity))
                     {
-                        updates = entityManager.GetComponentData<SpatialOSExhaustiveOptional.ReceivedUpdates>(entity).Updates;
+                        updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity).Updates;
 
                     }
                     else
                     {
-                        var updatesComponent = new SpatialOSExhaustiveOptional.ReceivedUpdates
+                        var updatesComponent = new Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates
                         {
                             handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                         };
-                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<SpatialOSExhaustiveOptional.Update>());
+                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>());
                         updates = updatesComponent.Updates;
                         entityManager.AddComponentData(entity, updatesComponent);
                     }
@@ -226,7 +228,7 @@ namespace Generated.Improbable.Gdk.Tests
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "SpatialOSExhaustiveOptional")
+                            .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                         );
                         break;
                 }
@@ -242,7 +244,7 @@ namespace Generated.Improbable.Gdk.Tests
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "SpatialOSExhaustiveOptional")
+                            .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                         );
                         break;
                 }
@@ -257,54 +259,54 @@ namespace Generated.Improbable.Gdk.Tests
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<SpatialOSExhaustiveOptional>>(entity);
-                        entityManager.AddComponentData(entity, new Authoritative<SpatialOSExhaustiveOptional>());
+                        entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
+                        entityManager.AddComponentData(entity, new Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
 
                         // Add event senders
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<SpatialOSExhaustiveOptional>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<SpatialOSExhaustiveOptional>());
+                        entityManager.AddComponentData(entity, new AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<SpatialOSExhaustiveOptional>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<SpatialOSExhaustiveOptional>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<SpatialOSExhaustiveOptional>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<SpatialOSExhaustiveOptional>>(entity);
-                        entityManager.AddComponentData(entity, new NotAuthoritative<SpatialOSExhaustiveOptional>());
+                        entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
+                        entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>());
 
                         // Remove event senders
                         break;
                 }
 
                 List<Authority> authorityChanges;
-                if (entityManager.HasComponent<AuthorityChanges<SpatialOSExhaustiveOptional>>(entity))
+                if (entityManager.HasComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                 {
-                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<SpatialOSExhaustiveOptional>>(entity).Changes;
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity).Changes;
 
                 }
                 else
                 {
-                    var changes = new AuthorityChanges<SpatialOSExhaustiveOptional>
+                    var changes = new AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>
                     {
                         Handle = AuthorityChangesProvider.Allocate(World)
                     };
@@ -324,7 +326,7 @@ namespace Generated.Improbable.Gdk.Tests
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, entityId.Id)
                         .WithField("Op", opType)
-                        .WithField("Component", "SpatialOSExhaustiveOptional")
+                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                     );
                     return false;
                 }
@@ -339,19 +341,19 @@ namespace Generated.Improbable.Gdk.Tests
                     .WithField(LoggingUtils.EntityId, entityId.Id)
                     .WithField("New Authority", newAuthority)
                     .WithField("Expected Old Authority", expectedOldAuthority)
-                    .WithField("Component", "SpatialOSExhaustiveOptional")
+                    .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveOptional")
                 );
             }
 
         }
 
-        public class ComponentReplicator : ComponentReplicationHandler
+        internal class ComponentReplicator : ComponentReplicationHandler
         {
             public override uint ComponentId => 197716;
 
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.Create<SpatialOSExhaustiveOptional>(),
-                ComponentType.ReadOnly<Authoritative<SpatialOSExhaustiveOptional>>(),
+                ComponentType.Create<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>(),
+                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
@@ -367,7 +369,7 @@ namespace Generated.Improbable.Gdk.Tests
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<SpatialOSExhaustiveOptional>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
                 {
@@ -377,7 +379,7 @@ namespace Generated.Improbable.Gdk.Tests
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(197716);
-                        SpatialOSExhaustiveOptional.Serialization.Serialize(data, update.GetFields());
+                        Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Serialization.Serialize(data, update.GetFields());
 
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
@@ -394,18 +396,18 @@ namespace Generated.Improbable.Gdk.Tests
 
         }
 
-        public class ComponentCleanup : ComponentCleanupHandler
+        internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<SpatialOSExhaustiveOptional>>(),
-                ComponentType.ReadOnly<ComponentRemoved<SpatialOSExhaustiveOptional>>(),
+                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(),
+                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<SpatialOSExhaustiveOptional.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<SpatialOSExhaustiveOptional>>();
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>();
 
             public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
             };
@@ -413,10 +415,10 @@ namespace Generated.Improbable.Gdk.Tests
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<SpatialOSExhaustiveOptional.ReceivedUpdates>();
+                var data = updateGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<SpatialOSExhaustiveOptional.ReceivedUpdates>(entities[i]);
+                    buffer.RemoveComponent<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entities[i]);
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }
@@ -424,10 +426,10 @@ namespace Generated.Improbable.Gdk.Tests
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<SpatialOSExhaustiveOptional>>();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<AuthorityChanges<SpatialOSExhaustiveOptional>>(entities[i]);
+                    buffer.RemoveComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entities[i]);
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }
