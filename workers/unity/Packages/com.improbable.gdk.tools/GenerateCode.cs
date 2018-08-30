@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -24,11 +25,30 @@ namespace Improbable.Gdk.Tools
 
         static GenerateCode()
         {
-            Generate();
+            GenerateMenu();
         }
 
         [MenuItem("Improbable/Generate code", false, GenerateCodePriority)]
-        private static void Generate()
+        private static void GenerateMenu()
+        {
+            if (InternalEditorUtility.isHumanControllingUs)
+            {
+                EditorUtility.DisplayProgressBar("SpatialOS: Generating Code", "", 0);
+
+                EditorApplication.delayCall += () =>
+                {
+                    EditorUtility.DisplayProgressBar("SpatialOS: Generating Code", "", 5);
+                    PerformCodeGeneration();
+                    EditorUtility.ClearProgressBar();
+                };
+            }
+            else
+            {
+                PerformCodeGeneration();
+            }
+        }
+
+        private static void PerformCodeGeneration()
         {
             try
             {
@@ -90,7 +110,7 @@ namespace Improbable.Gdk.Tools
                 Directory.Delete(AssetsGeneratedSourceDir, true);
             }
 
-            Generate();
+            GenerateMenu();
         }
 
         private static void CopySchema(string schemaRoot)
