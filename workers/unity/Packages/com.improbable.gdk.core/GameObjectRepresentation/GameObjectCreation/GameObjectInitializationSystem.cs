@@ -1,14 +1,9 @@
 using System.Collections.Generic;
-using Generated.Improbable;
-using Generated.Improbable.Transform;
-using Generated.Playground;
-using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Playground
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
@@ -20,10 +15,8 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialOSTransform> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> NewlyCreatedEntities;
-            [ReadOnly] public ComponentDataArray<SpatialOSMetadata> Metadata;
         }
 
         private struct RemovedEntitiesData
@@ -39,7 +32,6 @@ namespace Playground
 
         private Worker worker;
         private ViewCommandBuffer viewCommandBuffer;
-        private EntityGameObjectCreator entityGameObjectCreator;
         private EntityGameObjectLinker entityGameObjectLinker;
         private EntityManager entityManager;
         private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
@@ -50,7 +42,6 @@ namespace Playground
 
             worker = Worker.GetWorkerFromWorld(World);
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
-            entityGameObjectCreator = new EntityGameObjectCreator(World);
             entityManager = World.GetOrCreateManager<EntityManager>();
             entityGameObjectLinker = World.GetOrCreateManager<EntityGameObjectLinkerSystem>().Linker;
         }
@@ -59,19 +50,17 @@ namespace Playground
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
-                var prefabName = addedEntitiesData.Metadata[i].EntityType;
-                var transform = addedEntitiesData.Transforms[i];
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
-                    worker.Origin;
-                var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
-                    transform.Rotation.Z, transform.Rotation.W);
+                var gameObject = GameObjectSystemHelper.EntityGameObjectCreator.CreateGameObjectForEntity(
+                    new SpatialOSEntity(entity, entityManager), worker);
 
-                var gameObject =
-                    entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, worker.WorkerType,
-                        position, rotation, spatialEntityId);
+                if (gameObject == null)
+                {
+                    continue;
+                }
+
                 var gameObjectReference = new GameObjectReference { GameObject = gameObject };
 
                 var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();

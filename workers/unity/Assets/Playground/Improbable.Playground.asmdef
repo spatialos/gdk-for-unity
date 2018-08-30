@@ -7,8 +7,7 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
-        "Improbable.Gdk.Generated",
-        "Improbable.Gdk.Core.GameObjectCreation"
+        "Improbable.Gdk.Generated"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
