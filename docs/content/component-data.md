@@ -4,64 +4,41 @@
 
 
 ## Component Data
-SpatialOS components are generated from `.schema` files into components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/13.0/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+The [code generator](./code-generator.md) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+
+> Note that code generation runs when you open the Unity Editor or when you select Improbable > Generate Code from the Editor menu.
 
 ### Overview
 
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
-is generated for each [blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types) SpatialOS component.
-A `class`, which extends `UnityEngine.Component` and implements `Improbable.Gdk.Core.ISpatialComponentData` is generated for each non-blittable SpatialOS component.
+is generated for each SpatialOS component.
 
-Each of these structs will be named `SpatialOS[schemalang component name]` and will contain only the schema data fields.
-It will **Not** contain any fields or methods pertaining to [commands](commands.md) or [events](events.md) defined on that component. 
+The generation process names each of these structs according to the relevant schemalang component name, SpatialOS[schemalang component name]. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](commands.md) or [events](events.md) defined on that component. 
 
-For example, the following component contains only blittable fields, so an `IComponentData` will be generated, similar to the example below.
+For example:
 
 Schemalang
 ```
-component Blittable {
+component Example {
   id = 1;
   int32 value = 1;
 }
 ```
 Generated component
 ```	csharp
-struct SpatialOSBlittable : IComponentData, ISpatialComponentData
+public struct SpatialOSExample : IComponentData, ISpatialComponentData
 {
   public int Value;
 }
 ```
 
-However the following component contains non-blittable fields, so a `Component` will be generated, similar to the example below.
-
-Schemalang
-```
-component NonBlittableComponent {
-  id = 2;
-  int32 int_blittable = 1;
-  map<int32, float> map_non_blittable = 2;
-  string string_non_blittable = 3;
-}
-```
-Generated component
-```	csharp
-class SpatialOSNonBlittable : Component, ISpatialComponentData
-{
-  public int IntBlittable;
-  public Dictionary<int, float> MapNonBlittable;
-  public string StringNonBlittable;
-}
-```
-
 ### Reading and writing
 
-When a SpatialOS entity is [checked out](entity-checkout-process.md), the generated components will be automatically added to the corresponding ECS entity. 
+When a SpatialOS entity is [checked out](entity-checkout-process.md), its components are automatically added to the corresponding ECS entity as part of the entity check out process.
 
-A component's value can be read by injecting that component into a system, just like any other ECS component.
-Note that if the component is non-blittable then it must be injected as a `ComponentArray` rather than a `ComponentDataArray`.
+A generated component's values can be read by injecting that component into a system, just like any other ECS component.
 
-To send a component update, set the component to the value to be sent.
-It will automatically be sent at the end of the tick.
+To send a component update, set the component to the value to be sent. A component update will be constructed and sent at the end of the tick.
 To override this behaviour see [here](custom-replication-system.md).
 
 ```csharp
@@ -70,8 +47,7 @@ public class ChangeComponentFieldSystem : ComponentSystem
     public struct Data
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSBlittable> BlittableComponents;
-        public ComponentArray<SpatialOSNonBlittable> NonBlittableComponents;
+        public ComponentDataArray<SpatialOSExample> ExampleComponents;
     }
 
     [Inject] Data data;
@@ -80,13 +56,9 @@ public class ChangeComponentFieldSystem : ComponentSystem
     {
         for(var i = 0; i < data.Length; ++i)
         {
-            // How to write to a blittable component - this will automatically trigger a component update
-            var currentBlittable = data.BlittableComponents[i];
-            FooData updatedBlittableValue = GetNewBlittable(currentBlittable);
-            data.BlittableComponents[i] = updatedBlittableValue;                       
-
-            // How to write to a non-blittable component - this will automatically trigger a component update
-            data.NonBlittableComponents[i].value = GetNonBlittableValue(); 
+            var exampleComponent = data.ExampleComponents[i];
+            exampleComponent.Value = 10;
+            data.ExampleComponents[i] = exampleComponent;
         }
     }
 }
@@ -99,30 +71,30 @@ When a component update is received this will be added as a [reactive component]
 ### Generation details
 
 #### Primitive types
-Each primitive type in schemalang corresponds to some type in the Unity GDK.
+Each primitive type in schemalang corresponds to a type in the Unity GDK.
 
-| Schemalang type                | Unity GDK type      | Blittable |
-| ------------------------------ | :-----------------: | --------: |
-| `int32` / `sint32` / `fixed32` | `int`               | yes       |
-| `uint32`                       | `uint`              | yes       |
-| `int64` / `sint64`/ `fixed64`  | `long`              | yes       |
-| `uint64`                       | `ulong`             | yes       |
-| `float`                        | `float`             | yes       |
-| `bool`                         | `bool1`             | yes       |
-| `string`                       | `string`            | no        |
-| `bytes`                        | `Not yet supported` | no        |
-| `EntityId`                     | `long`              | yes       |
+| Schemalang type                | Unity GDK type      |
+| ------------------------------ | :-----------------: |
+| `int32` / `sint32` / `fixed32` | `int`               |
+| `uint32`                       | `uint`              |
+| `int64` / `sint64`/ `fixed64`  | `long`              |
+| `uint64`                       | `ulong`             |
+| `float`                        | `float`             |
+| `bool`                         | `BlittableBool`     |
+| `string`                       | `string`            |
+| `bytes`                        | `byte[]`            |
+| `EntityId`                     | `long`              |
 
-Note that, for the moment, schemalang `bool` corresponds to a Unity `bool1`.
+Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable.
 
 #### Collections 
 Schemalang has 3 collection types:
 
-| Schemalang collection | Unity GDK collection                          | Blittable |
-| --------------------- | :-------------------------------------------: | --------: |
-| `map<T, U>`           | `System.Collections.Generic.Dictionary<T, U>` | no        |
-| `list<T>`             | `System.Collections.Generic.List<T>`          | no        |
-| `option<T>`           | `System.Nullable<T>`                          | no        |
+| Schemalang collection | Unity GDK collection                          |
+| --------------------- | :-------------------------------------------: |
+| `map<T, U>`           | `System.Collections.Generic.Dictionary<T, U>` |
+| `list<T>`             | `System.Collections.Generic.List<T>`          |
+| `option<T>`           | `System.Nullable<T>`                          |
 
 Note that the Unity GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
@@ -137,18 +109,14 @@ type SomeData {
 ```
 Generated C#
 ```	csharp
-struct SomeData 
+public struct SomeData 
 {
   public int Value;
 }
 ```
 
-If the type contains a non-blittable field then that type is itself non-blittable. 
-Any component containing that type will then be non-blittable.
-
 #### Enums 
 For every schemalang enum, a C# enum will be generated.
-Enums are blittable.
 
 Schemalang
 ```

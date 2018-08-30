@@ -4,17 +4,17 @@
 
 ## Authority
 
-**Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component).
+**Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component).
 
-> If you don't know about authority, you should read [Understanding authority](https://docs.improbable.io/reference/13.0/shared/design/understanding-access) in the SpatialOS documentation.
+> If you don't know about authority, you should read [Understanding authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
 > 
 > Crucially: at runtime, your worker instance may or may not have authority over a given SpatialOS component.
 
 ### How authority is represented in Unity's ECS
 
-For every [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component) attached to a SpatialOS entity, the Unity GDK attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
+For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the Unity GDK attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
-The authority tags in the Unity GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/13.0/shared/glossary#component)):
+The authority tags in the Unity GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
 
 * Whether or not the worker instance has authority:
     * `Authoritative<T>`: the worker instance has authority over the SpatialOS component
@@ -24,9 +24,9 @@ The authority tags in the Unity GDK are (where `T` is a [SpatialOS component](ht
 * If you're using `AuthorityLossImminent` notifications, when there is an `Authoritative<T>` tag, you could also have:
     * `AuthorityLossImminent<T>`: the worker instance will shortly lose authority over the SpatialOS component
 
-        For more information on `AuthorityLossImminent`, [see the SpatialOS documentation](https://docs.improbable.io/reference/13.0/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+        For more information on `AuthorityLossImminent`, [see the SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
-> **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/13.0/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
+> **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
 
 Here's an example of how to write a system that runs when a worker instance has authority over the SpatialOS component Position: 
 
@@ -72,11 +72,9 @@ This means entities _may_ initially have `NotAuthoritative<T>` attached for a ti
 
 ### What happens when a worker instance gains or loses authority over a SpatialOS entity
 
-When authority changes over a SpatialOS component the Unity GDK automatically adds an `AuthoritiesChanged<T>` reactive ECS component to the corresponding ECS entity (for `T`, the component that changed authority).
+When authority changes over a SpatialOS component the Unity GDK automatically adds an `AuthorityChanges<T>` reactive ECS component to the corresponding ECS entity (where `T` is the component that changed authority).
 
-`AuthoritiesChanged<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
-
-> **Note**: `AuthoritiesChanged<T>` is a `Component`, not an `IComponentData`. This means you must use a `ComponentArray<T>` for injection rather than a `ComponentDataArray<T>`.
+`AuthorityChanges<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
 
 Here's an example of doing something when a worker instance gets authority over a SpatialOS component:
 
@@ -90,7 +88,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
         public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
         
         // This system will only run when there has been a change of authority over PlayerInput in the last tick
-        public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
+        public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
     }
 
     [Inject] Data data;

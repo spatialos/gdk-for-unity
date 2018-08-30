@@ -8,14 +8,14 @@
 For every entity we receive from SpatialOS, an ECS entity representing the SpatialOS entity is automatically created in the Worker's world through the `SpatialOSReceiveSystem`.
 
 For each of your entity's SpatialOS components, the following Unity ECS components are automatically added:
-- `SpatialOS<name of schema component>`: Codegenerated struct of type `ISpatialComponentData` or `Component` for accessing component field values. Fields of these components are automatically kept up-to-date.
+- `SpatialOS[name of schema component]`: Codegenerated struct of type `ISpatialComponentData` for accessing component field values. Fields of these components are automatically kept up-to-date.
 - An [authority maker tag](authority.md) (`Authoritative<T>`, `NotAuthoritative<T>` or `AuthorityLostImminent<T>`) based on the Worker's component write authority.
 
 In addition, the following components are added to your entity as well:
 - `SpatialEntityId`: Holds the corresponding SpatialOS EntityId of an entity.
 - `NewlyAddedSpatialOSEntity`: Tag component for marking entities that were just checked-out. This component is automatically removed from your entity at the end of the frame it was created.
-- `WorldCommandSender`: Component that exposes the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
-- A `CommandRequestSender<T>` for every SpatialOS schema component `T` that defines a command: Component that exposes the API for [sending schema commands](commands.md#sending-command-requests) defined in `T`.
+- World command senders: A set of components that expose the API for [sending world commands](commands.md#world-commands) (e.g. create entity, delete entity).
+- A `ComponentName.CommandSenders.CommandName` for every SpatialOS schema command: Component that exposes the API for [sending schema commands](commands.md#sending-command-requests).
 
 ### Performing Setup Logic on Entities
 
