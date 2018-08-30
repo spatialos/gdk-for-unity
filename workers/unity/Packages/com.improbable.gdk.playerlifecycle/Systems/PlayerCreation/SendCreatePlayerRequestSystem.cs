@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
@@ -33,7 +32,6 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         [Inject] private ResponseData responseData;
 
-        private readonly Dictionary<long, float> requestTimeMap = new Dictionary<long, float>();
         private ILogDispatcher logDispatcher;
 
         protected override void OnCreateManager(int capacity)
@@ -50,8 +48,6 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var request = new CreatePlayerRequestType(new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
                 var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
 
-                requestTimeMap[createPlayerRequest.RequestId] = Time.realtimeSinceStartup;
-
                 sendData.RequestSenders[i].RequestsToSend
                     .Add(createPlayerRequest);
             }
@@ -61,22 +57,6 @@ namespace Improbable.Gdk.PlayerLifecycle
                 foreach (var receivedResponse in responseData.Responses[i].Responses)
                 {
                     var requestId = receivedResponse.RequestId;
-
-                    if (requestTimeMap.TryGetValue(requestId, out var requestTime))
-                    {
-                        requestTimeMap.Remove(requestId);
-
-                        logDispatcher.HandleLog(LogType.Log,
-                            new LogEvent(
-                                $"Time taken to be spawned : {Time.realtimeSinceStartup - requestTime:0.00}s."));
-
-                        continue;
-                    }
-                    else
-                    {
-                        logDispatcher.HandleLog(LogType.Error,
-                            new LogEvent($"Failed to get timing information for request with ID {requestId}."));
-                    }
 
                     if (receivedResponse.StatusCode != StatusCode.Success)
                     {
