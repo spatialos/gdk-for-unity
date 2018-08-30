@@ -25,7 +25,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class DispatcherHandler : ComponentDispatcherHandler
+        internal class DispatcherHandler : ComponentDispatcherHandler
         {
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
@@ -498,7 +498,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         }
 
-        public class ComponentReplicator : ComponentReplicationHandler
+        internal class ComponentReplicator : ComponentReplicationHandler
         {
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
@@ -664,7 +664,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
         }
 
-        public class ComponentCleanup : ComponentCleanupHandler
+        internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<ComponentAdded<<#= componentNamespace #>.Component>>(),

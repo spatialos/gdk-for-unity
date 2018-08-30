@@ -15,7 +15,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
 <# foreach (var commandDetails in commandDetailsList) { #>
             public class <#= commandDetails.CommandName #> : CommandStorage
