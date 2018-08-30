@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
                 var entity = entityManager.CreateEntity();
 
                 var commandResponseHandler =
-                    new ComponentWithNoFieldsWithCommands.Requirables.CommandResponseHandler(entity, entityManager,
+                    new ComponentWithNoFieldsWithCommands.Requirables.CommandRequestSender(entity, entityManager,
                         new LoggingDispatcher());
 
                 var responseCallbackCalled = false;

@@ -11,18 +11,17 @@ namespace Playground.MonoBehaviours
     {
         [Require] private SpinnerRotation.Requirables.Reader reader;
         [Require] private SpinnerRotation.Requirables.CommandRequestSender requestSender;
-        [Require] private SpinnerRotation.Requirables.CommandResponseHandler responseHandler;
         private EntityId ownEntityId;
 
         private void OnEnable()
         {
             ownEntityId = GetComponent<SpatialOSComponent>().SpatialEntityId;
-            responseHandler.OnSpinnerToggleRotationResponse += ResponseHandlerOnOnSpinnerToggleRotationResponse;
+            requestSender.OnSpinnerToggleRotationResponse += ResponseHandlerOnOnSpinnerToggleRotationResponse;
         }
 
         public void OnDisable()
         {
-            responseHandler.OnSpinnerToggleRotationResponse -= ResponseHandlerOnOnSpinnerToggleRotationResponse;
+            requestSender.OnSpinnerToggleRotationResponse -= ResponseHandlerOnOnSpinnerToggleRotationResponse;
         }
 
         private void ResponseHandlerOnOnSpinnerToggleRotationResponse(

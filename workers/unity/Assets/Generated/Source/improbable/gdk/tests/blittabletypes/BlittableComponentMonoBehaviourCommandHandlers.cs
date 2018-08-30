@@ -103,12 +103,34 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
                 }
 
+                private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
+                public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
+                {
+                    add => firstCommandDelegates.Add(value);
+                    remove => firstCommandDelegates.Remove(value);
+                }
+
+                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, firstCommandDelegates, logger);
+                }
                 public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(SecondCommand.CreateRequest(entityId, request));
                 }
 
+                private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
+                public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
+                {
+                    add => secondCommandDelegates.Add(value);
+                    remove => secondCommandDelegates.Remove(value);
+                }
+
+                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, secondCommandDelegates, logger);
+                }
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, 1001)]
@@ -155,55 +177,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(new SecondCommand.RequestResponder(entityManager, entity, request), secondCommandDelegates, logger);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1001)]
-            internal class CommandResponseHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1001)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
-            {
-                private Entity entity;
-                private readonly EntityManager entityManager;
-                private readonly ILogDispatcher logger;
-
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-                    this.entity = entity;
-                    this.entityManager = entityManager;
-                    this.logger = logger;
-                }
-
-                private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
-                public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
-                {
-                    add => firstCommandDelegates.Add(value);
-                    remove => firstCommandDelegates.Remove(value);
-                }
-
-                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(response, firstCommandDelegates, logger);
-                }
-
-                private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
-                public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
-                {
-                    add => secondCommandDelegates.Add(value);
-                    remove => secondCommandDelegates.Remove(value);
-                }
-
-                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(response, secondCommandDelegates, logger);
                 }
             }
         }

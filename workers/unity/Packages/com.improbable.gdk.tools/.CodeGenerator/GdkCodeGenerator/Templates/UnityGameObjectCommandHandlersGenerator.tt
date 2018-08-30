@@ -81,13 +81,27 @@ namespace <#= qualifiedNamespace #>
                     this.logger = logger;
                 }
 
-<# foreach(var commandDetails in commandDetailsList) { #>
+<# foreach(var commandDetails in commandDetailsList) {
+   var commandResponseType = commandDetails.CommandName + ".ReceivedResponse";
+   var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+#>
                 public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> request)
                 {
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.CreateRequest(entityId, request));
                 }
 
+                private readonly List<Action<<#= commandResponseType #>>> <#= delegateList #> = new List<Action<<#= commandResponseType #>>>();
+                public event Action<<#= commandResponseType #>> On<#= commandDetails.CommandName #>Response
+                {
+                    add => <#= delegateList #>.Add(value);
+                    remove => <#= delegateList #>.Remove(value);
+                }
+
+                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, <#= delegateList #>, logger);
+                }
 <# } #>
             }
 
@@ -131,48 +145,6 @@ namespace <#= qualifiedNamespace #>
                 internal void On<#= commandDetails.CommandName #>RequestInternal(<#= rawRequestType #> request)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(new <#= wrappedRequestType #>(entityManager, entity, request), <#= delegateList #>, logger);
-                }
-<# } #>
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
-            internal class CommandResponseHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
-            {
-                private Entity entity;
-                private readonly EntityManager entityManager;
-                private readonly ILogDispatcher logger;
-
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-                    this.entity = entity;
-                    this.entityManager = entityManager;
-                    this.logger = logger;
-                }
-<# foreach(var commandDetails in commandDetailsList) {
-   var commandResponseType = commandDetails.CommandName + ".ReceivedResponse";
-   var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
-#>
-
-                private readonly List<Action<<#= commandResponseType #>>> <#= delegateList #> = new List<Action<<#= commandResponseType #>>>();
-                public event Action<<#= commandResponseType #>> On<#= commandDetails.CommandName #>Response
-                {
-                    add => <#= delegateList #>.Add(value);
-                    remove => <#= delegateList #>.Remove(value);
-                }
-
-                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> response)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(response, <#= delegateList #>, logger);
                 }
 <# } #>
             }

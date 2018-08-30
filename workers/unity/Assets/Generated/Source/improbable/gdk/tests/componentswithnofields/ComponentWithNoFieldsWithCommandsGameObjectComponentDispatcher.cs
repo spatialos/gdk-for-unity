@@ -64,7 +64,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             private const uint componentId = 1005;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
             private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
-            private static readonly InjectableId commandResponseHandlerInjectableId = new InjectableId(InjectableType.CommandResponseHandler, componentId);
+            private static readonly InjectableId commandRequestSenderInjectableId = new InjectableId(InjectableType.CommandRequestSender, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
@@ -180,17 +180,17 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityIndexToInjectableStore[entities[i].Index];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestSenderInjectableId, out var commandRequestSenders))
                         {
                             continue;
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirables.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirables.CommandRequestSender commandRequestSender in commandRequestSenders)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
-                                commandResponseHandler.OnCmdResponseInternal(commandResponse);
+                                commandRequestSender.OnCmdResponseInternal(commandResponse);
                             }
                         }
                     }
