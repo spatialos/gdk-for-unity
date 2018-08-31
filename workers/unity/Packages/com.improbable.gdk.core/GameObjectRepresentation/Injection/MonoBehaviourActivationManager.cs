@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -12,10 +12,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     are enabled , calling into the RequiredFieldInjector for injection, storing the created Injectables in the
     ///     given ReaderWriterStore.
     /// </summary>
-    internal class MonoBehaviourActivationManager
+    internal class MonoBehaviourActivationManager : IDisposable
     {
         private readonly Entity entity;
-        private readonly EntityId spatialId;
 
         private readonly Dictionary<uint, HashSet<MonoBehaviour>> behavioursRequiringComponentsPresent
             = new Dictionary<uint, HashSet<MonoBehaviour>>();
@@ -28,6 +27,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private readonly HashSet<MonoBehaviour> behavioursToEnable = new HashSet<MonoBehaviour>();
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
+        private readonly HashSet<MonoBehaviour> enabledBehaviours = new HashSet<MonoBehaviour>();
 
         private readonly InjectableStore store;
         private readonly RequiredFieldInjector injector;
@@ -45,7 +45,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
             entity = spatialComponent.Entity;
-            spatialId = spatialComponent.SpatialEntityId;
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
@@ -57,6 +56,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     var readRequirementCount = componentReadRequirements.Count;
                     var authRequirementCount = componentAuthRequirements.Count;
 
+                    // This is the case when a MonoBehaviour only requires CommandRequestSenders.
                     if (readRequirementCount == 0 && authRequirementCount == 0)
                     {
                         behavioursToEnable.Add(behaviour);
@@ -105,6 +105,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             foreach (var behaviour in behavioursToEnable)
             {
                 behaviour.enabled = true;
+                enabledBehaviours.Add(behaviour);
             }
 
             behavioursToEnable.Clear();
@@ -112,24 +113,40 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void DisableSpatialOSBehaviours()
         {
+            DisableAllSpatialOSBehavioursOfASet(behavioursToDisable);
+            behavioursToDisable.Clear();
+        }
+
+        private void DisableAllEnabledSpatialOSBehaviours()
+        {
+            DisableAllSpatialOSBehavioursOfASet(enabledBehaviours);
+        }
+
+        private void DisableAllSpatialOSBehavioursOfASet(HashSet<MonoBehaviour> behaviours)
+        {
             // Dispose all Requirables before OnDisable() so that users can't access potentially inaccessible ecs entity components.
-            foreach (var behaviour in behavioursToDisable)
+            foreach (var behaviour in behaviours)
             {
                 injector.DisposeAllRequiredFields(behaviour);
             }
 
-            foreach (var behaviour in behavioursToDisable)
+            foreach (var behaviour in behaviours)
             {
                 behaviour.enabled = false;
             }
 
-            foreach (var behaviour in behavioursToDisable)
+            foreach (var behaviour in behaviours)
             {
                 injector.DeInjectAllRequiredFields(behaviour);
                 store.RemoveInjectablesForBehaviour(behaviour);
             }
 
-            behavioursToDisable.Clear();
+            // Make a copy because the behaviours argument could potentially be the enabledBehaviours set itself.
+            var removedBehaviours = new List<MonoBehaviour>(behaviours);
+            foreach (var removedBehaviour in removedBehaviours)
+            {
+                enabledBehaviours.Remove(removedBehaviour);
+            }
         }
 
         public void AddComponent(uint componentId)
@@ -222,6 +239,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 numUnsatisfiedRequirements[behaviour]++;
             }
+        }
+
+        public void Dispose()
+        {
+            DisableAllEnabledSpatialOSBehaviours();
         }
     }
 }

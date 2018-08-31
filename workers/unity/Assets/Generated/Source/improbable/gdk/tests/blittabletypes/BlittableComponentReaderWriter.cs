@@ -58,40 +58,120 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public event Action<BlittableBool> BoolFieldUpdated
                 {
-                    add => boolFieldDelegates.Add(value);
-                    remove => boolFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        boolFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        boolFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
 
                 public event Action<int> IntFieldUpdated
                 {
-                    add => intFieldDelegates.Add(value);
-                    remove => intFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        intFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        intFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
 
                 public event Action<long> LongFieldUpdated
                 {
-                    add => longFieldDelegates.Add(value);
-                    remove => longFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        longFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        longFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
 
                 public event Action<float> FloatFieldUpdated
                 {
-                    add => floatFieldDelegates.Add(value);
-                    remove => floatFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        floatFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        floatFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
 
                 public event Action<double> DoubleFieldUpdated
                 {
-                    add => doubleFieldDelegates.Add(value);
-                    remove => doubleFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        doubleFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        doubleFieldDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update)
@@ -102,6 +182,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     DispatchWithErrorHandling(update.FloatField, floatFieldDelegates);
                     DispatchWithErrorHandling(update.DoubleField, doubleFieldDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component data)
                 {
                     if (update.BoolField.HasValue)
@@ -130,8 +211,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> OnFirstEvent
                 {
-                    add => FirstEventDelegates.Add(value);
-                    remove => FirstEventDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        FirstEventDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        FirstEventDelegates.Remove(value);
+                    }
                 }
 
                 public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
@@ -141,6 +238,11 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
                 {
+                    if (LogErrorIfDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.FirstEvent>(Entity);
                     sender.Events.Add(payload);
                 }
@@ -149,8 +251,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> OnSecondEvent
                 {
-                    add => SecondEventDelegates.Add(value);
-                    remove => SecondEventDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        SecondEventDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        SecondEventDelegates.Remove(value);
+                    }
                 }
 
                 public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
@@ -160,6 +278,11 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
                 {
+                    if (LogErrorIfDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.SecondEvent>(Entity);
                     sender.Events.Add(payload);
                 }

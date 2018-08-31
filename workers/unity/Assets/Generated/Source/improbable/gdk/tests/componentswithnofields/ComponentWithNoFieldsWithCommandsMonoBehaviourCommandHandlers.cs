@@ -29,13 +29,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : IInjectable
+            public class CommandRequestSender : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -44,6 +44,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
                 {
+                    if (LogErrorIfDisposed())
+                    {
+                        return;
+                    }
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
                 }
@@ -61,13 +66,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : IInjectable
+            public class CommandRequestHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -77,8 +82,24 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 private readonly List<Action<Cmd.ReceivedRequest>> cmdDelegates = new List<Action<Cmd.ReceivedRequest>>();
                 public event Action<Cmd.ReceivedRequest> OnCmdRequest
                 {
-                    add => cmdDelegates.Add(value);
-                    remove => cmdDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
@@ -110,9 +131,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandResponseHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
+            public class CommandResponseHandler : RequirableBase
             {
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
 
                 }

@@ -23,17 +23,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private RequiredFieldInjector injector;
         private ILogDispatcher logger;
 
-        internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
-        {
-            if (!entityToActivationManager.ContainsKey(entity))
-            {
-                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
-            }
-
-            entityToActivationManager.Remove(entity);
-            entityToReaderWriterStore.Remove(entity);
-        }
-
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
@@ -176,6 +165,19 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             entityToReaderWriterStore.Add(entity, store);
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityToActivationManager.Add(entity, manager);
+        }
+
+        internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
+        {
+            if (!entityToActivationManager.ContainsKey(entity))
+            {
+                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
+            }
+
+            // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
+            entityToActivationManager[entity].Dispose();
+            entityToActivationManager.Remove(entity);
+            entityToReaderWriterStore.Remove(entity);
         }
     }
 }

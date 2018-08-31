@@ -34,13 +34,13 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : IInjectable
+            public class CommandRequestSender : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -50,6 +50,11 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var commandDetails in commandDetailsList) { #>
                 public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> request)
                 {
+                    if (LogErrorIfDisposed())
+                    {
+                        return;
+                    }
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.CreateRequest(entityId, request));
                 }
@@ -68,13 +73,13 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : IInjectable
+            public class CommandRequestHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -88,8 +93,24 @@ namespace <#= qualifiedNamespace #>
                 private readonly List<Action<<#= commandRequestType #>>> <#= delegateList #> = new List<Action<<#= commandRequestType #>>>();
                 public event Action<<#= commandRequestType #>> On<#= commandDetails.CommandName #>Request
                 {
-                    add => <#= delegateList #>.Add(value);
-                    remove => <#= delegateList #>.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Remove(value);
+                    }
                 }
 
                 internal void On<#= commandDetails.CommandName #>RequestInternal(<#= commandRequestType #> request)
@@ -122,9 +143,9 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
+            public class CommandResponseHandler : RequirableBase
             {
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
 
                 }

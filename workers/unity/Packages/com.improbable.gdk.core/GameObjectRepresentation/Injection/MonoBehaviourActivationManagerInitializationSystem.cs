@@ -23,8 +23,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
+            [ReadOnly] public ComponentDataArray<MonoBehaviourActivationManagerHandle> GameObjectReferenceHandles;
             public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
+            public SubtractiveComponent<GameObjectReferenceHandle> NoGameObjectReferenceHandle;
         }
 
         [Inject] private AddedEntitiesData addedEntitiesData;
@@ -45,12 +46,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 var entity = addedEntitiesData.Entities[i];
                 gameObjectDispatcherSystem.CreateActivationManagerAndReaderWriterStore(entity);
+                PostUpdateCommands.AddComponent(entity, new MonoBehaviourActivationManagerHandle());
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
                 gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entity);
+                PostUpdateCommands.RemoveComponent<MonoBehaviourActivationManagerHandle>(entity);
             }
         }
     }
