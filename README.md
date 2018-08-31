@@ -17,7 +17,12 @@ Despite the experimental nature of this feature, we would still love to have you
 
 ## The feature
 
-This branch explores game development for mobile with the SpatialOS Unity GDK. Changes to code and documentation relate to development of mobile compilation, deployment and optimisation. There is currently no documentation for mobile development; the documentation here is a copy of the documentation in the [SpatialOS Unity GDK repository](https://github.com/spatialos/UnityGDK). 
+This branch explores game development for mobile with the SpatialOS Unity GDK. Changes to code and documentation relate to development of mobile compilation, deployment and optimisation. 
+
+To start developing games for Android using local SpatialOS deployment, refer to the [Android setting up and local development documentation](docs/content/mobile/android-local.md).
+>Note: There is currently no SpatialOS cloud deployment support.
+
+The rest of the documentation here is a copy of the documentation in the [SpatialOS Unity GDK repository](https://github.com/spatialos/UnityGDK). 
 
 The content below is a copy of the readme file in the SpatialOS Unity GDK master branch.
 
