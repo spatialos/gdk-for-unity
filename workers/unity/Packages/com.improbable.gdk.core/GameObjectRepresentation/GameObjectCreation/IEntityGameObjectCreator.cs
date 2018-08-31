@@ -1,8 +1,6 @@
-﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Packages.com.improbable.gdk.core.GameObjectRepresentation.GameObjectCreation
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public interface IEntityGameObjectCreator
     {
