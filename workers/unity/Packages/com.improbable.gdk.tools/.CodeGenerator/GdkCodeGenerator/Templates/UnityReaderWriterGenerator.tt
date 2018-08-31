@@ -80,6 +80,7 @@ namespace <#= qualifiedNamespace #>
                     DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
                 }
+
                 protected override void ApplyUpdate(<#= componentNamespace #>.Update update, ref <#= componentNamespace #>.Component data)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>

@@ -68,6 +68,26 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             return injectable;
         }
 
+        public void DisposeAllRequiredFields(MonoBehaviour behaviour)
+        {
+            var behaviourType = behaviour.GetType();
+            EnsureLoaded(behaviourType);
+            foreach (var fieldsToComponents in fieldInfoCache[behaviourType])
+            {
+                var fields = fieldsToComponents.Value;
+                foreach (var field in fields)
+                {
+                    var oldField = field.GetValue(behaviour);
+                    if (!(oldField is RequirableBase))
+                    {
+                        Debug.LogError("Something is wrong " + behaviour);
+                    }
+
+                    ((RequirableBase) oldField).Dispose();
+                }
+            }
+        }
+
         public void DeInjectAllRequiredFields(MonoBehaviour behaviour)
         {
             var behaviourType = behaviour.GetType();

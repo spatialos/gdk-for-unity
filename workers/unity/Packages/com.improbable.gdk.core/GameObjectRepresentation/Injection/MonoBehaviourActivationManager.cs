@@ -112,6 +112,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void DisableSpatialOSBehaviours()
         {
+            // Dispose all Requirables before OnDisable() so that users can't access potentially inaccessible ecs entity components.
+            foreach (var behaviour in behavioursToDisable)
+            {
+                injector.DisposeAllRequiredFields(behaviour);
+            }
+
             foreach (var behaviour in behavioursToDisable)
             {
                 behaviour.enabled = false;
