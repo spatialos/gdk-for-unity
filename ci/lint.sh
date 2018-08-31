@@ -17,10 +17,10 @@ if [ $? -ne 0 ]; then
 fi
 set -e
 
-ci/codegen.sh
+CODE_GENERATOR_DIR="workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator"
 
 # Ensure that all dependencies are present for Resharper.
-dotnet restore code_generator/GdkCodeGenerator.sln
+dotnet restore "${CODE_GENERATOR_DIR}/GdkCodeGenerator.sln"
 dotnet restore tools/Tools.sln
 
 markStartOfBlock "Generating Solution Files"
@@ -48,9 +48,9 @@ markEndOfBlock "Linting tools"
 markStartOfBlock "Linting GDK Code Generator"
 
 ${LINTER} --profile="IW Code Cleanup" \
-  --settings=code_generator/GdkCodeGenerator.sln.DotSettings \
+  --settings="${CODE_GENERATOR_DIR}/GdkCodeGenerator.sln.DotSettings" \
   --disable-settings-layers="SolutionPersonal;GlobalAll;GlobalPerProduct" \
-  code_generator/GdkCodeGenerator.sln
+  "${CODE_GENERATOR_DIR}/GdkCodeGenerator.sln"
 
 markEndOfBlock "Linting GDK Code Generator"
 

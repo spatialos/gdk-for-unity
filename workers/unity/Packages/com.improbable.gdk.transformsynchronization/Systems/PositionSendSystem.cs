@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    public class PositionSendSystem : CustomSpatialOSSendSystem<SpatialOSPosition>
+    public class PositionSendSystem : CustomSpatialOSSendSystem<Position.Component>
     {
         private struct PositionData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSPosition> Position;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
+            public ComponentDataArray<Position.Component> Position;
+            [ReadOnly] public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
         }
 
@@ -47,8 +47,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
 
                 var update = new SchemaComponentUpdate(component.ComponentId);
-                Generated.Improbable.SpatialOSPosition.Serialization.Serialize(component, update.GetFields());
-                worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+                Position.Serialization.Serialize(component, update.GetFields());
+                WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
                 positionData.Position[i] = component;

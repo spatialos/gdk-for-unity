@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        private Worker worker;
+        private WorkerSystem worker;
         private Dispatcher dispatcher;
 
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
+            worker = World.GetExistingManager<WorkerSystem>();
             dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
 
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Core
         private void OnAddEntity(AddEntityOp op)
         {
             var entityId = op.EntityId;
-            if (worker.EntityMapping.ContainsKey(entityId))
+            if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.DuplicateAdditionOfEntity)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core
             }
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
-            worker.EntityMapping.Add(entityId, entity);
+            worker.EntityIdToEntity.Add(entityId, entity);
         }
 
         private void OnRemoveEntity(RemoveEntityOp op)
@@ -115,13 +115,14 @@ namespace Improbable.Gdk.Core
             }
 
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
-            EntityManager.DestroyEntity(worker.EntityMapping[entityId]);
-            worker.EntityMapping.Remove(entityId);
+            EntityManager.DestroyEntity(worker.EntityIdToEntity[entityId]);
+            worker.EntityIdToEntity.Remove(entityId);
         }
 
         private void OnDisconnect(DisconnectOp op)
         {
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
+            WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             EntityManager.AddSharedComponentData(worker.WorkerEntity,
                 new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
@@ -244,7 +245,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
@@ -287,7 +288,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
@@ -330,7 +331,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnEntityQueryResponse(EntityQueryResponseOp op)
@@ -373,7 +374,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void HandleException(Exception e)

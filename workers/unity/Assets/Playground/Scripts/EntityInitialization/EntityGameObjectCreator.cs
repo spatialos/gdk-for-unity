@@ -5,6 +5,7 @@ using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
+using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Playground
 {
@@ -13,25 +14,25 @@ namespace Playground
         private readonly Dictionary<string, Dictionary<string, GameObject>> cachedPrefabsPerWorkerType
             = new Dictionary<string, Dictionary<string, GameObject>>();
 
-        public GameObject CreateGameObjectForEntity(SpatialOSEntity entity, Worker worker)
+        public GameObject CreateGameObjectForEntity(SpatialOSEntity entity, WorkerSystem worker)
         {
             if (!cachedPrefabsPerWorkerType.TryGetValue(worker.WorkerType, out var cachedPrefabs))
             {
                 cachedPrefabsPerWorkerType[worker.WorkerType] = cachedPrefabs = new Dictionary<string, GameObject>();
             }
 
-            if (!entity.HasComponent<SpatialOSMetadata>())
+            if (!entity.HasComponent<Metadata.Component>())
             {
                 return null;
             }
 
-            var prefabName = entity.GetComponent<SpatialOSMetadata>().EntityType;
-            if (!entity.HasComponent<SpatialOSTransform>())
+            var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
+            if (!entity.HasComponent<Transform.Component>())
             {
                 return cachedPrefabs[prefabName] = null;
             }
 
-            var transform = entity.GetComponent<SpatialOSTransform>();
+            var transform = entity.GetComponent<Transform.Component>();
             var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
                 worker.Origin;
             var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,

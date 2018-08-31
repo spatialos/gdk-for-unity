@@ -45,6 +45,14 @@ namespace Improbable.Gdk.Core.Commands
             manager.AddComponentData(entity, entityQuerySender);
         }
 
+        internal static void RemoveWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
+        {
+            manager.RemoveComponent<CreateEntity.CommandSender>(entity);
+            manager.RemoveComponent<DeleteEntity.CommandSender>(entity);
+            manager.RemoveComponent<ReserveEntityIds.CommandSender>(entity);
+            manager.RemoveComponent<EntityQuery.CommandSender>(entity);
+        }
+
         internal static void DeallocateWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
         {
             var createEntityData = manager.GetComponentData<CreateEntity.CommandSender>(entity);
@@ -62,11 +70,29 @@ namespace Improbable.Gdk.Core.Commands
 
         public static class CreateEntity
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public Entity Entity;
                 public EntityId? EntityId;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(Entity entity, EntityId? entityId = null, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    Entity = entity,
+                    EntityId = entityId,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -74,12 +100,14 @@ namespace Improbable.Gdk.Core.Commands
                 public CreateEntityResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context)
+                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -125,7 +153,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -135,7 +163,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -190,7 +218,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -200,7 +228,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -237,16 +265,33 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
         public static class DeleteEntity
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public EntityId EntityId;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(EntityId entityId, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    EntityId = entityId,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -254,12 +299,14 @@ namespace Improbable.Gdk.Core.Commands
                 public DeleteEntityResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context)
+                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -287,7 +334,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -305,7 +352,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -315,7 +362,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -370,7 +417,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -380,7 +427,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -417,16 +464,33 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
         public static class ReserveEntityIds
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public uint NumberOfEntityIds;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(uint numberOfEntityIds, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    NumberOfEntityIds = numberOfEntityIds,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -434,12 +498,14 @@ namespace Improbable.Gdk.Core.Commands
                 public ReserveEntityIdsResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context)
+                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -467,7 +533,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -485,7 +551,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -495,7 +561,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -550,7 +616,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -560,7 +626,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -597,16 +663,33 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
 
         public static class EntityQuery
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public Improbable.Worker.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    EntityQuery = entityQuery,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -614,12 +697,14 @@ namespace Improbable.Gdk.Core.Commands
                 public EntityQueryResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context)
+                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -647,7 +732,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal static class RequestsProvider
             {
-                private static readonly Dictionary<uint, List<Request>> Storage = new Dictionary<uint, List<Request>>();
+                private static readonly Dictionary<long, List<Request>> Storage = new Dictionary<long, List<Request>>();
                 private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
                 private static uint nextHandle = 0;
@@ -665,7 +750,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -675,7 +760,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"RequestsProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -730,7 +815,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     return value;
@@ -740,7 +825,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!Storage.ContainsKey(handle))
                     {
-                        throw new ArgumentException($"UpdatesProvider does not contain handle {handle}");
+                        throw new ArgumentException($"ResponsesProvider does not contain handle {handle}");
                     }
 
                     Storage[handle] = value;
@@ -777,7 +862,7 @@ namespace Improbable.Gdk.Core.Commands
 
             internal class Storage : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<uint, CommandRequestStore<Request>>();
+                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight = new Dictionary<long, CommandRequestStore<Request>>();
             }
         }
     }

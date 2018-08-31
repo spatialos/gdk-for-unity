@@ -37,7 +37,7 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
             public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
@@ -81,23 +81,19 @@ namespace Playground
 
             var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
 
-            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable)))
+            if (component == null || !EntityManager.HasComponent(component.Entity, typeof(Launchable.Component)))
             {
                 return;
             }
 
-            var impactPoint = new Vector3f { X = info.point.x, Y = info.point.y, Z = info.point.z };
-            var launchDirection = new Vector3f { X = ray.direction.x, Y = ray.direction.y, Z = ray.direction.z };
+            var impactPoint = new Vector3f(info.point.x, info.point.y, info.point.z);
+            var launchDirection = new Vector3f(ray.direction.x, ray.direction.y, ray.direction.z);
 
-            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
-                new LaunchCommandRequest
-                {
-                    EntityToLaunch = component.SpatialEntityId,
-                    ImpactPoint = impactPoint,
-                    LaunchDirection = launchDirection,
-                    LaunchEnergy = command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
-                    Player = playerId,
-                }));
+            sender.RequestsToSend.Add(Launcher.LaunchEntity.CreateRequest(playerId,
+                new LaunchCommandRequest(component.SpatialEntityId, impactPoint, launchDirection,
+                    command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
+                    playerId
+                )));
 
             playerData.Sender[0] = sender;
         }

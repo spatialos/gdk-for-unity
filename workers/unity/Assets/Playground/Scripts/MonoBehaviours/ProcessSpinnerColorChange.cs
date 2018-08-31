@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Playground;
@@ -11,11 +11,11 @@ public class ProcessSpinnerColorChange : MonoBehaviour
     [Require] private SpinnerColor.Requirables.Reader colorReader;
 
     private float collideTime;
-    private bool flashing = false;
+    private bool flashing;
 
     [SerializeField] private float flashTime = 0.2f;
 
-    private MeshRenderer renderer;
+    private MeshRenderer meshRenderer;
 
     private static Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
     private static MaterialPropertyBlock flashingMaterial;
@@ -30,17 +30,14 @@ public class ProcessSpinnerColorChange : MonoBehaviour
 
     private void OnEnable()
     {
-        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-        {
-            collisionsReader.OnPlayerCollided += HandleCollisionEvent;
-            colorReader.ColorUpdated += HandleColorChange;
-        }
+        collisionsReader.OnPlayerCollided += HandleCollisionEvent;
+        colorReader.ColorUpdated += HandleColorChange;
     }
 
     private void Awake()
     {
-        renderer = gameObject.GetComponent<MeshRenderer>();
-        if (renderer == null)
+        meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer == null)
         {
             Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
         }
@@ -48,25 +45,22 @@ public class ProcessSpinnerColorChange : MonoBehaviour
 
     private void OnDisable()
     {
-        if (colorReader != null && collisionsReader != null) // TODO UTY-791: Needed until prefab preprocessing is implemented, remove as part of UTY-791
-        {
-            collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
-            colorReader.ColorUpdated -= HandleColorChange;
-        }
+        collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
+        colorReader.ColorUpdated -= HandleColorChange;
     }
 
     private void HandleCollisionEvent(Empty empty)
     {
         collideTime = Time.time;
         flashing = true;
-        renderer.SetPropertyBlock(flashingMaterial);
+        meshRenderer.SetPropertyBlock(flashingMaterial);
     }
 
     private void HandleColorChange(Color color)
     {
         if (!flashing)
         {
-            renderer.SetPropertyBlock(materialPropertyBlocks[color]);
+            meshRenderer.SetPropertyBlock(materialPropertyBlocks[color]);
         }
     }
 
@@ -74,7 +68,7 @@ public class ProcessSpinnerColorChange : MonoBehaviour
     {
         if (flashing && Time.time - collideTime > flashTime)
         {
-            renderer.SetPropertyBlock(materialPropertyBlocks[colorReader.Data.Color]);
+            meshRenderer.SetPropertyBlock(materialPropertyBlocks[colorReader.Data.Color]);
             flashing = false;
         }
     }

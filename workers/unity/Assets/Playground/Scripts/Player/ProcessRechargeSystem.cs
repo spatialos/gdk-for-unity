@@ -25,7 +25,7 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<SpatialOSLauncher> Launcher;
+            public ComponentDataArray<Launcher.Component> Launcher;
             [ReadOnly] public ComponentDataArray<Recharging> Reloading;
         }
 

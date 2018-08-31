@@ -1,8 +1,8 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -10,7 +10,6 @@ namespace Improbable.Gdk.TransformSynchronization
     public class InterpolateTransformSystem : ComponentSystem
     {
         private const uint TargetTickOffset = 2;
-        private const uint MaxBufferSize = 4;
 
         private TickSystem tickSystem;
         private long serverTickOffset;
@@ -21,9 +20,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformData
         {
             public readonly int Length;
-            public ComponentArray<BufferedTransform> BufferedTransform;
+            public BufferArray<BufferedTransform> BufferedTransform;
             public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<SpatialOSTransform>> transformAuthority;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> transformAuthority;
         }
 
         [Inject] private TransformData transformData;
@@ -32,8 +31,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             base.OnCreateManager(capacity);
 
-            var worker = Core.Worker.GetWorkerFromWorld(World);
-            origin = worker.Origin;
+            origin = World.GetExistingManager<WorkerSystem>().Origin;
 
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }
@@ -58,36 +56,38 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             for (var i = 0; i < transformData.Length; i++)
             {
-                var transformQueue = transformData.BufferedTransform[i].TransformUpdates;
-                if (transformQueue.Count == 0)
+                var transformQueue = transformData.BufferedTransform[i];
+                if (transformQueue.Length == 0)
                 {
                     continue;
                 }
 
+                var nextTransform = transformQueue[0].transformUpdate;
+                
                 if (!tickOffsetSet)
                 {
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                     tickOffsetSet = true;
                 }
 
                 // Recieved too many updates. Drop to latest update and interpolate from there.
-                if (transformQueue.Count >= MaxBufferSize)
+                if (transformQueue.Length >= TransformSynchronizationConfig.MaxBufferSize)
                 {
-                    transformQueue.RemoveRange(0, transformQueue.Count - 1);
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    transformQueue.RemoveRange(0, transformQueue.Length - 1);
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                 }
 
+                nextTransform = transformQueue[0].transformUpdate;
                 var serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
 
                 // Our time is too far ahead need to reset to server tick
-                if (transformQueue[0].Tick < serverTickToApply)
+                if (nextTransform.Tick < serverTickToApply)
                 {
-                    serverTickOffset = (long) transformQueue[0].Tick - tickSystem.GlobalTick;
+                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
                     serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
                 }
 
                 // Apply update if update tick matches local tick, otherwise interpolate
-                var nextTransform = transformQueue[0];
                 var rigidBody = transformData.Rigidbody[i];
 
                 if (nextTransform.Tick == serverTickToApply)
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
                         nextTransform.Location.Z);
-                    var newRotation = new UnityEngine.Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
+                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
                         nextTransform.Rotation.Z, nextTransform.Rotation.W);
 
                     rigidBody.MovePosition(newPosition + origin);
@@ -111,11 +111,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
                         nextTransform.Location.Z);
-                    var newRotation = new UnityEngine.Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
+                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
                         nextTransform.Rotation.Z, nextTransform.Rotation.W);
 
                     var interpolateLocation = Vector3.Lerp(currentLocation, newPosition, t);
-                    var interpolateRotation = UnityEngine.Quaternion.Slerp(currentRotation, newRotation, t);
+                    var interpolateRotation = Quaternion.Slerp(currentRotation, newRotation, t);
 
                     rigidBody.MovePosition(interpolateLocation + origin);
                     rigidBody.MoveRotation(interpolateRotation);

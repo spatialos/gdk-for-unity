@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<SpatialOSExhaustiveBlittableSingular.Update>> Storage = new Dictionary<uint, List<SpatialOSExhaustiveBlittableSingular.Update>>();
+                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<SpatialOSExhaustiveBlittableSingular.Update>));
+                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<SpatialOSExhaustiveBlittableSingular.Update> Get(uint handle)
+                public static List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, List<SpatialOSExhaustiveBlittableSingular.Update> value)
+                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

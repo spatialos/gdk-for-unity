@@ -30,11 +30,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
-        private Worker worker;
+        private WorkerSystem worker;
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectLinker entityGameObjectLinker;
         private EntityManager entityManager;
-        private readonly Dictionary<int, GameObject> entityGameObjectCache = new Dictionary<int, GameObject>();
+        private readonly Dictionary<Entity, GameObject> entityGameObjectCache = new Dictionary<Entity, GameObject>();
 
         protected override void OnCreateManager(int capacity)
         {
@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return;
             }
 
-            worker = Worker.GetWorkerFromWorld(World);
+            worker = World.GetExistingManager<WorkerSystem>();
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
             entityManager = World.GetOrCreateManager<EntityManager>();
             entityGameObjectLinker = World.GetOrCreateManager<EntityGameObjectLinkerSystem>().Linker;
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();
 
-                entityGameObjectCache[entity.Index] = gameObject;
+                entityGameObjectCache.Add(entity, gameObject);
                 var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
 
                 PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
@@ -86,17 +86,17 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
-                var entityIndex = entity.Index;
 
-                if (!entityGameObjectCache.TryGetValue(entityIndex, out var gameObject))
+                if (!entityGameObjectCache.TryGetValue(entity, out var gameObject))
                 {
                     worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                             "GameObject corresponding to removed entity not found.")
-                        .WithField("EntityIndex", entityIndex));
+                        .WithField("EntityIndex", entity.Index)
+                        .WithField("EntityVersion", entity.Version));
                     continue;
                 }
 
-                entityGameObjectCache.Remove(entityIndex);
+                entityGameObjectCache.Remove(entity);
                 UnityObjectDestroyer.Destroy(gameObject);
                 PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }

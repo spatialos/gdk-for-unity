@@ -1,0 +1,65 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var typeDetails = GetTypeDetails();
+    var fieldDetailsList = GetFieldDetailsList();
+#>
+
+public struct <#= typeDetails.CapitalisedName #>
+{
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+    public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
+<# } #>
+<#
+if (fieldDetailsList.Count > 0)
+{ 
+    var constructorArgs = GetConstructorArgs();
+#>
+
+    public <#= typeDetails.CapitalisedName #>(<#= constructorArgs #>)
+    {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+        <#= fieldDetails.PascalCaseName #> = <#= fieldDetails.CamelCaseName #>;
+<# } #>
+    }
+<# } #>
+
+    public static class Serialization
+    {
+        public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.Core.SchemaObject obj)
+        {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+            {
+                <#= fieldDetails.GetSerializationString("instance." + fieldDetails.PascalCaseName, "obj", 4) #>
+            }
+<# } #>
+        }
+
+        public static <#= typeDetails.CapitalisedName #> Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+        {
+            var instance = new <#= typeDetails.CapitalisedName #>();
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+            {
+                <#= fieldDetails.GetDeserializeString("instance." + fieldDetails.PascalCaseName, "obj", 4) #>
+            }
+<# } #>
+            return instance;
+        }
+    }
+<#
+    var typeGenerator = new UnityTypeContent();
+    foreach (var nestedType in nestedTypes)
+    {
+#>
+
+    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, enumSet)) #>
+<# } #>
+<#
+    var enumGenerator = new UnityEnumContent();
+    foreach (var nestedEnum in nestedEnums)
+    {
+#>
+
+    <#= CommonGeneratorUtils.IndentEveryNewline(enumGenerator.Generate(nestedEnum)) #>
+<# } #>
+}

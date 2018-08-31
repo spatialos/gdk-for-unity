@@ -5,6 +5,7 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Legacy.BuildSystem.Configuration;
 using Improbable.Gdk.Legacy.BuildSystem.Util;
+using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -21,6 +22,7 @@ namespace Improbable.Gdk.Legacy.BuildSystem
         /// <summary>
         ///     Build method that is invoked by commandline
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public static void Build()
         {
             try
@@ -59,7 +61,7 @@ namespace Improbable.Gdk.Legacy.BuildSystem
 
                 var wantedWorkerPlatforms = GetWorkerPlatforms(workerTypesArg);
 
-                SpatialCommands.GenerateBuildConfiguration();
+                LocalLaunch.BuildConfig();
 
                 foreach (var workerPlatform in wantedWorkerPlatforms)
                 {
@@ -199,7 +201,7 @@ namespace Improbable.Gdk.Legacy.BuildSystem
 
                 var basePath = PathUtil.Combine(BuildPaths.BuildScratchDirectory, workerBuildData.PackageName);
 
-                SpatialCommands.Zip(zipPath, basePath,
+                Zip(zipPath, basePath,
                     targetEnvironment == BuildEnvironment.Local
                         ? PlayerCompression.Disabled
                         : PlayerCompression.Enabled);
@@ -207,6 +209,18 @@ namespace Improbable.Gdk.Legacy.BuildSystem
             finally
             {
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, symbols);
+            }
+        }
+
+        private static void Zip(string zipAbsolutePath, string basePath, PlayerCompression useCompression)
+        {
+            var zipFileFullPath = Path.GetFullPath(zipAbsolutePath);
+
+            using(new ShowProgressBarScope($"Package {basePath}"))
+            {
+                RedirectedProcess.Run(Common.SpatialBinary, "file", "zip", $"--output=\"{zipFileFullPath}\"",
+                    $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
+                    $"--compression={useCompression == PlayerCompression.Enabled}");
             }
         }
 

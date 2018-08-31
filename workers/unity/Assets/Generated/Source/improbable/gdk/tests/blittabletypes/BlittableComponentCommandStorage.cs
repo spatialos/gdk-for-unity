@@ -10,17 +10,17 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
-        public class CommandStorages
+        internal class CommandStorages
         {
             public class FirstCommand : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>>();
             }
             public class SecondCommand : CommandStorage
             {
-                public Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<uint, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>>();
             }
         }
     }

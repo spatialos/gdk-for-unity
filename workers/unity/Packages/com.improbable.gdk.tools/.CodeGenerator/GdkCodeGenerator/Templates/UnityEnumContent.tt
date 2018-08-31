@@ -1,0 +1,12 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var enumDetails = GetEnumDetails();
+#>
+
+public enum <#=  enumDetails.TypeName #> : uint
+{
+<# foreach (var valueDefinition in enumDefinition.valueDefinitions) { #>
+    <#= valueDefinition.name #> = <#= valueDefinition.value #>,
+<# } #>
+}
