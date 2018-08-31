@@ -106,47 +106,47 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.MarkComponentsRemovedForDeactivation(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.MarkAuthorityLostForDeactivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkComponentsRemovedForDeactivation(entityToActivationManager);
+                gameObjectComponentDispatcher.MarkAuthorityLostForDeactivation(entityToActivationManager);
             }
 
-            foreach (var indexManagerPair in entityIndexToActivationManager)
+            foreach (var indexManagerPair in entityToActivationManager)
             {
                 indexManagerPair.Value.DisableSpatialOSBehaviours();
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(entityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(entityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.MarkAuthorityGainedForActivation(entityIndexToActivationManager);
-                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityIndexToActivationManager);
+                gameObjectComponentDispatcher.MarkAuthorityGainedForActivation(entityToActivationManager);
+                gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityToActivationManager);
             }
 
-            foreach (var indexManagerPair in entityIndexToActivationManager)
+            foreach (var indexManagerPair in entityToActivationManager)
             {
                 indexManagerPair.Value.EnableSpatialOSBehaviours();
             }
 
             foreach (var gameObjectComponentDispatcher in GameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityIndexToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(entityIndexToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(entityToReaderWriterStore);
             }
         }
 
@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void CreateActivationManagerAndReaderWriterStore(Entity entity)
         {
-            if (entityIndexToActivationManager.ContainsKey(entity))
+            if (entityToActivationManager.ContainsKey(entity))
             {
                 throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entity {entity.Index}.");
             }
