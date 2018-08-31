@@ -493,7 +493,9 @@ namespace <#= qualifiedNamespace #>
                     op.Message,
                     op.StatusCode,
                     response,
-                    requestBundle.Request));
+                    requestBundle.Request,
+                    requestBundle.Context,
+                    requestBundle.RequestId));
             }
 <# } #>
         }
@@ -616,7 +618,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             <#= commandDetails.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entityArray[j], wrappedCommandRequest.Payload, null);
+                                new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
                         }
 
                         requests.Clear();

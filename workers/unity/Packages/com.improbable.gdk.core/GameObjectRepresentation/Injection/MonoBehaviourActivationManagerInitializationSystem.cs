@@ -49,8 +49,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
-                var entityIndex = removedEntitiesData.Entities[i].Index;
-                gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entityIndex);
+                var entity = removedEntitiesData.Entities[i];
+                gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entity);
             }
         }
     }

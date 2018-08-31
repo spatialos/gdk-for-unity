@@ -57,10 +57,10 @@ namespace Improbable.Gdk.PlayerLifecycle
                             PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
                         {
                             Debug.LogFormat(Messages.DeletingPlayer, entityId);
-                            entityDeleteSender.RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
-                            {
-                                EntityId = entityId,
-                            });
+                            entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+                            (
+                                entityId
+                            ));
                             data.WorldCommandSenders[i] = entityDeleteSender;
                         }
                     }

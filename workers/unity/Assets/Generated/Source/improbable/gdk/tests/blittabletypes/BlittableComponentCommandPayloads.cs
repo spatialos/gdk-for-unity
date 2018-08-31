@@ -22,12 +22,15 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
+                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -35,6 +38,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context,
+                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 
@@ -95,18 +100,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? ResponsePayload { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest RequestPayload { get; }
+                public System.Object Context { get; }
+                public long RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? response,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
+                    System.Object context,
+                    long requestId)
                 {
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
+                    Context = context;
+                    RequestId = requestId;
                 }
             }
         }
@@ -122,12 +133,15 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest Payload { get; internal set; }
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
+                public System.Object Context { get; internal set; }
+                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
                 global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
                 uint? timeoutMillis = null,
-                bool allowShortCircuiting = false)
+                bool allowShortCircuiting = false,
+                System.Object context = null)
             {
                 return new Request
                 {
@@ -135,6 +149,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Payload = request,
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
+                    Context = context,
+                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 
@@ -195,18 +211,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 public StatusCode StatusCode { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? ResponsePayload { get; }
                 public global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest RequestPayload { get; }
+                public System.Object Context { get; }
+                public long RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? response,
-                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
+                    global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
+                    System.Object context,
+                    long requestId)
                 {
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
+                    Context = context;
+                    RequestId = requestId;
                 }
             }
         }

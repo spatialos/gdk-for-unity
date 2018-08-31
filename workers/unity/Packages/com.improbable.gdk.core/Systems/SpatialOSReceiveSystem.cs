@@ -245,7 +245,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
@@ -288,7 +288,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
@@ -331,7 +331,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void OnEntityQueryResponse(EntityQueryResponseOp op)
@@ -374,7 +374,7 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context));
+                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
         private void HandleException(Exception e)

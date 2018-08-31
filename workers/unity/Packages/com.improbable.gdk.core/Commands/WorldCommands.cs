@@ -70,11 +70,29 @@ namespace Improbable.Gdk.Core.Commands
 
         public static class CreateEntity
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public Entity Entity;
                 public EntityId? EntityId;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(Entity entity, EntityId? entityId = null, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    Entity = entity,
+                    EntityId = entityId,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -82,12 +100,14 @@ namespace Improbable.Gdk.Core.Commands
                 public CreateEntityResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context)
+                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -251,10 +271,27 @@ namespace Improbable.Gdk.Core.Commands
 
         public static class DeleteEntity
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public EntityId EntityId;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(EntityId entityId, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    EntityId = entityId,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -262,12 +299,14 @@ namespace Improbable.Gdk.Core.Commands
                 public DeleteEntityResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context)
+                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -431,10 +470,27 @@ namespace Improbable.Gdk.Core.Commands
 
         public static class ReserveEntityIds
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public uint NumberOfEntityIds;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(uint numberOfEntityIds, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    NumberOfEntityIds = numberOfEntityIds,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -442,12 +498,14 @@ namespace Improbable.Gdk.Core.Commands
                 public ReserveEntityIdsResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context)
+                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
@@ -611,10 +669,27 @@ namespace Improbable.Gdk.Core.Commands
 
         public static class EntityQuery
         {
+            /// <summary>
+            ///     Please do not use the default constructor. Use CreateRequest instead.
+            ///     Using CreateRequest will ensure a correctly formed structure.
+            /// </summary>
             public struct Request
             {
                 public Improbable.Worker.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
+                public Object Context;
+                public long RequestId;
+            }
+
+            public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
+            {
+                return new Request
+                {
+                    EntityQuery = entityQuery,
+                    TimeoutMillis = timeoutMillis,
+                    Context = context,
+                    RequestId = CommandRequestIdGenerator.GetNext(),
+                };
             }
 
             public struct ReceivedResponse
@@ -622,12 +697,14 @@ namespace Improbable.Gdk.Core.Commands
                 public EntityQueryResponseOp Op { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
+                public long RequestId { get; }
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context)
+                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId)
                 {
                     Op = op;
                     RequestPayload = req;
                     Context = context;
+                    RequestId = requestId;
                 }
             }
 
