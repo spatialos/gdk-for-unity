@@ -39,6 +39,11 @@ namespace Improbable.Gdk.Tools
             toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
 
             errorLayoutOption.normal.textColor = Color.red;
+
+            Undo.undoRedoPerformed += () =>
+            {
+                configErrors = toolsConfig.Validate();
+            };
         }
 
         public override void OnInspectorGUI()
