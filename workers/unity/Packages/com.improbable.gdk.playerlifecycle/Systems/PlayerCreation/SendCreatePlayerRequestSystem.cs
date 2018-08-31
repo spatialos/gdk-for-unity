@@ -38,7 +38,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             base.OnCreateManager(capacity);
 
-            logDispatcher = Improbable.Gdk.Core.Worker.GetWorkerFromWorld(World).LogDispatcher;
+            logDispatcher = World.GetExistingManager<WorkerSystem>().LogDispatcher;
         }
 
         protected override void OnUpdate()
