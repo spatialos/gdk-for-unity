@@ -13,7 +13,7 @@ namespace Improbable
         {
             if (args.Length != 3)
             {
-                Console.Error.WriteLine("Usage: <path_to_spatial> <coresdk_version>");
+                Console.Error.WriteLine("Usage: <path_to_spatial> <coresdk_version> <path_to_schema_std_lib_directory>");
                 Environment.Exit(1);
             }
 
