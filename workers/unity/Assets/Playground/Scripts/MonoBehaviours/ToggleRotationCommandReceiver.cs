@@ -7,7 +7,12 @@ namespace Playground.MonoBehaviours
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
         [Require] private SpinnerRotation.Requirables.CommandRequestHandler requestHandler;
+
         private RotationBehaviour rotationBehaviour;
+
+        private float nextAvailableSpinChangeTime;
+
+        public float timeBetweenSpinChanges = 1.0f;
 
         private void OnEnable()
         {
@@ -18,11 +23,24 @@ namespace Playground.MonoBehaviours
         private void OnDisable()
         {
             requestHandler.OnSpinnerToggleRotationRequest -= OnSpinnerToggleRotationRequest;
+
+            nextAvailableSpinChangeTime = Time.time;
         }
 
-        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ReceivedRequest request)
+        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.RequestResponder spinnerToggleRotationRequest)
         {
-            rotationBehaviour.RotatingClockWise = !rotationBehaviour.RotatingClockWise;
+            if (Time.time < nextAvailableSpinChangeTime)
+            {
+                spinnerToggleRotationRequest.SendResponseFailure("Cannot change spinning direction too frequently.");
+            }
+            else
+            {
+                rotationBehaviour.RotatingClockWise = !rotationBehaviour.RotatingClockWise;
+
+                nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
+
+                spinnerToggleRotationRequest.SendResponse(new Void());
+            }
         }
     }
 }

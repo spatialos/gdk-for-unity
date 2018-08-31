@@ -10,7 +10,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
-        public class Cmd
+        public partial class Cmd
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.

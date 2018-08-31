@@ -56,9 +56,15 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 new ComponentType[] { ComponentType.ReadOnly<CommandRequests.Cmd>(), ComponentType.ReadOnly<GameObjectReference>() },
             };
 
+            public override ComponentType[][] CommandResponsesComponentTypeArrays => new ComponentType[][]
+            {
+                new ComponentType[] { ComponentType.ReadOnly<CommandResponses.Cmd>(), ComponentType.ReadOnly<GameObjectReference>() },
+            };
+
             private const uint componentId = 1005;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
             private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
+            private static readonly InjectableId commandResponseHandlerInjectableId = new InjectableId(InjectableType.CommandResponseHandler, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
@@ -166,7 +172,29 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
-                // TODO UTY-542 Command Response handlers
+
+                if (!CommandResponsesComponentGroups[0].IsEmptyIgnoreFilter)
+                {
+                    var entities = CommandResponsesComponentGroups[0].GetEntityArray();
+                    var commandResponseLists = CommandResponsesComponentGroups[0].GetComponentDataArray<CommandResponses.Cmd>();
+                    for (var i = 0; i < entities.Length; i++)
+                    {
+                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
+                        {
+                            continue;
+                        }
+
+                        var commandResponseList = commandResponseLists[i];
+                        foreach (Requirables.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        {
+                            foreach (var commandResponse in commandResponseList.Responses)
+                            {
+                                commandResponseHandler.OnCmdResponseInternal(commandResponse);
+                            }
+                        }
+                    }
+                }
             }
 
             public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)

@@ -56,6 +56,10 @@ namespace Generated.Improbable.Gdk.Tests
             {
             };
 
+            public override ComponentType[][] CommandResponsesComponentTypeArrays => new ComponentType[][]
+            {
+            };
+
             private const uint componentId = 197718;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
@@ -167,7 +171,6 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
-                // TODO UTY-542 Command Response handlers
             }
 
             public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
