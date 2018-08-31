@@ -76,6 +76,17 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
                 }
 
+                private readonly List<Action<Cmd.ReceivedResponse>> cmdDelegates = new List<Action<Cmd.ReceivedResponse>>();
+                public event Action<Cmd.ReceivedResponse> OnCmdResponse
+                {
+                    add => cmdDelegates.Add(value);
+                    remove => cmdDelegates.Remove(value);
+                }
+
+                internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, cmdDelegates, logger);
+                }
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
@@ -111,43 +122,6 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(new Cmd.RequestResponder(entityManager, entity, request), cmdDelegates, logger);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
-            internal class CommandResponseHandlerCreator : IInjectableCreator
-            {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
-                {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
-                }
-            }
-
-            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
-            [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
-            {
-                private Entity entity;
-                private readonly EntityManager entityManager;
-                private readonly ILogDispatcher logger;
-
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
-                {
-                    this.entity = entity;
-                    this.entityManager = entityManager;
-                    this.logger = logger;
-                }
-
-                private readonly List<Action<Cmd.ReceivedResponse>> cmdDelegates = new List<Action<Cmd.ReceivedResponse>>();
-                public event Action<Cmd.ReceivedResponse> OnCmdResponse
-                {
-                    add => cmdDelegates.Add(value);
-                    remove => cmdDelegates.Remove(value);
-                }
-
-                internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(response, cmdDelegates, logger);
                 }
             }
         }
