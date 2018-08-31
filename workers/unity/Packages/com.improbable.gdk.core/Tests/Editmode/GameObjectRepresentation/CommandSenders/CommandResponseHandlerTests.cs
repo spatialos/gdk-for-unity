@@ -32,7 +32,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
                         string.Empty,
                         StatusCode.Success,
                         new Empty(),
-                        new Empty()
+                        new Empty(),
+                        null,
+                        0
                     ));
 
                 Assert.IsTrue(responseCallbackCalled);

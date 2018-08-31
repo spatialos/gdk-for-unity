@@ -278,7 +278,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     var commandResponseLists = CommandResponsesComponentGroups[0].GetComponentDataArray<CommandResponses.FirstCommand>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        var injectableStore = entityToInjectableStore[entities[i]];
                         if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
                         {
                             continue;
@@ -301,7 +301,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     var commandResponseLists = CommandResponsesComponentGroups[1].GetComponentDataArray<CommandResponses.SecondCommand>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        var injectableStore = entityToInjectableStore[entities[i]];
                         if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
                         {
                             continue;
