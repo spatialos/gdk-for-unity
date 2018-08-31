@@ -3,12 +3,15 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Wrapper around an ECS Entity instance representing a SpatialOS Entity used for interacting with the the
+    ///     entity without touching ECS code like EntityManagers.
+    /// </summary>
     public struct SpatialOSEntity
     {
         private readonly EntityManager entityManager;
         private readonly Entity entity;
         public readonly EntityId SpatialEntityId;
-        public readonly int UnityEntityIndex;
 
         internal SpatialOSEntity(Entity entity, EntityManager entityManager)
         {
@@ -26,6 +29,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public T GetComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.GetComponentData<T>(entity);
+        }
+
+        public int GetUnityEntityIndex()
+        {
+            return entity.Index;
         }
     }
 }
