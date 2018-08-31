@@ -254,7 +254,7 @@ namespace <#= qualifiedNamespace #>
                     var commandResponseLists = CommandResponsesComponentGroups[<#= j #>].GetComponentDataArray<CommandResponses.<#= commandDetailsList[j].CommandName #>>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        var injectableStore = entityToInjectableStore[entities[i]];
                         if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
                         {
                             continue;
