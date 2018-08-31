@@ -4,8 +4,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public static class GameObjectSystemHelper
     {
-        public static IEntityGameObjectCreator EntityGameObjectCreator;
-
         public static void AddSystems(World world)
         {
             world.GetOrCreateManager<GameObjectDispatcherSystem>();

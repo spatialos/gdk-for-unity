@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            if (GameObjectSystemHelper.EntityGameObjectCreator == null)
+            if (EntityGameObjectCreationConfig.EntityGameObjectCreator == null)
             {
                 Enabled = false;
                 return;
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                var gameObject = GameObjectSystemHelper.EntityGameObjectCreator.CreateGameObjectForEntity(
+                var gameObject = EntityGameObjectCreationConfig.EntityGameObjectCreator.CreateGameObjectForEntity(
                     new SpatialOSEntity(entity, entityManager), worker);
 
                 if (gameObject == null)

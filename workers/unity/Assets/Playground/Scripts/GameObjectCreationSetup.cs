@@ -6,6 +6,6 @@ public class GameObjectCreationSetup : MonoBehaviour
 {
     private void Awake()
     {
-        GameObjectSystemHelper.EntityGameObjectCreator = new EntityGameObjectCreator();
+        EntityGameObjectCreationConfig.EntityGameObjectCreator = new EntityGameObjectCreator();
     }
 }
