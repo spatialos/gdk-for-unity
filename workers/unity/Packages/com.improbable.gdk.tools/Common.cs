@@ -85,6 +85,11 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        private static string[] GetCommonMacPaths()
+        {
+            return new[] { UsrLocalBinDir, UsrLocalShareDir };
+        }
+
         /// <summary>
         ///     Tries to find the full path to a binary in the system PATH.
         ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
@@ -97,7 +102,7 @@ namespace Improbable.Gdk.Tools
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
             {
-                Debug.LogError($"PATH has not been specified in the system environment.");
+                Debug.LogError("PATH has not been specified in the system environment.");
                 return string.Empty;
             }
 
@@ -115,16 +120,11 @@ namespace Improbable.Gdk.Tools
 
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                if (!splitPath.Contains(UsrLocalBinDir))
+                var macPaths = GetCommonMacPaths();
+                splitPath = splitPath.Union(macPaths).ToArray();
+                foreach (var macPath in macPaths)
                 {
-                    var usrLocalBinPaths = new[] { UsrLocalBinDir, Path.Combine(UsrLocalBinDir, binarybaseName) };
-                    splitPath = splitPath.Union(usrLocalBinPaths).ToArray();
-                }
-
-                if (!splitPath.Contains(UsrLocalShareDir))
-                {
-                    var usrLocalSharePaths = new[] { UsrLocalShareDir, Path.Combine(UsrLocalShareDir, binarybaseName) };
-                    splitPath = splitPath.Union(usrLocalSharePaths).ToArray();
+                    splitPath = splitPath.Union(new[] { Path.Combine(macPath, binarybaseName) }).ToArray();
                 }
             }
 
