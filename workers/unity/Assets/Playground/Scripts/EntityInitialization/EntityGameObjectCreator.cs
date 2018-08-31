@@ -57,13 +57,11 @@ namespace Playground
             {
                 return null;
             }
-            else
-            {
-                var gameObject = GameObject.Instantiate(prefab, position, rotation);
-                gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialEntityId}, " +
-                    $"Unity: {entity.UnityEntityIndex}/{worker.World.Name})";
-                return gameObject;
-            }
+
+            var gameObject = GameObject.Instantiate(prefab, position, rotation);
+            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialEntityId}, " +
+                $"Unity: {entity.UnityEntityIndex}/{worker.World.Name})";
+            return gameObject;
         }
     }
 }

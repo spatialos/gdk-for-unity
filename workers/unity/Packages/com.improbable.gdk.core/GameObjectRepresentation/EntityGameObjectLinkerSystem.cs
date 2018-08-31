@@ -9,6 +9,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         protected override void OnCreateManager(int capacity)
         {
             Linker = new EntityGameObjectLinker(World, Worker.GetWorkerFromWorld(World).LogDispatcher);
+            Enabled = false;
         }
 
         protected override void OnUpdate()

@@ -39,6 +39,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
+            if (GameObjectSystemHelper.EntityGameObjectCreator == null)
+            {
+                Enabled = false;
+                return;
+            }
 
             worker = Worker.GetWorkerFromWorld(World);
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
