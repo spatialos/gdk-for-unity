@@ -32,6 +32,8 @@ namespace Improbable.Gdk.Tools
         private const string UsrLocalBinDir = "/usr/local/bin";
         private const string UsrLocalShareDir = "/usr/local/share";
 
+        private static readonly string[] MacPaths = { UsrLocalBinDir, UsrLocalShareDir };
+
 
         static Common()
         {
@@ -85,11 +87,6 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static string[] GetCommonMacPaths()
-        {
-            return new[] { UsrLocalBinDir, UsrLocalShareDir };
-        }
-
         /// <summary>
         ///     Tries to find the full path to a binary in the system PATH.
         ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
@@ -120,11 +117,12 @@ namespace Improbable.Gdk.Tools
 
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                var macPaths = GetCommonMacPaths();
-                splitPath = splitPath.Union(macPaths).ToArray();
-                foreach (var macPath in macPaths)
+                foreach (var macPath in MacPaths)
                 {
-                    splitPath = splitPath.Union(new[] { Path.Combine(macPath, binarybaseName) }).ToArray();
+                    if (!splitPath.Contains(macPath))
+                    {
+                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();                        
+                    }
                 }
             }
 
