@@ -18,7 +18,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.entity = entity;
             this.entityManager = entityManager;
             SpatialEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
-            UnityEntityIndex = entity.Index;
         }
 
         public bool HasComponent<T>() where T : struct, ISpatialComponentData, IComponentData
@@ -29,11 +28,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public T GetComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.GetComponentData<T>(entity);
-        }
-
-        public int GetUnityEntityIndex()
-        {
-            return entity.Index;
         }
     }
 }
