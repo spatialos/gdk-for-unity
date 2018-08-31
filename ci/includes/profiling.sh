@@ -4,6 +4,7 @@
 # set -x) triggering TeamCity - we only want the output of the echo to do so.
 
 function markStartOfBlock {
+  echo "--- Log group: ${1}"
   echo -e "\x23\x23teamcity[blockOpened name='$1']"
 }
 
@@ -14,6 +15,7 @@ function markEndOfBlock {
 }
 
 function markTestStarted {
+  echo "--- Test: ${1}"
   echo -e "\x23\x23teamcity[testStarted name='$1']"
 }
 
