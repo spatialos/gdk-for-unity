@@ -11,3 +11,4 @@ Known issue = any major user-facing bug or lack of user-facing feature that:
 | Issue | Date added | Ticket | Workaround? | Fixed? |
 |-------|-------------------|--------|-------------|-------|
 | The Unity editor randomly crashes on MacOS when using ECS preview packages. This is not caused by the SpatialOS GDK. | 2018/07/25 | 1064084 | Simply retry. | No|
+| IL2CPP does not currently work on Mac as it will crash upon starting the game. This is not caused by the SpatialOS GDK. | 2018/08/31 | 1076596 | Use the Mono compiler. | No|
