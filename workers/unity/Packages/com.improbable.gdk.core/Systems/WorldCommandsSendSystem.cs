@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core.Commands;
+using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
     {
-        private Worker worker;
+        private Connection connection;
 
         private struct CreateEntitySenderData
         {
@@ -53,7 +54,7 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = Worker.GetWorkerFromWorld(World);
+            connection = World.GetExistingManager<WorkerSystem>().Connection;
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
             createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
@@ -64,7 +65,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (connection == null)
             {
                 return;
             }
@@ -75,7 +76,7 @@ namespace Improbable.Gdk.Core
                 var entity = createEntitySenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
-                    var reqId = worker.Connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
+                    var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
                     createEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context, req.RequestId));
                 }
@@ -89,7 +90,7 @@ namespace Improbable.Gdk.Core
                 var entity = deleteEntitySenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
-                    var reqId = worker.Connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
+                    var reqId = connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
                     deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context, req.RequestId));
                 }
@@ -104,7 +105,7 @@ namespace Improbable.Gdk.Core
                 var entity = reserveEntityIdsSenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
-                    var reqId = worker.Connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
+                    var reqId = connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
                     reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context, req.RequestId));
                 }
@@ -118,7 +119,7 @@ namespace Improbable.Gdk.Core
                 var entity = entityQuerySenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
-                    var reqId = worker.Connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
+                    var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
                     entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));
                 }

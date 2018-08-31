@@ -12,12 +12,12 @@ namespace Playground
     public static class PlayerTemplate
     {
         private static readonly List<string> AllWorkerAttributes =
-            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient };
+            new List<string> { WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient };
 
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)
         {
-            var clientAttribute = clientAttributeSet.First(attribute => attribute != SystemConfig.UnityClient);
+            var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
 
             if (clientAttribute == null)
             {
@@ -37,19 +37,19 @@ namespace Playground
             var score = Score.Component.CreateSchemaComponentData(0);
 
             var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)
-                .AddMetadata(ArchetypeConfig.CharacterArchetype, SystemConfig.UnityGameLogic)
+                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
+                .AddMetadata(ArchetypeConfig.CharacterArchetype, WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(AllWorkerAttributes)
-                .SetEntityAclComponentWriteAccess(SystemConfig.UnityGameLogic)
-                .AddComponent(transform, SystemConfig.UnityGameLogic)
+                .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
+                .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)
-                .AddComponent(prefab, SystemConfig.UnityGameLogic)
-                .AddComponent(archetype, SystemConfig.UnityGameLogic)
-                .AddComponent(launcher, SystemConfig.UnityGameLogic)
+                .AddComponent(prefab, WorkerUtils.UnityGameLogic)
+                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
+                .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)
-                .AddComponent(serverHeartbeat, SystemConfig.UnityGameLogic)
-                .AddComponent(score, SystemConfig.UnityGameLogic);
+                .AddComponent(serverHeartbeat, WorkerUtils.UnityGameLogic)
+                .AddComponent(score, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();
         }

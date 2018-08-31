@@ -23,19 +23,18 @@ namespace Playground
 
         [Inject] private Data data;
 
-        private Worker worker;
+        private WorkerSystem worker;
         private const string LoggerName = "ArchetypeInitializationSystem";
         private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
-        private const string UnsupportedArchetype =
-            "Worker type isn't supported by the ArchetypeInitializationSystem.";
+        private const string UnsupportedArchetype = "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
-            if (!SystemConfig.UnityClient.Equals(worker.WorkerType) &&
-                !SystemConfig.UnityGameLogic.Equals(worker.WorkerType))
+            worker = World.GetExistingManager<WorkerSystem>();
+            if (!WorkerUtils.UnityClient.Equals(worker.WorkerType) &&
+                !WorkerUtils.UnityGameLogic.Equals(worker.WorkerType))
             {
                 worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -53,12 +52,12 @@ namespace Playground
 
                 switch (worker.WorkerType)
                 {
-                    case SystemConfig.UnityClient when archetype == ArchetypeConfig.CharacterArchetype:
-                    case SystemConfig.UnityClient when archetype == ArchetypeConfig.CubeArchetype:
-                    case SystemConfig.UnityClient when archetype == ArchetypeConfig.SpinnerArchetype:
-                    case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.CharacterArchetype:
-                    case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.CubeArchetype:
-                    case SystemConfig.UnityGameLogic when archetype == ArchetypeConfig.SpinnerArchetype:
+                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CharacterArchetype:
+                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CubeArchetype:
+                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.SpinnerArchetype:
+                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CharacterArchetype:
+                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CubeArchetype:
+                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.SpinnerArchetype:
                         PostUpdateCommands.AddBuffer<BufferedTransform>(entity);
                         break;
                     default:
@@ -68,7 +67,7 @@ namespace Playground
                             .WithField("WorkerType", worker.WorkerType));
                         break;
                 }
-            }            
+            }
         }
     }
 }

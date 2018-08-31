@@ -26,7 +26,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             private const string LoggerName = "ComponentWithNoFields.DispatcherHandler";
 
 
-            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            public DispatcherHandler(WorkerSystem worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();

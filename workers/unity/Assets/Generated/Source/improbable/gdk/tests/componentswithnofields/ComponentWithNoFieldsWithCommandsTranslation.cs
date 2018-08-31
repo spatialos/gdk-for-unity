@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private CommandStorages.Cmd cmdStorage;
 
-            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            public DispatcherHandler(WorkerSystem worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();

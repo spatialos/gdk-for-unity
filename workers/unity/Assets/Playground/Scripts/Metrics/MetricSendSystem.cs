@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private Worker worker;
+        private Connection connection;
 
         private float timeElapsedSinceUpdate;
 
@@ -18,17 +19,15 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = Worker.GetWorkerFromWorld(World);
+            connection = World.GetExistingManager<WorkerSystem>().Connection;
         }
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (connection == null)
             {
                 return;
             }
-
-            var connection = worker.Connection;
 
             timeElapsedSinceUpdate += Time.deltaTime;
             AddFpsSample();

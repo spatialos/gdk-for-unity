@@ -49,7 +49,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var update = new SchemaComponentUpdate(component.ComponentId);
                 Transform.Serialization.Serialize(component,
                     update.GetFields());
-                worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+                WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
                 transformData.Transforms[i] = component;
