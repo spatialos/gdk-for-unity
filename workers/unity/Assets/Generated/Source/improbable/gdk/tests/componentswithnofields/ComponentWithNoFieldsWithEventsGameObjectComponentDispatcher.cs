@@ -59,7 +59,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             private const uint componentId = 1004;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 
-            public override void MarkComponentsAddedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkComponentsAddedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
                 if (ComponentAddedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -69,12 +69,12 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
             }
 
-            public override void MarkComponentsRemovedForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
                 if (ComponentRemovedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -84,12 +84,12 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
             }
 
-            public override void MarkAuthorityGainedForActivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
                 if (AuthorityGainedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -100,7 +100,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityToManagers[entities[i]];
                     // Call once except if flip-flopped back to starting state
                     if (IsFirstAuthChange(Authority.Authoritative, authoritiesChangedTags[i]))
                     {
@@ -109,7 +109,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void MarkAuthorityLostForDeactivation(Dictionary<int, MonoBehaviourActivationManager> entityIndexToManagers)
+            public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
                 if (AuthorityLostComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -120,7 +120,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var activationManager = entityIndexToManagers[entities[i].Index];
+                    var activationManager = entityToManagers[entities[i]];
                     // Call once except if flip-flopped back to starting state
                     if (IsFirstAuthChange(Authority.NotAuthoritative, authoritiesChangedTags[i]))
                     {
@@ -129,11 +129,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnComponentUpdateCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
             }
 
-            public override void InvokeOnEventCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
@@ -141,7 +141,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     var eventLists = EventsReceivedComponentGroups[0].GetComponentDataArray<ReceivedEvents.Evt>();
                     for (var i = 0; i < entities.Length; i++)
                     {
-                        var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                        var injectableStore = entityToInjectableStore[entities[i]];
                         if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                         {
                             continue;
@@ -161,16 +161,16 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             }
 
-            public override void InvokeOnCommandRequestCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnCommandRequestCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
             }
 
-            public override void InvokeOnCommandResponseCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
                 // TODO UTY-542 Command Response handlers
             }
 
-            public override void InvokeOnAuthorityGainedCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
                 if (AuthorityGainedComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -183,7 +183,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    var injectableStore = entityToInjectableStore[entities[i]];
                     if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
@@ -199,7 +199,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void InvokeOnAuthorityLostCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
                 if (AuthorityLostComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -212,7 +212,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    var injectableStore = entityToInjectableStore[entities[i]];
                     if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
@@ -240,7 +240,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 return false;
             }
 
-            public override void InvokeOnAuthorityLossImminentCallbacks(Dictionary<int, InjectableStore> entityIndexToInjectableStore)
+            public override void InvokeOnAuthorityLossImminentCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
                 if (AuthorityLossImminentComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -252,7 +252,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 // Call once on all entities
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    var injectableStore = entityIndexToInjectableStore[entities[i].Index];
+                    var injectableStore = entityToInjectableStore[entities[i]];
                     if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
                     {
                         continue;
