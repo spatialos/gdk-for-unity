@@ -40,10 +40,7 @@ namespace Improbable.Gdk.Tools
 
             errorLayoutOption.normal.textColor = Color.red;
 
-            Undo.undoRedoPerformed += () =>
-            {
-                configErrors = toolsConfig.Validate();
-            };
+            Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
         }
 
         public override void OnInspectorGUI()
@@ -155,5 +152,3 @@ namespace Improbable.Gdk.Tools
         }
     }
 }
-
-

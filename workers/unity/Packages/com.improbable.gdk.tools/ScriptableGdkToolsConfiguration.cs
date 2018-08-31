@@ -76,7 +76,6 @@ namespace Improbable.Gdk.Tools
             Directory.CreateDirectory(fullDir);
 
             AssetDatabase.ImportAsset(Path.GetDirectoryName(path));
-
         }
 
         private static class DefaultValues
