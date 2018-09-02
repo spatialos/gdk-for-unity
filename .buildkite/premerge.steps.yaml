@@ -10,7 +10,7 @@
 common: &common
   agents:
     - "environment=production"
-    - "queue=v-4bebd0907bb60e36-------1535579438"
+    - "queue=v-6a9249c9230bfe37-------1535883255"
   timeout_in_minutes: 60  # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
