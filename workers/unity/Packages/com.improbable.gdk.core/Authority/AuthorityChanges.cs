@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Improbable.Worker.Core;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public struct AuthorityChanges<T> : IComponentData
+    public struct AuthorityChanges<T> : IComponentData where T : ISpatialComponentData
     {
         public uint Handle;
 
