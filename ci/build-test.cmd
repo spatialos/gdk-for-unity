@@ -1,3 +1,3 @@
 @echo off
 
-"%ProgramFiles%\git\bin\bash.exe" -c "./ci/build-test.sh"
+"c:\program files\git\bin\bash.exe" -c "./ci/build-test.sh"
