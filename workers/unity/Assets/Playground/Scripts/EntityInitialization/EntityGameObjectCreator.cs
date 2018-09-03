@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Playground
 {
@@ -31,9 +33,14 @@ namespace Playground
                 cachedPrefabs[prefabPath] = prefab;
             }
 
-            var gameObject = GameObject.Instantiate(prefab, position, rotation);
+            var gameObject = Object.Instantiate(prefab, position, rotation);
             gameObject.name = $"{prefab.name}(SpatialOS: {spatialEntityId}, Unity: {entity.Index}/{world.Name})";
             return gameObject;
+        }
+
+        public void DeleteGameObject(Entity entity, GameObject gameObject)
+        {
+            UnityObjectDestroyer.Destroy(gameObject);
         }
     }
 
