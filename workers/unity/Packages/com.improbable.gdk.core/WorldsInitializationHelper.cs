@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public static class CoreInitialization
+    public static class WorldsInitializationHelper
     {
         public static void SetupInjectionHooks()
         {
