@@ -54,7 +54,7 @@ namespace Playground
 
                 if (prefab == null)
                 {
-                    worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                    worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(
                         $"Prefab not found for SpatialOS Entity in either {workerSpecificPath} or {commonPath}," +
                         "not going to associate a GameObject with it."));
                 }
