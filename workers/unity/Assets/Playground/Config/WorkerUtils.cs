@@ -15,7 +15,7 @@ namespace Playground
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world);
+            GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityClient));
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
             world.GetOrCreateManager<InitCameraSystem>();
@@ -31,7 +31,7 @@ namespace Playground
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world);
+            GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityGameLogic));
             world.GetOrCreateManager<CubeMovementSystem>();
             world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();

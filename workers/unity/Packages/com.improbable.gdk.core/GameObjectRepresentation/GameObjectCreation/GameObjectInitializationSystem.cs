@@ -33,21 +33,20 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private WorkerSystem worker;
         private ViewCommandBuffer viewCommandBuffer;
         private EntityGameObjectLinker entityGameObjectLinker;
-        private EntityManager entityManager;
         private readonly Dictionary<Entity, GameObject> entityGameObjectCache = new Dictionary<Entity, GameObject>();
+        private readonly IEntityGameObjectCreator gameObjectCreator;
+
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
+        {
+            this.gameObjectCreator = gameObjectCreator;
+        }
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            if (EntityGameObjectCreationConfig.EntityGameObjectCreator == null)
-            {
-                Enabled = false;
-                return;
-            }
 
             worker = World.GetExistingManager<WorkerSystem>();
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
-            entityManager = World.GetOrCreateManager<EntityManager>();
             entityGameObjectLinker = World.GetOrCreateManager<EntityGameObjectLinkerSystem>().Linker;
         }
 
@@ -58,8 +57,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                var gameObject = EntityGameObjectCreationConfig.EntityGameObjectCreator.CreateGameObjectForEntity(
-                    new SpatialOSEntity(entity, entityManager), worker);
+                var gameObject = gameObjectCreator.GetGameObjectForEntityAdded(
+                    new SpatialOSEntity(entity, EntityManager), worker);
 
                 if (gameObject == null)
                 {
@@ -97,7 +96,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 entityGameObjectCache.Remove(entity);
-                UnityObjectDestroyer.Destroy(gameObject);
+                gameObjectCreator.OnEntityGameObjectRemoved(new SpatialOSEntity(entity, EntityManager),
+                    worker, gameObject);
                 PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }
 

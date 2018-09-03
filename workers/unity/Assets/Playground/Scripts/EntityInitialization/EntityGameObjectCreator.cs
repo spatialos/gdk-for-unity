@@ -11,16 +11,18 @@ namespace Playground
 {
     public class EntityGameObjectCreator : IEntityGameObjectCreator
     {
-        private readonly Dictionary<string, Dictionary<string, GameObject>> cachedPrefabsPerWorkerType
-            = new Dictionary<string, Dictionary<string, GameObject>>();
+        private readonly Dictionary<string, GameObject> cachedPrefabs
+            = new Dictionary<string, GameObject>();
 
-        public GameObject CreateGameObjectForEntity(SpatialOSEntity entity, WorkerSystem worker)
+        private readonly string workerType;
+
+        public EntityGameObjectCreator(string workerType)
         {
-            if (!cachedPrefabsPerWorkerType.TryGetValue(worker.WorkerType, out var cachedPrefabs))
-            {
-                cachedPrefabsPerWorkerType[worker.WorkerType] = cachedPrefabs = new Dictionary<string, GameObject>();
-            }
+            this.workerType = workerType;
+        }
 
+        public GameObject GetGameObjectForEntityAdded(SpatialOSEntity entity, WorkerSystem worker)
+        {
             if (!entity.HasComponent<Metadata.Component>())
             {
                 return null;
@@ -50,7 +52,13 @@ namespace Playground
                     prefab = Resources.Load<GameObject>(commonPath);
                 }
 
-                // Cache even if null
+                if (prefab == null)
+                {
+                    worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                        $"Prefab not found for SpatialOS Entity in either {workerSpecificPath} or {commonPath}," +
+                        "not going to associate a GameObject with it."));
+                }
+
                 cachedPrefabs[prefabName] = prefab;
             }
 
@@ -59,9 +67,14 @@ namespace Playground
                 return null;
             }
 
-            var gameObject = GameObject.Instantiate(prefab, position, rotation);
+            var gameObject = Object.Instantiate(prefab, position, rotation);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}";
             return gameObject;
+        }
+
+        public void OnEntityGameObjectRemoved(SpatialOSEntity entity, WorkerSystem worker, GameObject linkedGameObject)
+        {
+            UnityObjectDestroyer.Destroy(linkedGameObject);
         }
     }
 }
