@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             var entityManager = world.GetOrCreateManager<EntityManager>();
-            injector = new RequiredFieldInjector(entityManager, new LoggingDispatcher());
+            injector = new RequiredFieldInjector(entityManager, new LoggingDispatcher(), world);
             testEntity = entityManager.CreateEntity();
             testGameObject = new GameObject();
         }

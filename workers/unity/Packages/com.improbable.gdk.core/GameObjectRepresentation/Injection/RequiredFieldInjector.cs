@@ -28,10 +28,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
 
-        public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
+        public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger, World world)
         {
             this.logger = logger;
-            this.injectableFactory = new InjectableFactory(entityManager, logger);
+            this.injectableFactory = new InjectableFactory(entityManager, logger, world);
         }
 
         public bool HasRequiredFields(Type behaviourType)

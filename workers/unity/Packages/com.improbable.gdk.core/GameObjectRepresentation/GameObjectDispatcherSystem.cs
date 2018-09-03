@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = World.GetExistingManager<WorkerSystem>().LogDispatcher;
-            injector = new RequiredFieldInjector(entityManager, logger);
+            injector = new RequiredFieldInjector(entityManager, logger, World);
         }
 
         private void FindGameObjectComponentDispatchers()

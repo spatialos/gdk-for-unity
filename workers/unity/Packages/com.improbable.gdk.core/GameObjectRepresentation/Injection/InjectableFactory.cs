@@ -17,13 +17,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             = "No InjectableCreator found for given InjectableId.";
 
         private readonly EntityManager entityManager;
+        private readonly World world;
         private readonly ILogDispatcher logger;
         private readonly Dictionary<InjectableId, IInjectableCreator> injectableIdToReaderWriterCreator = new Dictionary<InjectableId, IInjectableCreator>();
 
-        public InjectableFactory(EntityManager entityManager, ILogDispatcher logger)
+        public InjectableFactory(EntityManager entityManager, ILogDispatcher logger, World world)
         {
             this.entityManager = entityManager;
             this.logger = logger;
+            this.world = world;
 
             FindInjectableCreators();
         }
@@ -63,7 +65,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return null;
             }
 
-            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, entityManager, logger);
+            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, entityManager, world, logger);
         }
     }
 }

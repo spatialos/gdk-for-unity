@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     // ReSharper disable once ClassNeverInstantiated.Global
     public class GameObjectWorldCommandSystem : ComponentSystem
     {
-        private struct WorldCommandResponderData : IComponentData
+        private struct WorldCommandResponderData : ISystemStateComponentData
         {
             public uint ResponderHandle;
 
@@ -23,9 +23,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
+        private struct WorldCommandResponderAddedTag : IComponentData
+        {
+        }
+
         private struct ReserveEntityResponseData
         {
             [ReadOnly] public readonly int Length;
+            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
             [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandHandlers;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.ReserveEntityIds.CommandResponses> Responses;
         }
@@ -35,6 +40,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private struct CreateEntityResponseData
         {
             [ReadOnly] public readonly int Length;
+            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
             [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandHandlers;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.CreateEntity.CommandResponses> Responses;
         }
@@ -44,18 +50,23 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private struct DeleteEntityResponseData
         {
             [ReadOnly] public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandHandlers;
+            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
+            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandResponders;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.DeleteEntity.CommandResponses> Responses;
         }
 
         [Inject] private DeleteEntityResponseData deleteEntityResponseData;
 
-        internal static void RegisterResponseHandler(Entity entity, EntityManager entityManager,
-            WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler)
+        private struct EntitiesToCleanUpData
         {
-            GetOrCreateWorldCommandResponderData(entity, entityManager).ResponseHandlers
-                .Add(worldCommandResponseHandler);
+            [ReadOnly] public readonly int Length;
+
+            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandResponders;
+            [ReadOnly] public SubtractiveComponent<WorldCommandResponderAddedTag> WithoutTag;
+            [ReadOnly] public EntityArray Entities;
         }
+
+        [Inject] private EntitiesToCleanUpData entitiesToCleanUpData;
 
         protected override void OnUpdate()
         {
@@ -107,7 +118,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var worldCommandResponseHandlers = deleteEntityResponseData
-                    .WorldCommandHandlers[i]
+                    .WorldCommandResponders[i]
                     .ResponseHandlers;
 
                 foreach (var receivedResponse in deleteEntityResponseData.Responses[i].Responses)
@@ -118,9 +129,32 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     }
                 }
             }
+
+            for (var i = 0; i < entitiesToCleanUpData.Length; ++i)
+            {
+                var worldCommandResponderData = entitiesToCleanUpData.WorldCommandResponders[i];
+
+                WorldCommandResponseHandlerProvider.Free(worldCommandResponderData.ResponderHandle);
+
+                PostUpdateCommands.RemoveComponent<WorldCommandResponderData>(entitiesToCleanUpData.Entities[i]);
+            }
         }
 
-        private static WorldCommandResponderData GetOrCreateWorldCommandResponderData(Entity entity,
+        protected override void OnDestroyManager()
+        {
+            WorldCommandResponseHandlerProvider.CleanDataInWorld(World);
+        }
+
+        internal void RegisterResponseHandler(Entity entity,
+            WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler)
+        {
+            GetOrCreateWorldCommandResponderData(entity, EntityManager)
+                .ResponseHandlers
+                .Add(worldCommandResponseHandler);
+        }
+
+        private WorldCommandResponderData GetOrCreateWorldCommandResponderData(
+            Entity entity,
             EntityManager entityManager)
         {
             WorldCommandResponderData worldCommandSenderData;
@@ -130,12 +164,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 worldCommandSenderData = new WorldCommandResponderData();
 
                 worldCommandSenderData.ResponderHandle =
-                    WorldCommandResponseHandlerProvider.Allocate(null);
+                    WorldCommandResponseHandlerProvider.Allocate(World);
 
                 worldCommandSenderData.ResponseHandlers =
                     new HashSet<WorldCommands.WorldCommandResponseHandler>();
 
                 entityManager.AddComponentData(entity, worldCommandSenderData);
+                entityManager.AddComponentData(entity, new WorldCommandResponderAddedTag());
             }
             else
             {
@@ -168,7 +203,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 if (!Storage.TryGetValue(handle, out var value))
                 {
                     throw new ArgumentException(
-                        $"GenericProvider<{typeof(HashSet<WorldCommands.WorldCommandResponseHandler>)}> does not contain handle {handle}");
+                        $"WorldCommandResponseHandlerProvider does not contain handle {handle}");
                 }
 
                 return value;
@@ -179,7 +214,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 if (!Storage.ContainsKey(handle))
                 {
                     throw new ArgumentException(
-                        $"GenericProvider<{typeof(HashSet<WorldCommands.WorldCommandResponseHandler>)}> does not contain handle {handle}");
+                        $"WorldCommandResponseHandlerProvider does not contain handle {handle}");
                 }
 
                 Storage[handle] = value;

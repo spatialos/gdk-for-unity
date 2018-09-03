@@ -79,7 +79,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             // ReSharper disable once UnusedMember.Local
             private class WorldCommandRequestSenderCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager,
+                public IInjectable CreateInjectable(Entity entity,
+                    EntityManager entityManager,
+                    World world,
                     ILogDispatcher logDispatcher)
                 {
                     return new WorldCommandRequestSender(entity, entityManager);

@@ -60,7 +60,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
             internal class CommandRequestSenderCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
                 {
                     return new CommandRequestSender(entity, entityManager, logDispatcher);
                 }
@@ -94,7 +94,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
                 {
                     return new CommandRequestHandler(entity, entityManager, logDispatcher);
                 }
@@ -138,7 +138,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
                 {
                     return new CommandResponseHandler(entity, entityManager, logDispatcher);
                 }

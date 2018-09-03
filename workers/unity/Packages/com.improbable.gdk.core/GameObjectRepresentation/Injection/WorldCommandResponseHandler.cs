@@ -89,10 +89,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 remove => deleteEntityDelegates.Remove(value);
             }
 
-            private WorldCommandResponseHandler(Entity entity, EntityManager entityManager,
+            private WorldCommandResponseHandler(Entity entity,
+                EntityManager entityManager,
+                World world,
                 ILogDispatcher logDispatcher)
             {
-                GameObjectWorldCommandSystem.RegisterResponseHandler(entity, entityManager, this);
+                world.GetOrCreateManager<GameObjectWorldCommandSystem>().RegisterResponseHandler(entity, this);
 
                 this.entity = entity;
                 this.logDispatcher = logDispatcher;
@@ -141,10 +143,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             // ReSharper disable once UnusedMember.Local
             private class WorldCommandResponseHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager,
+                public IInjectable CreateInjectable(
+                    Entity entity,
+                    EntityManager entityManager,
+                    World world,
                     ILogDispatcher logDispatcher)
                 {
-                    return new WorldCommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new WorldCommandResponseHandler(entity, entityManager, world, logDispatcher);
                 }
             }
         }
