@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
-        private Worker worker;
+        private Connection connection;
 
         private readonly List<ComponentReplicator> componentReplicators =
             new List<ComponentReplicator>();
@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
+            connection = World.GetExistingManager<WorkerSystem>().Connection;
 
             PopulateDefaultComponentReplicators();
         }
@@ -63,14 +63,14 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (connection == null)
             {
                 return;
             }
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(worker.Connection);
+                replicator.Execute(connection);
             }
         }
 

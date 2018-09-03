@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public struct AuthorityChanges<T> : IComponentData
+    public struct AuthorityChanges<T> : IComponentData where T : ISpatialComponentData
     {
         public uint Handle;
 

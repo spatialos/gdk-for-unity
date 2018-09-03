@@ -22,7 +22,7 @@ namespace Playground.Editor.SnapshotGenerator
         }
 
         private static readonly List<string> UnityWorkers =
-            new List<string> { SystemConfig.UnityGameLogic, SystemConfig.UnityClient };
+            new List<string> { WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient};
 
         public static void Generate(Arguments arguments)
         {
@@ -49,11 +49,11 @@ namespace Playground.Editor.SnapshotGenerator
         {
             var playerCreator = PlayerCreator.Component.CreateSchemaComponentData();
             var spawner = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, SystemConfig.UnityGameLogic)
-                .AddMetadata("PlayerCreator", SystemConfig.UnityGameLogic)
+                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
+                .AddMetadata("PlayerCreator", WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
                 .SetReadAcl(UnityWorkers)
-                .AddComponent(playerCreator, SystemConfig.UnityGameLogic)
+                .AddComponent(playerCreator, WorkerUtils.UnityGameLogic)
                 .Build();
             snapshot.AddEntity(spawner);
         }
@@ -99,16 +99,16 @@ namespace Playground.Editor.SnapshotGenerator
                     var archetypeComponent = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
 
                     var entity = EntityBuilder.Begin()
-                        .AddPosition(x, 0, z, SystemConfig.UnityGameLogic)
-                        .AddMetadata(entityType, SystemConfig.UnityGameLogic)
+                        .AddPosition(x, 0, z, WorkerUtils.UnityGameLogic)
+                        .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                         .SetPersistence(true)
                         .SetReadAcl(UnityWorkers)
-                        .AddComponent(transform, SystemConfig.UnityGameLogic)
-                        .AddComponent(cubeColor, SystemConfig.UnityGameLogic)
-                        .AddComponent(cubeTargetVelocity, SystemConfig.UnityGameLogic)
-                        .AddComponent(prefab, SystemConfig.UnityGameLogic)
-                        .AddComponent(archetypeComponent, SystemConfig.UnityGameLogic)
-                        .AddComponent(launchable, SystemConfig.UnityGameLogic)
+                        .AddComponent(transform, WorkerUtils.UnityGameLogic)
+                        .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
+                        .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
+                        .AddComponent(prefab, WorkerUtils.UnityGameLogic)
+                        .AddComponent(archetypeComponent, WorkerUtils.UnityGameLogic)
+                        .AddComponent(launchable, WorkerUtils.UnityGameLogic)
                         .Build();
 
                     snapshot.AddEntity(entity);
@@ -133,16 +133,16 @@ namespace Playground.Editor.SnapshotGenerator
             var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
 
             var entity = EntityBuilder.Begin()
-                .AddPosition(coords.X, coords.Y, coords.Z, SystemConfig.UnityGameLogic)
-                .AddMetadata(entityType, SystemConfig.UnityGameLogic)
+                .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
+                .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
                 .SetReadAcl(UnityWorkers)
-                .AddComponent(collisions, SystemConfig.UnityGameLogic)
-                .AddComponent(transform, SystemConfig.UnityGameLogic)
-                .AddComponent(prefab, SystemConfig.UnityGameLogic)
-                .AddComponent(archetype, SystemConfig.UnityGameLogic)
-                .AddComponent(color, SystemConfig.UnityGameLogic)
-                .AddComponent(spinnerRotation, SystemConfig.UnityGameLogic)
+                .AddComponent(collisions, WorkerUtils.UnityGameLogic)
+                .AddComponent(transform, WorkerUtils.UnityGameLogic)
+                .AddComponent(prefab, WorkerUtils.UnityGameLogic)
+                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
+                .AddComponent(color, WorkerUtils.UnityGameLogic)
+                .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
                 .Build();
 
             snapshot.AddEntity(entity);

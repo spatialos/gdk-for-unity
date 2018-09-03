@@ -28,13 +28,13 @@ namespace Playground
 
         [Inject] private Data data;
 
-        private Worker worker;
+        private Vector3 origin;
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = Worker.GetWorkerFromWorld(World);
+            origin = World.GetExistingManager<WorkerSystem>().Origin;
         }
 
         protected override void OnUpdate()
@@ -44,12 +44,12 @@ namespace Playground
                 var rigidbodyComponent = data.Rigidbody[i];
                 var cubeComponent = data.Cube[i];
 
-                if (cubeComponent.TargetVelocity.X > 0 && rigidbodyComponent.position.x - worker.Origin.x > 10)
+                if (cubeComponent.TargetVelocity.X > 0 && rigidbodyComponent.position.x - origin.x > 10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = -2.0f };
                     data.Cube[i] = cubeComponent;
                 }
-                else if (cubeComponent.TargetVelocity.X < 0 && rigidbodyComponent.position.x - worker.Origin.x < -10)
+                else if (cubeComponent.TargetVelocity.X < 0 && rigidbodyComponent.position.x - origin.x < -10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
                     data.Cube[i] = cubeComponent;
