@@ -9,6 +9,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
     public class LocalTransformSyncSystem : ComponentSystem
     {
