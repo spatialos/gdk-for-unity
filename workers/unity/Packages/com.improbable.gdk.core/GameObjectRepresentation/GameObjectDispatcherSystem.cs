@@ -164,14 +164,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public void CreateActivationManagerAndReaderWriterStore(Entity entity)
+        public void CreateActivationManagerAndReaderWriterStore(Entity entity, GameObject gameObject)
         {
             if (entityToActivationManager.ContainsKey(entity))
             {
                 throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entity {entity.Index}.");
             }
 
-            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             var store = new InjectableStore();
             entityToReaderWriterStore.Add(entity, store);
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
