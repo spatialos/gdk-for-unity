@@ -16,6 +16,34 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
+        public partial class Cmd
+        {
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public Cmd.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
+                {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
+                }
+
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                {
+                    entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
+                        .Add(Cmd.CreateResponse(Request, payload));
+                }
+
+                public void SendResponseFailure(string message)
+                {
+                    entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
+                        .Add(Cmd.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+
         public partial class Requirables
         {
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
@@ -73,9 +101,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-
-                private readonly List<Action<Cmd.ReceivedRequest>> cmdDelegates = new List<Action<Cmd.ReceivedRequest>>();
-                public event Action<Cmd.ReceivedRequest> OnCmdRequest
+                private readonly List<Action<Cmd.RequestResponder>> cmdDelegates = new List<Action<Cmd.RequestResponder>>();
+                public event Action<Cmd.RequestResponder> OnCmdRequest
                 {
                     add => cmdDelegates.Add(value);
                     remove => cmdDelegates.Remove(value);
@@ -83,20 +110,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
-                    foreach (var callback in cmdDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(new Cmd.RequestResponder(entityManager, entity, request), cmdDelegates, logger);
                 }
-
             }
 
             [InjectableId(InjectableType.CommandResponseHandler, 1005)]
@@ -112,9 +127,27 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
+
                 public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
+                }
 
+                private readonly List<Action<Cmd.ReceivedResponse>> cmdDelegates = new List<Action<Cmd.ReceivedResponse>>();
+                public event Action<Cmd.ReceivedResponse> OnCmdResponse
+                {
+                    add => cmdDelegates.Add(value);
+                    remove => cmdDelegates.Remove(value);
+                }
+
+                internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, cmdDelegates, logger);
                 }
             }
         }

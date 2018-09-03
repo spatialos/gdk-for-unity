@@ -64,7 +64,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
-                    DispatchEventWithErrorHandling(payload, EvtDelegates);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, EvtDelegates, logDispatcher);
                 }
 
                 public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)

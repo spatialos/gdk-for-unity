@@ -16,7 +16,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <# foreach (var commandDetails in commandDetailsList) {#>
-        public class <#= commandDetails.CommandName #>
+        public partial class <#= commandDetails.CommandName #>
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.

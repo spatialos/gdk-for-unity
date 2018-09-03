@@ -10,7 +10,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
-        public class FirstCommand
+        public partial class FirstCommand
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.
@@ -121,7 +121,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
             }
         }
-        public class SecondCommand
+        public partial class SecondCommand
         {
             /// <summary>
             ///     Please do not use the default constructor. Use CreateRequest instead.

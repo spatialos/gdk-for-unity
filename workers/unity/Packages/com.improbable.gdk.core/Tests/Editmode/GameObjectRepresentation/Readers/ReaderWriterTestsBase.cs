@@ -31,8 +31,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.Readers
             world.Dispose();
         }
 
-        protected struct SomeOtherComponent : IComponentData
+        protected struct SomeOtherComponent : IComponentData, ISpatialComponentData
         {
+            public uint ComponentId { get; }
+            public BlittableBool DirtyBit { get; set; }
         }
     }
 }

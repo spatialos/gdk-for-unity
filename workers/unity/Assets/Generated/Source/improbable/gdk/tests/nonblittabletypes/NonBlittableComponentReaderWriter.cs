@@ -192,7 +192,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
-                    DispatchEventWithErrorHandling(payload, FirstEventDelegates);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, logDispatcher);
                 }
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
@@ -211,7 +211,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
-                    DispatchEventWithErrorHandling(payload, SecondEventDelegates);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, logDispatcher);
                 }
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)

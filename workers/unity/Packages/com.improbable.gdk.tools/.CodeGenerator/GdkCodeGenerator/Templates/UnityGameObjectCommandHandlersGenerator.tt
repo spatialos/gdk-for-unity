@@ -21,6 +21,40 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<# foreach(var commandDetails in commandDetailsList) {
+       var rawRequestType = commandDetails.CommandName + ".ReceivedRequest";
+       var responsePayloadType = commandDetails.FqnResponseType;
+       var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+#>
+        public partial class <#= commandDetails.CommandName #>
+        {
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public <#= rawRequestType #> Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
+                {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
+                }
+
+                public void SendResponse(<#= responsePayloadType #> payload)
+                {
+                    entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
+                        .Add(<#= commandDetails.CommandName #>.CreateResponse(Request, payload));
+                }
+
+                public void SendResponseFailure(string message)
+                {
+                    entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
+                        .Add(<#= commandDetails.CommandName #>.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+<# } #>
+
         public partial class Requirables
         {
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
@@ -80,34 +114,24 @@ namespace <#= qualifiedNamespace #>
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-
 <# foreach(var commandDetails in commandDetailsList) {
-           var commandRequestType = commandDetails.CommandName + ".ReceivedRequest";
            var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+           var rawRequestType = commandDetails.CommandName + ".ReceivedRequest";
+           var rawResponseType = commandDetails.CommandName + ".Response";
+           var wrappedRequestType = commandDetails.CommandName + ".RequestResponder";
+           var responsePayloadType = commandDetails.FqnResponseType;
 #>
-                private readonly List<Action<<#= commandRequestType #>>> <#= delegateList #> = new List<Action<<#= commandRequestType #>>>();
-                public event Action<<#= commandRequestType #>> On<#= commandDetails.CommandName #>Request
+                private readonly List<Action<<#= wrappedRequestType #>>> <#= delegateList #> = new List<Action<<#= wrappedRequestType #>>>();
+                public event Action<<#= wrappedRequestType #>> On<#= commandDetails.CommandName #>Request
                 {
                     add => <#= delegateList #>.Add(value);
                     remove => <#= delegateList #>.Remove(value);
                 }
 
-                internal void On<#= commandDetails.CommandName #>RequestInternal(<#= commandRequestType #> request)
+                internal void On<#= commandDetails.CommandName #>RequestInternal(<#= rawRequestType #> request)
                 {
-                    foreach (var callback in <#= delegateList #>)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(new <#= wrappedRequestType #>(entityManager, entity, request), <#= delegateList #>, logger);
                 }
-
 <# } #>
             }
 
@@ -124,10 +148,33 @@ namespace <#= qualifiedNamespace #>
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
+
                 public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
-
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
                 }
+<# foreach(var commandDetails in commandDetailsList) {
+   var commandResponseType = commandDetails.CommandName + ".ReceivedResponse";
+   var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
+#>
+
+                private readonly List<Action<<#= commandResponseType #>>> <#= delegateList #> = new List<Action<<#= commandResponseType #>>>();
+                public event Action<<#= commandResponseType #>> On<#= commandDetails.CommandName #>Response
+                {
+                    add => <#= delegateList #>.Add(value);
+                    remove => <#= delegateList #>.Remove(value);
+                }
+
+                internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, <#= delegateList #>, logger);
+                }
+<# } #>
             }
         }
     }

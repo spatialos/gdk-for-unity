@@ -64,7 +64,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
-                    DispatchEventWithErrorHandling(payload, MyEventDelegates);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, MyEventDelegates, logDispatcher);
                 }
 
                 public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)

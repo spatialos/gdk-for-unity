@@ -16,6 +16,61 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
+        public partial class FirstCommand
+        {
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public FirstCommand.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, FirstCommand.ReceivedRequest request)
+                {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
+                }
+
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse payload)
+                {
+                    entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
+                        .Add(FirstCommand.CreateResponse(Request, payload));
+                }
+
+                public void SendResponseFailure(string message)
+                {
+                    entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
+                        .Add(FirstCommand.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+        public partial class SecondCommand
+        {
+            public struct RequestResponder {
+                private readonly EntityManager entityManager;
+                private readonly Entity entity;
+                public SecondCommand.ReceivedRequest Request { get; }
+
+                internal RequestResponder(EntityManager entityManager, Entity entity, SecondCommand.ReceivedRequest request)
+                {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    Request = request;
+                }
+
+                public void SendResponse(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse payload)
+                {
+                    entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
+                        .Add(SecondCommand.CreateResponse(Request, payload));
+                }
+
+                public void SendResponseFailure(string message)
+                {
+                    entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
+                        .Add(SecondCommand.CreateResponseFailure(Request, message));
+                }
+            }
+        }
+
         public partial class Requirables
         {
             [InjectableId(InjectableType.CommandRequestSender, 1002)]
@@ -79,9 +134,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-
-                private readonly List<Action<FirstCommand.ReceivedRequest>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedRequest>>();
-                public event Action<FirstCommand.ReceivedRequest> OnFirstCommandRequest
+                private readonly List<Action<FirstCommand.RequestResponder>> firstCommandDelegates = new List<Action<FirstCommand.RequestResponder>>();
+                public event Action<FirstCommand.RequestResponder> OnFirstCommandRequest
                 {
                     add => firstCommandDelegates.Add(value);
                     remove => firstCommandDelegates.Remove(value);
@@ -89,22 +143,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in firstCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(new FirstCommand.RequestResponder(entityManager, entity, request), firstCommandDelegates, logger);
                 }
-
-                private readonly List<Action<SecondCommand.ReceivedRequest>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedRequest>>();
-                public event Action<SecondCommand.ReceivedRequest> OnSecondCommandRequest
+                private readonly List<Action<SecondCommand.RequestResponder>> secondCommandDelegates = new List<Action<SecondCommand.RequestResponder>>();
+                public event Action<SecondCommand.RequestResponder> OnSecondCommandRequest
                 {
                     add => secondCommandDelegates.Add(value);
                     remove => secondCommandDelegates.Remove(value);
@@ -112,20 +154,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
-                    foreach (var callback in secondCommandDelegates)
-                    {
-                        try
-                        {
-                            callback(request);
-                        }
-                        catch (Exception e)
-                        {
-                            // Log the exception but do not rethrow it, as other delegates should still get called
-                            logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                        }
-                    }
+                    GameObjectDelegates.DispatchWithErrorHandling(new SecondCommand.RequestResponder(entityManager, entity, request), secondCommandDelegates, logger);
                 }
-
             }
 
             [InjectableId(InjectableType.CommandResponseHandler, 1002)]
@@ -141,9 +171,39 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : IInjectable
             {
+                private Entity entity;
+                private readonly EntityManager entityManager;
+                private readonly ILogDispatcher logger;
+
                 public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
                 {
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                    this.logger = logger;
+                }
 
+                private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
+                public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
+                {
+                    add => firstCommandDelegates.Add(value);
+                    remove => firstCommandDelegates.Remove(value);
+                }
+
+                internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, firstCommandDelegates, logger);
+                }
+
+                private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
+                public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
+                {
+                    add => secondCommandDelegates.Add(value);
+                    remove => secondCommandDelegates.Remove(value);
+                }
+
+                internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(response, secondCommandDelegates, logger);
                 }
             }
         }
