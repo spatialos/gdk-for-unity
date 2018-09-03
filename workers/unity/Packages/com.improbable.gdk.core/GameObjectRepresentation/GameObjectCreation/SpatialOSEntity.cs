@@ -4,20 +4,19 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
-    ///     Wrapper around an ECS Entity instance representing a SpatialOS Entity used for interacting with the the
-    ///     entity without touching ECS code like EntityManagers.
+    ///     Used to easily retrieve information about a SpatialOS Entity instance from a Unity ECS Entity instance.
     /// </summary>
     public struct SpatialOSEntity
     {
+        public readonly EntityId SpatialOSEntityId;
         private readonly EntityManager entityManager;
         private readonly Entity entity;
-        public readonly EntityId SpatialEntityId;
 
         internal SpatialOSEntity(Entity entity, EntityManager entityManager)
         {
             this.entity = entity;
             this.entityManager = entityManager;
-            SpatialEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
+            SpatialOSEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
         public bool HasComponent<T>() where T : struct, ISpatialComponentData, IComponentData

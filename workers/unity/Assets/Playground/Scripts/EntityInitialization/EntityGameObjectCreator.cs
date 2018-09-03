@@ -29,7 +29,8 @@ namespace Playground
             var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
             if (!entity.HasComponent<Transform.Component>())
             {
-                return cachedPrefabs[prefabName] = null;
+                cachedPrefabs[prefabName] = null;
+                return null;
             }
 
             var transform = entity.GetComponent<Transform.Component>();
@@ -59,7 +60,7 @@ namespace Playground
             }
 
             var gameObject = GameObject.Instantiate(prefab, position, rotation);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialEntityId}";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}";
             return gameObject;
         }
     }
