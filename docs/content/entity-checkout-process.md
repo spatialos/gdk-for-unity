@@ -59,29 +59,30 @@ To perform more complex setup logic, you can add components that themselves act 
 
 ### Representing your Entity with a GameObject
 
-A GameObject initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the `Prefab` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
+A GameObject initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the name given in the `Metadata` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
 
 To use this feature:
-1. Add the `GameObjectInitializationSystem` to your Worker's world.
-2. Add an `Prefab` schema component to SpatialOS entities that should make use of this feature. Set the `prefab` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `prefab = "MyPrefab"`).
-3. Add a `Transform` schema component to SpatialOS entities that should make use of this feature. This is to help the feature determine where the corresponding GameObject shall be spawned in the scene.
-4. Create a prefab for representing your entity in the `Resources` folder of your Unity project. Give it a name, e.g. `MyPrefabClient`, `MyPrefabServer`.
-5. Specify a prefab mapping for matching entities with their corresponding prefabs in `workers\unity\Assets\Playground\Config\PrefabConfig.cs`:
+1. Pass an instance of `EntityGameObjectCreator` with the name of your worker the `GameObjectRepresentationSystemHelper`. In the Playground project setup, this currently happens in the `WorkerUtils` class:
 ```csharp
-public static class PrefabConfig
+public static class WorkerUtils
     {
-        public static readonly Dictionary<string, PrefabMapping> PrefabMappings = new Dictionary<string, PrefabMapping>
+        public const string UnityClientType = "UnityClient";
+		public static void AddClientSystems(World world)
         {
-            {
-                "MyPrefab",
-                new PrefabMapping { UnityGameLogic = "MyPrefabServer", UnityClient = "MyPrefabClient" }
-            }
-        };
-    }
+			// Configuration including the following
+			GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityClient));
+		}
+	}
 ```
+2. Add the `Metadata` schema component to SpatialOS entities that should make use of this feature. Set the `entityType` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `MyEntity`).
+3. Add a `Transform` schema component to SpatialOS entities that should make use of this feature. This is to help the feature determine where the corresponding GameObject shall be spawned in the scene.
+4. Create a prefab for representing your entity in the `Resources\Prefabs` folder of your Unity project. Name it just like in the Metadata component. If you want to use the same prefab for all workers, put it in the `\Common\` subfolder, e.g. `Resources\Prefabs\Common\MyEntity`. If you want to specify different prefabs depending on the workers, put them in subfolders corresponding to the worker type string you gave to the `EntityGameObjectCreator` constructor. In the Playground projects, the worker types are called `UnityClient` and `UnityGameLogic`, so the prefabs would be `Resources\Prefabs\UnityClient\MyEntity` and `Resources\Prefabs\UnityGameLogic\MyEntity`.
+
 Upon checking out an entity that has both a `Prefab` and a `Transform` component, a companion GameObject is automatically instantiated in the active scene based on its `Prefab` component. The companion GameObject is automatically deleted upon removing the entity from the worker.
 
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
+
+If you want to customize e.g. the location of the prefabs or how GameObjects are created for newly checked out SpatialOS Entities in general, you can also create your own implementation of the `IEntityGameObjectCreator` interface to replace the `EntityGameObjectCreator` class. Make sure to start by looking at the existing `EntityGameObjectCreator` class as an example if you decide to do this.
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
