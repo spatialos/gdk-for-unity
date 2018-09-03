@@ -7,6 +7,8 @@ fi
 
 cd "$(dirname "$0")/../"
 
+spatial auth login
+
 ci/test.sh
 ci/build-client.sh
 ci/build-gamelogic.sh
