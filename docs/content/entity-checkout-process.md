@@ -65,14 +65,14 @@ To use this feature:
 1. Pass an instance of `EntityGameObjectCreator` with the name of your worker the `GameObjectRepresentationSystemHelper`. In the Playground project setup, this currently happens in the `WorkerUtils` class:
 ```csharp
 public static class WorkerUtils
+{
+    public const string UnityClientType = "UnityClient";
+    public static void AddClientSystems(World world)
     {
-        public const string UnityClientType = "UnityClient";
-        public static void AddClientSystems(World world)
-        {
-            // Configuration including the following
-            GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityClient));
-        }
+        // Configuration including the following
+        GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityClient));
     }
+}
 ```
 2. Add the `Metadata` schema component to SpatialOS entities that should make use of this feature. Set the `entityType` field of the component before the SpatialOS entity is checked-out by your Unity worker (e.g. `MyEntity`).
 3. Add a `Transform` schema component to SpatialOS entities that should make use of this feature. This is to help the feature determine where the corresponding GameObject shall be spawned in the scene.
