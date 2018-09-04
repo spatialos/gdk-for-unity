@@ -63,7 +63,7 @@ Please format any code files that you've touched (normally `Ctrl+Alt+F`) before 
 
 ## Deprecation
 
-* Annotate deprecated functions  with `[System.Obsolete(<string>)]` where `<string>` is a short summary of the deprecation reason and either a guide on how to upgrade or a link to a guide on how to upgrade.
+* Annotate deprecated functions with `[System.Obsolete(<string>)]` where `<string>` is a short summary of the deprecation reason and either a guide on how to upgrade or a link to a guide on how to upgrade.
 
 ## Tests
 
