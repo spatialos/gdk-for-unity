@@ -1,4 +1,3 @@
-
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
