@@ -29,12 +29,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly HashSet<MonoBehaviour> behavioursToDisable = new HashSet<MonoBehaviour>();
         private readonly HashSet<MonoBehaviour> enabledBehaviours = new HashSet<MonoBehaviour>();
 
+        private readonly ILogDispatcher logger;
         private readonly InjectableStore store;
         private readonly RequiredFieldInjector injector;
-
-        private readonly ILogDispatcher logger;
-
-        private const string LoggerName = nameof(MonoBehaviourActivationManager);
 
         public MonoBehaviourActivationManager(GameObject gameObject, RequiredFieldInjector injector,
             InjectableStore store, ILogDispatcher logger)
@@ -74,7 +71,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                     numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
 
-                    behaviour.enabled = false;
+                    RunWithExceptionHandling(() => behaviour.enabled = false);
                 }
             }
         }
@@ -104,7 +101,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in behavioursToEnable)
             {
-                behaviour.enabled = true;
+                RunWithExceptionHandling(() => behaviour.enabled = true);
                 enabledBehaviours.Add(behaviour);
             }
 
@@ -132,7 +129,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var behaviour in behaviours)
             {
-                behaviour.enabled = false;
+                RunWithExceptionHandling(() => behaviour.enabled = false);
             }
 
             foreach (var behaviour in behaviours)
@@ -238,6 +235,19 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 numUnsatisfiedRequirements[behaviour]++;
+            }
+        }
+
+        private void RunWithExceptionHandling(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                // Log the exception but do not rethrow it, as other delegates should still get called
+                logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
             }
         }
 

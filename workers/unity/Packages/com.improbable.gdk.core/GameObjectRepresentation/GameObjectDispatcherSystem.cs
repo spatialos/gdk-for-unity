@@ -164,7 +164,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public void CreateActivationManagerAndReaderWriterStore(Entity entity, GameObject gameObject)
+        internal void CreateActivationManagerAndReaderWriterStore(Entity entity, GameObject gameObject)
         {
             if (entityToActivationManager.ContainsKey(entity))
             {
@@ -179,13 +179,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
         {
-            if (!entityToActivationManager.ContainsKey(entity))
+            if (!entityToActivationManager.TryGetValue(entity, out var activationManager))
             {
                 throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
             }
 
             // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
-            entityToActivationManager[entity].Dispose();
+            activationManager.Dispose();
             entityToActivationManager.Remove(entity);
             entityToReaderWriterStore.Remove(entity);
         }

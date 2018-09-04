@@ -27,6 +27,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             = "[Require] attribute found on member that is not Injectable. This member will be ignored.";
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
+        private const string RequirableFieldDoesNotInheritRequirableBase
+            = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the Unity GDK.";
 
         public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
@@ -77,13 +79,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var fields = fieldsToComponents.Value;
                 foreach (var field in fields)
                 {
-                    var oldField = field.GetValue(behaviour);
-                    if (!(oldField is RequirableBase))
+                    var requirableToBeDisposed = field.GetValue(behaviour) as RequirableBase;
+                    if (requirableToBeDisposed == null)
                     {
-                        Debug.LogError("Something is wrong " + behaviour);
+                        logger.HandleLog(LogType.Error, new LogEvent(RequirableFieldDoesNotInheritRequirableBase)
+                            .WithField("Behaviour", behaviour)
+                            .WithField("Field", field.GetValue(behaviour)));
                     }
 
-                    ((RequirableBase) oldField).Dispose();
+                    requirableToBeDisposed.Dispose();
                 }
             }
         }
