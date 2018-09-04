@@ -9,6 +9,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
+    [DisableAutoCreation]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
         private struct AddedEntitiesData

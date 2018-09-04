@@ -2,6 +2,7 @@
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
+    [DisableAutoCreation]
     public class EntityGameObjectLinkerSystem : ComponentSystem
     {
         public EntityGameObjectLinker Linker;
