@@ -7,7 +7,7 @@ fi
 
 cd "$(dirname "$0")/../"
 
-spatial auth login
+spatial auth login --log_level=debug
 
 ci/test.sh
 ci/build-client.sh
