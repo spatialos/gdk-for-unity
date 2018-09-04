@@ -59,10 +59,10 @@ To perform more complex setup logic, you can add components that themselves act 
 
 ### Representing your Entity with a GameObject
 
-A GameObject initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the name given in the `Metadata` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
+A GameObject initialization feature is provided as part of the GDK, with a typical example use case implemented in the Playground project in the `EntityGameObjectCreator` class. With the implementation there, this allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the name given in the `Metadata` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
 
 To use this feature:
-1. Pass an instance of `EntityGameObjectCreator` with the name of your worker the `GameObjectRepresentationSystemHelper`. In the Playground project setup, this currently happens in the `WorkerUtils` class:
+1. Pass an instance of `EntityGameObjectCreator` with the name of your worker to the `GameObjectRepresentationSystemHelper`. In the Playground project setup, this currently happens in the `WorkerUtils` class:
 ```csharp
 public static class WorkerUtils
 {
@@ -82,7 +82,7 @@ Upon checking out an entity that has both a `Prefab` and a `Transform` component
 
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
 
-If you want to customize e.g. the location of the prefabs or how GameObjects are created for newly checked out SpatialOS Entities in general, you can also create your own implementation of the `IEntityGameObjectCreator` interface to replace the `EntityGameObjectCreator` class. Make sure to start by looking at the existing `EntityGameObjectCreator` class as an example if you decide to do this.
+If you want to customize e.g. the location of the prefabs or how GameObjects are created for newly checked out SpatialOS Entities in general, you can also create your own implementation of the `IEntityGameObjectCreator` interface to replace the `EntityGameObjectCreator` class. If you decide to do this, make sure to start by looking at the existing `EntityGameObjectCreator` class as an example.
 
 ----
 **Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
