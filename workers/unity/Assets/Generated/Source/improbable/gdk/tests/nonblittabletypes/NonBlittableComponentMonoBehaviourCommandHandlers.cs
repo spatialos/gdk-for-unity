@@ -18,7 +18,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
     {
         public partial class FirstCommand
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public FirstCommand.ReceivedRequest Request { get; }
@@ -45,7 +46,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         }
         public partial class SecondCommand
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public SecondCommand.ReceivedRequest Request { get; }
@@ -227,8 +229,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
                 public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
                 {
-                    add => firstCommandDelegates.Add(value);
-                    remove => firstCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
@@ -239,8 +257,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
                 public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
                 {
-                    add => secondCommandDelegates.Add(value);
-                    remove => secondCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)

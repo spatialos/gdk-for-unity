@@ -28,7 +28,8 @@ namespace <#= qualifiedNamespace #>
 #>
         public partial class <#= commandDetails.CommandName #>
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public <#= rawRequestType #> Request { get; }
@@ -187,8 +188,24 @@ namespace <#= qualifiedNamespace #>
                 private readonly List<Action<<#= commandResponseType #>>> <#= delegateList #> = new List<Action<<#= commandResponseType #>>>();
                 public event Action<<#= commandResponseType #>> On<#= commandDetails.CommandName #>Response
                 {
-                    add => <#= delegateList #>.Add(value);
-                    remove => <#= delegateList #>.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Remove(value);
+                    }
                 }
 
                 internal void On<#= commandDetails.CommandName #>ResponseInternal(<#= commandResponseType #> response)

@@ -18,7 +18,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Cmd
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public Cmd.ReceivedRequest Request { get; }
@@ -162,8 +163,24 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 private readonly List<Action<Cmd.ReceivedResponse>> cmdDelegates = new List<Action<Cmd.ReceivedResponse>>();
                 public event Action<Cmd.ReceivedResponse> OnCmdResponse
                 {
-                    add => cmdDelegates.Add(value);
-                    remove => cmdDelegates.Remove(value);
+                    add
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (LogErrorIfDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)
