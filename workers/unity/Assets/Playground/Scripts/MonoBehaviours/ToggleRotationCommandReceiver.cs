@@ -22,8 +22,6 @@ namespace Playground.MonoBehaviours
 
         private void OnDisable()
         {
-            requestHandler.OnSpinnerToggleRotationRequest -= OnSpinnerToggleRotationRequest;
-
             nextAvailableSpinChangeTime = Time.time;
         }
 

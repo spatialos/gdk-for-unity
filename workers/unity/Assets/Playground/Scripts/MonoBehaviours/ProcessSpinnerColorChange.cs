@@ -43,12 +43,6 @@ public class ProcessSpinnerColorChange : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        collisionsReader.OnPlayerCollided -= HandleCollisionEvent;
-        colorReader.ColorUpdated -= HandleColorChange;
-    }
-
     private void HandleCollisionEvent(Empty empty)
     {
         collideTime = Time.time;
