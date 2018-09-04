@@ -61,12 +61,7 @@ public class SpawnCubeCommandReceiver : MonoBehaviour
             var location = transformReader.Data.Location;
 
             var cubeEntityTemplate =
-                CubeTemplate.CreateCubeEntityTemplate(new Coordinates
-                {
-                    X = location.X,
-                    Y = location.Y + 2,
-                    Z = location.Z,
-                });
+                CubeTemplate.CreateCubeEntityTemplate(new Coordinates(location.X, location.Y + 2, location.Z));
 
             worldCommandHelper.CreateEntity(cubeEntityTemplate, reserveResponse.FirstEntityId,
                 createEntityResponseOp =>

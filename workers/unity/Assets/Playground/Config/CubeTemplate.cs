@@ -14,8 +14,8 @@ namespace Playground
             const string entityType = "Cube";
 
             var transform = Transform.Component.CreateSchemaComponentData(
-                new Location { X = (float) coords.X, Y = (float) coords.Y, Z = (float) coords.Z },
-                new Quaternion { W = 1, X = 0, Y = 0, Z = 0 },
+                new Location((float) coords.X, (float) coords.Y, (float) coords.Z),
+                new Quaternion(1, 0, 0, 0),
                 0
             );
 
