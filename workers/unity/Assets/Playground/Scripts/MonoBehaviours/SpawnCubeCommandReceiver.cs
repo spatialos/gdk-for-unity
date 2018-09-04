@@ -43,6 +43,8 @@ public class SpawnCubeCommandReceiver : MonoBehaviour
     {
         worldCommandHelper.Dispose();
         worldCommandHelper = null;
+
+        commandRequestHandler.OnSpawnCubeRequest -= OnSpawnCubeRequest;
     }
 
     private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder requestResponder)
