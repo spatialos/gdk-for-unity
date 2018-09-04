@@ -11,11 +11,11 @@ namespace Playground.Editor
         [RuntimeInitializeOnLoadMethod]
         private static void Init()
         {
-            CompilationPipeline.assemblyCompilationStarted += CompilationPipeline_assemblyCompilationStarted;
-            CompilationPipeline.assemblyCompilationFinished += CompilationPipeline_assemblyCompilationFinished;
+            CompilationPipeline.assemblyCompilationStarted += OnCompilationStarted;
+            CompilationPipeline.assemblyCompilationFinished += OnCompilationFinished;
         }
 
-        private static void CompilationPipeline_assemblyCompilationStarted(string obj)
+        private static void OnCompilationStarted(string obj)
         {
             if (EditorApplication.isPlaying)
             {
@@ -24,7 +24,7 @@ namespace Playground.Editor
             }
         }
 
-        private static void CompilationPipeline_assemblyCompilationFinished(string arg1, CompilerMessage[] arg2)
+        private static void OnCompilationFinished(string arg1, CompilerMessage[] arg2)
         {
             if (stopped)
             {
