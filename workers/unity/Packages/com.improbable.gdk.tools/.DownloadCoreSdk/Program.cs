@@ -29,11 +29,13 @@ namespace Improbable
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86_64-msvc_mt-win32", $"{nativeDependenciesPath}/Windows/x86_64", new List<string> {"include", "worker.lib"}),
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86_64-gcc_libstdcpp-linux", $"{nativeDependenciesPath}/Linux/x86_64", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "c-bundle-x86_64-clang_libcpp-macos", $"{nativeDependenciesPath}/OSX", new List<string> {"include"}),
-                new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/OSX"),
+                new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/CSharpCore"),
+                new Package(tempPath, "platform_sdk", "csharp", $"{managedDependenciesPath}/Editor/CSharpPlatform"),
                 new Package(tempPath, "schema", "standard_library", $"{spatialProjectPath}/build/dependencies/schema/standard_library"),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-linux", $"{tempPath}/schema_compiler", null, OSPlatform.Linux),
+
             }.Where(p => p.InstallOnThisPlatform).ToList();
 
             try

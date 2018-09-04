@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Tools
 {
     public static class LocalLaunch
     {
-        private static readonly string
+        public static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.

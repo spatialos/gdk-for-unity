@@ -5,6 +5,7 @@
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:com.improbable.gdk.tools",
+    "com.improbable.gdk.ui": "file:com.improbable.gdk.ui",
     "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",
     "com.unity.package-manager-ui": "1.9.11",
     "com.unity.modules.physics": "1.0.0",
