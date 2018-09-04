@@ -27,7 +27,7 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            Debug.LogWarningFormat("Diconnected from SpatialOS with reason: \"{0}\"",
+            Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
                 data.DisconnectMessage[0].ReasonForDisconnect);
         }
     }
