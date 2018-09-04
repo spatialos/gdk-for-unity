@@ -90,7 +90,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             private WorldCommandResponseHandler(Entity entity,
-                EntityManager entityManager,
                 World world,
                 ILogDispatcher logDispatcher)
             {
@@ -145,11 +144,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 public IInjectable CreateInjectable(
                     Entity entity,
-                    EntityManager entityManager,
                     World world,
                     ILogDispatcher logDispatcher)
                 {
-                    return new WorldCommandResponseHandler(entity, entityManager, world, logDispatcher);
+                    return new WorldCommandResponseHandler(entity, world, logDispatcher);
                 }
             }
         }

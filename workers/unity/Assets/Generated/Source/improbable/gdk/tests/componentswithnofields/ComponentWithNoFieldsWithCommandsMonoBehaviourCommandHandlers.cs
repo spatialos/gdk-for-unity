@@ -49,9 +49,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
             internal class CommandRequestSenderCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, World world, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestSender(entity, entityManager, logDispatcher);
+                    return new CommandRequestSender(entity, world.GetOrCreateManager<EntityManager>(), logDispatcher);
                 }
             }
 
@@ -81,9 +81,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, World world, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandRequestHandler(entity, world.GetOrCreateManager<EntityManager>(), logDispatcher);
                 }
             }
 
@@ -117,9 +117,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectableId(InjectableType.CommandResponseHandler, 1005)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, World world, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, World world, ILogDispatcher logDispatcher)
                 {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseHandler(entity, world.GetOrCreateManager<EntityManager>(), logDispatcher);
                 }
             }
 

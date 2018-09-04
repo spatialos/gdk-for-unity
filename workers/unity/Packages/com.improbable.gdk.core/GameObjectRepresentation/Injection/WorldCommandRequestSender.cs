@@ -80,11 +80,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             private class WorldCommandRequestSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity,
-                    EntityManager entityManager,
                     World world,
                     ILogDispatcher logDispatcher)
                 {
-                    return new WorldCommandRequestSender(entity, entityManager);
+                    return new WorldCommandRequestSender(entity, world.GetOrCreateManager<EntityManager>());
                 }
             }
         }
