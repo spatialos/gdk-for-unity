@@ -93,7 +93,7 @@ public class SpawnCubeCommandReceiver : MonoBehaviour
                         NumSpawnedCubes = (uint) spawnedCubes.Count
                     });
 
-                    requestResponder.SendResponse(new SpawnCubeResponse());
+                    requestResponder.SendResponse(new Empty());
                 });
         });
     }

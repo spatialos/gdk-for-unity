@@ -87,7 +87,7 @@ public class CubeSpawnerInputBehaviour : MonoBehaviour
 
     private void SendSpawnCubeCommand()
     {
-        cubeSpawnerCommandSender.SendSpawnCubeRequest(ownEntityId, new SpawnCubeRequest());
+        cubeSpawnerCommandSender.SendSpawnCubeRequest(ownEntityId, new Empty());
     }
 
     private void SendDeleteCubeCommand()

@@ -65,7 +65,7 @@ public class DeleteCubeCommandReceiver : MonoBehaviour
                 NumSpawnedCubes = (uint) spawnedCubes.Count
             });
 
-            requestResponder.SendResponse(new DeleteCubeResponse());
+            requestResponder.SendResponse(new Empty());
         });
     }
 }

@@ -1,13 +1,10 @@
 package playground;
 
-type SpawnCubeRequest {}
-type SpawnCubeResponse {}
+import "playground/empty.schema";
 
 type DeleteCubeRequest {
   EntityId cube_entity_id = 1;
 }
-
-type DeleteCubeResponse {}
 
 component CubeSpawner
 {
@@ -15,6 +12,6 @@ component CubeSpawner
     list<EntityId> spawned_cubes = 1;
     uint32 num_spawned_cubes = 2; // TODO UTY-1081 remove this once lists can be emptied again
 
-    command SpawnCubeResponse spawn_cube(SpawnCubeRequest);
-    command DeleteCubeResponse delete_spawned_cube(DeleteCubeRequest);
+    command Empty spawn_cube(Empty);
+    command Empty delete_spawned_cube(DeleteCubeRequest);
 }
