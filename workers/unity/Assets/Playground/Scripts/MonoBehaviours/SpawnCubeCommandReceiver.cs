@@ -23,8 +23,8 @@ namespace Playground.MonoBehaviours
         [Require] private Transform.Requirables.Reader transformReader;
         [Require] private CubeSpawner.Requirables.CommandRequestHandler commandRequestHandler;
         [Require] private CubeSpawner.Requirables.Writer writer;
-        [Require] private WorldCommands.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private WorldCommandsRequirables.WorldCommandRequestSender worldCommandRequestSender;
+        [Require] private WorldCommandsRequirables.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
         private WorldCommandHelper worldCommandHelper;

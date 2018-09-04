@@ -15,7 +15,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    public static partial class WorldCommands
+    public static partial class WorldCommandsRequirables
     {
         public struct CreateEntityResponse
         {

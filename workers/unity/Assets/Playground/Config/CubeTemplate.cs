@@ -29,7 +29,7 @@ namespace Playground
                 .AddPosition(coords.X, 0, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(TemplateUtils.AllWorkerAttributes)
+                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)

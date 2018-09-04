@@ -25,16 +25,6 @@ namespace Playground.MonoBehaviours
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
 
-        public void OnEnable()
-        {
-            var spatialOSComponent = GetComponent<SpatialOSComponent>();
-            logDispatcher = spatialOSComponent.LogDispatcher;
-            ownEntityId = spatialOSComponent.SpatialEntityId;
-
-            cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnOnSpawnCubeResponse;
-            cubeSpawnerCommandResponseHandler.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
-        }
-
         public static List<EntityId> GetSpawnedCubes(CubeSpawner.Component spatialOSCubeSpawner)
         {
             if (spatialOSCubeSpawner.NumSpawnedCubes == 0)
@@ -49,7 +39,17 @@ namespace Playground.MonoBehaviours
             }
         }
 
-        private void OnOnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
+        private void OnEnable()
+        {
+            var spatialOSComponent = GetComponent<SpatialOSComponent>();
+            logDispatcher = spatialOSComponent.LogDispatcher;
+            ownEntityId = spatialOSComponent.SpatialEntityId;
+
+            cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
+            cubeSpawnerCommandResponseHandler.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
+        }
+
+        private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
         {
             if (response.StatusCode != StatusCode.Success)
             {

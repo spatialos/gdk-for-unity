@@ -39,7 +39,7 @@ namespace Playground
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
                 .AddMetadata(ArchetypeConfig.CharacterArchetype, WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
-                .SetReadAcl(TemplateUtils.AllWorkerAttributes)
+                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)

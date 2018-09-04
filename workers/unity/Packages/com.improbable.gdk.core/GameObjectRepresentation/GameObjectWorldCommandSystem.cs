@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             public uint ResponderHandle;
 
-            public HashSet<WorldCommands.WorldCommandResponseHandler> ResponseHandlers
+            public List<WorldCommands.WorldCommandResponseHandler> ResponseHandlers
             {
                 get => WorldCommandResponseHandlerProvider.Get(ResponderHandle);
                 set => WorldCommandResponseHandlerProvider.Set(ResponderHandle,
@@ -174,7 +174,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     WorldCommandResponseHandlerProvider.Allocate(World);
 
                 worldCommandSenderData.ResponseHandlers =
-                    new HashSet<WorldCommands.WorldCommandResponseHandler>();
+                    new List<WorldCommands.WorldCommandResponseHandler>();
 
                 entityManager.AddComponentData(entity, worldCommandSenderData);
                 entityManager.AddComponentData(entity, new WorldCommandResponderAddedTag());
@@ -189,8 +189,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private static class WorldCommandResponseHandlerProvider
         {
-            private static readonly Dictionary<uint, HashSet<WorldCommands.WorldCommandResponseHandler>> Storage =
-                new Dictionary<uint, HashSet<WorldCommands.WorldCommandResponseHandler>>();
+            private static readonly Dictionary<uint, List<WorldCommands.WorldCommandResponseHandler>> Storage =
+                new Dictionary<uint, List<WorldCommands.WorldCommandResponseHandler>>();
 
             private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
 
@@ -199,13 +199,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             public static uint Allocate(World world)
             {
                 var handle = GetNextHandle();
-                Storage.Add(handle, default(HashSet<WorldCommands.WorldCommandResponseHandler>));
+                Storage.Add(handle, default(List<WorldCommands.WorldCommandResponseHandler>));
                 WorldMapping.Add(handle, world);
 
                 return handle;
             }
 
-            public static HashSet<WorldCommands.WorldCommandResponseHandler> Get(uint handle)
+            public static List<WorldCommands.WorldCommandResponseHandler> Get(uint handle)
             {
                 if (!Storage.TryGetValue(handle, out var value))
                 {
@@ -216,7 +216,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return value;
             }
 
-            public static void Set(uint handle, HashSet<WorldCommands.WorldCommandResponseHandler> value)
+            public static void Set(uint handle, List<WorldCommands.WorldCommandResponseHandler> value)
             {
                 if (!Storage.ContainsKey(handle))
                 {

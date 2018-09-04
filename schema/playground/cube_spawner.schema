@@ -2,7 +2,8 @@ package playground;
 
 import "playground/empty.schema";
 
-type DeleteCubeRequest {
+type DeleteCubeRequest
+{
   EntityId cube_entity_id = 1;
 }
 

@@ -24,25 +24,25 @@ namespace Playground.MonoBehaviours
             }
         }
 
-        private readonly WorldCommands.WorldCommandResponseHandler responseHandler;
-        private readonly WorldCommands.WorldCommandRequestSender requestSender;
+        private readonly WorldCommandsRequirables.WorldCommandResponseHandler responseHandler;
+        private readonly WorldCommandsRequirables.WorldCommandRequestSender requestSender;
 
         public WorldCommandHelper(
-            WorldCommands.WorldCommandRequestSender requestSender,
-            WorldCommands.WorldCommandResponseHandler responseHandler)
+            WorldCommandsRequirables.WorldCommandRequestSender requestSender,
+            WorldCommandsRequirables.WorldCommandResponseHandler responseHandler)
         {
             this.requestSender = requestSender;
             this.responseHandler = responseHandler;
 
             responseHandler.OnReserveEntityIdsResponse += OnReserveEntityIdsResponse;
-            responseHandler.OnCreateEntityResponse += OnOnCreateEntityResponse;
+            responseHandler.OnCreateEntityResponse += OnCreateEntityResponse;
             responseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
         public void Dispose()
         {
             responseHandler.OnDeleteEntityResponse -= OnDeleteEntityResponse;
-            responseHandler.OnCreateEntityResponse -= OnOnCreateEntityResponse;
+            responseHandler.OnCreateEntityResponse -= OnCreateEntityResponse;
             responseHandler.OnReserveEntityIdsResponse -= OnReserveEntityIdsResponse;
         }
 
@@ -54,7 +54,7 @@ namespace Playground.MonoBehaviours
             }
         }
 
-        private void OnOnCreateEntityResponse(WorldCommands.CreateEntityResponse response)
+        private void OnCreateEntityResponse(WorldCommands.CreateEntityResponse response)
         {
             if (response.Context is ContextWrapper<CreateEntityResponseOp> wrapper && wrapper.Helper == this)
             {

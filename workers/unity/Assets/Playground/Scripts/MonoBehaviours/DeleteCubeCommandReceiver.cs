@@ -15,8 +15,8 @@ namespace Playground.MonoBehaviours
 {
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private WorldCommands.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private WorldCommandsRequirables.WorldCommandRequestSender worldCommandRequestSender;
+        [Require] private WorldCommandsRequirables.WorldCommandResponseHandler worldCommandResponseHandler;
         [Require] private CubeSpawner.Requirables.CommandRequestHandler commandRequestHandler;
         [Require] private CubeSpawner.Requirables.Writer writer;
 
@@ -24,7 +24,7 @@ namespace Playground.MonoBehaviours
 
         public void OnEnable()
         {
-            commandRequestHandler.OnDeleteSpawnedCubeRequest += OnOnDeleteSpawnedCubeRequest;
+            commandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
 
             worldCommandHelper = new WorldCommandHelper(
                 worldCommandRequestSender,
@@ -37,7 +37,7 @@ namespace Playground.MonoBehaviours
             worldCommandHelper = null;
         }
 
-        private void OnOnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
+        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
         {
             var cubeSpawner = writer.Data;
             var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawner);
