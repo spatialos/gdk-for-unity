@@ -2,6 +2,12 @@
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
+#region Diagnostic control
+
+// ReSharper disable UnusedMember.Local
+
+#endregion
+
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public static partial class WorldCommands
@@ -76,7 +82,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             [InjectableId(InjectableType.WorldCommandRequestSender)]
-            // ReSharper disable once UnusedMember.Local
             private class WorldCommandRequestSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity,

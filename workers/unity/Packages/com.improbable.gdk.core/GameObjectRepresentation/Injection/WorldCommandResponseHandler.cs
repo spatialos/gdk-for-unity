@@ -4,9 +4,14 @@ using Improbable.Worker.Core;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
+#region Diagnostic control
+
 // ReSharper disable EventNeverSubscribedTo.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Local
+
+#endregion
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -139,7 +144,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             [InjectableId(InjectableType.WorldCommandResponseHandler)]
-            // ReSharper disable once UnusedMember.Local
             private class WorldCommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(

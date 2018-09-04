@@ -4,11 +4,18 @@ using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
 #pragma warning disable 649
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class GameObjectWorldCommandSystem : ComponentSystem
     {
         private struct WorldCommandResponderData : ISystemStateComponentData
