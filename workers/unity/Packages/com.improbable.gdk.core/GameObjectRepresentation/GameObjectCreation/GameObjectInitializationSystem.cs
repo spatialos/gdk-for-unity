@@ -89,17 +89,17 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 if (!entityGameObjectCache.TryGetValue(entity, out var gameObject))
                 {
-                    worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "GameObject corresponding to removed entity not found.")
-                        .WithField("EntityIndex", entity.Index)
-                        .WithField("EntityVersion", entity.Version));
-                    continue;
+                    // Entity without linked GameObject removed
+                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager),
+                        worker, null);
                 }
-
-                entityGameObjectCache.Remove(entity);
-                gameObjectCreator.OnEntityGameObjectRemoved(new SpatialOSEntity(entity, EntityManager),
-                    worker, gameObject);
-                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
+                else
+                {
+                    entityGameObjectCache.Remove(entity);
+                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager),
+                        worker, gameObject);
+                    PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
+                }
             }
 
             viewCommandBuffer.FlushBuffer();
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var entityToGameObject in entityGameObjectCache)
             {
-                gameObjectCreator.OnEntityGameObjectRemoved(new SpatialOSEntity(entityToGameObject.Key, EntityManager),
+                gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entityToGameObject.Key, EntityManager),
                     worker, entityToGameObject.Value);
             }
 

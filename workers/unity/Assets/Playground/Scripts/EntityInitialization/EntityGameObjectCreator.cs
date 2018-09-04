@@ -71,9 +71,12 @@ namespace Playground
             return gameObject;
         }
 
-        public void OnEntityGameObjectRemoved(SpatialOSEntity entity, WorkerSystem worker, GameObject linkedGameObject)
+        public void OnEntityRemoved(SpatialOSEntity entity, WorkerSystem worker, GameObject linkedGameObject)
         {
-            UnityObjectDestroyer.Destroy(linkedGameObject);
+            if (linkedGameObject != null)
+            {
+                UnityObjectDestroyer.Destroy(linkedGameObject);
+            }
         }
     }
 }
