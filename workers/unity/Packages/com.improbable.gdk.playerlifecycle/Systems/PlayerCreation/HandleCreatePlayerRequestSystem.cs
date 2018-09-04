@@ -5,10 +5,10 @@ using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {

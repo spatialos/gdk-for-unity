@@ -7,6 +7,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component>
     {
         private struct TransformData

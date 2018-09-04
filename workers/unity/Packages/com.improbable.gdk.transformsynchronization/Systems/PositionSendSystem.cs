@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     public class PositionSendSystem : CustomSpatialOSSendSystem<Position.Component>
     {
         private struct PositionData

@@ -6,9 +6,7 @@
 ## Temporary components
 
 The attribute `Improbable.Gdk.Core.RemoveAtEndOfTick`, can be applied to any ECS component, extending either `IComponentData` or `ISharedComponentData`.
-All components with this attribute will be removed from all entities during the `InternalSpatialOSCleanGroup` at the end of `SpatialOSSendGroup`.
-
-Note: The `InternalSpatialOSCleanGroup` runs after both the `SpatialOSUpdateGroup` and the `CustomSpatialOSSendGroup`.
+All components with this attribute will be removed from all entities during the `InternalSpatialOSCleanGroup` at the end of `SpatialOSSendGroup`. See [System update order](system-update-order.md) for more details.
 
 ### Example
 ```csharp
@@ -27,11 +25,11 @@ class ReadComponentSystem : ComponentSystem
 {
     private struct Data
     {
-        int Length;
-        [Readonly] ComponentDataArray<SomeTemporaryComponent> TemporaryComponent;
+        public readonly int Length;
+        [Readonly] public ComponentDataArray<SomeTemporaryComponent> TemporaryComponent;
     }
 
-    [Inject] Data data;
+    [Inject] private Data data;
 
     protected override void OnUpdate()
     {

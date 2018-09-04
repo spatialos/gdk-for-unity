@@ -102,10 +102,24 @@ namespace Playground
 
                 entityGameObjectCache.Remove(entity);
                 entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, PostUpdateCommands);
-                UnityObjectDestroyer.Destroy(gameObject);
+                entityGameObjectCreator.DeleteGameObject(entity, gameObject);
             }
 
             viewCommandBuffer.FlushBuffer();
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+
+            foreach (var entityToGameObject in entityGameObjectCache)
+            {
+                entityGameObjectLinker
+                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, PostUpdateCommands);
+                entityGameObjectCreator
+                    .DeleteGameObject(entityToGameObject.Key, entityToGameObject.Value);
+            }
+            entityGameObjectCache.Clear();
         }
     }
 }
