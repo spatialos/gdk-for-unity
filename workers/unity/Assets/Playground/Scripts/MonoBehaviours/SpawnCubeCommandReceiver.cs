@@ -17,10 +17,8 @@ using Transform = Generated.Improbable.Transform.Transform;
 public class SpawnCubeCommandReceiver : MonoBehaviour
 {
     [Require] private Transform.Requirables.Reader transformReader;
-
     [Require] private CubeSpawner.Requirables.CommandRequestHandler commandRequestHandler;
     [Require] private CubeSpawner.Requirables.Writer writer;
-
     [Require] private WorldCommands.WorldCommandRequestSender worldCommandRequestSender;
     [Require] private WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler;
 
@@ -41,7 +39,7 @@ public class SpawnCubeCommandReceiver : MonoBehaviour
 
     public void OnDisable()
     {
-        worldCommandHelper.Dispose();
+        worldCommandHelper?.Dispose();
         worldCommandHelper = null;
 
         commandRequestHandler.OnSpawnCubeRequest -= OnSpawnCubeRequest;
@@ -49,49 +47,60 @@ public class SpawnCubeCommandReceiver : MonoBehaviour
 
     private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder requestResponder)
     {
-        worldCommandHelper.ReserveEntityIds(1, reserveResponse =>
+        worldCommandHelper.ReserveEntityIds(1, reserveResponse => OnEntityReserved(requestResponder, reserveResponse));
+    }
+
+    private void OnEntityReserved(CubeSpawner.SpawnCube.RequestResponder requestResponder,
+        ReserveEntityIdsResponseOp reserveResponse)
+    {
+        if (reserveResponse.StatusCode != StatusCode.Success || !reserveResponse.FirstEntityId.HasValue)
         {
-            if (reserveResponse.StatusCode != StatusCode.Success)
-            {
-                logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent($"Failed to reserve entity id: {reserveResponse.Message}"));
-                requestResponder.SendResponseFailure("Could not reserve entity id");
+            logDispatcher.HandleLog(LogType.Error,
+                new LogEvent($"Failed to reserve entity id: {reserveResponse.Message}"));
+            requestResponder.SendResponseFailure("Could not reserve an entity id.");
 
-                return;
-            }
+            return;
+        }
 
-            var location = transformReader.Data.Location;
+        var location = transformReader.Data.Location;
 
-            var cubeEntityTemplate =
-                CubeTemplate.CreateCubeEntityTemplate(new Coordinates(location.X, location.Y + 2, location.Z));
+        var cubeEntityTemplate =
+            CubeTemplate.CreateCubeEntityTemplate(new Coordinates(location.X, location.Y + 2, location.Z));
 
-            worldCommandHelper.CreateEntity(cubeEntityTemplate, reserveResponse.FirstEntityId,
-                createEntityResponseOp =>
-                {
-                    if (createEntityResponseOp.StatusCode != StatusCode.Success ||
-                        createEntityResponseOp.EntityId == null)
-                    {
-                        logDispatcher.HandleLog(LogType.Error,
-                            new LogEvent($"Create entity failed with message: \"{createEntityResponseOp.Message}\""));
+        var expectedEntityId = reserveResponse.FirstEntityId.Value;
 
-                        requestResponder.SendResponseFailure("Could not create entity");
+        worldCommandHelper.CreateEntity(cubeEntityTemplate, expectedEntityId,
+            createEntityResponseOp => OnEntityCreated(expectedEntityId, requestResponder, createEntityResponseOp));
+    }
 
-                        return;
-                    }
+    private void OnEntityCreated(
+        EntityId expectedEntityId,
+        CubeSpawner.SpawnCube.RequestResponder requestResponder,
+        CreateEntityResponseOp createEntityResponseOp)
+    {
+        if (createEntityResponseOp.StatusCode != StatusCode.Success ||
+            createEntityResponseOp.EntityId == null)
+        {
+            logDispatcher.HandleLog(LogType.Error,
+                new LogEvent(
+                    $"Create entity (for id {expectedEntityId}) failed with message: \"{createEntityResponseOp.Message}\""));
 
-                    var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
+            requestResponder.SendResponseFailure("Could not create entity.");
 
-                    var newEntityId = createEntityResponseOp.EntityId.Value;
-                    spawnedCubes.Add(newEntityId);
+            return;
+        }
 
-                    writer.Send(new CubeSpawner.Update
-                    {
-                        SpawnedCubes = spawnedCubes,
-                        NumSpawnedCubes = (uint) spawnedCubes.Count
-                    });
+        var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
 
-                    requestResponder.SendResponse(new Empty());
-                });
+        var newEntityId = createEntityResponseOp.EntityId.Value;
+        spawnedCubes.Add(newEntityId);
+
+        writer.Send(new CubeSpawner.Update
+        {
+            SpawnedCubes = spawnedCubes,
+            NumSpawnedCubes = (uint) spawnedCubes.Count
         });
+
+        requestResponder.SendResponse(new Empty());
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Generated.Playground;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
 
@@ -10,7 +11,6 @@ public class DeleteCubeCommandReceiver : MonoBehaviour
 {
     [Require] private WorldCommands.WorldCommandRequestSender worldCommandRequestSender;
     [Require] private WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler;
-
     [Require] private CubeSpawner.Requirables.CommandRequestHandler commandRequestHandler;
     [Require] private CubeSpawner.Requirables.Writer writer;
 
@@ -27,45 +27,53 @@ public class DeleteCubeCommandReceiver : MonoBehaviour
 
     public void OnDisable()
     {
-        worldCommandHelper.Dispose();
+        worldCommandHelper?.Dispose();
         worldCommandHelper = null;
+
+        commandRequestHandler.OnDeleteSpawnedCubeRequest -= OnOnDeleteSpawnedCubeRequest;
     }
 
     private void OnOnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
     {
         var cubeSpawner = writer.Data;
-
         var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawner);
-
         var entityId = requestResponder.Request.Payload.CubeEntityId;
 
         if (!spawnedCubes.Contains(entityId))
         {
-            requestResponder.SendResponseFailure("Entity not found in list.");
+            requestResponder.SendResponseFailure($"Entity id {entityId} not found in list.");
 
             return;
         }
 
-        worldCommandHelper.DeleteEntity(entityId, op =>
+        worldCommandHelper.DeleteEntity(entityId, op => OnDeleteResponse(op, requestResponder, entityId));
+    }
+
+    private void OnDeleteResponse(DeleteEntityResponseOp op,
+        CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder,
+        EntityId entityId)
+    {
+        if (op.StatusCode != StatusCode.Success)
         {
-            if (op.StatusCode != StatusCode.Success)
-            {
-                requestResponder.SendResponseFailure($"Could not delete entity: {op.Message}.");
-                return;
-            }
+            requestResponder.SendResponseFailure($"Could not delete entity: {op.Message}.");
+            return;
+        }
 
-            // Refresh the list here in case it may have changed between the responses
-            spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
+        // Refresh the list here in case it may have changed between the responses
+        var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
 
-            spawnedCubes.Remove(entityId);
+        if (!spawnedCubes.Remove(entityId))
+        {
+            requestResponder.SendResponseFailure($"The entity {entityId} has been unexpectedly removed from the list.");
+            return;
+        }
 
-            writer.Send(new CubeSpawner.Update
-            {
-                SpawnedCubes = spawnedCubes,
-                NumSpawnedCubes = (uint) spawnedCubes.Count
-            });
-
-            requestResponder.SendResponse(new Empty());
+        writer.Send(new CubeSpawner.Update
+        {
+            SpawnedCubes = spawnedCubes,
+            NumSpawnedCubes = (uint) spawnedCubes.Count
         });
+
+        requestResponder.SendResponse(new Empty());
     }
 }

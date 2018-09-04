@@ -12,7 +12,6 @@ using UnityEngine;
 public class CubeSpawnerInputBehaviour : MonoBehaviour
 {
     [Require] private PlayerInput.Requirables.Reader playerInputReader;
-
     [Require] private CubeSpawner.Requirables.Reader cubeSpawnerReader;
     [Require] private CubeSpawner.Requirables.CommandRequestSender cubeSpawnerCommandSender;
     [Require] private CubeSpawner.Requirables.CommandResponseHandler cubeSpawnerCommandResponseHandler;
@@ -96,13 +95,13 @@ public class CubeSpawnerInputBehaviour : MonoBehaviour
 
         if (spawnedCubes.Count == 0)
         {
-            Debug.LogError("I have no cubes to delete :(");
+            logDispatcher.HandleLog(LogType.Warning, new LogEvent("No cubes left to delete."));
             return;
         }
 
         cubeSpawnerCommandSender.SendDeleteSpawnedCubeRequest(ownEntityId, new DeleteCubeRequest
         {
-            CubeEntityId = spawnedCubes.First()
+            CubeEntityId = spawnedCubes[0]
         });
     }
 }
