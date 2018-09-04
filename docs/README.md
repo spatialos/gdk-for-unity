@@ -16,6 +16,7 @@ Check out our [FAQs](content/faqs/faqs.md) or head over to our [discussion forum
 The Unity GDK documentation assumes you are familiar with SpatialOS concepts. For guidance on SpatialOS concepts see the documentation on the [SpatialOS website](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). 
 
 #### Entity Component System
+The Unity GDK currently uses the `0.0.12-preview.11` version of the entities preview packages. 
 The Unity GDK documentation assumes you are familiar with the Unity Entity Component System. See:
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
