@@ -59,7 +59,7 @@ To perform more complex setup logic, you can add components that themselves act 
 
 ### Representing your Entity with a GameObject
 
-A GameObject initialization feature is provided as part of the GDK, with a typical example use case implemented in the Playground project in the `EntityGameObjectCreator` class. With the implementation there, this allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the name given in the `Metadata` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
+A GameObject initialization feature is provided as part of the GDK, with a typical example use case implemented in the Playground project in the `EntityGameObjectCreator` class. With the implementation there, this allows you to automatically create and delete a companion GameObject for representing a SpatialOS entity in the scene based on the name given in the `Metadata` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
 
 To use this feature:
 1. Pass an instance of `EntityGameObjectCreator` with the name of your worker to the `GameObjectRepresentationSystemHelper`. In the Playground project setup, this currently happens in the `WorkerUtils` class:
