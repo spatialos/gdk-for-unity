@@ -55,10 +55,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             gameObjectDispatcherSystem.CreateActivationManagerAndReaderWriterStore(entity, gameObject);
         }
 
-        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, EntityCommandBuffer entityCommandBuffer)
+        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, bool removeEcsComponents, EntityCommandBuffer entityCommandBuffer)
         {
             gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entity);
-            entityCommandBuffer.RemoveComponent<GameObjectReferenceHandle>(entity);
+            // The PostUpdateCommands buffer is not accessible during OnDestroyManager().
+            if (removeEcsComponents)
+            {
+                entityCommandBuffer.RemoveComponent<GameObjectReferenceHandle>(entity);
+            }
 
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
             if (spatialOSComponent != null)

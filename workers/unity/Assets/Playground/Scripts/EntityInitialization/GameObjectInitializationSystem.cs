@@ -101,7 +101,7 @@ namespace Playground
                 }
 
                 entityGameObjectCache.Remove(entity);
-                entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, PostUpdateCommands);
+                entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, true, PostUpdateCommands);
                 entityGameObjectCreator.DeleteGameObject(entity, gameObject);
             }
 
@@ -115,7 +115,7 @@ namespace Playground
             foreach (var entityToGameObject in entityGameObjectCache)
             {
                 entityGameObjectLinker
-                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, PostUpdateCommands);
+                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, false, PostUpdateCommands);
                 entityGameObjectCreator
                     .DeleteGameObject(entityToGameObject.Key, entityToGameObject.Value);
             }
