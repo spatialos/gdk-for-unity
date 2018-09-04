@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {

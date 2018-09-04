@@ -1,12 +1,12 @@
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Creates and removes MonoBehaviourActivationManager object for EntityGameObjects.
     /// </summary>
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitialisationGroup))]
     public class MonoBehaviourActivationManagerInitializationSystem : ComponentSystem
     {

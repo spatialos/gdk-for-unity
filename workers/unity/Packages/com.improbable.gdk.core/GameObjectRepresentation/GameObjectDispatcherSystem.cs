@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     /// <summary>
     ///     Gathers incoming dispatcher ops and invokes callbacks on relevant GameObjects.
     /// </summary>
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {

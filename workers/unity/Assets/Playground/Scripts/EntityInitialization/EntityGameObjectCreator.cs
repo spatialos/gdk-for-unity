@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;

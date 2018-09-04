@@ -103,5 +103,18 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             viewCommandBuffer.FlushBuffer();
         }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+
+            foreach (var entityToGameObject in entityGameObjectCache)
+            {
+                gameObjectCreator.OnEntityGameObjectRemoved(new SpatialOSEntity(entityToGameObject.Key, EntityManager),
+                    worker, entityToGameObject.Value);
+            }
+
+            entityGameObjectCache.Clear();
+        }
     }
 }
