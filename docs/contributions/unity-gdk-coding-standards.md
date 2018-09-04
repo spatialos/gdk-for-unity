@@ -72,12 +72,12 @@ Please format any code files that you've touched (normally `Ctrl+Alt+F`) before 
 
 ## Unity specific
 
-* We are using the experimental support for `C# 7` in the SpatialOS GDK for Unity (mandated by use of the Unity ECS).
+* We are using the `.NET 4.x` support in the SpatialOS GDK for Unity (mandated by use of the Unity ECS). This equates to `C# 7` so never language features are supported.
 * Implement logic in a `ComponentSystem` instead of a `MonoBehaviour` wherever possible.
 * Make sure you remove all `Debug.Log` statements before opening a PR.
 * Avoid running `foreach` over an `IEnumerable<T>` because it allocates excessively. See [this StackOverflow question](https://stackoverflow.com/questions/19689328/why-ienumerable-slow-and-list-is-fast) for an explanation of why `IEnumerable<T>` allocates.
 * Be aware of the possible allocations [when using collections](https://jacksondunstan.com/articles/3805) and avoid doing so where the volume would impact performance.
-* When using structs as keys in dictionaries or sets, ensure to implement a custom hash code function and the `IEquatable<>` interface to avoid a performance drop.
+* When using structs as keys in dictionaries or sets or in comparison, ensure to implement a custom hash code function and the `IEquatable<>` interface to avoid a performance drop.
 * Avoid using enums as dictionary keys. This leads to extra allocations due to boxing in the Mono runtime. The boxing can be avoided by implementing `EqualityComparer<MyEnum>` for your enum as described [here](https://stackoverflow.com/a/26281533).
 * When writing Unity code that's not compatible with all supported versions of Unity, use `ifdef`s:
     * Write all of them in a forward-compatible way.
@@ -85,4 +85,3 @@ Please format any code files that you've touched (normally `Ctrl+Alt+F`) before 
     * Be careful with defines such as `UNITY_2018_1_OR_NEWER` - they might not be available in all versions of Unity 2018.1.
 * Use `== null` when testing `GameObject`s and `MonoBehaviour`s even though they overload the `operator!`.
 * Avoid using custom threads. They complicate things and can easily cause crashes.
-* If an error occurs from which it is impossible to recover, throw exceptions instead of using `Debug.LogError`.
