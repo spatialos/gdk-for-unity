@@ -30,9 +30,7 @@ namespace Improbable.Gdk.Core.Commands
                     this.entityManager = entityManager;
                 }
 
-                public long ReserveEntityIds(uint numberOfEntityIds,
-                    uint? timeoutMillis = null,
-                    object context = null)
+                public long ReserveEntityIds(uint numberOfEntityIds, uint? timeoutMillis = null, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
@@ -48,11 +46,8 @@ namespace Improbable.Gdk.Core.Commands
                     return request.RequestId;
                 }
 
-                public long CreateEntity(
-                    Improbable.Worker.Core.Entity entityTemplate,
-                    EntityId? entityId = null,
-                    uint? timeoutMillis = null,
-                    object context = null)
+                public long CreateEntity(Improbable.Worker.Core.Entity entityTemplate, EntityId? entityId = null,
+                    uint? timeoutMillis = null, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
@@ -68,10 +63,7 @@ namespace Improbable.Gdk.Core.Commands
                     return request.RequestId;
                 }
 
-                public long DeleteEntity(
-                    EntityId entityId,
-                    uint? timeoutMillis = null,
-                    object context = null)
+                public long DeleteEntity(EntityId entityId, uint? timeoutMillis = null, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
@@ -89,8 +81,7 @@ namespace Improbable.Gdk.Core.Commands
                 [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
                 private class WorldCommandRequestSenderCreator : IInjectableCreator
                 {
-                    public IInjectable CreateInjectable(Entity entity,
-                        EntityManager entityManager,
+                    public IInjectable CreateInjectable(Entity entity, EntityManager entityManager,
                         ILogDispatcher logDispatcher)
                     {
                         return new WorldCommandRequestSender(entity, entityManager, logDispatcher);

@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private struct ReserveEntityIdsResponseData
         {
-            [ReadOnly] public readonly int Length;
+            public readonly int Length;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<WorldCommands.ReserveEntityIds.CommandResponses> CommandResponses;
             [ReadOnly] public ComponentArray<GameObjectReference> HasGameObjectReference;
@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private struct CreateEntityResponseData
         {
-            [ReadOnly] public readonly int Length;
+            public readonly int Length;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> CommandResponses;
             [ReadOnly] public ComponentArray<GameObjectReference> HasGameObjectReference;
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private struct DeleteEntityResponseData
         {
-            [ReadOnly] public readonly int Length;
+            public readonly int Length;
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandResponses> CommandResponses;
             [ReadOnly] public ComponentArray<GameObjectReference> HasGameObjectReference;
