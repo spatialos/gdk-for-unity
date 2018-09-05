@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = CreateMenuPath)]
     public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     internal class GUIColorScope : IDisposable
     {

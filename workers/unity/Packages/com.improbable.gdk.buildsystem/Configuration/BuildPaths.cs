@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public static class BuildPaths
     {

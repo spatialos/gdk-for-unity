@@ -1,4 +1,4 @@
-namespace Improbable.Gdk.Legacy.BuildSystem.Util
+namespace Improbable.Gdk.BuildSystem.Util
 {
     /// <summary>
     ///     Contains common directories related to building assets and players.

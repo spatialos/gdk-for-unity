@@ -1,4 +1,4 @@
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [System.Flags]
     public enum SpatialBuildPlatforms
