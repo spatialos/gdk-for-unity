@@ -30,7 +30,6 @@ namespace Playground.MonoBehaviours
             if (spatialOSCubeSpawner.NumSpawnedCubes == 0)
             {
                 // TODO UTY-1081 remove workaround when lists can be emptied again
-
                 return new List<EntityId>();
             }
             else

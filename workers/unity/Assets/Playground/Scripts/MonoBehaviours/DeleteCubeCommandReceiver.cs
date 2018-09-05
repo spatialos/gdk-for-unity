@@ -23,7 +23,6 @@ namespace Playground.MonoBehaviours
         [Require] private WorldCommands.Requirables.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
-
         private const string CouldNotDeleteEntityWithId = "Could not delete entity with id {0}: {1}.";
 
         private const string TheEntityHasBeenUnexpectedlyRemovedFromTheList =
@@ -34,17 +33,15 @@ namespace Playground.MonoBehaviours
         public void OnEnable()
         {
             logDispatcher = GetComponent<SpatialOSComponent>().LogDispatcher;
-
             commandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
-
             worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
         private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
         {
             var entityId = requestResponder.Request.Payload.CubeEntityId;
-
             var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
+
             if (!spawnedCubes.Contains(entityId))
             {
                 requestResponder.SendResponseFailure($"Requested entity id {entityId} not found in list.");
@@ -67,7 +64,6 @@ namespace Playground.MonoBehaviours
             }
 
             var op = response.Op;
-
             var entityId = response.RequestPayload.EntityId;
 
             if (op.StatusCode != StatusCode.Success)
