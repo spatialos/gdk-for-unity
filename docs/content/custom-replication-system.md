@@ -6,15 +6,15 @@
 
 ### What the SpatialOS GDK's replication system does
 
-By default, the SpatialOS GDK for Unity automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
+By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
 #### For properties
 
-Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the SpatialOS GDK for Unity sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the SpatialOS GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
+Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the GDK for Unity sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
 #### For events
 
-When a worker sends a SpatialOS event, the SpatialOS GDK for Unity puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
+When a worker sends a SpatialOS event, the GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
 
 ### Writing your own replication system
 
