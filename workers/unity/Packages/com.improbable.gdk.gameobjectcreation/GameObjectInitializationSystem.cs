@@ -12,6 +12,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     [DisableAutoCreation]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
+        // TODO: Add our ISystemStateComponentData for all entities instead of ones with GameObjects, store spatial ID
+        // callbacks instead of in it, give that in removal callback instead of SpatialOSEntity struct.
+
         private struct AddedEntitiesData
         {
             public readonly int Length;
