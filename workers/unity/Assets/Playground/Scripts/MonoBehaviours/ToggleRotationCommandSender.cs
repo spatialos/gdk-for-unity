@@ -20,11 +20,6 @@ namespace Playground.MonoBehaviours
             responseHandler.OnSpinnerToggleRotationResponse += ResponseHandlerOnOnSpinnerToggleRotationResponse;
         }
 
-        public void OnDisable()
-        {
-            responseHandler.OnSpinnerToggleRotationResponse -= ResponseHandlerOnOnSpinnerToggleRotationResponse;
-        }
-
         private void ResponseHandlerOnOnSpinnerToggleRotationResponse(
             SpinnerRotation.SpinnerToggleRotation.ReceivedResponse obj)
         {
