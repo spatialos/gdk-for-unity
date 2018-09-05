@@ -40,6 +40,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 viewCommandBuffer.AddComponent(entity, component.GetType(), component);
             }
 
+            viewCommandBuffer.AddComponent(entity, new GameObjectReference { GameObject = gameObject });
+
             var spatialOSComponent = gameObject.AddComponent<SpatialOSComponent>();
             spatialOSComponent.Entity = entity;
             spatialOSComponent.SpatialEntityId = spatialEntityId;
