@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 using Transform = Generated.Improbable.Transform.Transform;
 

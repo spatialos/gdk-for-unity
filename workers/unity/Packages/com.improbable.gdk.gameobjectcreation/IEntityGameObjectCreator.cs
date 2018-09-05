@@ -1,5 +1,4 @@
-﻿using Improbable.Gdk.Core.GameObjectRepresentation;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
