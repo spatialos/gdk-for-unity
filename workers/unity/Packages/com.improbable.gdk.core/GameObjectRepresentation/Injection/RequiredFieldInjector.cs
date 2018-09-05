@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
         private const string RequirableFieldDoesNotInheritRequirableBase
-            = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the Unity GDK.";
+            = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the SpatialOS GDK.";
 
         public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
