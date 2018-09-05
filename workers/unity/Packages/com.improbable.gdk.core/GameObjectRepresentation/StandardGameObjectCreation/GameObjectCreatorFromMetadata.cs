@@ -42,8 +42,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             var workerSpecificPath = Path.Combine("Prefabs", worker.WorkerType, prefabName);
             var commonPath = Path.Combine("Prefabs", "Common", prefabName);
 
-            if (!cachedPrefabs.TryGetValue(workerSpecificPath, out var prefab)
-                && !cachedPrefabs.TryGetValue(commonPath, out prefab))
+            if (!cachedPrefabs.TryGetValue(prefabName, out var prefab))
             {
                 prefab = Resources.Load<GameObject>(workerSpecificPath);
                 if (prefab == null)
