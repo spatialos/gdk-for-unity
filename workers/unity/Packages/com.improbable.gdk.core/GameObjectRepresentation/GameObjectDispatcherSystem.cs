@@ -194,7 +194,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         protected override void OnDestroyManager()
         {
-            foreach (var entity in entityToActivationManager.Keys)
+            foreach (var entity in new List<Entity>(entityToActivationManager.Keys))
             {
                 RemoveActivationManagerAndReaderWriterStore(entity);
             }
