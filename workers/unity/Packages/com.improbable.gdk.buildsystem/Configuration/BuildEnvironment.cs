@@ -1,4 +1,4 @@
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public enum BuildEnvironment
     {

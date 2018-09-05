@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [Serializable]
     public struct WorkerPlatform : IEquatable<WorkerPlatform>

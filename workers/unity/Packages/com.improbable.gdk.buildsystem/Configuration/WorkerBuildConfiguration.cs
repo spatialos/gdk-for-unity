@@ -1,7 +1,7 @@
 using System;
 using UnityEditor;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [Serializable]
     public class WorkerBuildConfiguration

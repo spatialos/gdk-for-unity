@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CustomEditor(typeof(SpatialOSBuildConfiguration))]
     public class SpatialOSBuildConfigurationEditor : UnityEditor.Editor

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.Legacy.BuildSystem.Configuration;
+using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem
+namespace Improbable.Gdk.BuildSystem
 {
     internal static class BuildSystemMenu
     {

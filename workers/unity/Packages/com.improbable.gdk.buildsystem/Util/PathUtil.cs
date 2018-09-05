@@ -1,7 +1,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Util
+namespace Improbable.Gdk.BuildSystem.Util
 {
     public static class PathUtil
     {

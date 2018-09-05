@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public abstract class SingletonScriptableObject<TSelf> : ScriptableObject
         where TSelf : SingletonScriptableObject<TSelf>
