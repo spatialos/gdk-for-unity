@@ -3,7 +3,6 @@ using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -32,7 +31,7 @@ namespace Improbable.Gdk.GameObjectCreation
             }
 
             var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
-            if (!entity.HasComponent<Transform.Component>())
+            if (!entity.HasComponent<Position.Component>())
             {
                 cachedPrefabs[prefabName] = null;
                 return null;
