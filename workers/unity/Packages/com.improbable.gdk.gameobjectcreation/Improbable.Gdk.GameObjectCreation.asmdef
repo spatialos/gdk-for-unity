@@ -4,8 +4,8 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
-		"Improbable.Gdk.Core",
-		"Improbable.Gdk.Generated"
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

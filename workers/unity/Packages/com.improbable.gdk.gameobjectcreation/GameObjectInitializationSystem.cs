@@ -37,8 +37,8 @@ namespace Improbable.Gdk.GameObjectCreation
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         [Inject] private EntityGameObjectLinkerSystem LinkerSystem;
+        [Inject] private WorkerSystem worker;
 
-        private WorkerSystem worker;
         private ViewCommandBuffer viewCommandBuffer;
         private readonly Dictionary<Entity, GameObject> entityGameObjectCache = new Dictionary<Entity, GameObject>();
         private readonly IEntityGameObjectCreator gameObjectCreator;
@@ -52,7 +52,6 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             base.OnCreateManager(capacity);
 
-            worker = World.GetExistingManager<WorkerSystem>();
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }
 
