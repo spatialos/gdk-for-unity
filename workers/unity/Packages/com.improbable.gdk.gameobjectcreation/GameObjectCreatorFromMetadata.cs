@@ -6,7 +6,7 @@ using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 using Transform = Generated.Improbable.Transform.Transform;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectCreation
 {
     public class GameObjectCreatorFromMetadata : IEntityGameObjectCreator
     {
@@ -14,13 +14,18 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             = new Dictionary<string, GameObject>();
 
         private readonly string workerType;
+        private readonly Vector3 workerOrigin;
 
-        public GameObjectCreatorFromMetadata(string workerType)
+        private readonly ILogDispatcher logger;
+
+        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
         {
             this.workerType = workerType;
+            this.workerOrigin = workerOrigin;
+            this.logger = logger;
         }
 
-        public GameObject CreateGameObjectForEntityAdded(SpatialOSEntity entity, WorkerSystem worker)
+        public GameObject OnEntityCreated(SpatialOSEntity entity)
         {
             if (!entity.HasComponent<Metadata.Component>())
             {
@@ -36,8 +41,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var spatialOSPosition = entity.GetComponent<Position.Component>();
             var position = new Vector3((float) spatialOSPosition.Coords.X, (float) spatialOSPosition.Coords.Y, (float) spatialOSPosition.Coords.Z) +
-                worker.Origin;
-            var workerSpecificPath = Path.Combine("Prefabs", worker.WorkerType, prefabName);
+                workerOrigin;
+            var workerSpecificPath = Path.Combine("Prefabs", workerType, prefabName);
             var commonPath = Path.Combine("Prefabs", "Common", prefabName);
 
             if (!cachedPrefabs.TryGetValue(prefabName, out var prefab))
@@ -50,7 +55,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
                 if (prefab == null)
                 {
-                    worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(
+                    logger.HandleLog(LogType.Log, new LogEvent(
                         $"Prefab not found for SpatialOS Entity in either {workerSpecificPath} or {commonPath}," +
                         "not going to associate a GameObject with it."));
                 }
@@ -68,7 +73,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             return gameObject;
         }
 
-        public void OnEntityRemoved(SpatialOSEntity entity, WorkerSystem worker, GameObject linkedGameObject)
+        public void OnEntityRemoved(SpatialOSEntity entity, GameObject linkedGameObject)
         {
             if (linkedGameObject != null)
             {

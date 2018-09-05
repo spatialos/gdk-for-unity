@@ -1,7 +1,8 @@
-﻿using Improbable.Worker;
+﻿using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectCreation
 {
     /// <summary>
     ///     Used to easily retrieve information about a SpatialOS Entity instance from a Unity ECS Entity instance.

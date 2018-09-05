@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectCreation
 {
     /// <summary>
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
@@ -61,8 +63,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
 
-                var gameObject = gameObjectCreator.CreateGameObjectForEntityAdded(
-                    new SpatialOSEntity(entity, EntityManager), worker);
+                var gameObject = gameObjectCreator.OnEntityCreated(
+                    new SpatialOSEntity(entity, EntityManager));
 
                 if (gameObject == null)
                 {
@@ -80,15 +82,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 if (!entityGameObjectCache.TryGetValue(entity, out var gameObject))
                 {
                     // Entity without linked GameObject removed
-                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager),
-                        worker, null);
+                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager), null);
                 }
                 else
                 {
                     entityGameObjectCache.Remove(entity);
                     LinkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, true, PostUpdateCommands);
-                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager),
-                        worker, gameObject);
+                    gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager), gameObject);
                 }
             }
 
@@ -101,9 +101,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var entityToGameObject in entityGameObjectCache)
             {
-                LinkerSystem.Linker.UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, false, PostUpdateCommands);
+                LinkerSystem.Linker.UnlinkGameObjectFromEntity(entityToGameObject.Value,
+                    entityToGameObject.Key, false, PostUpdateCommands);
                 gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entityToGameObject.Key, EntityManager),
-                    worker, entityToGameObject.Value);
+                    entityToGameObject.Value);
             }
 
             entityGameObjectCache.Clear();

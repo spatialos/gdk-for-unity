@@ -1,13 +1,15 @@
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectCreation
 {
     public static class GameObjectCreationSystemHelper
     {
         public static void EnableStandardGameObjectCreation(World world)
         {
-            string workerType = world.GetOrCreateManager<WorkerSystem>().WorkerType;
-            EnableStandardGameObjectCreation(world, new GameObjectCreatorFromMetadata(workerType));
+            var workerSystem = world.GetOrCreateManager<WorkerSystem>();
+            EnableStandardGameObjectCreation(world, new GameObjectCreatorFromMetadata(workerSystem.WorkerType,
+                workerSystem.Origin, workerSystem.LogDispatcher));
         }
 
         public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator)
