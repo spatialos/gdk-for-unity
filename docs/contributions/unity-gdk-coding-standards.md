@@ -72,12 +72,12 @@ Please format any code files that you've touched (normally `Ctrl+Alt+F`) before 
 
 ## Unity specific
 
-* We are using the `.NET 4.x` support in the SpatialOS GDK for Unity (mandated by use of the Unity ECS). This equates to `C# 7` so never language features are supported.
+* We are using the `.NET 4.x` support in the SpatialOS GDK for Unity (mandated by use of the Unity ECS). This equates to `C# 7` so newer language features are supported.
 * Implement logic in a `ComponentSystem` instead of a `MonoBehaviour` wherever possible.
 * Make sure you remove all `Debug.Log` statements before opening a PR.
 * Avoid running `foreach` over an `IEnumerable<T>` because it allocates excessively. See [this StackOverflow question](https://stackoverflow.com/questions/19689328/why-ienumerable-slow-and-list-is-fast) for an explanation of why `IEnumerable<T>` allocates.
 * Be aware of the possible allocations [when using collections](https://jacksondunstan.com/articles/3805) and avoid doing so where the volume would impact performance.
-* When using structs as keys in dictionaries or sets or in comparison, ensure to implement a custom hash code function and the `IEquatable<>` interface to avoid a performance drop.
+* When using structs as keys dictionaries, sets or in comparisons, ensure to implement a custom hash code function and the `IEquatable<>` interface to avoid a performance drop.
 * Avoid using enums as dictionary keys. This leads to extra allocations due to boxing in the Mono runtime. The boxing can be avoided by implementing `EqualityComparer<MyEnum>` for your enum as described [here](https://stackoverflow.com/a/26281533).
 * When writing Unity code that's not compatible with all supported versions of Unity, use `ifdef`s:
     * Write all of them in a forward-compatible way.
