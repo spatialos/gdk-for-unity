@@ -2,7 +2,7 @@
 
 ----
 
-# Unity GDK known issues
+# SpatialOS GDK for Unity known issues
 
 Known issue = any major user-facing bug or lack of user-facing feature that:
 1. diverges from vanilla Unity ECS design or implementation **OR**

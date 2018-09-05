@@ -86,4 +86,4 @@ Upon checking out an entity that has both a `Prefab` and a `Transform` component
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
