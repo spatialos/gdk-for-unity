@@ -4,7 +4,10 @@
 ### If you don't work at Improbable, this may be interesting as a guide to what software versions we use for our
 ### automation, but not much more than that.
 
-set -e -u -x -o pipefail
+set -e -u -o pipefail
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 cd "$(dirname "$0")/../"
 

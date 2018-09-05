@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-set -u -x -o pipefail
+set -e -u -o pipefail
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 cd "$(dirname "$0")/../"
 
@@ -20,7 +23,7 @@ CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-result
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 
-rm "${TOOLS_TEST_RESULTS_FILES}" \
+rm -f "${TOOLS_TEST_RESULTS_FILES}" \
     "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
     "${EDITMODE_TEST_RESULTS_FILE}" \
     "${PLAYMODE_TEST_RESULTS_FILE}"
