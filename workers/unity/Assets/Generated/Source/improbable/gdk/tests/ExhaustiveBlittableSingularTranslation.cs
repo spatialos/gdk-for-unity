@@ -48,7 +48,7 @@ namespace Generated.Improbable.Gdk.Tests
                 var data = Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
 
                 var update = new Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update
                 {
@@ -88,7 +88,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
                 }
                 else
                 {
@@ -115,7 +115,7 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
                 }
                 else
                 {
@@ -228,7 +228,7 @@ namespace Generated.Improbable.Gdk.Tests
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity);
-                        entityManager.AddComponentData(entity, new Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
 
                         // Add event senders
                         break;
@@ -239,7 +239,7 @@ namespace Generated.Improbable.Gdk.Tests
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity))
@@ -254,7 +254,7 @@ namespace Generated.Improbable.Gdk.Tests
                         }
 
                         entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity);
-                        entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>());
 
                         // Remove event senders
                         break;
