@@ -9,16 +9,15 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
-        : IWriter<TSpatialComponentData, TComponentUpdate>
+        : RequirableBase, IWriter<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
-
         protected readonly ILogDispatcher logDispatcher;
 
-        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
@@ -29,6 +28,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
+                if (!VerifyNotDisposed())
+                {
+                    return default(TSpatialComponentData);
+                }
+
                 try
                 {
                     return EntityManager.GetComponentData<TSpatialComponentData>(Entity);
@@ -42,6 +46,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void Send(TComponentUpdate update)
         {
+            if (!VerifyNotDisposed())
+            {
+                return;
+            }
+
             try
             {
                 var data = EntityManager.GetComponentData<TSpatialComponentData>(Entity);
@@ -60,6 +69,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
+                if (!VerifyNotDisposed())
+                {
+                    return Authority.NotAuthoritative;
+                }
+
                 if (EntityManager.HasComponent<AuthorityLossImminent<TSpatialComponentData>>(Entity))
                 {
                     return Authority.AuthorityLossImminent;
@@ -85,8 +99,24 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
-            add => authorityChangedDelegates.Add(value);
-            remove => authorityChangedDelegates.Remove(value);
+            add
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                authorityChangedDelegates.Add(value);
+            }
+            remove
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                authorityChangedDelegates.Remove(value);
+            }
         }
 
         /// <summary>
@@ -126,8 +156,24 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
         {
-            add => componentUpdateDelegates.Add(value);
-            remove => componentUpdateDelegates.Remove(value);
+            add
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                componentUpdateDelegates.Add(value);
+            }
+            remove
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                componentUpdateDelegates.Remove(value);
+            }
         }
 
         public void OnComponentUpdate(TComponentUpdate update)
