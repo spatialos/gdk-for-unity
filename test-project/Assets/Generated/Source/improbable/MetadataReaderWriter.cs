@@ -50,14 +50,31 @@ namespace Generated.Improbable
 
                 public event Action<string> EntityTypeUpdated
                 {
-                    add => entityTypeDelegates.Add(value);
-                    remove => entityTypeDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        entityTypeDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        entityTypeDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Metadata.Update update)
                 {
                     DispatchWithErrorHandling(update.EntityType, entityTypeDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Metadata.Update update, ref Generated.Improbable.Metadata.Component data)
                 {
                     if (update.EntityType.HasValue)

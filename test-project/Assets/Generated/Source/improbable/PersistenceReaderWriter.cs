@@ -48,6 +48,7 @@ namespace Generated.Improbable
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Persistence.Update update)
                 {
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Persistence.Update update, ref Generated.Improbable.Persistence.Component data)
                 {
                 }

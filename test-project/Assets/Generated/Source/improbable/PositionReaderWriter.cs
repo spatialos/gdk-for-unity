@@ -50,14 +50,31 @@ namespace Generated.Improbable
 
                 public event Action<global::Generated.Improbable.Coordinates> CoordsUpdated
                 {
-                    add => coordsDelegates.Add(value);
-                    remove => coordsDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        coordsDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        coordsDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Position.Update update)
                 {
                     DispatchWithErrorHandling(update.Coords, coordsDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Position.Update update, ref Generated.Improbable.Position.Component data)
                 {
                     if (update.Coords.HasValue)

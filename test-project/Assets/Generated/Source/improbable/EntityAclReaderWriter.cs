@@ -51,16 +51,48 @@ namespace Generated.Improbable
 
                 public event Action<global::Generated.Improbable.WorkerRequirementSet> ReadAclUpdated
                 {
-                    add => readAclDelegates.Add(value);
-                    remove => readAclDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        readAclDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        readAclDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.Dictionary<uint,global::Generated.Improbable.WorkerRequirementSet>>> componentWriteAclDelegates = new List<Action<global::System.Collections.Generic.Dictionary<uint,global::Generated.Improbable.WorkerRequirementSet>>>();
 
                 public event Action<global::System.Collections.Generic.Dictionary<uint,global::Generated.Improbable.WorkerRequirementSet>> ComponentWriteAclUpdated
                 {
-                    add => componentWriteAclDelegates.Add(value);
-                    remove => componentWriteAclDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        componentWriteAclDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        componentWriteAclDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.EntityAcl.Update update)
@@ -68,6 +100,7 @@ namespace Generated.Improbable
                     DispatchWithErrorHandling(update.ReadAcl, readAclDelegates);
                     DispatchWithErrorHandling(update.ComponentWriteAcl, componentWriteAclDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.EntityAcl.Update update, ref Generated.Improbable.EntityAcl.Component data)
                 {
                     if (update.ReadAcl.HasValue)
