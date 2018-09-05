@@ -1,4 +1,4 @@
-namespace Improbable.Gdk.Legacy.BuildSystem.Util
+namespace Improbable.Gdk.BuildSystem.Util
 {
     /// <summary>
     ///     Provides command line arguments to control editor-related operations.

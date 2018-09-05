@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Gdk.Legacy.BuildSystem.Util;
+using Improbable.Gdk.BuildSystem.Util;
 using UnityEditor;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public class WorkerBuildData
     {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Util
+namespace Improbable.Gdk.BuildSystem.Util
 {
     public static class UnityPathUtil
     {

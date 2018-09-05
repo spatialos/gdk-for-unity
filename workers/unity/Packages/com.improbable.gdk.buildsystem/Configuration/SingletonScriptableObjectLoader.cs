@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Improbable.Gdk.Legacy.BuildSystem.Configuration
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     internal static class SingletonScriptableObjectLoader
     {

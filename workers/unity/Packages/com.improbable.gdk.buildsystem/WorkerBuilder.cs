@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Improbable.Gdk.BuildSystem.Configuration;
+using Improbable.Gdk.BuildSystem.Util;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Legacy.BuildSystem.Configuration;
-using Improbable.Gdk.Legacy.BuildSystem.Util;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Improbable.Gdk.Legacy.BuildSystem
+namespace Improbable.Gdk.BuildSystem
 {
     public static class WorkerBuilder
     {
@@ -216,7 +216,7 @@ namespace Improbable.Gdk.Legacy.BuildSystem
         {
             var zipFileFullPath = Path.GetFullPath(zipAbsolutePath);
 
-            using(new ShowProgressBarScope($"Package {basePath}"))
+            using (new ShowProgressBarScope($"Package {basePath}"))
             {
                 RedirectedProcess.Run(Common.SpatialBinary, "file", "zip", $"--output=\"{zipFileFullPath}\"",
                     $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
