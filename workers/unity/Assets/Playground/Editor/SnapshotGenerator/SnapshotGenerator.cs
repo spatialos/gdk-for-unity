@@ -94,7 +94,6 @@ namespace Playground.Editor.SnapshotGenerator
 
                     var cubeColor = CubeColor.Component.CreateSchemaComponentData();
                     var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
-                    var prefab = Prefab.Component.CreateSchemaComponentData(entityType);
                     var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
                     var archetypeComponent = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
 
@@ -106,7 +105,6 @@ namespace Playground.Editor.SnapshotGenerator
                         .AddComponent(transform, WorkerUtils.UnityGameLogic)
                         .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
                         .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
-                        .AddComponent(prefab, WorkerUtils.UnityGameLogic)
                         .AddComponent(archetypeComponent, WorkerUtils.UnityGameLogic)
                         .AddComponent(launchable, WorkerUtils.UnityGameLogic)
                         .Build();
@@ -126,7 +124,6 @@ namespace Playground.Editor.SnapshotGenerator
                 0
             );
 
-            var prefab = Prefab.Component.CreateSchemaComponentData(entityType);
             var collisions = Collisions.Component.CreateSchemaComponentData();
             var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
             var color = SpinnerColor.Component.CreateSchemaComponentData(Color.BLUE);
@@ -139,7 +136,6 @@ namespace Playground.Editor.SnapshotGenerator
                 .SetReadAcl(UnityWorkers)
                 .AddComponent(collisions, WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
-                .AddComponent(prefab, WorkerUtils.UnityGameLogic)
                 .AddComponent(archetype, WorkerUtils.UnityGameLogic)
                 .AddComponent(color, WorkerUtils.UnityGameLogic)
                 .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)

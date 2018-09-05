@@ -2,7 +2,6 @@
     "name": "Improbable.Playground.Editor",
     "references": [
         "Improbable.Playground",
-        "Improbable.Gdk.Legacy",
         "Improbable.Gdk.Core",
         "Improbable.Gdk.Generated"
     ],
