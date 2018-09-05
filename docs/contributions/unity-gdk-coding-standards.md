@@ -32,8 +32,6 @@ Generally, we use [Microsoft's C# Coding Conventions](https://docs.microsoft.com
 
 Please format any code files that you've touched (normally `Ctrl+Alt+F`) before committing changes.
 
-If you don't have ReSharper, or want to format from the command line, run `ci/lint.sh`.
-
 ## General
 
 * Avoid interfaces with fewer than two implementations.
@@ -65,30 +63,25 @@ If you don't have ReSharper, or want to format from the command line, run `ci/li
 
 ## Deprecation
 
-* Annotate deprecated functions  with `[System.Obsolete(<string>)]` where `<string>` is a short summary of the deprecation reason and either a guide on how to upgrade or a link to a guide on how to upgrade.
+* Annotate deprecated functions with `[System.Obsolete(<string>)]` where `<string>` is a short summary of the deprecation reason and either a guide on how to upgrade or a link to a guide on how to upgrade.
 
 ## Tests
 
-* Name test fixtures as `<class>Test`
+* Name test fixtures as `<class>Tests`
 * Name test methods as `<method>_should_<action>_when_<conditions>`
 
 ## Unity specific
 
-* We are using the experimental support for `.NET 4.6` in the Unity GDK (mandated by use of the Unity ECS). This equates to `C# 6` so newer language features are supported.
+* We are using the `.NET 4.x` support in the SpatialOS GDK for Unity (mandated by use of the Unity ECS). This equates to `C# 7` so newer language features are supported.
 * Implement logic in a `ComponentSystem` instead of a `MonoBehaviour` wherever possible.
-* Each call to `Debug.Log` takes ~11ms (even in built players!), so use it sparingly ([relevant thread in Unity Answers](https://answers.unity.com/questions/126315/debuglog-in-build.html)).
 * Make sure you remove all `Debug.Log` statements before opening a PR.
 * Avoid running `foreach` over an `IEnumerable<T>` because it allocates excessively. See [this StackOverflow question](https://stackoverflow.com/questions/19689328/why-ienumerable-slow-and-list-is-fast) for an explanation of why `IEnumerable<T>` allocates.
 * Be aware of the possible allocations [when using collections](https://jacksondunstan.com/articles/3805) and avoid doing so where the volume would impact performance.
-* When using structs, implement a custom hash code function and the `IEquatable<>` interface. If you do **not** do this, performance will worsen and you will see unexpected allocations; for example, when using the struct in collections.
-* Avoid using enums as dictionary keys. This leads to extra allocations due to boxing in the Mono runtime.
-    * This appears to be true as of 2014, see [here](https://stackoverflow.com/questions/26280788/dictionary-enum-key-performance).
+* When using structs as keys dictionaries, sets or in comparisons, ensure to implement a custom hash code function and the `IEquatable<>` interface to avoid a performance drop.
+* Avoid using enums as dictionary keys. This leads to extra allocations due to boxing in the Mono runtime. The boxing can be avoided by implementing `EqualityComparer<MyEnum>` for your enum as described [here](https://stackoverflow.com/a/26281533).
 * When writing Unity code that's not compatible with all supported versions of Unity, use `ifdef`s:
     * Write all of them in a forward-compatible way.
-    * Write `if (!(UNITY_5_0 | UNITY_5_1))` instead of `if (UNITY_5_2)` if you want to specify `5.2` or newer.
-    * Be careful with defines such as `UNITY_5_3_OR_NEWER` - they might not be available in all versions of Unity 5.3.
-* Use `== null` when testing `GameObject`s and `MonoBehaviour`s even though they overload `operator!`.
+    * Write `if (!(UNITY_2018_0 | UNITY_2018_1))` instead of `if (UNITY_2018_2)` if you want to specify `2018.2` or newer.
+    * Be careful with defines such as `UNITY_2018_1_OR_NEWER` - they might not be available in all versions of Unity 2018.1.
+* Use `== null` when testing `GameObject`s and `MonoBehaviour`s even though they overload the `operator!`.
 * Avoid using custom threads. They complicate things and can easily cause crashes.
-* Avoid C# events. They are not efficient and allocate.
-* If an error occurs from which it is impossible to recover, throw exceptions instead of using `Debug.LogError`.
-

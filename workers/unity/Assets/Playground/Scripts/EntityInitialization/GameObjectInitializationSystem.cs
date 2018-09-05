@@ -77,27 +77,14 @@ namespace Playground
 
                 var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
                     worker.Origin;
-                var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
+                var rotation = new Quaternion(transform.Rotation.X, transform.Rotation.Y,
                     transform.Rotation.Z, transform.Rotation.W);
 
-                var gameObject =
-                    entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
-                        spatialEntityId);
-                var gameObjectReference = new GameObjectReference { GameObject = gameObject };
-
-                var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();
-
-                entityGameObjectCache.Add(entity, gameObject);
-                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
-
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
-
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
-                    requiresSpatialOSBehaviourManagerComponent);
-
-                viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                var gameObject = entityGameObjectCreator.CreateEntityGameObject(entity, prefabName, position, rotation,
+                    spatialEntityId);
+                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId, PostUpdateCommands,
                     viewCommandBuffer);
+                entityGameObjectCache.Add(entity, gameObject);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
@@ -114,8 +101,8 @@ namespace Playground
                 }
 
                 entityGameObjectCache.Remove(entity);
+                entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, true, PostUpdateCommands);
                 entityGameObjectCreator.DeleteGameObject(entity, gameObject);
-                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
             }
 
             viewCommandBuffer.FlushBuffer();
@@ -127,8 +114,10 @@ namespace Playground
 
             foreach (var entityToGameObject in entityGameObjectCache)
             {
-                entityGameObjectCreator.
-                    DeleteGameObject(entityToGameObject.Key, entityToGameObject.Value);
+                entityGameObjectLinker
+                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, false, PostUpdateCommands);
+                entityGameObjectCreator
+                    .DeleteGameObject(entityToGameObject.Key, entityToGameObject.Value);
             }
             entityGameObjectCache.Clear();
         }
