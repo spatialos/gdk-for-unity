@@ -58,7 +58,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var entity = reserveEntityResponseData.Entities[i];
-
                 var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
 
                 if (worldCommandResponseHandlers == null)
@@ -83,9 +82,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var entity = createEntityResponseData.Entities[i];
-
-                var worldCommandResponseHandlers =
-                    GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
 
                 if (worldCommandResponseHandlers == null)
                 {
@@ -109,9 +106,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 }
 
                 var entity = deleteEntityResponseData.Entities[i];
-
-                var worldCommandResponseHandlers =
-                    GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
 
                 if (worldCommandResponseHandlers == null)
                 {
