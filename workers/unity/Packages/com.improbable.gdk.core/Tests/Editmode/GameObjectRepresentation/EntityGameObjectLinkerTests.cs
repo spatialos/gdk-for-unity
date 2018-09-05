@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
     {
         private ViewCommandBuffer viewCommandBuffer;
         private World world;
+        private WorkerSystem worker;
         private EntityManager entityManager;
         private EntityGameObjectLinker entityGameObjectLinker;
         private GameObject testGameObject;
@@ -25,8 +26,8 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             entityManager = world.GetOrCreateManager<EntityManager>();
-            world.CreateManager<WorkerSystem>(null, null, "TestWorker", Vector3.zero);
-            entityGameObjectLinker = new EntityGameObjectLinker(world, new LoggingDispatcher());
+            worker = world.CreateManager<WorkerSystem>(null, null, "TestWorker", Vector3.zero);
+            entityGameObjectLinker = new EntityGameObjectLinker(world, worker);
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
             viewCommandBuffer = new ViewCommandBuffer(entityManager, new LoggingDispatcher());

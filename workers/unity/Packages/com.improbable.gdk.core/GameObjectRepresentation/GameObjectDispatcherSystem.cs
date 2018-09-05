@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {
-        public struct GameObjectReferenceHandle : ISystemStateComponentData
+        public struct HasActivationManagerSystemState : ISystemStateComponentData
         {
         }
 
@@ -23,14 +23,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentArray<GameObjectReference> GameObjectReferences;
-            [ReadOnly] public SubtractiveComponent<GameObjectReferenceHandle> GameObjectReferenceHandles;
+            [ReadOnly] public SubtractiveComponent<HasActivationManagerSystemState> GameObjectReferenceHandles;
         }
 
         public struct RemovedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
+            [ReadOnly] public ComponentDataArray<HasActivationManagerSystemState> GameObjectReferenceHandles;
             [ReadOnly] public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
         }
         
@@ -46,6 +46,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
+        [Inject] private WorkerSystem worker;
+
         private RequiredFieldInjector injector;
         private ILogDispatcher logger;
 
@@ -56,9 +58,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             FindGameObjectComponentDispatchers();
             GenerateComponentGroups();
 
-            var entityManager = World.GetOrCreateManager<EntityManager>();
-            logger = World.GetExistingManager<WorkerSystem>().LogDispatcher;
-            injector = new RequiredFieldInjector(entityManager, logger);
+            logger = worker.LogDispatcher;
+            injector = new RequiredFieldInjector(EntityManager, logger);
         }
 
 
@@ -68,14 +69,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 var entity = addedEntitiesData.Entities[i];
                 CreateActivationManagerAndReaderWriterStore(entity);
-                PostUpdateCommands.AddComponent(entity, new GameObjectReferenceHandle());
+                PostUpdateCommands.AddComponent(entity, new HasActivationManagerSystemState());
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
                 RemoveActivationManagerAndReaderWriterStore(entity);
-                PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
+                PostUpdateCommands.RemoveComponent<HasActivationManagerSystemState>(entity);
             }
 
             RunDispatchers();

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -22,6 +23,6 @@ namespace Improbable.Gdk.GameObjectCreation
         /// <param name="linkedGameObject">
         ///     The GameObject linked to the entity, or null if there is none.
         /// </param>
-        void OnEntityRemoved(SpatialOSEntity entity, GameObject linkedGameObject);
+        void OnEntityRemoved(SpatialEntityId entityId, GameObject linkedGameObject);
     }
 }

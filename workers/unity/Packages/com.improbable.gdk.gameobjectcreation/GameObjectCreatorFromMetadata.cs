@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -67,16 +68,25 @@ namespace Improbable.Gdk.GameObjectCreation
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, worker {workerType}";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType}";
             return gameObject;
         }
 
-        public void OnEntityRemoved(SpatialOSEntity entity, GameObject linkedGameObject)
+        public void OnEntityRemoved(SpatialEntityId entityId, GameObject gameObject)
         {
-            if (linkedGameObject != null)
+            if (gameObject != null)
             {
-                UnityObjectDestroyer.Destroy(linkedGameObject);
+                UnityObjectDestroyer.Destroy(gameObject);
             }
+        }
+
+        public bool ShouldHaveGameObject(SpatialOSEntity entity)
+        {
+            if (entity.HasComponent<WorkerEntityTag>())
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

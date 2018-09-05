@@ -1,6 +1,7 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -20,12 +21,12 @@ namespace Improbable.Gdk.GameObjectCreation
             SpatialOSEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
-        public bool HasComponent<T>() where T : struct, ISpatialComponentData, IComponentData
+        public bool HasComponent<T>() where T : struct, IComponentData
         {
             return entityManager.HasComponent<T>(entity);
         }
 
-        public T GetComponent<T>() where T : struct, ISpatialComponentData, IComponentData
+        public T GetComponent<T>() where T : struct, IComponentData
         {
             return entityManager.GetComponentData<T>(entity);
         }
