@@ -28,8 +28,17 @@ namespace Playground.Editor
         {
             if (stopped)
             {
-                EditorApplication.isPlaying = true;
                 stopped = false;
+
+                foreach (var message in compilerMessages)
+                {
+                    if (message.type == CompilerMessageType.Error)
+                    {
+                        return;
+                    }
+                }
+
+                EditorApplication.isPlaying = true;
             }
         }
     }
