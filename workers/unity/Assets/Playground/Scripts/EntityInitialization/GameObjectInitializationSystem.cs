@@ -12,8 +12,7 @@ namespace Playground
     /// <summary>
     ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
     /// </summary>
-    [UpdateBefore(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
-    [UpdateAfter(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
         public struct EntityGameObjectHandle : ISystemStateComponentData
@@ -27,17 +26,15 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<Prefab.Component> PrefabNames;
             [ReadOnly] public ComponentDataArray<Transform.Component> Transforms;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-            [ReadOnly] public SubtractiveComponent<EntityGameObjectHandle> NewlyCreatedEntities;
+            [ReadOnly] public SubtractiveComponent<EntityGameObjectHandle> NoEntityGameObjectHandles;
         }
 
         private struct RemovedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public SubtractiveComponent<Prefab.Component> PrefabNames;
-            [ReadOnly] public SubtractiveComponent<Transform.Component> Transforms;
             [ReadOnly] public SubtractiveComponent<SpatialEntityId> SpatialEntityIds;
-            [ReadOnly] public ComponentDataArray<EntityGameObjectHandle> NewlyCreatedEntities;
+            [ReadOnly] public ComponentDataArray<EntityGameObjectHandle> EntityGameObjectHandles;
         }
 
         [Inject] private AddedEntitiesData addedEntitiesData;
@@ -109,7 +106,7 @@ namespace Playground
                 }
 
                 entityGameObjectCache.Remove(entity);
-                entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, true, PostUpdateCommands);
+                entityGameObjectLinker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                 entityGameObjectCreator.DeleteGameObject(entity, gameObject);
                 PostUpdateCommands.RemoveComponent<EntityGameObjectHandle>(entity);
             }
@@ -124,7 +121,7 @@ namespace Playground
             foreach (var entityToGameObject in entityGameObjectCache)
             {
                 entityGameObjectLinker
-                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, false, PostUpdateCommands);
+                    .UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, viewCommandBuffer);
                 entityGameObjectCreator
                     .DeleteGameObject(entityToGameObject.Key, entityToGameObject.Value);
             }

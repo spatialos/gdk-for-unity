@@ -9,8 +9,7 @@ namespace Playground
     /// <summary>
     ///     Optionally adds a list of components to newly spawned entities according to an archetype definition.
     /// </summary>
-    [UpdateBefore(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
-    [UpdateAfter(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     public class ArchetypeInitializationSystem : ComponentSystem
     {
         private struct Data

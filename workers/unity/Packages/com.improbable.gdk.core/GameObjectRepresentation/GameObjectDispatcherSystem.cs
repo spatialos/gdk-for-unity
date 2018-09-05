@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -27,14 +26,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             [ReadOnly] public SubtractiveComponent<GameObjectReferenceHandle> GameObjectReferenceHandles;
         }
 
-        public struct ExistingEntitiesData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentArray<GameObjectReference> GameObjectReferences;
-            [ReadOnly] public ComponentDataArray<GameObjectReferenceHandle> GameObjectReferenceHandles;
-        }
-
         public struct RemovedEntitiesData
         {
             public readonly int Length;
@@ -53,7 +44,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             new Dictionary<Entity, MonoBehaviourActivationManager>();
 
         [Inject] private AddedEntitiesData addedEntitiesData;
-        [Inject] private ExistingEntitiesData existingEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         private RequiredFieldInjector injector;
@@ -89,6 +79,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             RunDispatchers();
+        }
+
+        protected override void OnDestroyManager()
+        {
+            foreach (var entity in new List<Entity>(entityToActivationManager.Keys))
+            {
+                RemoveActivationManagerAndReaderWriterStore(entity);
+            }
+
+            base.OnDestroyManager();
         }
 
         private void FindGameObjectComponentDispatchers()
@@ -206,7 +206,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        private void CreateActivationManagerAndReaderWriterStore(Entity entity, GameObject gameObject)
+        private void CreateActivationManagerAndReaderWriterStore(Entity entity)
         {
             if (entityToActivationManager.ContainsKey(entity))
             {
@@ -215,13 +215,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var store = new InjectableStore();
             entityToReaderWriterStore.Add(entity, store);
+            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityToActivationManager.Add(entity, manager);
         }
 
         private void RemoveActivationManagerAndReaderWriterStore(Entity entity)
         {
-            if (!entityToActivationManager.ContainsKey(entity))
+            if (!entityToActivationManager.TryGetValue(entity, out var activationManager))
             {
                 throw new KeyNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
             }
@@ -231,16 +232,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
             activationManager.Dispose();
-        }
-
-        protected override void OnDestroyManager()
-        {
-            foreach (var entity in new List<Entity>(entityToActivationManager.Keys))
-            {
-                RemoveActivationManagerAndReaderWriterStore(entity);
-            }
-
-            base.OnDestroyManager();
         }
     }
 }

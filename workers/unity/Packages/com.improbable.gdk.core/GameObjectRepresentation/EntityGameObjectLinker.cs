@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         }
 
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, EntityId spatialEntityId,
-            EntityCommandBuffer entityCommandBuffer, ViewCommandBuffer viewCommandBuffer)
+            ViewCommandBuffer viewCommandBuffer)
         {
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
@@ -50,22 +50,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var gameObjectReference = new GameObjectReference { GameObject = gameObject };
             viewCommandBuffer.AddComponent(entity, gameObjectReference);
-
-            var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
-            entityCommandBuffer.AddComponent(entity, gameObjectReferenceHandleComponent);
-
-            gameObjectDispatcherSystem.CreateActivationManagerAndReaderWriterStore(entity, gameObject);
         }
 
-        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, bool removeEcsComponents, EntityCommandBuffer entityCommandBuffer)
+        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
-            gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entity);
-            // The PostUpdateCommands buffer is not accessible during OnDestroyManager().
-            if (removeEcsComponents)
-            {
-                entityCommandBuffer.RemoveComponent<GameObjectReferenceHandle>(entity);
-            }
-
+            viewCommandBuffer.RemoveComponent(entity, ComponentType.ReadOnly(typeof(GameObjectReference)));
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
             if (spatialOSComponent != null)
             {
