@@ -66,136 +66,408 @@ namespace Generated.Improbable.Gdk.Tests
 
                 public event Action<BlittableBool?> Field1Updated
                 {
-                    add => field1Delegates.Add(value);
-                    remove => field1Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field1Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field1Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<float?>> field2Delegates = new List<Action<float?>>();
 
                 public event Action<float?> Field2Updated
                 {
-                    add => field2Delegates.Add(value);
-                    remove => field2Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field2Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field2Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::Improbable.Gdk.Core.Option<byte[]>>> field3Delegates = new List<Action<global::Improbable.Gdk.Core.Option<byte[]>>>();
 
                 public event Action<global::Improbable.Gdk.Core.Option<byte[]>> Field3Updated
                 {
-                    add => field3Delegates.Add(value);
-                    remove => field3Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field3Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field3Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int?>> field4Delegates = new List<Action<int?>>();
 
                 public event Action<int?> Field4Updated
                 {
-                    add => field4Delegates.Add(value);
-                    remove => field4Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field4Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field4Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<long?>> field5Delegates = new List<Action<long?>>();
 
                 public event Action<long?> Field5Updated
                 {
-                    add => field5Delegates.Add(value);
-                    remove => field5Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field5Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field5Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<double?>> field6Delegates = new List<Action<double?>>();
 
                 public event Action<double?> Field6Updated
                 {
-                    add => field6Delegates.Add(value);
-                    remove => field6Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field6Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field6Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::Improbable.Gdk.Core.Option<string>>> field7Delegates = new List<Action<global::Improbable.Gdk.Core.Option<string>>>();
 
                 public event Action<global::Improbable.Gdk.Core.Option<string>> Field7Updated
                 {
-                    add => field7Delegates.Add(value);
-                    remove => field7Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field7Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field7Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<uint?>> field8Delegates = new List<Action<uint?>>();
 
                 public event Action<uint?> Field8Updated
                 {
-                    add => field8Delegates.Add(value);
-                    remove => field8Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field8Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field8Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<ulong?>> field9Delegates = new List<Action<ulong?>>();
 
                 public event Action<ulong?> Field9Updated
                 {
-                    add => field9Delegates.Add(value);
-                    remove => field9Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field9Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field9Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int?>> field10Delegates = new List<Action<int?>>();
 
                 public event Action<int?> Field10Updated
                 {
-                    add => field10Delegates.Add(value);
-                    remove => field10Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field10Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field10Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<long?>> field11Delegates = new List<Action<long?>>();
 
                 public event Action<long?> Field11Updated
                 {
-                    add => field11Delegates.Add(value);
-                    remove => field11Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field11Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field11Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<uint?>> field12Delegates = new List<Action<uint?>>();
 
                 public event Action<uint?> Field12Updated
                 {
-                    add => field12Delegates.Add(value);
-                    remove => field12Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field12Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field12Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<ulong?>> field13Delegates = new List<Action<ulong?>>();
 
                 public event Action<ulong?> Field13Updated
                 {
-                    add => field13Delegates.Add(value);
-                    remove => field13Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field13Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field13Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int?>> field14Delegates = new List<Action<int?>>();
 
                 public event Action<int?> Field14Updated
                 {
-                    add => field14Delegates.Add(value);
-                    remove => field14Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field14Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field14Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<long?>> field15Delegates = new List<Action<long?>>();
 
                 public event Action<long?> Field15Updated
                 {
-                    add => field15Delegates.Add(value);
-                    remove => field15Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field15Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field15Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::Improbable.Worker.EntityId?>> field16Delegates = new List<Action<global::Improbable.Worker.EntityId?>>();
 
                 public event Action<global::Improbable.Worker.EntityId?> Field16Updated
                 {
-                    add => field16Delegates.Add(value);
-                    remove => field16Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field16Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field16Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>> field17Delegates = new List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>>();
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.SomeType?> Field17Updated
                 {
-                    add => field17Delegates.Add(value);
-                    remove => field17Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field17Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field17Delegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update)
@@ -218,6 +490,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component data)
                 {
                     if (update.Field1.HasValue)

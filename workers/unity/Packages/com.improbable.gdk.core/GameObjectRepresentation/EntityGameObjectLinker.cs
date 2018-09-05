@@ -11,15 +11,17 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly World world;
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
         private readonly ILogDispatcher logDispatcher;
+        private readonly GameObjectDispatcherSystem gameObjectDispatcherSystem;
 
         public EntityGameObjectLinker(World world, ILogDispatcher logDispatcher)
         {
             this.world = world;
             this.logDispatcher = logDispatcher;
+            gameObjectDispatcherSystem = world.GetOrCreateManager<GameObjectDispatcherSystem>();
         }
 
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, EntityId spatialEntityId,
-            ViewCommandBuffer viewCommandBuffer)
+            EntityCommandBuffer entityCommandBuffer, ViewCommandBuffer viewCommandBuffer)
         {
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
@@ -43,6 +45,30 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             spatialOSComponent.SpatialEntityId = spatialEntityId;
             spatialOSComponent.World = world;
             spatialOSComponent.LogDispatcher = logDispatcher;
+
+            var gameObjectReference = new GameObjectReference { GameObject = gameObject };
+            viewCommandBuffer.AddComponent(entity, gameObjectReference);
+
+            var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
+            entityCommandBuffer.AddComponent(entity, gameObjectReferenceHandleComponent);
+
+            gameObjectDispatcherSystem.CreateActivationManagerAndReaderWriterStore(entity, gameObject);
+        }
+
+        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, bool removeEcsComponents, EntityCommandBuffer entityCommandBuffer)
+        {
+            gameObjectDispatcherSystem.RemoveActivationManagerAndReaderWriterStore(entity);
+            // The PostUpdateCommands buffer is not accessible during OnDestroyManager().
+            if (removeEcsComponents)
+            {
+                entityCommandBuffer.RemoveComponent<GameObjectReferenceHandle>(entity);
+            }
+
+            var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
+            if (spatialOSComponent != null)
+            {
+                UnityObjectDestroyer.Destroy(spatialOSComponent);
+            }
         }
     }
 }
