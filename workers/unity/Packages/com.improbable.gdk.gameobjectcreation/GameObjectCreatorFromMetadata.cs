@@ -67,7 +67,7 @@ namespace Improbable.Gdk.GameObjectCreation
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, worker {workerType}";
             return gameObject;
         }
 
