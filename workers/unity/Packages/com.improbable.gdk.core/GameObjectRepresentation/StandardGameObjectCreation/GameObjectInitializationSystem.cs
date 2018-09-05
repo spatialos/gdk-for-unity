@@ -31,9 +31,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
+        [Inject] private EntityGameObjectLinkerSystem LinkerSystem;
+
         private WorkerSystem worker;
         private ViewCommandBuffer viewCommandBuffer;
-        private EntityGameObjectLinker entityGameObjectLinker;
         private readonly Dictionary<Entity, GameObject> entityGameObjectCache = new Dictionary<Entity, GameObject>();
         private readonly IEntityGameObjectCreator gameObjectCreator;
 
@@ -48,7 +49,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             worker = World.GetExistingManager<WorkerSystem>();
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
-            entityGameObjectLinker = World.GetOrCreateManager<EntityGameObjectLinkerSystem>().Linker;
         }
 
         protected override void OnUpdate()
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     requiresSpatialOSBehaviourManagerComponent);
 
                 viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                entityGameObjectLinker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
+                LinkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
                     viewCommandBuffer);
             }
 
