@@ -84,7 +84,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     {
                         logger.HandleLog(LogType.Error, new LogEvent(RequirableFieldDoesNotInheritRequirableBase)
                             .WithField("Behaviour", behaviour)
-                            .WithField("Field", field.GetValue(behaviour)));
+                            .WithField("Field", field.Name));
                     }
 
                     requirableToBeDisposed.Dispose();
