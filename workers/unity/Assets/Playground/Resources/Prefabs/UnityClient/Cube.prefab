@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65435046857257052}
   - component: {fileID: 54117405590287678}
   m_Layer: 0
-  m_Name: CubeKinematic
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

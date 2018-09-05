@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private readonly ILogDispatcher logDispatcher;
         private readonly GameObjectDispatcherSystem gameObjectDispatcherSystem;
 
-        public EntityGameObjectLinker(World world, ILogDispatcher logDispatcher)
+        internal EntityGameObjectLinker(World world, ILogDispatcher logDispatcher)
         {
             this.world = world;
             this.logDispatcher = logDispatcher;
