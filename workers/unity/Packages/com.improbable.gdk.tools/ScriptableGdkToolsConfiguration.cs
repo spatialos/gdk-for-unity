@@ -9,33 +9,38 @@ namespace Improbable.Gdk.Tools
 {
     public class ScriptableGdkToolsConfiguration : ScriptableObject
     {
-        public string SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
-        public List<string> SchemaSourceDirs = new List<string> { DefaultValues.SchemaSourceDir };
-        public string CodegenOutputDir = DefaultValues.CodegenOutputDir;
+        public string SchemaStdLibDir;
+        public List<string> SchemaSourceDirs = new List<string>();
+        public string CodegenOutputDir;
 
         private const string AssetPath = "Assets/Config/GdkToolsConfiguration.asset";
+
+        public ScriptableGdkToolsConfiguration()
+        {
+            ResetToDefault();
+        }
 
         internal List<string> Validate()
         {
             var errors = new List<string>();
             if (string.IsNullOrEmpty(SchemaStdLibDir))
             {
-                errors.Add($"{GdkToolsConfigurationInspector.SchemaStdLibDirLabel} cannot be empty!");
+                errors.Add($"{GdkToolsConfigurationInspector.SchemaStdLibDirLabel} cannot be empty.");
             }
 
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
-                errors.Add($"{GdkToolsConfigurationInspector.CodegenOutputDirLabel} cannot be empty!");
+                errors.Add($"{GdkToolsConfigurationInspector.CodegenOutputDirLabel} cannot be empty.");
             }
 
             if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
             {
-                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}");
+                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}.");
             }
 
             if (SchemaSourceDirs.Count == 0)
             {
-                errors.Add($"Cannot have no entrys in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}");
+                errors.Add($"You must have at least one item in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}.");
             }
 
             return errors;

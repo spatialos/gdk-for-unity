@@ -12,17 +12,17 @@ namespace Improbable.Gdk.Tools
     [CustomEditor(typeof(ScriptableGdkToolsConfiguration))]
     public class GdkToolsConfigurationInspector : Editor
     {
-        internal const string SchemaStdLibDirLabel = "Schema Standard Library Directory";
-        internal const string CodegenOutputDirLabel = "Code Generator Output Directory";
-        internal const string SchemaSourceDirsLabel = "Schema Source Directories";
+        internal const string SchemaStdLibDirLabel = "Schema standard library directory";
+        internal const string CodegenOutputDirLabel = "Code generator output directory";
+        internal const string SchemaSourceDirsLabel = "Schema source directories";
 
-        private const string CodeGeneratorLabel = "Code Generator Options";
-        private const string DownloadCoreSdkLabel = "Core SDK Options";
+        private const string CodeGeneratorLabel = "Code generator options";
+        private const string DownloadCoreSdkLabel = "CoreSDK options";
 
-        private const string AddSchemaDirButtonText = "Add Schema Source Directory";
+        private const string AddSchemaDirButtonText = "Add schema source directory";
         private const string RemoveSchemaDirButtonText = "Remove";
 
-        private const string ResetConfigurationButtonText = "Reset GDK Tools Configuration to Default";
+        private const string ResetConfigurationButtonText = "Reset GDK tools configuration to default";
 
         private ScriptableGdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
@@ -47,60 +47,62 @@ namespace Improbable.Gdk.Tools
         {
             EditorGUI.BeginChangeCheck();
 
-            GUILayout.Label(DownloadCoreSdkLabel);
-            GUILayout.Space(5);
-            GUILayout.Label(SchemaStdLibDirLabel);
-            toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
-
-            DrawHorizontalBreak();
-
-            GUILayout.Label(CodeGeneratorLabel);
-            GUILayout.Space(5);
-            GUILayout.Label(CodegenOutputDirLabel);
-            toolsConfig.CodegenOutputDir = GUILayout.TextField(toolsConfig.CodegenOutputDir);
-
-            GUILayout.Space(5);
-            GUILayout.Label(SchemaSourceDirsLabel);
-            for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
+            using (var check = new EditorGUI.ChangeCheckScope())
             {
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                    {
-                        toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
-                    }
+                GUILayout.Label(DownloadCoreSdkLabel);
+                GUILayout.Space(5);
+                GUILayout.Label(SchemaStdLibDirLabel);
+                toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
 
-                    if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
+                DrawHorizontalBreak();
+
+                GUILayout.Label(CodeGeneratorLabel);
+                GUILayout.Space(5);
+                GUILayout.Label(CodegenOutputDirLabel);
+                toolsConfig.CodegenOutputDir = GUILayout.TextField(toolsConfig.CodegenOutputDir);
+
+                GUILayout.Label(SchemaSourceDirsLabel);
+                for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
+                {
+                    using (new EditorGUILayout.HorizontalScope())
                     {
                         using (new ObjectUndoScope(toolsConfig, "Inspector"))
                         {
-                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                            toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
+                        }
+
+                        if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
+                        {
+                            using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                            {
+                                toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                            }
                         }
                     }
                 }
-            }
 
-            if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
-            {
-                using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
                 {
-                    toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                    {
+                        toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                    }
                 }
-            }
 
-            DrawHorizontalBreak();
+                DrawHorizontalBreak();
 
-            if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
-            {
-                using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
                 {
-                    toolsConfig.ResetToDefault();
+                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                    {
+                        toolsConfig.ResetToDefault();
+                    }
                 }
-            }
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                configErrors = toolsConfig.Validate();
+                if (check.changed)
+                {
+                    configErrors = toolsConfig.Validate();
+                }
             }
 
             if (configErrors.Count <= 0)
@@ -137,7 +139,6 @@ namespace Improbable.Gdk.Tools
 
             public void Dispose()
             {
-                CheckObject();
                 EditorUtility.SetDirty(obj);
                 obj = null;
             }
