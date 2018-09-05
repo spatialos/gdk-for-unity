@@ -1,96 +1,100 @@
-﻿using Improbable.Gdk.Core.Commands;
+﻿using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using Unity.Entities;
-using UnityEngine.Assertions.Must;
-using Entity = Unity.Entities.Entity;
 
 #region Diagnostic control
 
+// ReSharper disable MemberHidesStaticFromOuterClass
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedMember.Global
 
 #endregion
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.Core.Commands
 {
-    public static partial class WorldCommandsRequirables
+    public static partial class WorldCommands
     {
-        [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
-        [InjectionCondition(InjectionCondition.RequireNothing)]
-        public class WorldCommandRequestSender : IInjectable
+        public static partial class Requirables
         {
-            private readonly Entity entity;
-            private readonly EntityManager entityManager;
-
-            private WorldCommandRequestSender(Entity entity, EntityManager entityManager)
-            {
-                this.entity = entity;
-                this.entityManager = entityManager;
-            }
-
-            public WorldCommands.ReserveEntityIds.Request ReserveEntityIds(
-                uint numberOfEntityIds,
-                object context = null)
-            {
-                var reserveEntityIdCommandSender =
-                    entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(entity);
-
-                var request = new WorldCommands.ReserveEntityIds.Request
-                {
-                    NumberOfEntityIds = numberOfEntityIds,
-                    Context = context
-                };
-
-                reserveEntityIdCommandSender.RequestsToSend.Add(request);
-
-                return request;
-            }
-
-            public WorldCommands.CreateEntity.Request CreateEntity(
-                Improbable.Worker.Core.Entity entityTemplate,
-                EntityId? entityId = null,
-                object context = null)
-            {
-                var createEntityCommandSender =
-                    entityManager.GetComponentData<WorldCommands.CreateEntity.CommandSender>(entity);
-
-                var request = new WorldCommands.CreateEntity.Request
-                {
-                    Entity = entityTemplate,
-                    EntityId = entityId,
-                    Context = context
-                };
-
-                createEntityCommandSender.RequestsToSend.Add(request);
-
-                return request;
-            }
-
-            public WorldCommands.DeleteEntity.Request DeleteEntity(
-                EntityId entityId,
-                object context = null)
-            {
-                var deleteEntityCommandSender =
-                    entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandSender>(entity);
-
-                var request = new WorldCommands.DeleteEntity.Request
-                {
-                    EntityId = entityId,
-                    Context = context
-                };
-
-                deleteEntityCommandSender.RequestsToSend.Add(request);
-
-                return request;
-            }
-
             [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
-            private class WorldCommandRequestSenderCreator : IInjectableCreator
+            [InjectionCondition(InjectionCondition.RequireNothing)]
+            public class WorldCommandRequestSender : RequirableBase
             {
-                public IInjectable CreateInjectable(Entity entity,
-                    EntityManager entityManager,
-                    ILogDispatcher logDispatcher)
+                private readonly Entity entity;
+                private readonly EntityManager entityManager;
+
+                private WorldCommandRequestSender(Entity entity, EntityManager entityManager,
+                    ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
-                    return new WorldCommandRequestSender(entity, entityManager);
+                    this.entity = entity;
+                    this.entityManager = entityManager;
+                }
+
+                public long ReserveEntityIds(uint numberOfEntityIds,
+                    uint? timeoutMillis = null,
+                    object context = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request =
+                        WorldCommands.ReserveEntityIds.CreateRequest(numberOfEntityIds, timeoutMillis, context);
+
+                    entityManager.GetComponentData<ReserveEntityIds.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                public long CreateEntity(
+                    Improbable.Worker.Core.Entity entityTemplate,
+                    EntityId? entityId = null,
+                    uint? timeoutMillis = null,
+                    object context = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request =
+                        WorldCommands.CreateEntity.CreateRequest(entityTemplate, entityId, timeoutMillis, context);
+
+                    entityManager.GetComponentData<CreateEntity.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                public long DeleteEntity(
+                    EntityId entityId,
+                    uint? timeoutMillis = null,
+                    object context = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request = WorldCommands.DeleteEntity.CreateRequest(entityId, timeoutMillis, context);
+
+                    entityManager.GetComponentData<DeleteEntity.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
+                private class WorldCommandRequestSenderCreator : IInjectableCreator
+                {
+                    public IInjectable CreateInjectable(Entity entity,
+                        EntityManager entityManager,
+                        ILogDispatcher logDispatcher)
+                    {
+                        return new WorldCommandRequestSender(entity, entityManager, logDispatcher);
+                    }
                 }
             }
         }
