@@ -110,16 +110,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void DisableSpatialOSBehaviours()
         {
-            DisableAllSpatialOSBehavioursOfASet(behavioursToDisable);
+            DisableAllSpatialOSBehavioursInternal(behavioursToDisable);
             behavioursToDisable.Clear();
         }
 
         private void DisableAllEnabledSpatialOSBehaviours()
         {
-            DisableAllSpatialOSBehavioursOfASet(enabledBehaviours);
+            DisableAllSpatialOSBehavioursInternal(enabledBehaviours);
         }
 
-        private void DisableAllSpatialOSBehavioursOfASet(HashSet<MonoBehaviour> behaviours)
+        private void DisableAllSpatialOSBehavioursInternal(HashSet<MonoBehaviour> behaviours)
         {
             // Dispose all Requirables before OnDisable() so that users can't access potentially inaccessible ecs entity components.
             foreach (var behaviour in behaviours)
