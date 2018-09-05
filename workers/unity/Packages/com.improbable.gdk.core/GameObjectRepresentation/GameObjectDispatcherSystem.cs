@@ -185,10 +185,21 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
             }
 
-            // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
-            activationManager.Dispose();
             entityToActivationManager.Remove(entity);
             entityToReaderWriterStore.Remove(entity);
+
+            // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
+            activationManager.Dispose();
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+
+            foreach (var entity in entityToActivationManager.Keys)
+            {
+                RemoveActivationManagerAndReaderWriterStore(entity);
+            }
         }
     }
 }
