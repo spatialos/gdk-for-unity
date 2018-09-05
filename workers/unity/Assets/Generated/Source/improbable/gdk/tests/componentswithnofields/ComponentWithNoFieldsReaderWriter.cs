@@ -19,9 +19,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectableId(InjectableType.ReaderWriter, 1003)]
             internal class ReaderWriterCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, World world, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new ReaderWriterImpl(entity, world.GetOrCreateManager<EntityManager>(), logDispatcher);
+                    return new ReaderWriterImpl(entity, entityManager, logDispatcher);
                 }
             }
 

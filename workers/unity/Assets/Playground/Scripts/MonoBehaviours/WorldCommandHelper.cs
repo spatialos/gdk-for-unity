@@ -1,31 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
+using JetBrains.Annotations;
 
 namespace Playground.MonoBehaviours
 {
     public class WorldCommandHelper : IDisposable
     {
-        private class ContextWrapper<TOp>
-        {
-            public readonly WorldCommandHelper Helper;
-            private readonly Action<TOp> callback;
-
-            public ContextWrapper(WorldCommandHelper worldCommandHelper, Action<TOp> callback)
-            {
-                Helper = worldCommandHelper;
-                this.callback = callback;
-            }
-
-            public void Dispatch(TOp op)
-            {
-                callback(op);
-            }
-        }
-
         private readonly WorldCommandsRequirables.WorldCommandResponseHandler responseHandler;
         private readonly WorldCommandsRequirables.WorldCommandRequestSender requestSender;
+
+        private readonly HashSet<long> sentRequestIds = new HashSet<long>();
 
         public WorldCommandHelper(
             WorldCommandsRequirables.WorldCommandRequestSender requestSender,
@@ -46,45 +34,53 @@ namespace Playground.MonoBehaviours
             responseHandler.OnReserveEntityIdsResponse -= OnReserveEntityIdsResponse;
         }
 
-        private void OnDeleteEntityResponse(WorldCommands.DeleteEntityResponse response)
+        private void OnDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
-            if (response.Context is ContextWrapper<DeleteEntityResponseOp> wrapper && wrapper.Helper == this)
+            var responseRequestId = response.RequestId;
+
+            if (sentRequestIds.Remove(responseRequestId)
+                && response.Context is Action<DeleteEntityResponseOp> callback)
             {
-                wrapper.Dispatch(response.Op);
+                callback(response.Op);
             }
         }
 
-        private void OnCreateEntityResponse(WorldCommands.CreateEntityResponse response)
+        private void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
         {
-            if (response.Context is ContextWrapper<CreateEntityResponseOp> wrapper && wrapper.Helper == this)
+            var responseRequestId = response.RequestId;
+
+            if (sentRequestIds.Remove(responseRequestId)
+                && response.Context is Action<CreateEntityResponseOp> callback)
             {
-                wrapper.Dispatch(response.Op);
+                callback(response.Op);
             }
         }
 
-        private void OnReserveEntityIdsResponse(WorldCommands.ReserveEntityIdsResponse response)
+        private void OnReserveEntityIdsResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
-            if (response.Context is ContextWrapper<ReserveEntityIdsResponseOp> wrapper && wrapper.Helper == this)
+            var responseRequestId = response.RequestId;
+
+            if (sentRequestIds.Remove(responseRequestId) &&
+                response.Context is Action<ReserveEntityIdsResponseOp> callback)
             {
-                wrapper.Dispatch(response.Op);
+                callback(response.Op);
             }
         }
 
-        public void ReserveEntityIds(uint numberOfEntityIds, Action<ReserveEntityIdsResponseOp> action)
+        public void ReserveEntityIds(uint numberOfEntityIds, [NotNull] Action<ReserveEntityIdsResponseOp> action)
         {
-            requestSender.ReserveEntityIds(numberOfEntityIds,
-                new ContextWrapper<ReserveEntityIdsResponseOp>(this, action));
+            sentRequestIds.Add(requestSender.ReserveEntityIds(numberOfEntityIds, action).RequestId);
         }
 
-        public void CreateEntity(Entity entityTemplate, EntityId? entityId, Action<CreateEntityResponseOp> action)
+        public void CreateEntity(Entity entityTemplate, EntityId? entityId,
+            [NotNull] Action<CreateEntityResponseOp> action)
         {
-            requestSender.CreateEntity(entityTemplate, entityId,
-                new ContextWrapper<CreateEntityResponseOp>(this, action));
+            sentRequestIds.Add(requestSender.CreateEntity(entityTemplate, entityId, action).RequestId);
         }
 
-        public void DeleteEntity(EntityId entityId, Action<DeleteEntityResponseOp> action)
+        public void DeleteEntity(EntityId entityId, [NotNull] Action<DeleteEntityResponseOp> action)
         {
-            requestSender.DeleteEntity(entityId, new ContextWrapper<DeleteEntityResponseOp>(this, action));
+            sentRequestIds.Add(requestSender.DeleteEntity(entityId, action).RequestId);
         }
     }
 }

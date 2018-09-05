@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
@@ -18,27 +16,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public class GameObjectWorldCommandSystem : ComponentSystem
     {
-        private struct WorldCommandResponderData : ISystemStateComponentData
-        {
-            public uint ResponderHandle;
-
-            public List<WorldCommands.WorldCommandResponseHandler> ResponseHandlers
-            {
-                get => WorldCommandResponseHandlerProvider.Get(ResponderHandle);
-                set => WorldCommandResponseHandlerProvider.Set(ResponderHandle,
-                    value);
-            }
-        }
-
-        private struct WorldCommandResponderAddedTag : IComponentData
-        {
-        }
-
         private struct ReserveEntityResponseData
         {
             [ReadOnly] public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandHandlers;
+            [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.ReserveEntityIds.CommandResponses> Responses;
         }
 
@@ -47,8 +28,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private struct CreateEntityResponseData
         {
             [ReadOnly] public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandHandlers;
+            [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.CreateEntity.CommandResponses> Responses;
         }
 
@@ -57,23 +37,16 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         private struct DeleteEntityResponseData
         {
             [ReadOnly] public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderAddedTag> WithWorldCommandResponder;
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandResponders;
+            [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<Commands.WorldCommands.DeleteEntity.CommandResponses> Responses;
         }
 
         [Inject] private DeleteEntityResponseData deleteEntityResponseData;
 
-        private struct EntitiesToCleanUpData
-        {
-            [ReadOnly] public readonly int Length;
+        [Inject] private GameObjectDispatcherSystem GameObjectDispatcherSystem;
 
-            [ReadOnly] public ComponentDataArray<WorldCommandResponderData> WorldCommandResponders;
-            [ReadOnly] public SubtractiveComponent<WorldCommandResponderAddedTag> WithoutTag;
-            [ReadOnly] public EntityArray Entities;
-        }
-
-        [Inject] private EntitiesToCleanUpData entitiesToCleanUpData;
+        private static readonly InjectableId WorldCommandResponseHandlerInjectableId =
+            new InjectableId(InjectableType.WorldCommandResponseHandler, 0);
 
         protected override void OnUpdate()
         {
@@ -84,9 +57,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     continue;
                 }
 
-                var worldCommandResponseHandlers = reserveEntityResponseData
-                    .WorldCommandHandlers[i]
-                    .ResponseHandlers;
+                var entity = reserveEntityResponseData.Entities[i];
+
+                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+
+                if (worldCommandResponseHandlers == null)
+                {
+                    continue;
+                }
 
                 foreach (var receivedResponse in reserveEntityResponseData.Responses[i].Responses)
                 {
@@ -104,9 +82,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     continue;
                 }
 
-                var worldCommandResponseHandlers = createEntityResponseData
-                    .WorldCommandHandlers[i]
-                    .ResponseHandlers;
+                var entity = createEntityResponseData.Entities[i];
+
+                var worldCommandResponseHandlers =
+                    GetWorldCommandResponseHandlersForEntity(entity);
+
+                if (worldCommandResponseHandlers == null)
+                {
+                    continue;
+                }
 
                 foreach (var receivedResponse in createEntityResponseData.Responses[i].Responses)
                 {
@@ -124,9 +108,15 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     continue;
                 }
 
-                var worldCommandResponseHandlers = deleteEntityResponseData
-                    .WorldCommandResponders[i]
-                    .ResponseHandlers;
+                var entity = deleteEntityResponseData.Entities[i];
+
+                var worldCommandResponseHandlers =
+                    GetWorldCommandResponseHandlersForEntity(entity);
+
+                if (worldCommandResponseHandlers == null)
+                {
+                    continue;
+                }
 
                 foreach (var receivedResponse in deleteEntityResponseData.Responses[i].Responses)
                 {
@@ -136,124 +126,30 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     }
                 }
             }
-
-            for (var i = 0; i < entitiesToCleanUpData.Length; ++i)
-            {
-                var worldCommandResponderData = entitiesToCleanUpData.WorldCommandResponders[i];
-
-                WorldCommandResponseHandlerProvider.Free(worldCommandResponderData.ResponderHandle);
-
-                PostUpdateCommands.RemoveComponent<WorldCommandResponderData>(entitiesToCleanUpData.Entities[i]);
-            }
         }
 
-        protected override void OnDestroyManager()
+        private WorldCommandsRequirables.WorldCommandResponseHandler[] GetWorldCommandResponseHandlersForEntity(
+            Entity entity)
         {
-            WorldCommandResponseHandlerProvider.CleanDataInWorld(World);
-        }
+            var entityToReaderWriterStore = GameObjectDispatcherSystem.entityToReaderWriterStore;
 
-        internal void RegisterResponseHandler(Entity entity,
-            WorldCommands.WorldCommandResponseHandler worldCommandResponseHandler)
-        {
-            GetOrCreateWorldCommandResponderData(entity, EntityManager)
-                .ResponseHandlers
-                .Add(worldCommandResponseHandler);
-        }
-
-        private WorldCommandResponderData GetOrCreateWorldCommandResponderData(
-            Entity entity,
-            EntityManager entityManager)
-        {
-            WorldCommandResponderData worldCommandSenderData;
-
-            if (!entityManager.HasComponent<WorldCommandResponderData>(entity))
+            if (!entityToReaderWriterStore.TryGetValue(entity, out var injectableStore))
             {
-                worldCommandSenderData = new WorldCommandResponderData();
-
-                worldCommandSenderData.ResponderHandle =
-                    WorldCommandResponseHandlerProvider.Allocate(World);
-
-                worldCommandSenderData.ResponseHandlers =
-                    new List<WorldCommands.WorldCommandResponseHandler>();
-
-                entityManager.AddComponentData(entity, worldCommandSenderData);
-                entityManager.AddComponentData(entity, new WorldCommandResponderAddedTag());
-            }
-            else
-            {
-                worldCommandSenderData = entityManager.GetComponentData<WorldCommandResponderData>(entity);
+                return null;
             }
 
-            return worldCommandSenderData;
-        }
-
-        private static class WorldCommandResponseHandlerProvider
-        {
-            private static readonly Dictionary<uint, List<WorldCommands.WorldCommandResponseHandler>> Storage =
-                new Dictionary<uint, List<WorldCommands.WorldCommandResponseHandler>>();
-
-            private static readonly Dictionary<uint, World> WorldMapping = new Dictionary<uint, World>();
-
-            private static uint nextHandle = 0;
-
-            public static uint Allocate(World world)
+            if (!injectableStore.TryGetInjectablesForComponent(WorldCommandResponseHandlerInjectableId,
+                out var injectables))
             {
-                var handle = GetNextHandle();
-                Storage.Add(handle, default(List<WorldCommands.WorldCommandResponseHandler>));
-                WorldMapping.Add(handle, world);
-
-                return handle;
+                return null;
             }
 
-            public static List<WorldCommands.WorldCommandResponseHandler> Get(uint handle)
+            if (injectables.Count == 0)
             {
-                if (!Storage.TryGetValue(handle, out var value))
-                {
-                    throw new ArgumentException(
-                        $"WorldCommandResponseHandlerProvider does not contain handle {handle}");
-                }
-
-                return value;
+                return null;
             }
 
-            public static void Set(uint handle, List<WorldCommands.WorldCommandResponseHandler> value)
-            {
-                if (!Storage.ContainsKey(handle))
-                {
-                    throw new ArgumentException(
-                        $"WorldCommandResponseHandlerProvider does not contain handle {handle}");
-                }
-
-                Storage[handle] = value;
-            }
-
-            public static void Free(uint handle)
-            {
-                Storage.Remove(handle);
-                WorldMapping.Remove(handle);
-            }
-
-            public static void CleanDataInWorld(World world)
-            {
-                var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
-
-                foreach (var handle in handles)
-                {
-                    Free(handle);
-                }
-            }
-
-            private static uint GetNextHandle()
-            {
-                nextHandle++;
-
-                while (Storage.ContainsKey(nextHandle))
-                {
-                    nextHandle++;
-                }
-
-                return nextHandle;
-            }
+            return injectables.Cast<WorldCommandsRequirables.WorldCommandResponseHandler>().ToArray();
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return null;
             }
 
-            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, world, logger);
+            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, entityManager, logger);
         }
     }
 }

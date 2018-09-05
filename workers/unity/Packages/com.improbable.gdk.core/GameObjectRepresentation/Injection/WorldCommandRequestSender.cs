@@ -1,4 +1,5 @@
-﻿using Improbable.Worker;
+﻿using Improbable.Gdk.Core.Commands;
+using Improbable.Worker;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
@@ -12,18 +13,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public static partial class WorldCommandsRequirables
     {
-        private class WorldCommandContext
-        {
-            public readonly Entity OwnerEntity;
-            public readonly object Context;
-
-            public WorldCommandContext(Entity ownerEntity, object context)
-            {
-                OwnerEntity = ownerEntity;
-                Context = context;
-            }
-        }
-
         [InjectableId(InjectableType.WorldCommandRequestSender)]
         [InjectionCondition(InjectionCondition.RequireNothing)]
         public class WorldCommandRequestSender : IInjectable
@@ -34,61 +23,74 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             private WorldCommandRequestSender(Entity entity, EntityManager entityManager)
             {
                 this.entity = entity;
+
                 this.entityManager = entityManager;
             }
 
-            public void ReserveEntityIds(
+            public WorldCommands.ReserveEntityIds.Request ReserveEntityIds(
                 uint numberOfEntityIds,
                 object context = null)
             {
                 var reserveEntityIdCommandSender =
-                    entityManager.GetComponentData<Commands.WorldCommands.ReserveEntityIds.CommandSender>(entity);
+                    entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(entity);
 
-                reserveEntityIdCommandSender.RequestsToSend.Add(new Commands.WorldCommands.ReserveEntityIds.Request
+                var request = new WorldCommands.ReserveEntityIds.Request
                 {
                     NumberOfEntityIds = numberOfEntityIds,
-                    Context = new WorldCommandContext(entity, context)
-                });
+                    Context = context
+                };
+
+                reserveEntityIdCommandSender.RequestsToSend.Add(request);
+
+                return request;
             }
 
-            public void CreateEntity(
+            public WorldCommands.CreateEntity.Request CreateEntity(
                 Improbable.Worker.Core.Entity entityTemplate,
                 EntityId? entityId = null,
                 object context = null)
             {
                 var createEntityCommandSender =
-                    entityManager.GetComponentData<Commands.WorldCommands.CreateEntity.CommandSender>(entity);
+                    entityManager.GetComponentData<WorldCommands.CreateEntity.CommandSender>(entity);
 
-                createEntityCommandSender.RequestsToSend.Add(new Commands.WorldCommands.CreateEntity.Request
+                var request = new WorldCommands.CreateEntity.Request
                 {
                     Entity = entityTemplate,
                     EntityId = entityId,
-                    Context = new WorldCommandContext(entity, context)
-                });
+                    Context = context
+                };
+
+                createEntityCommandSender.RequestsToSend.Add(request);
+
+                return request;
             }
 
-            public void DeleteEntity(
+            public WorldCommands.DeleteEntity.Request DeleteEntity(
                 EntityId entityId,
                 object context = null)
             {
                 var deleteEntityCommandSender =
-                    entityManager.GetComponentData<Commands.WorldCommands.DeleteEntity.CommandSender>(entity);
+                    entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandSender>(entity);
 
-                deleteEntityCommandSender.RequestsToSend.Add(new Commands.WorldCommands.DeleteEntity.Request
+                var request = new WorldCommands.DeleteEntity.Request
                 {
                     EntityId = entityId,
-                    Context = new WorldCommandContext(entity, context)
-                });
+                    Context = context
+                };
+
+                deleteEntityCommandSender.RequestsToSend.Add(request);
+
+                return request;
             }
 
             [InjectableId(InjectableType.WorldCommandRequestSender)]
             private class WorldCommandRequestSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity,
-                    World world,
+                    EntityManager entityManager,
                     ILogDispatcher logDispatcher)
                 {
-                    return new WorldCommandRequestSender(entity, world.GetOrCreateManager<EntityManager>());
+                    return new WorldCommandRequestSender(entity, entityManager);
                 }
             }
         }

@@ -17,130 +17,70 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public static partial class WorldCommandsRequirables
     {
-        public struct CreateEntityResponse
-        {
-            public CreateEntityResponseOp Op { get; }
-            public Commands.WorldCommands.CreateEntity.Request RequestPayload { get; }
-            public readonly object Context;
-
-            public CreateEntityResponse(Commands.WorldCommands.CreateEntity.ReceivedResponse response, object context)
-            {
-                RequestPayload = response.RequestPayload;
-                Op = response.Op;
-                Context = context;
-            }
-        }
-
-        public struct ReserveEntityIdsResponse
-        {
-            public ReserveEntityIdsResponseOp Op { get; }
-            public Commands.WorldCommands.ReserveEntityIds.Request RequestPayload { get; }
-            public readonly object Context;
-
-            public ReserveEntityIdsResponse(Commands.WorldCommands.ReserveEntityIds.ReceivedResponse response,
-                object context)
-            {
-                RequestPayload = response.RequestPayload;
-                Op = response.Op;
-                Context = context;
-            }
-        }
-
-        public struct DeleteEntityResponse
-        {
-            public DeleteEntityResponseOp Op { get; }
-            public Commands.WorldCommands.DeleteEntity.Request RequestPayload { get; }
-            public readonly object Context;
-
-            public DeleteEntityResponse(Commands.WorldCommands.DeleteEntity.ReceivedResponse response, object context)
-            {
-                RequestPayload = response.RequestPayload;
-                Op = response.Op;
-                Context = context;
-            }
-        }
-
         [InjectableId(InjectableType.WorldCommandResponseHandler)]
         [InjectionCondition(InjectionCondition.RequireNothing)]
         public class WorldCommandResponseHandler : IInjectable
         {
-            private readonly Entity entity;
             private readonly ILogDispatcher logDispatcher;
 
-            private readonly List<Action<CreateEntityResponse>> createEntityDelegates
-                = new List<Action<CreateEntityResponse>>();
+            private readonly List<Action<Commands.WorldCommands.ReserveEntityIds.ReceivedResponse>>
+                reserveEntityIdsDelegates
+                    = new List<Action<Commands.WorldCommands.ReserveEntityIds.ReceivedResponse>>();
 
-            private readonly List<Action<ReserveEntityIdsResponse>> reserveEntityIdsDelegates
-                = new List<Action<ReserveEntityIdsResponse>>();
+            private readonly List<Action<Commands.WorldCommands.CreateEntity.ReceivedResponse>> createEntityDelegates
+                = new List<Action<Commands.WorldCommands.CreateEntity.ReceivedResponse>>();
 
-            private readonly List<Action<DeleteEntityResponse>> deleteEntityDelegates
-                = new List<Action<DeleteEntityResponse>>();
+            private readonly List<Action<Commands.WorldCommands.DeleteEntity.ReceivedResponse>> deleteEntityDelegates
+                = new List<Action<Commands.WorldCommands.DeleteEntity.ReceivedResponse>>();
 
-            public event Action<ReserveEntityIdsResponse> OnReserveEntityIdsResponse
+            public event Action<Commands.WorldCommands.ReserveEntityIds.ReceivedResponse> OnReserveEntityIdsResponse
             {
                 add => reserveEntityIdsDelegates.Add(value);
                 remove => reserveEntityIdsDelegates.Remove(value);
             }
 
-            public event Action<CreateEntityResponse> OnCreateEntityResponse
+            public event Action<Commands.WorldCommands.CreateEntity.ReceivedResponse> OnCreateEntityResponse
             {
                 add => createEntityDelegates.Add(value);
                 remove => createEntityDelegates.Remove(value);
             }
 
-            public event Action<DeleteEntityResponse> OnDeleteEntityResponse
+            public event Action<Commands.WorldCommands.DeleteEntity.ReceivedResponse> OnDeleteEntityResponse
             {
                 add => deleteEntityDelegates.Add(value);
                 remove => deleteEntityDelegates.Remove(value);
             }
 
-            private WorldCommandResponseHandler(Entity entity,
-                World world,
-                ILogDispatcher logDispatcher)
+            private WorldCommandResponseHandler(ILogDispatcher logDispatcher)
             {
-                world.GetOrCreateManager<GameObjectWorldCommandSystem>().RegisterResponseHandler(entity, this);
-
-                this.entity = entity;
                 this.logDispatcher = logDispatcher;
-            }
-
-            internal void OnCreateEntityResponseInternal(
-                Commands.WorldCommands.CreateEntity.ReceivedResponse receivedResponse)
-            {
-                if (receivedResponse.Context is WorldCommandContext worldCommandContext
-                    && worldCommandContext.OwnerEntity == entity)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(
-                        new CreateEntityResponse(receivedResponse, worldCommandContext.Context),
-                        createEntityDelegates,
-                        logDispatcher);
-                }
             }
 
             internal void OnReserveEntityIdsResponseInternal(
                 Commands.WorldCommands.ReserveEntityIds.ReceivedResponse receivedResponse)
             {
-                if (receivedResponse.Context is WorldCommandContext worldCommandContext
-                    && worldCommandContext.OwnerEntity == entity)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(
-                        new ReserveEntityIdsResponse(receivedResponse, worldCommandContext.Context),
-                        reserveEntityIdsDelegates,
-                        logDispatcher);
-                }
+                GameObjectDelegates.DispatchWithErrorHandling(
+                    receivedResponse,
+                    reserveEntityIdsDelegates,
+                    logDispatcher);
+            }
+
+            internal void OnCreateEntityResponseInternal(
+                Commands.WorldCommands.CreateEntity.ReceivedResponse receivedResponse)
+            {
+                GameObjectDelegates.DispatchWithErrorHandling(
+                    receivedResponse,
+                    createEntityDelegates,
+                    logDispatcher);
             }
 
             internal void OnDeleteEntityResponseInternal(
                 Commands.WorldCommands.DeleteEntity.ReceivedResponse receivedResponse)
             {
-                if (receivedResponse.Context is WorldCommandContext worldCommandContext
-                    && worldCommandContext.OwnerEntity == entity)
-                {
-                    GameObjectDelegates.DispatchWithErrorHandling(
-                        new DeleteEntityResponse(receivedResponse, worldCommandContext.Context),
-                        deleteEntityDelegates,
-                        logDispatcher);
-                }
+                GameObjectDelegates.DispatchWithErrorHandling(
+                    receivedResponse,
+                    deleteEntityDelegates,
+                    logDispatcher);
             }
 
             [InjectableId(InjectableType.WorldCommandResponseHandler)]
@@ -148,10 +88,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 public IInjectable CreateInjectable(
                     Entity entity,
-                    World world,
+                    EntityManager entityManager,
                     ILogDispatcher logDispatcher)
                 {
-                    return new WorldCommandResponseHandler(entity, world, logDispatcher);
+                    return new WorldCommandResponseHandler(logDispatcher);
                 }
             }
         }
