@@ -246,7 +246,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
             catch (Exception e)
             {
-                // Log the exception but do not rethrow it, as other delegates should still get called
+                // Log the exception but do not rethrow it.
                 logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
             }
         }
