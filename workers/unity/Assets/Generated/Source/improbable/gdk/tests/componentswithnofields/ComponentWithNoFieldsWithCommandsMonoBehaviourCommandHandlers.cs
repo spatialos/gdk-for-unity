@@ -73,7 +73,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }
@@ -112,7 +112,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -121,7 +121,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -165,7 +165,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -174,7 +174,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }

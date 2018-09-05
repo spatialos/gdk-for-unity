@@ -61,7 +61,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -70,7 +70,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -86,7 +86,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }

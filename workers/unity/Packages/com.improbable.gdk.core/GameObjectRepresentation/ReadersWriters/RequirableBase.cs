@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.logDispatcher = logDispatcher;
         }
 
-        protected bool LogErrorIfDisposed()
+        protected bool VerifyNotDisposed()
         {
             if (isDisposed)
             {
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     .WithField(LoggingUtils.LoggerName, GetType()));
             }
 
-            return isDisposed;
+            return !isDisposed;
         }
 
         public void Dispose()

@@ -60,7 +60,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -69,7 +69,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -84,7 +84,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -93,7 +93,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -108,7 +108,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -117,7 +117,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -132,7 +132,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -141,7 +141,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -156,7 +156,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -165,7 +165,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -213,7 +213,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -222,7 +222,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -238,7 +238,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }
@@ -253,7 +253,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -262,7 +262,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -278,7 +278,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }

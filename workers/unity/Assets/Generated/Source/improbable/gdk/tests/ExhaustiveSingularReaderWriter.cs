@@ -68,7 +68,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -77,7 +77,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -92,7 +92,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -101,7 +101,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -116,7 +116,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -125,7 +125,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -140,7 +140,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -149,7 +149,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -164,7 +164,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -173,7 +173,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -188,7 +188,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -197,7 +197,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -212,7 +212,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -221,7 +221,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -236,7 +236,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -245,7 +245,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -260,7 +260,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -269,7 +269,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -284,7 +284,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -293,7 +293,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -308,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -317,7 +317,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -332,7 +332,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -341,7 +341,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -356,7 +356,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -365,7 +365,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -380,7 +380,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -389,7 +389,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -404,7 +404,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -413,7 +413,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -428,7 +428,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -437,7 +437,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -452,7 +452,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -461,7 +461,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }

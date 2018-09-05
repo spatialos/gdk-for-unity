@@ -64,7 +64,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -73,7 +73,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -88,7 +88,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -97,7 +97,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -112,7 +112,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -121,7 +121,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -136,7 +136,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -145,7 +145,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -160,7 +160,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -169,7 +169,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -184,7 +184,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -193,7 +193,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -208,7 +208,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -217,7 +217,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -232,7 +232,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -241,7 +241,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -256,7 +256,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -265,7 +265,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -333,7 +333,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -342,7 +342,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -358,7 +358,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }
@@ -373,7 +373,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -382,7 +382,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -398,7 +398,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }

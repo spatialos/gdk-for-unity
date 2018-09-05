@@ -85,7 +85,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach(var commandDetails in commandDetailsList) { #>
                 public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> request)
                 {
-                    if (LogErrorIfDisposed())
+                    if (!VerifyNotDisposed())
                     {
                         return;
                     }
@@ -132,7 +132,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -141,7 +141,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -190,7 +190,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }
@@ -199,7 +199,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (LogErrorIfDisposed())
+                        if (!VerifyNotDisposed())
                         {
                             return;
                         }

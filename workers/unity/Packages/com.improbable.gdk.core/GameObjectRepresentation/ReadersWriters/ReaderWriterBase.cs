@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return default(TSpatialComponentData);
                 }
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void Send(TComponentUpdate update)
         {
-            if (LogErrorIfDisposed())
+            if (!VerifyNotDisposed())
             {
                 return;
             }
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return Authority.NotAuthoritative;
                 }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             add
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return;
                 }
@@ -110,7 +110,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
             remove
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return;
                 }
@@ -158,7 +158,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             add
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return;
                 }
@@ -167,7 +167,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
             remove
             {
-                if (LogErrorIfDisposed())
+                if (!VerifyNotDisposed())
                 {
                     return;
                 }
