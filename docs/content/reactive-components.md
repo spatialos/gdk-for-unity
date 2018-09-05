@@ -9,7 +9,7 @@ To represent state changes or messages from SpatialOS, the SpatialOS GDK for Uni
 
 When the GDK receives an update or message from SpatialOS, it places a "reactive component" on the associated ECS entity until the end of the tick. This reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to react to the change or message.
 
-At the end of the tick, the GDK for Unity removes the reactive component.
+At the end of the tick, the GDK removes the reactive component.
 
 ### Reactive component types
 

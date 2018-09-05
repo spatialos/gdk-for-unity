@@ -10,7 +10,7 @@ By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS compo
 
 #### For properties
 
-Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the GDK for Unity sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
+Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the GDK sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
 #### For events
 
