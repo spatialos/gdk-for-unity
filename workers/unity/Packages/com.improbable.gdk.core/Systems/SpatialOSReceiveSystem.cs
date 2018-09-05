@@ -77,7 +77,7 @@ namespace Improbable.Gdk.Core
             while (inCriticalSection);
         }
 
-        private void OnAddEntity(AddEntityOp op)
+        internal void OnAddEntity(AddEntityOp op)
         {
             var entityId = op.EntityId;
             if (worker.EntityIdToEntity.ContainsKey(entityId))
@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Core
             worker.EntityIdToEntity.Add(entityId, entity);
         }
 
-        private void OnRemoveEntity(RemoveEntityOp op)
+        internal void OnRemoveEntity(RemoveEntityOp op)
         {
             var entityId = op.EntityId;
             if (!worker.TryGetEntity(entityId, out var entity))
@@ -120,7 +120,7 @@ namespace Improbable.Gdk.Core
             worker.EntityIdToEntity.Remove(entityId);
         }
 
-        private void OnDisconnect(DisconnectOp op)
+        internal void OnDisconnect(DisconnectOp op)
         {
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
@@ -128,7 +128,7 @@ namespace Improbable.Gdk.Core
                 new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
-        private void OnAddComponent(AddComponentOp op)
+        internal void OnAddComponent(AddComponentOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Data.ComponentId, out var specificDispatcher))
             {
@@ -141,7 +141,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnAddComponent(op);
         }
 
-        private void OnRemoveComponent(RemoveComponentOp op)
+        internal void OnRemoveComponent(RemoveComponentOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
@@ -154,7 +154,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnRemoveComponent(op);
         }
 
-        private void OnComponentUpdate(ComponentUpdateOp op)
+        internal void OnComponentUpdate(ComponentUpdateOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Update.ComponentId, out var specificDispatcher))
             {
@@ -167,7 +167,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnComponentUpdate(op);
         }
 
-        private void OnAuthorityChange(AuthorityChangeOp op)
+        internal void OnAuthorityChange(AuthorityChangeOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
@@ -180,7 +180,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnAuthorityChange(op);
         }
 
-        private void OnCommandRequest(CommandRequestOp op)
+        internal void OnCommandRequest(CommandRequestOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Request.ComponentId, out var specificDispatcher))
             {
@@ -193,7 +193,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnCommandRequest(op);
         }
 
-        private void OnCommandResponse(CommandResponseOp op)
+        internal void OnCommandResponse(CommandResponseOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Response.ComponentId, out var specificDispatcher))
             {
@@ -206,7 +206,7 @@ namespace Improbable.Gdk.Core
             specificDispatcher.OnCommandResponse(op);
         }
 
-        private void OnCreateEntityResponse(CreateEntityResponseOp op)
+        internal void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
             if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
@@ -249,7 +249,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
-        private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
+        internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
             if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
@@ -292,7 +292,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
-        private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
+        internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
             if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
@@ -335,7 +335,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
-        private void OnEntityQueryResponse(EntityQueryResponseOp op)
+        internal void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
             if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
