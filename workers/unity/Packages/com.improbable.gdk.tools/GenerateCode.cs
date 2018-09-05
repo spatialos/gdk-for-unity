@@ -10,12 +10,9 @@ namespace Improbable.Gdk.Tools
     [InitializeOnLoad]
     internal static class GenerateCode
     {
-        private const string AssetsGeneratedSourceDir = "Assets/Generated/Source";
         private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
         private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
-        private const string SchemaRootDir = "../../schema";
-        private const string SchemaStandardLibraryDir = "../../build/dependencies/schema/standard_library";
 
         private const int GenerateCodePriority = 38;
         private const int GenerateCodeForcePriority = 39;
@@ -56,7 +53,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                CopySchema(SchemaRootDir);
+                CopySchema();
 
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     CsProjectFile));
@@ -81,12 +78,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary, "run", "-p", $"\"{projectPath}\"", "--",
-                        $"--schema-path=\"{SchemaRootDir}\"",
-                        $"--schema-path={SchemaStandardLibraryDir}",
-                        $"--json-dir={ImprobableJsonDir}",
-                        $"--native-output-dir={AssetsGeneratedSourceDir}",
-                        $"--schema-compiler-path=\"{schemaCompilerPath}\"");
+                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary, ConstructArgs(projectPath, schemaCompilerPath));
 
                     if (exitCode != 0)
                     {
@@ -106,6 +98,31 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath)
+        {
+            var baseArgs = new List<string>
+            {
+                "run",
+                "-p",
+                $"\"{projectPath}\"",
+                "--",
+                $"--json-dir=\"{ImprobableJsonDir}\"",
+                $"--schema-compiler-path=\"{schemaCompilerPath}\""
+            };
+
+            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+
+            baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
+            baseArgs.Add($"--schema-path=\"{toolsConfig.SchemaStdLibDir}\"");
+
+            foreach (var schemaSourceDir in toolsConfig.SchemaSourceDirs)
+            {
+                baseArgs.Add($"--schema-path=\"{schemaSourceDir}\"");
+            }
+
+            return baseArgs.ToArray();
+        }
+
         [MenuItem("SpatialOS/Generate code (force)", false, GenerateCodeForcePriority)]
         private static void ForceGenerateMenu()
         {
@@ -115,18 +132,22 @@ namespace Improbable.Gdk.Tools
 
         private static void ForceGenerate()
         {
-            if (Directory.Exists(AssetsGeneratedSourceDir))
+            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+            if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
-                Directory.Delete(AssetsGeneratedSourceDir, true);
+                Directory.Delete(toolsConfig.CodegenOutputDir, true);
             }
 
             Generate();
         }
 
-        private static void CopySchema(string schemaRoot)
+        private static void CopySchema()
         {
             try
             {
+                var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+                // Safe as we validate there is at least one entry.
+                var schemaRoot = toolsConfig.SchemaSourceDirs[0];
                 CleanDestination(schemaRoot);
 
                 var packages = Common.GetManifestDependencies().Where(kv => kv.Value.StartsWith("file:"))
