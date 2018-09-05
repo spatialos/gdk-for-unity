@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
         private static readonly string ProjectPath =
             Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
-        private const string DownloadForceMenuItem = "Improbable/Download CoreSdk (force)";
+        private const string DownloadForceMenuItem = "SpatialOS/Download CoreSdk (force)";
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()

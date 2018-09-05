@@ -15,7 +15,7 @@
 
 1. Open the `workers/unity` project in your Unity Editor.
 
-2. Choose **Improbable** > **Spatial** > **Local launch**
+2. Choose **SpatialOS** > **Local launch** or press **Ctrl-L**
 
 3. In the Editor, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
 
@@ -84,7 +84,7 @@ Unity may open a browser window prompting you to login to your SpatialOS account
 If this happens, please login.
 This will only happen the first time you open you project, or if the version of the required libraries changes.
 
-1. Choose **Improbable** > **Spatial** > **Local launch**.
+1. Choose **SpatialOS** > **Local launch**.
 <br>This launches a SpatialOS deployment locally in a new console window. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
     > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in the new console indow
 
@@ -107,7 +107,7 @@ This will only happen the first time you open you project, or if the version of 
 1. Build an assembly for the deployment
 <br>The first step of running a cloud deployment is uploading all the files that your game uses. This includes executable files for the clients and workers, and the assets your workers use (like models and textures used by the Unity client to visualise the game). We call that set of game files an assembly.
 <br><br> To build an assembly for your game to use while running in the cloud, either:
-    - In the Unity Editor, select **Improbable** > **Build all workers for cloud**
+    - In the Unity Editor, select **SpatialOS** > **Build all workers for cloud**
 
 1. Upload the assembly to the cloud
 

@@ -8,7 +8,7 @@ namespace Playground.Editor.SnapshotGenerator
     {
         private SnapshotGenerator.Arguments arguments;
 
-        [MenuItem("Improbable/Generate snapshot")]
+        [MenuItem("SpatialOS/Generate snapshot")]
         public static void GenerateMenuItem()
         {
             GetWindow<SnapshotEditorWindow>().Show();
