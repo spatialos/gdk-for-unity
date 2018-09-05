@@ -2,6 +2,7 @@ using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Playground
 {
@@ -12,10 +13,12 @@ namespace Playground
 
         public static void AddClientSystems(World world)
         {
+            Debug.Log(world.Name);
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityClient));
+            GameObjectRepresentationSystemHelper.AddSystems(world);
+            GameObjectCreationSystemHelper.AddStandardGameObjectCreation(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
             world.GetOrCreateManager<InitCameraSystem>();
@@ -28,10 +31,12 @@ namespace Playground
 
         public static void AddGameLogicSystems(World world)
         {
+            Debug.Log(world.Name);
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world, new EntityGameObjectCreator(UnityGameLogic));
+            GameObjectRepresentationSystemHelper.AddSystems(world);
+            GameObjectCreationSystemHelper.AddStandardGameObjectCreation(world);
             world.GetOrCreateManager<CubeMovementSystem>();
             world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();

@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Gdk.GameObjectRepresentation.GameObjectCreation",
+    "references": [
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Mathematics",
+		"Improbable.Gdk.Core",
+		"Improbable.Gdk.Generated"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -4,12 +4,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
     public static class GameObjectRepresentationSystemHelper
     {
-        public static void AddSystems(World world, IEntityGameObjectCreator gameObjectCreator)
+        public static void AddSystems(World world)
         {
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
             world.GetOrCreateManager<EntityGameObjectLinkerSystem>();
-            world.CreateManager<GameObjectInitializationSystem>(gameObjectCreator);
         }
     }
 }

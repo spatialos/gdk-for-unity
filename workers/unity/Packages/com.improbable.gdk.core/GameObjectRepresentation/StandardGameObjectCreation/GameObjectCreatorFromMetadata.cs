@@ -6,16 +6,16 @@ using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 using Transform = Generated.Improbable.Transform.Transform;
 
-namespace Playground
+namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    public class EntityGameObjectCreator : IEntityGameObjectCreator
+    public class GameObjectCreatorFromMetadata : IEntityGameObjectCreator
     {
         private readonly Dictionary<string, GameObject> cachedPrefabs
             = new Dictionary<string, GameObject>();
 
         private readonly string workerType;
 
-        public EntityGameObjectCreator(string workerType)
+        public GameObjectCreatorFromMetadata(string workerType)
         {
             this.workerType = workerType;
         }
