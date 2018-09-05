@@ -48,6 +48,7 @@ namespace Improbable.Gdk.Tools
             }
             catch
             {
+                // Nothing to handle if this fails - no need to abort the process.
             }
         }
 
@@ -135,11 +136,20 @@ namespace Improbable.Gdk.Tools
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
         }
 
-        internal static string[] ConstructArguments()
+        private static string[] ConstructArguments()
         {
-            var baseArgs = new List<string> { "run", "-p", $"\"{ProjectPath}\"", "--", $"\"{Common.SpatialBinary}\"", $"\"{Common.CoreSdkVersion}\"" };
             var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
-            baseArgs.Add($"\"{toolsConfig.SchemaStdLibDir}\"");
+
+            var baseArgs = new List<string>
+            {
+                "run",
+                "-p",
+                $"\"{ProjectPath}\"",
+                "--",
+                $"\"{Common.SpatialBinary}\"",
+                $"\"{Common.CoreSdkVersion}\"",
+                $"\"{toolsConfig.SchemaStdLibDir}\""
+            };
 
             return baseArgs.ToArray();
         }

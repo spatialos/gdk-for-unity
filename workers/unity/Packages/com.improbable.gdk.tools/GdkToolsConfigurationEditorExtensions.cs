@@ -49,46 +49,9 @@ namespace Improbable.Gdk.Tools
 
             using (var check = new EditorGUI.ChangeCheckScope())
             {
-                GUILayout.Label(DownloadCoreSdkLabel);
-                GUILayout.Space(5);
-                GUILayout.Label(SchemaStdLibDirLabel);
-                toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
-
+                DrawCoreSdkOptions();
                 DrawHorizontalBreak();
-
-                GUILayout.Label(CodeGeneratorLabel);
-                GUILayout.Space(5);
-                GUILayout.Label(CodegenOutputDirLabel);
-                toolsConfig.CodegenOutputDir = GUILayout.TextField(toolsConfig.CodegenOutputDir);
-
-                GUILayout.Label(SchemaSourceDirsLabel);
-                for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
-                {
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                        {
-                            toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
-                        }
-
-                        if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
-                        {
-                            using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                            {
-                                toolsConfig.SchemaSourceDirs.RemoveAt(i);
-                            }
-                        }
-                    }
-                }
-
-                if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
-                {
-                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                    {
-                        toolsConfig.SchemaSourceDirs.Add(string.Empty);
-                    }
-                }
-
+                DrawCodeGenerationOptions();
                 DrawHorizontalBreak();
 
                 if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
@@ -114,6 +77,50 @@ namespace Improbable.Gdk.Tools
             foreach (var error in configErrors)
             {
                 EditorGUILayout.HelpBox(error, MessageType.Error);
+            }
+        }
+
+        private void DrawCoreSdkOptions()
+        {
+            GUILayout.Label(DownloadCoreSdkLabel);
+            GUILayout.Space(5);
+            GUILayout.Label(SchemaStdLibDirLabel);
+            toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
+        }
+
+        private void DrawCodeGenerationOptions()
+        {
+            GUILayout.Label(CodeGeneratorLabel);
+            GUILayout.Space(5);
+            GUILayout.Label(CodegenOutputDirLabel);
+            toolsConfig.CodegenOutputDir = GUILayout.TextField(toolsConfig.CodegenOutputDir);
+
+            GUILayout.Label(SchemaSourceDirsLabel);
+            for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                    {
+                        toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
+                    }
+
+                    if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
+                    {
+                        using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                        {
+                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+
+            if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
+            {
+                using (new ObjectUndoScope(toolsConfig, "Inspector"))
+                {
+                    toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                }
             }
         }
 
