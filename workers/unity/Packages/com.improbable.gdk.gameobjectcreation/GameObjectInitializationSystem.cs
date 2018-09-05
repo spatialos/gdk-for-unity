@@ -8,7 +8,9 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectCreation
 {
     /// <summary>
-    ///     Creates a companion gameobject for newly spawned entities according to a prefab definition.
+    ///     For each newly added SpatialOS entity, calls IEntityGameObjectCreator to get an associated GameObject
+    ///     and links it to the entity via the EntityGameObjectLinker. Also checks for entity removal and calls the
+    ///     IEntityGameObjectCreator for cleanup.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     [DisableAutoCreation]
