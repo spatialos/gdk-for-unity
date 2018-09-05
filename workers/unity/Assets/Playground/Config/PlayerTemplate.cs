@@ -29,7 +29,6 @@ namespace Playground
                 Transform.Component.CreateSchemaComponentData(new Location(),
                     new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, 0);
             var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
-            var prefab = Prefab.Component.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
@@ -44,7 +43,6 @@ namespace Playground
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)
-                .AddComponent(prefab, WorkerUtils.UnityGameLogic)
                 .AddComponent(archetype, WorkerUtils.UnityGameLogic)
                 .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)

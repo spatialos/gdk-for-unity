@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     MonoBehaviour as dictated by the MonoBehaviourActivationManager, and querying by InjectableId for use
     ///     by the GameObjectComponentDispatchers.
     /// </summary>
-    internal class InjectableStore
+    public class InjectableStore
     {
         private readonly Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>> injectablesForBehaviours
             = new Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>>();

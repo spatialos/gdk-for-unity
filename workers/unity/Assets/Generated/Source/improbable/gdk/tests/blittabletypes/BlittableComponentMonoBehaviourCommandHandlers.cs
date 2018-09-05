@@ -18,7 +18,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
     {
         public partial class FirstCommand
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public FirstCommand.ReceivedRequest Request { get; }
@@ -45,7 +46,8 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
         }
         public partial class SecondCommand
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public SecondCommand.ReceivedRequest Request { get; }
@@ -84,13 +86,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.CommandRequestSender, 1001)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : IInjectable
+            public class CommandRequestSender : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -99,12 +101,22 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
                 }
 
                 public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(SecondCommand.CreateRequest(entityId, request));
                 }
@@ -122,13 +134,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.CommandRequestHandler, 1001)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : IInjectable
+            public class CommandRequestHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -137,8 +149,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 private readonly List<Action<FirstCommand.RequestResponder>> firstCommandDelegates = new List<Action<FirstCommand.RequestResponder>>();
                 public event Action<FirstCommand.RequestResponder> OnFirstCommandRequest
                 {
-                    add => firstCommandDelegates.Add(value);
-                    remove => firstCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
@@ -148,8 +176,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 private readonly List<Action<SecondCommand.RequestResponder>> secondCommandDelegates = new List<Action<SecondCommand.RequestResponder>>();
                 public event Action<SecondCommand.RequestResponder> OnSecondCommandRequest
                 {
-                    add => secondCommandDelegates.Add(value);
-                    remove => secondCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
@@ -169,13 +213,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.CommandResponseHandler, 1001)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
+            public class CommandResponseHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -185,8 +229,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 private readonly List<Action<FirstCommand.ReceivedResponse>> firstCommandDelegates = new List<Action<FirstCommand.ReceivedResponse>>();
                 public event Action<FirstCommand.ReceivedResponse> OnFirstCommandResponse
                 {
-                    add => firstCommandDelegates.Add(value);
-                    remove => firstCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        firstCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnFirstCommandResponseInternal(FirstCommand.ReceivedResponse response)
@@ -197,8 +257,24 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 private readonly List<Action<SecondCommand.ReceivedResponse>> secondCommandDelegates = new List<Action<SecondCommand.ReceivedResponse>>();
                 public event Action<SecondCommand.ReceivedResponse> OnSecondCommandResponse
                 {
-                    add => secondCommandDelegates.Add(value);
-                    remove => secondCommandDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        secondCommandDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnSecondCommandResponseInternal(SecondCommand.ReceivedResponse response)
