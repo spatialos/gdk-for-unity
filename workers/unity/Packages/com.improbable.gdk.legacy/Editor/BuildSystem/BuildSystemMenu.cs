@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Legacy.BuildSystem
 {
     internal static class BuildSystemMenu
     {
-        private const string ParentMenu = "Improbable";
+        private const string ParentMenu = "SpatialOS";
 
         [MenuItem(ParentMenu + "/Build UnityClient for local", false, 1)]
         public static void BuildLocalClient()
