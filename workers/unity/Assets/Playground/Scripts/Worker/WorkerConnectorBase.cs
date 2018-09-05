@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +54,11 @@ namespace Playground
                         new LogEvent("Cancelling connection attempt")
                             .WithField("WorkerType", workerType)
                             .WithField("Reason", "Required worker failed to connect"));
+#if UNITY_EDITOR
+                    logger.HandleLog(LogType.Warning,
+                        new LogEvent("A local runtime may not have been started. If not, you can start one from 'SpaitalOS -> Local launch' or by pressing Ctrl-L")                      
+                            .WithField("Reason", "A worker running in the editor failing to connect was observed"));
+#endif
                     connectionAttemptFinishedTask.SetException(e);
                     Dispose();
                     return;
