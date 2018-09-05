@@ -15,7 +15,7 @@ namespace Playground.Editor
             CompilationPipeline.assemblyCompilationFinished += OnCompilationFinished;
         }
 
-        private static void OnCompilationStarted(string obj)
+        private static void OnCompilationStarted(string assemblyPath)
         {
             if (EditorApplication.isPlaying)
             {
@@ -24,7 +24,7 @@ namespace Playground.Editor
             }
         }
 
-        private static void OnCompilationFinished(string arg1, CompilerMessage[] arg2)
+        private static void OnCompilationFinished(string assemblyPath, CompilerMessage[] compilerMessages)
         {
             if (stopped)
             {
