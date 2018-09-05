@@ -60,7 +60,6 @@ namespace Playground.MonoBehaviours
             }
 
             var responseOp = response.Op;
-            // TODO make a ticket to make world command responses match with normal command responses
 
             if (responseOp.StatusCode != StatusCode.Success)
             {
