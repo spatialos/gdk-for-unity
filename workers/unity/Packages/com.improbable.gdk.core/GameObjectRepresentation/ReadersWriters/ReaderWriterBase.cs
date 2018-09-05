@@ -8,7 +8,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+    public abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : IWriter<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
