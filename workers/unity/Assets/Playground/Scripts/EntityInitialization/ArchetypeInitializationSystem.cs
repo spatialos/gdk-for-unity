@@ -3,12 +3,11 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Playground
 {
     /// <summary>
-    ///     Adds a list of components to newly spawned entities according to an archetype definition.
+    ///     Optionally adds a list of components to newly spawned entities according to an archetype definition.
     /// </summary>
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.EntityInitialisationGroup))]
     public class ArchetypeInitializationSystem : ComponentSystem
@@ -24,23 +23,11 @@ namespace Playground
         [Inject] private Data data;
 
         private WorkerSystem worker;
-        private const string LoggerName = "ArchetypeInitializationSystem";
-        private const string ArchetypeMappingNotFound = "No corresponding archetype mapping found.";
-        private const string UnsupportedArchetype = "Worker type isn't supported by the ArchetypeInitializationSystem.";
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-
             worker = World.GetExistingManager<WorkerSystem>();
-            if (!WorkerUtils.UnityClient.Equals(worker.WorkerType) &&
-                !WorkerUtils.UnityGameLogic.Equals(worker.WorkerType))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(UnsupportedArchetype)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("WorldName", World.Name)
-                    .WithField("WorkerType", worker));
-            }
         }
 
         protected override void OnUpdate()
@@ -61,10 +48,6 @@ namespace Playground
                         PostUpdateCommands.AddBuffer<BufferedTransform>(entity);
                         break;
                     default:
-                        worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(ArchetypeMappingNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField("ArchetypeName", archetype)
-                            .WithField("WorkerType", worker.WorkerType));
                         break;
                 }
             }
