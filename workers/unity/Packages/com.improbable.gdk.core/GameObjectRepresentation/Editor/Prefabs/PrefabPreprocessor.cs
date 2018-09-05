@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Playground.Editor
+namespace Improbable.Gdk.Core.GameObjectRepresentation.Editor
 {
     [InitializeOnLoad]
     public class PrefabPreprocessor : IPreprocessBuildWithReport

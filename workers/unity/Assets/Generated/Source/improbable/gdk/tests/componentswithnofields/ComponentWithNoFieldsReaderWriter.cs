@@ -48,6 +48,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update update)
                 {
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update update, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component data)
                 {
                 }

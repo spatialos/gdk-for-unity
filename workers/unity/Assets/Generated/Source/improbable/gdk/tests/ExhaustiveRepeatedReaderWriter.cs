@@ -66,136 +66,408 @@ namespace Generated.Improbable.Gdk.Tests
 
                 public event Action<global::System.Collections.Generic.List<BlittableBool>> Field1Updated
                 {
-                    add => field1Delegates.Add(value);
-                    remove => field1Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field1Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field1Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<float>>> field2Delegates = new List<Action<global::System.Collections.Generic.List<float>>>();
 
                 public event Action<global::System.Collections.Generic.List<float>> Field2Updated
                 {
-                    add => field2Delegates.Add(value);
-                    remove => field2Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field2Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field2Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<byte[]>>> field3Delegates = new List<Action<global::System.Collections.Generic.List<byte[]>>>();
 
                 public event Action<global::System.Collections.Generic.List<byte[]>> Field3Updated
                 {
-                    add => field3Delegates.Add(value);
-                    remove => field3Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field3Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field3Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<int>>> field4Delegates = new List<Action<global::System.Collections.Generic.List<int>>>();
 
                 public event Action<global::System.Collections.Generic.List<int>> Field4Updated
                 {
-                    add => field4Delegates.Add(value);
-                    remove => field4Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field4Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field4Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<long>>> field5Delegates = new List<Action<global::System.Collections.Generic.List<long>>>();
 
                 public event Action<global::System.Collections.Generic.List<long>> Field5Updated
                 {
-                    add => field5Delegates.Add(value);
-                    remove => field5Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field5Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field5Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<double>>> field6Delegates = new List<Action<global::System.Collections.Generic.List<double>>>();
 
                 public event Action<global::System.Collections.Generic.List<double>> Field6Updated
                 {
-                    add => field6Delegates.Add(value);
-                    remove => field6Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field6Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field6Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<string>>> field7Delegates = new List<Action<global::System.Collections.Generic.List<string>>>();
 
                 public event Action<global::System.Collections.Generic.List<string>> Field7Updated
                 {
-                    add => field7Delegates.Add(value);
-                    remove => field7Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field7Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field7Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<uint>>> field8Delegates = new List<Action<global::System.Collections.Generic.List<uint>>>();
 
                 public event Action<global::System.Collections.Generic.List<uint>> Field8Updated
                 {
-                    add => field8Delegates.Add(value);
-                    remove => field8Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field8Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field8Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<ulong>>> field9Delegates = new List<Action<global::System.Collections.Generic.List<ulong>>>();
 
                 public event Action<global::System.Collections.Generic.List<ulong>> Field9Updated
                 {
-                    add => field9Delegates.Add(value);
-                    remove => field9Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field9Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field9Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<int>>> field10Delegates = new List<Action<global::System.Collections.Generic.List<int>>>();
 
                 public event Action<global::System.Collections.Generic.List<int>> Field10Updated
                 {
-                    add => field10Delegates.Add(value);
-                    remove => field10Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field10Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field10Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<long>>> field11Delegates = new List<Action<global::System.Collections.Generic.List<long>>>();
 
                 public event Action<global::System.Collections.Generic.List<long>> Field11Updated
                 {
-                    add => field11Delegates.Add(value);
-                    remove => field11Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field11Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field11Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<uint>>> field12Delegates = new List<Action<global::System.Collections.Generic.List<uint>>>();
 
                 public event Action<global::System.Collections.Generic.List<uint>> Field12Updated
                 {
-                    add => field12Delegates.Add(value);
-                    remove => field12Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field12Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field12Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<ulong>>> field13Delegates = new List<Action<global::System.Collections.Generic.List<ulong>>>();
 
                 public event Action<global::System.Collections.Generic.List<ulong>> Field13Updated
                 {
-                    add => field13Delegates.Add(value);
-                    remove => field13Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field13Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field13Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<int>>> field14Delegates = new List<Action<global::System.Collections.Generic.List<int>>>();
 
                 public event Action<global::System.Collections.Generic.List<int>> Field14Updated
                 {
-                    add => field14Delegates.Add(value);
-                    remove => field14Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field14Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field14Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<long>>> field15Delegates = new List<Action<global::System.Collections.Generic.List<long>>>();
 
                 public event Action<global::System.Collections.Generic.List<long>> Field15Updated
                 {
-                    add => field15Delegates.Add(value);
-                    remove => field15Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field15Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field15Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>>> field16Delegates = new List<Action<global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>>>();
 
                 public event Action<global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>> Field16Updated
                 {
-                    add => field16Delegates.Add(value);
-                    remove => field16Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field16Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field16Delegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>>> field17Delegates = new List<Action<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>>>();
 
                 public event Action<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>> Field17Updated
                 {
-                    add => field17Delegates.Add(value);
-                    remove => field17Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field17Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        field17Delegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update update)
@@ -218,6 +490,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component data)
                 {
                     if (update.Field1.HasValue)

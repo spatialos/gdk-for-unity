@@ -18,7 +18,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Cmd
         {
-            public struct RequestResponder {
+            public struct RequestResponder
+            {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public Cmd.ReceivedRequest Request { get; }
@@ -57,13 +58,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : IInjectable
+            public class CommandRequestSender : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -72,6 +73,11 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
                     ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
                 }
@@ -89,13 +95,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : IInjectable
+            public class CommandRequestHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -104,8 +110,24 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 private readonly List<Action<Cmd.RequestResponder>> cmdDelegates = new List<Action<Cmd.RequestResponder>>();
                 public event Action<Cmd.RequestResponder> OnCmdRequest
                 {
-                    add => cmdDelegates.Add(value);
-                    remove => cmdDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
@@ -125,13 +147,13 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandResponseHandler, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : IInjectable
+            public class CommandResponseHandler : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger)
+                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -141,8 +163,24 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 private readonly List<Action<Cmd.ReceivedResponse>> cmdDelegates = new List<Action<Cmd.ReceivedResponse>>();
                 public event Action<Cmd.ReceivedResponse> OnCmdResponse
                 {
-                    add => cmdDelegates.Add(value);
-                    remove => cmdDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        cmdDelegates.Remove(value);
+                    }
                 }
 
                 internal void OnCmdResponseInternal(Cmd.ReceivedResponse response)

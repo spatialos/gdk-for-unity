@@ -66,21 +66,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     continue;
                 }
 
-                var gameObjectReference = new GameObjectReference { GameObject = gameObject };
-
-                var requiresSpatialOSBehaviourManagerComponent = new RequiresMonoBehaviourActivationManager();
-
+                LinkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId, PostUpdateCommands, viewCommandBuffer);
                 entityGameObjectCache.Add(entity, gameObject);
-                var gameObjectReferenceHandleComponent = new GameObjectReferenceHandle();
-
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i], gameObjectReferenceHandleComponent);
-
-                PostUpdateCommands.AddComponent(addedEntitiesData.Entities[i],
-                    requiresSpatialOSBehaviourManagerComponent);
-
-                viewCommandBuffer.AddComponent(entity, gameObjectReference);
-                LinkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId,
-                    viewCommandBuffer);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
@@ -96,9 +83,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 else
                 {
                     entityGameObjectCache.Remove(entity);
+                    LinkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, true, PostUpdateCommands);
                     gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entity, EntityManager),
                         worker, gameObject);
-                    PostUpdateCommands.RemoveComponent<GameObjectReferenceHandle>(entity);
                 }
             }
 
@@ -111,6 +98,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             foreach (var entityToGameObject in entityGameObjectCache)
             {
+                LinkerSystem.Linker.UnlinkGameObjectFromEntity(entityToGameObject.Value, entityToGameObject.Key, false, PostUpdateCommands);
                 gameObjectCreator.OnEntityRemoved(new SpatialOSEntity(entityToGameObject.Key, EntityManager),
                     worker, entityToGameObject.Value);
             }
