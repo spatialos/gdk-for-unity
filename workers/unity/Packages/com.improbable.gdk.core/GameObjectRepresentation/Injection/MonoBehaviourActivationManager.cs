@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     ///     are enabled , calling into the RequiredFieldInjector for injection, storing the created Injectables in the
     ///     given ReaderWriterStore.
     /// </summary>
-    internal class MonoBehaviourActivationManager : IDisposable
+    public class MonoBehaviourActivationManager : IDisposable
     {
         private readonly Entity entity;
 

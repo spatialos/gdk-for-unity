@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// <summary>
     ///     Retrieves fields with [Require] tags from MonoBehaviours and handles injection into them.
     /// </summary>
-    internal class RequiredFieldInjector
+    public class RequiredFieldInjector
     {
         private readonly Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>>();
