@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
+    [DisableAutoCreation]
     [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     public class SendPlayerHeartbeatRequestSystem : ComponentSystem
     {
@@ -13,7 +14,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat> RequestSenders;
-            [ReadOnly] public ComponentDataArray<Authoritative<PlayerHeartbeatServer>> AuthorityMarkers;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerHeartbeatServer.Component>> AuthorityMarkers;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             public EntityArray Entities;
             public SubtractiveComponent<AwaitingHeartbeatResponseTag> NotAwaitingHeartbeatResponse;

@@ -7,6 +7,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component>
     {
         private struct TransformData
@@ -49,7 +50,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var update = new SchemaComponentUpdate(component.ComponentId);
                 Transform.Serialization.Serialize(component,
                     update.GetFields());
-                worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+                WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
                 transformData.Transforms[i] = component;

@@ -11,18 +11,18 @@ namespace Improbable
     {
         private static void Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 3)
             {
-                Console.Error.WriteLine("Usage: <path_to_spatial> <coresdk_version>");
+                Console.Error.WriteLine("Usage: <path_to_spatial> <coresdk_version> <path_to_schema_std_lib_directory>");
                 Environment.Exit(1);
             }
 
             var spatialPath = args[0];
             var coreSdkVersion = args[1];
+            var schemaStdLibDir = Path.GetFullPath(args[2]);
             var nativeDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Core");
             var managedDependenciesPath = Path.GetFullPath("./Assets/Plugins/Improbable/Sdk");
             var tempPath = Path.GetFullPath($"./build/CoreSdk/{coreSdkVersion}");
-            var spatialProjectPath = Path.GetFullPath("../../");
 
             var packages = new List<Package>
             {
@@ -30,7 +30,7 @@ namespace Improbable
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86_64-gcc_libstdcpp-linux", $"{nativeDependenciesPath}/Linux/x86_64", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "c-bundle-x86_64-clang_libcpp-macos", $"{nativeDependenciesPath}/OSX", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/OSX"),
-                new Package(tempPath, "schema", "standard_library", $"{spatialProjectPath}/build/dependencies/schema/standard_library"),
+                new Package(tempPath, "schema", "standard_library", schemaStdLibDir),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-linux", $"{tempPath}/schema_compiler", null, OSPlatform.Linux),

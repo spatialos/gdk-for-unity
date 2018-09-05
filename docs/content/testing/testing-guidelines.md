@@ -6,7 +6,7 @@
 
 # Test guidelines
 
-This document provides guidelines on testing the Unity editor project contained within the SpatialOS GDK for Unity.
+This document provides guidelines on testing the Unity editor project contained within the SpatialOS GDK for Unity (GDK).
 
 You can set up your own tests to validate that your functionality is resilient. Every test should always:
 
@@ -23,7 +23,7 @@ With [NUnit](https://github.com/nunit/docs/wiki/NUnit-Documentation), you can se
 **Test directory location**<br/>
 The project's assets are divided into modules, such as `Core`, `TransformSynchronization`, `PlayerLifecycle`. In the GDK repository, each module is in its own directory within `workers/unity/Packages`. In the future, each module will have its own tests which cover the functionality of that module only. Each module can have tests for Unity Editmode and Playmode using the Unity Test Runner (see the Unity User Manual [Test Runner documentation for the difference between EditMode and PlayMode tests](https://docs.unity3d.com/Manual/testing-editortestsrunner.html). Currently, there are only tests for the Core.
 
-[//]: # (TODO: Update document when new Feature Module tests added.) 
+[//]: # (TODO: Update document when new Feature Module tests added.)
 
 The tests have to be located so that each module’s directory has a test directory containing tests about that module; the test directory must have separate subdirectories for EditMode and PlayMode testing if a module needs both of these tests. This split between modes is a requirement of Unity because EditMode and PlayMode tests need to be in different assemblies, and currently Unity `.asmdef` files affect all files within the same directory.
 
@@ -230,7 +230,7 @@ You can choose to expect these errors or ignore them using the `LogAssert`
  for use details.
 
 We recommend that you:
-* Expect any error logging that the modules of the Spatialos GDK for Unity outputs.
+* Expect any error logging that the modules of the GDK outputs.
 * Expect any error logging that comes from other parts of the Unity engine, or third parties that are relevant to the functionality that you are testing.
 * Ignore irrelevant error logs as last resort.
 

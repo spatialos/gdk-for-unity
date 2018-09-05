@@ -8,17 +8,16 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
-    internal abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
-        : IWriter<TSpatialComponentData, TComponentUpdate>
+    public abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
+        : RequirableBase, IWriter<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
-
         protected readonly ILogDispatcher logDispatcher;
 
-        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
@@ -29,6 +28,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
+                if (!VerifyNotDisposed())
+                {
+                    return default(TSpatialComponentData);
+                }
+
                 try
                 {
                     return EntityManager.GetComponentData<TSpatialComponentData>(Entity);
@@ -42,6 +46,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void Send(TComponentUpdate update)
         {
+            if (!VerifyNotDisposed())
+            {
+                return;
+            }
+
             try
             {
                 var data = EntityManager.GetComponentData<TSpatialComponentData>(Entity);
@@ -60,6 +69,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             get
             {
+                if (!VerifyNotDisposed())
+                {
+                    return Authority.NotAuthoritative;
+                }
+
                 if (EntityManager.HasComponent<AuthorityLossImminent<TSpatialComponentData>>(Entity))
                 {
                     return Authority.AuthorityLossImminent;
@@ -85,8 +99,24 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
-            add => authorityChangedDelegates.Add(value);
-            remove => authorityChangedDelegates.Remove(value);
+            add
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                authorityChangedDelegates.Add(value);
+            }
+            remove
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                authorityChangedDelegates.Remove(value);
+            }
         }
 
         /// <summary>
@@ -95,25 +125,14 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         /// <param name="payload">The value for the property update.</param>
         /// <param name="callbacks">The property update handlers.</param>
         /// <typeparam name="T">The property update type.</typeparam>
-        protected void DispatchWithErrorHandling<T>(Option<T> payload, IEnumerable<Action<T>> callbacks)
+        protected void DispatchWithErrorHandling<T>(Option<T> payload, List<Action<T>> callbacks)
         {
             if (!payload.HasValue)
             {
                 return;
             }
 
-            foreach (var callback in callbacks)
-            {
-                try
-                {
-                    callback(payload.Value);
-                }
-                catch (Exception e)
-                {
-                    // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                }
-            }
+            GameObjectDelegates.DispatchWithErrorHandling(payload.Value, callbacks, logDispatcher);
         }
 
         public void OnAuthorityChange(Authority authority)
@@ -132,29 +151,29 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        protected void DispatchEventWithErrorHandling<T>(T payload, List<Action<T>> callbacks)
-        {
-            foreach (var callback in callbacks)
-            {
-                try
-                {
-                    callback(payload);
-                }
-                catch (Exception e)
-                {
-                    // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception, new LogEvent().WithException(e));
-                }
-            }
-        }
-
         private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
             = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
 
         public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
         {
-            add => componentUpdateDelegates.Add(value);
-            remove => componentUpdateDelegates.Remove(value);
+            add
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                componentUpdateDelegates.Add(value);
+            }
+            remove
+            {
+                if (!VerifyNotDisposed())
+                {
+                    return;
+                }
+
+                componentUpdateDelegates.Remove(value);
+            }
         }
 
         public void OnComponentUpdate(TComponentUpdate update)

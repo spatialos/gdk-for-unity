@@ -50,6 +50,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update)
                 {
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component data)
                 {
                 }
@@ -58,17 +59,38 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
                 {
-                    add => EvtDelegates.Add(value);
-                    remove => EvtDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        EvtDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        EvtDelegates.Remove(value);
+                    }
                 }
 
                 public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
-                    DispatchEventWithErrorHandling(payload, EvtDelegates);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, EvtDelegates, logDispatcher);
                 }
 
                 public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.Evt>(Entity);
                     sender.Events.Add(payload);
                 }

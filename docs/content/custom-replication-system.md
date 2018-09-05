@@ -4,17 +4,17 @@
 
 ## Writing a custom replication system
 
-### What the Unity GDK's replication system does
+### What the SpatialOS GDK's replication system does
 
-By default, the Unity GDK automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
+By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
 #### For properties
 
-Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the Unity GDK sets `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the Unity GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
+Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the GDK sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
 #### For events
 
-When a worker sends a SpatialOS event, the Unity GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
+When a worker sends a SpatialOS event, the GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
 
 ### Writing your own replication system
 
@@ -130,7 +130,7 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
             var eventsObj = update.GetEvents();
             foreach(var event in changeColorEvents)
             {
-                var eventObj = eventsObj.AddObject(1); // NOTE: 1 corresponds to the event index in schema. 
+                var eventObj = eventsObj.AddObject(1); // NOTE: 1 corresponds to the event index in schema.
                 global::Generated.Playground.ColorData.Serialization.Serialize(event, eventObj)
             }
 
@@ -142,4 +142,4 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
 ```
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
