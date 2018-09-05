@@ -34,11 +34,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return null;
             }
 
-            var transform = entity.GetComponent<Transform.Component>();
-            var position = new Vector3(transform.Location.X, transform.Location.Y, transform.Location.Z) +
+            var spatialOSPosition = entity.GetComponent<Position.Component>();
+            var position = new Vector3((float) spatialOSPosition.Coords.X, (float) spatialOSPosition.Coords.Y, (float) spatialOSPosition.Coords.Z) +
                 worker.Origin;
-            var rotation = new UnityEngine.Quaternion(transform.Rotation.X, transform.Rotation.Y,
-                transform.Rotation.Z, transform.Rotation.W);
             var workerSpecificPath = Path.Combine("Prefabs", worker.WorkerType, prefabName);
             var commonPath = Path.Combine("Prefabs", "Common", prefabName);
 
@@ -65,7 +63,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 return null;
             }
 
-            var gameObject = Object.Instantiate(prefab, position, rotation);
+            var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}";
             return gameObject;
         }
