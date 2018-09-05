@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -78,15 +77,6 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 UnityObjectDestroyer.Destroy(gameObject);
             }
-        }
-
-        public bool ShouldHaveGameObject(SpatialOSEntity entity)
-        {
-            if (entity.HasComponent<WorkerEntityTag>())
-            {
-                return false;
-            }
-            return true;
         }
     }
 }
