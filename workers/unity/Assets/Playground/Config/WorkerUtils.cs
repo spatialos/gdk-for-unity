@@ -13,7 +13,6 @@ namespace Playground
 
         public static void AddClientSystems(World world)
         {
-            Debug.Log(world.Name);
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
@@ -31,7 +30,6 @@ namespace Playground
 
         public static void AddGameLogicSystems(World world)
         {
-            Debug.Log(world.Name);
             AddLifecycleSystems(world);
             TransformSynchronizationSystemHelper.AddSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
