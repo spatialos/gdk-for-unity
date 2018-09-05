@@ -5,15 +5,13 @@ using Generated.Improbable.PlayerLifecycle;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 
 namespace Playground
 {
     public static class PlayerTemplate
     {
-        private static readonly List<string> AllWorkerAttributes =
-            new List<string> { WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient };
-
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)
         {
@@ -35,12 +33,13 @@ namespace Playground
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
             var score = Score.Component.CreateSchemaComponentData(0);
+            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>(), 0);
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
                 .AddMetadata(ArchetypeConfig.CharacterArchetype, WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
-                .SetReadAcl(AllWorkerAttributes)
+                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(playerInput, clientAttribute)
@@ -49,7 +48,8 @@ namespace Playground
                 .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)
                 .AddComponent(serverHeartbeat, WorkerUtils.UnityGameLogic)
-                .AddComponent(score, WorkerUtils.UnityGameLogic);
+                .AddComponent(score, WorkerUtils.UnityGameLogic)
+                .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();
         }

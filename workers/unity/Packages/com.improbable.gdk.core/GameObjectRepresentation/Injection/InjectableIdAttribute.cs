@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         public readonly InjectableId Id;
 
-        public InjectableIdAttribute(InjectableType type, uint componentId)
+        public InjectableIdAttribute(InjectableType type, uint componentId = 0)
         {
             Id = new InjectableId(type, componentId);
         }

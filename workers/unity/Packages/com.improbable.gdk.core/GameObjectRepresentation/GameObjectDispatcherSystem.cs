@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<Entity, MonoBehaviourActivationManager> entityToActivationManager =
             new Dictionary<Entity, MonoBehaviourActivationManager>();
-        private readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
+        internal readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
             new Dictionary<Entity, InjectableStore>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
             var entityManager = World.GetOrCreateManager<EntityManager>();
             logger = World.GetExistingManager<WorkerSystem>().LogDispatcher;
-            injector = new RequiredFieldInjector(entityManager, logger);
+            injector = new RequiredFieldInjector(entityManager, logger, World);
         }
 
         private void FindGameObjectComponentDispatchers()
