@@ -18,8 +18,8 @@ function isWindows() {
 }
 
 function cleanUnity() {
-  rm -rf "$(pwd)/workers/unity/Library/"  
-  rm -rf "$(pwd)/workers/unity/Temp/"
+  rm -rf "${1}/Library"
+  rm -rf "${1}/Temp"
 }
 
 # Ensure for the Mac TC agents that dotnet is on the path.
