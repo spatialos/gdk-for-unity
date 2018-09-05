@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.workerType = workerType;
         }
 
-        public GameObject GetGameObjectForEntityAdded(SpatialOSEntity entity, WorkerSystem worker)
+        public GameObject CreateGameObjectForEntityAdded(SpatialOSEntity entity, WorkerSystem worker)
         {
             if (!entity.HasComponent<Metadata.Component>())
             {
