@@ -16,6 +16,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
+    [DisableAutoCreation]
     public class GameObjectWorldCommandSystem : ComponentSystem
     {
         private struct ReserveEntityIdsResponseData
