@@ -103,22 +103,19 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
-                internal void OnReserveEntityIdsResponseInternal(
-                    ReserveEntityIds.ReceivedResponse receivedResponse)
+                internal void OnReserveEntityIdsResponseInternal(ReserveEntityIds.ReceivedResponse receivedResponse)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, reserveEntityIdsDelegates,
                         logDispatcher);
                 }
 
-                internal void OnCreateEntityResponseInternal(
-                    CreateEntity.ReceivedResponse receivedResponse)
+                internal void OnCreateEntityResponseInternal(CreateEntity.ReceivedResponse receivedResponse)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, createEntityDelegates,
                         logDispatcher);
                 }
 
-                internal void OnDeleteEntityResponseInternal(
-                    DeleteEntity.ReceivedResponse receivedResponse)
+                internal void OnDeleteEntityResponseInternal(DeleteEntity.ReceivedResponse receivedResponse)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, deleteEntityDelegates,
                         logDispatcher);
