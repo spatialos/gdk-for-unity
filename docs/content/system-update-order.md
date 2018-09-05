@@ -17,7 +17,7 @@ public class ProcessColorChangeSystem : ComponentSystem
 }
 ```
 
-The SpatialOS GDK for Unity defines several update groups which run relative to `PlayerLoop.Update`. Most of your systems should belong to one of these (please don’t use groups which have “Internal” in the name - these are for internal use only). Using one of these groups will ensure that the system gets all state changes and that new changes get correctly propagated. The groups are executed in the following order:
+The SpatialOS GDK for Unity (GDK) defines several update groups which run relative to `PlayerLoop.Update`. Most of your systems should belong to one of these (please don’t use groups which have “Internal” in the name - these are for internal use only). Using one of these groups will ensure that the system gets all state changes and that new changes get correctly propagated. The groups are executed in the following order:
 
 * `SpatialOSReceiveGroup` - This group contains all of the systems related to receiving and handling data from SpatialOS.
   * `InternalSpatialOSReceiveGroup` - This is used by the `SpatialOSReceiveSystem`. **(Internal use only)**
@@ -102,7 +102,7 @@ public class ApplyTransformUpdatesSystem : ComponentSystem
     }
 }
 ```
-Any system that runs on `PlayerLoop.FixedUpdate` can then inject for `BufferedTransform`. These buffers aren’t cleaned by the SpatialOS GDK and might be consumed by another system, so make sure to check which systems already use existing buffers before using them.
+Any system that runs on `PlayerLoop.FixedUpdate` can then inject for `BufferedTransform`. These buffers aren’t cleaned by the GDK and might be consumed by another system, so make sure to check which systems already use existing buffers before using them.
 
 -----
 

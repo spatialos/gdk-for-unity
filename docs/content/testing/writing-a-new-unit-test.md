@@ -13,7 +13,7 @@ This document covers Unity tests only (that is tests of the Unity project which 
 Please look through and understand the following documentation and videos before writing a new test:
 * SpatialOS GDK for Unity documentation - [Testing overview](./testing-overview.md)
 * SpatialOS GDK for Unity documentation - [How to run tests](./how-to-run-tests.md)
-* SptialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
+* SpatialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.

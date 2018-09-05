@@ -14,7 +14,7 @@ A worker instance can send a command using a `ComponentName.CommandSenders.Comma
 
 Note that a worker instance _does not need_ authority over the relevant SpatialOS component to send commands to a SpatialOS entity.
 
-Because of this, the SpatialOS GDK for Unity attaches a `ComponentName.CommandSenders.CommandName` for each command to all ECS entities that represent a SpatialOS entity. This means any ECS entity can send any command to any SpatialOS entity.
+Because of this, the SpatialOS GDK for Unity (GDK) attaches a `ComponentName.CommandSenders.CommandName` for each command to all ECS entities that represent a SpatialOS entity. This means any ECS entity can send any command to any SpatialOS entity.
 
 Given this schema:
 
@@ -42,7 +42,7 @@ component Builder
 }
 ```
 
-The SpatialOS GDK for Unity generates these types:
+The GDK generates these types:
 
 * `BuildRequest` - Equivalent of the schema type.
 * `BuildResponse` - Equivalent of the schema type.
@@ -100,7 +100,7 @@ To send a `build_wall` command in a system, you need to inject `Builder.CommandS
 
 When a worker instance receives a command request, the command request is represented with reactive ECS components.
 
-The SpatialOS GDK for Unity attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity: where `ComponentName` is the SpatialOS component the command is defined in, `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The SpatialOS GDK cleans it up at the end of the tick.
+The GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity: where `ComponentName` is the SpatialOS component the command is defined in, `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The GDK cleans it up at the end of the tick.
 
 To respond to the request, use `ComponentName.CommandResponders.CommandName` for that given command. This contains a list of type `ComponentName.CommandName.Response`. Create and add a `ComponentName.CommandName.Response` object to this list and the GDK will send the response for you.
 
@@ -147,7 +147,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 ### Receiving command responses
 
-Like requests, when an ECS entity receives a command response, the SpatialOS GDK for Unity attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
+Like requests, when an ECS entity receives a command response, the GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
 `ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that was originally sent with the command. **This payload is null** when the command fails.
 
@@ -220,7 +220,7 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
     * Receiving a response - `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
 
-When a response is received, the SpatialOS GDK for Unity attaches an ECS component to the ECS entity that originally sent the request. The ECS component it attaches corresponds to the response it receives.
+When a response is received, the GDK attaches an ECS component to the ECS entity that originally sent the request. The ECS component it attaches corresponds to the response it receives.
 
 Here's an example of creating a SpatialOS entity:
 

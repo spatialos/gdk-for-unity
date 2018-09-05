@@ -71,7 +71,7 @@ When a component update is received this will be added as a [reactive component]
 ### Generation details
 
 #### Primitive types
-Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity.
+Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
 | Schemalang type                | SpatialOS GDK type      |
 | ------------------------------ | :---------------------: |
@@ -96,7 +96,7 @@ Schemalang has 3 collection types:
 | `list<T>`             | `System.Collections.Generic.List<T>`              |
 | `option<T>`           | `System.Nullable<T>`                              |
 
-Note that the SpatialOS GDK for Unity does not use `Improbable.Collections` in Unity ECS component generation.
+Note that the GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
 #### Custom types
 For every custom data type in schema a `struct` will be generated.

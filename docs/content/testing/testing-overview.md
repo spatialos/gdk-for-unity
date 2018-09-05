@@ -6,13 +6,13 @@
 
 # Test overview
 
-We use tests to validate functionality and to ensure that the SpatialOS GDK for Unity and the framework as a whole are resilient under different conditions.
+We use tests to validate functionality and to ensure that the SpatialOS GDK for Unity (GDK) and the framework as a whole are resilient under different conditions.
 
 ## Test categories
 
 We have two main test categories:
 - Tools tests, such as testing the linter
-- Unity tests  - these test the Unity project which forms part of the SpatialOS GDK for Unity
+- Unity tests  - these test the Unity project which forms part of the GDK
 
 The tests in both of these categories use the NUnit testing framework. NUnit is the open source library that’s included with Unity; it forms the basis of the Unity Test Runner. See the [NUnit’s documentation](https://github.com/nunit/docs/wiki/NUnit-Documentation) and Unity’s User Manual [Test Runner documentation](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) for further information.
 
@@ -34,4 +34,3 @@ Find out more about the GDK Unity project test directory structure and file name
 * [Writing a new test](./writing-a-new-unit-test.md) covers Unity tests only.
 
 [//]: # (Editorial review status: Full review 2018-07-13)
-

@@ -54,12 +54,12 @@
 		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 
-1. Clone the SpatialOS GDK for Unity repository:
+1. Clone the SpatialOS GDK for Unity (GDK) repository:
 
 	SSH: `git clone git@github.com:spatialos/UnityGDK.git`
     <br>HTTPS: `git clone https://github.com/spatialos/UnityGDK.git`
 
-    The SpatialOS GDK for Unity repository is a SpatialOS project called `UnityGDK`. It contains:
+    The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
     - a Unity project at `UnityGDK/workers/unity`, which you need to open to use the GDK
     - SpatialOS features, such as the schema and snapshot files
     - development code

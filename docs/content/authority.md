@@ -12,9 +12,9 @@
 
 ### How authority is represented in Unity's ECS
 
-For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the SpatialOS GDK for Unity attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
+For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
-The authority tags in the SpatialOS GDK for Unity are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
+The authority tags in the GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
 
 * Whether or not the worker instance has authority:
     * `Authoritative<T>`: the worker instance has authority over the SpatialOS component
@@ -59,9 +59,9 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 ### What happens when a SpatialOS entity enters a worker instance's view
 
-> This section is just to tell you how the system works: all of this is handled automatically by the SpatialOS GDK for Unity, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
+> This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
-When a SpatialOS entity enters the worker instance's view, the SpatialOS GDK for Unity:
+When a SpatialOS entity enters the worker instance's view, the GDK:
 
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:
