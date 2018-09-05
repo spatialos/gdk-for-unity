@@ -378,6 +378,13 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
         }
 
+        internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
+        {
+            componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
+            AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
+            componentDispatcher.AddCommandComponents(worker.WorkerEntity);
+        }
+
         private void HandleException(Exception e)
         {
             worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
@@ -389,16 +396,14 @@ namespace Improbable.Gdk.Core
             // Find all component specific dispatchers and create an instance.
             var componentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract);
+                .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract
+                    && !typeof(ITestComponentDispatcher).IsAssignableFrom(type));
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
-                var componentDispatcher =
-                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker, World);
-                componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
-                AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
-                componentDispatcher.AddCommandComponents(worker.WorkerEntity);
+                AddDispatcherHandler((ComponentDispatcherHandler)
+                    Activator.CreateInstance(componentDispatcherType, worker, World));
             }
 
             dispatcher.OnAddEntity(OnAddEntity);
@@ -429,6 +434,14 @@ namespace Improbable.Gdk.Core
 
             public const string NoEntityFoundDuringDeletion =
                 "Tried to delete an entity but there is no entity associated with that EntityId.";
+        }
+
+        /// <summary>
+        ///     This interface should be added to component dispatchers that you do not want to be added by default
+        ///     to the SpatialOSReceiveSystem. This is intended to be used in testing.
+        /// </summary>
+        internal interface ITestComponentDispatcher
+        {
         }
     }
 }
