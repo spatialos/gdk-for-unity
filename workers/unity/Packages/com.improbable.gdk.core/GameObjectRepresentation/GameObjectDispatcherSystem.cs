@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly Dictionary<Entity, MonoBehaviourActivationManager> entityToActivationManager =
             new Dictionary<Entity, MonoBehaviourActivationManager>();
-        private readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
+        internal readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
             new Dictionary<Entity, InjectableStore>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
