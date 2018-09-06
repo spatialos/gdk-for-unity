@@ -1,4 +1,5 @@
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {

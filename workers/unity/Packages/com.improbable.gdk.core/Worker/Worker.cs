@@ -137,9 +137,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();
-            World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            World.GetOrCreateManager<GameObjectWorldCommandSystem>();
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
         }
 
         public void Dispose()

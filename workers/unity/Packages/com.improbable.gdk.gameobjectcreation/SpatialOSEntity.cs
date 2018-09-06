@@ -21,12 +21,12 @@ namespace Improbable.Gdk.GameObjectCreation
             SpatialOSEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
-        public bool HasComponent<T>() where T : struct, IComponentData
+        public bool HasComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.HasComponent<T>(entity);
         }
 
-        public T GetComponent<T>() where T : struct, IComponentData
+        public T GetComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.GetComponentData<T>(entity);
         }

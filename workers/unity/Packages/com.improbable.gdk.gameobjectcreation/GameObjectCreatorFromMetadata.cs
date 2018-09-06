@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -71,11 +72,11 @@ namespace Improbable.Gdk.GameObjectCreation
             return gameObject;
         }
 
-        public void OnEntityRemoved(SpatialEntityId entityId, GameObject gameObject)
+        public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
         {
-            if (gameObject != null)
+            if (linkedGameObject != null)
             {
-                UnityObjectDestroyer.Destroy(gameObject);
+                UnityObjectDestroyer.Destroy(linkedGameObject);
             }
         }
     }

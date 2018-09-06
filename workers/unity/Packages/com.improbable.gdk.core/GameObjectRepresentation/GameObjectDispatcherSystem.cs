@@ -14,23 +14,23 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {
-        public struct HasActivationManagerSystemState : ISystemStateComponentData
+        private struct HasActivationManagerSystemState : ISystemStateComponentData
         {
         }
 
-        public struct AddedEntitiesData
+        private struct AddedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
             [ReadOnly] public ComponentArray<GameObjectReference> GameObjectReferences;
-            [ReadOnly] public SubtractiveComponent<HasActivationManagerSystemState> GameObjectReferenceHandles;
+            [ReadOnly] public SubtractiveComponent<HasActivationManagerSystemState> DenotesThereIsNoActivationManager;
         }
 
-        public struct RemovedEntitiesData
+        private struct RemovedEntitiesData
         {
             public readonly int Length;
             public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<HasActivationManagerSystemState> GameObjectReferenceHandles;
+            [ReadOnly] public ComponentDataArray<HasActivationManagerSystemState> DenotesThereIsAnActivationManager;
             [ReadOnly] public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
         }
         
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                 PostUpdateCommands.RemoveComponent<HasActivationManagerSystemState>(entity);
             }
 
-            RunDispatchers();
+            UpdateMonoBehaviours();
         }
 
         protected override void OnDestroyManager()
@@ -159,7 +159,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        private void RunDispatchers()
+        private void UpdateMonoBehaviours()
         {
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
@@ -211,7 +211,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (entityToActivationManager.ContainsKey(entity))
             {
-                throw new SystemException($"MonoBehaviourActivationManager already exists for entity {entity.Index}.");
+                throw new ArgumentException($"{nameof(MonoBehaviourActivationManager)} already exists for entity {entity.Index}.");
             }
 
             var store = new InjectableStore();
@@ -225,7 +225,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             if (!entityToActivationManager.TryGetValue(entity, out var activationManager))
             {
-                throw new KeyNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
+                throw new KeyNotFoundException($"{nameof(MonoBehaviourActivationManager)} not found for entity {entity.Index}.");
             }
 
             entityToActivationManager.Remove(entity);

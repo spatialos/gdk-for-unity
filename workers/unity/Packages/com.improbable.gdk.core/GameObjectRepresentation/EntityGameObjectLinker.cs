@@ -10,15 +10,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     {
         private readonly World world;
         private readonly WorkerSystem worker;
-        private readonly EntityManager entityManager;
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
 
         public EntityGameObjectLinker(World world, WorkerSystem worker)
         {
             this.world = world;
             this.worker = worker;
-
-            entityManager = world.GetExistingManager<EntityManager>();
         }
 
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, EntityId spatialEntityId,
@@ -50,7 +47,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             spatialOSComponent.SpatialEntityId = spatialEntityId;
         }
 
-        public void UnlinkGameObjectFromEntity(GameObject gameObject, ViewCommandBuffer viewCommandBuffer)
+        public void UnlinkGameObjectFromEntity(GameObject gameObject)
         {
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
             if (spatialOSComponent != null)
