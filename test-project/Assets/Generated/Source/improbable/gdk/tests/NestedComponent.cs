@@ -59,19 +59,30 @@ namespace Generated.Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.NestedComponent.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component component)
+            public static Generated.Improbable.Gdk.Tests.NestedComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.NestedComponent.Update();
                 {
                     if (obj.GetObjectCount(1) == 1)
                     {
                         var value = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
-                        component.NestedType = value;
                         update.NestedType = new global::Improbable.Gdk.Core.Option<global::Generated.Improbable.Gdk.Tests.TypeName>(value);
                     }
                     
                 }
                 return update;
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component component)
+            {
+                {
+                    if (obj.GetObjectCount(1) == 1)
+                    {
+                        var value = global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
+                        component.NestedType = value;
+                    }
+                    
+                }
             }
         }
 

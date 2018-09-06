@@ -123,31 +123,31 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>(entity);
-
-                    var update = Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                    List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update> updates;
-                    if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates>(entity))
-                    {
-                        updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates>(entity).Updates;
-
-                    }
-                    else
-                    {
-                        var updatesComponent = new Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates
-                        {
-                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                        };
-                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>());
-                        updates = updatesComponent.Updates;
-                        entityManager.AddComponentData(entity, updatesComponent);
-                    }
-
-                    updates.Add(update);
-
+                    Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
+
+                var update = Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+
+                List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update> updates;
+                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
 
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
                 {

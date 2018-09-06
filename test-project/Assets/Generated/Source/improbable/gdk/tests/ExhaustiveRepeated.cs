@@ -666,7 +666,7 @@ namespace Generated.Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component)
+            public static Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update();
                 {
@@ -674,12 +674,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<BlittableBool>>(new global::System.Collections.Generic.List<BlittableBool>());
-                        component.Field1.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexBool(1, (uint) i);
-                        component.Field1.Add(value);
                         update.Field1.Value.Add(value);
                     }
                     
@@ -689,12 +687,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field2 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<float>>(new global::System.Collections.Generic.List<float>());
-                        component.Field2.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexFloat(2, (uint) i);
-                        component.Field2.Add(value);
                         update.Field2.Value.Add(value);
                     }
                     
@@ -704,12 +700,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<byte[]>>(new global::System.Collections.Generic.List<byte[]>());
-                        component.Field3.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexBytes(3, (uint) i);
-                        component.Field3.Add(value);
                         update.Field3.Value.Add(value);
                     }
                     
@@ -719,12 +713,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field4 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
-                        component.Field4.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexInt32(4, (uint) i);
-                        component.Field4.Add(value);
                         update.Field4.Value.Add(value);
                     }
                     
@@ -734,12 +726,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field5 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
-                        component.Field5.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexInt64(5, (uint) i);
-                        component.Field5.Add(value);
                         update.Field5.Value.Add(value);
                     }
                     
@@ -749,12 +739,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field6 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<double>>(new global::System.Collections.Generic.List<double>());
-                        component.Field6.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexDouble(6, (uint) i);
-                        component.Field6.Add(value);
                         update.Field6.Value.Add(value);
                     }
                     
@@ -764,12 +752,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field7 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<string>>(new global::System.Collections.Generic.List<string>());
-                        component.Field7.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexString(7, (uint) i);
-                        component.Field7.Add(value);
                         update.Field7.Value.Add(value);
                     }
                     
@@ -779,12 +765,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field8 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
-                        component.Field8.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexUint32(8, (uint) i);
-                        component.Field8.Add(value);
                         update.Field8.Value.Add(value);
                     }
                     
@@ -794,12 +778,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field9 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
-                        component.Field9.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexUint64(9, (uint) i);
-                        component.Field9.Add(value);
                         update.Field9.Value.Add(value);
                     }
                     
@@ -809,12 +791,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field10 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
-                        component.Field10.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexSint32(10, (uint) i);
-                        component.Field10.Add(value);
                         update.Field10.Value.Add(value);
                     }
                     
@@ -824,12 +804,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field11 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
-                        component.Field11.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexSint64(11, (uint) i);
-                        component.Field11.Add(value);
                         update.Field11.Value.Add(value);
                     }
                     
@@ -839,12 +817,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field12 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
-                        component.Field12.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexFixed32(12, (uint) i);
-                        component.Field12.Add(value);
                         update.Field12.Value.Add(value);
                     }
                     
@@ -854,12 +830,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field13 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
-                        component.Field13.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexFixed64(13, (uint) i);
-                        component.Field13.Add(value);
                         update.Field13.Value.Add(value);
                     }
                     
@@ -869,12 +843,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field14 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
-                        component.Field14.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexSfixed32(14, (uint) i);
-                        component.Field14.Add(value);
                         update.Field14.Value.Add(value);
                     }
                     
@@ -884,12 +856,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field15 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
-                        component.Field15.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexSfixed64(15, (uint) i);
-                        component.Field15.Add(value);
                         update.Field15.Value.Add(value);
                     }
                     
@@ -899,12 +869,10 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>>(new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>());
-                        component.Field16.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexEntityId(16, (uint) i);
-                        component.Field16.Add(value);
                         update.Field16.Value.Add(value);
                     }
                     
@@ -914,17 +882,240 @@ namespace Generated.Improbable.Gdk.Tests
                     if (listSize > 0)
                     {
                         update.Field17 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>>(new global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>());
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i));
+                        update.Field17.Value.Add(value);
+                    }
+                    
+                }
+                return update;
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component)
+            {
+                {
+                    var listSize = obj.GetBoolCount(1);
+                    if (listSize > 0)
+                    {
+                        component.Field1.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBool(1, (uint) i);
+                        component.Field1.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFloatCount(2);
+                    if (listSize > 0)
+                    {
+                        component.Field2.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFloat(2, (uint) i);
+                        component.Field2.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetBytesCount(3);
+                    if (listSize > 0)
+                    {
+                        component.Field3.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBytes(3, (uint) i);
+                        component.Field3.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt32Count(4);
+                    if (listSize > 0)
+                    {
+                        component.Field4.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt32(4, (uint) i);
+                        component.Field4.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt64Count(5);
+                    if (listSize > 0)
+                    {
+                        component.Field5.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt64(5, (uint) i);
+                        component.Field5.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetDoubleCount(6);
+                    if (listSize > 0)
+                    {
+                        component.Field6.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexDouble(6, (uint) i);
+                        component.Field6.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetStringCount(7);
+                    if (listSize > 0)
+                    {
+                        component.Field7.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexString(7, (uint) i);
+                        component.Field7.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint32Count(8);
+                    if (listSize > 0)
+                    {
+                        component.Field8.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint32(8, (uint) i);
+                        component.Field8.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint64Count(9);
+                    if (listSize > 0)
+                    {
+                        component.Field9.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint64(9, (uint) i);
+                        component.Field9.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint32Count(10);
+                    if (listSize > 0)
+                    {
+                        component.Field10.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint32(10, (uint) i);
+                        component.Field10.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint64Count(11);
+                    if (listSize > 0)
+                    {
+                        component.Field11.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint64(11, (uint) i);
+                        component.Field11.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed32Count(12);
+                    if (listSize > 0)
+                    {
+                        component.Field12.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed32(12, (uint) i);
+                        component.Field12.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed64Count(13);
+                    if (listSize > 0)
+                    {
+                        component.Field13.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed64(13, (uint) i);
+                        component.Field13.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed32Count(14);
+                    if (listSize > 0)
+                    {
+                        component.Field14.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed32(14, (uint) i);
+                        component.Field14.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed64Count(15);
+                    if (listSize > 0)
+                    {
+                        component.Field15.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed64(15, (uint) i);
+                        component.Field15.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetEntityIdCount(16);
+                    if (listSize > 0)
+                    {
+                        component.Field16.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexEntityId(16, (uint) i);
+                        component.Field16.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetObjectCount(17);
+                    if (listSize > 0)
+                    {
                         component.Field17.Clear();
                     }
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i));
                         component.Field17.Add(value);
-                        update.Field17.Value.Add(value);
                     }
                     
                 }
-                return update;
             }
         }
 

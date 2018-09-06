@@ -785,7 +785,7 @@ namespace Generated.Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component component)
+            public static Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update();
                 {
@@ -793,7 +793,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,BlittableBool>>(new global::System.Collections.Generic.Dictionary<string,BlittableBool>());
-                        component.Field1.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -801,7 +800,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetBool(2);
                         update.Field1.Value.Add(key, value);
-                        component.Field1.Add(key, value);
                     }
                     
                 }
@@ -810,7 +808,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field2 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,float>>(new global::System.Collections.Generic.Dictionary<string,float>());
-                        component.Field2.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -818,7 +815,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetFloat(2);
                         update.Field2.Value.Add(key, value);
-                        component.Field2.Add(key, value);
                     }
                     
                 }
@@ -827,7 +823,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,byte[]>>(new global::System.Collections.Generic.Dictionary<string,byte[]>());
-                        component.Field3.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -835,7 +830,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetBytes(2);
                         update.Field3.Value.Add(key, value);
-                        component.Field3.Add(key, value);
                     }
                     
                 }
@@ -844,7 +838,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field4 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,int>>(new global::System.Collections.Generic.Dictionary<string,int>());
-                        component.Field4.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -852,7 +845,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetInt32(2);
                         update.Field4.Value.Add(key, value);
-                        component.Field4.Add(key, value);
                     }
                     
                 }
@@ -861,7 +853,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field5 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,long>>(new global::System.Collections.Generic.Dictionary<string,long>());
-                        component.Field5.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -869,7 +860,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetInt64(2);
                         update.Field5.Value.Add(key, value);
-                        component.Field5.Add(key, value);
                     }
                     
                 }
@@ -878,7 +868,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field6 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,double>>(new global::System.Collections.Generic.Dictionary<string,double>());
-                        component.Field6.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -886,7 +875,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetDouble(2);
                         update.Field6.Value.Add(key, value);
-                        component.Field6.Add(key, value);
                     }
                     
                 }
@@ -895,7 +883,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field7 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,string>>(new global::System.Collections.Generic.Dictionary<string,string>());
-                        component.Field7.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -903,7 +890,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetString(2);
                         update.Field7.Value.Add(key, value);
-                        component.Field7.Add(key, value);
                     }
                     
                 }
@@ -912,7 +898,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field8 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,uint>>(new global::System.Collections.Generic.Dictionary<string,uint>());
-                        component.Field8.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -920,7 +905,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetUint32(2);
                         update.Field8.Value.Add(key, value);
-                        component.Field8.Add(key, value);
                     }
                     
                 }
@@ -929,7 +913,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field9 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,ulong>>(new global::System.Collections.Generic.Dictionary<string,ulong>());
-                        component.Field9.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -937,7 +920,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetUint64(2);
                         update.Field9.Value.Add(key, value);
-                        component.Field9.Add(key, value);
                     }
                     
                 }
@@ -946,7 +928,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field10 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,int>>(new global::System.Collections.Generic.Dictionary<string,int>());
-                        component.Field10.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -954,7 +935,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetSint32(2);
                         update.Field10.Value.Add(key, value);
-                        component.Field10.Add(key, value);
                     }
                     
                 }
@@ -963,7 +943,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field11 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,long>>(new global::System.Collections.Generic.Dictionary<string,long>());
-                        component.Field11.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -971,7 +950,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetSint64(2);
                         update.Field11.Value.Add(key, value);
-                        component.Field11.Add(key, value);
                     }
                     
                 }
@@ -980,7 +958,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field12 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,uint>>(new global::System.Collections.Generic.Dictionary<string,uint>());
-                        component.Field12.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -988,7 +965,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetFixed32(2);
                         update.Field12.Value.Add(key, value);
-                        component.Field12.Add(key, value);
                     }
                     
                 }
@@ -997,7 +973,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field13 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,ulong>>(new global::System.Collections.Generic.Dictionary<string,ulong>());
-                        component.Field13.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1005,7 +980,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetFixed64(2);
                         update.Field13.Value.Add(key, value);
-                        component.Field13.Add(key, value);
                     }
                     
                 }
@@ -1014,7 +988,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field14 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,int>>(new global::System.Collections.Generic.Dictionary<string,int>());
-                        component.Field14.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1022,7 +995,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetSfixed32(2);
                         update.Field14.Value.Add(key, value);
-                        component.Field14.Add(key, value);
                     }
                     
                 }
@@ -1031,7 +1003,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field15 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,long>>(new global::System.Collections.Generic.Dictionary<string,long>());
-                        component.Field15.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1039,7 +1010,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetSfixed64(2);
                         update.Field15.Value.Add(key, value);
-                        component.Field15.Add(key, value);
                     }
                     
                 }
@@ -1048,7 +1018,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>>(new global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>());
-                        component.Field16.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1056,7 +1025,6 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = mapObj.GetEntityId(2);
                         update.Field16.Value.Add(key, value);
-                        component.Field16.Add(key, value);
                     }
                     
                 }
@@ -1065,7 +1033,6 @@ namespace Generated.Improbable.Gdk.Tests
                     if (mapSize > 0)
                     {
                         update.Field17 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>>(new global::System.Collections.Generic.Dictionary<string,global::Generated.Improbable.Gdk.Tests.SomeType>());
-                        component.Field17.Clear();
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1073,11 +1040,269 @@ namespace Generated.Improbable.Gdk.Tests
                         var key = mapObj.GetString(1);
                         var value = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         update.Field17.Value.Add(key, value);
-                        component.Field17.Add(key, value);
                     }
                     
                 }
                 return update;
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component component)
+            {
+                {
+                    var mapSize = obj.GetObjectCount(1);
+                    if (mapSize > 0)
+                    {
+                        component.Field1.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(1, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetBool(2);
+                        component.Field1.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(2);
+                    if (mapSize > 0)
+                    {
+                        component.Field2.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(2, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetFloat(2);
+                        component.Field2.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(3);
+                    if (mapSize > 0)
+                    {
+                        component.Field3.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(3, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetBytes(2);
+                        component.Field3.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(4);
+                    if (mapSize > 0)
+                    {
+                        component.Field4.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(4, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetInt32(2);
+                        component.Field4.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(5);
+                    if (mapSize > 0)
+                    {
+                        component.Field5.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(5, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetInt64(2);
+                        component.Field5.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(6);
+                    if (mapSize > 0)
+                    {
+                        component.Field6.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(6, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetDouble(2);
+                        component.Field6.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(7);
+                    if (mapSize > 0)
+                    {
+                        component.Field7.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(7, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetString(2);
+                        component.Field7.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(8);
+                    if (mapSize > 0)
+                    {
+                        component.Field8.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(8, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetUint32(2);
+                        component.Field8.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(9);
+                    if (mapSize > 0)
+                    {
+                        component.Field9.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(9, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetUint64(2);
+                        component.Field9.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(10);
+                    if (mapSize > 0)
+                    {
+                        component.Field10.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(10, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetSint32(2);
+                        component.Field10.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(11);
+                    if (mapSize > 0)
+                    {
+                        component.Field11.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(11, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetSint64(2);
+                        component.Field11.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(12);
+                    if (mapSize > 0)
+                    {
+                        component.Field12.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(12, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetFixed32(2);
+                        component.Field12.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(13);
+                    if (mapSize > 0)
+                    {
+                        component.Field13.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(13, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetFixed64(2);
+                        component.Field13.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(14);
+                    if (mapSize > 0)
+                    {
+                        component.Field14.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(14, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetSfixed32(2);
+                        component.Field14.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(15);
+                    if (mapSize > 0)
+                    {
+                        component.Field15.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(15, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetSfixed64(2);
+                        component.Field15.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(16);
+                    if (mapSize > 0)
+                    {
+                        component.Field16.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(16, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = mapObj.GetEntityId(2);
+                        component.Field16.Add(key, value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(17);
+                    if (mapSize > 0)
+                    {
+                        component.Field17.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(17, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
+                        component.Field17.Add(key, value);
+                    }
+                    
+                }
             }
         }
 
