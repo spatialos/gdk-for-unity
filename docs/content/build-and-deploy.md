@@ -31,8 +31,8 @@ To do this:
 
 ### Building your workers
 To build your workers:
-From the Unity Editor menu, select **SpatialOS** > **Build <WorkerName> for local** or  **Build <WorkerName> for  cloud** where “<WorkerName>” is the name of any worker you could build. 
-This starts the build process for the worker you selected and deployment type (cloud or local). When build is done, there is a message in the Unity Editor Console, you can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity  project.
+From the Unity Editor menu, select **SpatialOS** > **Build <WorkerName> for local** or  **Build <WorkerName> for  cloud** where `<WorkerName>` is the name of any worker you could build. 
+This starts the build process for the worker you selected and deployment type (cloud or local). When the build is done, there is a message in the Unity Editor Console, you can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity  project.
 
 ### Run your built-out workers
 
@@ -45,15 +45,17 @@ You can run a deployment on your development machine (a [local deployment](https
 #### Local deployment
 
 To start a local deployment, either:
-In the Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
-or 
-Open a terminal window and from the root of your game project directory run `spatial local launch` in the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
-(See the SpatialOS documentation for details of the launch configurations.)
+* In the Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
 
-This starts a ‘local’ version of the SpatialOS Runtime on your development machine together with all server-workers (sometimes called “managed workers”) specified in the launch configuration you used. 
+    or 
+* Open a terminal window and from the root of your game project directory run `spatial local launch` in the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
-To start your client-workers (sometimes called “external workers”), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game.
+(See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) for details of the launch configurations.)
+
+This starts a "local" version of the SpatialOS Runtime on your development machine together with all server-workers (sometimes called “managed workers”) specified in the launch configuration you used. 
+
+To start your client-workers (sometimes called "external workers"), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game.
 Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world. 
 
 ### Cloud deployment
