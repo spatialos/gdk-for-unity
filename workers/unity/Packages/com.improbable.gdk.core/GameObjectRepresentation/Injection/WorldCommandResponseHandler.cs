@@ -28,6 +28,7 @@ namespace Improbable.Gdk.Core.Commands
 
                 private readonly List<Action<CreateEntity.ReceivedResponse>> createEntityDelegates;
                 private readonly List<Action<DeleteEntity.ReceivedResponse>> deleteEntityDelegates;
+                private readonly List<Action<EntityQuery.ReceivedResponse>> entityQueryDelegates;
 
                 private WorldCommandResponseHandler(ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
@@ -35,6 +36,7 @@ namespace Improbable.Gdk.Core.Commands
                     reserveEntityIdsDelegates = new List<Action<ReserveEntityIds.ReceivedResponse>>();
                     createEntityDelegates = new List<Action<CreateEntity.ReceivedResponse>>();
                     deleteEntityDelegates = new List<Action<DeleteEntity.ReceivedResponse>>();
+                    entityQueryDelegates = new List<Action<EntityQuery.ReceivedResponse>>();
                 }
 
                 public event Action<ReserveEntityIds.ReceivedResponse> OnReserveEntityIdsResponse
@@ -103,6 +105,28 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
+                public event Action<EntityQuery.ReceivedResponse> OnEntityQueryResponse
+                {
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        entityQueryDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        entityQueryDelegates.Remove(value);
+                    }
+                }
+
                 internal void OnReserveEntityIdsResponseInternal(ReserveEntityIds.ReceivedResponse receivedResponse)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, reserveEntityIdsDelegates,
@@ -118,6 +142,12 @@ namespace Improbable.Gdk.Core.Commands
                 internal void OnDeleteEntityResponseInternal(DeleteEntity.ReceivedResponse receivedResponse)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, deleteEntityDelegates,
+                        logDispatcher);
+                }
+
+                internal void OnEntityQueryResponseInternal(EntityQuery.ReceivedResponse receivedResponse)
+                {
+                    GameObjectDelegates.DispatchWithErrorHandling(receivedResponse, entityQueryDelegates,
                         logDispatcher);
                 }
 
