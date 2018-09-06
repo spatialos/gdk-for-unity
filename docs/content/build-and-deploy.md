@@ -25,7 +25,7 @@ To do this:
     * Which platforms you want to build it for. (We currently support Windows, Linux and OSX.)
     * Which build options you want enabled.
 
-[comment]: <> (Document the options UTY-1168)
+[//]: # (Document the options UTY-1168)
 
 > Note: You cannot configure the build of your workers via the  [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
@@ -66,5 +66,5 @@ To start a cloud deployment, follow these steps:
 ----
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
 
-[comment]: <> (Document the options UTY-1168)
-[comment]: <> (Document the options UTY-1170)
+[//]: # (Document the options UTY-1168)
+[//]: # (Document the options UTY-1170)
