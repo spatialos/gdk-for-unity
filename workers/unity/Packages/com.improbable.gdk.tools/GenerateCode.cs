@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            Generate();
+            EditorApplication.delayCall += Generate;
         }
 
         [MenuItem("SpatialOS/Generate code", false, GenerateCodePriority)]

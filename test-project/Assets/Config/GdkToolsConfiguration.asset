@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f2e6fcee4ea1d34196b2b9e795e86ac, type: 3}
   m_Name: GdkToolsConfiguration
   m_EditorClassIdentifier: 
-  SchemaStdLibDir: ../../build/dependencies/schema/standard_library
+  SchemaStdLibDir: build/dependencies/schema/standard_library
   SchemaSourceDirs:
-  - ../../schema
+  - Assets/.Schema
   CodegenOutputDir: Assets/Generated/Source
