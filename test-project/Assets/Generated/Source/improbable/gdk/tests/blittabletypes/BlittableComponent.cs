@@ -147,14 +147,13 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update GetAndApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
+            public static Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        component.BoolField = value;
                         update.BoolField = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
                     }
                     
@@ -163,7 +162,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     if (obj.GetInt32Count(2) == 1)
                     {
                         var value = obj.GetInt32(2);
-                        component.IntField = value;
                         update.IntField = new global::Improbable.Gdk.Core.Option<int>(value);
                     }
                     
@@ -172,7 +170,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     if (obj.GetInt64Count(3) == 1)
                     {
                         var value = obj.GetInt64(3);
-                        component.LongField = value;
                         update.LongField = new global::Improbable.Gdk.Core.Option<long>(value);
                     }
                     
@@ -181,7 +178,6 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     if (obj.GetFloatCount(4) == 1)
                     {
                         var value = obj.GetFloat(4);
-                        component.FloatField = value;
                         update.FloatField = new global::Improbable.Gdk.Core.Option<float>(value);
                     }
                     
@@ -190,12 +186,55 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     if (obj.GetDoubleCount(5) == 1)
                     {
                         var value = obj.GetDouble(5);
-                        component.DoubleField = value;
                         update.DoubleField = new global::Improbable.Gdk.Core.Option<double>(value);
                     }
                     
                 }
                 return update;
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
+            {
+                {
+                    if (obj.GetBoolCount(1) == 1)
+                    {
+                        var value = obj.GetBool(1);
+                        component.BoolField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt32Count(2) == 1)
+                    {
+                        var value = obj.GetInt32(2);
+                        component.IntField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt64Count(3) == 1)
+                    {
+                        var value = obj.GetInt64(3);
+                        component.LongField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFloatCount(4) == 1)
+                    {
+                        var value = obj.GetFloat(4);
+                        component.FloatField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetDoubleCount(5) == 1)
+                    {
+                        var value = obj.GetDouble(5);
+                        component.DoubleField = value;
+                    }
+                    
+                }
             }
         }
 
