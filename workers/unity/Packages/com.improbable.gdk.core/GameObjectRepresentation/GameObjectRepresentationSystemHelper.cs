@@ -8,6 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<EntityGameObjectLinkerSystem>();
+            world.GetOrCreateManager<GameObjectWorldCommandSystem>();
         }
     }
 }

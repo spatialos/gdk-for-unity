@@ -17,9 +17,10 @@ In the future you will be able to use the GDK to make multiplayer games with [Un
 
 You can [sign up for GDK updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb) direct to your mailbox.
 
-* License: use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
 * Version: pre-alpha (for evaluation only)
 * Unity Game Development Kit repository: [github.com/spatialos/UnityGDK](https://github.com/spatialos/UnityGDK)
+* Use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
+* Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
 ## Recommended use
 

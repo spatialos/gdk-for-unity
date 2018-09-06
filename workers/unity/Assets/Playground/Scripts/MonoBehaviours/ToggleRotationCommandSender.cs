@@ -25,7 +25,7 @@ namespace Playground.MonoBehaviours
         {
             if (obj.StatusCode != StatusCode.Success)
             {
-                GetComponent<SpatialOSComponent>().LogDispatcher.HandleLog(LogType.Error,
+                GetComponent<SpatialOSComponent>().Worker.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"Spin command request failed: {obj.StatusCode}, message: {obj.Message}"));
             }
         }
