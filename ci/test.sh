@@ -19,6 +19,7 @@ TOOLS_TEST_RESULTS_FILES="${PROJECT_DIR}/logs/tools-test-results.xml"
 CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-results.xml"
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
+TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmode-test-results.xml"
 
 rm "${TOOLS_TEST_RESULTS_FILES}" \
     "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
@@ -27,7 +28,8 @@ rm "${TOOLS_TEST_RESULTS_FILES}" \
 
 markEndOfBlock "Setup variables"
 
-cleanUnity
+cleanUnity "$(pwd)/workers/unity"
+cleanUnity "$(pwd)/test-project"
 
 markStartOfBlock "Tools Testing"
 
@@ -46,36 +48,51 @@ markEndOfBlock "Code Generator Testing"
 markStartOfBlock "Editmode Testing"
 
 pushd "workers/unity"
-  dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
-    -batchmode \
-    -projectPath "${PROJECT_DIR}/workers/unity" \
-    -runTests \
-    -testPlatform editmode \
-    -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
-    -testResults "${EDITMODE_TEST_RESULTS_FILE}"
+    dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath "${PROJECT_DIR}/workers/unity" \
+        -runTests \
+        -testPlatform editmode \
+        -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
+        -testResults "${EDITMODE_TEST_RESULTS_FILE}"
 
     EDITMODE_TEST_RESULT=$?
 popd
 
 markEndOfBlock "Editmode Testing"
 
-cleanUnity
+cleanUnity "$(pwd)/workers/unity"
 
 markStartOfBlock "Playmode Testing"
 
 pushd "workers/unity"
-  dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
-    -batchmode \
-    -projectPath "${PROJECT_DIR}/workers/unity" \
-    -runTests \
-    -testPlatform playmode \
-    -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
-    -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
+    dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath "${PROJECT_DIR}/workers/unity" \
+        -runTests \
+        -testPlatform playmode \
+        -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
+        -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
 
     PLAYMODE_TEST_RESULT=$?
 popd
 
 markEndOfBlock "Playmode Testing"
+
+pushd "test-project"
+markStartOfBlock "Generated Code Testing"
+    dotnet run -p "${PROJECT_DIR}/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath "${PROJECT_DIR}/test-project" \
+        -runTests \
+        -testPlatform playmode \
+        -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
+        -testResults "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
+
+    TEST_PROJECT_EDITMODE_TEST_RESULT=$?
+popd
+
+markEndOfBlock "Generated Code Testing"
 
 if [ $TOOLS_TEST_RESULT -ne 0 ]; then
     >&2 echo "Tools Tests failed. Please check the file ${TOOLS_TEST_RESULTS_FILES} for more information."
@@ -93,14 +110,20 @@ if [ $PLAYMODE_TEST_RESULT -ne 0 ]; then
     >&2 echo "Playmode Tests failed. Please check the file ${PLAYMODE_TEST_RESULTS_FILE} for more information."
 fi
 
+if [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ]; then
+    >&2 echo "Test Project Editmode Tests failed. Please check the file ${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE} for more information."
+fi
+
 markEndOfBlock "$0"
 
-cleanUnity
+cleanUnity "$(pwd)/workers/unity"
+cleanUnity "$(pwd)/test-project"
 
 if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
-   [ $TOOLS_TEST_RESULT -ne 0 ]
+   [ $TOOLS_TEST_RESULT -ne 0 ] || \
+   [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ] 
 then
     >&2 echo "Tests failed! See above for more information."
     exit 1
