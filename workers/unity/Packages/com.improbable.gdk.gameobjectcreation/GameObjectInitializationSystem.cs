@@ -15,7 +15,7 @@ namespace Improbable.Gdk.GameObjectCreation
     ///     IEntityGameObjectCreator for cleanup.
     /// </summary>
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitializationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
         private struct InitializedEntitySystemState : ISystemStateComponentData
