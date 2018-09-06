@@ -141,6 +141,7 @@ namespace Improbable.Gdk.Core
 
             // MonoBehaviour API
             World.GetOrCreateManager<GameObjectDispatcherSystem>();
+            World.GetOrCreateManager<GameObjectWorldCommandSystem>();
         }
 
         public void Dispose()
