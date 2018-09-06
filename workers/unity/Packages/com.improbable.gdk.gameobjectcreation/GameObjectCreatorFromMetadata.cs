@@ -52,13 +52,6 @@ namespace Improbable.Gdk.GameObjectCreation
                     prefab = Resources.Load<GameObject>(commonPath);
                 }
 
-                if (prefab == null)
-                {
-                    logger.HandleLog(LogType.Log, new LogEvent(
-                        $"Prefab not found for SpatialOS Entity in either {workerSpecificPath} or {commonPath}," +
-                        "not going to associate a GameObject with it."));
-                }
-
                 cachedPrefabs[prefabName] = prefab;
             }
 

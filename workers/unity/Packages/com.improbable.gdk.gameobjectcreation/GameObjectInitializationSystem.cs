@@ -18,7 +18,7 @@ namespace Improbable.Gdk.GameObjectCreation
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        private struct HasGameObjectSystemState : ISystemStateComponentData
+        private struct InitializedEntitySystemState : ISystemStateComponentData
         {
             public EntityId EntityId;
         }
@@ -29,14 +29,14 @@ namespace Improbable.Gdk.GameObjectCreation
             [ReadOnly] public EntityArray Entities;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewSpatialOSEntity;
-            [ReadOnly] public SubtractiveComponent<HasGameObjectSystemState> DenotesThereIsNoGameObject;
+            [ReadOnly] public SubtractiveComponent<InitializedEntitySystemState> DenotesEntityIsNotInitialized;
         }
 
         private struct RemovedEntitiesData
         {
             public readonly int Length;
             [ReadOnly] public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<HasGameObjectSystemState> DenotesThereIsAGameObject;
+            [ReadOnly] public ComponentDataArray<InitializedEntitySystemState> DenotesEntityIsInitialized;
             [ReadOnly] public SubtractiveComponent<SpatialEntityId> NoSpatialEntityIds;
         }
 
@@ -69,26 +69,33 @@ namespace Improbable.Gdk.GameObjectCreation
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
                 var gameObject = gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager));
-
+                PostUpdateCommands.AddComponent(entity, new InitializedEntitySystemState { EntityId = spatialEntityId });
                 if (gameObject == null)
                 {
                     continue;
                 }
 
                 linkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId, viewCommandBuffer);
-                PostUpdateCommands.AddComponent(entity, new HasGameObjectSystemState { EntityId = spatialEntityId });
                 entityToGameObjects.Add(entity, gameObject);
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
-                var spatialEntityId = EntityManager.GetComponentData<HasGameObjectSystemState>(entity).EntityId;
+                var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
                 var gameObject = entityToGameObjects[entity];
-                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
-                gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
-                PostUpdateCommands.RemoveComponent<HasGameObjectSystemState>(entity);
-                entityToGameObjects.Remove(entity);
+                if (gameObject == null)
+                {
+                    gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
+                }
+                else
+                {
+                    linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
+                    gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
+                    PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
+                    entityToGameObjects.Remove(entity);   
+                }
+                PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
             }
 
             viewCommandBuffer.FlushBuffer();
@@ -100,7 +107,7 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 var entity = entityToGameObject.Key;
                 var gameObject = entityToGameObject.Value;
-                var spatialEntityId = EntityManager.GetComponentData<HasGameObjectSystemState>(entity).EntityId;
+                var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
                 linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                 gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
             }
