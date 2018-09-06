@@ -5,11 +5,11 @@
 
 ## Receiving entity updates from SpatialOS: reactive components
 
-To represent state changes or messages from SpatialOS, the Unity GDK uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
+To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
-When the Unity GDK receives an update or message from SpatialOS, it places a "reactive component" on the associated ECS entity until the end of the tick. This reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to react to the change or message.
+When the GDK receives an update or message from SpatialOS, it places a "reactive component" on the associated ECS entity until the end of the tick. This reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to react to the change or message.
 
-At the end of the tick, the Unity GDK removes the reactive component. 
+At the end of the tick, the GDK removes the reactive component.
 
 ### Reactive component types
 
@@ -60,8 +60,8 @@ public class ReactiveSystem : ComponentSystem
 
 ### Removal of reactive components
 
-The Unity GDK automatically removes reactive components from the ECS entity as soon as `CleanReactiveComponentsSystem` is run. This means that you must run any logic processing that reactive component _before_ `CleanReactiveComponentsSystem`. (This system is run at the end of each frame.)
+The GDK automatically removes reactive components from the ECS entity as soon as `CleanReactiveComponentsSystem` is run. This means that you must run any logic processing that reactive component _before_ `CleanReactiveComponentsSystem`. (This system is run at the end of each frame.)
 
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

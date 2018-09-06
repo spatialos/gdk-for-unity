@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +54,12 @@ namespace Playground
                         new LogEvent("Cancelling connection attempt")
                             .WithField("WorkerType", workerType)
                             .WithField("Reason", "Required worker failed to connect"));
+#if UNITY_EDITOR
+                    // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not. 
+                    logger.HandleLog(LogType.Warning,
+                        new LogEvent("Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")                      
+                            .WithField("Reason", "A worker running in the editor failing to connect was observed"));
+#endif
                     connectionAttemptFinishedTask.SetException(e);
                     Dispose();
                     return;

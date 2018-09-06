@@ -1,27 +1,27 @@
-# SpatialOS Unity GDK documentation
+# SpatialOS GDK for Unity documentation
 
 #### How to get started
-We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the Unity GDK Core does from there. Use the [Unity GDK: Contents](#contents) documentation, listed below, to explore how the GDK Core works. 
+We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the SpatialOS GDK for Unity (GDK) Core does from there. Use the [SpatialOS GDK for Unity: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
 
-Note that the Unity GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
+Note that the GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
 
-We want your feedback on the Unity GDK, its documentation and its [roadmap (Trello board)](https://trello.com/b/29tMKyQC) - see [Give us feedback](../README.md#give-us-feedback).
+We want your feedback on the GDK, its documentation and its [roadmap (Trello board)](https://trello.com/b/29tMKyQC) - see [Give us feedback](../README.md#give-us-feedback).
 
-## Questions? 
+## Questions?
 Check out our [FAQs](content/faqs/faqs.md) or head over to our [discussion forums](../README.md#give-us-feedback).
 
-## Documentation 
+## Documentation
 
 #### SpatialOS
-The Unity GDK documentation assumes you are familiar with SpatialOS concepts. For guidance on SpatialOS concepts see the documentation on the [SpatialOS website](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). 
+The GDK documentation assumes you are familiar with SpatialOS concepts. For guidance on SpatialOS concepts see the documentation on the [SpatialOS website](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
 
 #### Entity Component System
-The Unity GDK currently uses the `0.0.12-preview.11` version of the entities preview packages. 
-The Unity GDK documentation assumes you are familiar with the Unity Entity Component System. See:
+The GDK currently uses the `0.0.12-preview.11` version of the entities preview packages.
+The GDK documentation assumes you are familiar with the Unity Entity Component System. See:
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
 
-#### Unity GDK
+#### SpatialOS GDK for Unity
 
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)

@@ -50,14 +50,31 @@ namespace Generated.Improbable.Gdk.Tests
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
                 {
-                    add => nestedTypeDelegates.Add(value);
-                    remove => nestedTypeDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        nestedTypeDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        nestedTypeDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.NestedComponent.Update update)
                 {
                     DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.NestedComponent.Update update, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component data)
                 {
                     if (update.NestedType.HasValue)

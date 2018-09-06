@@ -7,14 +7,14 @@
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component).
 
 > If you don't know about authority, you should read [Understanding authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
-> 
+>
 > Crucially: at runtime, your worker instance may or may not have authority over a given SpatialOS component.
 
 ### How authority is represented in Unity's ECS
 
-For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the Unity GDK attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
+For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
-The authority tags in the Unity GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
+The authority tags in the GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
 
 * Whether or not the worker instance has authority:
     * `Authoritative<T>`: the worker instance has authority over the SpatialOS component
@@ -28,7 +28,7 @@ The authority tags in the Unity GDK are (where `T` is a [SpatialOS component](ht
 
 > **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
 
-Here's an example of how to write a system that runs when a worker instance has authority over the SpatialOS component Position: 
+Here's an example of how to write a system that runs when a worker instance has authority over the SpatialOS component Position:
 
 ```csharp
 public class AuthoritativePositionSystem : ComponentSystem
@@ -39,15 +39,15 @@ public class AuthoritativePositionSystem : ComponentSystem
 
         public readonly int Length;
         // An ECS component representing the SpatialOS component Position.
-        public ComponentDataArray<SpatialOSPosition> Position; 
+        public ComponentDataArray<SpatialOSPosition> Position;
         // An ECS component tag representing the worker instance's authority over the SpatialOS component Position.
-        public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority; 
+        public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
     }
 
     [Inject] Data data;
 
     // This system will only run where the worker instance has authority over the SpatialOS component Position.
-    protected override void OnUpdate() 
+    protected override void OnUpdate()
     {
         for(var i = 0; i < data.Length; i++)
         {
@@ -59,9 +59,9 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 ### What happens when a SpatialOS entity enters a worker instance's view
 
-> This section is just to tell you how the system works: all of this is handled automatically by the Unity GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
+> This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
-When a SpatialOS entity enters the worker instance's view, the Unity GDK:
+When a SpatialOS entity enters the worker instance's view, the GDK:
 
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:
@@ -86,7 +86,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
         public readonly int Length;
         public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
         public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
-        
+
         // This system will only run when there has been a change of authority over PlayerInput in the last tick
         public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
     }
@@ -107,4 +107,4 @@ public class OnPlayerSpawnSystem : ComponentSystem
 The GDK automatically adds and removes authority tags: see [Reactive components](reactive-components.md) for more information.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

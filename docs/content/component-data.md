@@ -13,7 +13,7 @@ The [code generator](./code-generator.md) uses `.schema` files to generate compo
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each SpatialOS component.
 
-The generation process names each of these structs according to the relevant schemalang component name, SpatialOS[schemalang component name]. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](commands.md) or [events](events.md) defined on that component. 
+The generation process names each of these structs according to the relevant schemalang component name, SpatialOS[schemalang component name]. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](commands.md) or [events](events.md) defined on that component.
 
 For example:
 
@@ -44,13 +44,13 @@ To override this behaviour see [here](custom-replication-system.md).
 ```csharp
 public class ChangeComponentFieldSystem : ComponentSystem
 {
-    public struct Data
+    private struct Data
     {
         public readonly int Length;
         public ComponentDataArray<SpatialOSExample> ExampleComponents;
     }
 
-    [Inject] Data data;
+    [Inject] private Data data;
 
     protected void OnUpdate()
     {
@@ -71,34 +71,34 @@ When a component update is received this will be added as a [reactive component]
 ### Generation details
 
 #### Primitive types
-Each primitive type in schemalang corresponds to a type in the Unity GDK.
+Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
-| Schemalang type                | Unity GDK type      |
-| ------------------------------ | :-----------------: |
-| `int32` / `sint32` / `fixed32` | `int`               |
-| `uint32`                       | `uint`              |
-| `int64` / `sint64`/ `fixed64`  | `long`              |
-| `uint64`                       | `ulong`             |
-| `float`                        | `float`             |
-| `bool`                         | `BlittableBool`     |
-| `string`                       | `string`            |
-| `bytes`                        | `byte[]`            |
-| `EntityId`                     | `long`              |
+| Schemalang type                | SpatialOS GDK type      |
+| ------------------------------ | :---------------------: |
+| `int32` / `sint32` / `fixed32` | `int`                   |
+| `uint32`                       | `uint`                  |
+| `int64` / `sint64`/ `fixed64`  | `long`                  |
+| `uint64`                       | `ulong`                 |
+| `float`                        | `float`                 |
+| `bool`                         | `BlittableBool`         |
+| `string`                       | `string`                |
+| `bytes`                        | `byte[]`                |
+| `EntityId`                     | `long`                  |
 
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable.
 
-#### Collections 
+#### Collections
 Schemalang has 3 collection types:
 
-| Schemalang collection | Unity GDK collection                          |
-| --------------------- | :-------------------------------------------: |
-| `map<T, U>`           | `System.Collections.Generic.Dictionary<T, U>` |
-| `list<T>`             | `System.Collections.Generic.List<T>`          |
-| `option<T>`           | `System.Nullable<T>`                          |
+| Schemalang collection | SpatialOS GDK collection                          |
+| --------------------- | :-----------------------------------------------: |
+| `map<T, U>`           | `System.Collections.Generic.Dictionary<T, U>`     |
+| `list<T>`             | `System.Collections.Generic.List<T>`              |
+| `option<T>`           | `System.Nullable<T>`                              |
 
-Note that the Unity GDK does not use `Improbable.Collections` in Unity ECS component generation.
+Note that the GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
-#### Custom types 
+#### Custom types
 For every custom data type in schema a `struct` will be generated.
 
 Schemalang
@@ -109,13 +109,13 @@ type SomeData {
 ```
 Generated C#
 ```	csharp
-public struct SomeData 
+public struct SomeData
 {
   public int Value;
 }
 ```
 
-#### Enums 
+#### Enums
 For every schemalang enum, a C# enum will be generated.
 
 Schemalang
@@ -129,7 +129,7 @@ enum Color {
 
 ```
 Generated C#
-```csharp 
+```csharp
 public enum Color : uint
 {
     YELLOW = 0,
@@ -141,4 +141,4 @@ public enum Color : uint
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

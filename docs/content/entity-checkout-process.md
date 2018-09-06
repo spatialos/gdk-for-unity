@@ -59,6 +59,8 @@ To perform more complex setup logic, you can add components that themselves act 
 
 ### Representing your Entity with a GameObject
 
+> Note: This section of the documentation is not up to date and is in the process of being rewritten. You can find the WIP new version [here](https://docs.google.com/document/d/e/2PACX-1vQxPlFX6BPaArx4BpOHRHDHAW_iarJ8Dqd7-6U6na-3s44Ty_0YTtZELmpIViXSvD0KqzKKl7V1TIUD/pub). 
+
 A GameObject initialization feature is provided as part of the `Playground` project. This optional feature allows you to automatically create and delete a companion GameObject for representing a Unity ECS entity in the scene based on the `Prefab` schema component. This feature is useful if you want to make use of Unity features that are currently only accessible through the scene, e.g. physics.
 
 To use this feature:
@@ -84,4 +86,4 @@ Upon checking out an entity that has both a `Prefab` and a `Transform` component
 All GameObject components attached to the companion GameObject at the time it is instantiated are also added to the entity as ECS entity components. **Note:** Adding additional GameObject components to companion GameObjects after they were instantiated does not result in the components being added to the corresponding ECS entity.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
