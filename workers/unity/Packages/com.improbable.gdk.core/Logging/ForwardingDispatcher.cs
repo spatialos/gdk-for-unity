@@ -29,6 +29,7 @@ namespace Improbable.Gdk.Core
         public ForwardingDispatcher(LogLevel minimumLogLevel = LogLevel.Warn)
         {
             this.minimumLogLevel = minimumLogLevel;
+            Application.logMessageReceived += LogCallback;
         }
 
         // This method catches exceptions coming from the engine, or third party code.
@@ -96,6 +97,7 @@ namespace Improbable.Gdk.Core
         public void Dispose()
         {
             Connection = null;
+            Application.logMessageReceived -= LogCallback;
         }
     }
 }

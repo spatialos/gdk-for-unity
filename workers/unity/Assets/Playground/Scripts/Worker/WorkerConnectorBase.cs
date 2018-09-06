@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
@@ -55,6 +54,12 @@ namespace Playground
                         new LogEvent("Cancelling connection attempt")
                             .WithField("WorkerType", workerType)
                             .WithField("Reason", "Required worker failed to connect"));
+#if UNITY_EDITOR
+                    // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not. 
+                    logger.HandleLog(LogType.Warning,
+                        new LogEvent("Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")                      
+                            .WithField("Reason", "A worker running in the editor failing to connect was observed"));
+#endif
                     connectionAttemptFinishedTask.SetException(e);
                     Dispose();
                     return;
@@ -67,16 +72,15 @@ namespace Playground
                 ConnectionDelegate connectionDelegate;
                 if (ShouldUseLocator())
                 {
-                    var config = GetLocatorConfig(workerType);
                     connectionDelegate = async () =>
-                        await Worker.CreateWorkerAsync(config, SelectDeploymentName, logger, origin)
+                        await Worker.CreateWorkerAsync(GetLocatorConfig(workerType), SelectDeploymentName, logger, origin)
                             .ConfigureAwait(false);
                 }
                 else
                 {
-                    var config = GetReceptionistConfig(workerType);
                     connectionDelegate = async () =>
-                        await Worker.CreateWorkerAsync(config, logger, origin).ConfigureAwait(false);
+                        await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), logger, origin)
+                            .ConfigureAwait(false);
                 }
 
                 var worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
@@ -122,6 +126,7 @@ namespace Playground
                 var commandLineArguments = Environment.GetCommandLineArgs();
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
+                config.WorkerType = workerType;
                 config.UseExternalIp = UseExternalIp;
                 if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
                 {

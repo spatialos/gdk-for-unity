@@ -7,6 +7,7 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
     public class WorkerSystem : ComponentSystem
     {
         public readonly Connection Connection;

@@ -62,72 +62,216 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public event Action<BlittableBool> BoolFieldUpdated
                 {
-                    add => boolFieldDelegates.Add(value);
-                    remove => boolFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        boolFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        boolFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int>> intFieldDelegates = new List<Action<int>>();
 
                 public event Action<int> IntFieldUpdated
                 {
-                    add => intFieldDelegates.Add(value);
-                    remove => intFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        intFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        intFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<long>> longFieldDelegates = new List<Action<long>>();
 
                 public event Action<long> LongFieldUpdated
                 {
-                    add => longFieldDelegates.Add(value);
-                    remove => longFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        longFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        longFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<float>> floatFieldDelegates = new List<Action<float>>();
 
                 public event Action<float> FloatFieldUpdated
                 {
-                    add => floatFieldDelegates.Add(value);
-                    remove => floatFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        floatFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        floatFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<double>> doubleFieldDelegates = new List<Action<double>>();
 
                 public event Action<double> DoubleFieldUpdated
                 {
-                    add => doubleFieldDelegates.Add(value);
-                    remove => doubleFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        doubleFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        doubleFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<string>> stringFieldDelegates = new List<Action<string>>();
 
                 public event Action<string> StringFieldUpdated
                 {
-                    add => stringFieldDelegates.Add(value);
-                    remove => stringFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        stringFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        stringFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<int?>> optionalFieldDelegates = new List<Action<int?>>();
 
                 public event Action<int?> OptionalFieldUpdated
                 {
-                    add => optionalFieldDelegates.Add(value);
-                    remove => optionalFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        optionalFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        optionalFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.List<int>>> listFieldDelegates = new List<Action<global::System.Collections.Generic.List<int>>>();
 
                 public event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated
                 {
-                    add => listFieldDelegates.Add(value);
-                    remove => listFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        listFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        listFieldDelegates.Remove(value);
+                    }
                 }
 
                 private readonly List<Action<global::System.Collections.Generic.Dictionary<int,string>>> mapFieldDelegates = new List<Action<global::System.Collections.Generic.Dictionary<int,string>>>();
 
                 public event Action<global::System.Collections.Generic.Dictionary<int,string>> MapFieldUpdated
                 {
-                    add => mapFieldDelegates.Add(value);
-                    remove => mapFieldDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        mapFieldDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        mapFieldDelegates.Remove(value);
+                    }
                 }
 
                 protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update)
@@ -142,6 +286,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     DispatchWithErrorHandling(update.ListField, listFieldDelegates);
                     DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
                 }
+
                 protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update, ref Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component data)
                 {
                     if (update.BoolField.HasValue)
@@ -186,8 +331,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent
                 {
-                    add => FirstEventDelegates.Add(value);
-                    remove => FirstEventDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        FirstEventDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        FirstEventDelegates.Remove(value);
+                    }
                 }
 
                 public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
@@ -197,6 +358,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.FirstEvent>(Entity);
                     sender.Events.Add(payload);
                 }
@@ -205,8 +371,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent
                 {
-                    add => SecondEventDelegates.Add(value);
-                    remove => SecondEventDelegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        SecondEventDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        SecondEventDelegates.Remove(value);
+                    }
                 }
 
                 public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
@@ -216,6 +398,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.SecondEvent>(Entity);
                     sender.Events.Add(payload);
                 }

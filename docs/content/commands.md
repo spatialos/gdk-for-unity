@@ -14,7 +14,7 @@ A worker instance can send a command using a `ComponentName.CommandSenders.Comma
 
 Note that a worker instance _does not need_ authority over the relevant SpatialOS component to send commands to a SpatialOS entity.
 
-Because of this, the Unity GDK attaches a `ComponentName.CommandSenders.CommandName` for each command to all ECS entities that represent a SpatialOS entity. This means any ECS entity can send any command to any SpatialOS entity. 
+Because of this, the SpatialOS GDK for Unity (GDK) attaches a `ComponentName.CommandSenders.CommandName` for each command to all ECS entities that represent a SpatialOS entity. This means any ECS entity can send any command to any SpatialOS entity.
 
 Given this schema:
 
@@ -24,7 +24,7 @@ import "improbable/transform.transform.schema"
 
 type BuildRequest
 {
-    improbable.transform.Location location = 1; 
+    improbable.transform.Location location = 1;
     improbable.transform.Quaternion rotation = 2;
 }
 
@@ -42,7 +42,7 @@ component Builder
 }
 ```
 
-The Unity GDK generates these types:
+The GDK generates these types:
 
 * `BuildRequest` - Equivalent of the schema type.
 * `BuildResponse` - Equivalent of the schema type.
@@ -74,7 +74,7 @@ public class BuildSystem : ComponentSystem
         {
             var requestSender = data.BuildWallSender[i];
             var entityId = data.EntityIds[i];
-            
+
             Builder.BuildWall.Request request = new Builder.BuildWall.Request
             {
                 TargetEntityId = entityId,
@@ -85,7 +85,7 @@ public class BuildSystem : ComponentSystem
                 }
             };
 
-            
+
             requestSender.RequestsToSend.Add(request);
         }
     }
@@ -98,9 +98,9 @@ To send a `build_wall` command in a system, you need to inject `Builder.CommandS
 
 ### Responding to command requests
 
-When a worker instance receives a command request, the command request is represented with reactive ECS components. 
+When a worker instance receives a command request, the command request is represented with reactive ECS components.
 
-The Unity GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity: where `ComponentName` is the SpatialOS component the command is defined in, `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The Unity GDK cleans it up at the end of the tick.
+The GDK attaches a `ComponentName.CommandRequests.CommandName` ECS component to the specified ECS entity: where `ComponentName` is the SpatialOS component the command is defined in, `CommandName` is the name of the command in schema. `ComponentName.CommandRequests.CommandName` contains a list of type `ComponentName.CommandName.ReceivedRequest`. The GDK cleans it up at the end of the tick.
 
 To respond to the request, use `ComponentName.CommandResponders.CommandName` for that given command. This contains a list of type `ComponentName.CommandName.Response`. Create and add a `ComponentName.CommandName.Response` object to this list and the GDK will send the response for you.
 
@@ -129,13 +129,13 @@ public class BuildWallHandlerSystem : ComponentSystem
             {
                 // Do something with the request
                 var buildRequest = request.Request;
-                
+
                 Builder.BuildWall.Response buildResponse = Builder.BuildWall.Response.CreateResponse
                 (
                     buildRequest,
                     new BuildResponse(...)
                 );
-                
+
                 responder.Response.Add(buildResponse);
             }
         }
@@ -147,7 +147,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 ### Receiving command responses
 
-Like requests, when an ECS entity receives a command response, the Unity GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
+Like requests, when an ECS entity receives a command response, the GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
 `ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that was originally sent with the command. **This payload is null** when the command fails.
 
@@ -179,7 +179,7 @@ public class BuildWallResponseHandler : ComponentSystem
                     // Something bad happened!
                     continue;
                 }
-                
+
                 var responsePayload = response.ResponsePayload; // guaranteed to not be null at this point
                 var requestPayload = response.RequestPayload; // original request payload
 
@@ -194,7 +194,7 @@ public class BuildWallResponseHandler : ComponentSystem
 
 ### World commands
 
-World commands are RPCs to request specific things from the SpatialOS. 
+World commands are RPCs to request specific things from the SpatialOS.
 
 > They're different to component commands (which the sections above this cover), which are user-defined in schema. For more information, see [World commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands)in the SpatialOS documentation.
 
@@ -202,13 +202,13 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
 
 * ReserveEntityIds
     * Sending a request - `WorldCommands.ReserveEntityIds.CommandSender`. This contains a list of `WorldCommands.ReserveEntityIds.Request` structs. Add a struct to the list to send the command.
-        * `TimeoutMillis` is optional. 
-    * Receiving a response - `WorldCommands.ReserveEntityIds.CommandResponses`. This contains a list of `WorldCommands.ReserveEntityIds.ReceivedResponse` structs. 
+        * `TimeoutMillis` is optional.
+    * Receiving a response - `WorldCommands.ReserveEntityIds.CommandResponses`. This contains a list of `WorldCommands.ReserveEntityIds.ReceivedResponse` structs.
 * CreateEntity
     * Sending a request - `WorldCommands.CreateEntity.CommandSender`. This contains a list of `WorldCommands.CreateEntity.Request` structs. Add a struct to the list to send the command.
-        * `EntityId` and `TimeoutMillis` are optional. 
+        * `EntityId` and `TimeoutMillis` are optional.
         * If you do specify an `EntityId`, you need to get this from a `ReserveEntityIds` command.
-    * Receiving a response - `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`. 
+    * Receiving a response - `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
 * DeleteEntity
     * Sending a request - `WorldCommands.DeleteEntity.CommandSender`. This contains a list of `WorldCommands.DeleteEntity.Request` structs. Add a struct to the list to send the command.
         * `TimeoutMillis` is optional.
@@ -220,7 +220,7 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
     * Receiving a response - `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
 
-When a response is received, the Unity GDK attaches an ECS component to the ECS entity that originally sent the request. The ECS component it attaches corresponds to the response it receives.
+When a response is received, the GDK attaches an ECS component to the ECS entity that originally sent the request. The ECS component it attaches corresponds to the response it receives.
 
 Here's an example of creating a SpatialOS entity:
 
@@ -261,4 +261,4 @@ This system iterates through every entity with a `Foo` SpatialOS component and s
 For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity](create-entity.md#create-an-entity-definition-using-the-entitybuilder) page.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

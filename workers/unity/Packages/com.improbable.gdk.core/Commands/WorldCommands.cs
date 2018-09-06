@@ -8,7 +8,7 @@ using Entity = Improbable.Worker.Core.Entity;
 
 namespace Improbable.Gdk.Core.Commands
 {
-    public static class WorldCommands
+    public static partial class WorldCommands
     {
         internal static void AddWorldCommandRequesters(World world, EntityManager manager, Unity.Entities.Entity entity)
         {
