@@ -21,8 +21,6 @@ namespace Improbable.Gdk.Core
         
         private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
         private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
-
-        [Inject] private WorkerSystem worker;
         
         protected override void OnCreateManager(int capacity)
         {
