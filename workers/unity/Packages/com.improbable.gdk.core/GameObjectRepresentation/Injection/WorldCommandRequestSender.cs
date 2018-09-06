@@ -78,6 +78,22 @@ namespace Improbable.Gdk.Core.Commands
                     return request.RequestId;
                 }
 
+                public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null,
+                    object context = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, context);
+
+                    entityManager.GetComponentData<EntityQuery.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
                 [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
                 private class WorldCommandRequestSenderCreator : IInjectableCreator
                 {
