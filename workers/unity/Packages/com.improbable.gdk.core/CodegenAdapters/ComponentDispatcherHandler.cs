@@ -1,3 +1,4 @@
+using System;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
@@ -39,5 +40,15 @@ namespace Improbable.Gdk.Core.CodegenAdapters
             World = world;
             Worker = worker;
         }
+
+        /// <summary>
+        ///     This attribute denotes that a ComponentDispatcherHandler should not be automatically registered with
+        ///     that which consumes them. The intended use for this attribute is testing.
+        /// </summary>
+        public class DisableAutoRegisterAttribute : Attribute
+        {
+        }
     }
+
+
 }

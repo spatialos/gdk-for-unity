@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
@@ -12,6 +14,7 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Entity = Unity.Entities.Entity;
+using Object = System.Object;
 
 namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {
@@ -19,25 +22,47 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     public class SpatialOSReceiveSystemTests
     {
         internal const uint TestComponentId = 1;
+        private const uint InvalidComponentId = 0;
         private const string TestWorkerType = "TestWorker";
         private const long TestEntityId = 1;
 
+        private const uint TestCommandIndex = 1;
+        private const long TestCommandRequestId = 1;
+
         private World world;
         private EntityManager entityManager;
+
         private WorkerSystem worker;
         private SpatialOSReceiveSystem receiveSystem;
+
         private TestComponentDispatcher componentDispatcher;
+        private TestLogDispatcher logDispatcher;
+
+        private WorldCommands.CreateEntity.Storage createEntityStorage;
+        private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
+        private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
+        private WorldCommands.EntityQuery.Storage entityQueryStorage;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             world = new World("test-world");
             entityManager = world.GetOrCreateManager<EntityManager>();
-            worker = world.CreateManager<WorkerSystem>(null, new LoggingDispatcher(), TestWorkerType, Vector3.zero);
+            logDispatcher = new TestLogDispatcher();
+
+            worker = world.CreateManager<WorkerSystem>(null, logDispatcher, TestWorkerType, Vector3.zero);
             componentDispatcher = new TestComponentDispatcher(worker, world);
 
             receiveSystem = world.GetOrCreateManager<SpatialOSReceiveSystem>();
+            // Do not add command components from any generated code.
+            receiveSystem.AddAllCommandComponents.Clear();
             receiveSystem.AddDispatcherHandler(componentDispatcher);
+
+            var requestTracker = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+            createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
+            deleteEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.DeleteEntity.Storage>();
+            reserveEntityIdsStorage = requestTracker.GetCommandStorageForType<WorldCommands.ReserveEntityIds.Storage>();
+            entityQueryStorage = requestTracker.GetCommandStorageForType<WorldCommands.EntityQuery.Storage>();
         }
 
         [OneTimeTearDown]
@@ -62,19 +87,35 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             worker.EntityIdToEntity.Clear();
 
-            using (var entities = entityManager.GetAllEntities())
+            using (var allEntities = entityManager.GetAllEntities())
             {
-                entityManager.DestroyEntity(entities);
+                foreach (var entity in allEntities.Where(x => x != worker.WorkerEntity))
+                {
+                    entityManager.DestroyEntity(entity);
+                }
             }
 
             componentDispatcher.Reset();
+            logDispatcher.ClearExpectedLogs();
+
+            createEntityStorage.CommandRequestsInFlight.Clear();
+            deleteEntityStorage.CommandRequestsInFlight.Clear();
+            reserveEntityIdsStorage.CommandRequestsInFlight.Clear();
+            entityQueryStorage.CommandRequestsInFlight.Clear();
+
+            WorldCommands.CreateEntity.ResponsesProvider.CleanDataInWorld(world);
+            WorldCommands.EntityQuery.ResponsesProvider.CleanDataInWorld(world);
+            WorldCommands.DeleteEntity.ResponsesProvider.CleanDataInWorld(world);
+            WorldCommands.ReserveEntityIds.ResponsesProvider.CleanDataInWorld(world);
         }
 
         [Test]
         public void OnAddEntity_should_add_entity_and_world_command_components()
         {
-            var op = WorkerOpFactory.CreateAddEntityOp(TestEntityId);
-            receiveSystem.OnAddEntity(op);
+            using (var wrappedOp = WorkerOpFactory.CreateAddEntityOp(TestEntityId))
+            {
+                receiveSystem.OnAddEntity(wrappedOp.Op);
+            }
 
             Assert.IsTrue(worker.TryGetEntity(new EntityId(TestEntityId), out var entity));
 
@@ -97,6 +138,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
+        public void OnAddEntity_should_error_if_entity_already_exists()
+        {
+            SetupTestEntity();
+
+            using (var wrappedOp = WorkerOpFactory.CreateAddEntityOp(TestEntityId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, LoggingUtils.EntityId));
+                receiveSystem.OnAddEntity(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
         public void OnRemoveEntity_should_remove_entity_and_deallocate_world_command_providers()
         {
             var entity = SetupTestEntity();
@@ -110,8 +164,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             var reserveEntityIdsRequestsHandle =
                 entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(entity).Handle;
 
-            var op = WorkerOpFactory.CreateRemoveEntityOp(TestEntityId);
-            receiveSystem.OnRemoveEntity(op);
+            using (var wrappedOp = WorkerOpFactory.CreateRemoveEntityOp(TestEntityId))
+            {
+                receiveSystem.OnRemoveEntity(wrappedOp.Op);
+            }
 
             Assert.IsFalse(entityManager.Exists(entity));
             Assert.IsFalse(worker.TryGetEntity(new EntityId(TestEntityId), out _));
@@ -123,37 +179,419 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        public void OnAddComponent_should_error_if_unknown_component_id_received()
+        public void OnRemoveEntity_should_error_if_entity_does_not_exist()
         {
-            var op = WorkerOpFactory.CreateAddComponentOp(TestEntityId, 0);
-            LogAssert.Expect(LogType.Error, new Regex(".*"));
-            receiveSystem.OnAddComponent(op);
+            using (var wrappedOp = WorkerOpFactory.CreateRemoveEntityOp(TestEntityId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, LoggingUtils.EntityId));
+                receiveSystem.OnRemoveEntity(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
         }
 
         [Test]
         public void OnAddComponent_should_be_delegated_to_correct_dispatcher()
         {
-            var op = WorkerOpFactory.CreateAddComponentOp(TestEntityId, TestComponentId);
-            receiveSystem.OnAddComponent(op);
+            using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, TestComponentId))
+            {
+                receiveSystem.OnAddComponent(wrappedOp.Op);
+            }
 
             Assert.IsTrue(componentDispatcher.HasAddComponentReceived);
         }
 
         [Test]
-        public void OnRemoveComponent_should_error_if_unknown_component_id_received()
+        public void OnAddComponent_should_error_if_unknown_component_id_received()
         {
-            var op = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, 0);
-            LogAssert.Expect(LogType.Error, new Regex(".*"));
-            receiveSystem.OnRemoveComponent(op);
+            using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, InvalidComponentId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnAddComponent(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
         }
 
         [Test]
         public void OnRemoveComponent_should_be_delegated_to_correct_dispatcher()
         {
-            var op = WorkerOpFactory.CreateAddComponentOp(TestEntityId, TestComponentId);
-            receiveSystem.OnAddComponent(op);
+            using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, TestComponentId))
+            {
+                receiveSystem.OnRemoveComponent(wrappedOp.Op);
+            }
 
-            Assert.IsTrue(componentDispatcher.HasAddComponentReceived);
+            Assert.IsTrue(componentDispatcher.HasRemoveComponentReceived);
+        }
+
+        [Test]
+        public void OnRemoveComponent_should_error_if_unknown_component_id_received()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, InvalidComponentId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnRemoveComponent(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnComponentUpdate_should_be_delegated_to_correct_dispatcher()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, TestComponentId))
+            {
+                receiveSystem.OnComponentUpdate(wrappedOp.Op);
+            }
+
+            Assert.IsTrue(componentDispatcher.HasComponentUpdateReceived);
+        }
+
+        [Test]
+        public void OnComponentUpdate_should_error_if_unknown_component_id_received()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, InvalidComponentId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnComponentUpdate(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnAuthorityChange_should_be_delegated_to_correct_dispatcher()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, TestComponentId))
+            {
+                receiveSystem.OnAuthorityChange(wrappedOp.Op);
+            }
+
+            Assert.IsTrue(componentDispatcher.HasAuthorityChangedReceived);
+        }
+
+        [Test]
+        public void OnAuthorityChange_should_error_if_unknown_component_id_received()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, InvalidComponentId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnAuthorityChange(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnCommandRequest_should_be_delegated_to_correct_dispatcher()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(TestComponentId, TestCommandIndex, TestCommandRequestId))
+            {
+                receiveSystem.OnCommandRequest(wrappedOp.Op);
+            }
+
+            Assert.IsTrue(componentDispatcher.HasCommandRequestReceived);
+        }
+
+        [Test]
+        public void OnCommandRequest_should_error_if_unknown_component_id_received()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnCommandRequest(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnCommandResponse_should_be_delegated_to_correct_dispatcher()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(TestComponentId, TestCommandIndex, TestCommandRequestId))
+            {
+                receiveSystem.OnCommandResponse(wrappedOp.Op);
+            }
+
+            Assert.IsTrue(componentDispatcher.HasCommandResponseReceived);
+        }
+
+        [Test]
+        public void OnCommandResponse_should_error_if_unknown_component_id_received()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
+                receiveSystem.OnCommandResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnDisconnect_should_add_OnDisconnected_to_WorkerEntity_and_deallocate_world_command_senders()
+        {
+            const string DisconnectReason = "Testing disconnect.";
+
+            var createEntityRequestsHandle =
+                entityManager.GetComponentData<WorldCommands.CreateEntity.CommandSender>(worker.WorkerEntity).Handle;
+            var deleteEntityRequestsHandle =
+                entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandSender>(worker.WorkerEntity).Handle;
+            var entityQueryRequestsHandle =
+                entityManager.GetComponentData<WorldCommands.EntityQuery.CommandSender>(worker.WorkerEntity).Handle;
+            var reserveEntityIdsRequestsHandle =
+                entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(worker.WorkerEntity).Handle;
+
+            using (var wrappedOp = WorkerOpFactory.CreateDisconnectOp(DisconnectReason))
+            {
+                receiveSystem.OnDisconnect(wrappedOp.Op);
+            }
+
+            Assert.IsTrue(entityManager.HasComponent<OnDisconnected>(worker.WorkerEntity));
+            Assert.AreEqual(DisconnectReason,
+                entityManager.GetSharedComponentData<OnDisconnected>(worker.WorkerEntity).ReasonForDisconnect);
+
+            Assert.Throws<ArgumentException>(() => WorldCommands.CreateEntity.RequestsProvider.Get(createEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() => WorldCommands.DeleteEntity.RequestsProvider.Get(deleteEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() => WorldCommands.EntityQuery.RequestsProvider.Get(entityQueryRequestsHandle));
+            Assert.Throws<ArgumentException>(() => WorldCommands.ReserveEntityIds.RequestsProvider.Get(reserveEntityIdsRequestsHandle));
+        }
+
+        [Test]
+        public void OnCreateEntityResponse_should_add_received_responses_to_entity()
+        {
+            var entity = SetupTestEntity();
+
+            var emptyRequest = new WorldCommands.CreateEntity.Request();
+            var context = "Some context";
+
+            createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity,
+                    emptyRequest, context, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
+            {
+                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+
+                Assert.IsTrue(entityManager.HasComponent<WorldCommands.CreateEntity.CommandResponses>(entity));
+
+                var responses = entityManager.GetComponentData<WorldCommands.CreateEntity.CommandResponses>(entity);
+
+                int count = 0;
+                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+                Assert.AreEqual(1, count);
+
+                var response = responses.Responses[0];
+
+                Assert.AreEqual(emptyRequest, response.RequestPayload);
+                Assert.AreEqual(context, response.Context);
+                Assert.AreEqual(TestCommandRequestId, response.RequestId);
+                Assert.AreEqual(wrappedOp.Op, response.Op);
+            }
+        }
+
+        [Test]
+        public void OnCreateEntityRespoonse_should_error_if_request_id_not_found()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnCreateEntityResponse_should_log_if_corresponding_entity_not_found()
+        {
+            var emptyRequest = new WorldCommands.CreateEntity.Request();
+
+            createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.CreateEntity.Request>(Entity.Null,
+                    emptyRequest, null, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
+                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnDeleteEntityResponse_should_add_received_responses_to_entity()
+        {
+            var entity = SetupTestEntity();
+
+            var emptyRequest = new WorldCommands.DeleteEntity.Request();
+            var context = "Some context";
+
+            deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity,
+                    emptyRequest, context, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            {
+                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+
+                Assert.IsTrue(entityManager.HasComponent<WorldCommands.DeleteEntity.CommandResponses>(entity));
+
+                var responses = entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandResponses>(entity);
+
+                int count = 0;
+                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+                Assert.AreEqual(1, count);
+
+                var response = responses.Responses[0];
+
+                Assert.AreEqual(emptyRequest, response.RequestPayload);
+                Assert.AreEqual(context, response.Context);
+                Assert.AreEqual(TestCommandRequestId, response.RequestId);
+                Assert.AreEqual(wrappedOp.Op, response.Op);
+            }
+        }
+
+        [Test]
+        public void OnDeleteEntityRespoonse_should_error_if_request_id_not_found()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnDeleteEntityResponse_should_log_if_corresponding_entity_not_found()
+        {
+            var emptyRequest = new WorldCommands.DeleteEntity.Request();
+
+            deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.DeleteEntity.Request>(Entity.Null,
+                    emptyRequest, null, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
+                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnEntityQueryResponse_should_add_received_responses_to_entity()
+        {
+            var entity = SetupTestEntity();
+
+            var emptyRequest = new WorldCommands.EntityQuery.Request();
+            var context = "Some context";
+
+            entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity,
+                    emptyRequest, context, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            {
+                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+
+                Assert.IsTrue(entityManager.HasComponent<WorldCommands.EntityQuery.CommandResponses>(entity));
+
+                var responses = entityManager.GetComponentData<WorldCommands.EntityQuery.CommandResponses>(entity);
+
+                int count = 0;
+                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+                Assert.AreEqual(1, count);
+
+                var response = responses.Responses[0];
+
+                Assert.AreEqual(emptyRequest, response.RequestPayload);
+                Assert.AreEqual(context, response.Context);
+                Assert.AreEqual(TestCommandRequestId, response.RequestId);
+                Assert.AreEqual(wrappedOp.Op, response.Op);
+            }
+        }
+
+        [Test]
+        public void OnEntityQueryResponse_should_error_if_request_id_not_found()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnEntityQueryResponse_should_log_if_corresponding_entity_not_found()
+        {
+            var emptyRequest = new WorldCommands.EntityQuery.Request();
+
+            entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.EntityQuery.Request>(Entity.Null,
+                    emptyRequest, null, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
+                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnReserveEntityIdsResponse_should_add_received_responses_to_entity()
+        {
+            var entity = SetupTestEntity();
+
+            var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
+            var context = "Some context";
+
+            reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity,
+                    emptyRequest, context, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            {
+                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+
+                Assert.IsTrue(entityManager.HasComponent<WorldCommands.ReserveEntityIds.CommandResponses>(entity));
+
+                var responses = entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandResponses>(entity);
+
+                int count = 0;
+                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+                Assert.AreEqual(1, count);
+
+                var response = responses.Responses[0];
+
+                Assert.AreEqual(emptyRequest, response.RequestPayload);
+                Assert.AreEqual(context, response.Context);
+                Assert.AreEqual(TestCommandRequestId, response.RequestId);
+                Assert.AreEqual(wrappedOp.Op, response.Op);
+            }
+        }
+
+        [Test]
+        public void OnReserveEntityIdsResponse_should_error_if_request_id_not_found()
+        {
+            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
+        }
+
+        [Test]
+        public void OnReserveEntityIdsResponse_should_log_if_corresponding_entity_not_found()
+        {
+            var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
+
+            reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+                new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(Entity.Null,
+                    emptyRequest, null, TestCommandRequestId));
+
+            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            {
+                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
+                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+                logDispatcher.AssertAgainstExpectedLogs();
+            }
         }
 
         private Entity SetupTestEntity()
@@ -169,7 +607,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
     }
 
-    public class TestComponentDispatcher : ComponentDispatcherHandler, SpatialOSReceiveSystem.ITestComponentDispatcher
+    [DisableAutoRegister]
+    public class TestComponentDispatcher : ComponentDispatcherHandler
     {
         public bool HasAddComponentReceived;
         public bool HasRemoveComponentReceived;
@@ -197,7 +636,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public override void OnAddComponent(AddComponentOp op)
         {
             HasAddComponentReceived = true;
-            op.Data.SchemaData.Value.Dispose();
         }
 
         public override void OnRemoveComponent(RemoveComponentOp op)
@@ -208,7 +646,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public override void OnComponentUpdate(ComponentUpdateOp op)
         {
             HasComponentUpdateReceived = true;
-            op.Update.SchemaData.Value.Dispose();
         }
 
         public override void OnAuthorityChange(AuthorityChangeOp op)
@@ -219,13 +656,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public override void OnCommandRequest(CommandRequestOp op)
         {
             HasCommandRequestReceived = true;
-            op.Request.SchemaData.Value.Dispose();
         }
 
         public override void OnCommandResponse(CommandResponseOp op)
         {
             HasCommandResponseReceived = true;
-            op.Response.SchemaData.Value.Dispose();
         }
 
         public override void AddCommandComponents(Entity entity)

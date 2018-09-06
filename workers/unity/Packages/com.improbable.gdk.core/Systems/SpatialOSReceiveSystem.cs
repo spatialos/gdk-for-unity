@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker;
@@ -397,7 +398,7 @@ namespace Improbable.Gdk.Core
             var componentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract
-                    && !typeof(ITestComponentDispatcher).IsAssignableFrom(type));
+                    && type.GetCustomAttribute(typeof(ComponentDispatcherHandler.DisableAutoRegisterAttribute)) == null);
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)
@@ -434,14 +435,6 @@ namespace Improbable.Gdk.Core
 
             public const string NoEntityFoundDuringDeletion =
                 "Tried to delete an entity but there is no entity associated with that EntityId.";
-        }
-
-        /// <summary>
-        ///     This interface should be added to component dispatchers that you do not want to be added by default
-        ///     to the SpatialOSReceiveSystem. This is intended to be used in testing.
-        /// </summary>
-        internal interface ITestComponentDispatcher
-        {
         }
     }
 }
