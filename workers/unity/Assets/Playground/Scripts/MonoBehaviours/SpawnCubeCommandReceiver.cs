@@ -32,7 +32,7 @@ namespace Playground.MonoBehaviours
 
         public void OnEnable()
         {
-            logDispatcher = GetComponent<SpatialOSComponent>().LogDispatcher;
+            logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerCommandRequestHandler.OnSpawnCubeRequest += OnSpawnCubeRequest;
             worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
             worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;

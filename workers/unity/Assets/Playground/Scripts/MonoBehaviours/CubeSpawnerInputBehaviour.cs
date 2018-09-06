@@ -41,7 +41,7 @@ namespace Playground.MonoBehaviours
         private void OnEnable()
         {
             var spatialOSComponent = GetComponent<SpatialOSComponent>();
-            logDispatcher = spatialOSComponent.LogDispatcher;
+            logDispatcher = spatialOSComponent.Worker.LogDispatcher;
             ownEntityId = spatialOSComponent.SpatialEntityId;
 
             cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;

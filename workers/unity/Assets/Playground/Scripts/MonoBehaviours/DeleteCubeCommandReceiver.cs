@@ -28,7 +28,7 @@ namespace Playground.MonoBehaviours
 
         public void OnEnable()
         {
-            logDispatcher = GetComponent<SpatialOSComponent>().LogDispatcher;
+            logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerCommandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
             worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
