@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
-            if (entityManager.HasComponent<GameObjectReference>(entity))
+            if (entityManager.Exists(entity))
             {
                 foreach (var component in gameObject.GetComponents<Component>())
                 {

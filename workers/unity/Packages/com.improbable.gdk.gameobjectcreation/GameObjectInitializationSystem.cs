@@ -92,9 +92,8 @@ namespace Improbable.Gdk.GameObjectCreation
                 {
                     linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                     gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
-                    PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
-                    entityToGameObjects.Remove(entity);   
                 }
+                entityToGameObjects.Remove(entity);
                 PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
             }
 
