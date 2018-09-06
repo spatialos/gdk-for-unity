@@ -62,7 +62,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 var data = Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
 
                 var update = new Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update
                 {
@@ -92,7 +92,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
                 else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentAdded<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 }
                 else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentRemoved<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                 }
                 else
                 {
@@ -333,7 +333,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity);
-                        entityManager.AddComponentData(entity, new Authoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
 
                         // Add event senders
                         {
@@ -360,7 +360,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity))
@@ -375,7 +375,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity);
-                        entityManager.AddComponentData(entity, new NotAuthoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
 
                         // Remove event senders
                         {

@@ -4,7 +4,7 @@
 
 ##  Logging
 
-The Unity GDK uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface: 
+The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
 *  `LoggingDispatcher`, which simply logs to the Unity console
 *  `ForwardingDispatcher`, which logs to the Unity console and forwards it to the SpatialOS Console
@@ -18,7 +18,7 @@ You can access the dispatcher through the `MutableView`. The dispatcher provides
 * `LogType` (e.g. `UnityEngine.LogType.Error`)
 * `LogEvent`, which stores the message and other context variables in the Data dictionary
 
-There are two log context variables: 
+There are two log context variables:
 
 * `LoggingUtils.LoggerName`, which specifies where the log was sent from
 * `LoggingUtils.EntityId`, which links the log to a specific entity
@@ -40,7 +40,7 @@ worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
 The `LogEvent` class allows construction of enhanced log messages.
 * Use the `WithField` method to set additional information to be displayed with the log message.
 * Use the `WithContext(UnityEngine.Object)` method to add a context object to be passed into the Unity console.
- 
+
 **Note**: For `LogType.Exception`, add a relevant exception to the `LogEvent` class using the `WithException(Exception)` method. The `WithException` method will be ignored for other `LogType` values.
 
 ### Creating and using your own dispatcher
@@ -52,7 +52,7 @@ public class MyCustomDispatcher: ILogDispatcher
 {
     public void HandleLog(LogType type, LogEvent logEvent)
     {
-        // Handle Log 
+        // Handle Log
     }
 }
 ```
@@ -70,4 +70,4 @@ public class UnityClient : WorkerBase
 ```
 
 -----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

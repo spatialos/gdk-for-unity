@@ -26,8 +26,7 @@ namespace Improbable.Gdk.Core
             if (setComponentObjectMethodInfo == null)
             {
                 throw new MissingMethodException(
-                    "Could not find the EntityManager.SetComponentObject(Entity, ComponentType, object) method.\n" +
-                    "Please ensure you are using a compatible version of the Unity.Entities package.");
+                    "Could not find the EntityManager.SetComponentObject(Entity, ComponentType, object) method.");
             }
 
             SetComponentObjectAction =

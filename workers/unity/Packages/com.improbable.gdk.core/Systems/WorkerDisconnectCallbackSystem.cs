@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateAfter(typeof(SpatialOSReceiveSystem))]
     public class WorkerDisconnectCallbackSystem : ComponentSystem

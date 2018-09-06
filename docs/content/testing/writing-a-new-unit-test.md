@@ -10,10 +10,10 @@ This document covers Unity tests only (that is tests of the Unity project which 
 
 ## Prerequisites
 
-Please look through and understand the follow documentation and videos before writing a new test:
+Please look through and understand the following documentation and videos before writing a new test:
 * SpatialOS GDK for Unity documentation - [Testing overview](./testing-overview.md)
 * SpatialOS GDK for Unity documentation - [How to run tests](./how-to-run-tests.md)
-* SptialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
+* SpatialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
@@ -78,7 +78,7 @@ Following the [test directory structure instructions](./testing-guidelines.md#te
 `workers/Unity/Assets/Gdk/Core/Tests/EditMode/Utility/MyClassTests.cs`.
 
 (This assumes that the `workers/Unity/Packages/com.improbable.gdk.core/Tests/` directory exists.
- If it does not exist, see the section on 
+ If it does not exist, see the section on
  [How to  create a new test folder and assembly](#how-to-create-a-new-test-folder-and-assembly).).
 
 ### Test fixtures
@@ -234,8 +234,8 @@ In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.
 
 You can follow the namespace and fixture name in the hierarchy:
 
-- **Improbable** > **Gdk**  > **Core**  > **EditModeTests** > **Utility**  > **MyClassStaticTests** 
-- **Improbable**  > **Gdk**  > **Core**  > **EditModeTests**  > **Utility**  > **MyClassInstanceTests** 
+- **Improbable** > **Gdk**  > **Core**  > **EditModeTests** > **Utility**  > **MyClassStaticTests**
+- **Improbable**  > **Gdk**  > **Core**  > **EditModeTests**  > **Utility**  > **MyClassInstanceTests**
 
 Double-click the test fixture name to run all tests within that fixture.
 
@@ -308,7 +308,7 @@ The assembly definition file should look like this in your text editor:
 
 From now on, any `.cs` file you create within this directory and its
  subdirectories should be able to refer to `NUnit.*` and `Unity.Entities.*`
- assemblies and namespaces. Additionally, these assemblies are not 
+ assemblies and namespaces. Additionally, these assemblies are not
  included within player builds.
 
 For more information, please see the Unity documentation on [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).

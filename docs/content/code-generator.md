@@ -5,7 +5,7 @@
 
 ## The code generator
 
-The Unity GDK comes packaged with a custom code generator. This doc will detail how the code generator works on a high level and describe how to make changes to it. The source code for the code generator can be found in the [code_generator](../../workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator) directory in the root of the repository and is written in C#.
+The SpatialOS GDK for Unity comes packaged with a custom code generator. This doc will detail how the code generator works on a high level and describe how to make changes to it. The source code for the code generator can be found in the [code_generator](../../workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator) directory in the root of the repository and is written in C#.
 
 ### High-level breakdown
 
@@ -77,4 +77,4 @@ The process of editing the code generator is simple:
 If any changes you make change the input parameters or add new ones, you should add them to `Packages/com.improbable.gdk.tools/GenerateCode.cs` so it runs correctly!
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

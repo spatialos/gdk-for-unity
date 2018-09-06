@@ -9,12 +9,13 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// <summary>
     ///     Gathers incoming dispatcher ops and invokes callbacks on relevant GameObjects.
     /// </summary>
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
     internal class GameObjectDispatcherSystem : ComponentSystem
     {
         private readonly Dictionary<Entity, MonoBehaviourActivationManager> entityToActivationManager =
             new Dictionary<Entity, MonoBehaviourActivationManager>();
-        private readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
+        internal readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
             new Dictionary<Entity, InjectableStore>();
 
         public readonly List<GameObjectComponentDispatcherBase> GameObjectComponentDispatchers =
@@ -22,17 +23,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private RequiredFieldInjector injector;
         private ILogDispatcher logger;
-
-        internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
-        {
-            if (!entityToActivationManager.ContainsKey(entity))
-            {
-                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
-            }
-
-            entityToActivationManager.Remove(entity);
-            entityToReaderWriterStore.Remove(entity);
-        }
 
         protected override void OnCreateManager(int capacity)
         {
@@ -175,18 +165,41 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        public void CreateActivationManagerAndReaderWriterStore(Entity entity)
+        internal void CreateActivationManagerAndReaderWriterStore(Entity entity, GameObject gameObject)
         {
             if (entityToActivationManager.ContainsKey(entity))
             {
                 throw new ActivationManagerAlreadyExistsException($"MonoBehaviourActivationManager already exists for entity {entity.Index}.");
             }
 
-            var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             var store = new InjectableStore();
             entityToReaderWriterStore.Add(entity, store);
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityToActivationManager.Add(entity, manager);
+        }
+
+        internal void RemoveActivationManagerAndReaderWriterStore(Entity entity)
+        {
+            if (!entityToActivationManager.TryGetValue(entity, out var activationManager))
+            {
+                throw new ActivationManagerNotFoundException($"MonoBehaviourActivationManager not found for entity {entity.Index}.");
+            }
+
+            entityToActivationManager.Remove(entity);
+            entityToReaderWriterStore.Remove(entity);
+
+            // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
+            activationManager.Dispose();
+        }
+
+        protected override void OnDestroyManager()
+        {
+            foreach (var entity in new List<Entity>(entityToActivationManager.Keys))
+            {
+                RemoveActivationManagerAndReaderWriterStore(entity);
+            }
+
+            base.OnDestroyManager();
         }
     }
 }
