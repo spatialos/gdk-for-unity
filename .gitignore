@@ -1,6 +1,5 @@
 /build
 /workers/unity/build/
-/test-project/build
 /logs/
 .spatialos/
 .idea/
@@ -39,7 +38,6 @@ sysinfo.txt
 # Once a directory is ignored by git, nothing underneath it can ever be un-ignored.
 workers/unity/Assets/Generated/Source.meta
 workers/unity/Assets/Generated/Source/**/*.*
-!workers/unity/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
 workers/unity/Assets/Plugins/Improbable/
 workers/unity/Assets/Plugins/Improbable.meta
@@ -52,6 +50,7 @@ workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/
 
 
 # Test project.
+/test-project/build
 test-project/*.csproj
 test-project/*.sln
 test-project/[Ll]ibrary/
@@ -60,3 +59,7 @@ test-project/[Ll]ogs/
 test-project/Assets/Plugins/Improbable/
 test-project/Assets/Plugins/Improbable.meta
 test-project/ProjectSettings/UnityConnectSettings.asset
+test-project/Assets/Generated/Source.meta
+test-project/Assets/Generated/Source/**/*.*
+!test-project/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
+
