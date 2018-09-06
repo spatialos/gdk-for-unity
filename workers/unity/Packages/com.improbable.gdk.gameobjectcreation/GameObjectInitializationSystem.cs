@@ -85,7 +85,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 var entity = removedEntitiesData.Entities[i];
                 var spatialEntityId = EntityManager.GetComponentData<HasGameObjectSystemState>(entity).EntityId;
                 var gameObject = entityToGameObjects[entity];
-                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject);
+                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                 gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
                 PostUpdateCommands.RemoveComponent<HasGameObjectSystemState>(entity);
                 entityToGameObjects.Remove(entity);
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 var entity = entityToGameObject.Key;
                 var gameObject = entityToGameObject.Value;
                 var spatialEntityId = EntityManager.GetComponentData<HasGameObjectSystemState>(entity).EntityId;
-                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject);
+                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                 gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
             }
             entityToGameObjects.Clear();

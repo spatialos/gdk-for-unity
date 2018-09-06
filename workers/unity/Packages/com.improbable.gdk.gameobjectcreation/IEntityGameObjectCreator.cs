@@ -22,7 +22,7 @@ namespace Improbable.Gdk.GameObjectCreation
         ///     Called when a SpatialOS Entity is removed from the worker's view.
         /// </summary>
         /// <param name="linkedGameObject">
-        ///     The GameObject linked to the entity, or null if there is none.
+        ///     The GameObject linked to the entity.
         /// </param>
         void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject);
     }
