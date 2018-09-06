@@ -83,8 +83,7 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 var entity = removedEntitiesData.Entities[i];
                 var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
-                var gameObject = entityToGameObjects[entity];
-                if (gameObject != null)
+                if (entityToGameObjects.TryGetValue(entity, out var gameObject))
                 {
                     linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
                 }
