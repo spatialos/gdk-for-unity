@@ -25,10 +25,10 @@ namespace Playground
             var archetypeComponent = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
 
             var entity = EntityBuilder.Begin()
-                .AddPosition(coords.X, 0, coords.Z, WorkerUtils.UnityGameLogic)
+                .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)

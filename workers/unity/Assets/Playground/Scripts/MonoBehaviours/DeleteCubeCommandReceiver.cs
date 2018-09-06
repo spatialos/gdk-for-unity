@@ -3,6 +3,7 @@ using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
 
@@ -17,30 +18,25 @@ namespace Playground.MonoBehaviours
 {
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private CubeSpawner.Requirables.CommandRequestHandler commandRequestHandler;
-        [Require] private CubeSpawner.Requirables.Writer writer;
+        [Require] private CubeSpawner.Requirables.Writer cubeSpawnerWriter;
+        [Require] private CubeSpawner.Requirables.CommandRequestHandler cubeSpawnerCommandRequestHandler;
         [Require] private WorldCommands.Requirables.WorldCommandRequestSender worldCommandRequestSender;
         [Require] private WorldCommands.Requirables.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
         private const string CouldNotDeleteEntityWithId = "Could not delete entity with id {0}: {1}.";
 
-        private const string TheEntityHasBeenUnexpectedlyRemovedFromTheList =
-            "The entity {0} has been unexpectedly removed from the list.";
-
-        private readonly HashSet<long> sentRequestIds = new HashSet<long>();
-
         public void OnEnable()
         {
             logDispatcher = GetComponent<SpatialOSComponent>().LogDispatcher;
-            commandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
+            cubeSpawnerCommandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
             worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
         private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
         {
             var entityId = requestResponder.Request.Payload.CubeEntityId;
-            var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
+            var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data);
 
             if (!spawnedCubes.Contains(entityId))
             {
@@ -51,13 +47,13 @@ namespace Playground.MonoBehaviours
                 requestResponder.SendResponse(new Empty());
             }
 
-            sentRequestIds.Add(worldCommandRequestSender.DeleteEntity(entityId));
+            worldCommandRequestSender.DeleteEntity(entityId, context: this);
         }
 
 
         private void OnDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
-            if (!sentRequestIds.Remove(response.RequestId))
+            if (!ReferenceEquals(this, response.Context))
             {
                 // This response was not for a command from this behaviour.
                 return;
@@ -74,19 +70,21 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(writer.Data);
+            var spawnedCubesCopy =
+                new List<EntityId>(CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data));
 
-            if (!spawnedCubes.Remove(entityId))
+            if (!spawnedCubesCopy.Remove(entityId))
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format(TheEntityHasBeenUnexpectedlyRemovedFromTheList, entityId)));
+                    new LogEvent(string.Format("The entity {0} has been unexpectedly removed from the list.",
+                        entityId)));
                 return;
             }
 
-            writer.Send(new CubeSpawner.Update
+            cubeSpawnerWriter.Send(new CubeSpawner.Update
             {
-                SpawnedCubes = spawnedCubes,
-                NumSpawnedCubes = (uint) spawnedCubes.Count
+                SpawnedCubes = spawnedCubesCopy,
+                NumSpawnedCubes = (uint) spawnedCubesCopy.Count
             });
         }
     }

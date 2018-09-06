@@ -4,7 +4,7 @@ import "playground/empty.schema";
 
 type DeleteCubeRequest
 {
-  EntityId cube_entity_id = 1;
+    EntityId cube_entity_id = 1;
 }
 
 component CubeSpawner

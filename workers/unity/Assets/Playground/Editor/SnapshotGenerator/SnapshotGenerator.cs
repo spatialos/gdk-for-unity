@@ -46,7 +46,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
                 .AddMetadata("PlayerCreator", WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(playerCreator, WorkerUtils.UnityGameLogic)
                 .Build();
             snapshot.AddEntity(spawner);
@@ -105,7 +105,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(EntityTemplateUtils.AllWorkerAttributes)
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(collisions, WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(archetype, WorkerUtils.UnityGameLogic)

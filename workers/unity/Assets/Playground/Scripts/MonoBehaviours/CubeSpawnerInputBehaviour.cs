@@ -17,7 +17,7 @@ namespace Playground.MonoBehaviours
 {
     public class CubeSpawnerInputBehaviour : MonoBehaviour
     {
-        [Require] private PlayerInput.Requirables.Reader playerInputReader;
+        [Require] private PlayerInput.Requirables.Writer playerInputWriter;
         [Require] private CubeSpawner.Requirables.Reader cubeSpawnerReader;
         [Require] private CubeSpawner.Requirables.CommandRequestSender cubeSpawnerCommandSender;
         [Require] private CubeSpawner.Requirables.CommandResponseHandler cubeSpawnerCommandResponseHandler;
@@ -66,7 +66,7 @@ namespace Playground.MonoBehaviours
 
         private void Update()
         {
-            if (playerInputReader.Authority != Authority.Authoritative)
+            if (playerInputWriter.Authority != Authority.Authoritative)
             {
                 // Only send commands if we're the player with input
                 return;
@@ -94,7 +94,7 @@ namespace Playground.MonoBehaviours
 
             if (spawnedCubes.Count == 0)
             {
-                logDispatcher.HandleLog(LogType.Warning, new LogEvent("No cubes left to delete."));
+                logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
                 return;
             }
 
