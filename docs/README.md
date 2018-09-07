@@ -38,8 +38,7 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
 * [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
 * [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
-* [Glossary]
-* [Snapshots]
+* [Snapshots](content/snapshots.md)
 
 ##### Configuring your project
 * [Starting workers](content/workers.md)
