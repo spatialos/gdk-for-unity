@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
@@ -56,7 +56,7 @@ The `WorkerSystem` stores the following data:
 
 The Worker Entity provides the API to send and receive [Commands]([https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md](https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md)). 
 
-To check whether the worker just connected or disconnected, you can filter for the following [temporary components]([https://github.com/spatialos/UnityGDK/blob/master/docs/content/temporary-components.md](https://github.com/spatialos/UnityGDK/blob/master/docs/content/temporary-components.md)):
+To check whether the worker just connected or disconnected, you can filter for the following [temporary components](https://github.com/spatialos/UnityGDK/blob/master/docs/content/temporary-components.md):
 
     * `OnConnected`: the worker just connected to the SpatialOS Runtime. 
 
@@ -109,4 +109,4 @@ namespace YourProject
 
 ----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
