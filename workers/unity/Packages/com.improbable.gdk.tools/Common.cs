@@ -67,7 +67,14 @@ namespace Improbable.Gdk.Tools
             }
 
             path = path.Replace("file:", string.Empty);
-            path = $"{PackagesDir}/{path}";
+
+            if (Path.IsPathRooted(path))
+            {
+                // A "rooted path" is an absolute path, therefore it will should point directly at the package.
+                return path;
+            }
+
+            path = Path.GetFullPath(Path.Combine(PackagesDir, path));
 
             return path;
         }
