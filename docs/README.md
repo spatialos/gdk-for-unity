@@ -23,17 +23,9 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 
 #### SpatialOS GDK for Unity
 
-If you want to get started:
-* Get to know the concepts (SpatialOS ones??)
-* Install and set up (link to docs)
-* Look at the playground (doc?)
+If you're new to the SpatialOS GDK for Unity, check out the docs under [Getting started](#getting-started) and [Concepts](#concepts), and then [Configuring your project](#configuring-your-project).
 
-There are two types of development: 
-
-* GameObject with MonoBehaviour
-* ECS
-
-The documentation reflects these two workflows.
+If you're already set up, you can learn about using the GDK with [GameObjects and MonoBehaviours](#using-the-gdk-with-gameobjects-and-monobehaviours) or with [Unity ECS](#using-the-gdk-with-unity-ecs).
 
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)
@@ -42,17 +34,17 @@ The documentation reflects these two workflows.
 ##### Frequently asked questions (FAQs)
 * [FAQs](content/faqs/faqs.md)
 
-#### Concepts and feature set
+##### Concepts
 * [SpatialOS concepts (on the SpatialOS website)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
-* [The Core Module and Feature Modules overview]
+* [Core Module and Feature Modules overview](content/modules-overview.md)
 * [Glossary]
 * [Snapshots]
 
-#### Configuring your project
-* [Starting workers]
-* [Setting up a new project](set-up-new-project.md)
+##### Configuring your project
+* [Starting workers](content/workers.md)
+* [Setting up a new project](content/set-up-new-project.md)
 
-#### Using the GDK with GameObjects and MonoBehaviours
+##### Using the GDK with GameObjects and MonoBehaviours
 * Setting up GameObjects for interaction with SpatialOS
 * Reading and Writing Component Data
 * Sending and receiving events
@@ -60,7 +52,7 @@ The documentation reflects these two workflows.
 * World commands
 * Logging and accessing the worker
 
-#### Using the GDK with Unity ECS
+##### Using the GDK with Unity ECS
 * [System update order](content/system-update-order.md)
 * [Components and component updates](content/component-data.md)
 * [Sending and receiving events](content/events.md)
@@ -73,7 +65,7 @@ The documentation reflects these two workflows.
 * [The code generator](content/code-generator.md)
 * [Temporary components](content/temporary-components.md)
 * [Logging](content/logging.md)
-* [Accessing information about the worker during runtime]
+* [Accessing information about the worker during runtime](content/accessing-worker-info.md)
 
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
