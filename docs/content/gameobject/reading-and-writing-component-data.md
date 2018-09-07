@@ -47,7 +47,7 @@ component Health {
 
 ## How to read the component state
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. (See documentation on the [`[Require]` notation](./setting-up-gameobjects-for-interaction-with-spatialos#require-notation).
+1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
 
 2. Access the current component field values using `Reader.Data` as shown in the example below. 
 </br>(This returns a generated `ISpatialComponentData` which contains all the component field values. `ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`. )
