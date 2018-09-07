@@ -44,7 +44,7 @@ The `WorkerSystem` stores the following data:
 
     `World`: The ECS World that this worker will run its logic in.
 
-    `LogDispatcher`: A reference to the [logger]([https://github.com/spatialos/UnityGDK/blob/master/docs/content/logging.md](https://github.com/spatialos/UnityGDK/blob/master/docs/content/logging.md)) that can be used to log to the Unity Console and the SpatialOS Runtime.
+    `LogDispatcher`: A reference to the [logger](https://github.com/spatialos/UnityGDK/blob/master/docs/content/logging.md)) that can be used to log to the Unity Console and the SpatialOS Runtime.
 
     `WorkerType`: The type of this worker.
 
@@ -54,7 +54,7 @@ The `WorkerSystem` stores the following data:
 
 ### Worker Entity
 
-The Worker Entity provides the API to send and receive [Commands]([https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md](https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md)). 
+The Worker Entity provides the API to send and receive [Commands](https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md)). 
 
 To check whether the worker just connected or disconnected, you can filter for the following [temporary components](https://github.com/spatialos/UnityGDK/blob/master/docs/content/temporary-components.md):
 
