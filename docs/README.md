@@ -54,19 +54,19 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 * Logging and accessing the worker
 
 ##### Using the GDK with Unity ECS
-* [System update order](content/system-update-order.md)
-* [Components and component updates](content/component-data.md)
-* [Sending and receiving events](content/events.md)
-* [Sending and receiving commands](content/commands.md)
-* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
-* [Custom replication systems](content/custom-replication-system.md)
-* [Authority](content/authority.md)
-* [Creating entities](content/create-entity.md)
-* [Entity checkout process](content/entity-checkout-process.md)
-* [The code generator](content/code-generator.md)
-* [Temporary components](content/temporary-components.md)
-* [Logging](content/logging.md)
-* [Accessing information about the worker during runtime](content/accessing-worker-info.md)
+* [System update order](content/ecs/system-update-order.md)
+* [Components and component updates](content/ecs/component-data.md)
+* [Sending and receiving events](content/ecs/events.md)
+* [Sending and receiving commands](content/ecs/commands.md)
+* [Receiving updates from SpatialOS: Reactive components](content/ecs/reactive-components.md)
+* [Custom replication systems](content/ecs/custom-replication-system.md)
+* [Authority](content/ecs/authority.md)
+* [Creating entities](content/ecs/create-entity.md)
+* [Entity checkout process](content/ecs/entity-checkout-process.md)
+* [The code generator](content/ecs/code-generator.md)
+* [Temporary components](content/ecs/temporary-components.md)
+* [Logging](content/ecs/logging.md)
+* [Accessing information about the worker during runtime](content/ecs/accessing-worker-info.md)
 
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
