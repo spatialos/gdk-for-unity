@@ -4,7 +4,6 @@ using Improbable.PlayerLifecycle;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -12,82 +11,72 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatResponseSystem : ComponentSystem
     {
-        private struct Data
+        private struct InitializeGroup
         {
             public readonly int Length;
-
-            [ReadOnly]
-            public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
-
-            public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-            [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;
             public EntityArray Entities;
+            [ReadOnly]
+            public ComponentDataArray<PlayerHeartbeatClient.Component> NeedsHeartbeat;
+            public SubtractiveComponent<HeartbeatData> NoHeartbeatData;
         }
 
-        [Inject] private Data data;
+        private struct HeartbeatGroup
+        {
+            public readonly int Length;
+            public EntityArray Entities;
+            public ComponentDataArray<HeartbeatData> Heartbeats;
+            public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
+        }
+
+        [Inject] private InitializeGroup initializeGroup;
+        [Inject] private HeartbeatGroup heartbeatGroup;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            for (var i = 0; i < initializeGroup.Length; i++)
             {
-                var entityId = data.SpatialEntityIds[i].EntityId;
-                var responses = data.PlayerHeartbeatResponses[i].Responses;
-                var entity = data.Entities[i];
-                var entityDeleteSender = data.WorldCommandSenders[i];
+                PostUpdateCommands.AddComponent(initializeGroup.Entities[i], new HeartbeatData());
+            }
 
+            for (var i = 0; i < heartbeatGroup.Length; i++)
+            {
+                var heartbeatsComponent = heartbeatGroup.Heartbeats[i];
+
+                var stillAlive = false;
+                var responses = heartbeatGroup.PlayerHeartbeatResponses[i].Responses;
                 foreach (var response in responses)
                 {
-                    if (response.StatusCode != StatusCode.Success)
+                    if (response.StatusCode == StatusCode.Success)
                     {
-                        var failedHeartbeatsComponent = EntityManager.HasComponent<HeartbeatData>(entity)
-                            ? EntityManager.GetComponentData<HeartbeatData>(entity)
-                            : new HeartbeatData();
-                        failedHeartbeatsComponent.NumFailedHeartbeats++;
-                        if (EntityManager.HasComponent<HeartbeatData>(entity))
-                        {
-                            PostUpdateCommands.SetComponent(entity, failedHeartbeatsComponent);
-                        }
-                        else
-                        {
-                            PostUpdateCommands.AddComponent(entity, failedHeartbeatsComponent);
-                        }
-
-                        Debug.LogFormat(Messages.FailedHeartbeat, entityId,
-                            failedHeartbeatsComponent.NumFailedHeartbeats,
-                            PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats);
-
-                        if (failedHeartbeatsComponent.NumFailedHeartbeats >=
-                            PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
-                        {
-                            Debug.LogFormat(Messages.DeletingPlayer, entityId);
-                            entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
-                            (
-                                entityId
-                            ));
-                            data.WorldCommandSenders[i] = entityDeleteSender;
-                        }
-                    }
-                    else
-                    {
-                        if (EntityManager.HasComponent<HeartbeatData>(entity))
-                        {
-                            PostUpdateCommands.RemoveComponent<HeartbeatData>(entity);
-                        }
+                        stillAlive = true;
+                        break;
                     }
                 }
 
-                PostUpdateCommands.RemoveComponent<AwaitingHeartbeatResponseTag>(entity);
+                if (stillAlive)
+                {
+                    heartbeatsComponent.NumFailedHeartbeats = 0;
+                }
+                else
+                {
+                    heartbeatsComponent.NumFailedHeartbeats++;
+
+                    if (heartbeatsComponent.NumFailedHeartbeats >=
+                        PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
+                    {
+                        var entityDeleteSender = heartbeatGroup.WorldCommandSenders[i];
+                        entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+                        (
+                            heartbeatGroup.SpatialEntityIds[i].EntityId
+                        ));
+                        heartbeatGroup.WorldCommandSenders[i] = entityDeleteSender;
+                    }
+                }
+
+                heartbeatGroup.Heartbeats[i] = heartbeatsComponent;
             }
-        }
-
-        internal static class Messages
-        {
-            public const string FailedHeartbeat =
-                "Client of player entity {0} failed to respond to heartbeat. Number of consecutive failures: {1}/{2}.";
-
-            public const string DeletingPlayer =
-                "Client of player entity {0} failed to respond to heartbeat and exhausted all retries. Deleting player.";
         }
     }
 }

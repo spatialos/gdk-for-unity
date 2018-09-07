@@ -17,8 +17,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>
                 HeartbeatRequests;
 
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>
-                HeartbeatResponders;
+            public ComponentDataArray<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat> HeartbeatResponders;
         }
 
         [Inject] private HeartbeatData heartbeatData;

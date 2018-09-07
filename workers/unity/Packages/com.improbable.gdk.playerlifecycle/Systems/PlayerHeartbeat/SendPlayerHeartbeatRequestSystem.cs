@@ -23,11 +23,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct Data
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat> RequestSenders;
+            public ComponentDataArray<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat> RequestSenders;
             [ReadOnly] public ComponentDataArray<Authoritative<PlayerHeartbeatServer.Component>> AuthorityMarkers;
+            [ReadOnly] public ComponentDataArray<HeartbeatData> HasHeartbeatData;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-            public EntityArray Entities;
-            public SubtractiveComponent<AwaitingHeartbeatResponseTag> NotAwaitingHeartbeatResponse;
         }
 
         [Inject] private Data data;
@@ -48,9 +47,6 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var entityId = data.SpatialEntityIds[i].EntityId;
                 data.RequestSenders[i].RequestsToSend
                     .Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateRequest(entityId, new Empty()));
-
-                var entity = data.Entities[i];
-                PostUpdateCommands.AddComponent(entity, new AwaitingHeartbeatResponseTag());
             }
         }
     }
