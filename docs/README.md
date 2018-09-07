@@ -23,7 +23,7 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 
 #### SpatialOS GDK for Unity
 
-If you're new to the SpatialOS GDK for Unity, check out the docs under [Getting started](#getting-started) and [Concepts](#concepts), and then [Configuring your project](#configuring-your-project).
+If you're new to the SpatialOS GDK for Unity, check out the docs under [Getting started](#getting-started) and [Concepts](#concepts-and-features), and then [Configuring your project](#configuring-your-project).
 
 If you're already set up, you can learn about using the GDK with [GameObjects and MonoBehaviours](#using-the-gdk-with-gameobjects-and-monobehaviours) or with [Unity ECS](#using-the-gdk-with-unity-ecs).
 
@@ -34,9 +34,9 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 ##### Frequently asked questions (FAQs)
 * [FAQs](content/faqs/faqs.md)
 
-##### Concepts
+##### Concepts and features
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
-* [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/concepts/glossary) (on the SpatialOS docs site)
+* [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
 * [Core Module and Feature Modules overview](content/modules-overview.md)
 * [Glossary]
 * [Snapshots]
@@ -46,7 +46,7 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 * [Setting up a new project](content/set-up-new-project.md)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
-* Setting up GameObjects for interaction with SpatialOS
+* [Setting up GameObjects for interaction with SpatialOS](content/gameobjects/set-up-gameobjects.md)
 * Reading and Writing Component Data
 * Sending and receiving events
 * Sending and receiving commands

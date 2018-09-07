@@ -1,6 +1,6 @@
 # The SpatialOS GDK for Unity readme (alpha)
 
-Welcome to the SpatialOS and GDK for Unity community.
+Welcome to the SpatialOS GDK for Unity community.
 
 Our SpatialOS community shapes the functionality of the SpatialOS GDK for Unity, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us on the *feedback* section in our [forums](https://forums.improbable.io/) (use the *unity-gdk tag* - this [link](https://forums.improbable.io/latest?tags=unity-gdk) takes you there and pre-fills the category and tag).
 
