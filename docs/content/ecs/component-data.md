@@ -2,7 +2,6 @@
 
 -----
 
-
 ## ECS: Components and component updates
 The [code generator](./code-generator.md) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
