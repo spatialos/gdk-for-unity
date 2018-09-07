@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class LoggingDispatcher : ILogDispatcher
     {
-        public Connection Connection { get; set; }
+        public Worker Worker { get; set; }
 
         public void HandleLog(LogType type, LogEvent logEvent)
         {

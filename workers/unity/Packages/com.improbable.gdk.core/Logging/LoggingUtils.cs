@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Core
         private const string UnknownLogger = "UnknownLogger";
         public const string EntityId = "EntityId";
         public const string LoggerName = "LoggerName";
+        public const string WorkerType = "WorkerType";
 
         public static EntityId? ExtractEntityId(Dictionary<string, object> data)
         {

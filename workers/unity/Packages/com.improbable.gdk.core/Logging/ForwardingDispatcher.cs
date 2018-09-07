@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core
 
         private bool inHandleLog;
 
-        public Connection Connection { get; set; }
+        public Worker Worker { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Worker.Connection?.SendLogMessage(LogLevel.Error, Worker.Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
         }
 
@@ -53,6 +53,11 @@ namespace Improbable.Gdk.Core
             inHandleLog = true;
             try
             {
+                if (!string.IsNullOrEmpty(Worker?.WorkerType))
+                {
+                    logEvent.WithField(LoggingUtils.WorkerType, Worker.WorkerType);
+                }
+
                 if (type == LogType.Exception)
                 {
                     // For exception types, Unity expects an exception object to be passed.
@@ -71,7 +76,7 @@ namespace Improbable.Gdk.Core
 
                 var logLevel = LogTypeMapping[type];
 
-                if (Connection == null || logLevel < minimumLogLevel)
+                if (Worker?.Connection == null || logLevel < minimumLogLevel)
                 {
                     return;
                 }
@@ -86,7 +91,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+                Worker.Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
             }
             finally
             {
@@ -96,7 +101,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
-            Connection = null;
+            Worker = null;
             Application.logMessageReceived -= LogCallback;
         }
     }

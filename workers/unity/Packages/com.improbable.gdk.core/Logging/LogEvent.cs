@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core
         /// <returns></returns>
         public LogEvent WithField(string key, object value)
         {
-            Data.Add(key, value);
+            Data[key] = value;
             return this;
         }
 
@@ -53,19 +53,19 @@ namespace Improbable.Gdk.Core
         {
             var builder = new StringBuilder();
 
+            if (Data.TryGetValue(LoggingUtils.WorkerType, out var workerType))
+            {
+                builder.Append($"[{workerType}] ");
+            }
+
             builder.Append(Message);
 
-            if (Data.Count > 0)
+            foreach (var entry in Data)
             {
                 builder.AppendLine();
-
-                builder.AppendLine("Log event data:");
-
-                foreach (var entry in Data)
-                {
-                    builder.AppendLine($"'{entry.Key}': '{entry.Value}'");
-                }
+                builder.Append($"'{entry.Key}': '{entry.Value}'");
             }
+            builder.AppendLine();
 
             return builder.ToString();
         }
