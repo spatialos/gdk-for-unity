@@ -121,7 +121,7 @@ namespace Improbable.Gdk.Tools
                 {
                     if (!splitPath.Contains(macPath))
                     {
-                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();                        
+                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();
                     }
                 }
             }
