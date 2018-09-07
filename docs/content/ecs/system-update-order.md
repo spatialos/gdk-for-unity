@@ -1,8 +1,8 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
-## System update order in the SpatialOS GDK for Unity
+## ECS: System update order
 
 Unity provides attributes to define the [update order of systems](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
 > Note: You can only have one attribute of each type assigned to a system. If multiple are assigned they might override each other.
@@ -30,7 +30,7 @@ The SpatialOS GDK for Unity (GDK) defines several update groups which run relati
 
 Here's a diagram of the update order:  
 
-![Update order](../assets/update-order.png)
+![Update order](../../assets/update-order.png)
 
 ### Update vs FixedUpdate
 
@@ -106,4 +106,4 @@ Any system that runs on `PlayerLoop.FixedUpdate` can then inject for `BufferedTr
 
 -----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
