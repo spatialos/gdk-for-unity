@@ -1,6 +1,6 @@
 [google-docs-link]: https://docs.google.com/document/d/14_FY-Chu_illhaCCym-pv6P8NHtyN9PLzVBGSuK0ou4/edit (Please place reviews as comments into this document here)
 
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 

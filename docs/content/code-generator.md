@@ -1,9 +1,9 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 -----
 
 
-## The code generator
+## ECS: The code generator
 
 The SpatialOS GDK for Unity comes packaged with a custom code generator. This doc will detail how the code generator works on a high level and describe how to make changes to it. The source code for the code generator can be found in the [code_generator](../../workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator) directory in the root of the repository and is written in C#.
 

@@ -1,9 +1,9 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 -----
 
 
-## Creating entities
+## ECS: Creating entities
 
 To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in SpatialOS, you need to:
 1. Create an entity definition using the `EntityBuilder`

@@ -23,8 +23,57 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 
 #### SpatialOS GDK for Unity
 
+If you want to get started:
+* Get to know the concepts (SpatialOS ones??)
+* Install and set up (link to docs)
+* Look at the playground (doc?)
+
+There are two types of development: 
+
+* GameObject with MonoBehaviour
+* ECS
+
+The documentation reflects these two workflows.
+
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)
+* [Building and deploying your game](content/build-and-deploy.md)
+
+##### Frequently asked questions (FAQs)
+* [FAQs](content/faqs/faqs.md)
+
+#### Concepts and feature set
+* [SpatialOS concepts (on the SpatialOS website)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
+* [The Core Module and Feature Modules overview]
+* [Glossary]
+* [Snapshots]
+
+#### Configuring your project
+* [Starting workers]
+* [Setting up a new project](set-up-new-project.md)
+
+#### Using the GDK with GameObjects and MonoBehaviours
+Setting up GameObjects for interaction with SpatialOS
+Reading and Writing Component Data
+Sending and receiving events
+Sending and receiving commands
+World commands
+Logging and accessing the worker
+
+#### Using the GDK with Unity ECS
+System update order
+Components and component updates
+Sending and receiving events
+Sending and receiving commands
+Receiving updates from SpatialOS: Reactive components
+Custom replication systems
+Authority
+Creating entities
+Entity checkout process
+The code generator
+Temporary components
+Logging
+Accessing information about the worker during runtime
 
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
@@ -32,28 +81,9 @@ We are currently not accepting public contributions. However, we are accepting i
 * [Contributions policy](../.github/CONTRIBUTING.md)
 * [Coding standards](contributions/unity-gdk-coding-standards.md)
 
-##### Frequently asked questions (FAQs)
-* [FAQs](content/faqs/faqs.md)
-* [Summary of key features](content/faqs/key-features.md)
-
-##### Contents
-* [System update order](content/system-update-order.md)
-* [Components and component updates](content/component-data.md)
-* [Sending and receiving events](content/events.md)
-* [Sending and receiving commands](content/commands.md)
-* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
-* [Custom replication systems](content/custom-replication-system.md)
-* [Authority](content/authority.md)
-* [Creating entities](content/create-entity.md)
-* [Entity checkout process](content/entity-checkout-process.md)
-* [The code generator](content/code-generator.md)
-* [Temporary components](content/temporary-components.md)
-* [Logging](content/logging.md)
-
-
 ---
 #### Warning
-This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the GDK Core is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
 
 ----
 &copy; 2018 Improbable
