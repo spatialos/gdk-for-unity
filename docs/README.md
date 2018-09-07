@@ -53,27 +53,27 @@ The documentation reflects these two workflows.
 * [Setting up a new project](set-up-new-project.md)
 
 #### Using the GDK with GameObjects and MonoBehaviours
-Setting up GameObjects for interaction with SpatialOS
-Reading and Writing Component Data
-Sending and receiving events
-Sending and receiving commands
-World commands
-Logging and accessing the worker
+* Setting up GameObjects for interaction with SpatialOS
+* Reading and Writing Component Data
+* Sending and receiving events
+* Sending and receiving commands
+* World commands
+* Logging and accessing the worker
 
 #### Using the GDK with Unity ECS
-System update order
-Components and component updates
-Sending and receiving events
-Sending and receiving commands
-Receiving updates from SpatialOS: Reactive components
-Custom replication systems
-Authority
-Creating entities
-Entity checkout process
-The code generator
-Temporary components
-Logging
-Accessing information about the worker during runtime
+* [System update order](content/system-update-order.md)
+* [Components and component updates](content/component-data.md)
+* [Sending and receiving events](content/events.md)
+* [Sending and receiving commands](content/commands.md)
+* [Receiving updates from SpatialOS: Reactive components](content/reactive-components.md)
+* [Custom replication systems](content/custom-replication-system.md)
+* [Authority](content/authority.md)
+* [Creating entities](content/create-entity.md)
+* [Entity checkout process](content/entity-checkout-process.md)
+* [The code generator](content/code-generator.md)
+* [Temporary components](content/temporary-components.md)
+* [Logging](content/logging.md)
+* [Accessing information about the worker during runtime]
 
 ##### Contributions
 We are currently not accepting public contributions. However, we are accepting issues and we do
