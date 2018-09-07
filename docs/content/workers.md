@@ -10,7 +10,7 @@ While SpatialOS manages the current state of your game, [workers](https://docs.i
 
 In the SpatialOS GDK for Unity (GDK), a worker is responsible for its connection to the SpatialOS Runtime and its [ECS World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)). When you create a worker in the GDK using `Worker.CreateWorkerAsync`, the worker creates the ECS world and populates it with the systems from the Core module. We provide several wrappers around this `Worker` object, depending on whether you want to use the ECS or the MonoBehaviour workflow.
 
-See also documentation on [Accessing information about the worker during runtime](../ecs/accessing-worker.info.md)
+See also documentation on [Accessing information about the worker during runtime](./ecs/accessing-worker-info.md)
 
 ## Starting up a worker
 

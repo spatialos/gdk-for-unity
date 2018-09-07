@@ -54,9 +54,9 @@ The `WorkerSystem` stores the following data:
 
 ### Worker Entity
 
-The Worker Entity provides the API to send and receive [Commands](https://github.com/spatialos/UnityGDK/blob/master/docs/content/commands.md). 
+The Worker Entity provides the API to send and receive [commands](../commands.md).
 
-To check whether the worker just connected or disconnected, you can filter for the following [temporary components](https://github.com/spatialos/UnityGDK/blob/master/docs/content/temporary-components.md):
+To check whether the worker just connected or disconnected, you can filter for the following [temporary components](../temporary-components.md):
 
     * `OnConnected`: the worker just connected to the SpatialOS Runtime. 
 
