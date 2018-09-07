@@ -56,7 +56,7 @@ Planned for our alpha release, our MonoBehaviour workflow supports an API simila
 
  
 
-If you are interested in finding out more about our ECS workflow, these topics in our documentation are a good place to start: [Component updates](../component-data.md), [Events](../events.md), [Commands](../commands.md) and [Reactive components](../reactive-components.md).
+If you are interested in finding out more about our ECS workflow, these topics in our documentation are a good place to start: [Component updates](../ecs/component-data.md), [Events](../ecs/events.md), [Commands](../ecs/commands.md) and [Reactive components](../ecs/reactive-components.md).
 
 For more information on Unity ECS, see Unity’s page on the [Unity ECS](https://unity3d.com/unity/features/job-system-ECS) and their [vision](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_principles_and_vision.md) for it going forward.
 

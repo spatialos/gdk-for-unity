@@ -46,12 +46,12 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 * [Setting up a new project](content/set-up-new-project.md)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
-* [Setting up GameObjects for interaction with SpatialOS](content/gameobjects/set-up-gameobjects.md)
-* [Reading and writing component data](content/gameobjects/reading-and-writing-component-data.md)
-* [Sending and receiving events](content/gameobjects/sending-receiving-commands.md)
-* [Sending and receiving commands](content/gameobjects/sending-receiving-events.md)
-* [World commands](content/gameobjects/world-commands.md)
-* [Logging and accessing the worker](content/gameobjects/logging-and-accessing-the-worker.md)
+* [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
+* [Reading and writing component data](content/gameobject/reading-and-writing-component-data.md)
+* [Sending and receiving events](content/gameobject/sending-receiving-commands.md)
+* [Sending and receiving commands](content/gameobject/sending-receiving-events.md)
+* [World commands](content/gameobject/world-commands.md)
+* [Logging and accessing the worker](content/gameobject/logging-and-accessing-the-worker.md)
 
 ##### Using the GDK with Unity ECS
 * [System update order](content/ecs/system-update-order.md)

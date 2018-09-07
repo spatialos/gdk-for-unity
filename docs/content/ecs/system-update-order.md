@@ -30,7 +30,7 @@ The SpatialOS GDK for Unity (GDK) defines several update groups which run relati
 
 Here's a diagram of the update order:  
 
-![Update order](../assets/update-order.png)
+![Update order](../../assets/update-order.png)
 
 ### Update vs FixedUpdate
 
