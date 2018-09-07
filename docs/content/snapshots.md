@@ -11,9 +11,9 @@ You use a snapshot as the starting point for your [world](https://docs.improbabl
 You set up snapshots through code and generate them through the Unity Editor.
 
 ### Set up the snapshot
-To do this, look at the [Playground project](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Assets/Playground) which comes with the GDK for Unity. 
+To do this, look at the [Playground project](../../workers/unity/Assets/Playground) which comes with the GDK for Unity. 
 
-In the project’s [`Editor/SnapshotGenerator`](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Assets/Playground/Editor/SnapshotGenerator) folder, there is a simple example of generating a snapshot through code. 
+In the project’s [`Editor/SnapshotGenerator`](../../workers/unity/Assets/Playground/Editor/SnapshotGenerator) folder, there is a simple example of generating a snapshot through code. 
 You can use this as a base for your own project’s snapshot generation by copying the file to the same folder in your own project and editing the `SnapshotGenerator` class to add SpatialOS entities to a snapshot. 
 
 ### Generate the snapshot
