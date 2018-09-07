@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Tools
 
             if (Path.IsPathRooted(path))
             {
-                // A "rooted path" is an absolute path, therefore it will should point directly at the package.
+                // A "rooted path" is an absolute path, therefore it will point directly at the package.
                 return path;
             }
 
