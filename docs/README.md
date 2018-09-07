@@ -25,7 +25,7 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 
 If you're new to the SpatialOS GDK for Unity, check out the docs under [Getting started](#getting-started) and [Concepts](#concepts-and-features), and then look at the Playground project included in the repo and get a feel for using the GDK with either [GameObjects and MonoBehaviours](#using-the-gdk-with-gameobjects-and-monobehaviours) or with [Unity ECS](#using-the-gdk-with-unity-ecs).
 
-Once you are comfortable with the GDK and want to start a separate project, you will want to look at the section on [Configuring your project](#configuring-your-project).
+Once you are comfortable with the GDK and want to start a separate project, look at the section on [Configuring your project](#configuring-your-project).
 
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)
