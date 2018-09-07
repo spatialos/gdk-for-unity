@@ -1,7 +1,7 @@
 # SpatialOS GDK for Unity documentation
 
 #### How to get started
-We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the SpatialOS GDK for Unity (GDK) Core does from there. Use the [SpatialOS GDK for Unity: Contents](#contents) documentation, listed below, to explore how the GDK Core works.
+We recommend you start by following the [Installation and setup guide](setup-and-installing.md) to set up the GDK Core and its accompanying example scene, the Playground. You can then explore what the SpatialOS GDK for Unity (GDK) Core does from there. Use the [SpatialOS GDK for Unity: Contents](#documentation) documentation, listed below, to explore how the GDK Core works.
 
 Note that the GDK documentation assumes that you are familiar with SpatialOS concepts and the Unity ECS.
 
@@ -37,7 +37,7 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 ##### Concepts and features
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
 * [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
-* [Core Module and Feature Modules overview](content/modules-overview.md)
+* [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
 * [Glossary]
 * [Snapshots]
 
@@ -47,11 +47,11 @@ If you're already set up, you can learn about using the GDK with [GameObjects an
 
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobjects/set-up-gameobjects.md)
-* Reading and Writing Component Data
-* Sending and receiving events
-* Sending and receiving commands
-* World commands
-* Logging and accessing the worker
+* [Reading and writing component data](content/gameobjects/reading-and-writing-component-data.md)
+* [Sending and receiving events](content/gameobjects/sending-receiving-commands.md)
+* [Sending and receiving commands](content/gameobjects/sending-receiving-events.md)
+* [World commands](content/gameobjects/world-commands.md)
+* [Logging and accessing the worker](content/gameobjects/logging-and-accessing-the-worker.md)
 
 ##### Using the GDK with Unity ECS
 * [System update order](content/ecs/system-update-order.md)

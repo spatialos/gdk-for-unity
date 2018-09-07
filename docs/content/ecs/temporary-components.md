@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
@@ -41,7 +41,7 @@ class ReadComponentSystem : ComponentSystem
 At the end of the update loop, `SomeTemporaryComponent` will automatically be removed from all entities.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
 
 [//]: # (Editorial review status: Engineer review only)
 [//]: # (Questions to deal with: need to describe what a tick is. Needs to link to a doc on system execution order. Needs to link to docs describing the existing components which use this)

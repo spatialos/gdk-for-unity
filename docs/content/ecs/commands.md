@@ -261,4 +261,4 @@ This system iterates through every entity with a `Foo` SpatialOS component and s
 For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity](create-entity.md#create-an-entity-definition-using-the-entitybuilder) page.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
