@@ -230,7 +230,7 @@ namespace Improbable.Gdk.BuildSystem
 
         /// <returns>An instance of SpatialOSBuildConfiguration if one exists.</returns>
         /// <exception cref="Exception">If no assets exist of type SpatialOSBuildConfiguration</exception>
-        private static SpatialOSBuildConfiguration GetBuildConfiguration()
+        internal static SpatialOSBuildConfiguration GetBuildConfiguration()
         {
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
 
