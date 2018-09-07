@@ -26,7 +26,7 @@ namespace Improbable.Gdk.BuildSystem
         [MenuItem(ParentMenu + "/Build all workers for local", false, 3)]
         public static void BuildLocalAll()
         {
-            var platforms = SpatialOSBuildConfiguration.GetInstance().WorkerBuildConfigurations
+            var platforms = WorkerBuilder.GetBuildConfiguration().WorkerBuildConfigurations
                 .Select((x) => x.WorkerPlatform).ToArray();
             MenuBuild(platforms, BuildEnvironment.Local);
         }
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.BuildSystem
         [MenuItem(ParentMenu + "/Build all workers for cloud", false, 16)]
         public static void BuildCloudAll()
         {
-            var platforms = SpatialOSBuildConfiguration.GetInstance().WorkerBuildConfigurations
+            var platforms = WorkerBuilder.GetBuildConfiguration().WorkerBuildConfigurations
                 .Select((x) => x.WorkerPlatform).ToArray();
             MenuBuild(platforms, BuildEnvironment.Cloud);
         }
