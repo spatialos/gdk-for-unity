@@ -14,7 +14,7 @@ Add the following dependencies to the `packages` manifest located inside `worker
 {
   "dependencies": {
     "com.improbable.gdk.core": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.core",
-    "com.improbable.gdk.legacy": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.legacy",
+    "com.improbable.gdk.buildsystem": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.buildsystem",
     "com.improbable.gdk.playerlifecycle": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.playerlifecycle",
     "com.improbable.gdk.testutils": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.tools",
