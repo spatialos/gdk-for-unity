@@ -83,7 +83,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 
 ## How to write the component state
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. (See documentation on the [`[Require]` notation](./setting-up-gameobjects-for-interaction-with-spatialos#require-notation).
+1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
 </br></br> **Note**: The GDK only injects a Writer when  your worker gains write authority over the Health component or when a worker checks out a new component that it has authority over. The MonoBehaviour requiring the Writer remains disabled in any other circumstances.
 
 2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)` as shown in the example below.
@@ -129,7 +129,7 @@ public class WriteHealthBehaviour : MonoBehaviour
 
 ## How to react to component state changes
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. (See documentation on the [`[Require]` notation](./setting-up-gameobjects-for-interaction-with-spatialos#require-notation).
+1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
 
 2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update)` or for `Reader.<component field name>Updated()` during `OnEnable(<type of component field> newFieldValue)`.
 </br>They are slightly different:
