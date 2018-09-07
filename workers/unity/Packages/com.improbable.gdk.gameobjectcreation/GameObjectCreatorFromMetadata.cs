@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Generated.Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -51,13 +52,6 @@ namespace Improbable.Gdk.GameObjectCreation
                     prefab = Resources.Load<GameObject>(commonPath);
                 }
 
-                if (prefab == null)
-                {
-                    logger.HandleLog(LogType.Log, new LogEvent(
-                        $"Prefab not found for SpatialOS Entity in either {workerSpecificPath} or {commonPath}," +
-                        "not going to associate a GameObject with it."));
-                }
-
                 cachedPrefabs[prefabName] = prefab;
             }
 
@@ -67,11 +61,11 @@ namespace Improbable.Gdk.GameObjectCreation
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, worker {workerType}";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
             return gameObject;
         }
 
-        public void OnEntityRemoved(SpatialOSEntity entity, GameObject linkedGameObject)
+        public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
         {
             if (linkedGameObject != null)
             {

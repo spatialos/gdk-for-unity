@@ -43,10 +43,19 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             [ReadOnly] public ComponentArray<GameObjectReference> HasGameObjectReference;
         }
 
+        private struct EntityQueryResponseData
+        {
+            public readonly int Length;
+            [ReadOnly] public EntityArray Entities;
+            [ReadOnly] public ComponentDataArray<WorldCommands.EntityQuery.CommandResponses> CommandResponses;
+            [ReadOnly] public ComponentArray<GameObjectReference> HasGameObjectReference;
+        }
+
         [Inject] private GameObjectDispatcherSystem gameObjectDispatcherSystem;
         [Inject] private ReserveEntityIdsResponseData reserveEntityIdsResponseData;
         [Inject] private CreateEntityResponseData createEntityResponseData;
         [Inject] private DeleteEntityResponseData deleteEntityResponseData;
+        [Inject] private EntityQueryResponseData entityQueryResponseData;
 
         private static readonly InjectableId WorldCommandResponseHandlerInjectableId =
             new InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId);
@@ -106,6 +115,25 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     foreach (var worldCommandHandler in worldCommandResponseHandlers)
                     {
                         worldCommandHandler.OnDeleteEntityResponseInternal(receivedResponse);
+                    }
+                }
+            }
+
+            for (var i = 0; i < entityQueryResponseData.Length; ++i)
+            {
+                var entity = entityQueryResponseData.Entities[i];
+                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+
+                if (worldCommandResponseHandlers == null)
+                {
+                    continue;
+                }
+
+                foreach (var receivedResponse in entityQueryResponseData.CommandResponses[i].Responses)
+                {
+                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
+                    {
+                        worldCommandHandler.OnEntityQueryResponseInternal(receivedResponse);
                     }
                 }
             }

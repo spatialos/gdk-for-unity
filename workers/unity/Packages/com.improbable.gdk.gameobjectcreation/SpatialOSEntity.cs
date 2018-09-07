@@ -1,6 +1,7 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {

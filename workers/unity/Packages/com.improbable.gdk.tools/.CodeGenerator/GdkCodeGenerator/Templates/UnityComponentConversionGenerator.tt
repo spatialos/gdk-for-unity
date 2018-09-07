@@ -162,31 +162,31 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-
-                    var update = <#= componentNamespace #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                    List<<#= componentNamespace #>.Update> updates;
-                    if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
-                    {
-                        updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
-
-                    }
-                    else
-                    {
-                        var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
-                        {
-                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                        };
-                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentNamespace #>.Update>());
-                        updates = updatesComponent.Updates;
-                        entityManager.AddComponentData(entity, updatesComponent);
-                    }
-
-                    updates.Add(update);
-
+                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
+
+                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+
+                List<<#= componentNamespace #>.Update> updates;
+                if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentNamespace #>.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
 
 <# if (eventDetailsList.Count > 0) { #>
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
