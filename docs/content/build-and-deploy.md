@@ -1,4 +1,4 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 -----
 ## Building workers and deploying your game
@@ -62,7 +62,7 @@ Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/i
 To start a cloud deployment, follow these steps: 
 1. Upload your server-worker and client-worker assemblies. To do this, in a terminal window, from any directory, run `spatial cloud upload <assembly-name>` from the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). 
 </br>You can choose any assembly name you want (but note that the name can only contain alpha-numerical characters, hyphens, dots and underscores, and must be between 5 and 64 characters long).
-2. Once the server-worker and client-worker assemblies are successfully uploaded, from the same directory run `spatial cloud launch <assembly-name> <path/to/launch-config.json> <deployment-name> --snapshot=<path/to/snapshot.snapshot>`, replacing the `<example-content>` with file path and file names relevant to your game.
+2. Once the server-worker and client-worker assemblies are successfully uploaded, from the same directory run `spatial cloud launch <assembly-name> <path/to/launch-config.json> <deployment-name> --snapshot=<path/to/snapshot.snapshot>`, replacing the `<example-content>` with file path and file names relevant to your game. For more information on snapshots, see [Snapshots](../snapshots.md).
 3. The `spatial cloud launch` command automatically opens the SpatialOS [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) in your browser window once the deployment has started. Note that this process might take a couple of minutes. You can then view what’s happening in your game’s deployment in real time.
 
 ----
