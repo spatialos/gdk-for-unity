@@ -8,6 +8,12 @@ type Location {
     float z = 3;
 }
 
+type Velocity {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
 type Quaternion {
     float w = 1;
     float x = 2;
@@ -19,5 +25,7 @@ component Transform {
     id = 11000;
     Location location = 1;
     Quaternion rotation = 2;
-    uint32 tick = 3;
+    Velocity velocity = 3;
+    uint32 physics_tick = 4;
+    float ticks_per_second = 5;
 }
