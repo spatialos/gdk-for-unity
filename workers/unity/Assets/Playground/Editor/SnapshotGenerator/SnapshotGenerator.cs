@@ -33,8 +33,8 @@ namespace Playground.Editor.SnapshotGenerator
 
             AddPlayerSpawner(snapshot);
             AddCubeGrid(snapshot, cubeCount);
-            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = 5.5 });
-            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = -5.5 });
+            CreateSpinner(snapshot, new Coordinates { X = 5.5, Y = 0.5f, Z = 0.0 });
+            CreateSpinner(snapshot, new Coordinates { X = -5.5, Y = 0.5f, Z = 0.0 });
 
             return snapshot;
         }
@@ -79,8 +79,6 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
-                    var entity = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
-
                     snapshot.AddEntity(entity);
                 }
             }
@@ -93,7 +91,9 @@ namespace Playground.Editor.SnapshotGenerator
             var transform = Generated.Improbable.Transform.Transform.Component.CreateSchemaComponentData(
                 new Location { X = (float) coords.X, Y = (float) coords.Y, Z = (float) coords.Z },
                 new Quaternion { W = 1, X = 0, Y = 0, Z = 0 },
-                0
+                new Velocity(0.0f, 0.0f, 0.0f),
+                0,
+                0.0f
             );
 
             var collisions = Collisions.Component.CreateSchemaComponentData();

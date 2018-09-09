@@ -22,7 +22,6 @@ namespace Playground
             var cubeColor = CubeColor.Component.CreateSchemaComponentData();
             var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
             var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
-            var archetypeComponent = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
 
             var entity = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
@@ -32,7 +31,6 @@ namespace Playground
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
-                .AddComponent(archetypeComponent, WorkerUtils.UnityGameLogic)
                 .AddComponent(launchable, WorkerUtils.UnityGameLogic)
                 .Build();
 

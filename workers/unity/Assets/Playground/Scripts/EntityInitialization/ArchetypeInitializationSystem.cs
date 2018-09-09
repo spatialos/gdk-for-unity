@@ -39,14 +39,14 @@ namespace Playground
 
                 switch (worker.WorkerType)
                 {
-                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CharacterArchetype:
-                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CubeArchetype:
-                    case WorkerUtils.UnityClient when archetype == ArchetypeConfig.SpinnerArchetype:
-                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CharacterArchetype:
-                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CubeArchetype:
-                    case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.SpinnerArchetype:
-                        PostUpdateCommands.AddBuffer<BufferedTransform>(entity);
-                        break;
+                    // case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CharacterArchetype:
+                    // case WorkerUtils.UnityClient when archetype == ArchetypeConfig.CubeArchetype:
+                    // case WorkerUtils.UnityClient when archetype == ArchetypeConfig.SpinnerArchetype:
+                    // case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CharacterArchetype:
+                    // case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.CubeArchetype:
+                    // case WorkerUtils.UnityGameLogic when archetype == ArchetypeConfig.SpinnerArchetype:
+                    //     PostUpdateCommands.AddBuffer<BufferedTransform>(entity);
+                    //     break;
                     default:
                         break;
                 }
