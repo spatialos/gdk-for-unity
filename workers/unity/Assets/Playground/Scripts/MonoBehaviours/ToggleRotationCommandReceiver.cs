@@ -37,7 +37,7 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
 
-                spinnerToggleRotationRequest.SendResponse(new Void());
+                spinnerToggleRotationRequest.SendResponse(new Empty());
             }
         }
     }

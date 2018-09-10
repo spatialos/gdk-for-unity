@@ -40,7 +40,7 @@ namespace Playground.MonoBehaviours
 
             if (Input.GetKeyDown(KeyCode.T))
             {
-                requestSender.SendSpinnerToggleRotationRequest(ownEntityId, new Void());
+                requestSender.SendSpinnerToggleRotationRequest(ownEntityId, new Empty());
             }
         }
     }

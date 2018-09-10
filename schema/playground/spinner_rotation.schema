@@ -1,9 +1,9 @@
 package playground;
 
-type Void {}
+import "playground/empty.schema";
 
 component SpinnerRotation
 {
     id = 12002;
-    command Void spinner_toggle_rotation(Void);
+    command Empty spinner_toggle_rotation(Empty);
 }
