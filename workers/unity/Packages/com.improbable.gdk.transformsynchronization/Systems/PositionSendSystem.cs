@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     public class PositionSendSystem : CustomSpatialOSSendSystem<Position.Component>
     {
         private struct PositionData
@@ -48,7 +49,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var update = new SchemaComponentUpdate(component.ComponentId);
                 Position.Serialization.Serialize(component, update.GetFields());
-                worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+                WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 component.DirtyBit = false;
                 positionData.Position[i] = component;

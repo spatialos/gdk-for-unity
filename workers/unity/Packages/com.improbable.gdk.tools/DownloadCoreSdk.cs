@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
         private static readonly string ProjectPath =
             Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
-        private const string DownloadForceMenuItem = "Improbable/Download CoreSdk (force)";
+        private const string DownloadForceMenuItem = "SpatialOS/Download CoreSdk (force)";
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()
@@ -48,6 +48,7 @@ namespace Improbable.Gdk.Tools
             }
             catch
             {
+                // Nothing to handle if this fails - no need to abort the process.
             }
         }
 
@@ -105,7 +106,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Downloads and extracts the Core Sdk and associated libraries and tools.
         /// </summary>
-        internal static DownloadResult Download()
+        private static DownloadResult Download()
         {
             RemoveMarkerFile();
 
@@ -116,11 +117,10 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope($"Installing SpatialOS libraries, version {Common.CoreSdkVersion}..."))
                 {
-                    exitCode = RedirectedProcess.Run(Common.DotNetBinary, "run", "-p", $"\"{ProjectPath}\"", "--",
-                        Common.SpatialBinary, Common.CoreSdkVersion);
+                    exitCode = RedirectedProcess.Run(Common.DotNetBinary, ConstructArguments());
                     if (exitCode != 0)
                     {
-                        Debug.LogError($"Failed to download SpatialOS Core Sdk version {Common.CoreSdkVersion}.");
+                        Debug.LogError($"Failed to download SpatialOS Core Sdk version {Common.CoreSdkVersion}. You can use SpatialOS -> Download CoreSDK (force) to retry this.");
                     }
                     else
                     {
@@ -134,6 +134,24 @@ namespace Improbable.Gdk.Tools
             }
 
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
+        }
+
+        private static string[] ConstructArguments()
+        {
+            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+
+            var baseArgs = new List<string>
+            {
+                "run",
+                "-p",
+                $"\"{ProjectPath}\"",
+                "--",
+                $"\"{Common.SpatialBinary}\"",
+                $"\"{Common.CoreSdkVersion}\"",
+                $"\"{toolsConfig.SchemaStdLibDir}\""
+            };
+
+            return baseArgs.ToArray();
         }
     }
 }

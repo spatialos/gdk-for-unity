@@ -10,7 +10,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         ReaderWriter,
         CommandRequestSender,
         CommandRequestHandler,
-        CommandResponseHandler
+        CommandResponseHandler,
+        WorldCommandRequestSender,
+        WorldCommandResponseHandler,
     }
 
     /// <summary>
@@ -27,5 +29,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.type = type;
             this.componentId = componentId;
         }
+
+        /// <summary>
+        ///     This ID can be used to specify that an injectable is not tied to any components.
+        /// </summary>
+        public const uint NullComponentId = 0;
     }
 }

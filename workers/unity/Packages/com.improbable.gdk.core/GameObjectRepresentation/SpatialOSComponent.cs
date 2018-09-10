@@ -9,6 +9,6 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         public EntityId SpatialEntityId;
         public Entity Entity;
         public World World;
-        public ILogDispatcher LogDispatcher;
+        public WorkerSystem Worker;
     }
 }

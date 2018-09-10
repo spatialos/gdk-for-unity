@@ -2,11 +2,9 @@
     "name": "Improbable.Gdk.TestUtils.EditmodeTests",
     "references": [
         "Improbable.Gdk.TestUtils",
-        "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Unity.Entities.Hybrid",
-        "Improbable.Gdk.Generated"
+        "Unity.Entities.Hybrid"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

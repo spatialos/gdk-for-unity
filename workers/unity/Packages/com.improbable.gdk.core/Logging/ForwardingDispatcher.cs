@@ -11,11 +11,11 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class ForwardingDispatcher : ILogDispatcher
     {
-        public Connection Connection { get; set; }
-
         private readonly LogLevel minimumLogLevel;
 
         private bool inHandleLog;
+
+        public Connection Connection { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
@@ -44,13 +44,8 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Connection.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
-        }
-
-        public void SetConnection(Connection newConnection)
-        {
-            Connection = newConnection;
         }
 
         public void HandleLog(LogType type, LogEvent logEvent)
@@ -101,6 +96,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            Connection = null;
             Application.logMessageReceived -= LogCallback;
         }
     }

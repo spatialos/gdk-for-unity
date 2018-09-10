@@ -30,6 +30,9 @@ namespace Improbable.Gdk.Tools
 
         private const string PackagesDir = "Packages";
         private const string UsrLocalBinDir = "/usr/local/bin";
+        private const string UsrLocalShareDir = "/usr/local/share";
+
+        private static readonly string[] MacPaths = { UsrLocalBinDir, UsrLocalShareDir };
 
 
         static Common()
@@ -64,7 +67,14 @@ namespace Improbable.Gdk.Tools
             }
 
             path = path.Replace("file:", string.Empty);
-            path = $"{PackagesDir}/{path}";
+
+            if (Path.IsPathRooted(path))
+            {
+                // A "rooted path" is an absolute path, therefore it will point directly at the package.
+                return path;
+            }
+
+            path = Path.GetFullPath(Path.Combine(PackagesDir, path));
 
             return path;
         }
@@ -96,6 +106,7 @@ namespace Improbable.Gdk.Tools
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
             {
+                Debug.LogError("PATH has not been specified in the system environment.");
                 return string.Empty;
             }
 
@@ -111,14 +122,25 @@ namespace Improbable.Gdk.Tools
 
             var splitPath = pathValue.Split(Path.PathSeparator);
 
-            if (Application.platform == RuntimePlatform.OSXEditor && !splitPath.Contains(UsrLocalBinDir))
+            if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                splitPath = splitPath.Union(new[] { UsrLocalBinDir }).ToArray();
+                foreach (var macPath in MacPaths)
+                {
+                    if (!splitPath.Contains(macPath))
+                    {
+                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();
+                    }
+                }
             }
 
-            return splitPath
-                .Select(p => Path.Combine(p, binarybaseName))
-                .FirstOrDefault(File.Exists) ?? string.Empty;
+            var location = splitPath.Select(p => Path.Combine(p, binarybaseName)).FirstOrDefault(File.Exists);
+            if (location != null)
+            {
+                return location;
+            }
+
+            Debug.LogError($"Could not discover location for {binarybaseName}");
+            return string.Empty;
         }
     }
 }

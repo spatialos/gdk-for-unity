@@ -9,6 +9,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(TransformSynchronizationGroup))]
     public class LocalTransformSyncSystem : ComponentSystem
     {
@@ -38,8 +39,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             base.OnCreateManager(capacity);
 
-            var worker = Core.Worker.GetWorkerFromWorld(World);
-            origin = worker.Origin;
+            origin = World.GetExistingManager<WorkerSystem>().Origin;
 
             tickSystem = World.GetOrCreateManager<TickSystem>();
         }

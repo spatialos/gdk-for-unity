@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Removes GDK reactive components and components with attribute RemoveAtEndOfTick from all entities
     /// </summary>
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
@@ -20,7 +21,7 @@ namespace Improbable.Gdk.Core
         
         private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
         private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
-
+        
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);

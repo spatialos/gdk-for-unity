@@ -37,7 +37,7 @@ namespace <#= qualifiedNamespace #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
-            public DispatcherHandler(Worker worker, World world) : base(worker, world)
+            public DispatcherHandler(WorkerSystem worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -76,7 +76,7 @@ namespace <#= qualifiedNamespace #>
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentNamespace #>.Component>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
 
                 var update = new <#= componentNamespace #>.Update
                 {
@@ -104,7 +104,7 @@ namespace <#= qualifiedNamespace #>
                 }
                 else if (!entityManager.HasComponent<ComponentAdded<<#= componentNamespace #>.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentAdded<<#= componentNamespace #>.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<<#= componentNamespace #>.Component>>());
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace <#= qualifiedNamespace #>
                 }
                 else if (!entityManager.HasComponent<ComponentRemoved<<#= componentNamespace #>.Component>>(entity))
                 {
-                    entityManager.AddComponentData(entity, new ComponentRemoved<<#= componentNamespace #>.Component>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<<#= componentNamespace #>.Component>>());
                 }
                 else
                 {
@@ -162,31 +162,31 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-
-                    var update = <#= componentNamespace #>.Serialization.GetAndApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
-
-                    List<<#= componentNamespace #>.Update> updates;
-                    if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
-                    {
-                        updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
-
-                    }
-                    else
-                    {
-                        var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
-                        {
-                            handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
-                        };
-                        ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentNamespace #>.Update>());
-                        updates = updatesComponent.Updates;
-                        entityManager.AddComponentData(entity, updatesComponent);
-                    }
-
-                    updates.Add(update);
-
+                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
+
+                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+
+                List<<#= componentNamespace #>.Update> updates;
+                if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
+                {
+                    updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
+
+                }
+                else
+                {
+                    var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
+                    {
+                        handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
+                    };
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentNamespace #>.Update>());
+                    updates = updatesComponent.Updates;
+                    entityManager.AddComponentData(entity, updatesComponent);
+                }
+
+                updates.Add(update);
 
 <# if (eventDetailsList.Count > 0) { #>
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
@@ -314,7 +314,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponentData(entity, new Authoritative<<#= componentNamespace #>.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<<#= componentNamespace #>.Component>>());
 
                         // Add event senders
 <# foreach (var eventDetail in eventDetailsList) { #>
@@ -335,7 +335,7 @@ namespace <#= qualifiedNamespace #>
                             return;
                         }
 
-                        entityManager.AddComponentData(entity, new AuthorityLossImminent<<#= componentNamespace #>.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<<#= componentNamespace #>.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<<#= componentNamespace #>.Component>>(entity))
@@ -350,7 +350,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         entityManager.RemoveComponent<Authoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponentData(entity, new NotAuthoritative<<#= componentNamespace #>.Component>());
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
 
                         // Remove event senders
 <# foreach (var eventDetail in eventDetailsList) { #>
@@ -493,7 +493,9 @@ namespace <#= qualifiedNamespace #>
                     op.Message,
                     op.StatusCode,
                     response,
-                    requestBundle.Request));
+                    requestBundle.Request,
+                    requestBundle.Context,
+                    requestBundle.RequestId));
             }
 <# } #>
         }
@@ -616,7 +618,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                                 wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                             <#= commandDetails.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entityArray[j], wrappedCommandRequest.Payload, null);
+                                new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
                         }
 
                         requests.Clear();

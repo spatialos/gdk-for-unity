@@ -18,22 +18,18 @@ namespace Improbable.Gdk.Tools
         // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
 
-        [MenuItem("Improbable/Spatial/Build worker configs")]
+        [MenuItem("SpatialOS/Build worker configs")]
         private static void BuildConfigMenu()
         {
             Debug.Log("Building worker configs...");
             EditorApplication.delayCall += BuildConfig;
         }
 
-        [MenuItem("Improbable/Spatial/Local launch")]
+        [MenuItem("SpatialOS/Local launch %l")]
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
-            EditorApplication.delayCall += () =>
-            {
-                BuildConfig();
-                Launch();
-            };
+            EditorApplication.delayCall += Launch;
         }
 
         public static void BuildConfig()
@@ -52,7 +48,8 @@ namespace Improbable.Gdk.Tools
 
             var command = Common.SpatialBinary;
             var commandArgs = "local launch";
-            if(Application.platform == RuntimePlatform.OSXEditor)
+            
+            if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";
                 commandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} local launch\"\nend tell'";

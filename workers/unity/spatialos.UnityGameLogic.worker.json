@@ -46,6 +46,23 @@
           "-logfile",
           "../../logs/external-default-unitygamelogic.log"
         ]
+      },
+      "macos": {
+        "command": "open",
+        "arguments": [
+          "./build/worker/UnityGameLogic@Mac/UnityGameLogic@Mac.app",
+          "--args",
+          "+assemblyName",
+          "local_assembly",
+          "+workerType",
+          "UnityGameLogic",
+          "+infraServicesUrl",
+          "http://127.0.0.1:21000",
+          "+projectName",
+          "${IMPROBABLE_PROJECT_NAME}",
+          "-logfile",
+          "../../logs/external-default-unitygamelogic.log"
+        ]
       }
     }
   },
