@@ -7,11 +7,11 @@
 The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
 *  `LoggingDispatcher`, which simply logs to the Unity console
-*  `ForwardingDispatcher`, which logs to the Unity console and forwards it to the SpatialOS Console
+*  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
 
 All workers use the `ForwardingDispatcher` by default. To replace it with the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
 
-### Using the dispatcher
+### Using the ILogDispatcher
 
 You can access the dispatcher through the `WorkerSystem`. The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
@@ -65,7 +65,7 @@ public class ClientWorkerConnector : WorkerConnectorBase
 {
     private async void Start()
     {
-        ...
+        /* ... */
         await Connect(WorkerUtils.UnityClient, new MyCustomDispatcher()).ConfigureAwait(false);
     }
 }
