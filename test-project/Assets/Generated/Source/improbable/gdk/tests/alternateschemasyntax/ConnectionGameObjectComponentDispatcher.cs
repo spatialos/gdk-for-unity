@@ -153,7 +153,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
                             {
@@ -194,7 +194,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                     if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.Authoritative);
                         }
@@ -223,7 +223,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                     if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.NotAuthoritative);
                         }
@@ -260,7 +260,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     {
                         continue;
                     }
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
