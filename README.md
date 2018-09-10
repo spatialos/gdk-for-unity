@@ -53,7 +53,7 @@ Visit the **feedback** section in our [forums](https://forums.improbable.io) and
 **Github issues**<br/>
 Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issues).
 
-## Support Policy
+## Support policy
 We are not supporting the alpha release for game development, as this version is for evaluation only. However, please do give us your feedback.
 
 ## Migration from the SpatialOS Unity SDK
