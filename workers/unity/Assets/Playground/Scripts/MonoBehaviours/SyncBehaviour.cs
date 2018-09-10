@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core.GameObjectRepresentation;
+﻿using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
 using UnityQuaternion = UnityEngine.Quaternion;

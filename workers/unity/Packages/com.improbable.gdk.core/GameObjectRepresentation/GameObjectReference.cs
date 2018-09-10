@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Stores a reference to the GameObject representing an entity.

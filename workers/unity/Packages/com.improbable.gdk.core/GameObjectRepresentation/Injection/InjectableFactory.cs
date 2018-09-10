@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Creates IInjectables given an InjectableId and an Entity with which it should be associated.

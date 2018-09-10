@@ -7,7 +7,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation.Editor
+namespace Improbable.Gdk.GameObjectRepresentation.Editor
 {
     [InitializeOnLoad]
     public class PrefabPreprocessor : IPreprocessBuildWithReport
