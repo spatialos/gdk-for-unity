@@ -130,13 +130,13 @@ public class BuildWallHandlerSystem : ComponentSystem
                 // Do something with the request
                 var buildRequest = request.Request;
 
-                Builder.BuildWall.Response buildResponse = Builder.BuildWall.Response.CreateResponse
+                Builder.BuildWall.Response buildResponse = Builder.BuildWall.CreateResponse
                 (
                     buildRequest,
                     new BuildResponse(...)
                 );
 
-                responder.Response.Add(buildResponse);
+                responder.ResponsesToSend.Add(buildResponse);
             }
         }
     }
