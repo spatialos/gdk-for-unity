@@ -48,8 +48,7 @@ component Health {
 1. Declare a field of type `Health` Reader or Writer and decorate it with a `[Require]` attribute. 
 
 2. Access the current component field values using `Reader.Data`. 
-</br>
-(This returns a generated `ISpatialComponentData` struct which contains all the component field values of `Health`.)
+This returns a generated `ISpatialComponentData` struct which contains all the component field values of `Health`.
 
 **Example**
 ```csharp
@@ -57,26 +56,23 @@ using Generated.Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
 {
-  [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirables.Reader healthReader;
 
-  private int ReadHealthValue()
-  {
-    // Read the current health value of your entity’s Health component.
-    var healthvalue = healthReader.Data.CurrentHealth;
-    return healthvalue;
-  }
+    private int ReadHealthValue()
+    {
+        // Read the current health value of your entity’s Health component.
+        var healthvalue = healthReader.Data.CurrentHealth;
+        return healthvalue;
+    }
 }
 ```
 
 ## How to update component field values
 
-1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
-</br>
+1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute.
 **Note**: The GDK only injects a Writer when your worker gains write authority over the `Health` component. The MonoBehaviour requiring the Writer remains disabled otherwise.
 
-2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
-</br>
-(`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
+2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`. (`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
 
 **Example**
 ```csharp
@@ -84,19 +80,19 @@ using Generated.Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
 {
-  [Require] private Health.Requirables.Writer healthWriter;
+    [Require] private Health.Requirables.Writer healthWriter;
 
-  private void SetHealthValue(int newHealthValue)
-  {
-    // Create update type
-    var healthUpdate = new Health.Update
+    private void SetHealthValue(int newHealthValue)
     {
-      CurrentHealth = newHealthValue
-    };
+        // Create update type
+        var healthUpdate = new Health.Update
+        {
+            CurrentHealth = newHealthValue
+        };
 
-    // Update component value
-    healthWriter.Send(healthUpdate);
-  }
+        // Update component value
+        healthWriter.Send(healthUpdate);
+    }
 }
 ```
 
@@ -105,8 +101,6 @@ public class WriteHealthBehaviour : MonoBehaviour
 1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
 
 2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update) +=` or for `Reader.<component field name>Updated() +=` during `OnEnable(<type of component field> newFieldValue)`.
-</br>
-They are slightly different:
 *  `Reader.ComponentUpdated` is invoked when any component field gets updated.
 *  `Reader.<component field name>Updated` is invoked when that component field gets updated.
 
@@ -122,23 +116,23 @@ using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-  [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirables.Reader healthReader;
 
-  private void OnEnable()
-  {
-    healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
-  }
-
-  private void OnGeneralHealthComponentUpdated(Health.Update update)
-  {
-    // Check whether a specific field was updated.
-    if (!update.CurrentHealth.HasValue)
+    private void OnEnable()
     {
-      return;
+        healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
     }
 
-    DoSomethingWithNewHealthValue(update.CurrentHealth.Value);
-  }
+    private void OnGeneralHealthComponentUpdated(Health.Update update)
+    {
+        // Check whether a specific field was updated.
+        if (!update.CurrentHealth.HasValue)
+        {
+            return;
+        }
+
+        DoSomethingWithNewHealthValue(update.CurrentHealth.Value);
+    }
 }
 ```
 
@@ -151,17 +145,17 @@ using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-  [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirables.Reader healthReader;
 
-  private void OnEnable()
-  {
-    healthReader.CurrentHealthUpdated += OnCurrentHealthUpdated;
-  }
+    private void OnEnable()
+    {
+        healthReader.CurrentHealthUpdated += OnCurrentHealthUpdated;
+    }
 
-  private void OnCurrentHealthUpdated(int newCurrentHealth)
-  {
-    DoSomethingWithNewHealthValue(newCurrentHealth);
-  }
+    private void OnCurrentHealthUpdated(int newCurrentHealth)
+    {
+        DoSomethingWithNewHealthValue(newCurrentHealth);
+    }
 }
 ```
 
