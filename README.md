@@ -50,6 +50,19 @@ We are not currently accepting public contributions - see our [contributions](.g
 **Improbable developers**<br/>
 See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
 
+## Give us feedback
+
+We have released the GDK this early in development because we want your feedback. Please come and talk to us about the software and the documentation via:
+
+**Discord**<br/>
+Find us in the [**#unity** channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com).
+
+**The SpatialOS forums**<br/>
+Visit the **feedback** section in our [forums](https://forums.improbable.io) and use the **unity-gdk** tag. [This link](https://forums.improbable.io/new-topic?category=Feedback&tags=unity-gdk) takes you there and pre-fills the category and tag.
+
+**Github issues**<br/>
+Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issues).
+
 ## Support Policy
 We are not supporting the alpha release for game development, as this version is for evaluation only. However, please do give us your feedback.
 
