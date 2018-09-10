@@ -28,23 +28,16 @@ We use the following `Health` schema component for all the code examples in this
 package improbable.examples;
 
 type IntMessage {
-
   int32 value = 1;
-
 }
 
 type Empty {}
 
 component Health {
-
   id = 12345;
-
   int32 current_health = 1;
-
   event IntMessage health_changed;
-
   command Empty set_health(IntMessage);
-
 }
 
 ```
@@ -59,30 +52,20 @@ component Health {
 **Example**
 The following code example reads (that is it returns) the `Health` of your entity’s component using `IReader.Data` (`healthReader.Data.CurrentHealth` in the example below).
 
-```code
-
+```csharp
 using Generated.Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
-
 {
+    [Require] private Health.Requirables.Reader healthReader;
 
-  [Require] private Health.Requirables.Reader healthReader;
-
-  private int ReadHealthValue()
-
-  {
-
-    // Read the current health value of your entity’s Health component.
-
-    var healthvalue = healthReader.Data.CurrentHealth;
-
-    return healthvalue;
-
-  }
-
+    private int ReadHealthValue()
+    {
+        // Read the current health value of your entity’s Health component.
+        var healthvalue = healthReader.Data.CurrentHealth;
+        return healthvalue;
+    }
 }
-
 ```
 
 ## How to write the component state
@@ -97,38 +80,25 @@ public class ReadHealthBehaviour : MonoBehaviour
 
 The following code example writes (that is updates) the new value for `Health` using `Writer.Send(TComponentUpdate update)`. 
 
-```code
-
+```csharp
 using Generated.Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
-
 {
+    [Require] private Health.Requirables.Writer healthWriter;
 
- [Require] private Health.Requirables.Writer healthWriter;
-
-  private void SetHealthValue(int newHealthValue)
-
-  {
-
-    // Create update type
-
-    var healthUpdate = new Health.Update
-
+    private void SetHealthValue(int newHealthValue)
     {
+        // Create update type
+        var healthUpdate = new Health.Update
+        {
+            CurrentHealth = newHealthValue
+        };
 
-      CurrentHealth = newHealthValue
-
-    };
-
-    // Update component value
-
-    healthWriter.Send(healthUpdate);
-
-  }
-
+        // Update component value
+        healthWriter.Send(healthUpdate);
+    }
 }
-
 ```
 
 ## How to react to component state changes
@@ -150,44 +120,28 @@ Do not deregister callbacks during `OnDisable()` as that’s an invalid operatio
 
 The following code example sets up `Reader.ComponentUpdated`.
 
-```code
-
+```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
-
 {
+    [Require] private Health.Requirables.Reader healthReader;
 
-  [Require] private Health.Requirables.Reader healthReader;
-
-  private void OnEnable()
-
-  {
-
-    healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
-
-  }
-
-  private void OnGeneralHealthComponentUpdated(Health.Update update)
-
-  {
-
-    // Check whether a specific field was updated.
-
-    if (!update.CurrentHealth.HasValue)
-
+    private void OnEnable()
     {
-
-      return;
-
+        healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
     }
 
-    
-
-    DoSomethingWithNewHealthValue(update.CurrentHealth.Value);
-
-  }
-
+    private void OnGeneralHealthComponentUpdated(Health.Update update)
+    {
+        // Check whether a specific field was updated.
+        if (!update.CurrentHealth.HasValue)
+        {
+            return;
+        }
+		
+        DoSomethingWithNewHealthValue(update.CurrentHealth.Value);
+    }
 }
 
 ```
@@ -196,34 +150,23 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
 The following code example sets up `Reader.<component field name>Updated`.
 
-```code
-
+```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
-
 {
+    [Require] private Health.Requirables.Reader healthReader;
 
-  [Require] private Health.Requirables.Reader healthReader;
+    private void OnEnable()
+    {
+        healthReader.CurrentHealthUpdated += OnCurrentHealthUpdated;
+    }
 
-  private void OnEnable()
-
-  {
-
-    healthReader.CurrentHealthUpdated += OnCurrentHealthUpdated;
-
-  }
-
-  private void OnCurrentHealthUpdated(int newCurrentHealth)
-
-  {
-
-    DoSomethingWithNewHealthValue(newCurrentHealth);
-
-  }
-
+    private void OnCurrentHealthUpdated(int newCurrentHealth)
+    {
+        DoSomethingWithNewHealthValue(newCurrentHealth);
+    }
 }
-
 ```
 
 ----
