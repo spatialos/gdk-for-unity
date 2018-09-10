@@ -1,6 +1,6 @@
 # SpatialOS GDK for Unity documentation
 
-If you would like an overview of the GDK please see the main Readme [here](../README.md)
+If you would like an overview of the GDK please see the main [readme](../README.md)
 
 The GDK documentation assumes you are familiar with SpatialOS concepts. For guidance see the [SpatialOS website](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
 
@@ -26,7 +26,7 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [World commands](content/gameobject/world-commands.md)
 * [Logging and accessing the worker](content/gameobject/logging-and-accessing-the-worker.md)
 
-#### Entity Component System
+##### Entity Component System
 The GDK currently uses the `0.0.12-preview.11` version of the entities preview packages.
 The GDK documentation assumes you are familiar with the Unity Entity Component System. See:
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
