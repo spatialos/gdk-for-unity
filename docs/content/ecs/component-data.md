@@ -12,7 +12,7 @@ The [code generator](./code-generator.md) uses `.schema` files to generate compo
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each SpatialOS component.
 
-The generation process names each of these structs according to the relevant schemalang component name, SpatialOS[schemalang component name]. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](commands.md) or [events](events.md) defined on that component.
+The generation process names each of these structs according to the relevant schemalang component name, `[schemalang_name].Component`. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](commands.md) or [events](events.md) defined on that component.
 
 For example:
 
@@ -25,9 +25,12 @@ component Example {
 ```
 Generated component
 ```	csharp
-public struct SpatialOSExample : IComponentData, ISpatialComponentData
+public partial class Example 
 {
-  public int Value;
+    public struct Component : IComponentData, ISpatialComponentData
+    {
+        public int Value;
+    }
 }
 ```
 
@@ -46,7 +49,7 @@ public class ChangeComponentFieldSystem : ComponentSystem
     private struct Data
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSExample> ExampleComponents;
+        public ComponentDataArray<Example.Component> ExampleComponents;
     }
 
     [Inject] private Data data;
