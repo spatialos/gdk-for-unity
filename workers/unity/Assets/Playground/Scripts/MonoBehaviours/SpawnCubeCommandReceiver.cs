@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Generated.Improbable;
+using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
@@ -7,7 +8,6 @@ using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
 
 #region Diagnostic control
 
@@ -22,7 +22,7 @@ namespace Playground.MonoBehaviours
 {
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private Transform.Requirable.Reader transformReader;
+        [Require] private TransformInternal.Requirable.Reader transformReader;
         [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
         [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
         [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;

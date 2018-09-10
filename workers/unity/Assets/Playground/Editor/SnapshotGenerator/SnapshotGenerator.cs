@@ -33,8 +33,8 @@ namespace Playground.Editor.SnapshotGenerator
 
             AddPlayerSpawner(snapshot);
             AddCubeGrid(snapshot, cubeCount);
-            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = 5.5 });
-            CreateSpinner(snapshot, new Coordinates { X = 0, Y = 0.5f, Z = -5.5 });
+            CreateSpinner(snapshot, new Coordinates { X = 5.5, Y = 0.5f, Z = 0.0 });
+            CreateSpinner(snapshot, new Coordinates { X = -5.5, Y = 0.5f, Z = 0.0 });
 
             return snapshot;
         }
@@ -78,7 +78,7 @@ namespace Playground.Editor.SnapshotGenerator
                     {
                         return;
                     }
-
+                    
                     var entity = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
 
                     snapshot.AddEntity(entity);
@@ -90,14 +90,15 @@ namespace Playground.Editor.SnapshotGenerator
         {
             const string entityType = "Spinner";
 
-            var transform = Generated.Improbable.Transform.Transform.Component.CreateSchemaComponentData(
+            var transform = TransformInternal.Component.CreateSchemaComponentData(
                 new Location { X = (float) coords.X, Y = (float) coords.Y, Z = (float) coords.Z },
                 new Quaternion { W = 1, X = 0, Y = 0, Z = 0 },
-                0
+                new Velocity(0.0f, 0.0f, 0.0f),
+                0,
+                0.0f
             );
 
             var collisions = Collisions.Component.CreateSchemaComponentData();
-            var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
             var color = SpinnerColor.Component.CreateSchemaComponentData(Color.BLUE);
             var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
 
@@ -108,7 +109,6 @@ namespace Playground.Editor.SnapshotGenerator
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(collisions, WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
-                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
                 .AddComponent(color, WorkerUtils.UnityGameLogic)
                 .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
                 .Build();

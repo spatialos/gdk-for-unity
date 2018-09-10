@@ -20,7 +20,7 @@
       ],
       "load_balancing": {
         "auto_hex_grid": {
-          "num_workers": 1
+          "num_workers": 2
         }
       }
     },
