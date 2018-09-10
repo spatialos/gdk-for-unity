@@ -21,25 +21,25 @@ namespace Improbable.Gdk.Generated.EditmodeTests
 
         private class SingleReaderBehaviour : MonoBehaviour
         {
-            [Require] public BlittableComponent.Requirables.Reader Reader;
+            [Require] public BlittableComponent.Requirable.Reader Reader;
         }
 
         private class TwoWritersBehaviour : MonoBehaviour
         {
-            [Require] public BlittableComponent.Requirables.Writer Writer1;
-            [Require] public NonBlittableComponent.Requirables.Writer Writer2;
+            [Require] public BlittableComponent.Requirable.Writer Writer1;
+            [Require] public NonBlittableComponent.Requirable.Writer Writer2;
         }
 
         private class MultipleReadersOfSameType : MonoBehaviour
         {
-            [Require] public BlittableComponent.Requirables.Reader Reader1;
-            [Require] public BlittableComponent.Requirables.Reader Reader2;
+            [Require] public BlittableComponent.Requirable.Reader Reader1;
+            [Require] public BlittableComponent.Requirable.Reader Reader2;
         }
 
         private class ReaderAndWriterOfSameType : MonoBehaviour
         {
-            [Require] public BlittableComponent.Requirables.Reader Reader;
-            [Require] public BlittableComponent.Requirables.Writer Writer;
+            [Require] public BlittableComponent.Requirable.Reader Reader;
+            [Require] public BlittableComponent.Requirable.Writer Writer;
         }
 
         private class RequireInvalidMember : MonoBehaviour
@@ -80,7 +80,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests
             Assert.IsNull(behaviour.Reader);
             injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader);
-            Assert.AreEqual(typeof(BlittableComponent.Requirables.ReaderWriterImpl), behaviour.Reader.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Requirable.ReaderWriterImpl), behaviour.Reader.GetType());
         }
 
         [Test]
@@ -169,9 +169,9 @@ namespace Improbable.Gdk.Generated.EditmodeTests
             Assert.IsNull(behaviour.Reader2);
             injector.InjectAllRequiredFields(behaviour, testEntity);
             Assert.NotNull(behaviour.Reader1);
-            Assert.AreEqual(typeof(BlittableComponent.Requirables.ReaderWriterImpl), behaviour.Reader1.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Requirable.ReaderWriterImpl), behaviour.Reader1.GetType());
             Assert.NotNull(behaviour.Reader2);
-            Assert.AreEqual(typeof(BlittableComponent.Requirables.ReaderWriterImpl), behaviour.Reader2.GetType());
+            Assert.AreEqual(typeof(BlittableComponent.Requirable.ReaderWriterImpl), behaviour.Reader2.GetType());
         }
     }
 }

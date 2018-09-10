@@ -2,23 +2,23 @@
 
 -----
 
-## GameObject: Reading and writing SpatialOS component data
+## GameObject: Reading and writing SpatialOS component property data
 
 SpatialOS schema defines what objects in your game interact with SpatialOS. Find out about [what schema does](https://docs.improbable.io/reference/latest/shared/glossary#schema) and how to implement schema via the [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference) in the SpatialOS documentation.
 
-We provide code-generated Reader and Writer objects for interacting with SpatialOS component data. 
+We provide code-generated Readers and Writers for interacting with SpatialOS component [properties](https://docs.improbable.io/reference/latest/shared/glossary#property). 
 
-For every component defined in SpatialOS schema, the code generation creates a pair of Reader and Writer interfaces within:
+For every component defined in SpatialOS schema, we generate a pair of Readers and Writers within:
 
-* `Generated.<namespace of schema component>.<component name>.Requirables.Reader`
+* `Generated.<namespace of schema component>.<component name>.Requirable.Reader`
+* `Generated.<namespace of schema component>.<component name>.Requirable.Writer` 
 
-* `Generated.<namespace of schema component>.<component name>.Requirables.Writer` 
+You can access Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
 
-(Where `<example content>` is the name of relevant component, without the angle brackets.)
+* `Readers` are injected as long as a component is present on a worker giving you read-access over the component.
+* `Writers` are injected as long as a worker has write authority over a component.
 
-You can set up Reader and Writer objects to inject into MonoBehaviours using the `[Require]` annotation.
-
-As soon as you add a component to your SpatialOS entity on a worker, the GDK injects Readers into its  MonoBehaviours - this gives the worker read-only access to the component. As soon as your worker gains Writers write authority over a component, the GDK injects Writers, giving the worker read and write access over a component. This means that every Writer is also a Reader of the same component, so anything you can do with a Reader, you can do with a Writer too.
+Every Writer is also a Reader of the same component, so any functionality provided by a Reader is available on a Writer too.
 
 **Example schema component `Health`**
 
@@ -39,25 +39,22 @@ component Health {
   event IntMessage health_changed;
   command Empty set_health(IntMessage);
 }
-
 ```
 
-## How to read the component state
+## How to read component properties
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
+1. Declare a field of type `Health` Reader or Writer and decorate it with a `[Require]` attribute. 
 
-2. Access the current component field values using `Reader.Data` as shown in the example below. 
-</br>(This returns a generated `ISpatialComponentData` which contains all the component field values. `ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`. )
+2. Access the current component property values using `Reader.Data`. 
+</br>(This returns a generated `ISpatialComponentData` struct which contains all the component property values of a component.)
 
 **Example**
-The following code example reads (that is it returns) the `Health` of your entity’s component using `IReader.Data` (`healthReader.Data.CurrentHealth` in the example below).
-
 ```csharp
 using Generated.Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private int ReadHealthValue()
     {
@@ -68,94 +65,86 @@ public class ReadHealthBehaviour : MonoBehaviour
 }
 ```
 
-## How to write the component state
+## How to update component properties
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
-</br></br> **Note**: The GDK only injects a Writer when  your worker gains write authority over the Health component or when a worker checks out a new component that it has authority over. The MonoBehaviour requiring the Writer remains disabled in any other circumstances.
+1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute.
+</br>**Note**: The GDK only injects a Writer when your worker gains write authority over the `Health` component. The MonoBehaviour requiring the Writer remains disabled otherwise.
 
-2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)` as shown in the example below.
-</br>(This returns a generated `ISpatialComponentData` containing the component field values. `ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`. ) 
+2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
+</br>(`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
 
 **Example**
-
-The following code example writes (that is updates) the new value for `Health` using `Writer.Send(TComponentUpdate update)`. 
-
 ```csharp
 using Generated.Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Writer healthWriter;
+    [Require] private Health.Requirable.Writer healthWriter;
 
     private void SetHealthValue(int newHealthValue)
     {
-        // Create update type
+        // Create an update type
         var healthUpdate = new Health.Update
         {
             CurrentHealth = newHealthValue
         };
 
-        // Update component value
+        // Update component values
         healthWriter.Send(healthUpdate);
     }
 }
 ```
 
-## How to react to component state changes
+## How to react to component property changes
 
-1. Add a  `[Require]` notation to a Reader or Writer for the `Health` component. 
+1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
 
-2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update)` or for `Reader.<component field name>Updated()` during `OnEnable(<type of component field> newFieldValue)`.
-</br>They are slightly different:
-    *  `Reader.ComponentUpdated` is invoked when any component field gets updated.
-
-    *  `Reader.<component field name>Updated` is invoked when that component field gets updated.
-
+2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update) +=` or for `Reader.<component property name>Updated() +=` during `OnEnable()`.
+    *  `Reader.ComponentUpdated` is invoked when any component property is updated.
+    *  `Reader.<component property name>Updated` is invoked when a specific component property is updated.
 
 **Note:** 
-`Reader.ComponentUpdated` callbacks are invoked before specific field update callbacks.  You can deregister registered callbacks if you want to; callbacks are automatically deregistered when field which has been injected as a result of a component with a `[Require]` notation is removed. 
-Do not deregister callbacks during `OnDisable()` as that’s an invalid operation because your callbacks are already deregistered at this point.
+`Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated(ISpatialComponentUpdate update) -=` and `Reader.<component property name>Updated() -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
 **Example 1**
 
-The following code example sets up `Reader.ComponentUpdated`.
+The following code example sets up a `Reader.ComponentUpdated` callback.
 
 ```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private void OnEnable()
     {
-        healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
+        healthReader.ComponentUpdated += OnHealthComponentUpdated;
     }
 
-    private void OnGeneralHealthComponentUpdated(Health.Update update)
+    private void OnHealthComponentUpdated(Health.Update update)
     {
-        // Check whether a specific field was updated.
+        // Check whether a specific property was updated.
         if (!update.CurrentHealth.HasValue)
         {
             return;
         }
-		
+
         DoSomethingWithNewHealthValue(update.CurrentHealth.Value);
     }
 }
-
 ```
 
 **Example 2**
 
-The following code example sets up `Reader.<component field name>Updated`.
+The following code example sets up a `Reader.<component property name>Updated` callback.
 
 ```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private void OnEnable()
     {

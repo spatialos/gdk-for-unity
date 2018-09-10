@@ -1,6 +1,6 @@
 package playground;
 
-type Empty {}
+import "playground/empty.schema";
 
 component Collisions
 {
