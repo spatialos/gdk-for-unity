@@ -1,10 +1,5 @@
 # The SpatialOS GDK for Unity (alpha)
 
-Welcome to the SpatialOS GDK for Unity community.
-
-Our community shapes the functionality of the SpatialOS GDK for Unity, so make sure you are part of the conversation. Come and find us on [Discord](https://discordapp.com/invite/SCZTCYm) or talk to us in the *feedback* section of our [forums](https://forums.improbable.io/latest?tags=unity-gdk) (use the *unity-gdk tag*)
-
-#### What's the SpatialOS GDK for Unity all about?
 The SpatialOS Game Development Kit (GDK) for Unity enables game developers to build multiplayer [Unity](http://unity3d.com) games with [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). It will be made up of three parts:
 
 * the GDK Core, a performant, data-driven [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) multiplayer integration.
