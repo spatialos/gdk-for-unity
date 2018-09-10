@@ -1,8 +1,8 @@
-**Warning:** The [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
-## Sending and receiving commands
+## ECS: Sending and receiving commands
 
 Commands are SpatialOS's equivalent of remote procedure calls.
 
@@ -261,4 +261,4 @@ This system iterates through every entity with a `Foo` SpatialOS component and s
 For more information on how to compose an entity definition using the `EntityBuilder`, see the [creating an entity](create-entity.md#create-an-entity-definition-using-the-entitybuilder) page.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).

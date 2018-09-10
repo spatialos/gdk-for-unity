@@ -1,0 +1,3 @@
+The document "Sending and receiving events" is currently in progress, but you can view the [draft version](https://docs.google.com/document/d/e/2PACX-1vQLX1rgt-9P8ARHM_bVJ1cRhaBihGOWqugQKTxVsU2QfQ3U-GRAjH6Tdpr-nzKqJnaBJdg3UW3wbA_q/pub) as a Google Doc.
+
+Please note that it **doesn't** update with every change.
