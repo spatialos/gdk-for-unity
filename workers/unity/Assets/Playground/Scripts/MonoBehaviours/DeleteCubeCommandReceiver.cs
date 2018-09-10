@@ -18,10 +18,10 @@ namespace Playground.MonoBehaviours
 {
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private CubeSpawner.Requirables.Writer cubeSpawnerWriter;
-        [Require] private CubeSpawner.Requirables.CommandRequestHandler cubeSpawnerCommandRequestHandler;
-        [Require] private WorldCommands.Requirables.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirables.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
+        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
+        [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
+        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
         private const string CouldNotDeleteEntityWithId = "Could not delete entity with id {0}: {1}.";

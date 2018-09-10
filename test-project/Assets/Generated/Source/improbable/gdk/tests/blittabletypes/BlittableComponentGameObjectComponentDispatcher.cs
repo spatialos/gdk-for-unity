@@ -159,7 +159,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     }
 
                     var updateList = updateLists[i];
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var update in updateList.Updates)
                         {
@@ -185,7 +185,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
                             {
@@ -209,7 +209,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
                             {
@@ -235,7 +235,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             continue;
                         }
                          var commandRequestList = commandRequestLists[i];
-                         foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -257,7 +257,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                             continue;
                         }
                          var commandRequestList = commandRequestLists[i];
-                         foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -285,7 +285,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirables.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
@@ -308,7 +308,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirables.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
@@ -340,7 +340,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                     if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.Authoritative);
                         }
@@ -369,7 +369,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
                     if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.NotAuthoritative);
                         }
@@ -406,7 +406,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     {
                         continue;
                     }
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }

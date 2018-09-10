@@ -44,13 +44,13 @@ If some ECS components need more complex replication logic, you can create custo
 Here's an example of a custom replication system for a `Transform` component:
 
 ```csharp
-public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
+public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component>
 {
     private struct TransformData
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSTransform> Transforms;
-        [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+        public ComponentDataArray<Transform.Component> Transforms;
+        [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
         [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
 
@@ -84,7 +84,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
             var entityId = transformData.SpatialEntityIds[i].EntityId;
 
             var update = new SchemaComponentUpdate(component.ComponentId);
-            Generated.Improbable.Transform.SpatialOSTransform.Serialization.Serialize(component,
+            Generated.Improbable.Transform.Transform.Serialization.Serialize(component,
                 update.GetFields());
             worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
@@ -100,14 +100,14 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
 Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData` and has no fields.
 
 ```csharp
-public class CubeColorSendSystem : CustomSpatialOSSendSystem<SpatialOSCubeColor>
+public class CubeColorSendSystem : CustomSpatialOSSendSystem<CubeColor.Component>
 {
     public struct ColorData
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSCubeColor> CubeColors;
+        public ComponentDataArray<CubeColor.Component> CubeColors;
         public ComponentDataArray<CuberColor.EventSender.ChangeColor> ChangeColorEventSenders;
-        public ComponentDataArray<Authoritative<SpatialOSCubeColor>> CubeColorAuthority;
+        public ComponentDataArray<Authoritative<CubeColor.Component>> CubeColorAuthority;
         public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
 

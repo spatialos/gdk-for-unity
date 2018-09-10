@@ -56,7 +56,7 @@ namespace <#= qualifiedNamespace #>
         }
 <# } #>
 
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
             internal class CommandRequestSenderCreator : IInjectableCreator
