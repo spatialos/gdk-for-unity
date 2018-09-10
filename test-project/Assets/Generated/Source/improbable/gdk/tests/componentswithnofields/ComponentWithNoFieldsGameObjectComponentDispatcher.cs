@@ -169,7 +169,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.Authoritative);
                         }
@@ -198,7 +198,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.NotAuthoritative);
                         }
@@ -235,7 +235,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     {
                         continue;
                     }
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }

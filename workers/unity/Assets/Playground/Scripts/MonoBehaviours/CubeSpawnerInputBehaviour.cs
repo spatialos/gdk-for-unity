@@ -17,10 +17,10 @@ namespace Playground.MonoBehaviours
 {
     public class CubeSpawnerInputBehaviour : MonoBehaviour
     {
-        [Require] private PlayerInput.Requirables.Writer playerInputWriter;
-        [Require] private CubeSpawner.Requirables.Reader cubeSpawnerReader;
-        [Require] private CubeSpawner.Requirables.CommandRequestSender cubeSpawnerCommandSender;
-        [Require] private CubeSpawner.Requirables.CommandResponseHandler cubeSpawnerCommandResponseHandler;
+        [Require] private PlayerInput.Requirable.Writer playerInputWriter;
+        [Require] private CubeSpawner.Requirable.Reader cubeSpawnerReader;
+        [Require] private CubeSpawner.Requirable.CommandRequestSender cubeSpawnerCommandSender;
+        [Require] private CubeSpawner.Requirable.CommandResponseHandler cubeSpawnerCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;

@@ -95,7 +95,7 @@ This will only happen the first time you open you project, or if the version of 
 
 1. When you want to stop the game:
     1. In the Editor, click the play icon again to stop your client.
-    1. In your terminal, stop the SpatialOS deployment by pressing `Ctrl + C`.
+    1. Stop the SpatialOS deployment by closing the console window.
 
 #### 3. Run the `Playground` in the cloud using SpatialOS
 
@@ -115,7 +115,7 @@ Open a terminal and navigate to the `UnityGDK` directory (the repository you’v
     Run `spatial cloud upload <assembly name>`.
     > The `<assembly name>` is just a label so you can identify this assembly in the next step - for example, `MyGDKAssembly`.
 
-     **It’s done when:** You see `spatial upload MyGDKAssembly succeeded` printed in your console output.
+> **It’s done when:** You see `spatial upload MyGDKAssembly succeeded` printed in your console output.
 
 1. Launch a cloud deployment
 <br>The command `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
@@ -133,7 +133,7 @@ Open a terminal and navigate to the `UnityGDK` directory (the repository you’v
 
     This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better performance.
 
-    **It’s done when:** You see `Successfully created deployment` printed in your console output.
+> **It’s done when:** You see `Successfully created deployment` printed in your console output.
 
 
 1. Launch a game client:

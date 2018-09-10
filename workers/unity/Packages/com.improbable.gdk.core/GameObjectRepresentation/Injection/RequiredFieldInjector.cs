@@ -24,7 +24,8 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private const string LoggerName = nameof(RequiredFieldInjector);
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Injectable. This member will be ignored.";
+            = "[Require] attribute found on member that is not Injectable. This member will be ignored. " 
+            + "Please make sure that types marked with [Require] are located in the <component name>.Requirable or WorldsCommands.Requirable namespace.";
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
         private const string RequirableFieldDoesNotInheritRequirableBase

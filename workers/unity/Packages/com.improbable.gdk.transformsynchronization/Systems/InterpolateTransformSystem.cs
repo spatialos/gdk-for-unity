@@ -1,127 +1,192 @@
+using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(TransformSynchronizationGroup))]
+    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InterpolateTransformSystem : ComponentSystem
     {
-        private const uint TargetTickOffset = 2;
-
-        private TickSystem tickSystem;
-        private long serverTickOffset;
-        private bool tickOffsetSet;
-
-        private Vector3 origin;
-
-        private struct TransformData
+        private struct Data
         {
             public readonly int Length;
-            public BufferArray<BufferedTransform> BufferedTransform;
-            public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> transformAuthority;
+            public BufferArray<BufferedTransform> TransformBuffer;
+            public ComponentDataArray<DefferedUpdateTransform> LastTransformValue;
+            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
+            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
+            [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
         }
 
-        [Inject] private TransformData transformData;
+        [Inject] private Data data;
+        [Inject] private TickRateEstimationSystem tickRateSystem;
 
-        protected override void OnCreateManager(int capacity)
-        {
-            base.OnCreateManager(capacity);
-
-            origin = World.GetExistingManager<WorkerSystem>().Origin;
-
-            tickSystem = World.GetOrCreateManager<TickSystem>();
-        }
-
-        /*
-         * This system receives transform updates from the server and applies them on the client.
-         * Updates are not applied immedately due to the network sending updates at an inconsistent rate
-         * By keeping a buffer of updates, motion can still look smooth at the cost of being
-         * slightly behind the true position of the object on the server.
-         *
-         * The strategy used is:
-         * 1. Drop any updates that are too far in the past
-         * 2. If the time the update is supposed to be applied matches the client tick time, apply it.
-         * 3. If the next update is supposed to be applied in the future, interpolate the position for the
-         * current tick using the last position and the next update.
-         *
-         * The Unity ECS Transform component contains the latest transfrom update and does not accurately
-         * reflect the position of the object in the present. The rigid body transform is the true rendered
-         * transform of the object.
-         */
+        // todo this does everything eagerly, but with smearing it will probably make more sense to do things lazily
+        // the main difference would be how to detect the buffer is full and needs to be emptied
         protected override void OnUpdate()
         {
-            for (var i = 0; i < transformData.Length; i++)
+            for (int i = 0; i < data.Length; ++i)
             {
-                var transformQueue = transformData.BufferedTransform[i];
-                if (transformQueue.Length == 0)
+                var transformBuffer = data.TransformBuffer[i];
+                var lastTransformApplied = data.LastTransformValue[i].Transform;
+
+                // todo enable smear
+                // Need to take smear into account here when it's turned on
+                if (transformBuffer.Length >= TransformSynchronizationConfig.MaxLoadMatchedBufferSize)
                 {
+                    transformBuffer.Clear();
+                }
+
+                if (transformBuffer.Length == 0)
+                {
+                    var currentTransformComponent = data.CurrentTransform[i];
+                    if (currentTransformComponent.PhysicsTick <= lastTransformApplied.PhysicsTick)
+                    {
+                        continue;
+                    }
+
+                    var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
+
+                    float tickSmearFactor = 1.0f;
+                        // todo enable smear
+                        // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
+                        //     TransformSynchronizationConfig.MaxTickSmearFactor);
+
+                    uint ticksToFill = math.max(
+                        (uint) (TransformSynchronizationConfig.TargetLoadMatchedBufferSize * tickSmearFactor), 1);
+
+                    if (ticksToFill > 1)
+                    {
+                        var transformToInterpolateFrom = ToBufferedTransformAtTick(lastTransformApplied,
+                            transformToInterpolateTo.PhysicsTick - ticksToFill + 1);
+
+                        transformBuffer.Add(transformToInterpolateFrom);
+
+                        for (uint j = 0; j < ticksToFill - 2; ++j)
+                        {
+                            transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
+                                j + 1));
+                        }
+                    }
+
+                    transformBuffer.Add(transformToInterpolateTo);
                     continue;
                 }
 
-                var nextTransform = transformQueue[0].transformUpdate;
-                
-                if (!tickOffsetSet)
+                foreach (var update in data.Updates[i].Updates)
                 {
-                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
-                    tickOffsetSet = true;
-                }
+                    UpdateLastTransfrom(ref lastTransformApplied, update);
+                    data.LastTransformValue[i] = new DefferedUpdateTransform
+                    {
+                        Transform = lastTransformApplied
+                    };
 
-                // Recieved too many updates. Drop to latest update and interpolate from there.
-                if (transformQueue.Length >= TransformSynchronizationConfig.MaxBufferSize)
-                {
-                    transformQueue.RemoveRange(0, transformQueue.Length - 1);
-                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
-                }
+                    // todo: Need to deal with the case where the last tick is back in time. But currently can't happen
+                    if (!update.PhysicsTick.HasValue)
+                    {
+                        continue;
+                    }
 
-                nextTransform = transformQueue[0].transformUpdate;
-                var serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
+                    data.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate
+                    {
+                        NumberOfTicks = 0
+                    };
 
-                // Our time is too far ahead need to reset to server tick
-                if (nextTransform.Tick < serverTickToApply)
-                {
-                    serverTickOffset = (long) nextTransform.Tick - tickSystem.GlobalTick;
-                    serverTickToApply = tickSystem.GlobalTick - TargetTickOffset + serverTickOffset;
-                }
+                    float tickSmearFactor = 1.0f;
+                        // todo enable smear
+                        // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
+                        //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
-                // Apply update if update tick matches local tick, otherwise interpolate
-                var rigidBody = transformData.Rigidbody[i];
+                    var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 
-                if (nextTransform.Tick == serverTickToApply)
-                {
-                    transformQueue.RemoveAt(0);
+                    var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
+                    uint lastTickId = transformToInterpolateFrom.PhysicsTick;
 
-                    var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
-                        nextTransform.Location.Z);
-                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
-                        nextTransform.Rotation.Z, nextTransform.Rotation.W);
+                    uint remoteTickDifference = transformToInterpolateTo.PhysicsTick - lastTickId;
+                    if (remoteTickDifference == 0)
+                    {
+                        continue;
+                    }
 
-                    rigidBody.MovePosition(newPosition + origin);
-                    rigidBody.MoveRotation(newRotation);
-                }
-                else // Interpolate from current transform to next transform in the future.
-                {
-                    var t = (float) 1.0 / (nextTransform.Tick - (serverTickToApply - 1));
+                    uint ticksToFill =
+                        math.max((uint) ((transformToInterpolateTo.PhysicsTick - lastTickId) * tickSmearFactor), 1);
+                    for (uint j = 0; j < ticksToFill - 1; ++j)
+                    {
+                        transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
+                            j + 1));
+                    }
 
-                    var currentLocation = transformData.Rigidbody[i].position - origin;
-                    var currentRotation = transformData.Rigidbody[i].rotation;
-
-                    var newPosition = new Vector3(nextTransform.Location.X, nextTransform.Location.Y,
-                        nextTransform.Location.Z);
-                    var newRotation = new Quaternion(nextTransform.Rotation.X, nextTransform.Rotation.Y,
-                        nextTransform.Rotation.Z, nextTransform.Rotation.W);
-
-                    var interpolateLocation = Vector3.Lerp(currentLocation, newPosition, t);
-                    var interpolateRotation = Quaternion.Slerp(currentRotation, newRotation, t);
-
-                    rigidBody.MovePosition(interpolateLocation + origin);
-                    rigidBody.MoveRotation(interpolateRotation);
+                    transformBuffer.Add(transformToInterpolateTo);
                 }
             }
+        }
+
+        private void UpdateLastTransfrom(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        {
+            if (update.Location.HasValue)
+            {
+                lastTransform.Location = update.Location.Value;
+            }
+
+            if (update.Rotation.HasValue)
+            {
+                lastTransform.Rotation = update.Rotation.Value;
+            }
+
+            if (update.Velocity.HasValue)
+            {
+                lastTransform.Velocity = update.Velocity.Value;
+            }
+
+            if (update.TicksPerSecond.HasValue)
+            {
+                lastTransform.TicksPerSecond = update.TicksPerSecond.Value;
+            }
+
+            if (update.PhysicsTick.HasValue)
+            {
+                lastTransform.PhysicsTick = update.PhysicsTick.Value;
+            }
+        }
+
+        private static BufferedTransform ToBufferedTransform(TransformInternal.Component transform)
+        {
+            return new BufferedTransform
+            {
+                Position = transform.Location.ToUnityVector3(),
+                Velocity = transform.Velocity.ToUnityVector3(),
+                Orientation = transform.Rotation.ToUnityQuaternion(),
+                PhysicsTick = transform.PhysicsTick
+            };
+        }
+
+        private static BufferedTransform ToBufferedTransformAtTick(TransformInternal.Component component, uint tick)
+        {
+            return new BufferedTransform
+            {
+                Position = component.Location.ToUnityVector3(),
+                Velocity = component.Velocity.ToUnityVector3(),
+                Orientation = component.Rotation.ToUnityQuaternion(),
+                PhysicsTick = tick
+            };
+        }
+
+        private static BufferedTransform InterpolateValues(BufferedTransform first, BufferedTransform second,
+            uint ticksAfterFirst)
+        {
+            float t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
+            return new BufferedTransform
+            {
+                Position = Vector3.Lerp(first.Position, second.Position, t),
+                Velocity = Vector3.Lerp(first.Velocity, second.Velocity, t),
+                Orientation = Quaternion.Slerp(first.Orientation, second.Orientation, t),
+                PhysicsTick = ticksAfterFirst
+            };
         }
     }
 }
