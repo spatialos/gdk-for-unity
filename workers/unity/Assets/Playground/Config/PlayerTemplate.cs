@@ -23,11 +23,12 @@ namespace Playground
                     "Expected an attribute that is not \"UnityClient\" but none was found.");
             }
 
+            const string CharacterType = "Character";
+
             var transform =
-                Transform.Component.CreateSchemaComponentData(new Location(),
-                    new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, 0);
+                TransformInternal.Component.CreateSchemaComponentData(new Location(),
+                    new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, new Velocity(0.0f, 0.0f, 0.0f), 0, 0.0f);
             var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
-            var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(ArchetypeConfig.CharacterArchetype);
             var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
@@ -36,13 +37,12 @@ namespace Playground
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
-                .AddMetadata(ArchetypeConfig.CharacterArchetype, WorkerUtils.UnityGameLogic)
+                .AddMetadata(CharacterType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
-                .AddComponent(transform, WorkerUtils.UnityGameLogic)
+                .AddComponent(transform, clientAttribute)
                 .AddComponent(playerInput, clientAttribute)
-                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
                 .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(clientHeartbeat, clientAttribute)
                 .AddComponent(serverHeartbeat, WorkerUtils.UnityGameLogic)

@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 23525710993839452}
   - component: {fileID: 65358376201898794}
   - component: {fileID: 114749002643581954}
-  - component: {fileID: 114269369599588928}
   - component: {fileID: 114279928377325580}
   - component: {fileID: 114446978971394342}
   - component: {fileID: 114587035023781602}
@@ -115,17 +114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBetweenSpinChanges: 1
---- !u!114 &114269369599588928
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198430049189278}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5acf7b07e53f47be81fa9afc4f0f2712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114279928377325580
 MonoBehaviour:
   m_ObjectHideFlags: 1
