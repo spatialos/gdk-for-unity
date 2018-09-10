@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
@@ -26,6 +27,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
             {
+                if (ReferenceEquals(component, null))
+                {
+                    continue;
+                }
+
                 var componentType = component.GetType();
                 if (gameObjectComponentTypes.Contains(componentType))
                 {
@@ -55,14 +61,19 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             {
                 foreach (var component in gameObject.GetComponents<Component>())
                 {
+                    if (ReferenceEquals(component, null))
+                    {
+                        continue;
+                    }
+
                     var componentType = component.GetType();
                     if (entityManager.HasComponent(entity, componentType))
                     {
-                        viewCommandBuffer.RemoveComponent(entity, componentType);   
+                        viewCommandBuffer.RemoveComponent(entity, componentType);
                     }
                 }
             }
-            
+
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
             if (spatialOSComponent != null)
             {
