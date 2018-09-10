@@ -1,4 +1,4 @@
-# The SpatialOS GDK for Unity readme (alpha)
+# The SpatialOS GDK for Unity (alpha)
 
 Welcome to the SpatialOS GDK for Unity community.
 
