@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
@@ -19,11 +20,9 @@ namespace Playground
 
         public Worker Worker;
 
-        protected WorkerConnectorBase[] RequiredWorkerConnection;
-
         private GameObject levelInstance;
 
-        private readonly TaskCompletionSource<bool> connectionAttemptFinishedTask = new TaskCompletionSource<bool>();
+        private static readonly SemaphoreSlim workerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
         // Important run in this step as otherwise it can interfere with the the domain unloading logic
         private void OnApplicationQuit()
@@ -40,32 +39,7 @@ namespace Playground
         {
             // Check that other workers have finished trying to connect before this one starts
             // This prevents races on the workers starting and races on when we start ticking systems
-            if (RequiredWorkerConnection != null)
-            {
-                Task[] requiredWorkers = RequiredWorkerConnection
-                    .Select(connection => connection.connectionAttemptFinishedTask.Task).ToArray();
-                try
-                {
-                    await Task.WhenAll(requiredWorkers);
-                }
-                catch (Exception e)
-                {
-                    logger.HandleLog(LogType.Error,
-                        new LogEvent("Cancelling connection attempt")
-                            .WithField("WorkerType", workerType)
-                            .WithField("Reason", "Required worker failed to connect"));
-#if UNITY_EDITOR
-                    // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not. 
-                    logger.HandleLog(LogType.Warning,
-                        new LogEvent("Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")                      
-                            .WithField("Reason", "A worker running in the editor failing to connect was observed"));
-#endif
-                    connectionAttemptFinishedTask.SetException(e);
-                    Dispose();
-                    return;
-                }
-            }
-
+            await workerConnectionSemaphore.WaitAsync();
             try
             {
                 var origin = transform.position;
@@ -73,7 +47,8 @@ namespace Playground
                 if (ShouldUseLocator())
                 {
                     connectionDelegate = async () =>
-                        await Worker.CreateWorkerAsync(GetLocatorConfig(workerType), SelectDeploymentName, logger, origin)
+                        await Worker
+                            .CreateWorkerAsync(GetLocatorConfig(workerType), SelectDeploymentName, logger, origin)
                             .ConfigureAwait(false);
                 }
                 else
@@ -92,12 +67,20 @@ namespace Playground
                     .WithException(e)
                     .WithField("WorkerType", workerType)
                     .WithField("Message", e.Message));
-                connectionAttemptFinishedTask.SetException(e);
+#if UNITY_EDITOR
+                // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not.
+                logger.HandleLog(LogType.Warning,
+                    new LogEvent(
+                            "Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")
+                        .WithField("Reason", "A worker running in the editor failing to connect was observed"));
+#endif
                 Dispose();
                 return;
             }
-
-            connectionAttemptFinishedTask.SetResult(true);
+            finally
+            {
+                workerConnectionSemaphore.Release();
+            }
         }
 
         protected virtual void AddWorkerSystems()
