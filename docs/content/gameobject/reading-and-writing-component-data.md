@@ -119,10 +119,10 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        healthReader.ComponentUpdated += OnGeneralHealthComponentUpdated;
+        healthReader.ComponentUpdated += OnHealthComponentUpdated;
     }
 
-    private void OnGeneralHealthComponentUpdated(Health.Update update)
+    private void OnHealthComponentUpdated(Health.Update update)
     {
         // Check whether a specific property was updated.
         if (!update.CurrentHealth.HasValue)
