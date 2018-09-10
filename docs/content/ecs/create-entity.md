@@ -38,17 +38,17 @@ There is a method `Example.CreateSchemaComponentData(int value)` which will inst
 
 Below is an example of how to create an entity definition using the `EntityBuilder`:
 ```csharp
-private static readonly string GameLogicAttribute = UnityGameLogic.WorkerAttribute;
+private static readonly string GameLogicAttribute = WorkerUtils.UnityGameLogic;
 
-private static readonly List<string> AllWorkersAttributes = new List<string> { UnityGameLogic.WorkerAttribute, UnityClient.WorkerAttribute};
+private static readonly List<string> AllWorkersAttributes = new List<string> { WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient };
 
 public Entity CreateCreatureEntityDefinition(Coordinates position)
 {
-    var healthComponent = Health.CreateSchemaComponentData(healthValue: 100);
+    var healthComponent = Health.Component.CreateSchemaComponentData(healthValue: 100);
 
     return EntityBuilder
         .Begin()
-        .AddPositionComponent(position.x, position.y, position.z, GameLogicAttribute)
+        .AddPosition(position.X, position.Y, position.Z, GameLogicAttribute)
         .SetPersistence(true)
         .SetReadAcl(AllWorkersAttributes)
         .AddMetadata("Creature", GameLogicAttribute)
@@ -87,7 +87,7 @@ public class CreateEntitySystem : ComponentSystem
                 Entity = entity
             };
 
-            data.CreateEntitySender[i].Add(request);
+            data.CreateEntitySender[i].RequestsToSend.Add(request);
         }
     }
 }
