@@ -52,7 +52,7 @@ component Health {
 **Example**
 The following code example reads (that is it returns) the `Health` of your entity’s component using `IReader.Data` (`healthReader.Data.CurrentHealth` in the example below).
 
-```code
+```csharp
 using Generated.Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
@@ -80,7 +80,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 
 The following code example writes (that is updates) the new value for `Health` using `Writer.Send(TComponentUpdate update)`. 
 
-```code
+```csharp
 using Generated.Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
@@ -120,7 +120,7 @@ Do not deregister callbacks during `OnDisable()` as that’s an invalid operatio
 
 The following code example sets up `Reader.ComponentUpdated`.
 
-```code
+```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
@@ -150,7 +150,7 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
 The following code example sets up `Reader.<component field name>Updated`.
 
-```code
+```csharp
 using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
