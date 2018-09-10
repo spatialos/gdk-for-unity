@@ -10,8 +10,8 @@ We provide code-generated Reader and Writer interfaces for interacting with Spat
 
 For every component defined in SpatialOS schema, we generate a pair of Reader and Writer interfaces within:
 
-* `Generated.<namespace of schema component>.<component name>.Requirables.Reader`
-* `Generated.<namespace of schema component>.<component name>.Requirables.Writer` 
+* `Generated.<namespace of schema component>.<component name>.Requirable.Reader`
+* `Generated.<namespace of schema component>.<component name>.Requirable.Writer` 
 
 You can access Reader and Writer interfaces by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
 
@@ -54,7 +54,7 @@ using Generated.Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private int ReadHealthValue()
     {
@@ -79,7 +79,7 @@ using Generated.Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Writer healthWriter;
+    [Require] private Health.Requirable.Writer healthWriter;
 
     private void SetHealthValue(int newHealthValue)
     {
@@ -115,7 +115,7 @@ using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private void OnEnable()
     {
@@ -144,7 +144,7 @@ using Generated.Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirables.Reader healthReader;
+    [Require] private Health.Requirable.Reader healthReader;
 
     private void OnEnable()
     {
