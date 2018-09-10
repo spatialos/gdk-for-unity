@@ -32,7 +32,7 @@ The `WorkerSystem` stores the following data:
 
 * `World`: The ECS World that this worker will run its logic in.
 
-* `LogDispatcher`: A reference to the [logger](https://github.com/spatialos/UnityGDK/blob/master/docs/content/logging.md) that can be used to log to the Unity Console and the SpatialOS Runtime.
+* `LogDispatcher`: A reference to the [logger](logging.md) that can be used to log to the Unity Console and the SpatialOS Runtime.
 
 * `WorkerType`: The type of this worker.
 
