@@ -95,7 +95,7 @@ This will only happen the first time you open you project, or if the version of 
 
 1. When you want to stop the game:
     1. In the Editor, click the play icon again to stop your client.
-    1. In your terminal, stop the SpatialOS deployment by pressing `Ctrl + C`.
+    1. Stop the SpatialOS deployment by closing the console window.
 
 #### 3. Run the `Playground` in the cloud using SpatialOS
 
