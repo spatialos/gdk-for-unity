@@ -8,7 +8,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 public class RotationBehaviour : MonoBehaviour
 {
     public bool RotatingClockWise = true;
-    [Require] private Transform.Requirables.Writer writer;
+    [Require] private Transform.Requirable.Writer writer;
 
     private static SpatialQuaternion UnityToSpatialQuaternion(Quaternion q)
     {

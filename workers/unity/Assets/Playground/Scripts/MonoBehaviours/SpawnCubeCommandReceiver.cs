@@ -22,11 +22,11 @@ namespace Playground.MonoBehaviours
 {
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private Transform.Requirables.Reader transformReader;
-        [Require] private CubeSpawner.Requirables.CommandRequestHandler cubeSpawnerCommandRequestHandler;
-        [Require] private CubeSpawner.Requirables.Writer cubeSpawnerWriter;
-        [Require] private WorldCommands.Requirables.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirables.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private Transform.Requirable.Reader transformReader;
+        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
+        [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
+        [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
+        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
 
