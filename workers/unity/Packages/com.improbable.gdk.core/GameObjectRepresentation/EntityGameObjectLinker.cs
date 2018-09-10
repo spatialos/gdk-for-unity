@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
-using Object = System.Object;
 
 namespace Improbable.Gdk.Core.GameObjectRepresentation
 {
