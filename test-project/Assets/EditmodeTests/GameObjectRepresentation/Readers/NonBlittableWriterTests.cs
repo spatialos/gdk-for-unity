@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
                 var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
                 entityManager.SetComponentData(entity, new NonBlittableComponent.Component());
                 var writer =
-                    new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager,
+                    new NonBlittableComponent.Requirable.ReaderWriterImpl(entity, entityManager,
                         new LoggingDispatcher());
 
                 writer.Send(new NonBlittableComponent.Update
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
                 }
 
                 var writer =
-                    new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager,
+                    new NonBlittableComponent.Requirable.ReaderWriterImpl(entity, entityManager,
                         new LoggingDispatcher());
                 writer.Send(new NonBlittableComponent.Update
                 {

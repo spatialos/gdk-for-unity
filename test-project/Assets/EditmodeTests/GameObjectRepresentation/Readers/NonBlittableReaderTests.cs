@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
                 var reader =
-                    new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager,
+                    new NonBlittableComponent.Requirable.ReaderWriterImpl(entity, entityManager,
                         new LoggingDispatcher());
 
                 var schemaComponentData = NonBlittableComponent.Component.CreateSchemaComponentData(
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
                 var reader =
-                    new NonBlittableComponent.Requirables.ReaderWriterImpl(entity, entityManager,
+                    new NonBlittableComponent.Requirable.ReaderWriterImpl(entity, entityManager,
                         new LoggingDispatcher());
 
                 string stringValue = null;
