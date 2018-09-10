@@ -8,7 +8,7 @@ namespace Playground.MonoBehaviours
 {
     public class SyncBehaviour : MonoBehaviour
     {
-        [Require] private Transform.Requirables.Reader reader;
+        [Require] private Transform.Requirable.Reader reader;
 
         void Update()
         {
