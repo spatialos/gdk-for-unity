@@ -6,14 +6,14 @@
 
 SpatialOS schema defines what objects in your game interact with SpatialOS. Find out about [what schema does](https://docs.improbable.io/reference/latest/shared/glossary#schema) and how to implement schema via the [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference) in the SpatialOS documentation.
 
-We provide code-generated Reader and Writer interfaces for interacting with SpatialOS component [properties](https://docs.improbable.io/reference/latest/shared/glossary#property). 
+We provide code-generated Readers and Writers for interacting with SpatialOS component [properties](https://docs.improbable.io/reference/latest/shared/glossary#property). 
 
-For every component defined in SpatialOS schema, we generate a pair of Reader and Writer interfaces within:
+For every component defined in SpatialOS schema, we generate a pair of Readers and Writers within:
 
 * `Generated.<namespace of schema component>.<component name>.Requirable.Reader`
 * `Generated.<namespace of schema component>.<component name>.Requirable.Writer` 
 
-You can access Reader and Writer interfaces by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
+You can access Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
 
 * `Readers` are injected as long as a component is present on a worker giving you read-access over the component.
 * `Writers` are injected as long as a worker has write authority over a component.
