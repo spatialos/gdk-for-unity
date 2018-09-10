@@ -139,7 +139,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
         }
 
-        private WorldCommands.Requirables.WorldCommandResponseHandler[] GetWorldCommandResponseHandlersForEntity(
+        private WorldCommands.Requirable.WorldCommandResponseHandler[] GetWorldCommandResponseHandlersForEntity(
             Entity entity)
         {
             var entityToReaderWriterStore = gameObjectDispatcherSystem.entityToReaderWriterStore;
@@ -161,7 +161,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             }
 
             return Array.ConvertAll(injectables.ToArray(),
-                injectable => (WorldCommands.Requirables.WorldCommandResponseHandler) injectable);
+                injectable => (WorldCommands.Requirable.WorldCommandResponseHandler) injectable);
         }
     }
 }

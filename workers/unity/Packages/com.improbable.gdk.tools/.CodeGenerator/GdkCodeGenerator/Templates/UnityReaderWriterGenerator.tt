@@ -22,7 +22,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             internal class ReaderWriterCreator : IInjectableCreator

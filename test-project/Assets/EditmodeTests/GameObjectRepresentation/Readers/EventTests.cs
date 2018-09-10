@@ -14,8 +14,8 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
     [TestFixture]
     internal class EventTests
     {
-        private ComponentWithEvents.Requirables.Reader readerPublic;
-        private ComponentWithEvents.Requirables.ReaderWriterImpl readerWriterInternal;
+        private ComponentWithEvents.Requirable.Reader readerPublic;
+        private ComponentWithEvents.Requirable.ReaderWriterImpl readerWriterInternal;
         private EntityManager entityManager;
         private Entity entity;
         private World world;
@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
             entityManager = world.GetOrCreateManager<EntityManager>();
             entity = entityManager.CreateEntity(ComponentType.Create<BlittableComponent.Component>());
             readerWriterInternal =
-                new ComponentWithEvents.Requirables.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
+                new ComponentWithEvents.Requirable.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
             readerPublic = readerWriterInternal;
         }
 
