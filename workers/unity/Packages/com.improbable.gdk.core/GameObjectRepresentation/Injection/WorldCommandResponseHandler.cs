@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core.Commands
 {
     public static partial class WorldCommands
     {
-        public static partial class Requirables
+        public static partial class Requirable
         {
             [InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
