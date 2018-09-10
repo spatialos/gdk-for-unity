@@ -50,7 +50,7 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [Sending and receiving events](content/gameobject/sending-receiving-commands.md)
 * [Sending and receiving commands](content/gameobject/sending-receiving-events.md)
 * [World commands](content/gameobject/world-commands.md)
-* [SpatialOSComponent utility API](content/gameobject/spatialoscomponent-utility-api.md)
+* [Retrieving your EntityId and accessing the worker](content/gameobjectretrieving-your-entityid-and-accessing-the-worker.md)
 
 ##### Using the GDK with Unity ECS
 * [System update order](content/ecs/system-update-order.md)
