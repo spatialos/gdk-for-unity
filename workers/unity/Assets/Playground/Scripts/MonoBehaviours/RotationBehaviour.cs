@@ -1,5 +1,5 @@
-﻿using Generated.Improbable.Transform;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Generated.Improbable.Transform;
+using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 using SpatialQuaternion = Generated.Improbable.Transform.Quaternion;
 using Quaternion = UnityEngine.Quaternion;

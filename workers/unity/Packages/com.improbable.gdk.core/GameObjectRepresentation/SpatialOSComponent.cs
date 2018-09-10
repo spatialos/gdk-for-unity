@@ -1,8 +1,9 @@
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     public class SpatialOSComponent : MonoBehaviour
     {

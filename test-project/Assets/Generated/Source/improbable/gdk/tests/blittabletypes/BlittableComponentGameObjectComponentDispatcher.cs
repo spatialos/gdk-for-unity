@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
 
 namespace Generated.Improbable.Gdk.Tests.BlittableTypes

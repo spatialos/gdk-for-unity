@@ -1,7 +1,8 @@
-﻿using Improbable.Worker;
+﻿using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     The Reader interface is used by MonoBehaviours to query information about a SpatialOS component and register

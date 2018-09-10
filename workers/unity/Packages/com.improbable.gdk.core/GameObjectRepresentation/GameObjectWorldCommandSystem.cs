@@ -14,7 +14,7 @@ using Unity.Entities;
 #endregion
 
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     [DisableAutoCreation]
     public class GameObjectWorldCommandSystem : ComponentSystem

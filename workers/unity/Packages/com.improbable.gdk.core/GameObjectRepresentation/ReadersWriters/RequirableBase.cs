@@ -1,7 +1,8 @@
 using System;
+using Improbable.Gdk.Core;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     public class RequirableBase : IInjectable, IDisposable
     {
