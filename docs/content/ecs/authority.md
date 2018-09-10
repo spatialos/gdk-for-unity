@@ -39,9 +39,9 @@ public class AuthoritativePositionSystem : ComponentSystem
 
         public readonly int Length;
         // An ECS component representing the SpatialOS component Position.
-        public ComponentDataArray<SpatialOSPosition> Position;
+        public ComponentDataArray<Position.Component> Position;
         // An ECS component tag representing the worker instance's authority over the SpatialOS component Position.
-        public ComponentDataArray<Authoritative<SpatialOSPosition>> PositionAuthority;
+        public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
     }
 
     [Inject] Data data;
@@ -84,11 +84,11 @@ public class OnPlayerSpawnSystem : ComponentSystem
     public struct Data
     {
         public readonly int Length;
-        public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-        public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInputAuthority;
+        public ComponentDataArray<PlayerInput.Component> PlayerInput;
+        public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
 
         // This system will only run when there has been a change of authority over PlayerInput in the last tick
-        public ComponentDataArray<AuthorityChanges<SpatialOSPlayerInput>> PlayerInputAuthorityChange;
+        public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthorityChange;
     }
 
     [Inject] Data data;
