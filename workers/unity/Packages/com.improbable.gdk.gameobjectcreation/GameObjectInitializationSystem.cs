@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;

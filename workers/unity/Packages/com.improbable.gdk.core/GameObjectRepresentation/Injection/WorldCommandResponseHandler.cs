@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 

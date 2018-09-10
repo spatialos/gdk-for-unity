@@ -2,7 +2,7 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;

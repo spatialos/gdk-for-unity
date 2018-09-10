@@ -1,4 +1,4 @@
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.GameObjectCreation;
 using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
