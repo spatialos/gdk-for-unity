@@ -13,7 +13,7 @@ All workers use the `ForwardingDispatcher` by default. To replace it with the `L
 
 ### Using the ILogDispatcher
 
-You can access the dispatcher through the `WorkerSystem`. The dispatcher provides a single `HandleLog` function, which takes two arguments:
+You can access the dispatcher through the [WorkerSystem](accessing-worker-info.md). The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
 * `LogType` (e.g. `UnityEngine.LogType.Error`)
 * `LogEvent`, which stores the message and other context variables in the Data dictionary
