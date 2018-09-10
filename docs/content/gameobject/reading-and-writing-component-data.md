@@ -48,7 +48,8 @@ component Health {
 1. Declare a field of type `Health` Reader or Writer and decorate it with a `[Require]` attribute. 
 
 2. Access the current component field values using `Reader.Data`. 
-This returns a generated `ISpatialComponentData` struct which contains all the component field values of `Health`.
+</br>
+(This returns a generated `ISpatialComponentData` struct which contains all the component field values of `Health`.)
 
 **Example**
 ```csharp
@@ -70,9 +71,12 @@ public class ReadHealthBehaviour : MonoBehaviour
 ## How to update component field values
 
 1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute.
+</br>
 **Note**: The GDK only injects a Writer when your worker gains write authority over the `Health` component. The MonoBehaviour requiring the Writer remains disabled otherwise.
 
-2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`. (`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
+2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
+</br>
+(`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
 
 **Example**
 ```csharp
@@ -101,8 +105,9 @@ public class WriteHealthBehaviour : MonoBehaviour
 1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
 
 2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update) +=` or for `Reader.<component field name>Updated() +=` during `OnEnable(<type of component field> newFieldValue)`.
-*  `Reader.ComponentUpdated` is invoked when any component field gets updated.
-*  `Reader.<component field name>Updated` is invoked when that component field gets updated.
+</br>
+    *  `Reader.ComponentUpdated` is invoked when any component field gets updated.
+    *  `Reader.<component field name>Updated` is invoked when that component field gets updated.
 
 **Note:** 
 `Reader.ComponentUpdated` callbacks are invoked before specific field update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated(ISpatialComponentUpdate update) -=` and `Reader.<component field name>Updated() -=`. Callbacks are also automatically deregistered when a Reader wor Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
