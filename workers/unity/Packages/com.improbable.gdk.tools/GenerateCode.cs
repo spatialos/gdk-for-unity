@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Tools
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
         private static readonly string StartupCodegenMarkerFile =
-            Path.GetFullPath("Temp/ImprobableCodegen.marker");
+            Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
