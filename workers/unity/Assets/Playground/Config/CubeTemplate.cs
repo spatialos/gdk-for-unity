@@ -13,10 +13,12 @@ namespace Playground
         {
             const string entityType = "Cube";
 
-            var transform = Transform.Component.CreateSchemaComponentData(
+            var transform = TransformInternal.Component.CreateSchemaComponentData(
                 new Location((float) coords.X, (float) coords.Y, (float) coords.Z),
-                new Quaternion(1, 0, 0, 0),
-                0
+                new Quaternion(1.0f, 0.0f, 0.0f, 0.0f),
+                new Velocity(0.0f, 0.0f, 0.0f),
+                0,
+                0.0f
             );
 
             var cubeColor = CubeColor.Component.CreateSchemaComponentData();
