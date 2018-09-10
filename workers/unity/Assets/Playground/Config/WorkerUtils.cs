@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core.GameObjectRepresentation;
 using Improbable.Gdk.GameObjectCreation;
+using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
@@ -10,6 +11,13 @@ namespace Playground
     {
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
+
+        public static readonly List<string> AllWorkerAttributes =
+            new List<string>
+            {
+                UnityGameLogic,
+                UnityClient
+            };
 
         public static void AddClientSystems(World world)
         {

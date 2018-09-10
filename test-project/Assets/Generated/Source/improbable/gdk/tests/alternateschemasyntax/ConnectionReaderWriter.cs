@@ -14,7 +14,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             internal class ReaderWriterCreator : IInjectableCreator

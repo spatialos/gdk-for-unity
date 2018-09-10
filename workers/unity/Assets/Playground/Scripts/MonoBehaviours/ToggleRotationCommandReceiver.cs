@@ -6,7 +6,7 @@ namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
-        [Require] private SpinnerRotation.Requirables.CommandRequestHandler requestHandler;
+        [Require] private SpinnerRotation.Requirable.CommandRequestHandler requestHandler;
 
         private RotationBehaviour rotationBehaviour;
 
@@ -37,7 +37,7 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
 
-                spinnerToggleRotationRequest.SendResponse(new Void());
+                spinnerToggleRotationRequest.SendResponse(new Empty());
             }
         }
     }
