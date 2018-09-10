@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.Core;
+﻿using Generated.Improbable.Transform;
+using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -14,16 +15,16 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<Generated.Improbable.Transform.Transform.Component> TransformComponent;
+            [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
             [WriteOnly] public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
             [WriteOnly] public BufferArray<BufferedTransform> TransformBuffer;
 
             public SubtractiveComponent<NewlyAddedSpatialOSEntity> DenotesNotNewlyAdded;
 
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>>
                 DenotesAuthorityChanged;
 
-            [ReadOnly] public ComponentDataArray<Authoritative<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>>
                 DenotesAuthoritative;
         }
 
@@ -31,17 +32,17 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             [ReadOnly] public ComponentArray<Transform> UnityTransform;
-            [ReadOnly] public ComponentDataArray<Generated.Improbable.Transform.Transform.Component> TransformComponent;
+            [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
             [WriteOnly] public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
             [WriteOnly] public BufferArray<BufferedTransform> TransformBuffer;
 
             public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
             public SubtractiveComponent<NewlyAddedSpatialOSEntity> DenotesNotNewlyAdded;
 
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>>
                 DenotesAuthorityChanged;
 
-            [ReadOnly] public ComponentDataArray<Authoritative<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>>
                 DenotesAuthoritative;
         }
 

@@ -1,9 +1,10 @@
+using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -17,9 +18,9 @@ namespace Improbable.Gdk.TransformSynchronization
             public BufferArray<BufferedTransform> TransformBuffer;
             public ComponentDataArray<DefferedUpdateTransform> LastTransformValue;
             public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
-            [ReadOnly] public ComponentDataArray<Transform.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<Transform.Component> CurrentTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> DenotesNotAuthoritative;
+            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
+            [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
         }
 
         [Inject] private Data data;
@@ -123,7 +124,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
         }
 
-        private void UpdateLastTransfrom(ref Transform.Component lastTransform, Transform.Update update)
+        private void UpdateLastTransfrom(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {
@@ -151,7 +152,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
         }
 
-        private static BufferedTransform ToBufferedTransform(Transform.Component transform)
+        private static BufferedTransform ToBufferedTransform(TransformInternal.Component transform)
         {
             return new BufferedTransform
             {
@@ -162,7 +163,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        private static BufferedTransform ToBufferedTransformAtTick(Transform.Component component, uint tick)
+        private static BufferedTransform ToBufferedTransformAtTick(TransformInternal.Component component, uint tick)
         {
             return new BufferedTransform
             {

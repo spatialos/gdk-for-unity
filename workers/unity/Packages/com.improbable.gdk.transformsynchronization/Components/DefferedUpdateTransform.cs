@@ -5,6 +5,6 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public struct DefferedUpdateTransform : IComponentData
     {
-        public Transform.Component Transform;
+        public TransformInternal.Component Transform;
     }
 }

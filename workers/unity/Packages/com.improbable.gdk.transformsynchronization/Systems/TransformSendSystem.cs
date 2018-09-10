@@ -1,21 +1,21 @@
+using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component>
+    public class TransformSendSystem : CustomSpatialOSSendSystem<TransformInternal.Component>
     {
         private struct TransformData
         {
             public readonly int Length;
-            public ComponentDataArray<Transform.Component> Transform;
+            public ComponentDataArray<TransformInternal.Component> Transform;
             public ComponentDataArray<LastTransformSentData> LastTransformSent;
-            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
         }
 
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = transformData.SpatialEntityIds[i].EntityId;
 
                 var update = new SchemaComponentUpdate(transform.ComponentId);
-                Transform.Serialization.Serialize(transform, update.GetFields());
+                TransformInternal.Serialization.Serialize(transform, update.GetFields());
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 transform.DirtyBit = false;

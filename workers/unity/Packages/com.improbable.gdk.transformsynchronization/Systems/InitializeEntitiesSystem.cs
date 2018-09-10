@@ -14,7 +14,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             [ReadOnly] public EntityArray Entity;
-            [ReadOnly] public ComponentDataArray<Transform.Component> Transform;
+            [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
 
             // This can't work once we put proper interest in. Will need to completely decouple transform and position
             [ReadOnly] public ComponentDataArray<Position.Component> Position;

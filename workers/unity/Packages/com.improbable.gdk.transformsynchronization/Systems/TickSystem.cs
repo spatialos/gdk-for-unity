@@ -17,7 +17,7 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
             public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
 
-            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> DenotesAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> DenotesAuthority;
         }
 
         [Inject] private Data data;

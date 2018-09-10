@@ -2,7 +2,6 @@
 using Generated.Improbable.Transform;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
-using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {

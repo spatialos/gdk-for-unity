@@ -5,7 +5,7 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public struct LastTransformSentData : IComponentData
     {
-        public Transform.Component Transform;
+        public TransformInternal.Component Transform;
         public float TimeSinceLastUpdate;
     }
 }

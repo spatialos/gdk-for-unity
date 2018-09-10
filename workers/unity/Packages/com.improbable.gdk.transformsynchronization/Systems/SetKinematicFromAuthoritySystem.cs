@@ -1,9 +1,9 @@
-﻿using Improbable.Gdk.Core;
+﻿using Generated.Improbable.Transform;
+using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -18,7 +18,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public ComponentArray<Rigidbody> Rigidbody;
 
             // If authority is gained on the first tick there will be an auth changed component
-            public SubtractiveComponent<Authoritative<Transform.Component>> DenotesNotAuthoritative;
+            public SubtractiveComponent<Authoritative<TransformInternal.Component>> DenotesNotAuthoritative;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewEntity;
         }
 
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<Transform.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>> TransformAuthority;
         }
 
         [Inject] private AuthChangeData authChangeData;

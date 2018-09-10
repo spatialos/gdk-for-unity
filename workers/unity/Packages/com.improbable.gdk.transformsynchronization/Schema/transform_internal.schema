@@ -21,7 +21,7 @@ type Quaternion {
     float z = 4;
 }
 
-component Transform {
+component TransformInternal {
     id = 11000;
     Location location = 1;
     Quaternion rotation = 2;

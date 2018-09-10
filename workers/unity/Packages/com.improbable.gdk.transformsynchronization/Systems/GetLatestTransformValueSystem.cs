@@ -15,7 +15,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             public BufferArray<BufferedTransform> TransformBuffer;
             public ComponentDataArray<TransformToSet> CurrentTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Transform.Component>> DenotesNotAuthoritative;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
         }
 
         [Inject] private Data data;

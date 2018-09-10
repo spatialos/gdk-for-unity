@@ -1,10 +1,8 @@
-﻿using Improbable.Gdk.Core;
+﻿using Generated.Improbable.Transform;
 using Improbable.Gdk.Core.GameObjectRepresentation;
-using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
 using SpatialQuaternion = Generated.Improbable.Transform.Quaternion;
 using Quaternion = UnityEngine.Quaternion;
-using Transform = Generated.Improbable.Transform.Transform;
 
 public class RotationBehaviour : MonoBehaviour
 {

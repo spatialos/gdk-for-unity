@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.Core;
+﻿using Generated.Improbable.Transform;
+using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<TransformToSet> CurrentTransform;
             public ComponentArray<Rigidbody> Rigidbody;
 
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>>
                 DenotesNotAuthoritative;
         }
 
@@ -27,7 +28,7 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentArray<Transform> Transform;
             public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
 
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<Generated.Improbable.Transform.Transform.Component>>
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>>
                 DenotesNotAuthoritative;
         }
 
