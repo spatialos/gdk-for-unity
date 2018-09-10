@@ -1,6 +1,7 @@
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Interface for objects creating a particular type of IInjectable, to be used by the InjectableFactory.

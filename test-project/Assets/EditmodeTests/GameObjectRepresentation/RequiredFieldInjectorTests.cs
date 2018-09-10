@@ -3,7 +3,7 @@ using System.Linq;
 using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;

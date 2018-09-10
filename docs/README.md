@@ -24,7 +24,7 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [Sending and receiving events](content/gameobject/sending-receiving-commands.md)
 * [Sending and receiving commands](content/gameobject/sending-receiving-events.md)
 * [World commands](content/gameobject/world-commands.md)
-* [Logging and accessing the worker](content/gameobject/logging-and-accessing-the-worker.md)
+* [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
 
 ##### Entity Component System
 The GDK currently uses the `0.0.12-preview.11` version of the entities preview packages.

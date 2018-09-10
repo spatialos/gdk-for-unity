@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     public class EntityGameObjectLinker
     {
@@ -58,11 +59,11 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
                     var componentType = component.GetType();
                     if (entityManager.HasComponent(entity, componentType))
                     {
-                        viewCommandBuffer.RemoveComponent(entity, componentType);   
+                        viewCommandBuffer.RemoveComponent(entity, componentType);
                     }
                 }
             }
-            
+
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
             if (spatialOSComponent != null)
             {
