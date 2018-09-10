@@ -14,7 +14,7 @@ This is an alpha release of the GDK Core which is the foundation of the product.
 
 ---
 * [Setup Guide](docs/setup-and-installing.md)
-* [Documentation](docs/README.md#documentation)
+* [Documentation](docs/README.md)
 * [Development Roadmap](https://trello.com/b/29tMKyQC)
 * [FAQs](docs/content/faqs/faqs.md)
 * [Discord](https://discord.gg/SCZTCYm)
