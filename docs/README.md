@@ -1,6 +1,6 @@
 # SpatialOS GDK for Unity documentation
 
-If you would like an overview of the GDK please see the main [readme](../README.md)
+If you would like an overview of the GDK please see the main [readme](../README.md).
 
 The GDK documentation assumes you are familiar with SpatialOS concepts. For guidance see the [SpatialOS website](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
 
