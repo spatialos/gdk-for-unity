@@ -16,7 +16,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
-            [WriteOnly] public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
+            [WriteOnly] public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
             [WriteOnly] public BufferArray<BufferedTransform> TransformBuffer;
 
             public SubtractiveComponent<NewlyAddedSpatialOSEntity> DenotesNotNewlyAdded;
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             [ReadOnly] public ComponentArray<Transform> UnityTransform;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
-            [WriteOnly] public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
+            [WriteOnly] public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
             [WriteOnly] public BufferArray<BufferedTransform> TransformBuffer;
 
             public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 rigidbody.MoveRotation(t.Rotation.ToUnityQuaternion());
                 rigidbody.AddForce(t.Velocity.ToUnityVector3() - rigidbody.velocity, ForceMode.VelocityChange);
                 rigidbodyData.TransformBuffer[i].Clear();
-                rigidbodyData.TicksSinceLastUpdate[i] = new TicksSinceLastUpdate();
+                rigidbodyData.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate();
             }
 
             for (int i = 0; i < transformData.Length; ++i)
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 unityTransform.position = t.Location.ToUnityVector3() + worker.Origin;
                 unityTransform.rotation = t.Rotation.ToUnityQuaternion();
                 transformData.TransformBuffer[i].Clear();
-                transformData.TicksSinceLastUpdate[i] = new TicksSinceLastUpdate();
+                transformData.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate();
             }
         }
     }

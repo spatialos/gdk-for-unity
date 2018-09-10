@@ -7,7 +7,9 @@ using Quaternion = UnityEngine.Quaternion;
 public class RotationBehaviour : MonoBehaviour
 {
     public bool RotatingClockWise = true;
-    [Require] private Transform.Requirable.Writer writer;
+
+    // Should only run when authoritative
+    [Require] private TransformInternal.Requirable.Writer _;
 
     void Update()
     {

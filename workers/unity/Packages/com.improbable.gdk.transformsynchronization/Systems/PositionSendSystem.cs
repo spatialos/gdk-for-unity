@@ -42,10 +42,10 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                var squareDisatnce =
+                var squareDistance =
                     TransformUtils.SquareDistance(lastPositionSent.Position.Coords, positionData.Position[i].Coords);
 
-                if (squareDisatnce == 0.0f)
+                if (squareDistance == 0.0f)
                 {
                     continue;
                 }
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 if (lastPositionSent.TimeSinceLastUpdate <
                     TransformSynchronizationConfig.MaxTimeForStalePositionWithoutUpdateS)
                 {
-                    if (squareDisatnce < TransformSynchronizationConfig.MaxSquarePositionChangeWithoutUpdate)
+                    if (squareDistance < TransformSynchronizationConfig.MaxSquarePositionChangeWithoutUpdate)
                     {
                         continue;
                     }

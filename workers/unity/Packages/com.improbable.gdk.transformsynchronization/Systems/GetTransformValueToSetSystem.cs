@@ -8,7 +8,7 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
     [UpdateInGroup(typeof(FixedUpdate))]
-    public class GetLatestTransformValueSystem : ComponentSystem
+    public class GetTransformValueToSetSystem : ComponentSystem
     {
         private struct Data
         {
@@ -31,13 +31,13 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                var currentTrasnform = new TransformToSet
+                var currentTransform = new TransformToSet
                 {
                     Position = buffer[0].Position + worker.Origin,
                     Orientation = buffer[0].Orientation
                 };
 
-                data.CurrentTransform[i] = currentTrasnform;
+                data.CurrentTransform[i] = currentTransform;
 
                 buffer.RemoveAt(0);
             }

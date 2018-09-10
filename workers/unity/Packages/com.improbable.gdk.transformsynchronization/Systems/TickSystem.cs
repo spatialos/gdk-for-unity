@@ -15,7 +15,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
-            public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
+            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
 
             [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> DenotesAuthority;
         }
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             for (int i = 0; i < data.Length; ++i)
             {
-                TicksSinceLastUpdate t = data.TicksSinceLastUpdate[i];
+                TicksSinceLastTransformUpdate t = data.TicksSinceLastUpdate[i];
                 t.NumberOfTicks += 1;
                 data.TicksSinceLastUpdate[i] = t;
             }

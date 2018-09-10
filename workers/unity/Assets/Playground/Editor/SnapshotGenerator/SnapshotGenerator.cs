@@ -99,7 +99,6 @@ namespace Playground.Editor.SnapshotGenerator
             );
 
             var collisions = Collisions.Component.CreateSchemaComponentData();
-            var archetype = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
             var color = SpinnerColor.Component.CreateSchemaComponentData(Color.BLUE);
             var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
 
@@ -110,7 +109,6 @@ namespace Playground.Editor.SnapshotGenerator
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(collisions, WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
-                .AddComponent(archetype, WorkerUtils.UnityGameLogic)
                 .AddComponent(color, WorkerUtils.UnityGameLogic)
                 .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
                 .Build();

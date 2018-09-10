@@ -8,7 +8,7 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
     [UpdateAfter(typeof(SpatialOSReceiveGroup))]
-    public class InitializeEntitiesSystem : ComponentSystem
+    public class DefaultTransformInitializationSystem : ComponentSystem
     {
         private struct Data
         {
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 {
                     Transform = transform
                 };
-                var ticksSinceLastUpdate = new TicksSinceLastUpdate
+                var ticksSinceLastUpdate = new TicksSinceLastTransformUpdate
                 {
                     NumberOfTicks = 0
                 };

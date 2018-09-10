@@ -17,7 +17,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             public BufferArray<BufferedTransform> TransformBuffer;
             public ComponentDataArray<DefferedUpdateTransform> LastTransformValue;
-            public ComponentDataArray<TicksSinceLastUpdate> TicksSinceLastUpdate;
+            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
             [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
@@ -35,8 +35,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 var transformBuffer = data.TransformBuffer[i];
                 var lastTransformApplied = data.LastTransformValue[i].Transform;
 
+                // todo enable smear
                 // Need to take smear into account here when it's turned on
-                if (transformBuffer.Length == TransformSynchronizationConfig.MaxLoadMatchedBufferSize)
+                if (transformBuffer.Length >= TransformSynchronizationConfig.MaxLoadMatchedBufferSize)
                 {
                     transformBuffer.Clear();
                 }
@@ -52,6 +53,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
                     float tickSmearFactor = 1.0f;
+                        // todo enable smear
                         // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
                         //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
@@ -90,18 +92,18 @@ namespace Improbable.Gdk.TransformSynchronization
                         continue;
                     }
 
-                    data.TicksSinceLastUpdate[i] = new TicksSinceLastUpdate
+                    data.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate
                     {
                         NumberOfTicks = 0
                     };
 
                     float tickSmearFactor = 1.0f;
+                        // todo enable smear
                         // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
                         //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
                     var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 
-                    //Debug.Log("not empty or full + " + transformBuffer.Length);
                     var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
                     uint lastTickId = transformToInterpolateFrom.PhysicsTick;
 

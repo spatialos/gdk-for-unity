@@ -6,10 +6,10 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         public static void AddClientSystems(World world)
         {
-            world.GetOrCreateManager<InitializeEntitiesSystem>();
+            world.GetOrCreateManager<DefaultTransformInitializationSystem>();
             world.GetOrCreateManager<TickRateEstimationSystem>();
             world.GetOrCreateManager<InterpolateTransformSystem>();
-            world.GetOrCreateManager<GetLatestTransformValueSystem>();
+            world.GetOrCreateManager<GetTransformValueToSetSystem>();
             world.GetOrCreateManager<DefaultApplyLatestTransformSystem>();
             world.GetOrCreateManager<DefaultUpdateLatestTransformSystem>();
             world.GetOrCreateManager<UpdateTransformSystem>();
@@ -23,10 +23,10 @@ namespace Improbable.Gdk.TransformSynchronization
 
         public static void AddServerSystems(World world)
         {
-            world.GetOrCreateManager<InitializeEntitiesSystem>();
+            world.GetOrCreateManager<DefaultTransformInitializationSystem>();
             world.GetOrCreateManager<TickRateEstimationSystem>();
             world.GetOrCreateManager<TakeRawTransformUpdateSystem>();
-            world.GetOrCreateManager<GetLatestTransformValueSystem>();
+            world.GetOrCreateManager<GetTransformValueToSetSystem>();
             world.GetOrCreateManager<DefaultApplyLatestTransformSystem>();
             world.GetOrCreateManager<DefaultUpdateLatestTransformSystem>();
             world.GetOrCreateManager<UpdateTransformSystem>();

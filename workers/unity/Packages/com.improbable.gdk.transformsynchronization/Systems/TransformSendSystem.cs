@@ -42,7 +42,8 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                // Need to be doing things with velocity and orientation too for this to work
+                // todo Need to be doing things with velocity and orientation too for this to work
+                // also consider moving all this to the intermediate systems
                 // var squareDisatnce =
                 //     TransformUtils.SquareDisatnce(lastTransformSent.Transform.Location,
                 //         transformData.Transform[i].Location);

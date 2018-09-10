@@ -55,7 +55,6 @@ namespace Playground
 
         private static void AddLifecycleSystems(World world)
         {
-            world.GetOrCreateManager<ArchetypeInitializationSystem>();
             world.GetOrCreateManager<DisconnectSystem>();
         }
     }

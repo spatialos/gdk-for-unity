@@ -2,7 +2,7 @@
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    public struct TicksSinceLastUpdate : IComponentData
+    public struct TicksSinceLastTransformUpdate : IComponentData
     {
         public uint NumberOfTicks;
     }
