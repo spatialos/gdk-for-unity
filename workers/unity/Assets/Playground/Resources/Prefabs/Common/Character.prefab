@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114369544356922972}
   - component: {fileID: 114894172867123548}
   - component: {fileID: 114394854148111078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 4065413207019866}
   - component: {fileID: 33837999052822470}
   - component: {fileID: 23702068467411562}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 33387559950479064}
   - component: {fileID: 23648501088257758}
   - component: {fileID: 136218386378347046}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1292271339760838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.642104, y: 2.9705105, z: -3.281187}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4894061990277772}
@@ -198,13 +198,13 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1292271339760838}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &65358016271066852
 BoxCollider:
@@ -258,7 +258,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1683697636358776}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2

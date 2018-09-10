@@ -12,9 +12,9 @@ namespace Improbable.Gdk.Core
         private const string CustomReplicationSystemAlreadyExists =
             "Custom Replication System for this component already exists.";
 
-        private SpatialOSSendSystem spatialOSSendSystem;
-
         protected WorkerSystem WorkerSystem;
+
+        private SpatialOSSendSystem spatialOSSendSystem;
 
         protected override void OnCreateManager(int capacity)
         {
