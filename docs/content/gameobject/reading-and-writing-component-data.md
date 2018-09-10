@@ -107,9 +107,7 @@ public class WriteHealthBehaviour : MonoBehaviour
 `Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated(ISpatialComponentUpdate update) -=` and `Reader.<component property name>Updated() -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
 **Example 1**
-
 The following code example sets up a `Reader.ComponentUpdated` callback.
-
 ```csharp
 using Generated.Improbable.Examples
 
@@ -136,9 +134,7 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 ```
 
 **Example 2**
-
 The following code example sets up a `Reader.<component property name>Updated` callback.
-
 ```csharp
 using Generated.Improbable.Examples
 

@@ -20,18 +20,31 @@ namespace Improbable.Gdk.Tools
         private static readonly string SchemaCompilerRelativePath =
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
 
+        private static readonly string StartupCodegenMarkerFile =
+            Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
+
         /// <summary>
         ///     Ensure that code is generated on editor startup.
         /// </summary>
         static GenerateCode()
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            if (!CanGenerateOnLoad())
             {
-                // Don't generate code when entering PlayMode.
                 return;
             }
 
             EditorApplication.delayCall += Generate;
+        }
+
+        private static bool CanGenerateOnLoad()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                // Don't generate code when entering PlayMode.
+                return false;
+            }
+
+            return !File.Exists(StartupCodegenMarkerFile);
         }
 
         [MenuItem("SpatialOS/Generate code", false, GenerateCodePriority)]
@@ -78,11 +91,16 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary, ConstructArgs(projectPath, schemaCompilerPath));
+                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary,
+                        ConstructArgs(projectPath, schemaCompilerPath));
 
                     if (exitCode != 0)
                     {
                         Debug.LogError("Failed to generate code.");
+                    }
+                    else
+                    {
+                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
                     }
                 }
 

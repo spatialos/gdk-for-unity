@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
 using Generated.Improbable;
 using Generated.Improbable.PlayerLifecycle;
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 using Quaternion = Generated.Improbable.Transform.Quaternion;
-using Transform = UnityEngine.Transform;
 
 namespace Playground.Editor.SnapshotGenerator
 {
@@ -20,9 +17,6 @@ namespace Playground.Editor.SnapshotGenerator
             public int NumberEntities;
             public string OutputPath;
         }
-
-        private static readonly List<string> UnityWorkers =
-            new List<string> { WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient};
 
         public static void Generate(Arguments arguments)
         {
@@ -52,7 +46,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
                 .AddMetadata("PlayerCreator", WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(UnityWorkers)
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(playerCreator, WorkerUtils.UnityGameLogic)
                 .Build();
             snapshot.AddEntity(spawner);
@@ -68,7 +62,6 @@ namespace Playground.Editor.SnapshotGenerator
             }
 
             var cubesToSpawn = cubeCount;
-            const string entityType = "Cube";
 
             for (var x = -gridLength + 1; x <= gridLength - 1; x += 2)
             {
@@ -86,28 +79,7 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
-                    var transform = Generated.Improbable.Transform.Transform.Component.CreateSchemaComponentData(
-                        new Location { X = x, Y = 1, Z = z },
-                        new Quaternion { W = 1, X = 0, Y = 0, Z = 0 },
-                        0
-                    );
-
-                    var cubeColor = CubeColor.Component.CreateSchemaComponentData();
-                    var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
-                    var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
-                    var archetypeComponent = ArchetypeComponent.Component.CreateSchemaComponentData(entityType);
-
-                    var entity = EntityBuilder.Begin()
-                        .AddPosition(x, 0, z, WorkerUtils.UnityGameLogic)
-                        .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
-                        .SetPersistence(true)
-                        .SetReadAcl(UnityWorkers)
-                        .AddComponent(transform, WorkerUtils.UnityGameLogic)
-                        .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
-                        .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
-                        .AddComponent(archetypeComponent, WorkerUtils.UnityGameLogic)
-                        .AddComponent(launchable, WorkerUtils.UnityGameLogic)
-                        .Build();
+                    var entity = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
 
                     snapshot.AddEntity(entity);
                 }
@@ -133,7 +105,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
-                .SetReadAcl(UnityWorkers)
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(collisions, WorkerUtils.UnityGameLogic)
                 .AddComponent(transform, WorkerUtils.UnityGameLogic)
                 .AddComponent(archetype, WorkerUtils.UnityGameLogic)

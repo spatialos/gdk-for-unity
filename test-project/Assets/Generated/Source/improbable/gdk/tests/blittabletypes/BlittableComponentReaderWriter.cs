@@ -14,7 +14,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.ReaderWriter, 1001)]
             internal class ReaderWriterCreator : IInjectableCreator

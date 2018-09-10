@@ -175,7 +175,7 @@ namespace <#= qualifiedNamespace #>
                     }
 
                     var updateList = updateLists[i];
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         foreach (var update in updateList.Updates)
                         {
@@ -203,7 +203,7 @@ namespace <#= qualifiedNamespace #>
 
                         var eventList = eventLists[i];
 
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
                             {
@@ -231,7 +231,7 @@ namespace <#= qualifiedNamespace #>
                             continue;
                         }
                          var commandRequestList = commandRequestLists[i];
-                         foreach (Requirables.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -261,7 +261,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirables.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
@@ -294,7 +294,7 @@ namespace <#= qualifiedNamespace #>
 
                     if (IsFirstAuthChange(Authority.Authoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.Authoritative);
                         }
@@ -323,7 +323,7 @@ namespace <#= qualifiedNamespace #>
 
                     if (IsFirstAuthChange(Authority.NotAuthoritative, changeOpsLists[i]))
                     {
-                        foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                        foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             readerWriter.OnAuthorityChange(Authority.NotAuthoritative);
                         }
@@ -360,7 +360,7 @@ namespace <#= qualifiedNamespace #>
                     {
                         continue;
                     }
-                    foreach (Requirables.ReaderWriterImpl readerWriter in readersWriters)
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }

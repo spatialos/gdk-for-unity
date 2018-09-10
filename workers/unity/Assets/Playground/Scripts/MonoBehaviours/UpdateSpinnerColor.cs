@@ -8,7 +8,7 @@ namespace Playground.MonoBehaviours
 {
     public class UpdateSpinnerColor : MonoBehaviour
     {
-        [Require] private SpinnerColor.Requirables.Writer writer;
+        [Require] private SpinnerColor.Requirable.Writer writer;
 
         private Array colorValues;
         private int colorIndex = 0;

@@ -45,7 +45,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             }
         }
 
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
             internal class CommandRequestSenderCreator : IInjectableCreator
