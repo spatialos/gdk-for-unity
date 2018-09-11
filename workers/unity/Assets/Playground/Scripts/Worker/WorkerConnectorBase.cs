@@ -35,7 +35,7 @@ namespace Playground
             Dispose();
         }
 
-        public async Task Connect(string workerType, ILogDispatcher logger)
+        protected async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts
             // This prevents races on the workers starting and races on when we start ticking systems
