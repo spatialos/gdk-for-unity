@@ -4,6 +4,12 @@ using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
@@ -30,6 +36,7 @@ namespace Playground
             }
 
             timeElapsedSinceUpdate += Time.deltaTime;
+            
             AddFpsSample();
             if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
@@ -44,7 +51,7 @@ namespace Playground
             }
         }
 
-        private float DefaultLoadCalculation(float fps)
+        private static float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
             return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));

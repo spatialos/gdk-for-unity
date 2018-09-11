@@ -14,6 +14,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
     {
         private const string InjectableIdAttributeNotFoundError
             = "InjectableCreator found with no Injectable ID attribute.";
+
         private const string NoReaderWriterCreatorFoundForInjectableIdError
             = "No InjectableCreator found for given InjectableId.";
 
@@ -39,7 +40,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             foreach (var creatorType in creatorTypes)
             {
                 var injectableIdAttribute =
-                    (InjectableIdAttribute)Attribute.GetCustomAttribute(creatorType, typeof(InjectableIdAttribute), false);
+                    (InjectableIdAttribute) Attribute.GetCustomAttribute(creatorType, typeof(InjectableIdAttribute), false);
                 if (injectableIdAttribute == null)
                 {
                     logger.HandleLog(LogType.Error, new LogEvent(InjectableIdAttributeNotFoundError)

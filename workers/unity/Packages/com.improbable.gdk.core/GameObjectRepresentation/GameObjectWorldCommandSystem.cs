@@ -142,7 +142,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private WorldCommands.Requirable.WorldCommandResponseHandler[] GetWorldCommandResponseHandlersForEntity(
             Entity entity)
         {
-            var entityToReaderWriterStore = gameObjectDispatcherSystem.entityToReaderWriterStore;
+            var entityToReaderWriterStore = gameObjectDispatcherSystem.EntityToReaderWriterStore;
 
             if (!entityToReaderWriterStore.TryGetValue(entity, out var injectableStore))
             {
