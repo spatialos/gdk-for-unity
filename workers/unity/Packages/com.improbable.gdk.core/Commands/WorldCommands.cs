@@ -14,34 +14,34 @@ namespace Improbable.Gdk.Core.Commands
         {
             var createEntitySender = new CreateEntity.CommandSender
             {
-                Handle = CreateEntity.RequestsProvider.Allocate(world),
-                RequestsToSend = new List<CreateEntity.Request>()
+                Handle = CreateEntity.RequestsProvider.Allocate(world)
             };
 
+            createEntitySender.RequestsToSend = new List<CreateEntity.Request>();
             manager.AddComponentData(entity, createEntitySender);
 
             var deleteEntitySender = new DeleteEntity.CommandSender
             {
-                Handle = DeleteEntity.RequestsProvider.Allocate(world),
-                RequestsToSend = new List<DeleteEntity.Request>()
+                Handle = DeleteEntity.RequestsProvider.Allocate(world)
             };
 
+            deleteEntitySender.RequestsToSend = new List<DeleteEntity.Request>();
             manager.AddComponentData(entity, deleteEntitySender);
 
             var reserveEntityIdsSender = new ReserveEntityIds.CommandSender
             {
-                Handle = ReserveEntityIds.RequestsProvider.Allocate(world),
-                RequestsToSend = new List<ReserveEntityIds.Request>()
+                Handle = ReserveEntityIds.RequestsProvider.Allocate(world)
             };
 
+            reserveEntityIdsSender.RequestsToSend = new List<ReserveEntityIds.Request>();
             manager.AddComponentData(entity, reserveEntityIdsSender);
 
             var entityQuerySender = new EntityQuery.CommandSender
             {
-                Handle = EntityQuery.RequestsProvider.Allocate(world),
-                RequestsToSend = new List<EntityQuery.Request>()
+                Handle = EntityQuery.RequestsProvider.Allocate(world)
             };
 
+            entityQuerySender.RequestsToSend = new List<EntityQuery.Request>();
             manager.AddComponentData(entity, entityQuerySender);
         }
 
