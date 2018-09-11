@@ -6,6 +6,17 @@ using Unity.Mathematics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+#pragma warning disable 169
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
+
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -53,9 +64,9 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
                     float tickSmearFactor = 1.0f;
-                        // todo enable smear
-                        // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
-                        //     TransformSynchronizationConfig.MaxTickSmearFactor);
+                    // todo enable smear
+                    // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
+                    //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
                     uint ticksToFill = math.max(
                         (uint) (TransformSynchronizationConfig.TargetLoadMatchedBufferSize * tickSmearFactor), 1);
@@ -98,9 +109,9 @@ namespace Improbable.Gdk.TransformSynchronization
                     };
 
                     float tickSmearFactor = 1.0f;
-                        // todo enable smear
-                        // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
-                        //     TransformSynchronizationConfig.MaxTickSmearFactor);
+                    // todo enable smear
+                    // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
+                    //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
                     var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 

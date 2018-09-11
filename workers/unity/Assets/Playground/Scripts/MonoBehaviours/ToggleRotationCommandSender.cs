@@ -5,6 +5,13 @@ using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
 
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
+#pragma warning disable 649
+
+#endregion
+
 namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandSender : MonoBehaviour

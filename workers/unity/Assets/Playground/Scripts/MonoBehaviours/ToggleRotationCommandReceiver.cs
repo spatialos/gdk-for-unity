@@ -2,6 +2,13 @@ using Generated.Playground;
 using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
+#pragma warning disable 649
+
+#endregion
+
 namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
@@ -12,7 +19,7 @@ namespace Playground.MonoBehaviours
 
         private float nextAvailableSpinChangeTime;
 
-        public float timeBetweenSpinChanges = 1.0f;
+        public float TimeBetweenSpinChanges = 1.0f;
 
         private void OnEnable()
         {
@@ -35,7 +42,7 @@ namespace Playground.MonoBehaviours
             {
                 rotationBehaviour.RotatingClockWise = !rotationBehaviour.RotatingClockWise;
 
-                nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
+                nextAvailableSpinChangeTime = Time.time + TimeBetweenSpinChanges;
 
                 spinnerToggleRotationRequest.SendResponse(new Empty());
             }
