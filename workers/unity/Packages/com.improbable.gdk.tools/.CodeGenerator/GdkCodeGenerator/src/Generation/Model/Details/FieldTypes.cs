@@ -17,6 +17,24 @@ namespace Improbable.Gdk.CodeGenerator
             int indents);
     }
 
+    public static class CommonCodeWriterBlocks
+    {
+        public static void WriteCheckIsCleared(CodeWriter codeWriter, int fieldNumber)
+        {
+            codeWriter.WriteLine("bool isCleared = false;");
+            codeWriter.WriteLine("foreach (var fieldIndex in clearedFields)");
+            using (codeWriter.Scope())
+            {
+                codeWriter.WriteLine($"isCleared = fieldIndex == {fieldNumber};");
+                codeWriter.WriteLine("if (isCleared)");
+                using (codeWriter.Scope())
+                {
+                    codeWriter.WriteLine("break;");
+                }
+            }
+        }
+    }
+
     public class SingularFieldType : IFieldType
     {
         public string Type => containedType.Type;
@@ -120,7 +138,16 @@ namespace Improbable.Gdk.CodeGenerator
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (isCleared)");
+            using (codeWriter.Scope())
+            {
+                codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
+            }
+
+            codeWriter.WriteLine($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
@@ -134,7 +161,16 @@ namespace Improbable.Gdk.CodeGenerator
             int fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (isCleared)");
+            using (codeWriter.Scope())
+            {
+                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+            }
+
+            codeWriter.WriteLine($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
@@ -187,7 +223,10 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-            codeWriter.WriteLine("if (listSize > 0)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (listSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"{fieldInstance}.Clear();");
@@ -208,7 +247,10 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-            codeWriter.WriteLine("if (listSize > 0)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (listSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
@@ -274,7 +316,10 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-            codeWriter.WriteLine("if (mapSize > 0)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (mapSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"{fieldInstance}.Clear();");
@@ -297,7 +342,10 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-            codeWriter.WriteLine("if (mapSize > 0)");
+
+            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+            codeWriter.WriteLine("if (mapSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
                 codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
