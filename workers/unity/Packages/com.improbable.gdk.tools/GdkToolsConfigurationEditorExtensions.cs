@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
         private const string RemoveSchemaDirButtonText = "Remove";
 
         private const string ResetConfigurationButtonText = "Reset GDK tools configuration to default";
-        private const string SaveConfigurationButtonText = "Save GDK tools configuration";
+        private const string SaveConfigurationButtonText = "Save";
 
         private ScriptableGdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
