@@ -19,11 +19,11 @@ namespace Improbable.Gdk.Core
                 hybridAssembly.GetType("Unity.Entities.ComponentArrayInjectionHook");
 
             InjectionHookSupport.RegisterHook(
-                (InjectionHook)Activator.CreateInstance(gameObjectArrayInjectionHookType));
+                (InjectionHook) Activator.CreateInstance(gameObjectArrayInjectionHookType));
             InjectionHookSupport.RegisterHook(
-                (InjectionHook)Activator.CreateInstance(transformAccessArrayInjectionHookType));
+                (InjectionHook) Activator.CreateInstance(transformAccessArrayInjectionHookType));
             InjectionHookSupport.RegisterHook(
-                (InjectionHook)Activator.CreateInstance(componentArrayInjectionHookType));
+                (InjectionHook) Activator.CreateInstance(componentArrayInjectionHookType));
         }
 
         public static void DomainUnloadShutdown()

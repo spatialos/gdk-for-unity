@@ -5,6 +5,15 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
+#pragma warning disable 649
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
@@ -34,8 +43,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
             [ReadOnly] public ComponentDataArray<HasActivationManagerSystemState> DenotesThereIsAnActivationManager;
             [ReadOnly] public SubtractiveComponent<GameObjectReference> NoGameObjectReference;
         }
-        
-        internal readonly Dictionary<Entity, InjectableStore> entityToReaderWriterStore =
+
+        internal readonly Dictionary<Entity, InjectableStore> EntityToReaderWriterStore =
             new Dictionary<Entity, InjectableStore>();
 
         private readonly List<GameObjectComponentDispatcherBase> gameObjectComponentDispatchers =
@@ -62,7 +71,6 @@ namespace Improbable.Gdk.GameObjectRepresentation
             logger = worker.LogDispatcher;
             injector = new RequiredFieldInjector(EntityManager, logger);
         }
-
 
         protected override void OnUpdate()
         {
@@ -101,7 +109,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 .ToList();
 
             gameObjectComponentDispatchers.AddRange(gameObjectComponentDispatcherTypes.Select(type =>
-                (GameObjectComponentDispatcherBase)Activator.CreateInstance(type)));
+                (GameObjectComponentDispatcherBase) Activator.CreateInstance(type)));
         }
 
         private void GenerateComponentGroups()
@@ -175,18 +183,18 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(EntityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(entityToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnEventCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(EntityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnEventCallbacks(EntityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(EntityToReaderWriterStore);
             }
 
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
@@ -202,9 +210,9 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
-                gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(entityToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(entityToReaderWriterStore);
-                gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(entityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(EntityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(EntityToReaderWriterStore);
+                gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(EntityToReaderWriterStore);
             }
         }
 
@@ -216,7 +224,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
 
             var store = new InjectableStore();
-            entityToReaderWriterStore.Add(entity, store);
+            EntityToReaderWriterStore.Add(entity, store);
             var gameObject = EntityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             var manager = new MonoBehaviourActivationManager(gameObject, injector, store, logger);
             entityToActivationManager.Add(entity, manager);
@@ -230,7 +238,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
 
             entityToActivationManager.Remove(entity);
-            entityToReaderWriterStore.Remove(entity);
+            EntityToReaderWriterStore.Remove(entity);
 
             // Disable enabled SpatialOSBehaviours and dispose leftover Requirables.
             activationManager.Dispose();

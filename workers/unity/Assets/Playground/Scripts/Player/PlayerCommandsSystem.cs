@@ -13,6 +13,7 @@ using UnityEngine;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -52,7 +53,7 @@ namespace Playground
 
             if (playerData.Length > 1)
             {
-                throw new InvalidOperationException($"Expected at most 1 playerData, got: {playerData.Length}");
+                throw new InvalidOperationException($"Expected at most 1 playerData but got {playerData.Length}");
             }
 
             PlayerCommand command;
