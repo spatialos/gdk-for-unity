@@ -24,7 +24,6 @@ namespace Playground.MonoBehaviours
         [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
-        private const string CouldNotDeleteEntityWithId = "Could not delete entity with id {0}: {1}.";
 
         public void OnEnable()
         {
@@ -65,8 +64,9 @@ namespace Playground.MonoBehaviours
             if (op.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format(CouldNotDeleteEntityWithId,
-                        entityId, op.Message)));
+                    new LogEvent($"Could not delete entity.")
+                        .WithField(LoggingUtils.EntityId, entityId)
+                        .WithField("Reason", op.Message));
                 return;
             }
 
@@ -76,8 +76,8 @@ namespace Playground.MonoBehaviours
             if (!spawnedCubesCopy.Remove(entityId))
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format("The entity {0} has been unexpectedly removed from the list.",
-                        entityId)));
+                    new LogEvent($"The entity has been unexpectedly removed from the list.")
+                        .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
 

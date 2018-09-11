@@ -4,22 +4,29 @@ using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
+#pragma warning disable 649
+
+#endregion
+
 namespace Playground.MonoBehaviours
 {
     public class UpdateSpinnerColor : MonoBehaviour
     {
-        [Require] private SpinnerColor.Requirable.Writer writer;
+        [Require] private SpinnerColor.Requirable.Writer spinnerColorWriter;
 
         private Array colorValues;
-        private int colorIndex = 0;
-        private float nextColorChangeTime = 0;
+        private int colorIndex;
+        private float nextColorChangeTime;
 
-        void Awake()
+        private void Awake()
         {
             colorValues = Enum.GetValues(typeof(Color));
         }
 
-        void Update()
+        private void Update()
         {
             if (Time.time < nextColorChangeTime)
             {
@@ -29,7 +36,7 @@ namespace Playground.MonoBehaviours
             colorIndex = (colorIndex + 1) % colorValues.Length;
             nextColorChangeTime = Time.time + 2;
 
-            writer.Send(new SpinnerColor.Update
+            spinnerColorWriter.Send(new SpinnerColor.Update
             {
                 Color = (Color) colorValues.GetValue(colorIndex)
             });

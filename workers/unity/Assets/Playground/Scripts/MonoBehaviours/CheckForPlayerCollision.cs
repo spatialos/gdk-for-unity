@@ -3,15 +3,22 @@ using UnityEngine;
 using Collisions = Generated.Playground.Collisions;
 using Empty = Generated.Playground.Empty;
 
+
+#region Diagnostic control
+
+// Disable the "variable is never assigned" for injected fields.
+#pragma warning disable 649
+
+#endregion
+
+
 public class CheckForPlayerCollision : MonoBehaviour
 {
-    [Require] private Collisions.Requirable.Writer writer;
+    [Require] private Collisions.Requirable.Writer collisionsWriter;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (writer != null)
-        {
-            writer.SendPlayerCollided(new Empty());
-        }
+        // <*>Trigger events are called even when the behaviour is disabled.
+        collisionsWriter?.SendPlayerCollided(new Empty());
     }
 }

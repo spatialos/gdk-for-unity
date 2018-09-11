@@ -6,8 +6,8 @@ namespace Improbable.Gdk.Core
 {
     public struct LogEvent
     {
-        public string Message;
-        public Dictionary<string, object> Data;
+        public readonly string Message;
+        public readonly Dictionary<string, object> Data;
         public UnityEngine.Object Context;
         public Exception Exception;
 

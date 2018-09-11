@@ -39,7 +39,7 @@ public class ProcessSpinnerColorChange : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer == null)
         {
-            Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
+            Debug.LogError($"No MeshRenderer on GameObject with MonoBehaviour {nameof(ProcessSpinnerColorChange)}!");
         }
     }
 

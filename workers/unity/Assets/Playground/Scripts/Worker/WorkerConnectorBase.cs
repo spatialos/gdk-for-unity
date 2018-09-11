@@ -16,15 +16,15 @@ namespace Playground
 
         public GameObject LevelPrefab;
         public int MaxConnectionAttempts = 3;
-        public bool UseExternalIp = false;
+        public bool UseExternalIp;
 
         public Worker Worker;
 
         private GameObject levelInstance;
 
-        private static readonly SemaphoreSlim workerConnectionSemaphore = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim WorkerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
-        // Important run in this step as otherwise it can interfere with the the domain unloading logic
+        // Important run in this step as otherwise it can interfere with the the domain unloading logic.
         private void OnApplicationQuit()
         {
             Dispose();
@@ -35,11 +35,11 @@ namespace Playground
             Dispose();
         }
 
-        public async Task Connect(string workerType, ILogDispatcher logger)
+        protected async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts
             // This prevents races on the workers starting and races on when we start ticking systems
-            await workerConnectionSemaphore.WaitAsync();
+            await WorkerConnectionSemaphore.WaitAsync();
             try
             {
                 var origin = transform.position;
@@ -72,14 +72,13 @@ namespace Playground
                 logger.HandleLog(LogType.Warning,
                     new LogEvent(
                             "Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")
-                        .WithField("Reason", "A worker running in the editor failing to connect was observed"));
+                        .WithField("Reason", "A worker running in the Editor failed to connect"));
 #endif
                 Dispose();
-                return;
             }
             finally
             {
-                workerConnectionSemaphore.Release();
+                WorkerConnectionSemaphore.Release();
             }
         }
 
@@ -95,12 +94,13 @@ namespace Playground
         protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
         {
             ReceptionistConfig config;
+
             if (Application.isEditor)
             {
                 config = new ReceptionistConfig
                 {
                     WorkerType = workerType,
-                    WorkerId = $"{workerType}-{Guid.NewGuid()}",
+                    WorkerId = CreateNewWorkerId(workerType),
                     UseExternalIp = UseExternalIp
                 };
             }
@@ -113,7 +113,7 @@ namespace Playground
                 config.UseExternalIp = UseExternalIp;
                 if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
                 {
-                    config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
+                    config.WorkerId = CreateNewWorkerId(workerType);
                 }
             }
 
@@ -126,7 +126,7 @@ namespace Playground
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
             var config = LocatorConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
             config.WorkerType = workerType;
-            config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
+            config.WorkerId = CreateNewWorkerId(workerType);
             return config;
         }
 
@@ -142,7 +142,7 @@ namespace Playground
                 catch (ConnectionFailedException e)
                 {
                     logger.HandleLog(LogType.Error,
-                        new LogEvent($"Failed attempt to create worker")
+                        new LogEvent($"Failed to create worker")
                             .WithField("WorkerType", workerType)
                             .WithField("Message", e.Message));
                     attempts--;
@@ -150,11 +150,11 @@ namespace Playground
             }
 
             throw new ConnectionFailedException(
-                $"Exceeded maximum connection attempts ({attempts})",
+                $"Tried to connect {attempts} times - giving up.",
                 ConnectionErrorReason.ExceededMaximumRetries);
         }
 
-        private bool ShouldUseLocator()
+        private static bool ShouldUseLocator()
         {
             if (Application.isEditor)
             {
@@ -201,12 +201,17 @@ namespace Playground
         {
             Worker?.Dispose();
             Worker = null;
-            // Check needed for the case that play mode is exited before the connection can complete
+            // Handle the case that play mode is exited before the connection can complete.
             if (Application.isPlaying)
             {
                 Destroy(levelInstance);
                 Destroy(this);
             }
+        }
+
+        private static string CreateNewWorkerId(string workerType)
+        {
+            return $"{workerType}-{Guid.NewGuid()}";
         }
     }
 }

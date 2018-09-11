@@ -1,28 +1,33 @@
 using System.Collections.Generic;
 using Improbable.Worker;
 
+#region Diagnostic control
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Improbable.Gdk.Core
 {
-    public class LoggingUtils
+    public static class LoggingUtils
     {
-        public const string UnknownLogger = "UnknownLogger";
+        private const string UnknownLogger = "UnknownLogger";
         public const string EntityId = "EntityId";
         public const string LoggerName = "LoggerName";
 
         public static EntityId? ExtractEntityId(Dictionary<string, object> data)
         {
-            object dataEntityId;
-            if (data.TryGetValue(EntityId, out dataEntityId))
+            if (!data.TryGetValue(EntityId, out var dataEntityId))
             {
-                if (dataEntityId is EntityId)
-                {
-                    return (EntityId) dataEntityId;
-                }
+                return null;
+            }
 
-                if (dataEntityId is long)
-                {
+            switch (dataEntityId)
+            {
+                case EntityId _:
+                    return (EntityId) dataEntityId;
+                case long _:
                     return new EntityId((long) dataEntityId);
-                }
             }
 
             return null;
