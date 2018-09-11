@@ -35,7 +35,6 @@ namespace Improbable
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-linux", $"{tempPath}/schema_compiler", null, OSPlatform.Linux),
-
             }.Where(p => p.InstallOnThisPlatform).ToList();
 
             try
