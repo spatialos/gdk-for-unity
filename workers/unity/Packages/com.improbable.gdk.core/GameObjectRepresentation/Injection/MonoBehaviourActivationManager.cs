@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using System.Linq;
 using Improbable.Worker.Core;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -42,6 +43,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             this.injector = injector;
 
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
+            var workerType = spatialComponent.Worker.WorkerType;
             entity = spatialComponent.Entity;
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
@@ -56,6 +58,15 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 {
                     var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
                     var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
+                    var workerTypeRequirements =
+                        injector.GetComponentWorkerTypeRequirementsForBehaviours(behaviourType);
+
+                    if (workerTypeRequirements != null && !workerTypeRequirements.Contains(workerType))
+                    {
+                        // This behaviour does not want to be enabled for this worker.
+                        continue;
+                    }
+
                     var readRequirementCount = componentReadRequirements.Count;
                     var authRequirementCount = componentAuthRequirements.Count;
 
@@ -67,15 +78,18 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
                     if (readRequirementCount > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsPresent);
+                        AddBehaviourForComponentIds(behaviour, componentReadRequirements,
+                            behavioursRequiringComponentsPresent);
                     }
 
                     if (authRequirementCount > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, componentAuthRequirements, behavioursRequiringComponentsWithAuth);
+                        AddBehaviourForComponentIds(behaviour, componentAuthRequirements,
+                            behavioursRequiringComponentsWithAuth);
                     }
 
-                    numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
+                    numUnsatisfiedRequirements[behaviour] =
+                        componentReadRequirements.Count + componentAuthRequirements.Count;
 
                     RunWithExceptionHandling(() => behaviour.enabled = false);
                 }

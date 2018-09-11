@@ -19,13 +19,15 @@ namespace Improbable.Gdk.GameObjectRepresentation
             new Dictionary<Type, List<uint>>();
         private readonly Dictionary<Type, List<uint>> componentAuthRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
+        private readonly Dictionary<Type, string[]> componentWorkerTypeRequirementsForBehaviours =
+            new Dictionary<Type, string[]>();
 
         private readonly ILogDispatcher logger;
         private readonly InjectableFactory injectableFactory;
 
         private const string LoggerName = nameof(RequiredFieldInjector);
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Injectable. This member will be ignored. " 
+            = "[Require] attribute found on member that is not Injectable. This member will be ignored. "
             + "Please make sure that types marked with [Require] are located in the <component name>.Requirable or WorldsCommands.Requirable namespace.";
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
@@ -41,7 +43,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         public bool HasRequiredFields(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return fieldInfoCache[behaviourType].Count > 0;
+            return componentWorkerTypeRequirementsForBehaviours[behaviourType] != null || fieldInfoCache[behaviourType].Count > 0;
         }
 
         public Dictionary<InjectableId, IInjectable[]> InjectAllRequiredFields(MonoBehaviour behaviour, Entity entity)
@@ -120,6 +122,12 @@ namespace Improbable.Gdk.GameObjectRepresentation
             return componentAuthRequirementsForBehaviours[behaviourType];
         }
 
+        public string[] GetComponentWorkerTypeRequirementsForBehaviours(Type behaviourType)
+        {
+            EnsureLoaded(behaviourType);
+            return componentWorkerTypeRequirementsForBehaviours[behaviourType];
+        }
+
         private void EnsureLoaded(Type behaviourType)
         {
             if (fieldInfoCache.ContainsKey(behaviourType))
@@ -193,6 +201,16 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
             componentPresentRequirementsForBehaviours[behaviourType] = componentsRequiredPresent.ToList();
             componentAuthRequirementsForBehaviours[behaviourType] = componentsRequiredWithAuthority.ToList();
+
+            var workerTypeAttribute = behaviourType.GetCustomAttribute<WorkerTypeAttribute>();
+            if (workerTypeAttribute != null)
+            {
+                componentWorkerTypeRequirementsForBehaviours[behaviourType] = workerTypeAttribute.WorkerTypes;
+            }
+            else
+            {
+                componentWorkerTypeRequirementsForBehaviours[behaviourType] = null;
+            }
         }
 
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
