@@ -27,6 +27,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
             {
+                if (component == null)
+                {
+                    continue;
+                }
+
                 var componentType = component.GetType();
                 if (gameObjectComponentTypes.Contains(componentType))
                 {
