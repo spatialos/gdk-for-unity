@@ -23,6 +23,7 @@ namespace Improbable.Gdk.Tools
         private const string RemoveSchemaDirButtonText = "Remove";
 
         private const string ResetConfigurationButtonText = "Reset GDK tools configuration to default";
+        private const string SaveConfigurationButtonText = "Save";
 
         private ScriptableGdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
@@ -53,6 +54,13 @@ namespace Improbable.Gdk.Tools
                 DrawHorizontalBreak();
                 DrawCodeGenerationOptions();
                 DrawHorizontalBreak();
+
+                if (GUILayout.Button(SaveConfigurationButtonText, GUILayout.Width(250)))
+                {
+                    AssetDatabase.SaveAssets();
+                }
+
+                GUILayout.Space(15);
 
                 if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
                 {
