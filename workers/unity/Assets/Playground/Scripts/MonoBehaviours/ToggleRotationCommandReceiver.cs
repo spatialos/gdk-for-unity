@@ -1,12 +1,12 @@
 using Generated.Playground;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 
 namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
-        [Require] private SpinnerRotation.Requirables.CommandRequestHandler requestHandler;
+        [Require] private SpinnerRotation.Requirable.CommandRequestHandler requestHandler;
 
         private RotationBehaviour rotationBehaviour;
 
@@ -22,8 +22,6 @@ namespace Playground.MonoBehaviours
 
         private void OnDisable()
         {
-            requestHandler.OnSpinnerToggleRotationRequest -= OnSpinnerToggleRotationRequest;
-
             nextAvailableSpinChangeTime = Time.time;
         }
 
@@ -39,7 +37,7 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + timeBetweenSpinChanges;
 
-                spinnerToggleRotationRequest.SendResponse(new Void());
+                spinnerToggleRotationRequest.SendResponse(new Empty());
             }
         }
     }

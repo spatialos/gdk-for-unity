@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Retrieves fields with [Require] tags from MonoBehaviours and handles injection into them.
     /// </summary>
-    internal class RequiredFieldInjector
+    public class RequiredFieldInjector
     {
         private readonly Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>>();
@@ -24,9 +25,12 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
 
         private const string LoggerName = nameof(RequiredFieldInjector);
         private const string BadRequiredMemberWarning
-            = "[Require] attribute found on member that is not Injectable. This member will be ignored.";
+            = "[Require] attribute found on member that is not Injectable. This member will be ignored. " 
+            + "Please make sure that types marked with [Require] are located in the <component name>.Requirable or WorldsCommands.Requirable namespace.";
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
+        private const string RequirableFieldDoesNotInheritRequirableBase
+            = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the SpatialOS GDK.";
 
         public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
@@ -66,6 +70,28 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             var injectable = injectableFactory.CreateInjectable(injectableId, entity);
             field.SetValue(behaviour, injectable);
             return injectable;
+        }
+
+        public void DisposeAllRequiredFields(MonoBehaviour behaviour)
+        {
+            var behaviourType = behaviour.GetType();
+            EnsureLoaded(behaviourType);
+            foreach (var fieldsToComponents in fieldInfoCache[behaviourType])
+            {
+                var fields = fieldsToComponents.Value;
+                foreach (var field in fields)
+                {
+                    var requirableToBeDisposed = field.GetValue(behaviour) as RequirableBase;
+                    if (requirableToBeDisposed == null)
+                    {
+                        logger.HandleLog(LogType.Error, new LogEvent(RequirableFieldDoesNotInheritRequirableBase)
+                            .WithField("Behaviour", behaviour)
+                            .WithField("Field", field.Name));
+                    }
+
+                    requirableToBeDisposed.Dispose();
+                }
+            }
         }
 
         public void DeInjectAllRequiredFields(MonoBehaviour behaviour)

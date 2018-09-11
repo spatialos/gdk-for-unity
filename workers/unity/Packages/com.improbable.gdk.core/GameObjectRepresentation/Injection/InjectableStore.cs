@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Stores IInjectables and provides methods suited for the required access patterns: adding / removing by
     ///     MonoBehaviour as dictated by the MonoBehaviourActivationManager, and querying by InjectableId for use
     ///     by the GameObjectComponentDispatchers.
     /// </summary>
-    internal class InjectableStore
+    public class InjectableStore
     {
         private readonly Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>> injectablesForBehaviours
             = new Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>>();

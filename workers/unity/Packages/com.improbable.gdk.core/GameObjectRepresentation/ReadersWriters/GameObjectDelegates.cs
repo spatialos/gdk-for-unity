@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     public static class GameObjectDelegates
     {
@@ -20,7 +21,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         /// <param name="callbacks">The callbacks.</param>
         /// <param name="logDispatcher">The logging dispatcher that will be receiving the exceptions.</param>
         /// <typeparam name="TPayload">The payload type.</typeparam>
-        internal static void DispatchWithErrorHandling<TPayload>(
+        public static void DispatchWithErrorHandling<TPayload>(
             TPayload payload,
             List<Action<TPayload>> callbacks,
             ILogDispatcher logDispatcher)

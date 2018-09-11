@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
-    internal abstract class GameObjectComponentDispatcherBase
+    public abstract class GameObjectComponentDispatcherBase
     {
         public abstract ComponentType[] ComponentAddedComponentTypes { get; }
         public ComponentGroup ComponentAddedComponentGroup { get; set; }

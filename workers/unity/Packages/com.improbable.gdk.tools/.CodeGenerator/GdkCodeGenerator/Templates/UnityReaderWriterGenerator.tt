@@ -15,14 +15,14 @@ using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public partial class Requirables
+        public partial class Requirable
         {
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             internal class ReaderWriterCreator : IInjectableCreator
@@ -69,8 +69,24 @@ namespace <#= qualifiedNamespace #>
 
                 public event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated
                 {
-                    add => <#= fieldDetails.CamelCaseName #>Delegates.Add(value);
-                    remove => <#= fieldDetails.CamelCaseName #>Delegates.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= fieldDetails.CamelCaseName #>Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= fieldDetails.CamelCaseName #>Delegates.Remove(value);
+                    }
                 }
 <# } #>
 
@@ -80,6 +96,7 @@ namespace <#= qualifiedNamespace #>
                     DispatchWithErrorHandling(update.<#= fieldDetails.PascalCaseName #>, <#= fieldDetails.CamelCaseName #>Delegates);
 <# } #>
                 }
+
                 protected override void ApplyUpdate(<#= componentNamespace #>.Update update, ref <#= componentNamespace #>.Component data)
                 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
@@ -98,8 +115,24 @@ namespace <#= qualifiedNamespace #>
 
                 public event Action<<#= payloadType #>> On<#= eventDetails.EventName #>
                 {
-                    add => <#= delegateList #>.Add(value);
-                    remove => <#= delegateList #>.Remove(value);
+                    add
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Add(value);
+                    }
+                    remove
+                    {
+                        if (!VerifyNotDisposed())
+                        {
+                            return;
+                        }
+
+                        <#= delegateList #>.Remove(value);
+                    }
                 }
 
                 public void On<#= eventDetails.EventName #>Event(<#= payloadType #> payload)
@@ -109,6 +142,11 @@ namespace <#= qualifiedNamespace #>
 
                 public void Send<#= eventDetails.EventName #>(<#= eventDetails.FqnPayloadType #> payload)
                 {
+                    if (!VerifyNotDisposed())
+                    {
+                        return;
+                    }
+
                     var sender = EntityManager.GetComponentData<EventSender.<#= eventDetails.EventName #>>(Entity);
                     sender.Events.Add(payload);
                 }

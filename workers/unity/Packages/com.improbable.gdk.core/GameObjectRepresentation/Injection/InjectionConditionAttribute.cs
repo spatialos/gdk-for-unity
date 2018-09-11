@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Used to denote when a specific IInjectable type is ready to be created.
     /// </summary>
-    internal enum InjectionCondition
+    public enum InjectionCondition
     {
         RequireNothing,
         RequireComponentPresent,
@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
     /// <summary>
     ///     For tagging specific IInjectable types with the appropriate InjectionCondition.
     /// </summary>
-    internal class InjectionConditionAttribute : Attribute
+    public class InjectionConditionAttribute : Attribute
     {
         public readonly InjectionCondition condition;
 

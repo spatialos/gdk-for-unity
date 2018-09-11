@@ -18,6 +18,6 @@ See [About the SpatialOS Unity GDK](../docs/README.md) for
  details on how to get started using the Unity GDK.
 
 ## Warning
-This [pre-alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation -
+This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation -
  see the guidance on
   [Recommended use](../README.md#recommended-use).

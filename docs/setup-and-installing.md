@@ -1,8 +1,8 @@
-**Warning:** The pre-alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+**Warning:** The alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
 
 -----
 
-# Set up and get started with the SpatialOS Unity GDK
+# Set up and get started with the SpatialOS GDK for Unity
 
 ## Short version
 
@@ -15,7 +15,7 @@
 
 1. Open the `workers/unity` project in your Unity Editor.
 
-2. Choose **Improbable** > **Spatial** > **Local launch**
+2. Choose **SpatialOS** > **Local launch** or press **Ctrl-L**
 
 3. In the Editor, open **Assets** > **Playground** > **Scenes** > **SampleScene**.
 
@@ -29,7 +29,7 @@
 
 	- [Unity 2018.2.0f2](https://unity3d.com/get-unity/download/archive) with Linux Build Support and Mac Build Support components selected during the installation process.
 	- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
-	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity** and **.NET Core cross-platform development**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS Unity GDK requires Unity 2018.2.0f2). Make sure **Visual Studio Tools for Unity** is selected.
+	    > Within Visual Studio Installer, on the Workloads tab, select **Game development with Unity** and **.NET Core cross-platform development**. In the summary on the right, deselect **Unity 2017.2 64-bit Editor** (the SpatialOS GDK for Unity requires Unity 2018.2.0f2). Make sure **Visual Studio Tools for Unity** is selected.
     - [.NET Core 2.1.302 (x64)](https://www.microsoft.com/net/download/)
 	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win)
 	<br>This installs:
@@ -54,12 +54,12 @@
 		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
 		- the 32-bit and 64-bit Visual C++ Redistributables
 
-1. Clone the SpatialOS Unity GDK repository:
+1. Clone the SpatialOS GDK for Unity (GDK) repository:
 
 	SSH: `git clone git@github.com:spatialos/UnityGDK.git`
     <br>HTTPS: `git clone https://github.com/spatialos/UnityGDK.git`
 
-    The SpatialOS Unity GDK repository is a SpatialOS project called `UnityGDK`. It contains:
+    The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
     - a Unity project at `UnityGDK/workers/unity`, which you need to open to use the GDK
     - SpatialOS features, such as the schema and snapshot files
     - development code
@@ -84,7 +84,7 @@ Unity may open a browser window prompting you to login to your SpatialOS account
 If this happens, please login.
 This will only happen the first time you open you project, or if the version of the required libraries changes.
 
-1. Choose **Improbable** > **Spatial** > **Local launch**.
+1. Choose **SpatialOS** > **Local launch**.
 <br>This launches a SpatialOS deployment locally in a new console window. You can open the [Inspector](https://docs.improbable.io/reference/13.0/shared/glossary#inspector) and see what’s happening in the game.
     > **It’s done when:** You see `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector` printed in the new console indow
 
@@ -95,7 +95,7 @@ This will only happen the first time you open you project, or if the version of 
 
 1. When you want to stop the game:
     1. In the Editor, click the play icon again to stop your client.
-    1. In your terminal, stop the SpatialOS deployment by pressing `Ctrl + C`.
+    1. Stop the SpatialOS deployment by closing the console window.
 
 #### 3. Run the `Playground` in the cloud using SpatialOS
 
@@ -107,7 +107,7 @@ This will only happen the first time you open you project, or if the version of 
 1. Build an assembly for the deployment
 <br>The first step of running a cloud deployment is uploading all the files that your game uses. This includes executable files for the clients and workers, and the assets your workers use (like models and textures used by the Unity client to visualise the game). We call that set of game files an assembly.
 <br><br> To build an assembly for your game to use while running in the cloud, either:
-    - In the Unity Editor, select **Improbable** > **Build all workers for cloud**
+    - In the Unity Editor, select **SpatialOS** > **Build all workers for cloud**
 
 1. Upload the assembly to the cloud
 
@@ -115,7 +115,7 @@ Open a terminal and navigate to the `UnityGDK` directory (the repository you’v
     Run `spatial cloud upload <assembly name>`.
     > The `<assembly name>` is just a label so you can identify this assembly in the next step - for example, `MyGDKAssembly`.
 
-     **It’s done when:** You see `spatial upload MyGDKAssembly succeeded` printed in your console output.
+> **It’s done when:** You see `spatial upload MyGDKAssembly succeeded` printed in your console output.
 
 1. Launch a cloud deployment
 <br>The command `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
@@ -133,7 +133,7 @@ Open a terminal and navigate to the `UnityGDK` directory (the repository you’v
 
     This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better performance.
 
-    **It’s done when:** You see `Successfully created deployment` printed in your console output.
+> **It’s done when:** You see `Successfully created deployment` printed in your console output.
 
 
 1. Launch a game client:
@@ -150,4 +150,4 @@ Open a terminal and navigate to the `UnityGDK` directory (the repository you’v
     1. Once you’ve finished playing, click **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the Unity GDK and its documentation  - see [How to give us feedback](../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../README.md#give-us-feedback).

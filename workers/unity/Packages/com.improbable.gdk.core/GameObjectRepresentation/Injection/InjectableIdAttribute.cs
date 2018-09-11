@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     For tagging specific IInjectable types and IInjectableCreators with the appropriate InjectableId.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Enum to note what kind of Injectable a specific type is, to be used as part of the InjectableId.
@@ -10,7 +10,9 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         ReaderWriter,
         CommandRequestSender,
         CommandRequestHandler,
-        CommandResponseHandler
+        CommandResponseHandler,
+        WorldCommandRequestSender,
+        WorldCommandResponseHandler,
     }
 
     /// <summary>
@@ -27,5 +29,10 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
             this.type = type;
             this.componentId = componentId;
         }
+
+        /// <summary>
+        ///     This ID can be used to specify that an injectable is not tied to any components.
+        /// </summary>
+        public const uint NullComponentId = 0;
     }
 }

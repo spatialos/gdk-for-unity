@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -65,7 +65,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
-                logger.HandleLog(LogType.Log, new LogEvent("Successfully create worker")
+                logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
                     .WithField("WorkerType", worker.WorkerType)
                     .WithField("WorkerId", worker.WorkerId));
                 return worker;
@@ -97,7 +97,7 @@ namespace Improbable.Gdk.Core
                     }
 
                     var worker = new Worker(config.WorkerType, connection, logger, origin);
-                    logger.HandleLog(LogType.Log, new LogEvent("Successfully create worker")
+                    logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
                         .WithField("WorkerType", worker.WorkerType)
                         .WithField("WorkerId", worker.WorkerId));
                     return worker;
@@ -137,11 +137,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();
-
-            // Monobehaviour stuff
-            World.GetOrCreateManager<GameObjectDispatcherSystem>();
-            World.GetOrCreateManager<MonoBehaviourActivationManagerInitializationSystem>();
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
         }
 
         public void Dispose()
