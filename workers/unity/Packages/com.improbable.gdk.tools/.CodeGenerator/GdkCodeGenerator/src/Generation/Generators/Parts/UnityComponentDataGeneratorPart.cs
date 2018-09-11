@@ -34,7 +34,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         private bool ShouldGenerateClearedFieldsSet()
         {
-            return GetFieldDetailsList().Any(fieldDetails => fieldDetails.IsListMapOrOption);
+            return GetFieldDetailsList().Any(fieldDetails => fieldDetails.CanBeEmpty);
         }
     }
 }
