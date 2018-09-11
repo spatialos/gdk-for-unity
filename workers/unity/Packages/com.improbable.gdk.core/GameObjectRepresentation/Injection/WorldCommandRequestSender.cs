@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core.GameObjectRepresentation;
+﻿using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Unity.Entities;
 

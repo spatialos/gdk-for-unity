@@ -1,9 +1,9 @@
+using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Transform = Generated.Improbable.Transform.Transform;
 
 #region Diagnostic control
 
@@ -16,6 +16,7 @@ using Transform = Generated.Improbable.Transform.Transform;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [UpdateAfter(typeof(LocalPlayerInputSync))]
     internal class MoveLocalPlayerSystem : ComponentSystem
     {
         public struct Speed : IComponentData
@@ -29,7 +30,7 @@ namespace Playground
             public readonly int Length;
             public EntityArray Entity;
             [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
-            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
         }
 
@@ -39,14 +40,15 @@ namespace Playground
             public ComponentArray<Rigidbody> Rigidbody;
             public ComponentDataArray<Speed> SpeedData;
             [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
-            [ReadOnly] public ComponentDataArray<Authoritative<Transform.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
         }
 
         [Inject] private NewPlayerData newPlayerData;
         [Inject] private PlayerInputData playerInputData;
 
-        private const float WalkSpeed = 2;
-        private const float RunSpeed = 6;
+        private const float WalkSpeed = 2.0f;
+        private const float RunSpeed = 6.0f;
+        private const float MaxSpeed = 8.0f;
 
         private const float TurnSmoothTime = 0.2f;
         private float turnSmoothVelocity;
@@ -69,7 +71,7 @@ namespace Playground
 
             for (var i = 0; i < playerInputData.Length; i++)
             {
-                var rigidBody = playerInputData.Rigidbody[i];
+                var rigidbody = playerInputData.Rigidbody[i];
                 var playerInput = playerInputData.PlayerInput[i];
 
                 var input = new Vector2(playerInput.Horizontal, playerInput.Vertical);
@@ -78,8 +80,8 @@ namespace Playground
                 if (inputDir != Vector2.zero)
                 {
                     var targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
-                    rigidBody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
-                        rigidBody.transform.eulerAngles.y, targetRotation,
+                    rigidbody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
+                        rigidbody.transform.eulerAngles.y, targetRotation,
                         ref turnSmoothVelocity, TurnSmoothTime);
                 }
 
@@ -88,14 +90,17 @@ namespace Playground
                 var currentSpeed = speed.CurrentSpeed;
                 var speedSmoothVelocity = speed.SpeedSmoothVelocity;
 
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime);
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime,
+                    MaxSpeed, Time.deltaTime);
                 playerInputData.SpeedData[i] = new Speed
                 {
                     CurrentSpeed = currentSpeed,
                     SpeedSmoothVelocity = speedSmoothVelocity
                 };
 
-                rigidBody.transform.Translate(rigidBody.transform.forward * currentSpeed * Time.deltaTime, Space.World);
+                // This needs to be used instead of add force because this is running in update
+                // Better would be to store this in another component and have something else use it on fixed update
+                rigidbody.velocity = rigidbody.transform.forward * currentSpeed;
             }
         }
     }

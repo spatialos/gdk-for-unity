@@ -7,13 +7,13 @@
 The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
 *  `LoggingDispatcher`, which simply logs to the Unity console
-*  `ForwardingDispatcher`, which logs to the Unity console and forwards it to the SpatialOS Console
+*  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
 
 All workers use the `ForwardingDispatcher` by default. To replace it with the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
 
-### Using the dispatcher
+### Using the ILogDispatcher
 
-You can access the dispatcher through the `MutableView`. The dispatcher provides a single `HandleLog` function, which takes two arguments:
+You can access the dispatcher through the [WorkerSystem](accessing-worker-info.md). The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
 * `LogType` (e.g. `UnityEngine.LogType.Error`)
 * `LogEvent`, which stores the message and other context variables in the Data dictionary
@@ -28,9 +28,9 @@ These are automatically picked up by the `ForwardingDispatcher` if provided. Oth
 For example, if you want to use one of the dispatchers in a system, you can use the following code:
 
 ```csharp
-var worker = WorkerRegistry.GetWorkerForWorld(World);
+var workerSystem = World.GetExistingManager<WorkerSystem>();
 
-worker.View.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
         "Custom error message.")
     .WithField(LoggingUtils.LoggerName, LoggerName)
     .WithField(LoggingUtils.EntityId, entityId)
@@ -58,13 +58,15 @@ public class MyCustomDispatcher: ILogDispatcher
 ```
 
 
-If you want a specific worker to use the dispatcher, pass it to the constructor of the `WorkerBase` class instead of the default dispatcher:
+If you want a specific worker to use the dispatcher, pass it to the `Connect` method of the `WorkerConnectorBase` class instead of the default dispatcher when connecting to SpatialOS:
 
 ```csharp
-public class UnityClient : WorkerBase
+public class ClientWorkerConnector : WorkerConnectorBase
 {
-    public UnityClient(string workerId, Vector3 origin) : base(workerId, origin, new MyCustomDispatcher())
+    private async void Start()
     {
+        /* ... */
+        await Connect(WorkerUtils.UnityClient, new MyCustomDispatcher()).ConfigureAwait(false);
     }
 }
 ```

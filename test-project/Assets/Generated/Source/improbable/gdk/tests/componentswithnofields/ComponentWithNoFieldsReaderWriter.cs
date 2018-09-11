@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
 namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields

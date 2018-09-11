@@ -14,45 +14,63 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             public ComponentDataArray<Position.Component> Position;
+            public ComponentDataArray<LastPositionSentData> LastPositionSent;
             [ReadOnly] public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
         }
 
         [Inject] private PositionData positionData;
 
-        // Number of position sends per second.
-        private const float SendRateHz = 1.0f;
-
-        private float timeSinceLastSend = 0.0f;
-
         protected override void OnUpdate()
         {
-            // Send update at SendRateHz.
-            timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < 1.0f / SendRateHz)
-            {
-                return;
-            }
-
-            timeSinceLastSend = 0.0f;
-
             for (var i = 0; i < positionData.Length; i++)
             {
-                var component = positionData.Position[i];
+                var position = positionData.Position[i];
 
-                if (component.DirtyBit != true)
+                if (position.DirtyBit != true)
                 {
                     continue;
                 }
 
+                var lastPositionSent = positionData.LastPositionSent[i];
+                lastPositionSent.TimeSinceLastUpdate += Time.deltaTime;
+                positionData.LastPositionSent[i] = lastPositionSent;
+
+                if (lastPositionSent.TimeSinceLastUpdate <
+                    1.0f / TransformSynchronizationConfig.MaxPositionUpdateRateHz)
+                {
+                    continue;
+                }
+
+                var squareDistance =
+                    TransformUtils.SquareDistance(lastPositionSent.Position.Coords, positionData.Position[i].Coords);
+
+                if (squareDistance == 0.0f)
+                {
+                    continue;
+                }
+
+                if (lastPositionSent.TimeSinceLastUpdate <
+                    TransformSynchronizationConfig.MaxTimeForStalePositionWithoutUpdateS)
+                {
+                    if (squareDistance < TransformSynchronizationConfig.MaxSquarePositionChangeWithoutUpdate)
+                    {
+                        continue;
+                    }
+                }
+
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
 
-                var update = new SchemaComponentUpdate(component.ComponentId);
-                Position.Serialization.Serialize(component, update.GetFields());
+                var update = new SchemaComponentUpdate(position.ComponentId);
+                Position.Serialization.Serialize(position, update.GetFields());
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
-                component.DirtyBit = false;
-                positionData.Position[i] = component;
+                position.DirtyBit = false;
+                positionData.Position[i] = position;
+
+                lastPositionSent.TimeSinceLastUpdate = 0.0f;
+                lastPositionSent.Position = position;
+                positionData.LastPositionSent[i] = lastPositionSent;
             }
         }
     }

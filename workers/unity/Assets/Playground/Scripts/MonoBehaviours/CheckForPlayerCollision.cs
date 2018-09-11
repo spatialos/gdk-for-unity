@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core.GameObjectRepresentation;
+﻿using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 using Collisions = Generated.Playground.Collisions;
 using Empty = Generated.Playground.Empty;

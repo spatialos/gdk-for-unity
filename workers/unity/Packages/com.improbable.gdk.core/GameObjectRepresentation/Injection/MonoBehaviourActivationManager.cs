@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
     ///     Keeps track of Component availability for MonoBehaviours on a particular GameObject and decides when
