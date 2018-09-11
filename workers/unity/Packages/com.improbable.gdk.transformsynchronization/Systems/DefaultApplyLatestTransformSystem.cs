@@ -34,7 +34,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private RigidbodyData rigidbodyData;
         [Inject] private TransformData transformData;
-        [Inject] private WorkerSystem worker;
 
         protected override void OnUpdate()
         {

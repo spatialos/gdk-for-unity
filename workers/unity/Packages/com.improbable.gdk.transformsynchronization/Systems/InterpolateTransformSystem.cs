@@ -24,7 +24,8 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         [Inject] private Data data;
-        [Inject] private TickRateEstimationSystem tickRateSystem;
+        // todo enable smear
+        // [Inject] private TickRateEstimationSystem tickRateSystem;
 
         // todo this does everything eagerly, but with smearing it will probably make more sense to do things lazily
         // the main difference would be how to detect the buffer is full and needs to be emptied
