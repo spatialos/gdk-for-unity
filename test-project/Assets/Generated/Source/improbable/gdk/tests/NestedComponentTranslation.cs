@@ -124,12 +124,12 @@ namespace Generated.Improbable.Gdk.Tests
                 if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.NestedComponent.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NestedComponent.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<Generated.Improbable.Gdk.Tests.NestedComponent.Update> updates;
                 if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NestedComponent.ReceivedUpdates>(entity))
@@ -329,7 +329,7 @@ namespace Generated.Improbable.Gdk.Tests
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(20152);
-                        Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.Serialize(data, update.GetFields());
+                        Generated.Improbable.Gdk.Tests.NestedComponent.Serialization.SerializeUpdate(data, update);
 
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
