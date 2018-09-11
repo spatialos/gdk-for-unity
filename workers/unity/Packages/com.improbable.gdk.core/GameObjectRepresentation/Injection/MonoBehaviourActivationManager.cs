@@ -46,6 +46,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
             {
+                if (ReferenceEquals(behaviour, null))
+                {
+                    continue;
+                }
+
                 var behaviourType = behaviour.GetType();
                 if (injector.HasRequiredFields(behaviourType))
                 {
