@@ -96,5 +96,10 @@ namespace Improbable.Gdk.CodeGenerator
             return fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber,
                 indents);
         }
+
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObj, int indents)
+        {
+            return fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber, indents);
+        }
     }
 }
