@@ -32,7 +32,7 @@ namespace Improbable
                 new Package(tempPath, "worker_sdk", "c-static_combined-arm-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/arm", new List<string> {"include", "libworker_static_combined.a.pic", "worker_static_combined.lib"}),
                 new Package(tempPath, "worker_sdk", "c-static_combined-x86_64-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/x86_64", new List<string> {"include", "libworker_static_combined.a.pic", "worker_static_combined.lib"}),
                 new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/OSX"),
-                new Package(tempPath, "worker_sdk", "csharp_core-static", $"{managedDependenciesPath}/OSX"),
+                new Package(tempPath, "worker_sdk", "csharp_core-static", $"{managedDependenciesPath}/iOS"),
                 new Package(tempPath, "schema", "standard_library", schemaStdLibDir),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
