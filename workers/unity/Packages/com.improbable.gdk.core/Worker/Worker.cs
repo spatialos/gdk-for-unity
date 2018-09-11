@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -137,10 +137,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();
-
-            // MonoBehaviour API
-            World.GetOrCreateManager<GameObjectDispatcherSystem>();
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
         }
 
         public void Dispose()

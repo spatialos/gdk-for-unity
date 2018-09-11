@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace Improbable.Gdk.Core.GameObjectRepresentation
+namespace Improbable.Gdk.GameObjectRepresentation
 {
     public static class GameObjectRepresentationSystemHelper
     {
@@ -8,6 +8,7 @@ namespace Improbable.Gdk.Core.GameObjectRepresentation
         {
             world.GetOrCreateManager<GameObjectDispatcherSystem>();
             world.GetOrCreateManager<EntityGameObjectLinkerSystem>();
+            world.GetOrCreateManager<GameObjectWorldCommandSystem>();
         }
     }
 }

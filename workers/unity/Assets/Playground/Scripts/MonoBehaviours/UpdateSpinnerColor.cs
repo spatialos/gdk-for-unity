@@ -1,6 +1,6 @@
 ﻿using System;
 using Generated.Playground;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 
@@ -8,7 +8,7 @@ namespace Playground.MonoBehaviours
 {
     public class UpdateSpinnerColor : MonoBehaviour
     {
-        [Require] private SpinnerColor.Requirables.Writer writer;
+        [Require] private SpinnerColor.Requirable.Writer writer;
 
         private Array colorValues;
         private int colorIndex = 0;

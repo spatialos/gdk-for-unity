@@ -84,7 +84,7 @@ namespace Improbable
 
                 File.Delete(package.SourceFile);
 
-                Common.RunRedirected(spatialPath, "--json_output", "package", "retrieve", package.Type, package.Name, coreSdkVersion, package.SourceFile);
+                Common.RunRedirected(spatialPath, "--json_output", "package", "retrieve", package.Type, package.Name, coreSdkVersion, $"\"{package.SourceFile}\"");
 
                 try
                 {

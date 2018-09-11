@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
         
         private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
         private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
-
+        
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);

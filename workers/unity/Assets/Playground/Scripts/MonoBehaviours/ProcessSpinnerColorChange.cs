@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using Generated.Playground;
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Playground;
 using UnityEngine;
 using Color = Generated.Playground.Color;
 
 public class ProcessSpinnerColorChange : MonoBehaviour
 {
-    [Require] private Collisions.Requirables.Reader collisionsReader;
-    [Require] private SpinnerColor.Requirables.Reader colorReader;
+    [Require] private Collisions.Requirable.Reader collisionsReader;
+    [Require] private SpinnerColor.Requirable.Reader colorReader;
 
     private float collideTime;
     private bool flashing;

@@ -1,5 +1,6 @@
-using Improbable.Gdk.Core.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.GameObjectCreation;
+using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
@@ -11,15 +12,23 @@ namespace Playground
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
 
+        public static readonly List<string> AllWorkerAttributes =
+            new List<string>
+            {
+                UnityGameLogic,
+                UnityClient
+            };
+
         public static void AddClientSystems(World world)
         {
             AddLifecycleSystems(world);
-            TransformSynchronizationSystemHelper.AddSystems(world);
+            TransformSynchronizationSystemHelper.AddClientSystems(world);
             PlayerLifecycleConfig.AddClientSystems(world);
             GameObjectRepresentationSystemHelper.AddSystems(world);
             GameObjectCreationSystemHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
+            world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<InitCameraSystem>();
             world.GetOrCreateManager<FollowCameraSystem>();
             world.GetOrCreateManager<InitUISystem>();
@@ -31,12 +40,11 @@ namespace Playground
         public static void AddGameLogicSystems(World world)
         {
             AddLifecycleSystems(world);
-            TransformSynchronizationSystemHelper.AddSystems(world);
+            TransformSynchronizationSystemHelper.AddServerSystems(world);
             PlayerLifecycleConfig.AddServerSystems(world);
             GameObjectRepresentationSystemHelper.AddSystems(world);
             GameObjectCreationSystemHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<CubeMovementSystem>();
-            world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();
             world.GetOrCreateManager<ProcessLaunchCommandSystem>();
             world.GetOrCreateManager<ProcessRechargeSystem>();
@@ -47,7 +55,6 @@ namespace Playground
 
         private static void AddLifecycleSystems(World world)
         {
-            world.GetOrCreateManager<ArchetypeInitializationSystem>();
             world.GetOrCreateManager<DisconnectSystem>();
         }
     }

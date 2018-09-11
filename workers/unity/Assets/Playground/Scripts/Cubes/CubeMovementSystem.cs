@@ -4,6 +4,7 @@ using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 #region Diagnostic control
 
@@ -15,7 +16,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    [UpdateBefore(typeof(UnityEngine.Experimental.PlayerLoop.FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
         private struct Data
@@ -41,22 +42,22 @@ namespace Playground
         {
             for (var i = 0; i < data.Length; i++)
             {
-                var rigidbodyComponent = data.Rigidbody[i];
+                var rigidbody = data.Rigidbody[i];
                 var cubeComponent = data.Cube[i];
 
-                if (cubeComponent.TargetVelocity.X > 0 && rigidbodyComponent.position.x - origin.x > 10)
+                if (cubeComponent.TargetVelocity.X > 0 && rigidbody.position.x - origin.x > 10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = -2.0f };
                     data.Cube[i] = cubeComponent;
                 }
-                else if (cubeComponent.TargetVelocity.X < 0 && rigidbodyComponent.position.x - origin.x < -10)
+                else if (cubeComponent.TargetVelocity.X < 0 && rigidbody.position.x - origin.x < -10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
                     data.Cube[i] = cubeComponent;
                 }
 
                 var velocity = new Vector3(cubeComponent.TargetVelocity.X, cubeComponent.TargetVelocity.Y, cubeComponent.TargetVelocity.Z);
-                rigidbodyComponent.MovePosition(rigidbodyComponent.position + Time.fixedDeltaTime * velocity);
+                rigidbody.MovePosition(rigidbody.position + Time.fixedDeltaTime * velocity);
             }
         }
     }

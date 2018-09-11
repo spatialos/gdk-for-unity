@@ -3,7 +3,7 @@
 
 [2018-Aug-02]
 
-The SpatialOS GDK for Unity enables you to create online games that were previously impossible without specialized staff and skill sets. Its key features are based around fast development iteration, Unity-native workflows, high performance and customizability. In addition, we develop in the open, our community shaping what we do.
+The SpatialOS GDK for Unity (GDK) enables you to create online games that were previously impossible without specialized staff and skill sets. Its key features are based around fast development iteration, Unity-native workflows, high performance and customizability. In addition, we develop in the open, our community shaping what we do.
 
 ## Fast development iteration
 
@@ -11,7 +11,7 @@ Development iteration speed is critically important in creating games; fast iter
 
 #### Test client and server(s) in one Editor
 
-The GIF below shows the game client and server running simultaneously in the same Unity Editor. (Without the SpatialOS GDK, you need to run one Unity Editor for the client, and one Unity Editor for the server simultaneously.) Running both in one Editor enables you to iterate on development of the entirety of your project, client *and* server code, in one Editor instance.
+The GIF below shows the game client and server running simultaneously in the same Unity Editor. (Without the GDK, you need to run one Unity Editor for the client, and one Unity Editor for the server simultaneously.) Running both in one Editor enables you to iterate on development of the entirety of your project, client *and* server code, in one Editor instance.
 <br/>
 <br/>
 
@@ -24,7 +24,7 @@ In the near future, we aim to support multiple servers in the same Editor, allow
 
 #### Iterate on game code without rebuilding executables.
 
-With the SpatialOS GDK, you’ll be able to iterate on your game code with a Unity refresh, instead of a full rebuild of the executables. In the GIF below, we made changes to the movement direction of the cubes. 
+With the GDK, you’ll be able to iterate on your game code with a Unity refresh, instead of a full rebuild of the executables. In the GIF below, we made changes to the movement direction of the cubes.
 
 In our earlier product, the SpatialOS SDK for Unity, this would have required a full rebuild, and a relaunch of the game client and server.
 <br/>
@@ -34,15 +34,15 @@ In our earlier product, the SpatialOS SDK for Unity, this would have required a 
 
 #### SpatialOS schema auto-generation
 
-In future releases, you will be able to save time on writing out classes and structs by annotating the C# classes and structs you use. The [schema](https://docs.improbable.io/reference/latest/shared/glossary#schema) will be automatically generated for you in a standardised format. 
+In future releases, you will be able to save time on writing out classes and structs by annotating the C# classes and structs you use. The [schema](https://docs.improbable.io/reference/latest/shared/glossary#schema) will be automatically generated for you in a standardised format.
 
 ## Native workflows
 
-We know that game developers are deeply familiar with and experienced in using Unity and the Unity Editor, so we are building features within Unity itself as much as possible, allowing you to experience a Unity-native workflow. 
+We know that game developers are deeply familiar with and experienced in using Unity and the Unity Editor, so we are building features within Unity itself as much as possible, allowing you to experience a Unity-native workflow.
 
 #### MonoBehaviour workflow and callbacks
 
-You can easily inject components into MonoBehaviour and get method callbacks when values change. You can use this to run code in reaction to changes in component values, events fired or commands received. Alternatively, you can get the latest value on each frame, if that’s your preference. 
+You can easily inject components into MonoBehaviour and get method callbacks when values change. You can use this to run code in reaction to changes in component values, events fired or commands received. Alternatively, you can get the latest value on each frame, if that’s your preference.
 
 #### Automatic state synchronization
 
@@ -50,13 +50,13 @@ When you update ECS component values, those changes are automatically synchroniz
 
 ## High performance
 
-We want to the SpatialOS GDK for Unity’s performance to be as fast as possible. A more efficient integration means more resources available to both the client and server; your game uses less resources so you can develop more content.
+We want to the GDK’s performance to be as fast as possible. A more efficient integration means more resources available to both the client and server; your game uses less resources so you can develop more content.
 
-We are using low allocation APIs, optional GameObjects and the Unity ECS to accomplish this. 
+We are using low allocation APIs, optional GameObjects and the Unity ECS to accomplish this.
 
 #### Near-zero allocation for component updates
 
-In our older SpatialOS **SDK** for Unity, each component update allocates memory in managed C#. This was problematic as its garbage collection caused loading spikes, manifesting as dropped frames. 
+In our older SpatialOS **SDK** for Unity, each component update allocates memory in managed C#. This was problematic as its garbage collection caused loading spikes, manifesting as dropped frames.
 
 The new SpatialOS **GDK** for Unity directly deserializes networked data into ECS data types (which are largely structs), creating extremely low allocations for networked operations. (This functionality is currently in R&D and is something we’re treating as high priority.)
 
@@ -68,11 +68,10 @@ You only use GameObjects when you want to. You have the option to do computation
 
 #### Full source access
 
-At Improbable, we’ve always believed that everyone benefits from open development and that code gets better, faster, when it’s public. We’re developing the SpatialOS GDK for Unity in the open so that you can better understand it, and directly impact its development. We welcome [issue reports](https://github.com/spatialos/UnityGDK/issues) and [feature requests](https://github.com/spatialos/UnityGDK#give-us-feedback) right now, and at later releases we’ll be accepting pull requests directly from the community.
+At Improbable, we’ve always believed that everyone benefits from open development and that code gets better, faster, when it’s public. We’re developing the GDK in the open so that you can better understand it, and directly impact its development. We welcome [issue reports](https://github.com/spatialos/UnityGDK/issues) and [feature requests](https://github.com/spatialos/UnityGDK#give-us-feedback) right now, and at later releases we’ll be accepting pull requests directly from the community.
 
 ## Publicly-available experimental features
 
 #### Mobile game development
 
-To enable mobile game development support for SpatialOS, we have an experimental branch (`experimental/mobile-support`) for Android on the SpatialOS GDK. We plan to have iOS support for the GDK soon.
-
+To enable mobile game development support for SpatialOS, we have an experimental branch (`experimental/mobile-support`) for Android on the GDK. We plan to have iOS support for the GDK soon.

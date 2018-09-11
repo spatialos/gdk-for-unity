@@ -7,9 +7,6 @@ public class ClientWorkerConnector : WorkerConnectorBase
 {
     private async void Start()
     {
-        // Array covariance means the explicit cast isn't strictly needed but it is slightly safer
-        RequiredWorkerConnection = FindObjectsOfType<GameLogicWorkerConnector>()
-            .Select(c => (WorkerConnectorBase) c).ToArray();
         await Connect(WorkerUtils.UnityClient, new ForwardingDispatcher()).ConfigureAwait(false);
     }
 
