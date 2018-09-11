@@ -13,13 +13,13 @@ namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
+        public float TimeBetweenSpinChanges = 1.0f;
+
         [Require] private SpinnerRotation.Requirable.CommandRequestHandler requestHandler;
 
         private RotationBehaviour rotationBehaviour;
 
         private float nextAvailableSpinChangeTime;
-
-        public float TimeBetweenSpinChanges = 1.0f;
 
         private void OnEnable()
         {
