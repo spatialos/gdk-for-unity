@@ -163,12 +163,12 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<<#= componentNamespace #>.Update> updates;
                 if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
