@@ -24,10 +24,10 @@ namespace Improbable.Gdk.Core
 
             switch (dataEntityId)
             {
-                case EntityId _:
-                    return (EntityId) dataEntityId;
-                case long _:
-                    return new EntityId((long) dataEntityId);
+                case EntityId asEntityId:
+                    return asEntityId;
+                case long asLong:
+                    return new EntityId(asLong);
             }
 
             return null;

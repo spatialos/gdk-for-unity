@@ -35,7 +35,7 @@ namespace Playground
             Dispose();
         }
 
-        protected async Task Connect(string workerType, ILogDispatcher logger)
+        public async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts
             // This prevents races on the workers starting and races on when we start ticking systems
@@ -197,21 +197,21 @@ namespace Playground
             Dispose();
         }
 
+        private static string CreateNewWorkerId(string workerType)
+        {
+            return $"{workerType}-{Guid.NewGuid()}";
+        }
+
         public void Dispose()
         {
             Worker?.Dispose();
             Worker = null;
-            // Handle the case that play mode is exited before the connection can complete.
+            // A check is needed for the case that play mode is exited before the connection can complete.
             if (Application.isPlaying)
             {
                 Destroy(levelInstance);
                 Destroy(this);
             }
-        }
-
-        private static string CreateNewWorkerId(string workerType)
-        {
-            return $"{workerType}-{Guid.NewGuid()}";
         }
     }
 }
