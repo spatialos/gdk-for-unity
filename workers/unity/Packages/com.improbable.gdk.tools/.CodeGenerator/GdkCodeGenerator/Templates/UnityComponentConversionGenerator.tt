@@ -518,6 +518,22 @@ namespace <#= qualifiedNamespace #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
+            private EntityArchetypeQuery[] CommandQueries =
+            {
+<# foreach (var commandDetails in commandDetailsList) { #>
+                new EntityArchetypeQuery()
+                {
+                    All = new[]
+                    {
+                        ComponentType.Create<CommandRequests.<#= commandDetails.CommandName #>>(),
+                        ComponentType.Create<CommandResponses.<#= commandDetails.CommandName #>>(),
+                    },
+                    Any = Array.Empty<ComponentType>(),
+                    None = Array.Empty<ComponentType>(),
+                },
+<# } #>
+            };
+
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -586,14 +602,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 {
                     var senderType = sendSystem.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
                     var responderType = sendSystem.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
-                    var query = new EntityArchetypeQuery()
-                    {
-                        All = new[] { ComponentType.Create<<#= commandSenderType #>>(), ComponentType.Create<<#= commandResponderType #>>() },
-                        Any = Array.Empty<ComponentType>(),
-                        None = Array.Empty<ComponentType>(),
-                    };
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(query, Allocator.TempJob);
+                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[<#= i #>], Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
