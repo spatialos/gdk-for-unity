@@ -17,6 +17,7 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
 * [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
 * [Snapshots](content/snapshots.md)
+* [Creating entity templates](content/entity-templates.md)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
@@ -37,10 +38,10 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 * [Components and component updates](content/ecs/component-data.md)
 * [Sending and receiving events](content/ecs/events.md)
 * [Sending and receiving commands](content/ecs/commands.md)
+* [World commands](content/ecs/world-commands.md)
 * [Receiving updates from SpatialOS: Reactive components](content/ecs/reactive-components.md)
 * [Custom replication systems](content/ecs/custom-replication-system.md)
 * [Authority](content/ecs/authority.md)
-* [Creating entities](content/ecs/create-entity.md)
 * [Entity checkout process](content/ecs/entity-checkout-process.md)
 * [The code generator](content/ecs/code-generator.md)
 * [Temporary components](content/ecs/temporary-components.md)
