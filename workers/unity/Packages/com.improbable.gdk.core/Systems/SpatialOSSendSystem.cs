@@ -8,6 +8,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
@@ -44,8 +45,6 @@ namespace Improbable.Gdk.Core
                     Handler = componentReplicationHandler,
                     ReplicationComponentGroup =
                         GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
-                    CommandReplicationGroups = componentReplicationHandler.CommandTypes
-                        .Select(componentType => GetComponentGroup(componentType)).ToList()
                 });
             }
         }
@@ -71,7 +70,7 @@ namespace Improbable.Gdk.Core
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(connection);
+                replicator.Execute(this, connection);
             }
         }
 
@@ -82,10 +81,10 @@ namespace Improbable.Gdk.Core
             public ComponentGroup ReplicationComponentGroup;
             public List<ComponentGroup> CommandReplicationGroups;
 
-            public void Execute(Connection connection)
+            public void Execute(SpatialOSSendSystem sendSystem, Connection connection)
             {
                 Handler.ExecuteReplication(ReplicationComponentGroup, connection);
-                Handler.SendCommands(CommandReplicationGroups, connection);
+                Handler.SendCommands(sendSystem, connection);
             }
         }
     }
