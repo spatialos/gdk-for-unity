@@ -73,12 +73,12 @@ public class BuildSystem : ComponentSystem
         for(var i = 0; i < data.Length; i++)
         {
             var requestSender = data.BuildWallSender[i];
-            var entityId = data.EntityIds[i];
+            var targetEntityId = data.EntityIds[i];
 
-            Builder.BuildWall.Request request = new Builder.BuildWall.Request
+            Builder.BuildWall.Request request = new Builder.BuildWall.CreateRequest
             {
-                TargetEntityId = entityId,
-                Payload = new BuildRequest
+                targetEntityId,
+                new BuildRequest
                 {
                     Location = new Location(...),
                     Rotation = new Rotation(...)
