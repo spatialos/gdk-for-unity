@@ -34,7 +34,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
+            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
             {
             }
 
