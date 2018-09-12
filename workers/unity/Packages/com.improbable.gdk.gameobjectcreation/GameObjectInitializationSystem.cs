@@ -68,9 +68,8 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
-                var gameObject = gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager));
                 PostUpdateCommands.AddComponent(entity, new InitializedEntitySystemState { EntityId = spatialEntityId });
-                if (gameObject == null)
+                if (!gameObjectCreator.OnEntityAdded(new SpatialOSEntity(entity, EntityManager), out var gameObject) || gameObject == null)
                 {
                     continue;
                 }
