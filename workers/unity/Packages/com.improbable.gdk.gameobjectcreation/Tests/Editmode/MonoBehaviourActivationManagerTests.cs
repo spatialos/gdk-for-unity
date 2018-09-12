@@ -68,8 +68,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no PlayerCreator component");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -85,8 +83,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -102,8 +98,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -125,8 +119,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if it has lost authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -140,8 +132,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
     }
 
@@ -166,8 +156,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no transform component");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -183,8 +171,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -200,8 +186,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -223,8 +207,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if it has lost authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -238,8 +220,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
     }
 
@@ -259,8 +239,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no transform component");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -276,8 +254,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -293,8 +269,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -315,8 +289,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be disabled after DisableSpatialOSBehaviours is called");
-
-            Object.DestroyImmediate(TestGameObject);
         }
 
         [Test]
@@ -330,8 +302,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
-
-            Object.DestroyImmediate(TestGameObject);
         }
     }
 
