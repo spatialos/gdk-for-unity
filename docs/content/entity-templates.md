@@ -6,7 +6,7 @@
 
 To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
 
-The entity template can created using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
+The entity template can be created using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
 
 | Public method                                                | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
