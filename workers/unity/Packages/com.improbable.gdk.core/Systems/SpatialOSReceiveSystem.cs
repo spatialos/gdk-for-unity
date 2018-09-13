@@ -8,6 +8,7 @@ using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -87,6 +88,7 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.EntityAlreadyExistsError, entityId.Id));
             }
 
+            Profiler.BeginSample("OnAddEntity");
             var entity = EntityManager.CreateEntity();
             EntityManager.AddComponentData(entity, new SpatialEntityId
             {
@@ -101,6 +103,7 @@ namespace Improbable.Gdk.Core
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
             worker.EntityIdToEntity.Add(entityId, entity);
+            Profiler.EndSample();
         }
 
         internal void OnRemoveEntity(RemoveEntityOp op)
@@ -112,9 +115,11 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
             }
 
+            Profiler.BeginSample("OnRemoveEntity");
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
             EntityManager.DestroyEntity(worker.EntityIdToEntity[entityId]);
             worker.EntityIdToEntity.Remove(entityId);
+            Profiler.EndSample();
         }
 
         internal void OnDisconnect(DisconnectOp op)
@@ -133,7 +138,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Data.ComponentId));
             }
 
+            Profiler.BeginSample("OnAddComponent");
             specificDispatcher.OnAddComponent(op);
+            Profiler.EndSample();
         }
 
         internal void OnRemoveComponent(RemoveComponentOp op)
@@ -144,7 +151,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
+            Profiler.BeginSample("OnRemoveComponent");
             specificDispatcher.OnRemoveComponent(op);
+            Profiler.EndSample();
         }
 
         internal void OnComponentUpdate(ComponentUpdateOp op)
@@ -155,7 +164,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Update.ComponentId));
             }
 
+            Profiler.BeginSample("OnComponentUpdate");
             specificDispatcher.OnComponentUpdate(op);
+            Profiler.EndSample();
         }
 
         internal void OnAuthorityChange(AuthorityChangeOp op)
@@ -166,7 +177,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
+            Profiler.BeginSample("OnAuthorityChange");
             specificDispatcher.OnAuthorityChange(op);
+            Profiler.EndSample();
         }
 
         internal void OnCommandRequest(CommandRequestOp op)
@@ -177,7 +190,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Request.ComponentId));
             }
 
+            Profiler.BeginSample("OnCommandRequest");
             specificDispatcher.OnCommandRequest(op);
+            Profiler.EndSample();
         }
 
         internal void OnCommandResponse(CommandResponseOp op)
@@ -188,7 +203,9 @@ namespace Improbable.Gdk.Core
                     string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Response.ComponentId));
             }
 
+            Profiler.BeginSample("OnCommandResponse");
             specificDispatcher.OnCommandResponse(op);
+            Profiler.EndSample();
         }
 
         internal void OnCreateEntityResponse(CreateEntityResponseOp op)

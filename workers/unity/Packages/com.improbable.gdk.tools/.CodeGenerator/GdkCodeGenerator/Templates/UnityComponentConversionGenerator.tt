@@ -7,6 +7,8 @@
     var commandDetailsList = GetCommandDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
+    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
@@ -14,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
@@ -71,6 +74,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                <#= profilingStart #>
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
@@ -112,11 +116,15 @@ namespace <#= qualifiedNamespace #>
                         .WithField("Component", "<#= componentNamespace #>")
                     );
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                <#= profilingStart #>
 <# if (!componentDetails.IsBlittable) { #>
 
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -145,12 +153,15 @@ namespace <#= qualifiedNamespace #>
                         .WithField("Component", "<#= componentNamespace #>")
                     );
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                <#= profilingStart #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -165,7 +176,6 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
                 {
                     updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
-
                 }
                 else
                 {
@@ -216,16 +226,21 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
 <# } #>
+                <#= profilingEnd #>
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                <#= profilingStart #>
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                <#= profilingEnd #>
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
+                <#= profilingStart #>
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
@@ -237,10 +252,13 @@ namespace <#= qualifiedNamespace #>
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
+                <#= profilingStart #>
                 var commandIndex = op.Response.CommandIndex;
                 switch (commandIndex)
                 {
@@ -252,6 +270,8 @@ namespace <#= qualifiedNamespace #>
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
@@ -364,7 +384,6 @@ namespace <#= qualifiedNamespace #>
                     .WithField("Component", "<#= componentNamespace #>")
                 );
             }
-
 <# foreach (var commandDetails in commandDetailsList) {
     var wrappedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
     var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
@@ -374,6 +393,7 @@ namespace <#= qualifiedNamespace #>
 
     var commandStorage = $"{commandDetails.CamelCaseCommandName}Storage";
 #>
+
             private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
@@ -469,7 +489,7 @@ namespace <#= qualifiedNamespace #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
-            private EntityArchetypeQuery[] CommandQueries =
+            private readonly EntityArchetypeQuery[] CommandQueries =
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
                 new EntityArchetypeQuery()
@@ -495,6 +515,8 @@ namespace <#= qualifiedNamespace #>
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
+                <#= profilingStart #>
+
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentNamespace #>.Component>();
 <# foreach (var eventDetail in eventDetailsList) { #>
@@ -539,10 +561,14 @@ namespace <#= qualifiedNamespace #>
                         componentDataArray[i] = data;
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+<# if (commandDetailsList.Count > 0) { #>
+                <#= profilingStart #>
                 var entityType = sendSystem.GetArchetypeChunkEntityType();
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {
@@ -609,6 +635,9 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                     chunks.Dispose();
                 }
+<# } #>
+
+                <#= profilingEnd #>
 <# } #>
             }
         }
