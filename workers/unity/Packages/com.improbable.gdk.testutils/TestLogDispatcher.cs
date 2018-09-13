@@ -23,8 +23,7 @@ namespace Improbable.Gdk.TestUtils
         private static readonly string AttemptToAccessConnectionError =
             $"Cannot access or set the Connection in the {nameof(TestLogDispatcher)}";
 
-        private readonly Queue<ExpectedLog> expectedLogs = new Queue<ExpectedLog>();
-        private readonly Queue<(LogType, LogEvent)> unexpectedLogs = new Queue<(LogType, LogEvent)>();
+        private ExpectingScope currentExpectingScope;
 
         // The connection will never be valid - so any attempt to get or set will throw.
         public Connection Connection
@@ -35,101 +34,111 @@ namespace Improbable.Gdk.TestUtils
 
         public void HandleLog(LogType type, LogEvent logEvent)
         {
-            if (expectedLogs.Count == 0)
+            if (currentExpectingScope != null)
             {
-                if (type == LogType.Error || type == LogType.Exception)
-                {
-                    unexpectedLogs.Enqueue((type, logEvent));
-                }
-
+                currentExpectingScope.CheckIncomingLog(type, logEvent);
                 return;
             }
 
-            if (expectedLogs.Peek().DoesMatchLog(type, logEvent))
+            if (type == LogType.Error || type == LogType.Exception)
             {
-                expectedLogs.Dequeue();
-            }
-            else
-            {
-                if (type == LogType.Error || type == LogType.Exception)
-                {
-                    unexpectedLogs.Enqueue((type, logEvent));
-                }
+                Assert.Fail($"Encountered error log outside of an expecting scope: [{type}] - {logEvent}");
             }
         }
 
-        /// <summary>
-        ///     Specifies that you are expecting a log message of a certain structure.
-        /// </summary>
-        /// <param name="expectedLog">A struct which defines the structure of the expected log message.</param>
-        public void Expect(ExpectedLog expectedLog)
+        public ExpectingScope EnterExpectingScope()
         {
-            expectedLogs.Enqueue(expectedLog);
-        }
+            if (currentExpectingScope != null)
+            {
+                throw new InvalidOperationException("Cannot ");
+            }
 
-        /// <summary>
-        ///     Assert against any queued up expected logs and asserts against unexpected error or exceptions.
-        /// </summary>
-        public void AssertAgainstExpectedLogs()
-        {
-            Assert.AreEqual(0, unexpectedLogs.Count, $"Received unexpected errors or exceptions: {PrintUnexpectedLogs()}");
-            Assert.AreEqual(0, expectedLogs.Count, "Did not receive all expected logs");
-        }
-
-        /// <summary>
-        ///     Clears the queue of expected logs. This should be called in after AssertAgainstExpectedLogs() to clean
-        ///     up any leftover expected logs. A good place to call this is in a [TearDown] fixture.
-        /// </summary>
-        public void Reset()
-        {
-            expectedLogs.Clear();
-            unexpectedLogs.Clear();
+            currentExpectingScope = new ExpectingScope(this);
+            return currentExpectingScope;
         }
 
         public void Dispose()
         {
-        }
-
-        private string PrintUnexpectedLogs()
-        {
-            return string.Join("\n", unexpectedLogs.Select(log =>
+            if (currentExpectingScope != null)
             {
-                var (logType, logEvent) = log;
-                return $"[{logType}] - {logEvent}";
-            }));
-        }
-    }
-
-    /// <summary>
-    ///     A struct which defines the shape of an expected log.
-    /// </summary>
-    public struct ExpectedLog
-    {
-        public LogType Type;
-        public string[] DataKeys;
-
-        /// <summary>
-        ///     The constructor.
-        /// </summary>
-        /// <param name="type">The LogType of the expected log. Warning, Error, etc.</param>
-        /// <param name="dataKeys">
-        ///     The set of string keys expected in the log message.
-        ///     This corresponds to the WithField method on a LogEvent.
-        /// </param>
-        public ExpectedLog(LogType type, params string[] dataKeys)
-        {
-            Type = type;
-            DataKeys = dataKeys;
+                throw new InvalidOperationException(
+                    "Cannot Dispose a TestLogDispatcher while there is an outstanding ExpectingScope");
+            }
         }
 
-        internal bool DoesMatchLog(LogType type, LogEvent logEvent)
+        public class ExpectingScope : IDisposable
         {
-            if (type != Type)
+            private readonly Queue<LogStructure> expectedLogs = new Queue<LogStructure>();
+            private readonly Queue<(LogType, LogEvent)> unexpectedLogs = new Queue<(LogType, LogEvent)>();
+
+            private TestLogDispatcher dispatcher;
+
+            internal ExpectingScope(TestLogDispatcher dispatcher)
             {
-                return false;
+                this.dispatcher = dispatcher;
             }
 
-            return !logEvent.Data.Keys.Except(DataKeys).Any();
+            public void Expect(LogType type, params string[] dataKeys)
+            {
+                expectedLogs.Enqueue(new LogStructure(type, dataKeys));
+            }
+
+            public void Dispose()
+            {
+                dispatcher.currentExpectingScope = null;
+
+                Assert.AreEqual(0, expectedLogs.Count);
+
+                var unexpectedLogsString = string.Join("\n", unexpectedLogs.Select(log =>
+                {
+                    var (logType, logEvent) = log;
+                    return $"[{logType}] - {logEvent}";
+                }));
+                Assert.AreEqual(0, unexpectedLogs.Count,
+                    $"Received unexpected errors or exceptions : {unexpectedLogsString}");
+            }
+
+            internal void CheckIncomingLog(LogType type, LogEvent logEvent)
+            {
+                if (expectedLogs.Count > 0)
+                {
+                    if (expectedLogs.Peek().DoesMatchLog(type, logEvent))
+                    {
+                        expectedLogs.Dequeue();
+                        return;
+                    }
+                }
+
+                if (type == LogType.Error || type == LogType.Exception)
+                {
+                    unexpectedLogs.Enqueue((type, logEvent));
+                }
+            }
+
+            /// <summary>
+            ///     A struct which defines the shape of an expected log.
+            /// </summary>
+            private struct LogStructure
+            {
+                public LogType Type;
+                public string[] DataKeys;
+
+                public LogStructure(LogType type, params string[] dataKeys)
+                {
+                    Type = type;
+                    DataKeys = dataKeys;
+                }
+
+                public bool DoesMatchLog(LogType type, LogEvent logEvent)
+                {
+                    if (type != Type)
+                    {
+                        return false;
+                    }
+
+                    return !logEvent.Data.Keys.Except(DataKeys).Any();
+                }
+            }
         }
     }
 }
