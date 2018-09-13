@@ -69,6 +69,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
+            logDispatcher.Dispose();
             world.Dispose();
         }
 
@@ -97,7 +98,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             }
 
             firstComponentDispatcher.Reset();
-            logDispatcher.ClearExpectedLogs();
+            secondComponentDispatcher.Reset();
 
             createEntityStorage.CommandRequestsInFlight.Clear();
             deleteEntityStorage.CommandRequestsInFlight.Clear();
@@ -108,6 +109,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             WorldCommands.EntityQuery.ResponsesProvider.CleanDataInWorld(world);
             WorldCommands.DeleteEntity.ResponsesProvider.CleanDataInWorld(world);
             WorldCommands.ReserveEntityIds.ResponsesProvider.CleanDataInWorld(world);
+        }
+
+        private Entity SetupTestEntity()
+        {
+            var entity = entityManager.CreateEntity();
+            var entityId = new EntityId(TestEntityId);
+            entityManager.AddComponentData(entity, new SpatialEntityId { EntityId = entityId });
+            worker.EntityIdToEntity.Add(entityId, entity);
+
+            WorldCommands.AddWorldCommandRequesters(world, entityManager, entity);
+
+            return entity;
         }
 
         [Test]
@@ -144,15 +157,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        public void OnAddEntity_should_error_if_entity_already_exists()
+        public void OnAddEntity_should_throw_if_entity_already_exists()
         {
             SetupTestEntity();
 
             using (var wrappedOp = WorkerOpFactory.CreateAddEntityOp(TestEntityId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, LoggingUtils.EntityId));
-                receiveSystem.OnAddEntity(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<InvalidSpatialEntityStateException>(() =>
+                {
+                    receiveSystem.OnAddEntity(wrappedOp.Op);
+                });
             }
         }
 
@@ -193,9 +207,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateRemoveEntityOp(TestEntityId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, LoggingUtils.EntityId));
-                receiveSystem.OnRemoveEntity(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<InvalidSpatialEntityStateException>(() =>
+                {
+                    receiveSystem.OnRemoveEntity(wrappedOp.Op);
+                });
             }
         }
 
@@ -216,9 +231,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, InvalidComponentId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnAddComponent(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnAddComponent(wrappedOp.Op);
+                });
             }
         }
 
@@ -239,9 +255,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, InvalidComponentId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnRemoveComponent(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnRemoveComponent(wrappedOp.Op);
+                });
             }
         }
 
@@ -262,9 +279,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, InvalidComponentId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnComponentUpdate(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnComponentUpdate(wrappedOp.Op);
+                });
             }
         }
 
@@ -285,9 +303,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, InvalidComponentId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnAuthorityChange(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnAuthorityChange(wrappedOp.Op);
+                });
             }
         }
 
@@ -310,9 +329,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             using (var wrappedOp =
                 WorkerOpFactory.CreateCommandRequestOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnCommandRequest(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnCommandRequest(wrappedOp.Op);
+                });
             }
         }
 
@@ -335,9 +355,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             using (var wrappedOp =
                 WorkerOpFactory.CreateCommandResponseOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
-                receiveSystem.OnCommandResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownComponentIdException>(() =>
+                {
+                    receiveSystem.OnCommandResponse(wrappedOp.Op);
+                });
             }
         }
 
@@ -409,14 +430,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        public void OnCreateEntityRespoonse_should_error_if_request_id_not_found()
+        public void OnCreateEntityResponse_should_error_if_request_id_not_found()
         {
             using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
-                    "Command Type"));
-                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownRequestIdException>(() =>
+                {
+                    receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+                });
             }
         }
 
@@ -431,9 +452,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
-                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                using (var expectingScope = logDispatcher.EnterExpectingScope())
+                {
+                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+                    receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+                }
             }
         }
 
@@ -471,14 +494,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        public void OnDeleteEntityRespoonse_should_error_if_request_id_not_found()
+        public void OnDeleteEntityResponse_should_error_if_request_id_not_found()
         {
             using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
-                    "Command Type"));
-                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownRequestIdException>(() =>
+                {
+                    receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+                });
             }
         }
 
@@ -493,9 +516,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
-                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                using (var expectingScope = logDispatcher.EnterExpectingScope())
+                {
+                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+                    receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+                }
             }
         }
 
@@ -537,10 +562,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
-                    "Command Type"));
-                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownRequestIdException>(() =>
+                {
+                    receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+                });
             }
         }
 
@@ -555,9 +580,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
-                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                using (var expectingScope = logDispatcher.EnterExpectingScope())
+                {
+                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+                    receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+                }
             }
         }
 
@@ -599,10 +626,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
-                    "Command Type"));
-                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                Assert.Throws<UnknownRequestIdException>(() =>
+                {
+                    receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+                });
             }
         }
 
@@ -617,22 +644,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Log, LoggingUtils.LoggerName, "Op"));
-                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
-                logDispatcher.AssertAgainstExpectedLogs();
+                using (var expectingScope = logDispatcher.EnterExpectingScope())
+                {
+                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+                    receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+                }
             }
-        }
-
-        private Entity SetupTestEntity()
-        {
-            var entity = entityManager.CreateEntity();
-            var entityId = new EntityId(TestEntityId);
-            entityManager.AddComponentData(entity, new SpatialEntityId { EntityId = entityId });
-            worker.EntityIdToEntity.Add(entityId, entity);
-
-            WorldCommands.AddWorldCommandRequesters(world, entityManager, entity);
-
-            return entity;
         }
     }
 
