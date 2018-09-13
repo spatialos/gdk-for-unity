@@ -4,11 +4,9 @@
 
 ## Creating entity templates
 
-To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in SpatialOS, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
+To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
 
 The entity template can created using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
-
-The `EntityBuilder` class has the following public methods:
 
 | Public method                                                | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
@@ -38,13 +36,11 @@ public static class CreatureTemplate
 {
     public static Entity CreateCreatureEntityTemplate(Coordinates coords)
     {
-        const string entityType = "Creature";
-
         var healthComponent = Health.Component.CreateSchemaComponentData(healthValue: 100);
 
         var entity = EntityBuilder.Begin()
             .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
-            .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
+            .AddMetadata("Creature", WorkerUtils.UnityGameLogic)
             .SetPersistence(true)
             .SetReadAcl(WorkerUtils.AllWorkerAttributes)
             .AddComponent(healthComponent, WorkerUtils.UnityGameLogic)
@@ -55,7 +51,7 @@ public static class CreatureTemplate
 }
 ```
 
-We have created an entity template, now we should spawn this entity. This can be done either using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
+You can use this entity template to spawn a Creature entity. This can be done either using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
 
 ------
 
