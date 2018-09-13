@@ -195,7 +195,8 @@ namespace Improbable.Gdk.Core
         {
             if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -227,14 +228,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
         internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
             if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -266,14 +269,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
         internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
             if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -305,14 +310,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
         internal void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
             if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -344,7 +351,8 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
         internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
@@ -366,7 +374,8 @@ namespace Improbable.Gdk.Core
             var componentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract
-                    && type.GetCustomAttribute(typeof(ComponentDispatcherHandler.DisableAutoRegisterAttribute)) == null);
+                    && type.GetCustomAttribute(typeof(ComponentDispatcherHandler.DisableAutoRegisterAttribute)) ==
+                    null);
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)

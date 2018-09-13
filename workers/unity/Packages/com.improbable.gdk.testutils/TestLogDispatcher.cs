@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
+using NUnit.Framework;
 using UnityEngine;
-using Assert = NUnit.Framework.Assert;
 
 namespace Improbable.Gdk.TestUtils
 {
     /// <summary>
     ///     A ILogDispatcher implementation designed to be used in testing. This replaces the LogAssert approach with
     ///     a more specialised one.
-    ///
     ///     Using the TestLogDispatcher allows you to expect a certain structure of message and asserts against it. Any
     ///     unexpected error or exceptions will cause an assertion failure.
-    ///
     ///     You can expect against a series of logs which are asserted against in order. I.e. - out of order messages
     ///     will cause an assertion failure.
     /// </summary>

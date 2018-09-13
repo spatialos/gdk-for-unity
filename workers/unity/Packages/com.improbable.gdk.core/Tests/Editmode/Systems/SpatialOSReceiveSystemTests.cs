@@ -163,10 +163,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             using (var wrappedOp = WorkerOpFactory.CreateAddEntityOp(TestEntityId))
             {
-                Assert.Throws<InvalidSpatialEntityStateException>(() =>
-                {
-                    receiveSystem.OnAddEntity(wrappedOp.Op);
-                });
+                Assert.Throws<InvalidSpatialEntityStateException>(() => { receiveSystem.OnAddEntity(wrappedOp.Op); });
             }
         }
 
@@ -231,10 +228,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, InvalidComponentId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnAddComponent(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnAddComponent(wrappedOp.Op); });
             }
         }
 
@@ -255,10 +249,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, InvalidComponentId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnRemoveComponent(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnRemoveComponent(wrappedOp.Op); });
             }
         }
 
@@ -279,10 +270,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, InvalidComponentId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnComponentUpdate(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnComponentUpdate(wrappedOp.Op); });
             }
         }
 
@@ -303,10 +291,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, InvalidComponentId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnAuthorityChange(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnAuthorityChange(wrappedOp.Op); });
             }
         }
 
@@ -329,10 +314,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             using (var wrappedOp =
                 WorkerOpFactory.CreateCommandRequestOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnCommandRequest(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnCommandRequest(wrappedOp.Op); });
             }
         }
 
@@ -355,10 +337,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             using (var wrappedOp =
                 WorkerOpFactory.CreateCommandResponseOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
-                Assert.Throws<UnknownComponentIdException>(() =>
-                {
-                    receiveSystem.OnCommandResponse(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownComponentIdException>(() => { receiveSystem.OnCommandResponse(wrappedOp.Op); });
             }
         }
 
@@ -434,10 +413,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
             {
-                Assert.Throws<UnknownRequestIdException>(() =>
-                {
-                    receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnCreateEntityResponse(wrappedOp.Op); });
             }
         }
 
@@ -498,10 +474,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
             {
-                Assert.Throws<UnknownRequestIdException>(() =>
-                {
-                    receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnDeleteEntityResponse(wrappedOp.Op); });
             }
         }
 
@@ -562,10 +535,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
             {
-                Assert.Throws<UnknownRequestIdException>(() =>
-                {
-                    receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
-                });
+                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnEntityQueryResponse(wrappedOp.Op); });
             }
         }
 
