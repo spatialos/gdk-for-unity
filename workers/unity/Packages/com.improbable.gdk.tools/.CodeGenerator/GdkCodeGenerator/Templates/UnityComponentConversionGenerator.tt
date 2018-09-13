@@ -525,8 +525,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     All = new[]
                     {
-                        ComponentType.Create<CommandRequests.<#= commandDetails.CommandName #>>(),
-                        ComponentType.Create<CommandResponses.<#= commandDetails.CommandName #>>(),
+                        ComponentType.Create<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>>(),
+                        ComponentType.Create<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),

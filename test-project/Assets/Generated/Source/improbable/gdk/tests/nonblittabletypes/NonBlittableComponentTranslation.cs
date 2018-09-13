@@ -632,8 +632,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     All = new[]
                     {
-                        ComponentType.Create<CommandRequests.FirstCommand>(),
-                        ComponentType.Create<CommandResponses.FirstCommand>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
@@ -642,8 +642,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     All = new[]
                     {
-                        ComponentType.Create<CommandRequests.SecondCommand>(),
-                        ComponentType.Create<CommandResponses.SecondCommand>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),

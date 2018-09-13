@@ -416,8 +416,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     All = new[]
                     {
-                        ComponentType.Create<CommandRequests.Cmd>(),
-                        ComponentType.Create<CommandResponses.Cmd>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
