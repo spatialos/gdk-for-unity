@@ -24,18 +24,19 @@ namespace Improbable.Gdk.GameObjectCreation
             this.logger = logger;
         }
 
-        public GameObject OnEntityCreated(SpatialOSEntity entity)
+        public bool OnEntityAdded(SpatialOSEntity entity, out GameObject gameObject)
         {
+            gameObject = null;
             if (!entity.HasComponent<Metadata.Component>())
             {
-                return null;
+                return false;
             }
 
             var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
             if (!entity.HasComponent<Position.Component>())
             {
                 cachedPrefabs[prefabName] = null;
-                return null;
+                return false;
             }
 
             var spatialOSPosition = entity.GetComponent<Position.Component>();
@@ -57,12 +58,12 @@ namespace Improbable.Gdk.GameObjectCreation
 
             if (prefab == null)
             {
-                return null;
+                return false;
             }
 
-            var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
+            gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
-            return gameObject;
+            return true;
         }
 
         public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
