@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
@@ -12,9 +8,7 @@ using Improbable.Worker.Core;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.TestTools;
 using Entity = Unity.Entities.Entity;
-using Object = System.Object;
 
 namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {
@@ -117,7 +111,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        public void OnAddEntity_should_add_entity_and_world_command_components()
+        public void OnAddEntity_should_add_entity_and_command_components()
         {
             using (var wrappedOp = WorkerOpFactory.CreateAddEntityOp(TestEntityId))
             {
@@ -142,6 +136,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             {
                 Assert.IsTrue(entityManager.HasComponent(entity, type));
             }
+
+            Assert.IsTrue(entityManager.HasComponent(entity,
+                ComponentType.Create<FirstComponentDispatcher.CommandComponent>()));
+            Assert.IsTrue(entityManager.HasComponent(entity,
+                ComponentType.Create<SecondComponentDispatcher.CommandComponent>()));
         }
 
         [Test]
@@ -179,10 +178,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             Assert.IsFalse(entityManager.Exists(entity));
             Assert.IsFalse(worker.TryGetEntity(new EntityId(TestEntityId), out _));
 
-            Assert.Throws<ArgumentException>(() => WorldCommands.CreateEntity.RequestsProvider.Get(createEntityRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.DeleteEntity.RequestsProvider.Get(deleteEntityRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.EntityQuery.RequestsProvider.Get(entityQueryRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.ReserveEntityIds.RequestsProvider.Get(reserveEntityIdsRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.CreateEntity.RequestsProvider.Get(createEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.DeleteEntity.RequestsProvider.Get(deleteEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.EntityQuery.RequestsProvider.Get(entityQueryRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.ReserveEntityIds.RequestsProvider.Get(reserveEntityIdsRequestsHandle));
         }
 
         [Test]
@@ -291,7 +294,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandRequest_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp =
+                WorkerOpFactory.CreateCommandRequestOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 receiveSystem.OnCommandRequest(wrappedOp.Op);
             }
@@ -303,7 +307,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandRequest_should_error_if_unknown_component_id_received()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp =
+                WorkerOpFactory.CreateCommandRequestOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
                 receiveSystem.OnCommandRequest(wrappedOp.Op);
@@ -314,7 +319,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandResponse_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp =
+                WorkerOpFactory.CreateCommandResponseOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 receiveSystem.OnCommandResponse(wrappedOp.Op);
             }
@@ -326,7 +332,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandResponse_should_error_if_unknown_component_id_received()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp =
+                WorkerOpFactory.CreateCommandResponseOp(InvalidComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 logDispatcher.Expect(new ExpectedLog(LogType.Error, "Op Type", "ComponentId"));
                 receiveSystem.OnCommandResponse(wrappedOp.Op);
@@ -346,7 +353,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             var entityQueryRequestsHandle =
                 entityManager.GetComponentData<WorldCommands.EntityQuery.CommandSender>(worker.WorkerEntity).Handle;
             var reserveEntityIdsRequestsHandle =
-                entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(worker.WorkerEntity).Handle;
+                entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(worker.WorkerEntity)
+                    .Handle;
 
             using (var wrappedOp = WorkerOpFactory.CreateDisconnectOp(DisconnectReason))
             {
@@ -357,10 +365,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             Assert.AreEqual(DisconnectReason,
                 entityManager.GetSharedComponentData<OnDisconnected>(worker.WorkerEntity).ReasonForDisconnect);
 
-            Assert.Throws<ArgumentException>(() => WorldCommands.CreateEntity.RequestsProvider.Get(createEntityRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.DeleteEntity.RequestsProvider.Get(deleteEntityRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.EntityQuery.RequestsProvider.Get(entityQueryRequestsHandle));
-            Assert.Throws<ArgumentException>(() => WorldCommands.ReserveEntityIds.RequestsProvider.Get(reserveEntityIdsRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.CreateEntity.RequestsProvider.Get(createEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.DeleteEntity.RequestsProvider.Get(deleteEntityRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.EntityQuery.RequestsProvider.Get(entityQueryRequestsHandle));
+            Assert.Throws<ArgumentException>(() =>
+                WorldCommands.ReserveEntityIds.RequestsProvider.Get(reserveEntityIdsRequestsHandle));
         }
 
         [Test]
@@ -383,7 +395,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
                 var responses = entityManager.GetComponentData<WorldCommands.CreateEntity.CommandResponses>(entity);
 
-                int count = 0;
+                var count = 0;
                 Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
                 Assert.AreEqual(1, count);
 
@@ -401,7 +413,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
+                    "Command Type"));
                 receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
                 logDispatcher.AssertAgainstExpectedLogs();
             }
@@ -444,7 +457,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
                 var responses = entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandResponses>(entity);
 
-                int count = 0;
+                var count = 0;
                 Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
                 Assert.AreEqual(1, count);
 
@@ -462,7 +475,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
+                    "Command Type"));
                 receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
                 logDispatcher.AssertAgainstExpectedLogs();
             }
@@ -505,7 +519,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
                 var responses = entityManager.GetComponentData<WorldCommands.EntityQuery.CommandResponses>(entity);
 
-                int count = 0;
+                var count = 0;
                 Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
                 Assert.AreEqual(1, count);
 
@@ -523,7 +537,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
+                    "Command Type"));
                 receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
                 logDispatcher.AssertAgainstExpectedLogs();
             }
@@ -566,7 +581,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
                 var responses = entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandResponses>(entity);
 
-                int count = 0;
+                var count = 0;
                 Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
                 Assert.AreEqual(1, count);
 
@@ -584,7 +599,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
             {
-                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId", "Command Type"));
+                logDispatcher.Expect(new ExpectedLog(LogType.Error, LoggingUtils.LoggerName, "RequestId",
+                    "Command Type"));
                 receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
                 logDispatcher.AssertAgainstExpectedLogs();
             }
@@ -627,6 +643,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public FirstComponentDispatcher(WorkerSystem worker, World world) : base(worker, world)
         {
         }
+
+        public override void AddCommandComponents(Entity entity)
+        {
+            EntityManager.AddComponentData(entity, new CommandComponent());
+        }
+
+        internal struct CommandComponent : IComponentData
+        {
+            public uint Test;
+        }
     }
 
     public class SecondComponentDispatcher : TestComponentDispatcherBase
@@ -635,6 +661,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
         public SecondComponentDispatcher(WorkerSystem worker, World world) : base(worker, world)
         {
+        }
+
+        public override void AddCommandComponents(Entity entity)
+        {
+            EntityManager.AddComponentData(entity, new CommandComponent());
+        }
+
+        internal struct CommandComponent : IComponentData
+        {
+            public uint Test;
         }
     }
 
@@ -648,8 +684,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public bool HasCommandRequestReceived;
         public bool HasCommandResponseReceived;
 
+        protected EntityManager EntityManager;
+
         public TestComponentDispatcherBase(WorkerSystem worker, World world) : base(worker, world)
         {
+            EntityManager = world.GetOrCreateManager<EntityManager>();
         }
 
         public void Reset()
@@ -690,10 +729,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public override void OnCommandResponse(CommandResponseOp op)
         {
             HasCommandResponseReceived = true;
-        }
-
-        public override void AddCommandComponents(Entity entity)
-        {
         }
 
         public override void Dispose()
