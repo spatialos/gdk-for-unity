@@ -83,10 +83,8 @@ namespace Improbable.Gdk.Core
             var entityId = op.EntityId;
             if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.DuplicateAdditionOfEntity)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
+                throw new InvalidSpatialEntityStateException(
+                    string.Format(Errors.EntityAlreadyExistsError, entityId.Id));
             }
 
             var entity = EntityManager.CreateEntity();
@@ -110,10 +108,8 @@ namespace Improbable.Gdk.Core
             var entityId = op.EntityId;
             if (!worker.TryGetEntity(entityId, out var entity))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
+                throw new InvalidSpatialEntityStateException(
+                    string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
             }
 
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
@@ -133,10 +129,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Data.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Data.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Data.ComponentId));
             }
 
             specificDispatcher.OnAddComponent(op);
@@ -146,10 +140,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
             specificDispatcher.OnRemoveComponent(op);
@@ -159,10 +151,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Update.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Update.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Update.ComponentId));
             }
 
             specificDispatcher.OnComponentUpdate(op);
@@ -172,10 +162,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
             specificDispatcher.OnAuthorityChange(op);
@@ -185,10 +173,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Request.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Request.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Request.ComponentId));
             }
 
             specificDispatcher.OnCommandRequest(op);
@@ -198,10 +184,8 @@ namespace Improbable.Gdk.Core
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Response.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Response.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Response.ComponentId));
             }
 
             specificDispatcher.OnCommandResponse(op);
@@ -211,11 +195,7 @@ namespace Improbable.Gdk.Core
         {
             if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "CreateEntity"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -254,11 +234,7 @@ namespace Improbable.Gdk.Core
         {
             if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "DeleteEntity"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -297,11 +273,7 @@ namespace Improbable.Gdk.Core
         {
             if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "ReserveEntityIds"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -340,11 +312,7 @@ namespace Improbable.Gdk.Core
         {
             if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "EntityQuery"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(), op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -430,11 +398,20 @@ namespace Improbable.Gdk.Core
 
         private static class Errors
         {
-            public const string DuplicateAdditionOfEntity =
-                "Tried to add an entity but there is already an entity associated with that EntityId.";
+            public const string EntityAlreadyExistsError =
+                "Received an AddEntityOp with Spatial entity ID {0}, but an entity with that EntityId already exists.";
 
-            public const string NoEntityFoundDuringDeletion =
-                "Tried to delete an entity but there is no entity associated with that EntityId.";
+            public const string EntityNotFoundForDeleteError =
+                "Received a DeleteEntityOp with Spatial entity ID {0}, but an entity with that EntityId could not be found."
+                + "This could be caused by deleting SpatialOS entities locally. "
+                + "Use a DeleteEntity command to delete entities instead.";
+
+            public const string UnknownComponentIdError =
+                "Received an {0} with component ID {1}, but this component ID is unknown."
+                + "This could be caused by adding schema components and not recompiling Unity workers.";
+
+            public const string UnknownRequestIdError =
+                "Received an {0} with Request ID {1}, but this Request ID is unknown.";
         }
     }
 }
