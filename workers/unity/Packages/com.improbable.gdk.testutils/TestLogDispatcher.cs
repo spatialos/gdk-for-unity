@@ -11,10 +11,9 @@ namespace Improbable.Gdk.TestUtils
     /// <summary>
     ///     A ILogDispatcher implementation designed to be used in testing. This replaces the LogAssert approach with
     ///     a more specialised one.
-    ///     Using the TestLogDispatcher allows you to expect a certain structure of message and asserts against it. Any
-    ///     unexpected error or exceptions will cause an assertion failure.
-    ///     You can expect against a series of logs which are asserted against in order. I.e. - out of order messages
-    ///     will cause an assertion failure.
+    ///
+    ///     The expected usage is to use EnterExpectingScope() with a using block. This methods returns a Disposable
+    ///     object which you can mark logs as expected. When the object is disposed - it will assert against any logs.
     /// </summary>
     public class TestLogDispatcher : ILogDispatcher
     {
@@ -44,6 +43,13 @@ namespace Improbable.Gdk.TestUtils
             }
         }
 
+        /// <summary>
+        ///     Creates and returns an disposable ExpectingScope object. This is intended to be used with a using block.
+        /// </summary>
+        /// <returns>An ExpectingScope instance.</returns>
+        /// <exception cref="InvalidOperationException">
+        ///     Throws if you already have an un-disposed ExpectingScope from this logger.
+        /// </exception>
         public ExpectingScope EnterExpectingScope()
         {
             if (currentExpectingScope != null)
