@@ -34,10 +34,8 @@ namespace Improbable.Gdk.TestUtils
             if (currentExpectingScope != null)
             {
                 currentExpectingScope.CheckIncomingLog(type, logEvent);
-                return;
             }
-
-            if (type == LogType.Error || type == LogType.Exception)
+            else if (type == LogType.Error || type == LogType.Exception)
             {
                 Assert.Fail($"Encountered error log outside of an expecting scope: [{type}] - {logEvent}");
             }
@@ -54,20 +52,28 @@ namespace Improbable.Gdk.TestUtils
         {
             if (currentExpectingScope != null)
             {
-                throw new InvalidOperationException("Cannot ");
+                throw new InvalidOperationException(
+                    "Cannot enter an ExpectingScope while there is an outstanding ExpectingScope");
             }
 
             currentExpectingScope = new ExpectingScope(this);
             return currentExpectingScope;
         }
 
-        public void Dispose()
+        public void ExitExpectingScope()
         {
-            if (currentExpectingScope != null)
+            if (currentExpectingScope == null)
             {
                 throw new InvalidOperationException(
-                    "Cannot Dispose a TestLogDispatcher while there is an outstanding ExpectingScope");
+                    "Cannot exit an ExpectingScope if you have not entered one!");
             }
+
+            currentExpectingScope.Dispose();
+        }
+
+        public void Dispose()
+        {
+            currentExpectingScope = null;
         }
 
         public class ExpectingScope : IDisposable
@@ -104,13 +110,10 @@ namespace Improbable.Gdk.TestUtils
 
             internal void CheckIncomingLog(LogType type, LogEvent logEvent)
             {
-                if (expectedLogs.Count > 0)
+                if (expectedLogs.Count > 0 && expectedLogs.Peek().DoesMatchLog(type, logEvent))
                 {
-                    if (expectedLogs.Peek().DoesMatchLog(type, logEvent))
-                    {
-                        expectedLogs.Dequeue();
-                        return;
-                    }
+                    expectedLogs.Dequeue();
+                    return;
                 }
 
                 if (type == LogType.Error || type == LogType.Exception)
