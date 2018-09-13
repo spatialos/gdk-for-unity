@@ -20,11 +20,11 @@ namespace Improbable.Gdk.TestUtils
     /// </summary>
     public class TestLogDispatcher : ILogDispatcher
     {
-        private static string AttemptToAccessConnectionError =
+        private static readonly string AttemptToAccessConnectionError =
             $"Cannot access or set the Connection in the {nameof(TestLogDispatcher)}";
 
-        private Queue<ExpectedLog> expectedLogs = new Queue<ExpectedLog>();
-        private bool unexpectedLogsReceived;
+        private readonly Queue<ExpectedLog> expectedLogs = new Queue<ExpectedLog>();
+        private readonly Queue<(LogType, LogEvent)> unexpectedLogs = new Queue<(LogType, LogEvent)>();
 
         // The connection will never be valid - so any attempt to get or set will throw.
         public Connection Connection
@@ -37,7 +37,11 @@ namespace Improbable.Gdk.TestUtils
         {
             if (expectedLogs.Count == 0)
             {
-                unexpectedLogsReceived |= type == LogType.Error || type == LogType.Exception;
+                if (type == LogType.Error || type == LogType.Exception)
+                {
+                    unexpectedLogs.Enqueue((type, logEvent));
+                }
+
                 return;
             }
 
@@ -47,7 +51,10 @@ namespace Improbable.Gdk.TestUtils
             }
             else
             {
-                unexpectedLogsReceived |= type == LogType.Error || type == LogType.Exception;
+                if (type == LogType.Error || type == LogType.Exception)
+                {
+                    unexpectedLogs.Enqueue((type, logEvent));
+                }
             }
         }
 
@@ -65,7 +72,7 @@ namespace Improbable.Gdk.TestUtils
         /// </summary>
         public void AssertAgainstExpectedLogs()
         {
-            Assert.IsFalse(unexpectedLogsReceived, "Received unexpected errors or exceptions.");
+            Assert.AreEqual(0, unexpectedLogs.Count, $"Received unexpected errors or exceptions: {PrintUnexpectedLogs()}");
             Assert.AreEqual(0, expectedLogs.Count, "Did not receive all expected logs");
         }
 
@@ -73,13 +80,23 @@ namespace Improbable.Gdk.TestUtils
         ///     Clears the queue of expected logs. This should be called in after AssertAgainstExpectedLogs() to clean
         ///     up any leftover expected logs. A good place to call this is in a [TearDown] fixture.
         /// </summary>
-        public void ClearExpectedLogs()
+        public void Reset()
         {
             expectedLogs.Clear();
+            unexpectedLogs.Clear();
         }
 
         public void Dispose()
         {
+        }
+
+        private string PrintUnexpectedLogs()
+        {
+            return string.Join("\n", unexpectedLogs.Select(log =>
+            {
+                var (logType, logEvent) = log;
+                return $"[{logType}] - {logEvent}";
+            }));
         }
     }
 
