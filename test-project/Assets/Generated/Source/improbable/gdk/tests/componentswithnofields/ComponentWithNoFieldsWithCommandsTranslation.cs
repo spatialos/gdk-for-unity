@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
+using Unity.Collections;
 using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
@@ -407,12 +408,21 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
-            public override ComponentType[] CommandTypes => new ComponentType[] {
-                ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
-                ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
-            };
-
             private CommandStorages.Cmd cmdStorage;
+
+            private EntityArchetypeQuery[] CommandQueries =
+            {
+                new EntityArchetypeQuery()
+                {
+                    All = new[]
+                    {
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
+                        ComponentType.Create<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
+                    },
+                    Any = Array.Empty<ComponentType>(),
+                    None = Array.Empty<ComponentType>(),
+                },
+            };
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
@@ -444,83 +454,69 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
-                if (!commandComponentGroups[0].IsEmptyIgnoreFilter)
+                var entityType = sendSystem.GetArchetypeChunkEntityType();
                 {
-                    var componentGroup = commandComponentGroups[0];
-                    var commandSenderDataArray = componentGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>();
-                    var entityArray = componentGroup.GetEntityArray();
+                    var senderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
+                    var responderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(true);
 
-                    for (var j = 0; j < commandSenderDataArray.Length; j++)
+                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[0], Allocator.TempJob);
+                    foreach (var chunk in chunks)
                     {
-                        var requests = commandSenderDataArray[j].RequestsToSend;
-                        var count = requests.Count;
-
-                        // Skip processing requests if that are none.
-                        if (count == 0)
+                        var entities = chunk.GetNativeArray(entityType);
+                        var senders = chunk.GetNativeArray(senderType);
+                        var responders = chunk.GetNativeArray(responderType);
+                        for (var i = 0; i < senders.Length; i++)
                         {
-                            continue;
-                        }
-
-                        for (var k = 0; k < count; k++)
-                        {
-                            var wrappedCommandRequest = requests[k];
-
-                            var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
-                            global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandRequest.Payload, schemaCommandRequest.GetObject());
-
-                            var requestId = connection.SendCommandRequest(wrappedCommandRequest.TargetEntityId,
-                                new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
-                                wrappedCommandRequest.TimeoutMillis,
-                                wrappedCommandRequest.AllowShortCircuiting ? ShortCircuitParameters : null);
-
-                            cmdStorage.CommandRequestsInFlight[requestId.Id] =
-                                new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>(entityArray[j], wrappedCommandRequest.Payload, wrappedCommandRequest.Context, wrappedCommandRequest.RequestId);
-                        }
-
-                        requests.Clear();
-                    }
-                }
-                if (!commandComponentGroups[1].IsEmptyIgnoreFilter)
-                {
-                    var componentGroup = commandComponentGroups[1];
-                    var commandResponderDataArray = componentGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>();
-
-                    for (var j = 0; j < commandResponderDataArray.Length; j++)
-                    {
-                        var responses = commandResponderDataArray[j].ResponsesToSend;
-                        var count = responses.Count;
-
-                        // Skip processing responses if that are none.
-                        if (count == 0)
-                        {
-                            continue;
-                        }
-
-                        for (var k = 0; k < count; k++)
-                        {
-                            var wrappedCommandResponse = responses[k];
-                            var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(wrappedCommandResponse.RequestId);
-
-                            if (wrappedCommandResponse.FailureMessage != null)
+                            var requests = senders[i].RequestsToSend;
+                            var responses = responders[i].ResponsesToSend;
+                            if (requests.Count > 0)
                             {
-                                // Send a command failure if the string is non-null.
-                                connection.SendCommandFailure(requestId, wrappedCommandResponse.FailureMessage);
-                                continue;
+                                foreach (var request in requests)
+                                {
+                                    var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
+                                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
+
+                                    var requestId = connection.SendCommandRequest(request.TargetEntityId,
+                                        new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                                        request.TimeoutMillis,
+                                        request.AllowShortCircuiting ? ShortCircuitParameters : null);
+
+                                    cmdStorage.CommandRequestsInFlight[requestId.Id] =
+                                        new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>(entities[i], request.Payload, request.Context, request.RequestId);
+                                }
+
+                                requests.Clear();
                             }
 
-                            var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
-                            global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(wrappedCommandResponse.Payload.Value, schemaCommandResponse.GetObject());
+                            if (responses.Count > 0)
+                            {
+                                foreach (var response in responses)
+                                {
+                                    var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(response.RequestId);
 
-                            connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                                    if (response.FailureMessage != null)
+                                    {
+                                        // Send a command failure if the string is non-null.
+                                        connection.SendCommandFailure(requestId, response.FailureMessage);
+                                        continue;
+                                    }
+
+                                    var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
+                                    global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
+
+                                    connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                                }
+
+                                responses.Clear();
+                            }
                         }
-
-                        responses.Clear();
                     }
+
+                    chunks.Dispose();
                 }
             }
-
         }
 
         internal class ComponentCleanup : ComponentCleanupHandler
