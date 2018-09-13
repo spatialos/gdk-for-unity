@@ -1,5 +1,5 @@
 using Generated.Improbable;
-using Generated.Improbable.PlayerLifecycle;
+using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
@@ -47,12 +47,15 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
     [TestFixture]
     public class NoComponentsNeeded : ActivationManagerTestBase<NoComponentsNeeded.TestBehaviourWithCommandSender>
     {
-        private static readonly uint PlayerCreatorComponentId = new PlayerCreator.Component().ComponentId;
+        private static readonly uint ComponentId = new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 
         public class TestBehaviourWithCommandSender : MonoBehaviour
         {
-            [Require] private PlayerCreator.Requirable.CommandRequestSender commandRequestSender;
-            [Require] private PlayerCreator.Requirable.CommandResponseHandler commandResponseHandler;
+            [Require] private ComponentWithNoFieldsWithCommands.Requirable.CommandRequestSender commandRequestSender;
+
+            [Require]
+            private ComponentWithNoFieldsWithCommands.Requirable.CommandResponseHandler commandResponseHandler;
+
             [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
             [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
         }
@@ -73,7 +76,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         [Test]
         public void Activate_behaviour_when_authority_is_not_present()
         {
-            ActivationManager.AddComponent(PlayerCreatorComponentId);
+            ActivationManager.AddComponent(ComponentId);
 
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
@@ -88,8 +91,8 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         [Test]
         public void Activates_behaviour_when_authority_is_present()
         {
-            ActivationManager.AddComponent(PlayerCreatorComponentId);
-            ActivationManager.ChangeAuthority(PlayerCreatorComponentId, Authority.Authoritative);
+            ActivationManager.AddComponent(ComponentId);
+            ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
 
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
@@ -103,12 +106,12 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         [Test]
         public void Does_not_deactivate_behaviour_when_authority_is_lost()
         {
-            ActivationManager.AddComponent(PlayerCreatorComponentId);
-            ActivationManager.ChangeAuthority(PlayerCreatorComponentId, Authority.Authoritative);
+            ActivationManager.AddComponent(ComponentId);
+            ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
 
             ActivationManager.EnableSpatialOSBehaviours();
 
-            ActivationManager.ChangeAuthority(PlayerCreatorComponentId, Authority.NotAuthoritative);
+            ActivationManager.ChangeAuthority(ComponentId, Authority.NotAuthoritative);
 
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
@@ -124,8 +127,8 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         [Test]
         public void Does_not_deactivate_behaviour_when_authority_is_not_lost()
         {
-            ActivationManager.AddComponent(PlayerCreatorComponentId);
-            ActivationManager.ChangeAuthority(PlayerCreatorComponentId, Authority.Authoritative);
+            ActivationManager.AddComponent(ComponentId);
+            ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
 
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
@@ -334,11 +337,11 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
     public class CommandHandlers :
         TestForBehaviourThatNeedsAuthority<CommandHandlers.TestBehaviourWithCommandHandlers>
     {
-        protected override uint ComponentId => new PlayerCreator.Component().ComponentId;
+        protected override uint ComponentId => new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 
         public class TestBehaviourWithCommandHandlers : MonoBehaviour
         {
-            [Require] private PlayerCreator.Requirable.CommandRequestHandler commandRequestHandler;
+            [Require] private ComponentWithNoFieldsWithCommands.Requirable.CommandRequestHandler commandRequestHandler;
         }
     }
 }
