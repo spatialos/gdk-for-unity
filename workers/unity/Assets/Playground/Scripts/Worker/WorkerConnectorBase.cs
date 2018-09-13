@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+#if UNITY_ANDROID
+using Improbable.Gdk.Android;
+#endif
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -55,9 +58,9 @@ namespace Playground
                             .WithField("WorkerType", workerType)
                             .WithField("Reason", "Required worker failed to connect"));
 #if UNITY_EDITOR
-                    // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not. 
+                    // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not.
                     logger.HandleLog(LogType.Warning,
-                        new LogEvent("Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")                      
+                        new LogEvent("Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")
                             .WithField("Reason", "A worker running in the editor failing to connect was observed"));
 #endif
                     connectionAttemptFinishedTask.SetException(e);
@@ -123,11 +126,19 @@ namespace Playground
             }
             else
             {
+#if UNITY_ANDROID
+                config = DeviceInfo.IsAndroidStudioEmulator()
+                    ? ReceptionistConfig.CreateConnectionConfigForAndroidEmulator()
+                    : ReceptionistConfig.CreateConnectionConfigForPhysicalAndroid("");
+#elif UNITY_IOS
+                config = ReceptionistConfig.CreateConnectionConfigForiOS();
+#else
                 var commandLineArguments = Environment.GetCommandLineArgs();
                 var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
                 config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
-                config.WorkerType = workerType;
                 config.UseExternalIp = UseExternalIp;
+#endif
+                config.WorkerType = workerType;
                 if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
                 {
                     config.WorkerId = $"{workerType}-{Guid.NewGuid()}";
