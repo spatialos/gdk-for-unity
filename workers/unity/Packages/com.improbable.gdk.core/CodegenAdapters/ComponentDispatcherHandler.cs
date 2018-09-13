@@ -49,6 +49,4 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         {
         }
     }
-
-
 }

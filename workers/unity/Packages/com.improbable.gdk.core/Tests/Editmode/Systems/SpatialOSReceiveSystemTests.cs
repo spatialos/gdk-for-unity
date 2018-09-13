@@ -21,7 +21,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     [TestFixture]
     public class SpatialOSReceiveSystemTests
     {
-        internal const uint TestComponentId = 1;
+        internal const uint FirstTestComponentId = 1;
+        internal const uint SecondTestComponentId = 2;
+
         private const uint InvalidComponentId = 0;
         private const string TestWorkerType = "TestWorker";
         private const long TestEntityId = 1;
@@ -35,7 +37,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         private WorkerSystem worker;
         private SpatialOSReceiveSystem receiveSystem;
 
-        private TestComponentDispatcher componentDispatcher;
+        private FirstComponentDispatcher firstComponentDispatcher;
+        private SecondComponentDispatcher secondComponentDispatcher;
         private TestLogDispatcher logDispatcher;
 
         private WorldCommands.CreateEntity.Storage createEntityStorage;
@@ -51,12 +54,16 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             logDispatcher = new TestLogDispatcher();
 
             worker = world.CreateManager<WorkerSystem>(null, logDispatcher, TestWorkerType, Vector3.zero);
-            componentDispatcher = new TestComponentDispatcher(worker, world);
+
+            firstComponentDispatcher = new FirstComponentDispatcher(worker, world);
+            secondComponentDispatcher = new SecondComponentDispatcher(worker, world);
 
             receiveSystem = world.GetOrCreateManager<SpatialOSReceiveSystem>();
+
             // Do not add command components from any generated code.
             receiveSystem.AddAllCommandComponents.Clear();
-            receiveSystem.AddDispatcherHandler(componentDispatcher);
+            receiveSystem.AddDispatcherHandler(firstComponentDispatcher);
+            receiveSystem.AddDispatcherHandler(secondComponentDispatcher);
 
             var requestTracker = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
@@ -95,7 +102,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 }
             }
 
-            componentDispatcher.Reset();
+            firstComponentDispatcher.Reset();
             logDispatcher.ClearExpectedLogs();
 
             createEntityStorage.CommandRequestsInFlight.Clear();
@@ -192,12 +199,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnAddComponent_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, TestComponentId))
+            using (var wrappedOp = WorkerOpFactory.CreateAddComponentOp(TestEntityId, FirstTestComponentId))
             {
                 receiveSystem.OnAddComponent(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasAddComponentReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasAddComponentReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasAddComponentReceived);
         }
 
         [Test]
@@ -214,12 +222,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnRemoveComponent_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, TestComponentId))
+            using (var wrappedOp = WorkerOpFactory.CreateRemoveComponentOp(TestEntityId, FirstTestComponentId))
             {
                 receiveSystem.OnRemoveComponent(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasRemoveComponentReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasRemoveComponentReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasRemoveComponentReceived);
         }
 
         [Test]
@@ -236,12 +245,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnComponentUpdate_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, TestComponentId))
+            using (var wrappedOp = WorkerOpFactory.CreateComponentUpdateOp(TestEntityId, FirstTestComponentId))
             {
                 receiveSystem.OnComponentUpdate(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasComponentUpdateReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasComponentUpdateReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasComponentUpdateReceived);
         }
 
         [Test]
@@ -258,12 +268,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnAuthorityChange_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, TestComponentId))
+            using (var wrappedOp = WorkerOpFactory.CreateAuthorityChangeOp(TestEntityId, FirstTestComponentId))
             {
                 receiveSystem.OnAuthorityChange(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasAuthorityChangedReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasAuthorityChangedReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasAuthorityChangedReceived);
         }
 
         [Test]
@@ -280,12 +291,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandRequest_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(TestComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp = WorkerOpFactory.CreateCommandRequestOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 receiveSystem.OnCommandRequest(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasCommandRequestReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasCommandRequestReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasCommandRequestReceived);
         }
 
         [Test]
@@ -302,12 +314,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCommandResponse_should_be_delegated_to_correct_dispatcher()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(TestComponentId, TestCommandIndex, TestCommandRequestId))
+            using (var wrappedOp = WorkerOpFactory.CreateCommandResponseOp(FirstTestComponentId, TestCommandIndex, TestCommandRequestId))
             {
                 receiveSystem.OnCommandResponse(wrappedOp.Op);
             }
 
-            Assert.IsTrue(componentDispatcher.HasCommandResponseReceived);
+            Assert.IsTrue(firstComponentDispatcher.HasCommandResponseReceived);
+            Assert.IsFalse(secondComponentDispatcher.HasCommandResponseReceived);
         }
 
         [Test]
@@ -607,8 +620,26 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
     }
 
+    public class FirstComponentDispatcher : TestComponentDispatcherBase
+    {
+        public override uint ComponentId => SpatialOSReceiveSystemTests.FirstTestComponentId;
+
+        public FirstComponentDispatcher(WorkerSystem worker, World world) : base(worker, world)
+        {
+        }
+    }
+
+    public class SecondComponentDispatcher : TestComponentDispatcherBase
+    {
+        public override uint ComponentId => SpatialOSReceiveSystemTests.SecondTestComponentId;
+
+        public SecondComponentDispatcher(WorkerSystem worker, World world) : base(worker, world)
+        {
+        }
+    }
+
     [DisableAutoRegister]
-    public class TestComponentDispatcher : ComponentDispatcherHandler
+    public abstract class TestComponentDispatcherBase : ComponentDispatcherHandler
     {
         public bool HasAddComponentReceived;
         public bool HasRemoveComponentReceived;
@@ -617,9 +648,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public bool HasCommandRequestReceived;
         public bool HasCommandResponseReceived;
 
-        public override uint ComponentId => SpatialOSReceiveSystemTests.TestComponentId;
-
-        public TestComponentDispatcher(WorkerSystem worker, World world) : base(worker, world)
+        public TestComponentDispatcherBase(WorkerSystem worker, World world) : base(worker, world)
         {
         }
 

@@ -151,14 +151,14 @@ namespace Improbable.Gdk.TestUtils
 
     /// <summary>
     ///     A wrapped Worker Op that implements Dispose so that the allocated native memory is properly freed.
-    ///     Ensure to call Dipose or use WrappedOp with a using scope.
+    ///     Ensure to call Dispose or use WrappedOp with a using scope.
     /// </summary>
     /// <typeparam name="T">The worker op type. E.g. - AddComponentOp</typeparam>
     public struct WrappedOp<T> : IDisposable where T : struct
     {
         public T Op;
 
-        public WrappedOp(T op)
+        internal WrappedOp(T op)
         {
             Op = op;
         }
