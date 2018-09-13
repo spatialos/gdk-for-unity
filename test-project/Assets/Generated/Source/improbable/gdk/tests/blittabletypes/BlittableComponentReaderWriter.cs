@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.ReaderWriter, 1001)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>
+            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>
             {
                 void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload);
                 void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload);

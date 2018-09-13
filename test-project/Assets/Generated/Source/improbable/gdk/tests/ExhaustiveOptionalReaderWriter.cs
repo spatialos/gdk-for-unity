@@ -50,7 +50,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
+            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
             {
             }
 
