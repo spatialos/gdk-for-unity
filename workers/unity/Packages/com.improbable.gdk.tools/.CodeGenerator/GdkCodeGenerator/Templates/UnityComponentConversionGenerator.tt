@@ -163,12 +163,12 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<<#= componentNamespace #>.Update> updates;
                 if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
@@ -562,7 +562,7 @@ namespace <#= qualifiedNamespace #>
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
-                        <#= componentNamespace #>.Serialization.Serialize(data, update.GetFields());
+                        <#= componentNamespace #>.Serialization.SerializeUpdate(data, update);
 
 <# if (eventDetailsList.Count > 0) { #>
                         // Serialize events

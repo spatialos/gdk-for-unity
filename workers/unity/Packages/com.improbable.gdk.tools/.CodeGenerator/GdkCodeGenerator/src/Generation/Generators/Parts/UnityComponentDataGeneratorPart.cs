@@ -31,5 +31,10 @@ namespace Improbable.Gdk.CodeGenerator
                     new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
                 .ToList();
         }
+
+        private bool ShouldGenerateClearedFieldsSet()
+        {
+            return GetFieldDetailsList().Any(fieldDetails => fieldDetails.CanBeEmpty);
+        }
     }
 }
