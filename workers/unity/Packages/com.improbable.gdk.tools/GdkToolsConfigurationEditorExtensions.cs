@@ -9,7 +9,6 @@ namespace Improbable.Gdk.Tools
     /// <summary>
     ///     Defines a custom inspector window that allows you to configure the GDK Tools.
     /// </summary>
-    [CustomEditor(typeof(ScriptableGdkToolsConfiguration))]
     public class GdkToolsConfigurationInspector : Editor
     {
         internal const string SchemaStdLibDirLabel = "Schema standard library directory";
@@ -25,11 +24,11 @@ namespace Improbable.Gdk.Tools
         private const string ResetConfigurationButtonText = "Reset GDK tools configuration to default";
         private const string SaveConfigurationButtonText = "Save";
 
-        private ScriptableGdkToolsConfiguration toolsConfig;
+        private GdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
 
         private readonly GUIStyle errorLayoutOption = new GUIStyle();
-
+/*
         private void OnEnable()
         {
             if (toolsConfig != null)
@@ -37,7 +36,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+            toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             errorLayoutOption.normal.textColor = Color.red;
 
@@ -166,5 +165,6 @@ namespace Improbable.Gdk.Tools
                 }
             }
         }
+        */
     }
 }
