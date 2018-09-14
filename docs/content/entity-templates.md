@@ -4,9 +4,9 @@
 
 ## Creating entity templates
 
-To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
+To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](ecs/authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
 
-The entity template can be created using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
+Create the entity template using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
 
 | Public method                                                | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
@@ -18,7 +18,7 @@ The entity template can be created using the `EntityBuilder` which is part of th
 | `AddComponent(ComponentData data, string writeAccess)`       | Add a user-defined component to your entity and specify which worker type(s) can have authority over it. |
 | `Build()`                                                    | Create a finished entity template.                           |
 
-For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](./code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
+For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
 
 ```
 component Health {

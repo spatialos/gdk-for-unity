@@ -5,7 +5,7 @@
 
 ## ECS: World commands
 
-World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://www.google.com/url?q=https://docs.improbable.io/reference/latest/shared/design/commands%23world-commands&sa=D&ust=1536752675413000) for more information.) 
+World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.) 
 
 Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response. 
 
@@ -67,7 +67,7 @@ This system iterates through every entity with a `Foo` component and sends a cre
 
 ### 3.  Delete an entity
 
-Deleting entities can be done similarly via the `DeleteEntity` world command. You need to know the SpatialOS entity ID of the entity you want to delete.
+You can delete entities via the `DeleteEntity` world command. You need to know the SpatialOS entity ID of the entity you want to delete.
 
 To send a request use a `WorldCommands.DeleteEntity.CommandSender` component. This contains a list of `WorldCommands.DeleteEntity.Request` structs. Add a struct to the list to send the command.
 
@@ -112,7 +112,7 @@ This system iterates through every entity with a `Bar` component and sends a del
 
 You can use entity queries to get information about entities in the world. 
 
-To send a request use a `WorldCommands.EntityQuery.CommandSender` component. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command
+To send a request use a `WorldCommands.EntityQuery.CommandSender` component. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command.
 
 - For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
 - `TimeoutMillis` is optional.
