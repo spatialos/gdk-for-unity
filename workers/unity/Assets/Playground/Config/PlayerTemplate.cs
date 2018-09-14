@@ -33,7 +33,7 @@ namespace Playground
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
             var score = Score.Component.CreateSchemaComponentData(0);
-            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>(), 0);
+            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)

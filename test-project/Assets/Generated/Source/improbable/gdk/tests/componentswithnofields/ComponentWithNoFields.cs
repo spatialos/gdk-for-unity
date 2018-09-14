@@ -26,8 +26,9 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public static class Serialization
         {
-            public static void Serialize(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void SerializeUpdate(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
+                var obj = updateObj.GetFields();
             }
 
             public static Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
@@ -37,14 +38,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
+            public static Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update();
+                var obj = updateObj.GetFields();
+
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component)
             {
+                var obj = updateObj.GetFields();
+
             }
         }
 

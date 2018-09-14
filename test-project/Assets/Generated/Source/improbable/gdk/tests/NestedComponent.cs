@@ -42,8 +42,9 @@ namespace Generated.Improbable.Gdk.Tests
 
         public static class Serialization
         {
-            public static void Serialize(Generated.Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void SerializeUpdate(Generated.Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
+                var obj = updateObj.GetFields();
                 {
                     global::Generated.Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
                 }
@@ -59,9 +60,11 @@ namespace Generated.Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.NestedComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
+            public static Generated.Improbable.Gdk.Tests.NestedComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.NestedComponent.Update();
+                var obj = updateObj.GetFields();
+
                 {
                     if (obj.GetObjectCount(1) == 1)
                     {
@@ -73,8 +76,10 @@ namespace Generated.Improbable.Gdk.Tests
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component component)
             {
+                var obj = updateObj.GetFields();
+
                 {
                     if (obj.GetObjectCount(1) == 1)
                     {

@@ -156,12 +156,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update> updates;
                 if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity))
@@ -676,7 +676,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1002);
-                        Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Serialize(data, update.GetFields());
+                        Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.SerializeUpdate(data, update);
 
                         // Serialize events
                         var eventsObject = update.GetEvents();
