@@ -22,9 +22,9 @@ namespace Playground
         private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
         }
 

@@ -31,9 +31,9 @@ namespace Playground
 
         private Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
         }
 

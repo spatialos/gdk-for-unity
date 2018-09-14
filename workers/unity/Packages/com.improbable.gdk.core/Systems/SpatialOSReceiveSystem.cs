@@ -35,9 +35,9 @@ namespace Improbable.Gdk.Core
         private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
         private WorldCommands.EntityQuery.Storage entityQueryStorage;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             worker = World.GetExistingManager<WorkerSystem>();
             dispatcher = new Dispatcher();
