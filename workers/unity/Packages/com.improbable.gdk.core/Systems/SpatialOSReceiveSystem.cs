@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker;
@@ -77,15 +78,13 @@ namespace Improbable.Gdk.Core
             while (inCriticalSection);
         }
 
-        private void OnAddEntity(AddEntityOp op)
+        internal void OnAddEntity(AddEntityOp op)
         {
             var entityId = op.EntityId;
             if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.DuplicateAdditionOfEntity)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
+                throw new InvalidSpatialEntityStateException(
+                    string.Format(Errors.EntityAlreadyExistsError, entityId.Id));
             }
 
             var entity = EntityManager.CreateEntity();
@@ -104,15 +103,13 @@ namespace Improbable.Gdk.Core
             worker.EntityIdToEntity.Add(entityId, entity);
         }
 
-        private void OnRemoveEntity(RemoveEntityOp op)
+        internal void OnRemoveEntity(RemoveEntityOp op)
         {
             var entityId = op.EntityId;
             if (!worker.TryGetEntity(entityId, out var entity))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(Errors.NoEntityFoundDuringDeletion)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId));
-                return;
+                throw new InvalidSpatialEntityStateException(
+                    string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
             }
 
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
@@ -120,7 +117,7 @@ namespace Improbable.Gdk.Core
             worker.EntityIdToEntity.Remove(entityId);
         }
 
-        private void OnDisconnect(DisconnectOp op)
+        internal void OnDisconnect(DisconnectOp op)
         {
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
@@ -128,93 +125,78 @@ namespace Improbable.Gdk.Core
                 new OnDisconnected { ReasonForDisconnect = op.Reason });
         }
 
-        private void OnAddComponent(AddComponentOp op)
+        internal void OnAddComponent(AddComponentOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Data.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Data.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Data.ComponentId));
             }
 
             specificDispatcher.OnAddComponent(op);
         }
 
-        private void OnRemoveComponent(RemoveComponentOp op)
+        internal void OnRemoveComponent(RemoveComponentOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
             specificDispatcher.OnRemoveComponent(op);
         }
 
-        private void OnComponentUpdate(ComponentUpdateOp op)
+        internal void OnComponentUpdate(ComponentUpdateOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Update.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Update.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Update.ComponentId));
             }
 
             specificDispatcher.OnComponentUpdate(op);
         }
 
-        private void OnAuthorityChange(AuthorityChangeOp op)
+        internal void OnAuthorityChange(AuthorityChangeOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
             }
 
             specificDispatcher.OnAuthorityChange(op);
         }
 
-        private void OnCommandRequest(CommandRequestOp op)
+        internal void OnCommandRequest(CommandRequestOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Request.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Request.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Request.ComponentId));
             }
 
             specificDispatcher.OnCommandRequest(op);
         }
 
-        private void OnCommandResponse(CommandResponseOp op)
+        internal void OnCommandResponse(CommandResponseOp op)
         {
             if (!componentSpecificDispatchers.TryGetValue(op.Response.ComponentId, out var specificDispatcher))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(UnknownComponentIdError).WithField("Op Type", op.GetType())
-                        .WithField("ComponentId", op.Response.ComponentId));
-                return;
+                throw new UnknownComponentIdException(
+                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Response.ComponentId));
             }
 
             specificDispatcher.OnCommandResponse(op);
         }
 
-        private void OnCreateEntityResponse(CreateEntityResponseOp op)
+        internal void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
             if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "CreateEntity"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -246,18 +228,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
-        private void OnDeleteEntityResponse(DeleteEntityResponseOp op)
+        internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
             if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "DeleteEntity"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -289,18 +269,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
-        private void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
+        internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
             if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "ReserveEntityIds"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -332,18 +310,16 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
         }
 
-        private void OnEntityQueryResponse(EntityQueryResponseOp op)
+        internal void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
             if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
             {
-                worker.LogDispatcher.HandleLog(LogType.Error, new LogEvent(RequestIdNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("RequestId", op.RequestId.Id)
-                    .WithField("Command Type", "EntityQuery"));
-                return;
+                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
+                    op.RequestId.Id));
             }
 
             var entity = requestBundle.Entity;
@@ -375,7 +351,15 @@ namespace Improbable.Gdk.Core
             }
 
             responses.Add(
-                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context, requestBundle.RequestId));
+                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
+                    requestBundle.RequestId));
+        }
+
+        internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
+        {
+            componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
+            AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
+            componentDispatcher.AddCommandComponents(worker.WorkerEntity);
         }
 
         private void HandleException(Exception e)
@@ -389,16 +373,15 @@ namespace Improbable.Gdk.Core
             // Find all component specific dispatchers and create an instance.
             var componentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract);
+                .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract
+                    && type.GetCustomAttribute(typeof(ComponentDispatcherHandler.DisableAutoRegisterAttribute)) ==
+                    null);
 
             WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
             foreach (var componentDispatcherType in componentDispatcherTypes)
             {
-                var componentDispatcher =
-                    (ComponentDispatcherHandler) Activator.CreateInstance(componentDispatcherType, worker, World);
-                componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
-                AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
-                componentDispatcher.AddCommandComponents(worker.WorkerEntity);
+                AddDispatcherHandler((ComponentDispatcherHandler)
+                    Activator.CreateInstance(componentDispatcherType, worker, World));
             }
 
             dispatcher.OnAddEntity(OnAddEntity);
@@ -424,11 +407,20 @@ namespace Improbable.Gdk.Core
 
         private static class Errors
         {
-            public const string DuplicateAdditionOfEntity =
-                "Tried to add an entity but there is already an entity associated with that EntityId.";
+            public const string EntityAlreadyExistsError =
+                "Received an AddEntityOp with Spatial entity ID {0}, but an entity with that EntityId already exists.";
 
-            public const string NoEntityFoundDuringDeletion =
-                "Tried to delete an entity but there is no entity associated with that EntityId.";
+            public const string EntityNotFoundForDeleteError =
+                "Received a DeleteEntityOp with Spatial entity ID {0}, but an entity with that EntityId could not be found."
+                + "This could be caused by deleting SpatialOS entities locally. "
+                + "Use a DeleteEntity command to delete entities instead.";
+
+            public const string UnknownComponentIdError =
+                "Received an {0} with component ID {1}, but this component ID is unknown."
+                + "This could be caused by adding schema components and not recompiling Unity workers.";
+
+            public const string UnknownRequestIdError =
+                "Received an {0} with Request ID {1}, but this Request ID is unknown.";
         }
     }
 }
