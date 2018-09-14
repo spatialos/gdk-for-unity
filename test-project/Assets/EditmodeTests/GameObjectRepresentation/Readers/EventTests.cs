@@ -30,6 +30,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
             readerWriterInternal =
                 new ComponentWithEvents.Requirable.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
             readerPublic = readerWriterInternal;
+            writerPublic = readerWriterInternal;
         }
 
         [TearDown]
