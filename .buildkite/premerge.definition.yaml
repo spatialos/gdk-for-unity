@@ -2,9 +2,13 @@
 agent_queue_id: "v-055f94f65f893f9d-------1535588947"
 description: spatialos/UnityGDK
 github:
-  branch_configuration: []
+  branch_configuration:
+    - feature/build*
+    - "!master"
   default_branch: master
-  pull_request_branch_filter_configuration: []
+  pull_request_branch_filter_configuration:
+    - feature/build*
+    - "!master"
 teams:
   - name: Everyone
     permission: BUILD_AND_READ
