@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
+using Unity.Collections;
 using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
@@ -137,12 +138,12 @@ namespace Generated.Improbable.Gdk.Tests
                 if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update> updates;
                 if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.ReceivedUpdates>(entity))
@@ -319,9 +320,10 @@ namespace Generated.Improbable.Gdk.Tests
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
-            public override ComponentType[] CommandTypes => new ComponentType[] {
-            };
 
+            private EntityArchetypeQuery[] CommandQueries =
+            {
+            };
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
@@ -341,7 +343,7 @@ namespace Generated.Improbable.Gdk.Tests
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(197720);
-                        Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.Serialize(data, update.GetFields());
+                        Generated.Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.SerializeUpdate(data, update);
 
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
@@ -352,10 +354,10 @@ namespace Generated.Improbable.Gdk.Tests
                 }
             }
 
-            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+                var entityType = sendSystem.GetArchetypeChunkEntityType();
             }
-
         }
 
         internal class ComponentCleanup : ComponentCleanupHandler

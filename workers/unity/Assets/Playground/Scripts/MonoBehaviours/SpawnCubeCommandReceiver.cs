@@ -92,15 +92,14 @@ namespace Playground.MonoBehaviours
             }
 
             var spawnedCubesCopy =
-                new List<EntityId>(CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data));
+                new List<EntityId>(cubeSpawnerWriter.Data.SpawnedCubes);
             var newEntityId = createEntityResponseOp.EntityId.Value;
 
             spawnedCubesCopy.Add(newEntityId);
 
             cubeSpawnerWriter.Send(new CubeSpawner.Update
             {
-                SpawnedCubes = spawnedCubesCopy,
-                NumSpawnedCubes = (uint) spawnedCubesCopy.Count
+                SpawnedCubes = spawnedCubesCopy
             });
         }
     }

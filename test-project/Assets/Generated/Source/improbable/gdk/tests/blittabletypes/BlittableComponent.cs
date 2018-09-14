@@ -106,8 +106,9 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
 
         public static class Serialization
         {
-            public static void Serialize(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void SerializeUpdate(Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
+                var obj = updateObj.GetFields();
                 {
                     obj.AddBool(1, component.BoolField);
                 }
@@ -147,9 +148,11 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
+            public static Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
+                var obj = updateObj.GetFields();
+
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
@@ -193,8 +196,10 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Generated.Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
             {
+                var obj = updateObj.GetFields();
+
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {

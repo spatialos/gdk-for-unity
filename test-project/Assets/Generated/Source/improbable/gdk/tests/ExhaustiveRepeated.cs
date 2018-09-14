@@ -366,12 +366,18 @@ namespace Generated.Improbable.Gdk.Tests
 
         public static class Serialization
         {
-            public static void Serialize(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void SerializeUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
+                var obj = updateObj.GetFields();
                 {
                     foreach (var value in component.Field1)
                     {
                         obj.AddBool(1, value);
+                    }
+                    
+                    if (component.Field1.Count == 0)
+                    {
+                        updateObj.AddClearedField(1);
                     }
                     
                 }
@@ -381,11 +387,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddFloat(2, value);
                     }
                     
+                    if (component.Field2.Count == 0)
+                    {
+                        updateObj.AddClearedField(2);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field3)
                     {
                         obj.AddBytes(3, value);
+                    }
+                    
+                    if (component.Field3.Count == 0)
+                    {
+                        updateObj.AddClearedField(3);
                     }
                     
                 }
@@ -395,11 +411,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddInt32(4, value);
                     }
                     
+                    if (component.Field4.Count == 0)
+                    {
+                        updateObj.AddClearedField(4);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field5)
                     {
                         obj.AddInt64(5, value);
+                    }
+                    
+                    if (component.Field5.Count == 0)
+                    {
+                        updateObj.AddClearedField(5);
                     }
                     
                 }
@@ -409,11 +435,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddDouble(6, value);
                     }
                     
+                    if (component.Field6.Count == 0)
+                    {
+                        updateObj.AddClearedField(6);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field7)
                     {
                         obj.AddString(7, value);
+                    }
+                    
+                    if (component.Field7.Count == 0)
+                    {
+                        updateObj.AddClearedField(7);
                     }
                     
                 }
@@ -423,11 +459,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddUint32(8, value);
                     }
                     
+                    if (component.Field8.Count == 0)
+                    {
+                        updateObj.AddClearedField(8);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field9)
                     {
                         obj.AddUint64(9, value);
+                    }
+                    
+                    if (component.Field9.Count == 0)
+                    {
+                        updateObj.AddClearedField(9);
                     }
                     
                 }
@@ -437,11 +483,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddSint32(10, value);
                     }
                     
+                    if (component.Field10.Count == 0)
+                    {
+                        updateObj.AddClearedField(10);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field11)
                     {
                         obj.AddSint64(11, value);
+                    }
+                    
+                    if (component.Field11.Count == 0)
+                    {
+                        updateObj.AddClearedField(11);
                     }
                     
                 }
@@ -451,11 +507,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddFixed32(12, value);
                     }
                     
+                    if (component.Field12.Count == 0)
+                    {
+                        updateObj.AddClearedField(12);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field13)
                     {
                         obj.AddFixed64(13, value);
+                    }
+                    
+                    if (component.Field13.Count == 0)
+                    {
+                        updateObj.AddClearedField(13);
                     }
                     
                 }
@@ -465,11 +531,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddSfixed32(14, value);
                     }
                     
+                    if (component.Field14.Count == 0)
+                    {
+                        updateObj.AddClearedField(14);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field15)
                     {
                         obj.AddSfixed64(15, value);
+                    }
+                    
+                    if (component.Field15.Count == 0)
+                    {
+                        updateObj.AddClearedField(15);
                     }
                     
                 }
@@ -479,11 +555,21 @@ namespace Generated.Improbable.Gdk.Tests
                         obj.AddEntityId(16, value);
                     }
                     
+                    if (component.Field16.Count == 0)
+                    {
+                        updateObj.AddClearedField(16);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.Field17)
                     {
                         global::Generated.Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                    }
+                    
+                    if (component.Field17.Count == 0)
+                    {
+                        updateObj.AddClearedField(17);
                     }
                     
                 }
@@ -666,12 +752,25 @@ namespace Generated.Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
+            public static Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var update = new Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Update();
+                var obj = updateObj.GetFields();
+
+                var clearedFields = updateObj.GetClearedFields();
+
                 {
                     var listSize = obj.GetBoolCount(1);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 1;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<BlittableBool>>(new global::System.Collections.Generic.List<BlittableBool>());
                     }
@@ -684,7 +783,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFloatCount(2);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 2;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field2 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<float>>(new global::System.Collections.Generic.List<float>());
                     }
@@ -697,7 +805,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetBytesCount(3);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 3;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<byte[]>>(new global::System.Collections.Generic.List<byte[]>());
                     }
@@ -710,7 +827,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetInt32Count(4);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 4;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field4 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
                     }
@@ -723,7 +849,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetInt64Count(5);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 5;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field5 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
                     }
@@ -736,7 +871,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetDoubleCount(6);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 6;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field6 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<double>>(new global::System.Collections.Generic.List<double>());
                     }
@@ -749,7 +893,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetStringCount(7);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 7;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field7 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<string>>(new global::System.Collections.Generic.List<string>());
                     }
@@ -762,7 +915,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetUint32Count(8);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 8;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field8 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
                     }
@@ -775,7 +937,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetUint64Count(9);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 9;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field9 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
                     }
@@ -788,7 +959,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSint32Count(10);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 10;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field10 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
                     }
@@ -801,7 +981,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSint64Count(11);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 11;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field11 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
                     }
@@ -814,7 +1003,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFixed32Count(12);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 12;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field12 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
                     }
@@ -827,7 +1025,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFixed64Count(13);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 13;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field13 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
                     }
@@ -840,7 +1047,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSfixed32Count(14);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 14;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field14 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
                     }
@@ -853,7 +1069,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSfixed64Count(15);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 15;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field15 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
                     }
@@ -866,7 +1091,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetEntityIdCount(16);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 16;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>>(new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>());
                     }
@@ -879,7 +1113,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetObjectCount(17);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 17;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         update.Field17 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>>(new global::System.Collections.Generic.List<global::Generated.Improbable.Gdk.Tests.SomeType>());
                     }
@@ -893,11 +1136,24 @@ namespace Generated.Improbable.Gdk.Tests
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Generated.Improbable.Gdk.Tests.ExhaustiveRepeated.Component component)
             {
+                var obj = updateObj.GetFields();
+
+                var clearedFields = updateObj.GetClearedFields();
+
                 {
                     var listSize = obj.GetBoolCount(1);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 1;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field1.Clear();
                     }
@@ -910,7 +1166,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFloatCount(2);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 2;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field2.Clear();
                     }
@@ -923,7 +1188,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetBytesCount(3);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 3;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field3.Clear();
                     }
@@ -936,7 +1210,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetInt32Count(4);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 4;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field4.Clear();
                     }
@@ -949,7 +1232,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetInt64Count(5);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 5;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field5.Clear();
                     }
@@ -962,7 +1254,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetDoubleCount(6);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 6;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field6.Clear();
                     }
@@ -975,7 +1276,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetStringCount(7);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 7;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field7.Clear();
                     }
@@ -988,7 +1298,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetUint32Count(8);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 8;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field8.Clear();
                     }
@@ -1001,7 +1320,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetUint64Count(9);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 9;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field9.Clear();
                     }
@@ -1014,7 +1342,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSint32Count(10);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 10;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field10.Clear();
                     }
@@ -1027,7 +1364,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSint64Count(11);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 11;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field11.Clear();
                     }
@@ -1040,7 +1386,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFixed32Count(12);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 12;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field12.Clear();
                     }
@@ -1053,7 +1408,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetFixed64Count(13);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 13;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field13.Clear();
                     }
@@ -1066,7 +1430,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSfixed32Count(14);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 14;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field14.Clear();
                     }
@@ -1079,7 +1452,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetSfixed64Count(15);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 15;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field15.Clear();
                     }
@@ -1092,7 +1474,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetEntityIdCount(16);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 16;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field16.Clear();
                     }
@@ -1105,7 +1496,16 @@ namespace Generated.Improbable.Gdk.Tests
                 }
                 {
                     var listSize = obj.GetObjectCount(17);
-                    if (listSize > 0)
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 17;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
                     {
                         component.Field17.Clear();
                     }

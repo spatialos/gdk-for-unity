@@ -34,7 +34,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
+            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
                 void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
             }
