@@ -21,8 +21,8 @@ Once you are comfortable with the GDK and want to start a separate project, look
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
 * [Reading and writing component data](content/gameobject/reading-and-writing-component-data.md)
-* [Sending and receiving events](content/gameobject/sending-receiving-commands.md)
-* [Sending and receiving commands](content/gameobject/sending-receiving-events.md)
+* [Sending and receiving events](content/gameobject/sending-receiving-events.md)
+* [Sending and receiving commands](content/gameobject/sending-receiving-commands.md)
 * [World commands](content/gameobject/world-commands.md)
 * [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
 

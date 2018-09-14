@@ -79,10 +79,10 @@ public class BuildSystem : ComponentSystem
             (
                 targetEntityId,
                 new BuildRequest
-                {
+                (
                     Location = new Location(...),
                     Rotation = new Rotation(...)
-                }
+                )
             );
 
             requestSender.RequestsToSend.Add(request);
