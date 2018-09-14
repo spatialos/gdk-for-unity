@@ -27,7 +27,7 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
 
 ##### Entity Component System
-The GDK currently uses the `0.0.12-preview.11` version of the entities preview packages.
+The GDK currently uses the `0.0.12-preview.13` version of the entities preview packages.
 The GDK documentation assumes you are familiar with the Unity Entity Component System. See:
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
