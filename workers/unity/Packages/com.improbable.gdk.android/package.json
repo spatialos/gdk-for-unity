@@ -1,0 +1,9 @@
+{
+    "name": "com.improbable.gdk.android",
+    "displayName": "SpatialOS GDK Android Support",
+    "version": "0.0.1",
+    "unity": "2018.2",
+    "description": "SpatialOS GDK Android Support Module. THIS IS NOT MADE BY UNITY. IGNORE THE AUTHOR FIELD",
+    "dependencies": {
+    }
+}

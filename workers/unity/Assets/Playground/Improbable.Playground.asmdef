@@ -5,6 +5,7 @@
         "Improbable.Gdk.TransformSynchronization",
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.GameObjectRepresentation.GameObjectCreation",
+        "Improbable.Gdk.Android",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",

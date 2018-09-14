@@ -39,29 +39,26 @@ namespace Playground
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
             [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-            public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
+            [ReadOnly] public ComponentDataArray<LocalInput> ShootInput;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
         }
 
         [Inject] private PlayerData playerData;
 
         protected override void OnUpdate()
         {
-            if (playerData.Length == 0)
-            {
-                return;
-            }
-
             if (playerData.Length > 1)
             {
                 throw new InvalidOperationException($"Expected at most 1 playerData but got {playerData.Length}");
             }
 
             PlayerCommand command;
-            if (Input.GetMouseButtonDown(0))
+            var input = playerData.ShootInput[0];
+            if (input.ShootSmall)
             {
                 command = PlayerCommand.LaunchSmall;
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (input.ShootLarge)
             {
                 command = PlayerCommand.LaunchLarge;
             }

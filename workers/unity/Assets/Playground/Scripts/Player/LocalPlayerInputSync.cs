@@ -1,6 +1,7 @@
 using System;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -21,9 +22,10 @@ namespace Playground
         private struct PlayerInputData
         {
             public readonly int Length;
+            [ReadOnly] public ComponentDataArray<LocalInput> LocalInput;
             public ComponentDataArray<PlayerInput.Component> PlayerInput;
-            public ComponentDataArray<CameraTransform> CameraTransform;
-            public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
+            [ReadOnly] public ComponentDataArray<CameraTransform> CameraTransform;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
         }
 
         [Inject] private PlayerInputData playerInputData;
@@ -34,11 +36,12 @@ namespace Playground
         {
             for (var i = 0; i < playerInputData.Length; i++)
             {
+                var localInput = playerInputData.LocalInput[i];
                 var cameraTransform = playerInputData.CameraTransform[i];
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
-                var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
-                var isShiftDown = Input.GetKey(KeyCode.LeftShift);
+                var input = localInput.LeftStick.x * right + localInput.LeftStick.y * forward;
+                var isShiftDown = localInput.Running;
 
                 var oldPlayerInput = playerInputData.PlayerInput[i];
 

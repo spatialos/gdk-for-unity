@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Playground
 {
@@ -35,6 +36,14 @@ namespace Playground
             world.GetOrCreateManager<UpdateUISystem>();
             world.GetOrCreateManager<PlayerCommandsSystem>();
             world.GetOrCreateManager<MetricSendSystem>();
+            if (Application.isMobilePlatform)
+            {
+                world.GetOrCreateManager<MobilePlayerInputSystem>();
+            }
+            else
+            {
+                world.GetOrCreateManager<PlayerInputSystem>();
+            }
         }
 
         public static void AddGameLogicSystems(World world)

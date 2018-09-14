@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.improbable.gdk.android": "file:com.improbable.gdk.android",
     "com.improbable.gdk.buildsystem": "file:com.improbable.gdk.buildsystem",
     "com.improbable.gdk.core": "file:com.improbable.gdk.core",
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",

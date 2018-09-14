@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cube
+  - ConnectionPanel
+  - CameraJoystick
+  - MovementJoystick
   layers:
   - Default
   - TransparentFX
