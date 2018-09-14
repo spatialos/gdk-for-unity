@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            EditorApplication.delayCall += Generate;
+            Generate();
         }
 
         private static bool CanGenerateOnLoad()
