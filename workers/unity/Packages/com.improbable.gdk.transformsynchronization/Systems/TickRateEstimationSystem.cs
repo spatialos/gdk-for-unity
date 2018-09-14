@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
@@ -27,9 +27,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private readonly Queue<long> samples = new Queue<long>();
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             PhysicsTicksPerRealSecond = 1.0f / Time.fixedDeltaTime;
         }
 

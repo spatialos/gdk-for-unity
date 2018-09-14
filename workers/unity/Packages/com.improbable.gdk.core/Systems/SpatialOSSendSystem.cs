@@ -17,9 +17,9 @@ namespace Improbable.Gdk.Core
         private readonly List<ComponentReplicator> componentReplicators =
             new List<ComponentReplicator>();
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             connection = World.GetExistingManager<WorkerSystem>().Connection;
 

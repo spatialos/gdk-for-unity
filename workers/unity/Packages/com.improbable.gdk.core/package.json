@@ -5,8 +5,9 @@
     "unity": "2018.2",
     "description": "SpatialOS GDK Core Module. THIS IS NOT MADE BY UNITY. IGNORE THE AUTHOR FIELD",
     "dependencies": {
-        "com.unity.burst": "0.2.4-preview.26",
-        "com.unity.entities": "0.0.12-preview.11",
-        "com.unity.incrementalcompiler": "0.0.42-preview.20"
+        "com.improbable.gdk.tools": "0.0.1",
+        "com.unity.burst": "0.2.4-preview.30",
+        "com.unity.entities": "0.0.12-preview.13",
+        "com.unity.incrementalcompiler": "0.0.42-preview.21"
     }
 }
