@@ -76,15 +76,14 @@ public class BuildSystem : ComponentSystem
             var targetEntityId = data.EntityIds[i];
 
             Builder.BuildWall.Request request = new Builder.BuildWall.CreateRequest
-            {
+            (
                 targetEntityId,
                 new BuildRequest
-                {
+                (
                     Location = new Location(...),
                     Rotation = new Rotation(...)
-                }
-            };
-
+                )
+            );
 
             requestSender.RequestsToSend.Add(request);
         }
