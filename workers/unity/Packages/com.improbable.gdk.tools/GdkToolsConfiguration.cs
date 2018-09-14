@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tools
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
 
-        private static string AssetPath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
+        private static string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private const string SchemaStdLibDirJsonField = "schema_standard_lib_directory";
         private const string SchemaSourceDirsJsonField = "schema_source_directories";
@@ -25,27 +25,38 @@ namespace Improbable.Gdk.Tools
             ResetToDefault();
         }
 
+        public void Save()
+        {
+            var json = ToJson();
+            if (File.Exists(JsonFilePath))
+            {
+                File.Delete(JsonFilePath);
+            }
+
+            File.WriteAllText(JsonFilePath, MiniJSON.Json.Serialize(json));
+        }
+
         internal List<string> Validate()
         {
             var errors = new List<string>();
             if (string.IsNullOrEmpty(SchemaStdLibDir))
             {
-                errors.Add($"{GdkToolsConfigurationInspector.SchemaStdLibDirLabel} cannot be empty.");
+                errors.Add($"{GdkToolsConfigurationWindow.SchemaStdLibDirLabel} cannot be empty.");
             }
 
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
-                errors.Add($"{GdkToolsConfigurationInspector.CodegenOutputDirLabel} cannot be empty.");
+                errors.Add($"{GdkToolsConfigurationWindow.CodegenOutputDirLabel} cannot be empty.");
             }
 
             if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
             {
-                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}.");
+                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
             }
 
             if (SchemaSourceDirs.Count == 0)
             {
-                errors.Add($"You must have at least one item in {GdkToolsConfigurationInspector.SchemaSourceDirsLabel}.");
+                errors.Add($"You must have at least one item in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
             }
 
             return errors;
@@ -87,7 +98,7 @@ namespace Improbable.Gdk.Tools
 
         private void ThrowBadJsonException(string jsonField)
         {
-            throw new JsonSerializationException($"Could not find field {jsonField} in JSON loaded at {AssetPath}");
+            throw new JsonSerializationException($"Could not find field {jsonField} in JSON loaded at {JsonFilePath}");
         }
 
         private bool TryGetFieldFromJson<TValue>(Dictionary<string, object> jsonData, string jsonFieldLabel,
@@ -121,12 +132,12 @@ namespace Improbable.Gdk.Tools
 
         public static GdkToolsConfiguration GetOrCreateInstance()
         {
-            return File.Exists(AssetPath) ? LoadFile() : CreateInstance();
+            return File.Exists(JsonFilePath) ? LoadFile() : CreateInstance();
         }
 
         private static GdkToolsConfiguration LoadFile()
         {
-            var data = MiniJSON.Json.Deserialize(File.ReadAllText(AssetPath));
+            var data = MiniJSON.Json.Deserialize(File.ReadAllText(JsonFilePath));
             var config = new GdkToolsConfiguration();
             config.LoadFromJson(data);
 
@@ -138,7 +149,7 @@ namespace Improbable.Gdk.Tools
             var config = new GdkToolsConfiguration();
             var jsonString = MiniJSON.Json.Serialize(config.ToJson());
 
-            File.WriteAllText(AssetPath, jsonString);
+            File.WriteAllText(JsonFilePath, jsonString);
 
             return config;
         }

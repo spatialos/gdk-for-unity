@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Improbable.Gdk.Tools
 {
     /// <summary>
     ///     Defines a custom inspector window that allows you to configure the GDK Tools.
     /// </summary>
-    public class GdkToolsConfigurationInspector : Editor
+    public class GdkToolsConfigurationWindow : EditorWindow
     {
         internal const string SchemaStdLibDirLabel = "Schema standard library directory";
         internal const string CodegenOutputDirLabel = "Code generator output directory";
@@ -28,7 +26,13 @@ namespace Improbable.Gdk.Tools
         private List<string> configErrors = new List<string>();
 
         private readonly GUIStyle errorLayoutOption = new GUIStyle();
-/*
+
+        [MenuItem("SpatialOS/GDK tools configuration")]
+        public static void ShowWindow()
+        {
+            GetWindow<GdkToolsConfigurationWindow>().Show();
+        }
+
         private void OnEnable()
         {
             if (toolsConfig != null)
@@ -43,7 +47,7 @@ namespace Improbable.Gdk.Tools
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
         }
 
-        public override void OnInspectorGUI()
+        public void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
 
@@ -56,17 +60,14 @@ namespace Improbable.Gdk.Tools
 
                 if (GUILayout.Button(SaveConfigurationButtonText, GUILayout.Width(250)))
                 {
-                    AssetDatabase.SaveAssets();
+                    toolsConfig.Save();
                 }
 
                 GUILayout.Space(15);
 
                 if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
                 {
-                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                    {
-                        toolsConfig.ResetToDefault();
-                    }
+                    toolsConfig.ResetToDefault();
                 }
 
                 if (check.changed)
@@ -107,27 +108,19 @@ namespace Improbable.Gdk.Tools
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                    {
-                        toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
-                    }
+                    toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
+
 
                     if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
                     {
-                        using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                        {
-                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
-                        }
+                        toolsConfig.SchemaSourceDirs.RemoveAt(i);
                     }
                 }
             }
 
             if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
             {
-                using (new ObjectUndoScope(toolsConfig, "Inspector"))
-                {
-                    toolsConfig.SchemaSourceDirs.Add(string.Empty);
-                }
+                toolsConfig.SchemaSourceDirs.Add(string.Empty);
             }
         }
 
@@ -137,34 +130,5 @@ namespace Improbable.Gdk.Tools
             EditorGUILayout.TextArea(string.Empty, GUI.skin.horizontalSlider);
             GUILayout.Space(10);
         }
-
-        private struct ObjectUndoScope : IDisposable
-        {
-            private const string NullArgumentError = "ObjectUndoScope received null as an argument for the object.";
-
-            private Object obj;
-
-            public ObjectUndoScope(Object obj, string name)
-            {
-                this.obj = obj;
-                CheckObject();
-                Undo.RecordObject(obj, name);
-            }
-
-            public void Dispose()
-            {
-                EditorUtility.SetDirty(obj);
-                obj = null;
-            }
-
-            private void CheckObject()
-            {
-                if (obj == null)
-                {
-                    throw new ArgumentException(NullArgumentError);
-                }
-            }
-        }
-        */
     }
 }
