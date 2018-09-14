@@ -10,6 +10,7 @@ using UnityEngine;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -98,8 +99,8 @@ namespace Playground
                     SpeedSmoothVelocity = speedSmoothVelocity
                 };
 
-                // This needs to be used instead of add force because this is running in update
-                // Better would be to store this in another component and have something else use it on fixed update
+                // This needs to be used instead of add force because this is running in update.
+                // It would be better to store this in another component and have something else use it on fixed update.
                 rigidbody.velocity = rigidbody.transform.forward * currentSpeed;
             }
         }

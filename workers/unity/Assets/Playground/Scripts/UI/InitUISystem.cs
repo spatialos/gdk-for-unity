@@ -10,6 +10,7 @@ using UnityEngine;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 

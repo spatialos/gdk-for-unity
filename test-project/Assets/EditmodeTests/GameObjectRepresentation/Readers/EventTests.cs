@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
     internal class EventTests
     {
         private ComponentWithEvents.Requirable.Reader readerPublic;
+        private ComponentWithEvents.Requirable.Writer writerPublic;
         private ComponentWithEvents.Requirable.ReaderWriterImpl readerWriterInternal;
         private EntityManager entityManager;
         private Entity entity;
@@ -38,10 +39,19 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
         }
 
         [Test]
-        public void Event_callback_is_invoked()
+        public void Event_callback_is_invoked_through_reader()
         {
             bool callbackInvoked = false;
             readerPublic.OnEvt += (ev => callbackInvoked = true);
+            readerWriterInternal.OnEvtEvent(new Empty());
+            Assert.IsTrue(callbackInvoked);
+        }
+
+        [Test]
+        public void Event_callback_is_invoked_through_writer()
+        {
+            bool callbackInvoked = false;
+            writerPublic.OnEvt += (ev => callbackInvoked = true);
             readerWriterInternal.OnEvtEvent(new Empty());
             Assert.IsTrue(callbackInvoked);
         }

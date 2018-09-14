@@ -9,6 +9,8 @@ using Unity.Entities;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnassignedField.Global
 
 #endregion
 

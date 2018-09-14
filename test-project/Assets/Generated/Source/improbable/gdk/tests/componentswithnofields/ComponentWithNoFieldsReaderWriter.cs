@@ -33,7 +33,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.ReaderWriter, 1003)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update>
+            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update>
             {
             }
 

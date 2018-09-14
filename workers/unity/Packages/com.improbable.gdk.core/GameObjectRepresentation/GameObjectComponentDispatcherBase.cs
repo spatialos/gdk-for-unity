@@ -27,10 +27,13 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         public abstract void MarkComponentsAddedForActivation
             (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
+
         public abstract void MarkComponentsRemovedForDeactivation
             (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
+
         public abstract void MarkAuthorityGainedForActivation
             (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
+
         public abstract void MarkAuthorityLostForDeactivation
             (Dictionary<Entity, MonoBehaviourActivationManager> entityIndexToManagers);
 

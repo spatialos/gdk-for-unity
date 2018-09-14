@@ -9,6 +9,7 @@ using UnityEngine;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -22,8 +23,7 @@ namespace Playground
             public readonly int Length;
             public ComponentDataArray<Score.Component> Score;
 
-            [ReadOnly]
-            public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;
         }
 
         [Inject] private ScoringData scoringData;

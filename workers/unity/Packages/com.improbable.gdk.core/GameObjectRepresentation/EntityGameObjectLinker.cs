@@ -27,6 +27,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
             {
+                if (ReferenceEquals(component, null))
+                {
+                    continue;
+                }
+
                 var componentType = component.GetType();
                 if (gameObjectComponentTypes.Contains(componentType))
                 {
@@ -56,6 +61,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
             {
                 foreach (var component in gameObject.GetComponents<Component>())
                 {
+                    if (ReferenceEquals(component, null))
+                    {
+                        continue;
+                    }
+
                     var componentType = component.GetType();
                     if (entityManager.HasComponent(entity, componentType))
                     {

@@ -5,6 +5,17 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
+#region Diagnostic control
+
+#pragma warning disable 169
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
+
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -34,7 +45,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private RigidbodyData rigidbodyData;
         [Inject] private TransformData transformData;
-        [Inject] private WorkerSystem worker;
 
         protected override void OnUpdate()
         {
