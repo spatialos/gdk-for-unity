@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using NUnit.Framework;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests

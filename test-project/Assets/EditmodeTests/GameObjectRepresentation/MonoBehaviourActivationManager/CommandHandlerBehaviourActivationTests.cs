@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class CommandHandlers :
-        TestForBehaviourThatNeedsAuthority<CommandHandlers.TestBehaviourWithCommandHandlers>
+    public class CommandHandlerBehaviourActivationTests :
+        TestForBehaviourThatNeedsAuthority<CommandHandlerBehaviourActivationTests.TestBehaviourWithCommandHandlers>
     {
         protected override uint ComponentId => new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 
