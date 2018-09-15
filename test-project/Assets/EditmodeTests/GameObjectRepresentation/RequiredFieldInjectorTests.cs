@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests
         {
             if (testGameObject != null)
             {
-                Object.DestroyImmediate(testGameObject);
+                UnityObjectDestroyer.Destroy(testGameObject);
             }
 
             world.Dispose();

@@ -35,7 +35,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager?.Dispose();
             ActivationManager = null;
-            Object.DestroyImmediate(TestGameObject);
+            UnityObjectDestroyer.Destroy(TestGameObject);
             world?.Dispose();
             world = null;
         }
