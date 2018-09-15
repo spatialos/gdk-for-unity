@@ -1,12 +1,15 @@
 using Generated.Improbable;
+using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using NUnit.Framework;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class ReaderBehaviourActivationTests : ActivationManagerTestBase<ReaderBehaviourActivationTests.TestBehaviourWithReader>
+    public class ReaderBehaviourActivationTests
+        : ActivationManagerTestBase<ReaderBehaviourActivationTests.TestBehaviourWithReader>
     {
         private static readonly uint PositionComponentId = new Position.Component().ComponentId;
 
@@ -51,22 +54,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         }
 
         [Test]
-        public void Does_not_deactivate_behaviour_when_authority_is_lost()
-        {
-            ActivationManager.AddComponent(PositionComponentId);
-            ActivationManager.ChangeAuthority(PositionComponentId, Authority.Authoritative);
-            ActivationManager.EnableSpatialOSBehaviours();
-            ActivationManager.ChangeAuthority(PositionComponentId, Authority.NotAuthoritative);
-            Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
-                "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
-                " even if authority is lost");
-            ActivationManager.DisableSpatialOSBehaviours();
-            Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
-                "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
-                " even if it has lost authority");
-        }
-
-        [Test]
         public void Does_not_deactivate_behaviour_when_authority_is_not_lost()
         {
             ActivationManager.AddComponent(PositionComponentId);
@@ -75,6 +62,22 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
+        }
+
+        [Test]
+        public void Does_not_deactivate_behaviour_when_authority_is_lost()
+        {
+            ActivationManager.AddComponent(PositionComponentId);
+            ActivationManager.ChangeAuthority(PositionComponentId, Authority.Authoritative);
+            ActivationManager.EnableSpatialOSBehaviours();
+            ActivationManager.ChangeAuthority(PositionComponentId, Authority.NotAuthoritative);
+            Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
+                "Behaviour should not be disabled before DisableSpatialOSBehaviours is called" +
+                " even if authority is lost");
+            ActivationManager.DisableSpatialOSBehaviours();
+            Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
+                "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
+                " even if it has lost authority");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             entityManager = world.GetOrCreateManager<EntityManager>();
             TestGameObject = new GameObject();
 
-            TestGameObject.AddComponent<TBehaviour>();
+            PopulateBehaviours();
             TestGameObject.AddComponent<SpatialOSComponent>().Entity = entityManager.CreateEntity();
 
             var loggingDispatcher = new LoggingDispatcher();
@@ -28,6 +28,11 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
             ActivationManager = new MonoBehaviourActivationManager(TestGameObject,
                 requiredFieldInjector, injectableStore, loggingDispatcher);
+        }
+
+        protected virtual void PopulateBehaviours()
+        {
+            TestGameObject.AddComponent<TBehaviour>();
         }
 
         [TearDown]
