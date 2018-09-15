@@ -20,14 +20,42 @@ namespace Improbable.Gdk.Tools
         private const string SchemaSourceDirsJsonField = "schema_source_directories";
         private const string CodegenOutputDirJsonField = "codegen_output_directory";
 
-        public GdkToolsConfiguration()
+        private GdkToolsConfiguration()
         {
             ResetToDefault();
         }
 
+        private GdkToolsConfiguration(string jsonString) : this()
+        {
+            var data = MiniJSON.Json.Deserialize(jsonString);
+
+            if (!TryGetFieldFromJson<string>(data, SchemaStdLibDirJsonField, out var schemaStdLibDir))
+            {
+                ThrowBadJsonException(SchemaStdLibDirJsonField);
+            }
+
+            if (!TryGetFieldFromJson<IList>(data, SchemaSourceDirsJsonField, out var schemaSourceDirsIList))
+            {
+                ThrowBadJsonException(SchemaSourceDirsJsonField);
+            }
+
+            if (!TryGetFieldFromJson<string>(data, CodegenOutputDirJsonField, out var codegenOutputDir))
+            {
+                ThrowBadJsonException(CodegenOutputDirJsonField);
+            }
+
+            // Can't cast from object to List<string>. Need to go to intermediate IList and iterate over
+            // that.
+            var actualSchemaSourceDirs = schemaSourceDirsIList.Cast<string>().ToList();
+
+            SchemaStdLibDir = schemaStdLibDir;
+            SchemaSourceDirs = actualSchemaSourceDirs;
+            CodegenOutputDir = codegenOutputDir;
+        }
+
         public void Save()
         {
-            var json = ToJson();
+            var json = ToJsonString();
             if (File.Exists(JsonFilePath))
             {
                 File.Delete(JsonFilePath);
@@ -66,34 +94,9 @@ namespace Improbable.Gdk.Tools
         {
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
+
             SchemaSourceDirs.Clear();
             SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
-        }
-
-        private void LoadFromJson(Dictionary<string, object> data)
-        {
-            if (!TryGetFieldFromJson<string>(data, SchemaStdLibDirJsonField, out var schemaStdLibDir))
-            {
-                ThrowBadJsonException(SchemaStdLibDirJsonField);
-            }
-
-            if (!TryGetFieldFromJson<IList>(data, SchemaSourceDirsJsonField, out var schemaSourceDirsIList))
-            {
-                ThrowBadJsonException(SchemaSourceDirsJsonField);
-            }
-
-            if (!TryGetFieldFromJson<string>(data, CodegenOutputDirJsonField, out var codegenOutputDir))
-            {
-                ThrowBadJsonException(CodegenOutputDirJsonField);
-            }
-
-            // Can't cast from object to List<string>. Need to go to intermediate IList and iterate over
-            // that.
-            var actualSchemaSourceDirs = schemaSourceDirsIList.Cast<string>().ToList();
-
-            SchemaStdLibDir = schemaStdLibDir;
-            SchemaSourceDirs = actualSchemaSourceDirs;
-            CodegenOutputDir = codegenOutputDir;
         }
 
         private void ThrowBadJsonException(string jsonField)
@@ -120,36 +123,31 @@ namespace Improbable.Gdk.Tools
             return false;
         }
 
-        private Dictionary<string, object> ToJson()
+        private string ToJsonString()
         {
             var data = new Dictionary<string, object>();
             data[SchemaStdLibDirJsonField] = SchemaStdLibDir;
             data[SchemaSourceDirsJsonField] = SchemaSourceDirs;
             data[CodegenOutputDirJsonField] = CodegenOutputDir;
 
-            return data;
+            return MiniJSON.Json.Serialize(data);
         }
 
         public static GdkToolsConfiguration GetOrCreateInstance()
         {
-            return File.Exists(JsonFilePath) ? LoadFile() : CreateInstance();
+            return File.Exists(JsonFilePath) ? LoadFromFile() : CreateInstance();
         }
 
-        private static GdkToolsConfiguration LoadFile()
+        private static GdkToolsConfiguration LoadFromFile()
         {
-            var data = MiniJSON.Json.Deserialize(File.ReadAllText(JsonFilePath));
-            var config = new GdkToolsConfiguration();
-            config.LoadFromJson(data);
-
-            return config;
+            return new GdkToolsConfiguration(File.ReadAllText(JsonFilePath));
         }
 
         private static GdkToolsConfiguration CreateInstance()
         {
             var config = new GdkToolsConfiguration();
-            var jsonString = MiniJSON.Json.Serialize(config.ToJson());
 
-            File.WriteAllText(JsonFilePath, jsonString);
+            File.WriteAllText(JsonFilePath, config.ToJsonString());
 
             return config;
         }
