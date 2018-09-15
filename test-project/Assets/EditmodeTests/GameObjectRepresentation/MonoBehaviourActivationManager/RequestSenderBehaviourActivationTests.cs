@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class NoComponentsNeeded : ActivationManagerTestBase<NoComponentsNeeded.TestBehaviourWithCommandSender>
+    public class RequestSenderBehaviourActivationTests : ActivationManagerTestBase<
+        RequestSenderBehaviourActivationTests.TestBehaviourWithCommandSender>
     {
         private static readonly uint ComponentId = new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 
@@ -27,9 +28,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no PlayerCreator component");
@@ -39,12 +38,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         public void Activate_behaviour_when_authority_is_not_present()
         {
             ActivationManager.AddComponent(ComponentId);
-
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
@@ -55,12 +51,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
         }
@@ -70,17 +63,12 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             ActivationManager.ChangeAuthority(ComponentId, Authority.NotAuthoritative);
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
-
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if it has lost authority");
@@ -91,10 +79,8 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
         }

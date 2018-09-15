@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
-    public abstract class ActivationManagerTestBase<TBehaviour> where TBehaviour : Component
+    public abstract class ActivationManagerTestBase<TBehaviour> where TBehaviour : MonoBehaviour
     {
         private World world;
-        protected GameObject TestGameObject;
         private EntityManager entityManager;
+        protected GameObject TestGameObject;
         protected MonoBehaviourActivationManager ActivationManager;
 
         [SetUp]
@@ -33,8 +33,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         [TearDown]
         public void TearDown()
         {
+            ActivationManager?.Dispose();
+            ActivationManager = null;
             Object.DestroyImmediate(TestGameObject);
-
             world?.Dispose();
             world = null;
         }

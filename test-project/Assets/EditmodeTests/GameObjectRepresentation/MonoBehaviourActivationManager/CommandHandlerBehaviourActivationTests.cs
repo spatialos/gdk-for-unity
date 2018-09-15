@@ -7,7 +7,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 {
     [TestFixture]
     public class CommandHandlerBehaviourActivationTests :
-        TestForBehaviourThatNeedsAuthority<CommandHandlerBehaviourActivationTests.TestBehaviourWithCommandHandlers>
+        AuthorityRequiredBehaviourActivationTestsBase<CommandHandlerBehaviourActivationTests.TestBehaviourWithCommandHandlers>
     {
         protected override uint ComponentId => new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 

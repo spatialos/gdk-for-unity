@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
-    public abstract class TestForBehaviourThatNeedsAuthority<TBehaviour> : ActivationManagerTestBase<TBehaviour>
+    public abstract class
+        AuthorityRequiredBehaviourActivationTestsBase<TBehaviour> : ActivationManagerTestBase<TBehaviour>
         where TBehaviour : MonoBehaviour
     {
         protected abstract uint ComponentId { get; }
@@ -14,9 +15,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no transform component");
@@ -26,12 +25,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         public void Does_not_activate_behaviour_when_authority_is_not_present()
         {
             ActivationManager.AddComponent(ComponentId);
-
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no authority");
@@ -42,12 +38,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
         }
@@ -57,17 +50,12 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             ActivationManager.ChangeAuthority(ComponentId, Authority.NotAuthoritative);
-
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
-
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be disabled after DisableSpatialOSBehaviours is called");
         }
@@ -77,10 +65,8 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(ComponentId);
             ActivationManager.ChangeAuthority(ComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
         }

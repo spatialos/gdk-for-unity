@@ -5,8 +5,8 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class Writers :
-        TestForBehaviourThatNeedsAuthority<Writers.TestBehaviourWithWriter>
+    public class WriterBehaviourActivationTests :
+        AuthorityRequiredBehaviourActivationTestsBase<WriterBehaviourActivationTests.TestBehaviourWithWriter>
     {
         protected override uint ComponentId => new Position.Component().ComponentId;
 

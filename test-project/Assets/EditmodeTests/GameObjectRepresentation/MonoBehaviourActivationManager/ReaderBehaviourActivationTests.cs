@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class Readers : ActivationManagerTestBase<Readers.TestBehaviourWithReader>
+    public class ReaderBehaviourActivationTests : ActivationManagerTestBase<ReaderBehaviourActivationTests.TestBehaviourWithReader>
     {
         private static readonly uint PositionComponentId = new Position.Component().ComponentId;
 
@@ -20,9 +20,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
                 " because it has no transform component");
@@ -32,12 +30,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         public void Activate_behaviour_when_authority_is_not_present()
         {
             ActivationManager.AddComponent(PositionComponentId);
-
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
@@ -48,12 +43,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(PositionComponentId);
             ActivationManager.ChangeAuthority(PositionComponentId, Authority.Authoritative);
-
             Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
         }
@@ -63,17 +55,12 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(PositionComponentId);
             ActivationManager.ChangeAuthority(PositionComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
-
             ActivationManager.ChangeAuthority(PositionComponentId, Authority.NotAuthoritative);
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
-
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if it has lost authority");
@@ -84,10 +71,8 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         {
             ActivationManager.AddComponent(PositionComponentId);
             ActivationManager.ChangeAuthority(PositionComponentId, Authority.Authoritative);
-
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
-
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
         }
