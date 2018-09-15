@@ -18,10 +18,9 @@ namespace Improbable.Gdk.Core
 
         // Here to prevent adding an action for the same type multiple times
         private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
-        
+
         private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove = new List<(ComponentGroup, ComponentType)>();
-        private readonly List<(Entity, ComponentType)> componentsToRemove = new List<(Entity, ComponentType)>();
-        
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
@@ -93,7 +92,19 @@ namespace Improbable.Gdk.Core
             }
 
             // Clean components with RemoveAtEndOfTick attribute
-            RemoveComponents();
+            foreach ((var componentGroup, var componentType) in componentGroupsToRemove)
+            {
+                if (componentGroup.IsEmptyIgnoreFilter)
+                {
+                    continue;
+                }
+
+                var entityArray = componentGroup.GetEntityArray();
+                for (var i = 0; i < entityArray.Length; i++)
+                {
+                    PostUpdateCommands.RemoveComponent(entityArray[i], componentType);
+                }
+            }
         }
 
         private struct ComponentCleanup
@@ -103,29 +114,6 @@ namespace Improbable.Gdk.Core
             public ComponentGroup AuthorityChangesGroup;
             public ComponentGroup[] EventGroups;
             public ComponentGroup[] CommandsGroups;
-        }
-
-        private void RemoveComponents()
-        {
-            componentsToRemove.Clear();
-            foreach ((ComponentGroup componentGroup, ComponentType type) in componentGroupsToRemove)
-            {
-                if (componentGroup.IsEmptyIgnoreFilter)
-                {
-                    continue;
-                }
-
-                var entityArray = componentGroup.GetEntityArray();
-                for (var i = 0; i < entityArray.Length; ++i)
-                {
-                    componentsToRemove.Add((entityArray[i], type));
-                }
-            }
-
-            foreach ((Entity entity, ComponentType type) in componentsToRemove)
-            {
-                EntityManager.RemoveComponent(entity, type);
-            }
         }
     }
 }
