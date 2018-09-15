@@ -86,7 +86,7 @@ markStartOfBlock "Generated Code Testing"
         -projectPath "${PROJECT_DIR}/test-project" \
         -runTests \
         -testPlatform editmode \
-        -logfile "${PROJECT_DIR}/logs/test-project-editnode-test-run.log" \
+        -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
         -testResults "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
 
     TEST_PROJECT_EDITMODE_TEST_RESULT=$?
