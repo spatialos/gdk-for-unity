@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Core.EditmodeTests
+namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {
     [TestFixture]
     public class SpatialOSSendSystemTests
