@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core
             {
                 var componentReplicationHandler =
                     (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
-                        new object[] { EntityManager, World });
+                        EntityManager, World);
 
                 AddComponentReplicator(componentReplicationHandler);
             }
