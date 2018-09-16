@@ -1,1 +1,7 @@
-{"schema_standard_lib_directory":"build/dependencies/schema/standard_library","schema_source_directories":["Assets/.Schema"],"codegen_output_directory":"Assets/Generated/Source"}
+{
+    "SchemaStdLibDir": "build/dependencies/schema/standard_library",
+    "SchemaSourceDirs": [
+        "Assets/.Schema"
+    ],
+    "CodegenOutputDir": "Assets/Generated/Source"
+}
