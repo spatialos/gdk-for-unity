@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithEvents
     {
@@ -15,10 +15,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
+                public List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
                 }
             }
 
@@ -30,10 +30,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
+                public List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
                 }
             }
 

@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 {
     public partial class NestedComponent
     {
@@ -27,28 +27,28 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.NestedComponent.Component, Improbable.Gdk.Tests.NestedComponent.Update>
             {
-                event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
+                event Action<global::Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 20152)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.NestedComponent.Component, Improbable.Gdk.Tests.NestedComponent.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.NestedComponent.Component, Generated.Improbable.Gdk.Tests.NestedComponent.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.NestedComponent.Component, Improbable.Gdk.Tests.NestedComponent.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>> nestedTypeDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.TypeName>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.TypeName>> nestedTypeDelegates = new List<Action<global::Improbable.Gdk.Tests.TypeName>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
+                public event Action<global::Improbable.Gdk.Tests.TypeName> NestedTypeUpdated
                 {
                     add
                     {
@@ -70,12 +70,12 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.NestedComponent.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.NestedComponent.Update update)
                 {
                     DispatchWithErrorHandling(update.NestedType, nestedTypeDelegates);
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.NestedComponent.Update update, ref Generated.Improbable.Gdk.Tests.NestedComponent.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.NestedComponent.Update update, ref Improbable.Gdk.Tests.NestedComponent.Component data)
                 {
                     if (update.NestedType.HasValue)
                     {
