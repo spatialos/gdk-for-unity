@@ -155,13 +155,7 @@ namespace Improbable.Gdk.Tests
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.NestedComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
                 }
             }
 
@@ -171,13 +165,7 @@ namespace Improbable.Gdk.Tests
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.NestedComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
                 }
             }
 

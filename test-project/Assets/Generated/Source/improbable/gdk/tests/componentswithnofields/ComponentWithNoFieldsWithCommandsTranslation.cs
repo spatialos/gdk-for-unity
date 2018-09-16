@@ -163,13 +163,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         OnCmdRequest(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithCommands");
                 }
             }
 
@@ -182,13 +176,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         OnCmdResponse(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithCommands");
                 }
             }
 

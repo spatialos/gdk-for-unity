@@ -242,13 +242,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         OnSecondCommandRequest(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.BlittableTypes.BlittableComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "BlittableComponent");
                 }
             }
 
@@ -264,13 +258,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         OnSecondCommandResponse(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.BlittableTypes.BlittableComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "BlittableComponent");
                 }
             }
 
