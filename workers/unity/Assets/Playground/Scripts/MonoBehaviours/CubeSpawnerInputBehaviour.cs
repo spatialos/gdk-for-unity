@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Generated.Playground;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Improbable.Worker.Core;
