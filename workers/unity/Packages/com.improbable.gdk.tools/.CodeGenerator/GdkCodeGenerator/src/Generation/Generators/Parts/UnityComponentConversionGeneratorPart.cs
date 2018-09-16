@@ -17,7 +17,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string Generate(UnityComponentDefinition unityComponentDefinition, string package,
             HashSet<string> enumSet)
         {
-            qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
+            qualifiedNamespace = package;
             spatialNamespace = package;
             this.unityComponentDefinition = unityComponentDefinition;
             this.enumSet = enumSet;
