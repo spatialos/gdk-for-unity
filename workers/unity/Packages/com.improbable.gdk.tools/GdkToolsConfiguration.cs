@@ -23,11 +23,6 @@ namespace Improbable.Gdk.Tools
         public void Save()
         {
             var json = JsonUtility.ToJson(this, true);
-            if (File.Exists(JsonFilePath))
-            {
-                File.Delete(JsonFilePath);
-            }
-
             File.WriteAllText(JsonFilePath, json);
         }
 

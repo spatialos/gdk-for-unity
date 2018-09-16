@@ -59,13 +59,13 @@ namespace Improbable.Gdk.Tools
                 DrawCodeGenerationOptions();
                 DrawHorizontalBreak();
 
-                GUI.enabled = configErrors.Count == 0;
-                if (GUILayout.Button(SaveConfigurationButtonText, GUILayout.Width(250)))
+                using (new EditorGUI.DisabledScope(configErrors.Count != 0))
                 {
-                    toolsConfig.Save();
+                    if (GUILayout.Button(SaveConfigurationButtonText, GUILayout.Width(250)))
+                    {
+                        toolsConfig.Save();
+                    }
                 }
-
-                GUI.enabled = true;
 
                 GUILayout.Space(15);
 
