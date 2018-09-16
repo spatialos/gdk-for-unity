@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -17,17 +16,9 @@ namespace Improbable.Gdk.TestUtils
     /// </summary>
     public class TestLogDispatcher : ILogDispatcher
     {
-        private static readonly string AttemptToAccessConnectionError =
-            $"Cannot access or set the Connection in the {nameof(TestLogDispatcher)}";
-
         private ExpectingScope currentExpectingScope;
 
-        // The connection will never be valid - so any attempt to get or set will throw.
-        public Connection Connection
-        {
-            get => throw new InvalidOperationException(AttemptToAccessConnectionError);
-            set => throw new InvalidOperationException(AttemptToAccessConnectionError);
-        }
+        public Core.Worker Worker { get; set; }
 
         public void HandleLog(LogType type, LogEvent logEvent)
         {
