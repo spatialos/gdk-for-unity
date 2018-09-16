@@ -82,7 +82,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 {
                     WorldCommands.DeallocateWorldCommandRequesters(entityManager, entity);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
