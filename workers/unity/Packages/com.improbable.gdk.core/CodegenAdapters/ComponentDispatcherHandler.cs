@@ -32,7 +32,6 @@ namespace Improbable.Gdk.Core.CodegenAdapters
             "Received ComponentRemoved, but already received one for this entity.";
 
         protected const string EntityNotFound = "No entity found for entity specified in op.";
-        protected const string CommandIndexNotFound = "Command index not found.";
         protected const string InvalidAuthorityChange = "Invalid authority state change received.";
 
         protected ComponentDispatcherHandler(WorkerSystem worker, World world)
@@ -59,6 +58,20 @@ namespace Improbable.Gdk.Core.CodegenAdapters
             }
 
             return entity;
+        }
+
+        /// <summary>
+        ///     An exception for when the ComponentDispatcherHandler receive a CommandRequest or CommandResponse
+        ///     with an index that it does not know.
+        /// </summary>
+        protected class UnknownCommandIndexException : Exception
+        {
+            /// <param name="commandIndex">The unknown command index.</param>
+            /// <param name="componentName">The name of the component that the command was received on.</param>
+            public UnknownCommandIndexException(uint commandIndex, string componentName)
+                : base($"Unknown command index: {commandIndex} received for {componentName}")
+            {
+            }
         }
     }
 }

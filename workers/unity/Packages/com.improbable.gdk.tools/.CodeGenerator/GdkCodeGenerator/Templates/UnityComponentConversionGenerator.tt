@@ -235,13 +235,7 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "<#= componentNamespace #>")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
             }
 
@@ -256,13 +250,7 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "<#= componentNamespace #>")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
             }
 
