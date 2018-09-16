@@ -1,5 +1,5 @@
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.CodeGenerator.End2EndTests
