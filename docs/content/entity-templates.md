@@ -51,7 +51,7 @@ public static class CreatureTemplate
 }
 ```
 
-You can use this entity template to spawn a Creature entity. This can be done either using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
+You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
 
 ------
 

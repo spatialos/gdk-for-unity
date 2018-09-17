@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**This system iterates through every entity with a `Bar` component and sends a delete entity request.Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
 
@@ -11,7 +11,7 @@ Each ECS entity that represents a SpatialOS entity has a set of components for s
 
 ### 1. Reserve an entity ID
 
-You can use the `ReserveEntityIds` world command before entity creation which makes it easier to create multiple entities in a group.
+You can use the `ReserveEntityIds` world command to reserve groups of entity IDs that you can use in entity creation.
 
 To send a request use a `WorldCommands.ReserveEntityIds.CommandSender` component. This contains a list of `WorldCommands.ReserveEntityIds.Request` structs. Add a struct to the list to send the command.
 
@@ -52,12 +52,12 @@ public class CreateCreatureSystem : ComponentSystem
             var entity = CreatureTemplate.CreateCreatureEntityTemplate(
                 new Coordinates(0, 0, 0));
 
-            requests.Add(new WorldCommands.CreateEntity.CreateRequest
+            requests.Add(WorldCommands.CreateEntity.CreateRequest
             (
                 entity
             ));
 
-            data.CreateEntitySender[i].requestsd;
+            data.CreateEntitySender[i].RequestsToSend = requests;
         }
     }
 }
@@ -90,12 +90,12 @@ public class DeleteCreatureSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
+        for (var i = 0; i < data.Length; i++)
         {
             var requests = data.DeleteEntitySender[i].RequestsToSend;
             var entityId = data.SpatialEntityIds[i].EntityId;
         	
-            requests.Add(new WorldCommands.DeleteEntity.CreateRequest
+            requests.Add(WorldCommands.DeleteEntity.CreateRequest
             (
                 entityId
             ));
@@ -106,7 +106,7 @@ public class DeleteCreatureSystem : ComponentSystem
 }
 ```
 
-This system iterates through every entity with a `Bar` component and sends a delete entity request.
+This system iterates through every entity with a `Bar` and a SpatialEntityId component and sends a delete entity request.
 
 ### 4. Entity query
 
@@ -119,7 +119,7 @@ To send a request use a `WorldCommands.EntityQuery.CommandSender` component. Thi
 
 To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
-**Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information  safely in the responses. It is not recommended to use them.
+**Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information  safely in the responses. It is not recommended to use them at this time.
 
 ------
 
