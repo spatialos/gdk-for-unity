@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
 
         /// <summary>
         ///     A helper method that wraps TryGetEntity on the Worker. This throws if the entity does not exist.
-        ///     The reason this throws is that this method is called on receiving ops and not having that Entity Id is
+        ///     Calling this method on receiving an op and not having the Entity Id specified in the op is
         ///     strictly incorrect.
         /// </summary>
         /// <param name="entityId">The Spatial EntityId to try and get.</param>
