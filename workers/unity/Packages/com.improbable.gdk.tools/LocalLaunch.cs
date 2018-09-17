@@ -142,12 +142,14 @@ namespace Improbable.Gdk.Tools
 
         private static string GenerateCommandArgs(string command)
         {
-            string generatedCommandArgs = command;
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                generatedCommandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}\"\nend tell'";
+                return $@"-e 'tell application ""Terminal""
+                        activate
+                        do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
+                        end tell'";
             }
-            return generatedCommandArgs;
+            return command;
         }
 
         private static bool WasProcessKilled(Process process)
