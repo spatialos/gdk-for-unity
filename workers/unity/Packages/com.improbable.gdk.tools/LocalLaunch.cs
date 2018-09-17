@@ -32,10 +32,10 @@ namespace Improbable.Gdk.Tools
             EditorApplication.delayCall += LaunchSpatialLocally;
         }
 
-        [MenuItem("SpatialOS/Launch additional client")]
+        [MenuItem("SpatialOS/Launch standalone client")]
         private static void LaunchAdditionalClientMenu()
         {
-            Debug.Log("Launching an additional client locally...");
+            Debug.Log("Launching a standalone client locally...");
             EditorApplication.delayCall += LaunchClient;
         }
 
@@ -65,7 +65,7 @@ namespace Improbable.Gdk.Tools
 
             if (process == null)
             {
-                Debug.LogError("Failed to start an additional client locally.");
+                Debug.LogError("Failed to start a standalone client locally.");
                 return;
             }
 
@@ -85,11 +85,11 @@ namespace Improbable.Gdk.Tools
 
                 if (latestLogFile == null)
                 {
-                    Debug.LogError($"Could not find a client log file in {logPath}.");
+                    Debug.LogError($"Could not find a standalone client log file in {logPath}.");
                     return;
                 }
 
-                var message = $"Unity Client local launch logfile: {latestLogFile.FullName}";
+                var message = $"Unity Standalone Client local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
