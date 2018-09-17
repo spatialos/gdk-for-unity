@@ -93,10 +93,10 @@ namespace Improbable.Gdk.Tools
 
         public static void Launch(LaunchType launchType, params string[] additionalArgs)
         {
-            var command = GetCommand();
-            var commandArgsGenerated = GenerateCommandArgs(launchType, additionalArgs);
+            string command, commandArgs;
+            (command, commandArgs) = GenerateLaunchCommand(launchType, additionalArgs);
 
-            var processInfo = new ProcessStartInfo(command, commandArgsGenerated)
+            var processInfo = new ProcessStartInfo(command, commandArgs)
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
@@ -148,27 +148,19 @@ namespace Improbable.Gdk.Tools
             };
         }
 
-        private static string GetCommand()
+        private static (string, string) GenerateLaunchCommand(LaunchType launchType, params string[] additionalArgs)
         {
+            var command = Common.SpatialBinary;
+            var commandArgs = string.Concat(launchTypeToCommand[launchType], " ", string.Join(" ", additionalArgs));
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                return "osascript";
+                command = "osascript";
+                commandArgs =  $@"-e 'tell application ""Terminal""
+                                activate
+                                do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                end tell'";
             }
-            return Common.SpatialBinary;
-        }
-
-        private static string GenerateCommandArgs(LaunchType launchType, params string[] additionalArgs)
-        {
-            ;
-            var command = string.Concat(launchTypeToCommand[launchType], " ", string.Join(" ", additionalArgs));
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                return $@"-e 'tell application ""Terminal""
-                        activate
-                        do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
-                        end tell'";
-            }
-            return command;
+            return (command, commandArgs);
         }
 
         private static bool WasProcessKilled(Process process)
