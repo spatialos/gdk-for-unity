@@ -37,6 +37,11 @@ namespace Improbable.Gdk.Core
             };
         }
 
+        public void SetSteamToken(string steamToken)
+        {
+            LocatorParameters.Steam = new SteamCredentials();
+        }
+
         public static LocatorConfig CreateConnectionConfigFromCommandLine(Dictionary<string, string> parsedArgs)
         {
             var config = new LocatorConfig();
@@ -44,8 +49,11 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.LoginToken, string.Empty);
             var projectName = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.ProjectName, string.Empty);
+            var steamToken = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamCredentials, string.Empty);
             config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
+            config.SetSteamToken(steamToken);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
