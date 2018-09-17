@@ -57,6 +57,12 @@ namespace Improbable.Gdk.Tools
             Launch("Launch standalone client", "local worker launch UnityClient default", "*unityclient.log");
         }
 
+        public static void LaunchLocalDeployment()
+        {
+            BuildConfig();
+            Launch("Launch SpatialOS locally", "local launch", "spatial_*.log");
+        }
+
         private static string GetClientLogFilename()
         {
             string clientConfigFilename = "spatialos.UnityClient.worker.json";
@@ -66,11 +72,6 @@ namespace Improbable.Gdk.Tools
             var dict = Json.Deserialize(configFileJson) as Dictionary<string, object>;
 
             return "WIP";
-        }
-
-        public static void LaunchLocalDeployment()
-        {
-            Launch("Launch SpatialOS locally", "local launch", "spatial_*.log");
         }
 
         public static void Launch(string commandName, string commandArgs, string logFileName)
