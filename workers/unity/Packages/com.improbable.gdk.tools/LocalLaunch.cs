@@ -1,3 +1,5 @@
+using Improbable.Gdk.Tools.MiniJSON;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -51,7 +53,19 @@ namespace Improbable.Gdk.Tools
 
         public static void LaunchClient()
         {
+            GetClientLogFilename();
             Launch("Launch standalone client", "local worker launch UnityClient default", "spatial_*.log");
+        }
+
+        private static string GetClientLogFilename()
+        {
+            string clientConfigFilename = "spatialos.UnityClient.worker.json";
+
+            var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity", clientConfigFilename);
+            var configFileJson = File.ReadAllText(logConfigPath);
+            var dict = Json.Deserialize(configFileJson) as Dictionary<string, object>;
+
+            return "WIP";
         }
 
         public static void LaunchLocalDeployment()
