@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Tools
         }
 
         [MenuItem("SpatialOS/Launch standalone client")]
-        private static void LaunchAdditionalClientMenu()
+        private static void LaunchStandaloneClient()
         {
             Debug.Log("Launching a standalone client");
             EditorApplication.delayCall += LaunchClient;
