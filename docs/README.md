@@ -19,6 +19,11 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [Snapshots](content/snapshots.md)
 * [Creating entity templates](content/entity-templates.md)
 
+##### Configuring your project
+
+- [Starting workers](content/workers.md)
+- [Setting up a new project](content/set-up-new-project.md)
+
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
 * [Reading and writing component data](content/gameobject/reading-and-writing-component-data.md)
@@ -47,10 +52,6 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 * [Temporary components](content/ecs/temporary-components.md)
 * [Logging](content/ecs/logging.md)
 * [Accessing information about the worker during runtime](content/ecs/accessing-worker-info.md)
-
-##### Configuring your project
-* [Starting workers](content/workers.md)
-* [Setting up a new project](content/set-up-new-project.md)
 
 ##### Frequently asked questions (FAQs)
 * [FAQs](content/faqs/faqs.md)
