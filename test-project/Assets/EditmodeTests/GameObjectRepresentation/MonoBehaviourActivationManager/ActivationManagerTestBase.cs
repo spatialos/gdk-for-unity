@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
-    public abstract class ActivationManagerTestBase<TBehaviour> where TBehaviour : MonoBehaviour
+    public abstract class ActivationManagerTestBase
     {
         private World world;
         private EntityManager entityManager;
@@ -30,10 +30,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
                 requiredFieldInjector, injectableStore, loggingDispatcher);
         }
 
-        protected virtual void PopulateBehaviours()
-        {
-            TestGameObject.AddComponent<TBehaviour>();
-        }
+        protected abstract void PopulateBehaviours();
 
         [TearDown]
         public void TearDown()

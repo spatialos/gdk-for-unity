@@ -1,5 +1,5 @@
-using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Worker.Core;
 using NUnit.Framework;
 using UnityEngine;
@@ -7,20 +7,32 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class RequestSenderBehaviourActivationTests : ActivationManagerTestBase<
-        RequestSenderBehaviourActivationTests.TestBehaviourWithCommandSender>
+    public class RequestSenderBehaviourActivationTests : ActivationManagerTestBase
     {
         private static readonly uint ComponentId = new ComponentWithNoFieldsWithCommands.Component().ComponentId;
 
         public class TestBehaviourWithCommandSender : MonoBehaviour
         {
-            [Require] private ComponentWithNoFieldsWithCommands.Requirable.CommandRequestSender commandRequestSender;
+            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandRequestSender CommandRequestSender;
 
-            [Require]
-            private ComponentWithNoFieldsWithCommands.Requirable.CommandResponseHandler commandResponseHandler;
+            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandResponseHandler CommandResponseHandler;
 
-            [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-            [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+            [Require] public WorldCommands.Requirable.WorldCommandRequestSender WorldCommandRequestSender;
+            [Require] public WorldCommands.Requirable.WorldCommandResponseHandler WorldCommandResponseHandler;
+        }
+
+        protected override void PopulateBehaviours()
+        {
+            TestGameObject.AddComponent<TestBehaviourWithCommandSender>();
+        }
+
+        private void AssertRequirablesNotNull()
+        {
+            var testBehaviour = TestGameObject.GetComponent<TestBehaviourWithCommandSender>();
+            Assert.IsNotNull(testBehaviour.CommandRequestSender);
+            Assert.IsNotNull(testBehaviour.CommandResponseHandler);
+            Assert.IsNotNull(testBehaviour.WorldCommandRequestSender);
+            Assert.IsNotNull(testBehaviour.WorldCommandResponseHandler);
         }
 
         [Test]
@@ -32,6 +44,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no PlayerCreator component");
+            AssertRequirablesNotNull();
         }
 
         [Test]
@@ -44,6 +57,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
+            AssertRequirablesNotNull();
         }
 
         [Test]
@@ -56,6 +70,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
+            AssertRequirablesNotNull();
         }
 
         [Test]
@@ -72,6 +87,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if it has lost authority");
+            AssertRequirablesNotNull();
         }
 
         [Test]
@@ -83,6 +99,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
+            AssertRequirablesNotNull();
         }
     }
 }

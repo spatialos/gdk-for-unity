@@ -1,4 +1,3 @@
-using Generated.Improbable;
 using Improbable.Worker.Core;
 using NUnit.Framework;
 
@@ -10,15 +9,13 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
 
     [TestFixture]
     // A fork of the ReaderBehaviourActivationTests, with an additional authority-requiring behaviour.
-    public class MultipleBehaviourActivationTests
-        : ActivationManagerTestBase<ReaderBehaviour>
+    public class MultipleBehaviourActivationTests : ActivationManagerTestBase
     {
         private static readonly uint PositionComponentId = new Position.Component().ComponentId;
 
         protected override void PopulateBehaviours()
         {
-            base.PopulateBehaviours();
-
+            TestGameObject.AddComponent<ReaderBehaviour>();
             TestGameObject.AddComponent<WriterBehaviour>();
         }
 

@@ -1,21 +1,22 @@
-using Generated.Improbable;
-using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using NUnit.Framework;
-using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
-    public class ReaderBehaviourActivationTests
-        : ActivationManagerTestBase<ReaderBehaviourActivationTests.TestBehaviourWithReader>
+    public class ReaderBehaviourActivationTests : ActivationManagerTestBase
     {
         private static readonly uint PositionComponentId = new Position.Component().ComponentId;
 
         public class TestBehaviourWithReader : MonoBehaviour
         {
-            [Require] private Position.Requirable.Reader positionReader;
+            [Require] public Position.Requirable.Reader PositionReader;
+        }
+
+        protected override void PopulateBehaviours()
+        {
+            TestGameObject.AddComponent<TestBehaviourWithReader>();
         }
 
         [Test]
@@ -33,12 +34,14 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         public void Activate_behaviour_when_authority_is_not_present()
         {
             ActivationManager.AddComponent(PositionComponentId);
-            Assert.IsFalse(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
+            var testBehaviourWithReader = TestGameObject.GetComponent<TestBehaviourWithReader>();
+            Assert.IsFalse(testBehaviourWithReader.enabled,
                 "Behaviour should not be enabled before EnableSpatialOSBehaviours is called");
             ActivationManager.EnableSpatialOSBehaviours();
-            Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithReader>().enabled,
+            Assert.IsTrue(testBehaviourWithReader.enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
                 " even if it has no authority");
+            Assert.IsNotNull(testBehaviourWithReader.PositionReader);
         }
 
         [Test]

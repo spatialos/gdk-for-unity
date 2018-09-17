@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
 {
-    public abstract class
-        AuthorityRequiredBehaviourActivationTestsBase<TBehaviour> : ActivationManagerTestBase<TBehaviour>
+    public abstract class AuthorityRequiredBehaviourActivationTestsBase<TBehaviour> : ActivationManagerTestBase
         where TBehaviour : MonoBehaviour
     {
         protected abstract uint ComponentId { get; }
+
+        protected override void PopulateBehaviours()
+        {
+            TestGameObject.AddComponent<TBehaviour>();
+        }
+
+        protected abstract void ValidateRequirablesNotNull();
 
         [Test]
         public void Does_not_activate_behaviour_when_component_is_not_present()
@@ -43,6 +49,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called");
+            ValidateRequirablesNotNull();
         }
 
         [Test]
@@ -55,6 +62,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
+            ValidateRequirablesNotNull();
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should be disabled after DisableSpatialOSBehaviours is called");
@@ -69,6 +77,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be disabled if it has not lost authority");
+            ValidateRequirablesNotNull();
         }
     }
 }
