@@ -29,10 +29,10 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsFalse(TestGameObject.GetComponent<ReaderBehaviour>().enabled,
                 "Reader Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
-                " because it has no transform component");
+                " because it has no components");
             Assert.IsFalse(TestGameObject.GetComponent<WriterBehaviour>().enabled,
                 "Writer Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
-                " because it has no transform component");
+                " because it has no components");
         }
 
         [Test]
@@ -46,10 +46,10 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<ReaderBehaviour>().enabled,
                 "Reader Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
-                " even if it has no authority");
+                " even if authority is not present");
             Assert.IsFalse(TestGameObject.GetComponent<WriterBehaviour>().enabled,
                 "Writer Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
-                " because if it has no authority");
+                " because authority is not present");
         }
 
         [Test]
@@ -76,9 +76,9 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<ReaderBehaviour>().enabled,
-                "Reader Behaviour should not be disabled if it has not lost authority");
+                "Reader Behaviour should not be disabled if authority is not lost");
             Assert.IsTrue(TestGameObject.GetComponent<WriterBehaviour>().enabled,
-                "Writer Behaviour should not be disabled if it has not lost authority");
+                "Writer Behaviour should not be disabled if authority is not lost");
         }
 
         [Test]
@@ -97,10 +97,10 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<ReaderBehaviour>().enabled,
                 "Reader Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
-                " even if authority has been lost");
+                " even if authority is lost");
             Assert.IsFalse(TestGameObject.GetComponent<WriterBehaviour>().enabled,
                 "Writer Behaviour not be disabled after DisableSpatialOSBehaviours is called" +
-                " after authority has been lost");
+                " after authority is lost");
         }
     }
 }

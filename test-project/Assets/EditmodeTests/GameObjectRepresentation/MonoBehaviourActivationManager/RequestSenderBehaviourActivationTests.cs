@@ -56,7 +56,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should be enabled after EnableSpatialOSBehaviours is called" +
-                " even if it has no authority");
+                " even if authority is not present");
             AssertRequirablesNotNull();
         }
 
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
                 "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
-                " even if it has lost authority");
+                " even if authority is lost");
             AssertRequirablesNotNull();
         }
 
@@ -98,7 +98,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TestBehaviourWithCommandSender>().enabled,
-                "Behaviour should not be disabled if it has not lost authority");
+                "Behaviour should not be disabled if authority is not lost");
             AssertRequirablesNotNull();
         }
     }

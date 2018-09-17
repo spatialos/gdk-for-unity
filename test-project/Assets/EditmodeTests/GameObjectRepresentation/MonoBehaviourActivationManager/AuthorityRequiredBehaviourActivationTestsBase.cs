@@ -24,7 +24,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
-                " because it has no transform component");
+                " because it has no components");
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             Assert.IsFalse(TestGameObject.GetComponent<TBehaviour>().enabled,
                 "Behaviour should not be enabled after EnableSpatialOSBehaviours is called" +
-                " because it has no authority");
+                " because authority is not present");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.ChangeAuthority(ComponentId, Authority.NotAuthoritative);
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
-                "Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
+                "Behaviour should not be disabled before DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
             ValidateRequirablesNotNull();
             ActivationManager.DisableSpatialOSBehaviours();
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             ActivationManager.EnableSpatialOSBehaviours();
             ActivationManager.DisableSpatialOSBehaviours();
             Assert.IsTrue(TestGameObject.GetComponent<TBehaviour>().enabled,
-                "Behaviour should not be disabled if it has not lost authority");
+                "Behaviour should not be disabled if authority is not lost");
             ValidateRequirablesNotNull();
         }
     }
