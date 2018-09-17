@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using ComponentWithEvents = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
 {
     [TestFixture]
     internal class EventTests

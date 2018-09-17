@@ -4,7 +4,7 @@ using Improbable.Gdk.Tests.NonblittableTypes;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
 {
     [TestFixture]
     public class NonBlittableReaderTests
