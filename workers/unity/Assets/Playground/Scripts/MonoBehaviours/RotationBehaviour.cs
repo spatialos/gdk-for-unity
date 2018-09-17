@@ -1,7 +1,7 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Transform;
 using UnityEngine;
-using SpatialQuaternion = Generated.Improbable.Transform.Quaternion;
+using SpatialQuaternion = Improbable.Transform.Quaternion;
 using Quaternion = UnityEngine.Quaternion;
 
 #region Diagnostic control

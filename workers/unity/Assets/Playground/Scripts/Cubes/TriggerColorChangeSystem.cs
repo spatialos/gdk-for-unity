@@ -1,9 +1,7 @@
 using System;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 #region Diagnostic control
 

@@ -5,7 +5,7 @@
 using System.Linq;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 { 
     
     public struct Empty

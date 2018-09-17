@@ -1,4 +1,3 @@
-using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Collections;

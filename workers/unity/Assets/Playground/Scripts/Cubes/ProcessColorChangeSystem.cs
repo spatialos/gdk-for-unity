@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 #region Diagnostic control
 

@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 {
     public partial class ExhaustiveOptional
     {
@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.ExhaustiveOptional.Component, Improbable.Gdk.Tests.ExhaustiveOptional.Update>
             {
                 event Action<BlittableBool?> Field1Updated;
                 event Action<float?> Field2Updated;
@@ -45,17 +45,17 @@ namespace Generated.Improbable.Gdk.Tests
                 event Action<int?> Field14Updated;
                 event Action<long?> Field15Updated;
                 event Action<global::Improbable.Worker.EntityId?> Field16Updated;
-                event Action<global::Generated.Improbable.Gdk.Tests.SomeType?> Field17Updated;
+                event Action<global::Improbable.Gdk.Tests.SomeType?> Field17Updated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197716)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.ExhaustiveOptional.Component, Improbable.Gdk.Tests.ExhaustiveOptional.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component, Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.ExhaustiveOptional.Component, Improbable.Gdk.Tests.ExhaustiveOptional.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -446,9 +446,9 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>> field17Delegates = new List<Action<global::Generated.Improbable.Gdk.Tests.SomeType?>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.SomeType?>> field17Delegates = new List<Action<global::Improbable.Gdk.Tests.SomeType?>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.SomeType?> Field17Updated
+                public event Action<global::Improbable.Gdk.Tests.SomeType?> Field17Updated
                 {
                     add
                     {
@@ -470,7 +470,7 @@ namespace Generated.Improbable.Gdk.Tests
                     }
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.ExhaustiveOptional.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
                     DispatchWithErrorHandling(update.Field2, field2Delegates);
@@ -491,7 +491,7 @@ namespace Generated.Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update update, ref Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.ExhaustiveOptional.Update update, ref Improbable.Gdk.Tests.ExhaustiveOptional.Component data)
                 {
                     if (update.Field1.HasValue)
                     {

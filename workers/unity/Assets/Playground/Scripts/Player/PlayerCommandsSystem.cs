@@ -1,6 +1,5 @@
 using System;
-using Generated.Improbable;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Playground.Scripts.UI;
