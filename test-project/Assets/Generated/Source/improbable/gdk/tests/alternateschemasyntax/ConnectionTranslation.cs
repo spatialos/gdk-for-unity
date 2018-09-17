@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Entities;
+using Unity.Collections;
 using Improbable.Worker.Core;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
@@ -123,12 +124,12 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.ApplyUpdate(op.Update.SchemaData.Value.GetFields(), ref data);
+                    Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.DeserializeUpdate(op.Update.SchemaData.Value.GetFields());
+                var update = Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> updates;
                 if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity))
@@ -351,9 +352,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
-            public override ComponentType[] CommandTypes => new ComponentType[] {
-            };
 
+            private EntityArchetypeQuery[] CommandQueries =
+            {
+            };
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
@@ -376,7 +378,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1105);
-                        Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.Serialize(data, update.GetFields());
+                        Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
 
                         // Serialize events
                         var eventsObject = update.GetEvents();
@@ -400,10 +402,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 }
             }
 
-            public override void SendCommands(List<ComponentGroup> commandComponentGroups, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+                var entityType = sendSystem.GetArchetypeChunkEntityType();
             }
-
         }
 
         internal class ComponentCleanup : ComponentCleanupHandler

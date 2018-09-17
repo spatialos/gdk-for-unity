@@ -32,9 +32,9 @@ namespace Playground
 
         private Vector3 origin;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             origin = World.GetExistingManager<WorkerSystem>().Origin;
         }

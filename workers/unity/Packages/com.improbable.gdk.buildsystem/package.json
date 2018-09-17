@@ -5,7 +5,6 @@
     "unity": "2018.2",
     "description": "SpatialOS GDK Build System Module. THIS IS NOT MADE BY UNITY. IGNORE THE AUTHOR FIELD",
     "dependencies": {
-        "com.improbable.gdk.core": "0.0.1",
-        "com.improbable.gdk.tools": "0.0.1"
+        "com.improbable.gdk.core": "0.0.1"
     }
 }

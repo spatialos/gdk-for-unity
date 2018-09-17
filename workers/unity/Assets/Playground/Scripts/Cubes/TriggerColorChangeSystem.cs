@@ -31,9 +31,9 @@ namespace Playground
         private int colorIndex;
         private float nextColorChange;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             colorValues = Enum.GetValues(typeof(Color));
         }

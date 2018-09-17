@@ -49,7 +49,7 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : IWriter<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
+            public interface Writer : Reader, IWriter<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
 <# foreach (var eventDetails in eventDetailsList) { #>
                 void Send<#= eventDetails.EventName #>( <#= eventDetails.FqnPayloadType #> payload);
