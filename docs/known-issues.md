@@ -12,3 +12,4 @@ Known issue = any major user-facing bug or lack of user-facing feature that:
 |-------|-------------------|--------|-------------|-------|
 | The Unity editor randomly crashes on MacOS when using ECS preview packages. This is not caused by the SpatialOS GDK. | 2018/07/25 | 1064084 | Simply retry. | No|
 | IL2CPP does not currently work on Mac as it crashes upon starting the game. This is due to a bug in Unity that does not initialize a system correctly, if one of the injected `IComponentData` contains a `long`. | 2018/08/31 | 1076596 | Use the Mono compiler. | Yes|
+| `bool` is not a [blittable type](https://en.wikipedia.org/wiki/Blittable_types), so will cause an error if used to store component data. | 2018/09/17 | None | Use `BlittableBool` instead. | No|
