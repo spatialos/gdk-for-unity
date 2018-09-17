@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Tools
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
-            EditorApplication.delayCall += LaunchSpatialLocally;
+            EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
         [MenuItem("SpatialOS/Launch standalone client")]
@@ -98,9 +98,7 @@ namespace Improbable.Gdk.Tools
                 else
                 {
                     var content = File.ReadAllText(latestLogFile.FullName);
-                    message = $"{message}\n{content}";
-
-                    Debug.LogError(message);
+                    Debug.LogError($"{message}\n{content}");
                 }
 
                 process.Dispose();
@@ -108,7 +106,7 @@ namespace Improbable.Gdk.Tools
             };
         }
 
-        public static void LaunchSpatialLocally()
+        public static void LaunchLocalDeployment()
         {
             BuildConfig();
 
@@ -159,9 +157,7 @@ namespace Improbable.Gdk.Tools
                 else
                 {
                     var content = File.ReadAllText(latestLogFile.FullName);
-                    message = $"{message}\n{content}";
-
-                    Debug.LogError(message);
+                    Debug.LogError(message = $"{message}\n{content}");
                 }
 
                 process.Dispose();
