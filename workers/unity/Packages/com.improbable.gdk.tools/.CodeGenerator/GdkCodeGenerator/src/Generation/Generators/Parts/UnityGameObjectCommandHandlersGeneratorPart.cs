@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public string Generate(UnityComponentDefinition unityComponentDefinition, string package)
         {
-            qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
+            qualifiedNamespace = package;
             this.unityComponentDefinition = unityComponentDefinition;
 
             return TransformText();

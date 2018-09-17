@@ -1,5 +1,5 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Experimental.PlayerLoop;

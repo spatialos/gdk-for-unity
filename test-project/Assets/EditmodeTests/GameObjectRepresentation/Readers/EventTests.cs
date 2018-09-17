@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
-using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
+using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.TestTools;
-using ComponentWithEvents = Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
+using ComponentWithEvents = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
 
 namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
 {

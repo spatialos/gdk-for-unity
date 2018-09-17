@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -27,7 +27,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
 
             [InjectableId(InjectableType.ReaderWriter, 1002)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
             {
                 event Action<BlittableBool> BoolFieldUpdated;
                 event Action<int> IntFieldUpdated;
@@ -38,20 +38,20 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 event Action<int?> OptionalFieldUpdated;
                 event Action<global::System.Collections.Generic.List<int>> ListFieldUpdated;
                 event Action<global::System.Collections.Generic.Dictionary<int,string>> MapFieldUpdated;
-                event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent;
-                event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent;
+                event Action<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent;
+                event Action<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1002)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
             {
-                void SendFirstEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
-                void SendSecondEvent( global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
+                void SendFirstEvent( global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload);
+                void SendSecondEvent( global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload);
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
@@ -274,7 +274,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update)
                 {
                     DispatchWithErrorHandling(update.BoolField, boolFieldDelegates);
                     DispatchWithErrorHandling(update.IntField, intFieldDelegates);
@@ -287,7 +287,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     DispatchWithErrorHandling(update.MapField, mapFieldDelegates);
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update, ref Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update, ref Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component data)
                 {
                     if (update.BoolField.HasValue)
                     {
@@ -327,9 +327,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>> FirstEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>> FirstEventDelegates = new List<Action<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent
+                public event Action<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> OnFirstEvent
                 {
                     add
                     {
@@ -351,12 +351,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                public void OnFirstEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
+                public void OnFirstEventEvent(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, logDispatcher);
                 }
 
-                public void SendFirstEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
+                public void SendFirstEvent(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
                     if (!VerifyNotDisposed())
                     {
@@ -367,9 +367,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     sender.Events.Add(payload);
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>> SecondEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>> SecondEventDelegates = new List<Action<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent
+                public event Action<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> OnSecondEvent
                 {
                     add
                     {
@@ -391,12 +391,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                public void OnSecondEventEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
+                public void OnSecondEventEvent(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, logDispatcher);
                 }
 
-                public void SendSecondEvent(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
+                public void SendSecondEvent(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
                     if (!VerifyNotDisposed())
                     {

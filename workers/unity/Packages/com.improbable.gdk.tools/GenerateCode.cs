@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            EditorApplication.delayCall += Generate;
+            Generate();
         }
 
         private static bool CanGenerateOnLoad()
@@ -128,7 +128,7 @@ namespace Improbable.Gdk.Tools
                 $"--schema-compiler-path=\"{schemaCompilerPath}\""
             };
 
-            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
             baseArgs.Add($"--schema-path=\"{toolsConfig.SchemaStdLibDir}\"");
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.Tools
 
         private static void ForceGenerate()
         {
-            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
                 Directory.Delete(toolsConfig.CodegenOutputDir, true);
@@ -163,7 +163,7 @@ namespace Improbable.Gdk.Tools
         {
             try
             {
-                var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+                var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
                 // Safe as we validate there is at least one entry.
                 var schemaRoot = toolsConfig.SchemaSourceDirs[0];
                 CleanDestination(schemaRoot);
