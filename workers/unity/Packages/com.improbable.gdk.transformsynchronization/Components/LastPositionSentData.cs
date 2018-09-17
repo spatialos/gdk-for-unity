@@ -1,5 +1,4 @@
-﻿using Generated.Improbable;
-using Unity.Entities;
+﻿using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {

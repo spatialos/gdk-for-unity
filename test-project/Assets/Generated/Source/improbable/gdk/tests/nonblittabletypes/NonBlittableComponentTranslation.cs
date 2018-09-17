@@ -14,7 +14,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -64,12 +64,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var data = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                var data = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
 
-                var update = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update
+                var update = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update
                 {
                     BoolField = data.BoolField,
                     IntField = data.IntField,
@@ -82,12 +82,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     MapField = data.MapField,
                 };
 
-                var updates = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
+                var updates = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
                 {
                     update
                 };
 
-                var updatesComponent = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates
+                var updatesComponent = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates
                 {
                     handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                 };
@@ -95,20 +95,20 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                 entityManager.AddComponentData(entity, updatesComponent);
 
-                if (entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                if (entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                 }
             }
@@ -120,28 +120,28 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
+                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
                 NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Free(data.optionalFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Free(data.listFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Free(data.mapFieldHandle);
 
-                entityManager.RemoveComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
+                entityManager.RemoveComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
 
-                if (entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                if (entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                 }
             }
@@ -153,29 +153,29 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
+                    var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
+                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                var update = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
-                List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update> updates;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity))
+                List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update> updates;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity))
                 {
-                    updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity).Updates;
+                    updates = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity).Updates;
 
                 }
                 else
                 {
-                    var updatesComponent = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates
+                    var updatesComponent = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>());
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>());
                     updates = updatesComponent.Updates;
                     entityManager.AddComponentData(entity, updatesComponent);
                 }
@@ -189,13 +189,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         // Create component to hold received events
                         ReceivedEvents.FirstEvent eventsReceived;
-                        List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> eventList;
+                        List<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> eventList;
                         if (!entityManager.HasComponent<ReceivedEvents.FirstEvent>(entity))
                         {
                             eventsReceived = new ReceivedEvents.FirstEvent() {
                                 handle = ReferenceTypeProviders.FirstEventProvider.Allocate(World)
                             };
-                            eventList = new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>((int) eventCount);
+                            eventList = new List<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>((int) eventCount);
                             ReferenceTypeProviders.FirstEventProvider.Set(eventsReceived.handle, eventList);
                             entityManager.AddComponentData(entity, eventsReceived);
                         }
@@ -208,7 +208,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         // Deserialize events onto component
                         for (var i = 0; i < eventCount; i++)
                         {
-                            var e = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Deserialize(eventsObject.GetObject(1));
+                            var e = global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Deserialize(eventsObject.GetObject(1));
                             eventList.Add(e);
                         }
                     }
@@ -220,13 +220,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         // Create component to hold received events
                         ReceivedEvents.SecondEvent eventsReceived;
-                        List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> eventList;
+                        List<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> eventList;
                         if (!entityManager.HasComponent<ReceivedEvents.SecondEvent>(entity))
                         {
                             eventsReceived = new ReceivedEvents.SecondEvent() {
                                 handle = ReferenceTypeProviders.SecondEventProvider.Allocate(World)
                             };
-                            eventList = new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>((int) eventCount);
+                            eventList = new List<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>((int) eventCount);
                             ReferenceTypeProviders.SecondEventProvider.Set(eventsReceived.handle, eventList);
                             entityManager.AddComponentData(entity, eventsReceived);
                         }
@@ -239,7 +239,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         // Deserialize events onto component
                         for (var i = 0; i < eventCount; i++)
                         {
-                            var e = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Deserialize(eventsObject.GetObject(2));
+                            var e = global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Deserialize(eventsObject.GetObject(2));
                             eventList.Add(e);
                         }
                     }
@@ -278,7 +278,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                            .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                         );
                         break;
                 }
@@ -300,7 +300,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                            .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                         );
                         break;
                 }
@@ -309,28 +309,28 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public override void AddCommandComponents(Unity.Entities.Entity entity)
             {
                 {
-                    var commandSender = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand();
-                    commandSender.CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Allocate(World);
-                    commandSender.RequestsToSend = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request>();
+                    var commandSender = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand();
+                    commandSender.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Allocate(World);
+                    commandSender.RequestsToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request>();
 
                     entityManager.AddComponentData(entity, commandSender);
 
-                    var commandResponder = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand();
-                    commandResponder.CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Allocate(World);
-                    commandResponder.ResponsesToSend = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response>();
+                    var commandResponder = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand();
+                    commandResponder.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Allocate(World);
+                    commandResponder.ResponsesToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response>();
 
                     entityManager.AddComponentData(entity, commandResponder);
                 }
                 {
-                    var commandSender = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand();
-                    commandSender.CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Allocate(World);
-                    commandSender.RequestsToSend = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request>();
+                    var commandSender = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand();
+                    commandSender.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Allocate(World);
+                    commandSender.RequestsToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request>();
 
                     entityManager.AddComponentData(entity, commandSender);
 
-                    var commandResponder = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand();
-                    commandResponder.CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Allocate(World);
-                    commandResponder.ResponsesToSend = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response>();
+                    var commandResponder = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand();
+                    commandResponder.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Allocate(World);
+                    commandResponder.ResponsesToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response>();
 
                     entityManager.AddComponentData(entity, commandResponder);
                 }
@@ -341,14 +341,14 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                        entityManager.RemoveComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
 
                         // Add event senders
                         {
@@ -356,7 +356,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             {
                                 handle = ReferenceTypeProviders.FirstEventProvider.Allocate(World)
                             };
-                            ReferenceTypeProviders.FirstEventProvider.Set(eventSender.handle, new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>());
+                            ReferenceTypeProviders.FirstEventProvider.Set(eventSender.handle, new List<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload>());
                             entityManager.AddComponentData(entity, eventSender);
                         }
                         {
@@ -364,33 +364,33 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             {
                                 handle = ReferenceTypeProviders.SecondEventProvider.Allocate(World)
                             };
-                            ReferenceTypeProviders.SecondEventProvider.Set(eventSender.handle, new List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>());
+                            ReferenceTypeProviders.SecondEventProvider.Set(eventSender.handle, new List<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload>());
                             entityManager.AddComponentData(entity, eventSender);
                         }
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
+                        entityManager.RemoveComponent<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>());
 
                         // Remove event senders
                         {
@@ -407,14 +407,14 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
 
                 List<Authority> authorityChanges;
-                if (entityManager.HasComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
+                if (entityManager.HasComponent<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
-                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity).Changes;
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity).Changes;
 
                 }
                 else
                 {
-                    var changes = new AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>
+                    var changes = new AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>
                     {
                         Handle = AuthorityChangesProvider.Allocate(World)
                     };
@@ -434,7 +434,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, entityId.Id)
                         .WithField("Op", opType)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                     return false;
                 }
@@ -449,7 +449,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     .WithField(LoggingUtils.EntityId, entityId.Id)
                     .WithField("New Authority", newAuthority)
                     .WithField("Expected Old Authority", expectedOldAuthority)
-                    .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                    .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                 );
             }
 
@@ -460,24 +460,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var deserializedRequest = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+                var deserializedRequest = global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
-                List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> requests;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity))
+                List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> requests;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity))
                 {
-                    requests = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity).Requests;
+                    requests = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity).Requests;
                 }
                 else
                 {
-                    var data = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand
+                    var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand
                     {
-                        CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Allocate(World)
+                        CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Allocate(World)
                     };
-                    requests = data.Requests = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>();
+                    requests = data.Requests = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>();
                     entityManager.AddComponentData(entity, data);
                 }
 
-                requests.Add(new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest(op.RequestId.Id,
+                requests.Add(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest(op.RequestId.Id,
                     op.CallerWorkerId,
                     op.CallerAttributeSet,
                     deserializedRequest));
@@ -497,33 +497,33 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Op", "CommandResponseOp - FirstCommand")
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                     return;
                 }
 
-                global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response = null;
+                global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response = null;
                 if (op.StatusCode == StatusCode.Success)
                 {
-                    response = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                    response = global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> responses;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(entity))
+                List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> responses;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(entity))
                 {
-                    responses = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(entity).Responses;
+                    responses = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(entity).Responses;
                 }
                 else
                 {
-                    var data = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand
+                    var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand
                     {
-                        CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Allocate(World)
+                        CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Allocate(World)
                     };
-                    responses = data.Responses = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse>();
+                    responses = data.Responses = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse>();
                     entityManager.AddComponentData(entity, data);
                 }
 
-                responses.Add(new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse(op.EntityId,
+                responses.Add(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse(op.EntityId,
                     op.Message,
                     op.StatusCode,
                     response,
@@ -538,24 +538,24 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var deserializedRequest = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+                var deserializedRequest = global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
-                List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> requests;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity))
+                List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> requests;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity))
                 {
-                    requests = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity).Requests;
+                    requests = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity).Requests;
                 }
                 else
                 {
-                    var data = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand
+                    var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand
                     {
-                        CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Allocate(World)
+                        CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Allocate(World)
                     };
-                    requests = data.Requests = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>();
+                    requests = data.Requests = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>();
                     entityManager.AddComponentData(entity, data);
                 }
 
-                requests.Add(new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest(op.RequestId.Id,
+                requests.Add(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest(op.RequestId.Id,
                     op.CallerWorkerId,
                     op.CallerAttributeSet,
                     deserializedRequest));
@@ -575,33 +575,33 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Op", "CommandResponseOp - SecondCommand")
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
+                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                     return;
                 }
 
-                global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response = null;
+                global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response = null;
                 if (op.StatusCode == StatusCode.Success)
                 {
-                    response = global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                    response = global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> responses;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(entity))
+                List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> responses;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(entity))
                 {
-                    responses = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(entity).Responses;
+                    responses = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(entity).Responses;
                 }
                 else
                 {
-                    var data = new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand
+                    var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand
                     {
-                        CommandListHandle = Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Allocate(World)
+                        CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Allocate(World)
                     };
-                    responses = data.Responses = new List<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse>();
+                    responses = data.Responses = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse>();
                     entityManager.AddComponentData(entity, data);
                 }
 
-                responses.Add(new Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse(op.EntityId,
+                responses.Add(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse(op.EntityId,
                     op.Message,
                     op.StatusCode,
                     response,
@@ -618,8 +618,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.FirstEvent>(),
                 ComponentType.ReadOnly<EventSender.SecondEvent>(),
-                ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
-                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
+                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
@@ -632,8 +632,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     All = new[]
                     {
-                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(),
-                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(),
+                        ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(),
+                        ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
@@ -642,8 +642,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 {
                     All = new[]
                     {
-                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(),
-                        ComponentType.Create<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(),
+                        ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(),
+                        ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
@@ -660,7 +660,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
                 var eventFirstEventArray = replicationGroup.GetComponentDataArray<EventSender.FirstEvent>();
                 var eventSecondEventArray = replicationGroup.GetComponentDataArray<EventSender.SecondEvent>();
 
@@ -676,7 +676,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1002);
-                        Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.SerializeUpdate(data, update);
+                        Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.SerializeUpdate(data, update);
 
                         // Serialize events
                         var eventsObject = update.GetEvents();
@@ -685,7 +685,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             foreach (var e in eventsFirstEvent)
                             {
                                 var obj = eventsObject.AddObject(1);
-                                global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
+                                global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
                             }
 
                             eventsFirstEvent.Clear();
@@ -696,7 +696,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                             foreach (var e in eventsSecondEvent)
                             {
                                 var obj = eventsObject.AddObject(2);
-                                global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
+                                global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
                             }
 
                             eventsSecondEvent.Clear();
@@ -715,8 +715,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 var entityType = sendSystem.GetArchetypeChunkEntityType();
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
+                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
+                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
 
                     var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[0], Allocator.TempJob);
                     foreach (var chunk in chunks)
@@ -733,7 +733,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 foreach (var request in requests)
                                 {
                                     var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 1);
-                                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId,
                                         new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
@@ -741,7 +741,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                                     firstCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                        new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>(entities[i], request.Payload, request.Context, request.RequestId);
+                                        new CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>(entities[i], request.Payload, request.Context, request.RequestId);
                                 }
 
                                 requests.Clear();
@@ -761,7 +761,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                     }
 
                                     var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 1);
-                                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
 
                                     connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                                 }
@@ -774,8 +774,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     chunks.Dispose();
                 }
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
+                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
+                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
 
                     var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[1], Allocator.TempJob);
                     foreach (var chunk in chunks)
@@ -792,7 +792,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                 foreach (var request in requests)
                                 {
                                     var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, 2);
-                                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId,
                                         new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
@@ -800,7 +800,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 
                                     secondCommandStorage.CommandRequestsInFlight[requestId.Id] =
-                                        new CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>(entities[i], request.Payload, request.Context, request.RequestId);
+                                        new CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>(entities[i], request.Payload, request.Context, request.RequestId);
                                 }
 
                                 requests.Clear();
@@ -820,7 +820,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                                     }
 
                                     var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, 2);
-                                    global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
 
                                     connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
                                 }
@@ -838,8 +838,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
@@ -847,8 +847,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(),
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
 
             public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
                 ComponentType.ReadOnly<CommandRequests.FirstCommand>(),
@@ -860,10 +860,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
+                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entities[i]);
+                    buffer.RemoveComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entities[i]);
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }
@@ -871,10 +871,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
+                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }

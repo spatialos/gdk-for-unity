@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 {
     public partial class ExhaustiveOptional
     {
@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>>();
+                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ExhaustiveOptional.Update>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ExhaustiveOptional.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update>));
+                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ExhaustiveOptional.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update> Get(uint handle)
+                public static List<Improbable.Gdk.Tests.ExhaustiveOptional.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.ExhaustiveOptional.Update> value)
+                public static void Set(uint handle, List<Improbable.Gdk.Tests.ExhaustiveOptional.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1154,7 +1154,7 @@ namespace Generated.Improbable.Gdk.Tests
 
             public static class Field17Provider 
             {
-                private static readonly Dictionary<uint, global::Generated.Improbable.Gdk.Tests.SomeType?> Storage = new Dictionary<uint, global::Generated.Improbable.Gdk.Tests.SomeType?>();
+                private static readonly Dictionary<uint, global::Improbable.Gdk.Tests.SomeType?> Storage = new Dictionary<uint, global::Improbable.Gdk.Tests.SomeType?>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1163,13 +1163,13 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::Generated.Improbable.Gdk.Tests.SomeType?));
+                    Storage.Add(handle, default(global::Improbable.Gdk.Tests.SomeType?));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::Generated.Improbable.Gdk.Tests.SomeType? Get(uint handle)
+                public static global::Improbable.Gdk.Tests.SomeType? Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1179,7 +1179,7 @@ namespace Generated.Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::Generated.Improbable.Gdk.Tests.SomeType? value)
+                public static void Set(uint handle, global::Improbable.Gdk.Tests.SomeType? value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

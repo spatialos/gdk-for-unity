@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
@@ -14,10 +14,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public struct Cmd : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> RequestsToSend
+                public List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> RequestsToSend
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Get(CommandListHandle);
-                    set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Set(CommandListHandle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Get(CommandListHandle);
+                    set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -27,10 +27,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public struct Cmd : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> Requests
+                public List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> Requests
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdRequestsProvider.Get(CommandListHandle);
-                    set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdRequestsProvider.Set(CommandListHandle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdRequestsProvider.Get(CommandListHandle);
+                    set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdRequestsProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -40,10 +40,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public struct Cmd : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> ResponsesToSend
+                public List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> ResponsesToSend
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Get(CommandListHandle);
-                    set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Set(CommandListHandle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Get(CommandListHandle);
+                    set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -53,10 +53,10 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
             public struct Cmd : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> Responses
+                public List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> Responses
                 {
-                    get => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponsesProvider.Get(CommandListHandle);
-                    set => Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponsesProvider.Set(CommandListHandle, value);
+                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponsesProvider.Get(CommandListHandle);
+                    set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponsesProvider.Set(CommandListHandle, value);
                 }
             }
         }

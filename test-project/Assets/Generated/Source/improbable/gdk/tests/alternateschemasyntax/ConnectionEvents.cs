@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
@@ -15,10 +15,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
+                public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 
@@ -30,10 +30,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
+                public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 

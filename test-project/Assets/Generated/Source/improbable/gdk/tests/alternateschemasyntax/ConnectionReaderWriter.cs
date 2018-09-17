@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
@@ -27,37 +27,37 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
-                event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
+                event Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1105)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
-                void SendMyEvent( global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
+                void SendMyEvent( global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload);
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update)
                 {
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update, ref Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update, ref Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component data)
                 {
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> MyEventDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> MyEventDelegates = new List<Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
+                public event Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent
                 {
                     add
                     {
@@ -79,12 +79,12 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
                 }
 
-                public void OnMyEventEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+                public void OnMyEventEvent(global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(payload, MyEventDelegates, logDispatcher);
                 }
 
-                public void SendMyEvent(global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
+                public void SendMyEvent(global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
                     if (!VerifyNotDisposed())
                     {

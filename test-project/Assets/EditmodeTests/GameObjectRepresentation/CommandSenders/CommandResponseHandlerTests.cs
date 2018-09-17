@@ -1,4 +1,4 @@
-﻿using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
+﻿using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using NUnit.Framework;

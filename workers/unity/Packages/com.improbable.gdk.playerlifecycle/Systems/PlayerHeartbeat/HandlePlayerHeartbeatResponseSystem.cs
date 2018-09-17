@@ -1,6 +1,6 @@
-using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
+using Improbable.PlayerLifecycle;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -15,7 +15,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         private struct Data
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
+
+            [ReadOnly]
+            public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
+
             public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;

@@ -1,7 +1,7 @@
 ﻿using System;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Worker.Core;
 using NUnit.Framework;
 using UnityEngine;

@@ -9,7 +9,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFields
     {
@@ -17,30 +17,30 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthorityGainedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
             };
 
             public override ComponentType[] AuthorityLostComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<NotAuthoritative<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
             };
 
             public override ComponentType[] AuthorityLossImminentComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<AuthorityLossImminent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
@@ -99,7 +99,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
+                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -119,7 +119,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
+                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -156,7 +156,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
+                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -185,7 +185,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
+                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -206,7 +206,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
 
-            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component> changeOps)
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component> changeOps)
             {
                 foreach (var auth in changeOps.Changes)
                 {
