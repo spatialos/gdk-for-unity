@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "*unityclient.log")
+                var latestLogFile = Directory.GetFiles(logPath, "external-default-unityclient.log")
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
