@@ -79,17 +79,17 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "client_*.log")
+                var latestLogFile = Directory.GetFiles(logPath, "*unityclient.log")
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
                 if (latestLogFile == null)
                 {
-                    Debug.LogError($"Could not find a spatial log file in {logPath}.");
+                    Debug.LogError($"Could not find a client log file in {logPath}.");
                     return;
                 }
 
-                var message = $"Spatial local launch logfile: {latestLogFile.FullName}";
+                var message = $"Unity Client local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
@@ -140,7 +140,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "*unityclient.log")
+                var latestLogFile = Directory.GetFiles(logPath, "spatial_*.log")
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var message = $"Unity Client local launch logfile: {latestLogFile.FullName}";
+                var message = $"Spatial local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
