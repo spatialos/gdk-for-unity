@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Improbable.Gdk.Generated.EditmodeTests")]
+[assembly: InternalsVisibleTo("Improbable.Gdk.EditModeTests")]

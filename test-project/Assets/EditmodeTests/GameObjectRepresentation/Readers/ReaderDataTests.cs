@@ -1,7 +1,7 @@
 ﻿using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
 {
     [TestFixture]
     internal class ReaderDataTests : ReaderWriterTestsBase
