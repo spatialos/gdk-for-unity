@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 ------
 
@@ -18,7 +18,7 @@ Create the entity template using the `EntityBuilder` which is part of the `Impro
 | `AddComponent(ComponentData data, string writeAccess)`       | Add a user-defined component to your entity and specify which worker type(s) can have authority over it. |
 | `Build()`                                                    | Create a finished entity template.                           |
 
-For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
+For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](ecs/code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
 
 ```
 component Health {

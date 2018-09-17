@@ -30,7 +30,7 @@ To send a request use a `WorldCommands.CreateEntity.CommandSender` component. Th
 
 To receive a response use `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
 
-Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates](../creating-entities.md) page. 
+Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates](../entity-templates.md) page. 
 
 ```csharp
 public class CreateCreatureSystem : ComponentSystem
@@ -123,4 +123,4 @@ To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This con
 
 ------
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
