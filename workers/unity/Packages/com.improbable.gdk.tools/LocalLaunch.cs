@@ -29,7 +29,14 @@ namespace Improbable.Gdk.Tools
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
-            EditorApplication.delayCall += Launch;
+            EditorApplication.delayCall += LaunchSpatialLocally;
+        }
+
+        [MenuItem("SpatialOS/Launch additional client")]
+        private static void LaunchAdditionalClientMenu()
+        {
+            Debug.Log("Launching an additional client locally...");
+            EditorApplication.delayCall += LaunchClient;
         }
 
         public static void BuildConfig()
@@ -42,18 +49,10 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static void Launch()
+        public static void LaunchClient()
         {
-            BuildConfig();
-
-            var command = Common.SpatialBinary;
-            var commandArgs = "local launch";
-            
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                command = "osascript";
-                commandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} local launch\"\nend tell'";
-            }
+            var command = GetCommand();
+            var commandArgs = GenerateCommandArgs("local worker launch UnityClient default");
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
             {
@@ -66,7 +65,7 @@ namespace Improbable.Gdk.Tools
 
             if (process == null)
             {
-                Debug.LogError("Failed to start SpatialOS locally.");
+                Debug.LogError("Failed to start an additional client locally.");
                 return;
             }
 
@@ -80,7 +79,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "spatial_*.log")
+                var latestLogFile = Directory.GetFiles(logPath, "client_*.log")
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
@@ -107,6 +106,86 @@ namespace Improbable.Gdk.Tools
                 process.Dispose();
                 process = null;
             };
+        }
+
+        public static void LaunchSpatialLocally()
+        {
+            BuildConfig();
+
+            var command = GetCommand();
+            var commandArgs = GenerateCommandArgs("local launch");
+
+            var processInfo = new ProcessStartInfo(command, commandArgs)
+            {
+                CreateNoWindow = false,
+                UseShellExecute = true,
+                WorkingDirectory = SpatialProjectRootDir
+            };
+
+            var process = Process.Start(processInfo);
+
+            if (process == null)
+            {
+                Debug.LogError("Failed to start SpatialOS locally.");
+                return;
+            }
+
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, args) =>
+            {
+                // N.B. This callback is run on a different thread.
+                if (process.ExitCode == 0)
+                {
+                    return;
+                }
+
+                var logPath = Path.Combine(SpatialProjectRootDir, "logs");
+                var latestLogFile = Directory.GetFiles(logPath, "*unityclient.log")
+                    .Select(f => new FileInfo(f))
+                    .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
+
+                if (latestLogFile == null)
+                {
+                    Debug.LogError($"Could not find a spatial log file in {logPath}.");
+                    return;
+                }
+
+                var message = $"Unity Client local launch logfile: {latestLogFile.FullName}";
+
+                if (WasProcessKilled(process))
+                {
+                    Debug.Log(message);
+                }
+                else
+                {
+                    var content = File.ReadAllText(latestLogFile.FullName);
+                    message = $"{message}\n{content}";
+
+                    Debug.LogError(message);
+                }
+
+                process.Dispose();
+                process = null;
+            };
+        }
+
+        private static string GetCommand()
+        {
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                return "osascript";
+            }
+            return Common.SpatialBinary;
+        }
+
+        private static string GenerateCommandArgs(string command)
+        {
+            string generatedCommandArgs = command;
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                generatedCommandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}\"\nend tell'";
+            }
+            return generatedCommandArgs;
         }
 
         private static bool WasProcessKilled(Process process)
