@@ -11,6 +11,23 @@ namespace Improbable.Gdk.Tools
 {
     public static class LocalLaunch
     {
+        public enum LaunchType { CLIENT, SPATIAL };
+
+        private static Dictionary<LaunchType, string> launchTypeToLogFile = new Dictionary<LaunchType, string> {
+            { LaunchType.CLIENT, "*unityclient.log" },
+            { LaunchType.SPATIAL, "spatial_*.log" },
+        };
+
+        private static Dictionary<LaunchType, string> launchTypeToCommandName = new Dictionary<LaunchType, string> {
+            { LaunchType.CLIENT, "Launch standalone client" },
+            { LaunchType.SPATIAL, "Launch SpatialOS locally" },
+        };
+
+        private static Dictionary<LaunchType, string> launchTypeToCommand = new Dictionary<LaunchType, string> {
+            { LaunchType.CLIENT, "local worker launch" },
+            { LaunchType.SPATIAL, "local launch" },
+        };
+
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
@@ -54,13 +71,13 @@ namespace Improbable.Gdk.Tools
         public static void LaunchClient()
         {
             GetClientLogFilename();
-            Launch("Launch standalone client", "local worker launch UnityClient default", "*unityclient.log");
+            Launch(LaunchType.CLIENT, "UnityClient", "default");
         }
 
         public static void LaunchLocalDeployment()
         {
             BuildConfig();
-            Launch("Launch SpatialOS locally", "local launch", "spatial_*.log");
+            Launch(LaunchType.SPATIAL);
         }
 
         private static string GetClientLogFilename()
@@ -74,10 +91,10 @@ namespace Improbable.Gdk.Tools
             return "WIP";
         }
 
-        public static void Launch(string commandName, string commandArgs, string logFileName)
+        public static void Launch(LaunchType launchType, params string[] additionalArgs)
         {
             var command = GetCommand();
-            var commandArgsGenerated = GenerateCommandArgs(commandArgs);
+            var commandArgsGenerated = GenerateCommandArgs(launchType, additionalArgs);
 
             var processInfo = new ProcessStartInfo(command, commandArgsGenerated)
             {
@@ -90,7 +107,7 @@ namespace Improbable.Gdk.Tools
 
             if (process == null)
             {
-                Debug.LogError($"Failed to start a process for the command: {commandName}");
+                Debug.LogError($"Failed to start a process for the command: {launchTypeToCommandName[launchType]}");
                 return;
             }
 
@@ -104,7 +121,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, logFileName)
+                var latestLogFile = Directory.GetFiles(logPath, launchTypeToLogFile[launchType])
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
@@ -114,7 +131,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var message = $"Logfile for the {commandName} command: {latestLogFile.FullName}";
+                var message = $"Logfile for the {launchTypeToCommandName[launchType]} command: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
@@ -140,8 +157,10 @@ namespace Improbable.Gdk.Tools
             return Common.SpatialBinary;
         }
 
-        private static string GenerateCommandArgs(string command)
+        private static string GenerateCommandArgs(LaunchType launchType, params string[] additionalArgs)
         {
+            ;
+            var command = string.Concat(launchTypeToCommand[launchType], " ", string.Join(" ", additionalArgs));
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 return $@"-e 'tell application ""Terminal""
