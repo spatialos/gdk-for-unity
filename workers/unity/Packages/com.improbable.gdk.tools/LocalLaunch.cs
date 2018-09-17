@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Tools
         public static void LaunchClient()
         {
             GetClientLogFilename();
-            Launch("Launch standalone client", "local worker launch UnityClient default", "spatial_*.log");
+            Launch("Launch standalone client", "local worker launch UnityClient default", "*unityclient.log");
         }
 
         private static string GetClientLogFilename()
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Tools
 
         public static void LaunchLocalDeployment()
         {
-            Launch("Launch SpatialOS locally", "local launch", "*unityclient.log");
+            Launch("Launch SpatialOS locally", "local launch", "spatial_*.log");
         }
 
         public static void Launch(string commandName, string commandArgs, string logFileName)
