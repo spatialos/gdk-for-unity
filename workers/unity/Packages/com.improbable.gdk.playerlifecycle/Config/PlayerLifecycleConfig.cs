@@ -4,7 +4,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     public delegate Worker.Core.Entity GetPlayerEntityTemplateDelegate(List<string> clientAttributeSet,
-        Generated.Improbable.Vector3f position);
+        Vector3f position);
 
     public static class PlayerLifecycleConfig
     {

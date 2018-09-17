@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;

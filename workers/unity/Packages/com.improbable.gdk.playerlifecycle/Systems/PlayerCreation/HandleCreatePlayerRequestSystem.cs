@@ -1,7 +1,7 @@
 using System;
-using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
+using Improbable.PlayerLifecycle;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;

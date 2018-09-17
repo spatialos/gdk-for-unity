@@ -1,5 +1,4 @@
-﻿using Generated.Improbable;
-using Generated.Improbable.Transform;
+﻿using Improbable.Transform;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
@@ -24,14 +23,14 @@ namespace Improbable.Gdk.TransformSynchronization
             return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);
         }
 
-        public static Quaternion ToUnityQuaternion(this Generated.Improbable.Transform.Quaternion quaternion)
+        public static Quaternion ToUnityQuaternion(this Improbable.Transform.Quaternion quaternion)
         {
             return new Quaternion(quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);
         }
 
-        public static Generated.Improbable.Transform.Quaternion ToImprobableQuaternion(this Quaternion quaternion)
+        public static Improbable.Transform.Quaternion ToImprobableQuaternion(this Quaternion quaternion)
         {
-            return new Generated.Improbable.Transform.Quaternion(quaternion.w, quaternion.x, quaternion.y,
+            return new Improbable.Transform.Quaternion(quaternion.w, quaternion.x, quaternion.y,
                 quaternion.z);
         }
 

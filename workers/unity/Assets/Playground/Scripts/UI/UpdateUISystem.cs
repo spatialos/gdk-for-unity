@@ -1,4 +1,3 @@
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Playground.Scripts.UI;
 using Unity.Collections;

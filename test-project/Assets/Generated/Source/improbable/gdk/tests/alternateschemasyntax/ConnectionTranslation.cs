@@ -14,7 +14,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 
-namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
@@ -47,21 +47,21 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
-                var data = Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                var data = Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
 
-                var update = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update
+                var update = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update
                 {
                 };
 
-                var updates = new List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
+                var updates = new List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
                 {
                     update
                 };
 
-                var updatesComponent = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates
+                var updatesComponent = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates
                 {
                     handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                 };
@@ -69,20 +69,20 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                 entityManager.AddComponentData(entity, updatesComponent);
 
-                if (entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                if (entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                        .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                     );
                 }
             }
@@ -94,22 +94,22 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
-                entityManager.RemoveComponent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
+                entityManager.RemoveComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
 
-                if (entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                if (entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                        .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                     );
                 }
             }
@@ -121,29 +121,29 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
-                if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
+                    var data = entityManager.GetComponentData<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
+                    Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                var update = Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
-                List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> updates;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity))
+                List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> updates;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity))
                 {
-                    updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity).Updates;
+                    updates = entityManager.GetComponentData<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity).Updates;
 
                 }
                 else
                 {
-                    var updatesComponent = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates
+                    var updatesComponent = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>());
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>());
                     updates = updatesComponent.Updates;
                     entityManager.AddComponentData(entity, updatesComponent);
                 }
@@ -157,13 +157,13 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     {
                         // Create component to hold received events
                         ReceivedEvents.MyEvent eventsReceived;
-                        List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> eventList;
+                        List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> eventList;
                         if (!entityManager.HasComponent<ReceivedEvents.MyEvent>(entity))
                         {
                             eventsReceived = new ReceivedEvents.MyEvent() {
                                 handle = ReferenceTypeProviders.MyEventProvider.Allocate(World)
                             };
-                            eventList = new List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>((int) eventCount);
+                            eventList = new List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>((int) eventCount);
                             ReferenceTypeProviders.MyEventProvider.Set(eventsReceived.handle, eventList);
                             entityManager.AddComponentData(entity, eventsReceived);
                         }
@@ -176,7 +176,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                         // Deserialize events onto component
                         for (var i = 0; i < eventCount; i++)
                         {
-                            var e = global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Deserialize(eventsObject.GetObject(1));
+                            var e = global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Deserialize(eventsObject.GetObject(1));
                             eventList.Add(e);
                         }
                     }
@@ -209,7 +209,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                            .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                         );
                         break;
                 }
@@ -225,7 +225,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                             .WithField(LoggingUtils.LoggerName, LoggerName)
                             .WithField(LoggingUtils.EntityId, op.EntityId.Id)
                             .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                            .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                         );
                         break;
                 }
@@ -240,14 +240,14 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.RemoveComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
 
                         // Add event senders
                         {
@@ -255,33 +255,33 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                             {
                                 handle = ReferenceTypeProviders.MyEventProvider.Allocate(World)
                             };
-                            ReferenceTypeProviders.MyEventProvider.Set(eventSender.handle, new List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>());
+                            ReferenceTypeProviders.MyEventProvider.Set(eventSender.handle, new List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>());
                             entityManager.AddComponentData(entity, eventSender);
                         }
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.RemoveComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
 
                         // Remove event senders
                         {
@@ -293,14 +293,14 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 }
 
                 List<Authority> authorityChanges;
-                if (entityManager.HasComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                if (entityManager.HasComponent<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
-                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity).Changes;
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity).Changes;
 
                 }
                 else
                 {
-                    var changes = new AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>
+                    var changes = new AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>
                     {
                         Handle = AuthorityChangesProvider.Allocate(World)
                     };
@@ -320,7 +320,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, entityId.Id)
                         .WithField("Op", opType)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                        .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                     );
                     return false;
                 }
@@ -335,7 +335,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     .WithField(LoggingUtils.EntityId, entityId.Id)
                     .WithField("New Authority", newAuthority)
                     .WithField("Expected Old Authority", expectedOldAuthority)
-                    .WithField("Component", "Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                    .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                 );
             }
 
@@ -347,8 +347,8 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<EventSender.MyEvent>(),
-                ComponentType.Create<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
-                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                ComponentType.Create<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
+                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
@@ -365,7 +365,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>();
                 var eventMyEventArray = replicationGroup.GetComponentDataArray<EventSender.MyEvent>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
@@ -378,7 +378,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1105);
-                        Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
+                        Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
 
                         // Serialize events
                         var eventsObject = update.GetEvents();
@@ -387,7 +387,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                             foreach (var e in eventsMyEvent)
                             {
                                 var obj = eventsObject.AddObject(1);
-                                global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Serialize(e, obj);
+                                global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Serialize(e, obj);
                             }
 
                             eventsMyEvent.Clear();
@@ -411,16 +411,16 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
                 ComponentType.ReadOnly<ReceivedEvents.MyEvent>(),
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
 
             public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
             };
@@ -428,10 +428,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
+                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entities[i]);
+                    buffer.RemoveComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entities[i]);
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }
@@ -439,10 +439,10 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
+                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }

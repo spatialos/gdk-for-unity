@@ -12,7 +12,7 @@ using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Generated.Improbable.Gdk.Tests.BlittableTypes
+namespace Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent
     {
@@ -31,7 +31,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse payload)
                 {
                     entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
                         .Add(FirstCommand.CreateResponse(Request, payload));
@@ -59,7 +59,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse payload)
                 {
                     entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
                         .Add(SecondCommand.CreateResponse(Request, payload));
@@ -99,7 +99,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     this.logger = logger;
                 }
 
-                public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
+                public void SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
                 {
                     if (!VerifyNotDisposed())
                     {
@@ -110,7 +110,7 @@ namespace Generated.Improbable.Gdk.Tests.BlittableTypes
                     ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
                 }
 
-                public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
+                public void SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
                 {
                     if (!VerifyNotDisposed())
                     {
