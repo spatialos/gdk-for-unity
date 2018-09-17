@@ -46,7 +46,7 @@ public class CreateCreatureSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
+        for (var i = 0; i < data.Length; i++)
         {
             var requests = data.CreateEntitySender[i].RequestsToSend;
             var entity = CreatureTemplate.CreateCreatureEntityTemplate(
