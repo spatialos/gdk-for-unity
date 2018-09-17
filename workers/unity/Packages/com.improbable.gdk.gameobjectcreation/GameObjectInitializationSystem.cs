@@ -107,6 +107,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
             }
 
+            viewCommandBuffer.FlushBuffer();
             entityToGameObjects.Clear();
 
             base.OnDestroyManager();
