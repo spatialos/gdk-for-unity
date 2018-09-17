@@ -51,10 +51,20 @@ namespace Improbable.Gdk.Tools
 
         public static void LaunchClient()
         {
-            var command = GetCommand();
-            var commandArgs = GenerateCommandArgs("local worker launch UnityClient default");
+            Launch("Launch standalone client", "local worker launch UnityClient default", "spatial_*.log");
+        }
 
-            var processInfo = new ProcessStartInfo(command, commandArgs)
+        public static void LaunchLocalDeployment()
+        {
+            Launch("Launch SpatialOS locally", "local launch", "*unityclient.log");
+        }
+
+        public static void Launch(string commandName, string commandArgs, string logFileName)
+        {
+            var command = GetCommand();
+            var commandArgsGenerated = GenerateCommandArgs(commandArgs);
+
+            var processInfo = new ProcessStartInfo(command, commandArgsGenerated)
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
@@ -65,7 +75,7 @@ namespace Improbable.Gdk.Tools
 
             if (process == null)
             {
-                Debug.LogError("Failed to start a standalone client locally.");
+                Debug.LogError($"Failed to start a process for the command: {commandName}");
                 return;
             }
 
@@ -79,17 +89,17 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "external-default-unityclient.log")
+                var latestLogFile = Directory.GetFiles(logPath, logFileName)
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
 
                 if (latestLogFile == null)
                 {
-                    Debug.LogError($"Could not find a standalone client log file in {logPath}.");
+                    Debug.LogError($"Could not find a log file in {logPath}.");
                     return;
                 }
 
-                var message = $"Unity Standalone Client local launch logfile: {latestLogFile.FullName}";
+                var message = $"Logfile for the {commandName} command: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
@@ -99,65 +109,6 @@ namespace Improbable.Gdk.Tools
                 {
                     var content = File.ReadAllText(latestLogFile.FullName);
                     Debug.LogError($"{message}\n{content}");
-                }
-
-                process.Dispose();
-                process = null;
-            };
-        }
-
-        public static void LaunchLocalDeployment()
-        {
-            BuildConfig();
-
-            var command = GetCommand();
-            var commandArgs = GenerateCommandArgs("local launch");
-
-            var processInfo = new ProcessStartInfo(command, commandArgs)
-            {
-                CreateNoWindow = false,
-                UseShellExecute = true,
-                WorkingDirectory = SpatialProjectRootDir
-            };
-
-            var process = Process.Start(processInfo);
-
-            if (process == null)
-            {
-                Debug.LogError("Failed to start SpatialOS locally.");
-                return;
-            }
-
-            process.EnableRaisingEvents = true;
-            process.Exited += (sender, args) =>
-            {
-                // N.B. This callback is run on a different thread.
-                if (process.ExitCode == 0)
-                {
-                    return;
-                }
-
-                var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, "spatial_*.log")
-                    .Select(f => new FileInfo(f))
-                    .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
-
-                if (latestLogFile == null)
-                {
-                    Debug.LogError($"Could not find a spatial log file in {logPath}.");
-                    return;
-                }
-
-                var message = $"Spatial local launch logfile: {latestLogFile.FullName}";
-
-                if (WasProcessKilled(process))
-                {
-                    Debug.Log(message);
-                }
-                else
-                {
-                    var content = File.ReadAllText(latestLogFile.FullName);
-                    Debug.LogError(message = $"{message}\n{content}");
                 }
 
                 process.Dispose();
