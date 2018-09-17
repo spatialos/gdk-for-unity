@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
-using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
+using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.TestTools;
-using ComponentWithEvents = Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
+using ComponentWithEvents = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents;
 
 namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
 {
@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
     internal class EventTests
     {
         private ComponentWithEvents.Requirable.Reader readerPublic;
+        private ComponentWithEvents.Requirable.Writer writerPublic;
         private ComponentWithEvents.Requirable.ReaderWriterImpl readerWriterInternal;
         private EntityManager entityManager;
         private Entity entity;
@@ -29,6 +30,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
             readerWriterInternal =
                 new ComponentWithEvents.Requirable.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
             readerPublic = readerWriterInternal;
+            writerPublic = readerWriterInternal;
         }
 
         [TearDown]
@@ -38,10 +40,19 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
         }
 
         [Test]
-        public void Event_callback_is_invoked()
+        public void Event_callback_is_invoked_through_reader()
         {
             bool callbackInvoked = false;
             readerPublic.OnEvt += (ev => callbackInvoked = true);
+            readerWriterInternal.OnEvtEvent(new Empty());
+            Assert.IsTrue(callbackInvoked);
+        }
+
+        [Test]
+        public void Event_callback_is_invoked_through_writer()
+        {
+            bool callbackInvoked = false;
+            writerPublic.OnEvt += (ev => callbackInvoked = true);
             readerWriterInternal.OnEvtEvent(new Empty());
             Assert.IsTrue(callbackInvoked);
         }

@@ -85,8 +85,8 @@ markStartOfBlock "Generated Code Testing"
         -batchmode \
         -projectPath "${PROJECT_DIR}/test-project" \
         -runTests \
-        -testPlatform playmode \
-        -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
+        -testPlatform editmode \
+        -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
         -testResults "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
 
     TEST_PROJECT_EDITMODE_TEST_RESULT=$?

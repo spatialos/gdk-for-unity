@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocsLinter", "DocsLinter\DocsLinter.csproj", "{A8D920E3-1239-4280-9FD8-CEB5D013DE45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindUnity", "FindUnity\FindUnity.csproj", "{B78813CB-B137-4217-8686-606716EBDC36}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityPaths", "UnityPaths\UnityPaths.csproj", "{6B5EDA68-527B-4A29-9E82-F3F384C12663}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunUnity", "RunUnity\RunUnity.csproj", "{EC601956-117E-484C-A813-5E500DAFFDB2}"
@@ -21,10 +19,6 @@ Global
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8D920E3-1239-4280-9FD8-CEB5D013DE45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B78813CB-B137-4217-8686-606716EBDC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B78813CB-B137-4217-8686-606716EBDC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B78813CB-B137-4217-8686-606716EBDC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B78813CB-B137-4217-8686-606716EBDC36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B5EDA68-527B-4A29-9E82-F3F384C12663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B5EDA68-527B-4A29-9E82-F3F384C12663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B5EDA68-527B-4A29-9E82-F3F384C12663}.Release|Any CPU.ActiveCfg = Release|Any CPU

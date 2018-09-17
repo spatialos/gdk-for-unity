@@ -1,8 +1,6 @@
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 #region Diagnostic control
 

@@ -1,6 +1,5 @@
-using Generated.Improbable.Transform;
-using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;

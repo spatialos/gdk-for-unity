@@ -1,69 +1,69 @@
 using System.Collections.Generic;
-using Generated.Playground;
 using Improbable.Gdk.GameObjectRepresentation;
-using Playground;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
-public class ProcessSpinnerColorChange : MonoBehaviour
+namespace Playground.MonoBehaviours
 {
-    [Require] private Collisions.Requirable.Reader collisionsReader;
-    [Require] private SpinnerColor.Requirable.Reader colorReader;
-
-    private float collideTime;
-    private bool flashing;
-
-    [SerializeField] private float flashTime = 0.2f;
-
-    private MeshRenderer meshRenderer;
-
-    private static Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
-    private static MaterialPropertyBlock flashingMaterial;
-
-    [RuntimeInitializeOnLoadMethod]
-    public static void SetupColors()
+    public class ProcessSpinnerColorChange : MonoBehaviour
     {
-        flashingMaterial = new MaterialPropertyBlock();
-        flashingMaterial.SetColor("_Color", UnityEngine.Color.magenta);
-        ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
-    }
+        [Require] private Collisions.Requirable.Reader collisionsReader;
+        [Require] private SpinnerColor.Requirable.Reader colorReader;
 
-    private void OnEnable()
-    {
-        collisionsReader.OnPlayerCollided += HandleCollisionEvent;
-        colorReader.ColorUpdated += HandleColorChange;
-    }
+        private float collideTime;
+        private bool flashing;
 
-    private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        if (meshRenderer == null)
+        [SerializeField] private float flashTime = 0.2f;
+
+        private MeshRenderer meshRenderer;
+
+        private static Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
+        private static MaterialPropertyBlock flashingMaterial;
+
+        [RuntimeInitializeOnLoadMethod]
+        public static void SetupColors()
         {
-            Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
+            flashingMaterial = new MaterialPropertyBlock();
+            flashingMaterial.SetColor("_Color", UnityEngine.Color.magenta);
+            ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
         }
-    }
 
-    private void HandleCollisionEvent(Empty empty)
-    {
-        collideTime = Time.time;
-        flashing = true;
-        meshRenderer.SetPropertyBlock(flashingMaterial);
-    }
-
-    private void HandleColorChange(Color color)
-    {
-        if (!flashing)
+        private void OnEnable()
         {
-            meshRenderer.SetPropertyBlock(materialPropertyBlocks[color]);
+            collisionsReader.OnPlayerCollided += HandleCollisionEvent;
+            colorReader.ColorUpdated += HandleColorChange;
         }
-    }
 
-    private void Update()
-    {
-        if (flashing && Time.time - collideTime > flashTime)
+        private void Awake()
         {
-            meshRenderer.SetPropertyBlock(materialPropertyBlocks[colorReader.Data.Color]);
-            flashing = false;
+            meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer == null)
+            {
+                Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
+            }
+        }
+
+        private void HandleCollisionEvent(Empty empty)
+        {
+            collideTime = Time.time;
+            flashing = true;
+            meshRenderer.SetPropertyBlock(flashingMaterial);
+        }
+
+        private void HandleColorChange(Color color)
+        {
+            if (!flashing)
+            {
+                meshRenderer.SetPropertyBlock(materialPropertyBlocks[color]);
+            }
+        }
+
+        private void Update()
+        {
+            if (flashing && Time.time - collideTime > flashTime)
+            {
+                meshRenderer.SetPropertyBlock(materialPropertyBlocks[colorReader.Data.Color]);
+                flashing = false;
+            }
         }
     }
 }

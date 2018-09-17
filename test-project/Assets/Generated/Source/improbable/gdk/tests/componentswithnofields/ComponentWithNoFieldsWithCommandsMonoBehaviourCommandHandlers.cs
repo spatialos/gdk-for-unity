@@ -12,7 +12,7 @@ using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
@@ -31,7 +31,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
                     entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
                         .Add(Cmd.CreateResponse(Request, payload));
@@ -71,7 +71,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.logger = logger;
                 }
 
-                public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
+                public void SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
                 {
                     if (!VerifyNotDisposed())
                     {
