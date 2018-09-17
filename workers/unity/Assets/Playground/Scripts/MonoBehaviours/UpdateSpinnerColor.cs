@@ -1,8 +1,6 @@
 ﻿using System;
-using Generated.Playground;
 using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 namespace Playground.MonoBehaviours
 {

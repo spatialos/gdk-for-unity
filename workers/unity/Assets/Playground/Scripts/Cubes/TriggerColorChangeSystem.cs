@@ -1,9 +1,7 @@
 using System;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 #region Diagnostic control
 
@@ -31,9 +29,9 @@ namespace Playground
         private int colorIndex;
         private float nextColorChange;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             colorValues = Enum.GetValues(typeof(Color));
         }

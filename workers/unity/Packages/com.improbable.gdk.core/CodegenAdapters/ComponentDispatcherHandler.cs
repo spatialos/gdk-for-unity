@@ -1,3 +1,4 @@
+using System;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;

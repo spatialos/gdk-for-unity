@@ -11,8 +11,9 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         [Inject] private WorkerSystem worker;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
+            base.OnCreateManager();
             Linker = new EntityGameObjectLinker(World, worker);
             Enabled = false;
         }

@@ -1,12 +1,10 @@
 using System;
-using Generated.Improbable;
-using Generated.Improbable.PlayerLifecycle;
-using Generated.Improbable.Transform;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
+using Improbable.PlayerLifecycle;
+using Improbable.Transform;
 using UnityEngine;
-using Color = Generated.Playground.Color;
-using Quaternion = Generated.Improbable.Transform.Quaternion;
+using Quaternion = Improbable.Transform.Quaternion;
 
 namespace Playground.Editor.SnapshotGenerator
 {
@@ -78,7 +76,7 @@ namespace Playground.Editor.SnapshotGenerator
                     {
                         return;
                     }
-                    
+
                     var entity = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
 
                     snapshot.AddEntity(entity);

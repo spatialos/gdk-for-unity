@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Tools
 
         private static string[] ConstructArguments()
         {
-            var toolsConfig = ScriptableGdkToolsConfiguration.GetOrCreateInstance();
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var baseArgs = new List<string>
             {
