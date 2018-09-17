@@ -1,14 +1,14 @@
 ﻿using System;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
 {
     [TestFixture]
-    internal class ReaderUpdateTests : ReaderWriterTestsBase
+    internal class ReaderWriterUpdateTests : ReaderWriterTestsBase
     {
         [Test]
         public void ComponentUpdated_gets_triggered_when_the_reader_receives_an_update()
@@ -74,6 +74,26 @@ namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
             bool floatFieldUpdated = false;
             float receivedFloatValue = 0;
             ReaderPublic.FloatFieldUpdated += newValue =>
+            {
+                floatFieldUpdated = true;
+                receivedFloatValue = newValue;
+            };
+            ReaderWriterInternal.OnComponentUpdate(new BlittableComponent.Update
+            {
+                FloatField = new Option<float>(10.0f),
+            });
+
+            Assert.IsTrue(floatFieldUpdated,
+                "The update contains a float field but the callback for the float field was not called.");
+            Assert.AreEqual(10.0f, receivedFloatValue);
+        }
+
+        [Test]
+        public void FieldUpdates_get_called_through_writer()
+        {
+            bool floatFieldUpdated = false;
+            float receivedFloatValue = 0;
+            WriterPublic.FloatFieldUpdated += newValue =>
             {
                 floatFieldUpdated = true;
                 receivedFloatValue = newValue;

@@ -1,8 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -18,9 +27,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private readonly Queue<long> samples = new Queue<long>();
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             PhysicsTicksPerRealSecond = 1.0f / Time.fixedDeltaTime;
         }
 

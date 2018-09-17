@@ -1,8 +1,18 @@
-﻿using Generated.Improbable.Transform;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -31,7 +41,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private struct TransformData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentArray<Transform> UnityTransform;
+            [ReadOnly] public ComponentArray<UnityEngine.Transform> UnityTransform;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
             [WriteOnly] public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
             [WriteOnly] public BufferArray<BufferedTransform> TransformBuffer;

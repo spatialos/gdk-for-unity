@@ -55,9 +55,9 @@ namespace Improbable.Gdk.GameObjectCreation
             this.gameObjectCreator = gameObjectCreator;
         }
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }

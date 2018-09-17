@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public string Generate(EnumDefinitionRaw enumDefinition, string package)
         {
-            qualifiedNamespace = UnityTypeMappings.PackagePrefix + package;
+            qualifiedNamespace = package;
             this.enumDefinition = enumDefinition;
 
             return TransformText();

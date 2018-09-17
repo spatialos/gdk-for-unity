@@ -1,8 +1,17 @@
-using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.PlayerLifecycle;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Improbable.Gdk.PlayerLifecycle
 {

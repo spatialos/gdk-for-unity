@@ -11,6 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseName => Formatting.SnakeCaseToCamelCase(rawFieldDefinition.name);
         public int FieldNumber => rawFieldDefinition.Number;
         public bool IsBlittable;
+        public bool CanBeEmpty;
 
         private IFieldType fieldType;
         private FieldDefinitionRaw rawFieldDefinition;
@@ -23,14 +24,17 @@ namespace Improbable.Gdk.CodeGenerator
             if (rawFieldDefinition.IsOption())
             {
                 fieldType = new OptionFieldType(rawFieldDefinition.optionType, enumSet);
+                CanBeEmpty = true;
             }
             else if (rawFieldDefinition.IsList())
             {
                 fieldType = new ListFieldType(rawFieldDefinition.listType, enumSet);
+                CanBeEmpty = true;
             }
             else if (rawFieldDefinition.IsMap())
             {
                 fieldType = new MapFieldType(rawFieldDefinition.mapType, enumSet);
+                CanBeEmpty = true;
             }
             else
             {
@@ -91,6 +95,11 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber,
                 indents);
+        }
+
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObj, int indents)
+        {
+            return fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber, indents);
         }
     }
 }
