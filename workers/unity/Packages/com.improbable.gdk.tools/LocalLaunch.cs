@@ -183,20 +183,6 @@ namespace Improbable.Gdk.Tools
             };
         }
 
-        private static string GetCommand()
-        {
-            
-        }
-
-        private static string GenerateCommandArgs(string command)
-        {
-            string generatedCommandArgs = command;
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-            }
-            return generatedCommandArgs;
-        }
-
         private static bool WasProcessKilled(Process process)
         {
             if (process == null)
