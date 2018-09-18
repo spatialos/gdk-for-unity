@@ -203,14 +203,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
             componentAuthRequirementsForBehaviours[behaviourType] = componentsRequiredWithAuthority.ToList();
 
             var workerTypeAttribute = behaviourType.GetCustomAttribute<WorkerTypeAttribute>();
-            if (workerTypeAttribute != null)
-            {
-                componentWorkerTypeRequirementsForBehaviours[behaviourType] = workerTypeAttribute.WorkerTypes;
-            }
-            else
-            {
-                componentWorkerTypeRequirementsForBehaviours[behaviourType] = null;
-            }
+            workerTypeRequirementsForBehaviours[behaviourType] =
+                workerTypeAttribute?.WorkerTypes;
         }
 
         private const BindingFlags MemberFlags = BindingFlags.Instance | BindingFlags.NonPublic |
