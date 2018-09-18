@@ -26,14 +26,11 @@ namespace Improbable.Gdk.Core.Commands
                 private readonly Entity entity;
                 private readonly EntityManager entityManager;
 
-                private readonly ILogDispatcher logDispatcher;
-
                 private WorldCommandRequestSender(Entity entity, EntityManager entityManager,
                     ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
-                    this.logDispatcher = logDispatcher;
                 }
 
                 public long ReserveEntityIds(uint numberOfEntityIds, uint? timeoutMillis = null, object context = null)
@@ -89,14 +86,6 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return -1;
-                    }
-
-                    if (entityQuery.ResultType is SnapshotResultType)
-                    {
-                        logDispatcher.HandleLog(
-                            LogType.Warning,
-                            new LogEvent("Cannot create entity queries returning component data - dropping query."));
                         return -1;
                     }
 

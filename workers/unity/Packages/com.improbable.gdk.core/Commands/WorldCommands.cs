@@ -4,7 +4,9 @@ using System.Linq;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
+using UnityEngine;
 using Entity = Improbable.Worker.Core.Entity;
+using Object = System.Object;
 
 namespace Improbable.Gdk.Core.Commands
 {
@@ -697,6 +699,7 @@ namespace Improbable.Gdk.Core.Commands
 
             public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
             {
+                Debug.LogWarning("Cannot create entity queries returning component data - dropping query.");
                 return new Request
                 {
                     EntityQuery = entityQuery,
