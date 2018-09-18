@@ -1,6 +1,9 @@
 ﻿using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
+using Improbable.Worker.Query;
 using Unity.Entities;
+using UnityEditor.PackageManager.Requests;
+using UnityEngine;
 
 #region Diagnostic control
 
@@ -23,11 +26,14 @@ namespace Improbable.Gdk.Core.Commands
                 private readonly Entity entity;
                 private readonly EntityManager entityManager;
 
+                private readonly ILogDispatcher logDispatcher;
+
                 private WorldCommandRequestSender(Entity entity, EntityManager entityManager,
                     ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
+                    this.logDispatcher = logDispatcher;
                 }
 
                 public long ReserveEntityIds(uint numberOfEntityIds, uint? timeoutMillis = null, object context = null)
@@ -86,8 +92,15 @@ namespace Improbable.Gdk.Core.Commands
                         return -1;
                     }
 
-                    var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, context);
+                    if (entityQuery.ResultType is SnapshotResultType)
+                    {
+                        logDispatcher.HandleLog(
+                            LogType.Warning,
+                            new LogEvent("Cannot send entity queries returning component data - dropping query."));
+                        return -1;
+                    }
 
+                    var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, context);
                     entityManager.GetComponentData<EntityQuery.CommandSender>(entity)
                         .RequestsToSend.Add(request);
 
