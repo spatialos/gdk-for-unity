@@ -33,9 +33,9 @@ namespace Improbable.Gdk.Tools
         }
 
         [MenuItem("SpatialOS/Launch standalone client")]
-        private static void LaunchAdditionalClientMenu()
+        private static void LaunchStandaloneClient()
         {
-            Debug.Log("Launching a standalone client locally...");
+            Debug.Log("Launching a standalone client");
             EditorApplication.delayCall += LaunchClient;
         }
 
@@ -51,8 +51,17 @@ namespace Improbable.Gdk.Tools
 
         public static void LaunchClient()
         {
-            var command = GetCommand();
+            var command = Common.SpatialBinary;
             var commandArgs = GenerateCommandArgs("local worker launch UnityClient default");
+
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                command = "osascript";
+                commandArgs = $@"-e 'tell application ""Terminal""
+                                     activate
+                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
+                                     end tell'";
+            }
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
             {
@@ -110,8 +119,17 @@ namespace Improbable.Gdk.Tools
         {
             BuildConfig();
 
-            var command = GetCommand();
+            var command = Common.SpatialBinary;
             var commandArgs = GenerateCommandArgs("local launch");
+
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                command = "osascript";
+                commandArgs = $@"-e 'tell application ""Terminal""
+                                     activate
+                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
+                                     end tell'";
+            }
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
             {
@@ -167,11 +185,7 @@ namespace Improbable.Gdk.Tools
 
         private static string GetCommand()
         {
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                return "osascript";
-            }
-            return Common.SpatialBinary;
+            
         }
 
         private static string GenerateCommandArgs(string command)
@@ -179,7 +193,6 @@ namespace Improbable.Gdk.Tools
             string generatedCommandArgs = command;
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
-                generatedCommandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}\"\nend tell'";
             }
             return generatedCommandArgs;
         }
