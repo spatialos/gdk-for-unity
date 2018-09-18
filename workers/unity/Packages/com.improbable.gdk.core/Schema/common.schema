@@ -1,5 +1,4 @@
 package improbable.core;
-
 import "improbable/vector3.schema";
 
 type EmptyMessage {}
