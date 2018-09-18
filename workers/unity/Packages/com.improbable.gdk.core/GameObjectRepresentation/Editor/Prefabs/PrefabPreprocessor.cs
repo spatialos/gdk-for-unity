@@ -78,7 +78,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
                    && EditorUtility.GetObjectEnabled(obj) == 1;
         }
 
-        private static bool DoesBehaviourRequireReadersOrWriters(Type targetType)
+        private static bool DoesBehaviourNeedConditionalEnabling(Type targetType)
         {
             return
                 targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
@@ -90,7 +90,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
         private static bool DoesBehaviourNeedFixing(MonoBehaviour monoBehaviour)
         {
             return IsBehaviourEnabledInEditor(monoBehaviour) &&
-                   DoesBehaviourRequireReadersOrWriters(monoBehaviour.GetType());
+                   DoesBehaviourNeedConditionalEnabling(monoBehaviour.GetType());
         }
     }
 }

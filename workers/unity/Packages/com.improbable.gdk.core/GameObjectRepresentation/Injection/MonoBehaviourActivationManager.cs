@@ -54,7 +54,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 }
 
                 var behaviourType = behaviour.GetType();
-                if (injector.HasRequiredFields(behaviourType))
+                if (injector.IsSpatialOSBehaviour(behaviourType))
                 {
                     var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
                     var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);

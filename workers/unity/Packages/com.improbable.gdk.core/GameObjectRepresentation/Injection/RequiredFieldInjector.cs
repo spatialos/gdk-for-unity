@@ -19,7 +19,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             new Dictionary<Type, List<uint>>();
         private readonly Dictionary<Type, List<uint>> componentAuthRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
-        private readonly Dictionary<Type, string[]> componentWorkerTypeRequirementsForBehaviours =
+        private readonly Dictionary<Type, string[]> workerTypeRequirementsForBehaviours =
             new Dictionary<Type, string[]>();
 
         private readonly ILogDispatcher logger;
@@ -40,10 +40,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
             this.injectableFactory = new InjectableFactory(entityManager, logger);
         }
 
-        public bool HasRequiredFields(Type behaviourType)
+        public bool IsSpatialOSBehaviour(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return componentWorkerTypeRequirementsForBehaviours[behaviourType] != null || fieldInfoCache[behaviourType].Count > 0;
+            return workerTypeRequirementsForBehaviours[behaviourType] != null || fieldInfoCache[behaviourType].Count > 0;
         }
 
         public Dictionary<InjectableId, IInjectable[]> InjectAllRequiredFields(MonoBehaviour behaviour, Entity entity)
@@ -125,7 +125,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         public string[] GetComponentWorkerTypeRequirementsForBehaviours(Type behaviourType)
         {
             EnsureLoaded(behaviourType);
-            return componentWorkerTypeRequirementsForBehaviours[behaviourType];
+            return workerTypeRequirementsForBehaviours[behaviourType];
         }
 
         private void EnsureLoaded(Type behaviourType)
