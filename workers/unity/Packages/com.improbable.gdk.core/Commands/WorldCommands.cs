@@ -97,14 +97,18 @@ namespace Improbable.Gdk.Core.Commands
 
             public struct ReceivedResponse
             {
-                public CreateEntityResponseOp Op { get; }
+                public StatusCode StatusCode { get; }
+                public string Message { get; }
+                public EntityId? EntityId { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
                 public long RequestId { get; }
 
                 internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, long requestId)
                 {
-                    Op = op;
+                    StatusCode = op.StatusCode;
+                    Message = op.Message;
+                    EntityId = op.EntityId;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
@@ -296,14 +300,18 @@ namespace Improbable.Gdk.Core.Commands
 
             public struct ReceivedResponse
             {
-                public DeleteEntityResponseOp Op { get; }
+                public StatusCode StatusCode { get; }
+                public string Message { get; }
+                public EntityId EntityId { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
                 public long RequestId { get; }
 
                 internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, long requestId)
                 {
-                    Op = op;
+                    StatusCode = op.StatusCode;
+                    Message = op.Message;
+                    EntityId = op.EntityId;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
@@ -495,14 +503,20 @@ namespace Improbable.Gdk.Core.Commands
 
             public struct ReceivedResponse
             {
-                public ReserveEntityIdsResponseOp Op { get; }
+                public StatusCode StatusCode { get; }
+                public string Message { get; }
+                public EntityId? FirstEntityId { get; }
+                public int NumberOfEntityIds { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
                 public long RequestId { get; }
 
                 internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, long requestId)
                 {
-                    Op = op;
+                    StatusCode = op.StatusCode;
+                    Message = op.Message;
+                    FirstEntityId = op.FirstEntityId;
+                    NumberOfEntityIds = op.NumberOfEntityIds;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
@@ -694,14 +708,20 @@ namespace Improbable.Gdk.Core.Commands
 
             public struct ReceivedResponse
             {
-                public EntityQueryResponseOp Op { get; }
+                public StatusCode StatusCode { get; }
+                public string Message { get; }
+                public Dictionary<EntityId, Entity> Result { get; }
+                public int ResultCount { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
                 public long RequestId { get; }
 
                 internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId)
                 {
-                    Op = op;
+                    StatusCode = op.StatusCode;
+                    Message = op.Message;
+                    Result = op.Result;
+                    ResultCount = op.ResultCount;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
