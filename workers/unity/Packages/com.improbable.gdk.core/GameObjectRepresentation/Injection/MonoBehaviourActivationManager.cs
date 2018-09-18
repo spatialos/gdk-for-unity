@@ -80,18 +80,15 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
                     if (readRequirementCount > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, componentReadRequirements,
-                            behavioursRequiringComponentsPresent);
+                        AddBehaviourForComponentIds(behaviour, componentReadRequirements, behavioursRequiringComponentsPresent);
                     }
 
                     if (authRequirementCount > 0)
                     {
-                        AddBehaviourForComponentIds(behaviour, componentAuthRequirements,
-                            behavioursRequiringComponentsWithAuth);
+                        AddBehaviourForComponentIds(behaviour, componentAuthRequirements, behavioursRequiringComponentsWithAuth);
                     }
 
-                    numUnsatisfiedRequirements[behaviour] =
-                        componentReadRequirements.Count + componentAuthRequirements.Count;
+                    numUnsatisfiedRequirements[behaviour] = componentReadRequirements.Count + componentAuthRequirements.Count;
 
                     RunWithExceptionHandling(() => behaviour.enabled = false);
                 }
