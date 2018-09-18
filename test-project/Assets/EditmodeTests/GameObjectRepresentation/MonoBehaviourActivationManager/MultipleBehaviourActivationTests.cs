@@ -99,7 +99,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
                 "Reader Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " even if authority is lost");
             Assert.IsFalse(TestGameObject.GetComponent<WriterBehaviour>().enabled,
-                "Writer Behaviour not be disabled after DisableSpatialOSBehaviours is called" +
+                "Writer Behaviour should not be disabled after DisableSpatialOSBehaviours is called" +
                 " after authority is lost");
         }
     }
