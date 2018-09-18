@@ -1,70 +1,90 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Worker.Core;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
-        private MutableView view;
+        private Connection connection;
 
-        private readonly List<int> registeredReplicators = new List<int>();
-        private readonly List<int> commandSenders = new List<int>();
+        private readonly List<ComponentReplicator> componentReplicators =
+            new List<ComponentReplicator>();
 
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
 
-            worker = WorkerRegistry.GetWorkerForWorld(World);
-            view = worker.View;
+            connection = World.GetExistingManager<WorkerSystem>().Connection;
 
-            GenerateComponentGroups();
+            PopulateDefaultComponentReplicators();
         }
 
-        private void GenerateComponentGroups()
+        private void PopulateDefaultComponentReplicators()
         {
-            foreach (var componentTranslatorPair in view.TranslationUnits)
+            // Find all component specific replicators and create an instance.
+            var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract);
+
+            foreach (var componentReplicationType in componentReplicationTypes)
             {
-                var componentIndex = componentTranslatorPair.Key;
-                var componentTranslator = componentTranslatorPair.Value;
+                var componentReplicationHandler =
+                    (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
+                        new object[] { EntityManager, World });
 
-                var replicationComponentGroup = GetComponentGroup(componentTranslator.ReplicationComponentTypes);
-                componentTranslator.ReplicationComponentGroup = replicationComponentGroup;
-
-                registeredReplicators.Add(componentIndex);
-                commandSenders.Add(componentIndex);
+                componentReplicators.Add(new ComponentReplicator
+                {
+                    ComponentId = componentReplicationHandler.ComponentId,
+                    Handler = componentReplicationHandler,
+                    ReplicationComponentGroup =
+                        GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
+                });
             }
         }
 
-        public bool TryRegisterCustomReplicationSystem(ComponentType type)
+        public bool TryRegisterCustomReplicationSystem(uint componentId)
         {
-            if (!registeredReplicators.Contains(type.TypeIndex))
+            if (componentReplicators.All(componentReplicator => componentReplicator.ComponentId != componentId))
             {
                 return false;
             }
 
             // The default replication system is removed, instead the custom one is responsible for replication.
-            return registeredReplicators.Remove(type.TypeIndex);
+            return componentReplicators.Remove(componentReplicators.First(
+                componentReplicator => componentReplicator.ComponentId == componentId));
         }
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (connection == null)
             {
                 return;
             }
 
-            var connection = worker.Connection;
-
-            foreach (var componentTypeIndex in registeredReplicators)
+            foreach (var replicator in componentReplicators)
             {
-                view.TranslationUnits[componentTypeIndex].ExecuteReplication(connection);
+                replicator.Execute(this, connection);
             }
+        }
 
-            foreach (var componentTypeIndex in commandSenders)
+        private struct ComponentReplicator
+        {
+            public uint ComponentId;
+            public ComponentReplicationHandler Handler;
+            public ComponentGroup ReplicationComponentGroup;
+            public List<ComponentGroup> CommandReplicationGroups;
+
+            public void Execute(SpatialOSSendSystem sendSystem, Connection connection)
             {
-                view.TranslationUnits[componentTypeIndex].SendCommands(connection);
+                Handler.ExecuteReplication(ReplicationComponentGroup, connection);
+                Handler.SendCommands(sendSystem, connection);
             }
         }
     }

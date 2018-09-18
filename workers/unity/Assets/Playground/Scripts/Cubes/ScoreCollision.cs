@@ -1,5 +1,5 @@
 using Generated.Playground;
-using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectRepresentation;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,33 +8,25 @@ public class ScoreCollision : MonoBehaviour
     private EntityManager entityManager;
     private SpatialOSComponent component;
 
+    private void Start()
+    {
+        component = GetComponent<SpatialOSComponent>();
+        entityManager = component.World.GetExistingManager<EntityManager>();
+    }
+
     public void OnCollisionEnter(Collision col)
     {
-        if (entityManager == null)
+        if (!col.gameObject || !col.gameObject.CompareTag("Cube"))
         {
-            component = GetComponent<SpatialOSComponent>();
-            if (!component)
-            {
-                Debug.LogError("Could not get SpatialOSComponent.");
-                return;
-            }
-
-            entityManager = component.World.GetExistingManager<EntityManager>();
+            return;
         }
 
-        if (col.gameObject && col.gameObject.tag == "Cube")
+        var otherComponent = col.gameObject.GetComponentInParent<SpatialOSComponent>();
+        if (entityManager.HasComponent<Launchable.Component>(component.Entity)
+            && !entityManager.HasComponent<Playground.CollisionComponent>(component.Entity)
+            && otherComponent)
         {
-            var otherComponent = col.gameObject.GetComponent<SpatialOSComponent>();
-            if (entityManager.HasComponent(component.Entity, typeof(SpatialOSLaunchable))
-                && !entityManager.HasComponent(component.Entity, typeof(Playground.CollisionComponent))
-                && otherComponent)
-            {
-                entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent
-                {
-                    ownEntity = component.Entity,
-                    otherEntity = otherComponent.Entity,
-                });
-            }
+            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent(otherComponent.Entity));
         }
     }
 }

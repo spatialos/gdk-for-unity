@@ -1,16 +1,14 @@
-using Generated.Improbable.Transform;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    public class BufferedTransform : Component
+    [InternalBufferCapacity(TransformSynchronizationConfig.MaxLoadMatchedBufferSize)]
+    public struct BufferedTransform : IBufferElementData
     {
-        public System.Collections.Generic.List<SpatialOSTransform> TransformUpdates;
-        public SpatialOSTransform LastTransformSnapshot;
-
-        public BufferedTransform()
-        {
-            TransformUpdates = new System.Collections.Generic.List<SpatialOSTransform>();
-        }
+        public Vector3 Position;
+        public Vector3 Velocity;
+        public Quaternion Orientation;
+        public uint PhysicsTick;
     }
 }

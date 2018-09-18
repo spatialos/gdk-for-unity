@@ -24,6 +24,10 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LinkProtocol, RuntimeConfigDefaults.LinkProtocol);
+            config.WorkerId = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerId, string.Empty);
+            config.WorkerType = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.WorkerType, string.Empty);
             return config;
         }
 
@@ -42,6 +46,17 @@ namespace Improbable.Gdk.Core
             {
                 ReceptionistHost = ip,
                 UseExternalIp = true
+            };
+        }
+
+        public static ReceptionistConfig CreateConnectionConfigForiOS()
+        {
+            return new ReceptionistConfig
+            {
+                // By default this config only connects to local IP (127.0.0.1)
+                // Uncomment the following line with hardcoded IP to connect to non-local deployment
+                // ReceptionistHost = "Your IP address",
+                UseExternalIp = true,
             };
         }
     }

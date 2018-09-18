@@ -1,5 +1,5 @@
 {
-  "template": "small",
+  "template": "small_bridge_v2",
   "world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
@@ -8,7 +8,13 @@
     "dimensions": {
       "xMeters": 5000,
       "zMeters": 5000
-    }
+    },
+    "legacy_flags": [
+      {
+        "name": "bridge_qos_max_timeout",
+        "value": "0"
+      }
+    ]
   },
   "workers": [
     {

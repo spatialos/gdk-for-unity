@@ -1,54 +1,55 @@
+using System;
 using System.Collections.Generic;
-using Improbable;
+using System.Linq;
+using Generated.Improbable.PlayerLifecycle;
+using Generated.Improbable.Transform;
+using Generated.Playground;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Legacy;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 
 namespace Playground
 {
     public static class PlayerTemplate
     {
-        private static readonly WorkerRequirementSet GameLogicSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityGameLogic));
-
-        private static readonly WorkerRequirementSet AllWorkersSet =
-            WorkerRegistry.GetWorkerRequirementSet(typeof(UnityClient), typeof(UnityGameLogic));
-
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
             Generated.Improbable.Vector3f position)
         {
-            var clientSet = new WorkerRequirementSet(new Improbable.Collections.List<WorkerAttributeSet>()
+            var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
+
+            if (clientAttribute == null)
             {
-                new WorkerAttributeSet(clientAttributeSet as Improbable.Collections.List<string>)
-            });
+                throw new InvalidOperationException(
+                    "Expected an attribute that is not \"UnityClient\" but none was found.");
+            }
 
-            var location = new Improbable.Transform.Location(position.X, position.Y, position.Z);
-            var rotation = new Improbable.Transform.Quaternion(1, 0, 0, 0);
-            var coordinates = new Coordinates(0, 0, 0);
-            var transformData = new Improbable.Transform.Transform.Data(location, rotation, 0);
-            var metadata = new Metadata.Data(ArchetypeConfig.CharacterArchetype);
-            var playerInput = new Playground.PlayerInput.Data(0, 0, false);
-            var playerHeartbeatClient = new Improbable.PlayerLifecycle.PlayerHeartbeatClient.Data();
-            var playerHeartbeatServer = new Improbable.PlayerLifecycle.PlayerHeartbeatServer.Data();
-            var prefab = new Playground.Prefab.Data(ArchetypeConfig.CharacterArchetype);
-            var archetype = new Playground.ArchetypeComponent.Data(ArchetypeConfig.CharacterArchetype);
-            var launcher = new Playground.Launcher.Data(100, 0);
-            var score = new Playground.Score.Data(0);
+            const string CharacterType = "Character";
 
-            return EntityBuilder.Begin()
-                .AddPositionComponent(coordinates, GameLogicSet)
-                .AddComponent(metadata, GameLogicSet)
+            var transform =
+                TransformInternal.Component.CreateSchemaComponentData(new Location(),
+                    new Quaternion { W = 1, X = 0, Y = 0, Z = 0 }, new Velocity(0.0f, 0.0f, 0.0f), 0, 0.0f);
+            var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
+            var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
+            var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
+            var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
+            var score = Score.Component.CreateSchemaComponentData(0);
+            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
+
+            var entityBuilder = EntityBuilder.Begin()
+                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
+                .AddMetadata(CharacterType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
-                .SetReadAcl(AllWorkersSet)
-                .AddComponent(transformData, GameLogicSet)
-                .AddComponent(playerInput, clientSet)
-                .AddComponent(playerHeartbeatClient, clientSet)
-                .AddComponent(playerHeartbeatServer, GameLogicSet)
-                .AddComponent(prefab, GameLogicSet)
-                .AddComponent(archetype, GameLogicSet)
-                .AddComponent(launcher, GameLogicSet)
-                .AddComponent(score, GameLogicSet)
-                .Build();
+                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
+                .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
+                .AddComponent(transform, clientAttribute)
+                .AddComponent(playerInput, clientAttribute)
+                .AddComponent(launcher, WorkerUtils.UnityGameLogic)
+                .AddComponent(clientHeartbeat, clientAttribute)
+                .AddComponent(serverHeartbeat, WorkerUtils.UnityGameLogic)
+                .AddComponent(score, WorkerUtils.UnityGameLogic)
+                .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic);
+
+            return entityBuilder.Build();
         }
     }
 }

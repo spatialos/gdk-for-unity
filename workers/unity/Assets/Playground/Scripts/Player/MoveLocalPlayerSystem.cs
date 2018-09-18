@@ -1,12 +1,23 @@
 using Generated.Improbable.Transform;
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [UpdateAfter(typeof(LocalPlayerInputSync))]
     internal class MoveLocalPlayerSystem : ComponentSystem
     {
         public struct Speed : IComponentData
@@ -15,30 +26,30 @@ namespace Playground
             public float SpeedSmoothVelocity;
         }
 
-        public struct NewPlayerData
+        private struct NewPlayerData
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
             public SubtractiveComponent<Speed> NoSpeed;
         }
 
-        [Inject] private NewPlayerData newPlayerData;
-
-        public struct PlayerInputData
+        private struct PlayerInputData
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<SpatialOSPlayerInput> PlayerInput;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-            public ComponentDataArray<Speed> Speed;
+            public ComponentDataArray<Speed> SpeedData;
+            [ReadOnly] public ComponentDataArray<PlayerInput.Component> PlayerInput;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
         }
 
+        [Inject] private NewPlayerData newPlayerData;
         [Inject] private PlayerInputData playerInputData;
 
-        private const float WalkSpeed = 2;
-        private const float RunSpeed = 6;
+        private const float WalkSpeed = 2.0f;
+        private const float RunSpeed = 6.0f;
+        private const float MaxSpeed = 8.0f;
 
         private const float TurnSmoothTime = 0.2f;
         private float turnSmoothVelocity;
@@ -61,34 +72,36 @@ namespace Playground
 
             for (var i = 0; i < playerInputData.Length; i++)
             {
-                var rigidBody = playerInputData.Rigidbody[i];
+                var rigidbody = playerInputData.Rigidbody[i];
+                var playerInput = playerInputData.PlayerInput[i];
 
-                var input = new Vector2(playerInputData.PlayerInput[i].Horizontal,
-                    playerInputData.PlayerInput[i].Vertical);
+                var input = new Vector2(playerInput.Horizontal, playerInput.Vertical);
                 var inputDir = input.normalized;
 
                 if (inputDir != Vector2.zero)
                 {
                     var targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
-                    rigidBody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
-                        rigidBody.transform.eulerAngles.y, targetRotation,
+                    rigidbody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
+                        rigidbody.transform.eulerAngles.y, targetRotation,
                         ref turnSmoothVelocity, TurnSmoothTime);
                 }
 
-                var running = playerInputData.PlayerInput[i].Running;
-                var targetSpeed = (running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
-                var speed = playerInputData.Speed[i];
+                var targetSpeed = (playerInput.Running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
+                var speed = playerInputData.SpeedData[i];
                 var currentSpeed = speed.CurrentSpeed;
                 var speedSmoothVelocity = speed.SpeedSmoothVelocity;
 
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime);
-                playerInputData.Speed[i] = new Speed
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime,
+                    MaxSpeed, Time.deltaTime);
+                playerInputData.SpeedData[i] = new Speed
                 {
                     CurrentSpeed = currentSpeed,
                     SpeedSmoothVelocity = speedSmoothVelocity
                 };
 
-                rigidBody.transform.Translate(rigidBody.transform.forward * currentSpeed * Time.deltaTime, Space.World);
+                // This needs to be used instead of add force because this is running in update.
+                // It would be better to store this in another component and have something else use it on fixed update.
+                rigidbody.velocity = rigidbody.transform.forward * currentSpeed;
             }
         }
     }

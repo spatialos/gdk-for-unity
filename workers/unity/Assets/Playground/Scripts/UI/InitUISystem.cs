@@ -5,19 +5,28 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitUISystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialOSLauncher> Launcher;
-            [ReadOnly] public ComponentDataArray<SpatialOSScore> Score;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSPlayerInput>> PlayerInput;
-            [ReadOnly] public ComponentArray<AuthoritiesChanged<SpatialOSPlayerInput>> PlayerInputAuthority;
+            public EntityArray Entites;
+            [ReadOnly] public ComponentDataArray<Launcher.Component> Launcher;
+            [ReadOnly] public ComponentDataArray<Score.Component> Score;
+            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInput;
+            [ReadOnly] public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthority;
         }
 
         [Inject] private Data data;

@@ -1,0 +1,31 @@
+package improbable.transform;
+
+// These are both types to be removed later when we decide on a compression scheme.
+
+type Location {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+type Velocity {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+type Quaternion {
+    float w = 1;
+    float x = 2;
+    float y = 3;
+    float z = 4;
+}
+
+component TransformInternal {
+    id = 11000;
+    Location location = 1;
+    Quaternion rotation = 2;
+    Velocity velocity = 3;
+    uint32 physics_tick = 4;
+    float ticks_per_second = 5;
+}

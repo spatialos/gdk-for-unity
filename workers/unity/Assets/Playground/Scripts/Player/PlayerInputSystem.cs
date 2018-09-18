@@ -31,9 +31,8 @@ namespace Playground
             }
             catch (NullReferenceException)
             {
-                WorkerRegistry.GetWorkerForWorld(World)
-                    .View.LogDispatcher.HandleLog(LogType.Error,
-                        new LogEvent("Could not find movement virtual stick. Movement is now disabled on mobile"));
+                // Worker.GetWorkerFromWorld(World).LogDispatcher.HandleLog(LogType.Error,
+                    // new LogEvent("Could not find movement virtual stick. Movement is now disabled on mobile"));
             }
 
             try
@@ -44,8 +43,8 @@ namespace Playground
             }
             catch (NullReferenceException)
             {
-                WorkerRegistry.GetWorkerForWorld(World).View.LogDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
+                // Worker.GetWorkerFromWorld(World).LogDispatcher.HandleLog(LogType.Error,
+                //     new LogEvent("Could not find virtual camera joystick. Camera movement is now disabled on mobile"));
             }
         }
 

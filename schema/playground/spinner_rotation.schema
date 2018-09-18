@@ -1,0 +1,9 @@
+package playground;
+
+import "playground/empty.schema";
+
+component SpinnerRotation
+{
+    id = 12002;
+    command Empty spinner_toggle_rotation(Empty);
+}

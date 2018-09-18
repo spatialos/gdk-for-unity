@@ -1,15 +1,22 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private WorkerBase worker;
+        private Connection connection;
 
-        private float timeElapsedSinceUpdate = 0.0f;
+        private float timeElapsedSinceUpdate;
 
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
@@ -18,26 +25,25 @@ namespace Playground
         protected override void OnCreateManager(int capacity)
         {
             base.OnCreateManager(capacity);
-            worker = WorkerRegistry.GetWorkerForWorld(World);
+            connection = World.GetExistingManager<WorkerSystem>().Connection;
         }
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (connection == null)
             {
                 return;
             }
 
-            var connection = worker.Connection;
-
             timeElapsedSinceUpdate += Time.deltaTime;
+            
             AddFpsSample();
             if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
                 timeElapsedSinceUpdate = 0;
-                float fps = CalculateFps();
+                var fps = CalculateFps();
                 var load = DefaultLoadCalculation(fps);
-                Improbable.Worker.Metrics metrics = new Improbable.Worker.Metrics
+                var metrics = new Improbable.Worker.Metrics
                 {
                     Load = load
                 };
@@ -45,7 +51,7 @@ namespace Playground
             }
         }
 
-        private float DefaultLoadCalculation(float fps)
+        private static float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
             return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
@@ -63,7 +69,7 @@ namespace Playground
 
         private float CalculateFps()
         {
-            float fps = 0.0f;
+            var fps = 0.0f;
             foreach (var measurement in fpsMeasurements)
             {
                 fps += measurement;

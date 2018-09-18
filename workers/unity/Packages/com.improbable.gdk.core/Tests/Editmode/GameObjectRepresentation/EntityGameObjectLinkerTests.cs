@@ -1,5 +1,8 @@
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.TestUtils;
+using Improbable.Worker;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,21 +11,27 @@ namespace Improbable.Gdk.Core.EditmodeTests
     [TestFixture]
     public class EntityGameObjectLinkerTests
     {
+        private ViewCommandBuffer viewCommandBuffer;
         private World world;
+        private WorkerSystem worker;
         private EntityManager entityManager;
         private EntityGameObjectLinker entityGameObjectLinker;
         private GameObject testGameObject;
         private Entity testEntity;
-        private const long testSpatialEntityId = 1337;
+        private EntityCommandBuffer entityCommandBuffer;
+        private readonly EntityId testSpatialEntityId = new EntityId(1337);
 
         [SetUp]
         public void Setup()
         {
             world = new World("TestWorld");
             entityManager = world.GetOrCreateManager<EntityManager>();
-            entityGameObjectLinker = new EntityGameObjectLinker(world, new MutableView(world, new LoggingDispatcher()));
+            worker = world.CreateManager<WorkerSystem>(null, new LoggingDispatcher(), "TestWorker", Vector3.zero);
+            entityGameObjectLinker = new EntityGameObjectLinker(world, worker);
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
+            viewCommandBuffer = new ViewCommandBuffer(entityManager, new LoggingDispatcher());
+            entityCommandBuffer = new EntityCommandBuffer(Allocator.TempJob);
         }
 
         [TearDown]
@@ -33,6 +42,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
                 Object.DestroyImmediate(testGameObject);
             }
 
+            entityCommandBuffer.Dispose();
             world.Dispose();
         }
 
@@ -40,7 +50,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void LinkGameObjectToEntity_adds_SpatialOSComponent_component()
         {
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
-                new ViewCommandBuffer());
+                viewCommandBuffer);
             var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(spatialOSComponent);
             Assert.AreEqual(testEntity, spatialOSComponent.Entity);
@@ -52,11 +62,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void LinkGameObjectToEntity_adds_GameObject_components_to_entity()
         {
             testGameObject.AddComponent<TestMonoBehaviour>();
-            var viewCommandBuffer = new ViewCommandBuffer();
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 viewCommandBuffer);
             Assert.IsFalse(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
-            viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
+            viewCommandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
 
@@ -65,10 +74,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             testGameObject.AddComponent<TestMonoBehaviour>();
             testGameObject.AddComponent<TestMonoBehaviour>();
-            var viewCommandBuffer = new ViewCommandBuffer();
             entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
                 viewCommandBuffer);
-            viewCommandBuffer.FlushBuffer(new MutableView(world, new LoggingDispatcher()));
+            viewCommandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
     }

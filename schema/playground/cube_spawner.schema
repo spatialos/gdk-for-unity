@@ -1,0 +1,17 @@
+package playground;
+
+import "playground/empty.schema";
+
+type DeleteCubeRequest
+{
+    EntityId cube_entity_id = 1;
+}
+
+component CubeSpawner
+{
+    id = 12011;
+    list<EntityId> spawned_cubes = 1;
+
+    command Empty spawn_cube(Empty);
+    command Empty delete_spawned_cube(DeleteCubeRequest);
+}

@@ -16,7 +16,6 @@ TARGET=${1:-local}
 
 # Back-compat: we need to run this to generate the bridge configurations.
 spatial build build-config UnityClient
-ci/codegen.sh
 
 pushd "${UNITY_PROJECT_DIR}"
     dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
@@ -24,7 +23,7 @@ pushd "${UNITY_PROJECT_DIR}"
         -batchmode \
         -quit \
         -logfile "$(pwd)/../../logs/UnityClientBuild.log" \
-        -executeMethod "Improbable.Gdk.Legacy.BuildSystem.WorkerBuilder.Build" \
+        -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
         +buildWorkerTypes "UnityClient" \
         +buildTarget "${TARGET}"
 popd

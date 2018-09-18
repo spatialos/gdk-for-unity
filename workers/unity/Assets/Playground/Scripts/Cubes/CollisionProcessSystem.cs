@@ -1,15 +1,30 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Playground
 {
     [RemoveAtEndOfTick]
     public struct CollisionComponent : IComponentData
     {
-        public Entity ownEntity;
-        public Entity otherEntity;
+        public Entity OtherEntity;
+
+        public CollisionComponent(Entity otherEntity)
+        {
+            OtherEntity = otherEntity;
+        }
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -19,13 +34,17 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entities;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
+
+            // Gets updated through PostUpdate
+            [ReadOnly] public ComponentDataArray<Launchable.Component> Launchable;
             [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
-            [ReadOnly] public ComponentDataArray<Authoritative<SpatialOSLaunchable>> DenotesAuthority;
+            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
+            [ReadOnly] public ComponentDataArray<Authoritative<Launchable.Component>> DenotesAuthority;
         }
 
         [Inject] private Data data;
+
+        private static readonly EntityId InvalidEntityId = new EntityId(0);
 
         protected override void OnUpdate()
         {
@@ -33,39 +52,36 @@ namespace Playground
             {
                 // Handle all the different possible outcomes of the collision.
                 // This requires looking at their most recent launchers.
+                var launchable = data.Launchable[i];
                 var collision = data.Collision[i];
-                var first = data.Collision[i].ownEntity;
-                var second = data.Collision[i].otherEntity;
-                var first_launchable = EntityManager.GetComponentData<SpatialOSLaunchable>(first);
-                var second_launchable = EntityManager.GetComponentData<SpatialOSLaunchable>(second);
-                var first_launcher = first_launchable.MostRecentLauncher;
-                var second_launcher = second_launchable.MostRecentLauncher;
-                if (first_launcher == second_launcher)
+                var sender = data.Sender[i];
+
+                var otherLaunchable = EntityManager.GetComponentData<Launchable.Component>(collision.OtherEntity);
+                var ourOwner = launchable.MostRecentLauncher;
+                var otherOwner = otherLaunchable.MostRecentLauncher;
+
+                if (ourOwner == otherOwner)
                 {
-                    if (first_launcher != 0)
+                    if (ourOwner.IsValid())
                     {
-                        data.Sender[i].SendIncreaseScoreRequest(first_launcher,
-                            new Generated.Playground.ScoreIncreaseRequest()
-                            {
-                                Amount = 1,
-                            });
+                        sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(
+                            ourOwner, new ScoreIncreaseRequest(1)));
+                        data.Sender[i] = sender;
                     }
                 }
-                else if (second_launcher != 0)
+                else if (otherOwner.IsValid())
                 {
-                    var launchable = data.Launchable[i];
-                    if (first_launcher == 0)
+                    if (!ourOwner.IsValid())
                     {
-                        launchable.MostRecentLauncher = second_launcher;
-                        data.Sender[i].SendIncreaseScoreRequest(second_launcher,
-                            new Generated.Playground.ScoreIncreaseRequest()
-                            {
-                                Amount = 1,
-                            });
+                        sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(otherOwner,
+                            new ScoreIncreaseRequest(1)));
+                        data.Sender[i] = sender;
+
+                        launchable.MostRecentLauncher = otherOwner;
                     }
                     else
                     {
-                        launchable.MostRecentLauncher = 0;
+                        launchable.MostRecentLauncher = InvalidEntityId;
                     }
 
                     PostUpdateCommands.SetComponent(data.Entities[i], launchable);

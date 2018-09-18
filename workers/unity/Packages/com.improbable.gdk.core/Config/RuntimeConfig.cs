@@ -18,7 +18,6 @@ namespace Improbable.Gdk.Core
         public const string LocatorHost = "locatorHost";
         public const string LoginToken = "loginToken";
         public const string ProjectName = "projectName";
-        public const string InfraServicesUrl = "infraServicesUrl";
         public const string ReceptionistHost = "receptionistHost";
         public const string ReceptionistPort = "receptionistPort";
         public const string WorkerId = "workerId";

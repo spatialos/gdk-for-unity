@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Worker;
+using Improbable.Worker.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -8,13 +9,13 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Forwards logEvents and exceptions to the SpatialOS Console and logs locally.
     /// </summary>
-    public class ForwardingDispatcher : ILogDispatcher, IDisposable
+    public class ForwardingDispatcher : ILogDispatcher
     {
-        private Connection connection;
-
         private readonly LogLevel minimumLogLevel;
 
         private bool inHandleLog;
+
+        public Connection Connection { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
@@ -43,13 +44,8 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                connection.SendLogMessage(LogLevel.Error, connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
             }
-        }
-
-        public void SetConnection(Connection connection)
-        {
-            this.connection = connection;
         }
 
         public void HandleLog(LogType type, LogEvent logEvent)
@@ -61,21 +57,21 @@ namespace Improbable.Gdk.Core
                 {
                     // For exception types, Unity expects an exception object to be passed.
                     // Otherwise, it will not be displayed.
-                    Exception exception = logEvent.Exception ?? new Exception(logEvent.ToString());
+                    var exception = logEvent.Exception ?? new Exception(logEvent.ToString());
 
                     Debug.unityLogger.LogException(exception, logEvent.Context);
                 }
                 else
                 {
                     Debug.unityLogger.Log(
-                        logType: type,
-                        message: logEvent,
-                        context: logEvent.Context);
+                        type,
+                        logEvent,
+                        logEvent.Context);
                 }
 
-                LogLevel logLevel = LogTypeMapping[type];
+                var logLevel = LogTypeMapping[type];
 
-                if (connection == null || logLevel < minimumLogLevel)
+                if (Connection == null || logLevel < minimumLogLevel)
                 {
                     return;
                 }
@@ -90,7 +86,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
             }
             finally
             {
@@ -100,6 +96,7 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            Connection = null;
             Application.logMessageReceived -= LogCallback;
         }
     }

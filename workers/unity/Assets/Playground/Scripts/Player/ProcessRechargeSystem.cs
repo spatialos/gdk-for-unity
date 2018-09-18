@@ -1,7 +1,17 @@
 using Generated.Playground;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Playground
 {
@@ -16,8 +26,8 @@ namespace Playground
         {
             public readonly int Length;
             public EntityArray Entity;
-            public ComponentDataArray<Recharging> Reloading;
-            public ComponentDataArray<SpatialOSLauncher> Launcher;
+            public ComponentDataArray<Launcher.Component> Launcher;
+            [ReadOnly] public ComponentDataArray<Recharging> Reloading;
         }
 
         [Inject] private Data data;

@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             public int Value;
         }
 
-        [UsedImplicitly]
+        [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
             private struct PreparationData
@@ -27,7 +26,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 it has ComponentArray<> fields, and not its contents.
                 */
                 public ComponentArray<Rigidbody> GameObjectRigidBody;
-
                 public ComponentDataArray<TestPreparation> PreparationStruct;
             }
 

@@ -5,8 +5,7 @@
         "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Unity.Mathematics",
-        "Improbable.Generated.NetworkTypes"
+        "Unity.Mathematics"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

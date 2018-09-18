@@ -1,32 +1,90 @@
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
+using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class SendCreatePlayerRequestSystem : ComponentSystem
     {
-        private const long PlayerCreatorEntityId = 1;
+        private readonly EntityId playerCreatorEntityId = new EntityId(1);
 
-        public struct Data
+        private struct NewEntityData
         {
             public readonly int Length;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSPlayerCreator>> RequestSenders;
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
             [ReadOnly] public ComponentDataArray<OnConnected> DenotesJustConnected;
+            public EntityArray Entities;
         }
 
-        [Inject] private Data data;
+        private struct SendData
+        {
+            public readonly int Length;
+            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandSenders.CreatePlayer> RequestSenders;
+            [ReadOnly] public ComponentDataArray<ShouldRequestPlayerTag> DenotesShouldRequestPlayer;
+            public EntityArray Entities;
+        }
+
+        private struct ResponseData
+        {
+            public readonly int Length;
+            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponses.CreatePlayer> Responses;
+            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+            public EntityArray Entities;
+        }
+
+        private ILogDispatcher logDispatcher;
+
+        [Inject] private NewEntityData newEntityData;
+        [Inject] private SendData sendData;
+        [Inject] private ResponseData responseData;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+
+            logDispatcher = World.GetExistingManager<WorkerSystem>().LogDispatcher;
+        }
 
         protected override void OnUpdate()
         {
-            var request = new CreatePlayerRequestType
+            for (int i = 0; i < newEntityData.Length; ++i)
             {
-                Position = new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 }
-            };
-            data.RequestSenders[0].SendCreatePlayerRequest(PlayerCreatorEntityId, request);
+                PostUpdateCommands.AddComponent(newEntityData.Entities[i], new ShouldRequestPlayerTag());
+            }
+
+            for (var i = 0; i < sendData.Length; ++i)
+            {
+                var request = new CreatePlayerRequestType(new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
+                var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
+
+                sendData.RequestSenders[i].RequestsToSend
+                    .Add(createPlayerRequest);
+                PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(sendData.Entities[i]);
+            }
+
+            // Currently this has a race condition where you can receive two entites
+            // The fix for this is more sophisticted server side handling of requests
+            for (var i = 0; i < responseData.Length; ++i)
+            {
+                foreach (var receivedResponse in responseData.Responses[i].Responses)
+                {
+                    if (receivedResponse.StatusCode == StatusCode.AuthorityLost)
+                    {
+                        PostUpdateCommands.AddComponent(responseData.Entities[i], new ShouldRequestPlayerTag());
+                    }
+                    else if (receivedResponse.StatusCode != StatusCode.Success)
+                    {
+                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            $"Create player request failed: {receivedResponse.Message}"));
+                    }
+                }
+            }
         }
     }
 }

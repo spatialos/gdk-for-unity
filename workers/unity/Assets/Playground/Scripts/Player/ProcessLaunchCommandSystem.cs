@@ -5,6 +5,15 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -15,25 +24,19 @@ namespace Playground
         private struct LaunchCommandData
         {
             public readonly int Length;
-            [ReadOnly] public EntityArray Entity;
-            public ComponentDataArray<SpatialOSLauncher> Launcher;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launcher.LaunchEntity.Request>> CommandRequests;
-
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLaunchable>> Sender;
+            public EntityArray Entity;
+            public ComponentDataArray<Launcher.Component> Launcher;
+            public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
+            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
         }
 
         private struct LaunchableData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSLaunchable> Launchable;
-
-            [ReadOnly]
-            public ComponentArray<CommandRequests<Generated.Playground.Launchable.LaunchMe.Request>> CommandRequests;
-
-            [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-            [ReadOnly] public ComponentDataArray<CommandRequestSender<SpatialOSLauncher>> Sender;
+            public ComponentDataArray<Launchable.Component> Launchable;
+            public ComponentArray<Rigidbody> Rigidbody;
+            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
+            [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
         }
 
         [Inject] private LaunchCommandData launchCommandData;
@@ -44,7 +47,7 @@ namespace Playground
             // Handle Launch Commands from players. Only allow if they have energy etc.
             for (var i = 0; i < launchCommandData.Length; i++)
             {
-                var sender = launchCommandData.Sender[i];
+                var sender = launchCommandData.Senders[i];
                 var launcher = launchCommandData.Launcher[i];
 
                 if (launcher.RechargeTimeLeft > 0)
@@ -52,20 +55,16 @@ namespace Playground
                     return;
                 }
 
-                var requests = launchCommandData.CommandRequests[i].Buffer;
+                var requests = launchCommandData.Requests[i].Requests;
                 var energyLeft = launcher.EnergyLeft;
                 var j = 0;
                 while (energyLeft > 0f && j < requests.Count)
                 {
-                    var info = requests[j].RawRequest;
+                    var info = requests[j].Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.SendLaunchMeRequest(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
-                    {
-                        ImpactPoint = info.ImpactPoint,
-                        LaunchDirection = info.LaunchDirection,
-                        LaunchEnergy = energy,
-                        Player = info.Player
-                    });
+                    sender.RequestsToSend.Add(Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
+                        new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
+                            energy, info.Player)));
                     energyLeft -= energy;
                     j++;
                 }
@@ -91,24 +90,23 @@ namespace Playground
                 var rigidbody = launchableData.Rigidbody[i];
                 var launchable = launchableData.Launchable[i];
                 var sender = launchableData.Sender[i];
-                var player = 0L;
-                foreach (var request in launchableData.CommandRequests[i].Buffer)
+
+                foreach (var request in launchableData.Requests[i].Requests)
                 {
-                    var info = request.RawRequest;
+                    var info = request.Payload;
                     rigidbody.AddForceAtPosition(
                         new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z) *
                         info.LaunchEnergy * 100.0f,
                         new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                     );
-                    player = info.Player;
-                    launchable.MostRecentLauncher = player;
+                    launchable.MostRecentLauncher = info.Player;
+
+                    sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(
+                        launchable.MostRecentLauncher,
+                        new ScoreIncreaseRequest(1.0f)));
                 }
 
-                sender.SendIncreaseScoreRequest(launchable.MostRecentLauncher,
-                    new Generated.Playground.ScoreIncreaseRequest
-                    {
-                        Amount = 1.0f,
-                    });
+                launchableData.Sender[i] = sender;
                 launchableData.Launchable[i] = launchable;
             }
         }

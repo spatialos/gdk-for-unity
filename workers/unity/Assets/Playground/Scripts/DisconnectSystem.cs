@@ -3,6 +3,15 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -12,7 +21,6 @@ namespace Playground
         {
             public readonly int Length;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
         }
 
@@ -20,7 +28,7 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            Debug.LogWarningFormat("Diconnected from SpatialOS with reason: \"{0}\"",
+            Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
                 data.DisconnectMessage[0].ReasonForDisconnect);
         }
     }

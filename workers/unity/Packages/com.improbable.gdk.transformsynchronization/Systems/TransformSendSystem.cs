@@ -1,57 +1,88 @@
 using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace Improbable.Gdk.TransformSynchronization
 {
-    public class TransformSendSystem : CustomSpatialOSSendSystem<SpatialOSTransform>
+    [DisableAutoCreation]
+    public class TransformSendSystem : CustomSpatialOSSendSystem<TransformInternal.Component>
     {
-        public struct TransformData
+        private struct TransformData
         {
             public readonly int Length;
-            public ComponentDataArray<SpatialOSTransform> Transforms;
-            public ComponentDataArray<Authoritative<SpatialOSTransform>> TransformAuthority;
-            public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
+            public ComponentDataArray<TransformInternal.Component> Transform;
+            public ComponentDataArray<LastTransformSentData> LastTransformSent;
+            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
         }
 
         [Inject] private TransformData transformData;
 
-        // Number of transform sends per second.
-        private const float SendRateHz = 30.0f;
-
-        private float timeSinceLastSend = 0.0f;
-
         protected override void OnUpdate()
         {
-            // Send update at SendRateHz.
-            timeSinceLastSend += Time.deltaTime;
-            if (timeSinceLastSend < (1.0f / SendRateHz))
-            {
-                return;
-            }
-
-            timeSinceLastSend = 0.0f;
-
             for (var i = 0; i < transformData.Length; i++)
             {
-                var component = transformData.Transforms[i];
+                var transform = transformData.Transform[i];
 
-                if (component.DirtyBit != true)
+                if (transform.DirtyBit != true)
                 {
                     continue;
                 }
 
-                var entityId = transformData.SpatialEntityIds[i].EntityId;
-                var update = new global::Improbable.Transform.Transform.Update();
-                update.SetLocation(global::Generated.Improbable.Transform.Location.ToSpatial(component.Location));
-                update.SetRotation(global::Generated.Improbable.Transform.Quaternion.ToSpatial(component.Rotation));
-                update.SetTick(component.Tick);
-                Generated.Improbable.Transform.Transform.Translation.SendComponentUpdate(worker.Connection, entityId,
-                    update);
+                var lastTransformSent = transformData.LastTransformSent[i];
+                lastTransformSent.TimeSinceLastUpdate += Time.deltaTime;
+                transformData.LastTransformSent[i] = lastTransformSent;
 
-                component.DirtyBit = false;
-                transformData.Transforms[i] = component;
+                if (lastTransformSent.TimeSinceLastUpdate <
+                    1.0f / TransformSynchronizationConfig.MaxTransformUpdateRateHz)
+                {
+                    continue;
+                }
+
+                // todo Need to be doing things with velocity and orientation too for this to work
+                // also consider moving all this to the intermediate systems
+                // var squareDisatnce =
+                //     TransformUtils.SquareDisatnce(lastTransformSent.Transform.Location,
+                //         transformData.Transform[i].Location);
+                //
+                // if (squareDisatnce == 0.0f)
+                // {
+                //     continue;
+                // }
+                //
+                // if (lastTransformSent.TimeSinceLastUpdate <
+                //     TransformSynchronizationConfig.MaxTimeForStalePositionWithoutUpdateS)
+                // {
+                //     if (squareDisatnce < TransformSynchronizationConfig.MaxSquarePositionChangeWithoutUpdate)
+                //     {
+                //         continue;
+                //     }
+                // }
+
+                var entityId = transformData.SpatialEntityIds[i].EntityId;
+
+                var update = new SchemaComponentUpdate(transform.ComponentId);
+                TransformInternal.Serialization.SerializeUpdate(transform, update);
+                WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
+
+                transform.DirtyBit = false;
+                transformData.Transform[i] = transform;
+
+                lastTransformSent.TimeSinceLastUpdate = 0.0f;
+                lastTransformSent.Transform = transform;
+                transformData.LastTransformSent[i] = lastTransformSent;
             }
         }
     }

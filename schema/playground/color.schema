@@ -15,3 +15,9 @@ component CubeColor {
     id = 12000;
     event ColorData change_color;
 }
+
+component SpinnerColor
+{
+	id = 12010;
+	Color color = 1;
+}

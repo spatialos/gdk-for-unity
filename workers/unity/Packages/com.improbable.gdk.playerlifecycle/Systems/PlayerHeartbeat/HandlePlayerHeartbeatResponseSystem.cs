@@ -1,22 +1,22 @@
 using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
+using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatResponseSystem : ComponentSystem
     {
-        public struct Data
+        private struct Data
         {
             public readonly int Length;
-
-            public ComponentArray<CommandResponses<PlayerHeartbeatClient.PlayerHeartbeat.Response>>
-                PlayerHeartbeatResponses;
-
-            [ReadOnly] public ComponentDataArray<WorldCommandSender> WorldCommandSenders;
+            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
+            public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
             [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
             [ReadOnly] public ComponentDataArray<AwaitingHeartbeatResponseTag> AwaitingHeartbeatResponses;
             public EntityArray Entities;
@@ -29,12 +29,13 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < data.Length; i++)
             {
                 var entityId = data.SpatialEntityIds[i].EntityId;
-                var responses = data.PlayerHeartbeatResponses[i].Buffer;
+                var responses = data.PlayerHeartbeatResponses[i].Responses;
                 var entity = data.Entities[i];
+                var entityDeleteSender = data.WorldCommandSenders[i];
 
                 foreach (var response in responses)
                 {
-                    if (response.StatusCode != CommandStatusCode.Success)
+                    if (response.StatusCode != StatusCode.Success)
                     {
                         var failedHeartbeatsComponent = EntityManager.HasComponent<HeartbeatData>(entity)
                             ? EntityManager.GetComponentData<HeartbeatData>(entity)
@@ -57,7 +58,11 @@ namespace Improbable.Gdk.PlayerLifecycle
                             PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
                         {
                             Debug.LogFormat(Messages.DeletingPlayer, entityId);
-                            data.WorldCommandSenders[i].SendDeleteEntityRequest(entityId);
+                            entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+                            (
+                                entityId
+                            ));
+                            data.WorldCommandSenders[i] = entityDeleteSender;
                         }
                     }
                     else

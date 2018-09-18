@@ -2,26 +2,40 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
-    public static class TransfromSynchronizationSystemHelper
+    public static class TransformSynchronizationSystemHelper
     {
-        public static void RegisterClientSystems(World world)
+        public static void AddClientSystems(World world)
         {
-            world.GetOrCreateManager<TickSystem>();
-            world.GetOrCreateManager<LocalTransformSyncSystem>();
+            world.GetOrCreateManager<DefaultTransformInitializationSystem>();
+            world.GetOrCreateManager<TickRateEstimationSystem>();
             world.GetOrCreateManager<InterpolateTransformSystem>();
-            world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
-            world.GetOrCreateManager<TransformSendSystem>();
+            world.GetOrCreateManager<GetTransformValueToSetSystem>();
+            world.GetOrCreateManager<DefaultApplyLatestTransformSystem>();
+            world.GetOrCreateManager<DefaultUpdateLatestTransformSystem>();
+            world.GetOrCreateManager<UpdateTransformSystem>();
+            world.GetOrCreateManager<UpdatePositionSystem>();
+            world.GetOrCreateManager<ResetForAuthorityGainedSystem>();
+            world.GetOrCreateManager<SetKinematicFromAuthoritySystem>();
             world.GetOrCreateManager<PositionSendSystem>();
+            world.GetOrCreateManager<TransformSendSystem>();
+            world.GetOrCreateManager<TickSystem>();
         }
 
-        public static void RegisterServerSystems(World world)
+        public static void AddServerSystems(World world)
         {
-            world.GetOrCreateManager<TickSystem>();
-            world.GetOrCreateManager<LocalTransformSyncSystem>();
-            world.GetOrCreateManager<InterpolateTransformSystem>();
-            world.GetOrCreateManager<ApplyTransformUpdatesSystem>();
-            world.GetOrCreateManager<TransformSendSystem>();
+            world.GetOrCreateManager<DefaultTransformInitializationSystem>();
+            world.GetOrCreateManager<TickRateEstimationSystem>();
+            world.GetOrCreateManager<TakeRawTransformUpdateSystem>();
+            world.GetOrCreateManager<GetTransformValueToSetSystem>();
+            world.GetOrCreateManager<DefaultApplyLatestTransformSystem>();
+            world.GetOrCreateManager<DefaultUpdateLatestTransformSystem>();
+            world.GetOrCreateManager<UpdateTransformSystem>();
+            world.GetOrCreateManager<UpdatePositionSystem>();
+            world.GetOrCreateManager<SetKinematicFromAuthoritySystem>();
+            world.GetOrCreateManager<ResetForAuthorityGainedSystem>();
             world.GetOrCreateManager<PositionSendSystem>();
+            world.GetOrCreateManager<TransformSendSystem>();
+            world.GetOrCreateManager<TickSystem>();
         }
     }
 }
