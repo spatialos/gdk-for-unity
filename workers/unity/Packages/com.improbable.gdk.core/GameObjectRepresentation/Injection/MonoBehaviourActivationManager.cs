@@ -64,6 +64,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
                     if (workerTypeRequirements != null && !workerTypeRequirements.Contains(workerType))
                     {
                         // This behaviour does not want to be enabled for this worker.
+                        RunWithExceptionHandling(() => behaviour.enabled = false);
+
                         continue;
                     }
 
