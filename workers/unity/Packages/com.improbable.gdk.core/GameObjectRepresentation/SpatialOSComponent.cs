@@ -12,6 +12,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
         public World World;
         public WorkerSystem Worker;
 
+        private EntityManager entityManager;
+
         public bool IsEntityOnThisWorker(EntityId entityId)
         {
             return Worker.EntityIdToEntity.ContainsKey(entityId);
@@ -27,7 +29,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return false;
             }
 
-            var entityManager = World.GetOrCreateManager<EntityManager>();
+            entityManager = entityManager ?? World.GetOrCreateManager<EntityManager>();
             if (!entityManager.HasComponent<GameObjectReference>(entity))
             {
                 Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Given entity is not linked to a game object")
