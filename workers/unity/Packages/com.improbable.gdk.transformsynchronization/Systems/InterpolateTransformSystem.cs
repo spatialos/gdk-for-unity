@@ -62,6 +62,11 @@ namespace Improbable.Gdk.TransformSynchronization
                         continue;
                     }
 
+                    data.LastTransformValue[i] = new DefferedUpdateTransform
+                    {
+                        Transform = currentTransformComponent
+                    };
+
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
                     float tickSmearFactor = 1.0f;
