@@ -52,12 +52,10 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var responseOp = response.Op;
-
-            if (responseOp.StatusCode != StatusCode.Success)
+            if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format("Failed to reserve entity id: {0}", responseOp.Message)));
+                    new LogEvent(string.Format("Failed to reserve entity id: {0}", response.Message)));
 
                 return;
             }
@@ -65,7 +63,7 @@ namespace Playground.MonoBehaviours
             var location = transformReader.Data.Location;
             var cubeEntityTemplate =
                 CubeTemplate.CreateCubeEntityTemplate(new Coordinates(location.X, location.Y + 2, location.Z));
-            var expectedEntityId = responseOp.FirstEntityId.Value;
+            var expectedEntityId = response.FirstEntityId.Value;
 
             worldCommandRequestSender.CreateEntity(cubeEntityTemplate, expectedEntityId, context: this);
         }
@@ -78,21 +76,19 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var createEntityResponseOp = response.Op;
-
-            if (createEntityResponseOp.StatusCode != StatusCode.Success)
+            if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
                     new LogEvent(string.Format("Create entity (for id {0}) failed with message: \"{1}\"",
                         response.RequestPayload.EntityId,
-                        createEntityResponseOp.Message)));
+                        response.Message)));
 
                 return;
             }
 
             var spawnedCubesCopy =
                 new List<EntityId>(cubeSpawnerWriter.Data.SpawnedCubes);
-            var newEntityId = createEntityResponseOp.EntityId.Value;
+            var newEntityId = response.EntityId.Value;
 
             spawnedCubesCopy.Add(newEntityId);
 
