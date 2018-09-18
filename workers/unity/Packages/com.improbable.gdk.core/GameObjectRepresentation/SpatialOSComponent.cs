@@ -16,5 +16,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
         {
             return Worker.EntityIdToEntity.ContainsKey(entityId);
         }
+
+        public bool IsEntityOnThisWorker(Entity entity)
+        {
+            return Worker.EntityIdToEntity.ContainsValue(entity);
+        }
     }
 }
