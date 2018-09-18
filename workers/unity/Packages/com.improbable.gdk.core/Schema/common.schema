@@ -1,23 +1,41 @@
 package improbable.core;
 
-type Empty {}
+import "improbable/vector3.schema";
 
-type Int {
+type EmptyMessage {}
+
+type BoolMessage {
+    bool value = 1;
+}
+
+type IntMessage {
   int32 value = 1;
 }
 
-type Float {
+type FloatMessage {
   float value = 1;
 }
 
-type EntityId {
+type DoubleMessage {
+  double value = 1;
+}
+
+type StringMessage {
+  string value = 1;
+}
+
+type BytesMessage {
+  bytes value = 1;
+}
+
+type EntityIdMessage {
   EntityId value = 1;
 }
 
-type Coordinates {
-  improbable.Coordinates value;
+type Vector3dMessage {
+  improbable.Vector3d value = 1;
 }
 
-type Vector3d {
-  improbable.Vector3d value;
+type Vector3fMessage {
+  improbable.Vector3f value = 1;
 }
