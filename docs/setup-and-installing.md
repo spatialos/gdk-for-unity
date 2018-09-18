@@ -5,12 +5,12 @@
 # Short Version
 
 1. [Sign up for a SpatialOS account](https://improbable.io/get-spatialos)
-1. Setup your machine by installing the prerequisites. See the install guide for [Windows](#Windows) or [MacOS](#Mac).
-2. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`
-2. Open the `workers/unity` project in your Unity Editor. You may need to authenticate with SpatialOS.
-3. In the Editor, open **Assets > Playground > Scenes > SampleScene**.
-4. Launch a local deployment by either selecting **SpatialOS > Local launch** or press **Ctrl-L**.
-5. Play the scene in the Unity Editor. A server worker (UnityGameLogic) and a client worker (UnityClient) will start and connect to the local deployment.
+2. Setup your machine by installing the prerequisites. See the install guide for [Windows](#Windows) or [MacOS](#Mac).
+3. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`
+4. Open the `workers/unity` project in your Unity Editor. You may need to authenticate with SpatialOS.
+5. In the Editor, open **Assets > Playground > Scenes > SampleScene**.
+6. Launch a local deployment by either selecting **SpatialOS > Local launch** or press **Ctrl-L**.
+7. Play the scene in the Unity Editor. A server worker (UnityGameLogic) and a client worker (UnityClient) will start and connect to the local deployment.
 
 # Full Version
 
