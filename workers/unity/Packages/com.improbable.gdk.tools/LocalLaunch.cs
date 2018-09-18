@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Tools
         public static void LaunchClient()
         {
             var command = Common.SpatialBinary;
-            var commandArgs = GenerateCommandArgs("local worker launch UnityClient default");
+            var commandArgs = "local worker launch UnityClient default";
 
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
@@ -120,7 +120,7 @@ namespace Improbable.Gdk.Tools
             BuildConfig();
 
             var command = Common.SpatialBinary;
-            var commandArgs = GenerateCommandArgs("local launch");
+            var commandArgs = "local launch";
 
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
@@ -175,7 +175,7 @@ namespace Improbable.Gdk.Tools
                 else
                 {
                     var content = File.ReadAllText(latestLogFile.FullName);
-                    Debug.LogError(message = $"{message}\n{content}");
+                    Debug.LogError($"{message}\n{content}");
                 }
 
                 process.Dispose();
