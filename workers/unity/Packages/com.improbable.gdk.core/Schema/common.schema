@@ -1,0 +1,23 @@
+package improbable.core;
+
+type Empty {}
+
+type Int {
+  int32 value = 1;
+}
+
+type Float {
+  float value = 1;
+}
+
+type EntityId {
+  EntityId value = 1;
+}
+
+type Coordinates {
+  improbable.Coordinates value;
+}
+
+type Vector3d {
+  improbable.Vector3d value;
+}
