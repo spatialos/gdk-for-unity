@@ -11,6 +11,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
         private EntityManager entityManager;
         protected GameObject TestGameObject;
         protected MonoBehaviourActivationManager ActivationManager;
+        protected virtual string WorkerType => string.Empty;
 
         [SetUp]
         public void SetUp()
@@ -18,11 +19,20 @@ namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourAct
             world = new World("test-world");
             entityManager = world.GetOrCreateManager<EntityManager>();
             TestGameObject = new GameObject();
+            var loggingDispatcher = new LoggingDispatcher();
+            var workerSystem = world.CreateManager<WorkerSystem>(
+                null,               // Connection connection
+                loggingDispatcher,  // ILogDispatcher logDispatcher
+                WorkerType,         // string workerType
+                Vector3.zero        // Vector3 origin
+            );
 
             PopulateBehaviours();
-            TestGameObject.AddComponent<SpatialOSComponent>().Entity = entityManager.CreateEntity();
 
-            var loggingDispatcher = new LoggingDispatcher();
+            var spatialOSComponent = TestGameObject.AddComponent<SpatialOSComponent>();
+            spatialOSComponent.Worker = workerSystem;
+            spatialOSComponent.Entity = entityManager.CreateEntity();
+
             var injectableStore = new InjectableStore();
             var requiredFieldInjector = new RequiredFieldInjector(entityManager, loggingDispatcher);
 
