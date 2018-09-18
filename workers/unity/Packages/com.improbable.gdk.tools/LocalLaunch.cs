@@ -122,11 +122,10 @@ namespace Improbable.Gdk.Tools
 
         private static string GetClientLogFilename()
         {
-
             var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
             var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
             var dict = Json.Deserialize(configFileJson);
-            var defaultLogFileName = "unitygamelogic.log";
+            var defaultLogFileName = "*unityclient.log";
             Dictionary<string, object> tempDict;
 
             var currentOS = "windows";
@@ -175,7 +174,6 @@ namespace Improbable.Gdk.Tools
                     argumentIdx++;
                     break;
                 }
-
             }
 
             // Logger file not found - using default one
