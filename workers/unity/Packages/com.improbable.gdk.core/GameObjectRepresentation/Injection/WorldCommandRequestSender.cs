@@ -96,7 +96,7 @@ namespace Improbable.Gdk.Core.Commands
                     {
                         logDispatcher.HandleLog(
                             LogType.Warning,
-                            new LogEvent("Cannot send entity queries returning component data - dropping query."));
+                            new LogEvent("Cannot create entity queries returning component data - dropping query."));
                         return -1;
                     }
 
