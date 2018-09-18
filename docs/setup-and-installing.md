@@ -46,19 +46,21 @@
 
     > Warning: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.0 like: projects loading/unloading frequently and Intellisense breaking. If you do experience these issues, try updating Visual Studio 2017
 
-# TODO - CHECK MAC STUFF
-
     #### Mac
 
-	- [Unity 2018.2.0](https://unity3d.com/get-unity/download/archive) with Linux Build Support and Windows Build Support components selected during the installation process.
-    - [Rider](https://www.jetbrains.com/rider/) (optional)
-      <br>You can also use [Visual Studio 2017](https://www.visualstudio.com/downloads/) for development, however to lint your code according to our linting rules, you need to use Rider.
-    - [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) Verified with version `2.1.3xx` and `2.1.4xx`
-	- SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac)
-	<br>This installs:
-		- the [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
-		- the SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
-		- the 32-bit and 64-bit Visual C++ Redistributables
+	1. [Unity 2018.2.0](https://unity3d.com/get-unity/download/archive) 
+        - Make sure to select the following components:
+            - **Linux Build Support** 
+            - **Windows Build Support**
+    2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
+        - If you are using Visual Studio, within the Visual Studio Installer, on the Workloads tab:
+
+    3. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) Verified with version `2.1.3xx` and `2.1.4xx`
+	4. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
+		- The [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
+		- The SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
+		- The 32-bit and 64-bit Visual C++ Redistributables
+    5. Reboot your machine to finish setup.
 
 1. Clone the SpatialOS GDK for Unity repository:
 
