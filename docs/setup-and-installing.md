@@ -4,16 +4,23 @@
 
 # Short Version
 
+1. [Sign up for a SpatialOS account](https://improbable.io/get-spatialos)
 1. Setup your machine by following the prerequisites. See the install guide for [Windows](#Windows) or [MacOS](#Mac).
 2. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`
 2. Open the `workers/unity` project in your Unity Editor. You may need to authenticate with SpatialOS.
 3. In the Editor, open **Assets > Playground > Scenes > SampleScene**.
 4. Launch a local deployment by either selecting **SpatialOS > Local launch** or press **Ctrl-L**.
-5. Play the scene in the Unity Editor. A UnityGameLogic worker and a UnityClient worker should start and connect to the local deployment.
+5. Play the scene in the Unity Editor. A server worker (UnityGameLogic) and a client worker (UnityClient) will start and connect to the local deployment.
 
 # Full Version
 
 ## Set up and get started with the SpatialOS GDK for Unity
+
+### Sign up for a SpatialOS account
+
+You'll need a SpatialOS account in order to run the SpatialOS GDK for Unity.
+
+Follow [this link](https://improbable.io/get-spatialos) to sign up for one for free.
 
 ### Setting up your machine
 
@@ -52,10 +59,10 @@
         - Make sure to select the following components:
             - **Linux Build Support** 
             - **Windows Build Support**
-    2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
-        - If you are using Visual Studio, within the Visual Studio Installer, on the Workloads tab:
-
-    3. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) Verified with version `2.1.3xx` and `2.1.4xx`
+    2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
+        - If you are using Visual Studio, within the Visual Studio Installer:
+            - Select **.NET Core + ASP .NET Core**
+    3. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` and `2.1.4xx`)
 	4. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
 		- The [`spatial` CLI](https://docs.improbable.io/reference/13.0/shared/spatial-cli-introduction)
 		- The SpatialOS [Launcher](https://docs.improbable.io/reference/13.0/shared/operate/launcher)
@@ -84,7 +91,7 @@ Currently, you can try this out using the `Playground`.
 #### 1. Run the `Playground` locally using SpatialOS
 
 1. Open Unity, and open the `unity` project.
-    - Unity will automatically download several required SpatialOS libraries.
+    - Unity will download several required SpatialOS libraries.
 Unity may open a browser window prompting you to login to your SpatialOS account.
 If this happens, please login.
 This will only happen the first time you open you project, or if the version of the required libraries changes.
