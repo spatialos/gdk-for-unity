@@ -22,7 +22,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             linkedGameObject = default(GameObject);
             if (!Worker.TryGetEntity(entityId, out var entity))
             {
-                Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Could not find ECS entity for given SpatialOS entity id")
+                Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Could not find ECS entity for given SpatialOS entity ID")
                     .WithField("EntityId", entityId.Id));
                 return false;
             }
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             if (!entityManager.HasComponent<GameObjectReference>(entity))
             {
                 Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Given entity is not linked to a game object")
-                    .WithField("Entity", entity.Index));
+                    .WithField("EntityId", entityId.Id));
                 return false;
             }
 
