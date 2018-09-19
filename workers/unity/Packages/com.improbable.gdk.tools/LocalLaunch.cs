@@ -1,3 +1,6 @@
+using Improbable.Gdk.Tools.MiniJSON;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,6 +15,14 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
+        private static readonly string
+            DefaultLogFileName = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "*unityclient.log"));
+
+        private static readonly string
+            BuildPath = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "build", "assembly", "worker"));
+
+        private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
+
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.
         private const int WindowsCtrlCExitCode = -1073741510;
 
@@ -25,11 +36,18 @@ namespace Improbable.Gdk.Tools
             EditorApplication.delayCall += BuildConfig;
         }
 
-        [MenuItem("SpatialOS/Local launch %l")]
+        [MenuItem("SpatialOS/Local launch %l", priority = 70)]
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
-            EditorApplication.delayCall += Launch;
+            EditorApplication.delayCall += LaunchLocalDeployment;
+        }
+
+        [MenuItem("SpatialOS/Launch standalone client", priority = 70)]
+        private static void LaunchStandaloneClient()
+        {
+            Debug.Log("Launching a standalone client");
+            EditorApplication.delayCall += LaunchClient;
         }
 
         public static void BuildConfig()
@@ -42,17 +60,152 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static void Launch()
+        public static void LaunchClient()
+        {
+            var command = Common.SpatialBinary;
+            var commandArgs = "local worker launch UnityClient default";
+            var unityClientZipName = "UnityClient@Windows.zip";
+
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                command = "osascript";
+                commandArgs = $@"-e 'tell application ""Terminal""
+                                     activate
+                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
+                                     end tell'";
+                unityClientZipName = "UnityClient@Mac.zip";
+            }
+
+            var processInfo = new ProcessStartInfo(command, commandArgs)
+            {
+                CreateNoWindow = false,
+                UseShellExecute = true,
+                WorkingDirectory = SpatialProjectRootDir
+            };
+
+            var process = Process.Start(processInfo);
+
+            if (process == null)
+            {
+                Debug.LogError("Failed to start a standalone client locally.");
+                return;
+            }
+
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, args) =>
+            {
+                // N.B. This callback is run on a different thread.
+                if (process.ExitCode == 0)
+                {
+                    return;
+                }
+
+                var latestLogFile = GetClientLogFileFullPath();
+                var latestClientBuild = Path.GetFullPath(Path.Combine(BuildPath, unityClientZipName));
+
+                if (!File.Exists(latestClientBuild))
+                {
+                    Debug.LogError($"Local client build missing. Couldn't find the Unity Client at {latestClientBuild}.");
+                    return;
+                }
+
+                if (!File.Exists(latestLogFile))
+                {
+                    Debug.LogError($"Could not find a standalone client log file {latestLogFile}.");
+                    return;
+                }
+
+                var message = $"Unity Standalone Client local launch logfile: {latestLogFile}";
+
+                if (WasProcessKilled(process))
+                {
+                    Debug.Log(message);
+                }
+                else
+                {
+                    Debug.LogError($"Errors occured - {message}");
+                }
+
+                process.Dispose();
+                process = null;
+            };
+        }
+
+        private static string GetClientLogFileFullPath()
+        {
+            try
+            {
+                var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
+                var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
+                var configFileJsonDeserialized = Json.Deserialize(configFileJson);
+                var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
+                Dictionary<string, object> partialJsonDict;
+
+                if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'external'.");
+                    return DefaultLogFileName;
+                }
+
+                partialJsonDict = externalValue as Dictionary<string, object>;
+
+                if (!partialJsonDict.TryGetValue("default", out var defaultValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'default' within 'external'.");
+                    return DefaultLogFileName;
+                }
+
+                partialJsonDict = defaultValue as Dictionary<string, object>;
+
+                if (!partialJsonDict.TryGetValue(currentOS, out var currentOSValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key '{currentOS}' within 'external' -> 'default'.");
+                    return DefaultLogFileName;
+                }
+
+                partialJsonDict = currentOSValue as Dictionary<string, object>;
+
+                if (!partialJsonDict.TryGetValue("arguments", out var argumentsValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'arguments' within 'external' -> 'default' -> '{currentOS}'.");
+                    return DefaultLogFileName;
+                }
+
+                var arguments = (List<object>) argumentsValue;
+
+                var logFileArg = arguments.SkipWhile(arg => !string.Equals(arg, "-logfile")).FirstOrDefault(arg => !string.Equals(arg, "-logfile"));
+
+                // Logger file not found - using default one
+                if (logFileArg == null)
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain '-logfile' argument within 'external' -> 'default' -> '{currentOS}' -> arguments.");
+                    return DefaultLogFileName;
+                }
+
+                var logFileName = Path.GetFullPath(Path.Combine(logConfigPath, (string) logFileArg));
+                return logFileName;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e.ToString());
+                return DefaultLogFileName;
+            }
+        }
+
+        public static void LaunchLocalDeployment()
         {
             BuildConfig();
 
             var command = Common.SpatialBinary;
             var commandArgs = "local launch";
-            
+
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";
-                commandArgs = $"-e 'tell application \"Terminal\"\nactivate\ndo script \"cd {SpatialProjectRootDir} && {Common.SpatialBinary} local launch\"\nend tell'";
+                commandArgs = $@"-e 'tell application ""Terminal""
+                                     activate
+                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
+                                     end tell'";
             }
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
@@ -98,10 +251,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    var content = File.ReadAllText(latestLogFile.FullName);
-                    message = $"{message}\n{content}";
-
-                    Debug.LogError(message);
+                    Debug.LogError($"Errors occured - {message}");
                 }
 
                 process.Dispose();
