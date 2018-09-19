@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
-        private static readonly string defaultLogFileName = "*unityclient.log";
+        private const string DefaultLogFileName = "*unityclient.log";
 
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
@@ -126,7 +126,7 @@ namespace Improbable.Gdk.Tools
         {
             var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
             var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
-            var dict = Json.Deserialize(configFileJson);
+            var configFileJsonDeserialized = Json.Deserialize(configFileJson);
             Dictionary<string, object> tempDict;
 
             var currentOS = "windows";
@@ -135,9 +135,9 @@ namespace Improbable.Gdk.Tools
                 currentOS = "macos";
             }
 
-            if (!dict.TryGetValue("external", out var externalValue)) {
+            if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue)) {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'external'.");
-                return defaultLogFileName;
+                return DefaultLogFileName;
             }
 
             tempDict = externalValue as Dictionary<string, object>;
@@ -145,7 +145,7 @@ namespace Improbable.Gdk.Tools
             if (!tempDict.TryGetValue("default", out var defaultValue))
             {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'default' within 'external'.");
-                return defaultLogFileName;
+                return DefaultLogFileName;
             }
 
             tempDict = defaultValue as Dictionary<string, object>;
@@ -153,7 +153,7 @@ namespace Improbable.Gdk.Tools
             if (!tempDict.TryGetValue(currentOS, out var currentOSValue))
             {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key '{currentOS}' within 'external' -> 'default'.");
-                return defaultLogFileName;
+                return DefaultLogFileName;
             }
 
             tempDict = currentOSValue as Dictionary<string, object>;
@@ -161,7 +161,7 @@ namespace Improbable.Gdk.Tools
             if (!tempDict.TryGetValue("arguments", out var argumentsValue))
             {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'arguments' within 'external' -> 'default' -> '{currentOS}'.");
-                return defaultLogFileName;
+                return DefaultLogFileName;
             }
 
             var arguments = (IList) argumentsValue;
@@ -181,7 +181,7 @@ namespace Improbable.Gdk.Tools
             if (argumentIdx >= arguments.Count)
             {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain '-logfile' argument within 'external' -> 'default' -> '{currentOS}' -> arguments.");
-                return defaultLogFileName;
+                return DefaultLogFileName;
             }
 
             // Strip any relative pathing
