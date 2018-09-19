@@ -1,8 +1,6 @@
-using System.Collections.ObjectModel;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
-using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;

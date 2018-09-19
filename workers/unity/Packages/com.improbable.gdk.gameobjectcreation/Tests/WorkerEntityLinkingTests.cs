@@ -1,13 +1,10 @@
-using System.Runtime.CompilerServices;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 {
