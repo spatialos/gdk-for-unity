@@ -1,3 +1,4 @@
+using Improbable.Common;
 using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 
