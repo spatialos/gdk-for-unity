@@ -15,6 +15,8 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
+        private static readonly string defaultLogFileName = "*unityclient.log";
+
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.
@@ -125,7 +127,6 @@ namespace Improbable.Gdk.Tools
             var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
             var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
             var dict = Json.Deserialize(configFileJson);
-            var defaultLogFileName = "*unityclient.log";
             Dictionary<string, object> tempDict;
 
             var currentOS = "windows";
