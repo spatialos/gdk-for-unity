@@ -18,6 +18,10 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             DefaultLogFileName = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "*unityclient.log"));
 
+        private static readonly string
+            BuildPath = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "build", "assembly", "worker"));
+
+
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.
@@ -40,7 +44,7 @@ namespace Improbable.Gdk.Tools
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
-        [MenuItem("SpatialOS/Launch standalone client %l", priority = 70)]
+        [MenuItem("SpatialOS/Launch standalone client", priority = 70)]
         private static void LaunchStandaloneClient()
         {
             Debug.Log("Launching a standalone client");
@@ -61,7 +65,7 @@ namespace Improbable.Gdk.Tools
         {
             var command = Common.SpatialBinary;
             var commandArgs = "local worker launch UnityClient default";
-
+            var unityClientZipName = "UnityClient@Windows.zip";
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";
@@ -69,6 +73,7 @@ namespace Improbable.Gdk.Tools
                                      activate
                                      do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {command}""
                                      end tell'";
+                unityClientZipName = "UnityClient@Mac.zip";
             }
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
@@ -96,6 +101,13 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var latestLogFile = GetClientLogFileFullPath();
+                var latestClientBuild = Path.GetFullPath(Path.Combine(BuildPath, unityClientZipName));
+
+                if (!File.Exists(latestClientBuild))
+                {
+                    Debug.LogError($"Local client build missing. Couldn't find the Unity Client at {latestClientBuild}.");
+                    return;
+                }
 
                 if (!File.Exists(latestLogFile))
                 {
@@ -111,8 +123,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    var content = File.ReadAllText(latestLogFile);
-                    Debug.LogError($"{message}\n{content}");
+                    Debug.LogError($"{message}");
                 }
 
                 process.Dispose();
@@ -240,8 +251,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    var content = File.ReadAllText(latestLogFile.FullName);
-                    Debug.LogError($"{message}\n{content}");
+                    Debug.LogError($"{message}");
                 }
 
                 process.Dispose();
