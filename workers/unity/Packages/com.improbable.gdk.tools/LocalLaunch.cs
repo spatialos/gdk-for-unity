@@ -21,7 +21,6 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             BuildPath = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "build", "assembly", "worker"));
 
-
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
         // Windows: The exit code is 0xc000013a when the user closes the console window, or presses Ctrl+C.
@@ -66,6 +65,7 @@ namespace Improbable.Gdk.Tools
             var command = Common.SpatialBinary;
             var commandArgs = "local worker launch UnityClient default";
             var unityClientZipName = "UnityClient@Windows.zip";
+
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";
