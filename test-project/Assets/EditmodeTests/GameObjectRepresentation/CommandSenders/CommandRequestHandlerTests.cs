@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Generated.Improbable.Gdk.Tests.ComponentsWithNoFields;
+using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.CommandSenders
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.CommandSenders
 {
     [TestFixture]
     public class CommandRequestHandlerTests

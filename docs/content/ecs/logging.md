@@ -8,8 +8,9 @@ The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of 
 
 *  `LoggingDispatcher`, which simply logs to the Unity console
 *  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
+    * Note: By default, messages with the log level `LogType.Log` are not sent to SpatialOS. This can be changed by instantiating the `ForwardingDispatcher` with a different `minimumLogLevel` parameter.
 
-All workers use the `ForwardingDispatcher` by default. To replace it with the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
+All workers use the `ForwardingDispatcher` by default in the Playground. If you want to use the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
 
 ### Using the ILogDispatcher
 

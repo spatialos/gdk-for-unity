@@ -1,5 +1,5 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -61,6 +61,11 @@ namespace Improbable.Gdk.TransformSynchronization
                     {
                         continue;
                     }
+
+                    data.LastTransformValue[i] = new DefferedUpdateTransform
+                    {
+                        Transform = currentTransformComponent
+                    };
 
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Generated.Improbable.PlayerLifecycle;
-using Generated.Improbable.Transform;
-using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.PlayerLifecycle;
+using Improbable.Transform;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 
@@ -13,7 +12,7 @@ namespace Playground
     public static class PlayerTemplate
     {
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
-            Generated.Improbable.Vector3f position)
+            Improbable.Vector3f position)
         {
             var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
 

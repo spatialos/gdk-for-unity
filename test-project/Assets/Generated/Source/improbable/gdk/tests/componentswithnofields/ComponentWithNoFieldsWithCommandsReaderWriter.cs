@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
@@ -27,29 +27,29 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.ReaderWriter, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>
             {
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>
             {
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update update)
                 {
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update update, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update update, ref Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component data)
                 {
                 }
             }

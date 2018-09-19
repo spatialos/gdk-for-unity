@@ -1,5 +1,4 @@
-using Generated.Improbable;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;

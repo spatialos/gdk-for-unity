@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.Generated.EditmodeTests",
+    "name": "Improbable.Gdk.EditModeTests",
     "references": [
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",

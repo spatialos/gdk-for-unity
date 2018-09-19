@@ -84,7 +84,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component
             var entityId = transformData.SpatialEntityIds[i].EntityId;
 
             var update = new SchemaComponentUpdate(component.ComponentId);
-            Generated.Improbable.Transform.Transform.Serialization.Serialize(component,
+            Improbable.Transform.Transform.Serialization.Serialize(component,
                 update.GetFields());
             worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
@@ -131,7 +131,7 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<CubeColor.Component
             foreach(var event in changeColorEvents)
             {
                 var eventObj = eventsObj.AddObject(1); // NOTE: 1 corresponds to the event index in schema.
-                global::Generated.Playground.ColorData.Serialization.Serialize(event, eventObj)
+                Playground.ColorData.Serialization.Serialize(event, eventObj)
             }
 
             worker.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));

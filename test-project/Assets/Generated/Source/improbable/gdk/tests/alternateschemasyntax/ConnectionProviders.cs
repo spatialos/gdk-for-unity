@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
@@ -15,7 +15,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>> Storage = new Dictionary<uint, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>>();
+                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>));
+                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> Get(uint handle)
+                public static List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return value;
                 }
             
-                public static void Set(uint handle, List<Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> value)
+                public static void Set(uint handle, List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -82,7 +82,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public static class MyEventProvider 
             {
-                private static readonly Dictionary<uint, List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> Storage = new Dictionary<uint, List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -91,13 +91,13 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -107,7 +107,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return value;
                 }
             
-                public static void Set(uint handle, List<global::Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
