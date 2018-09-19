@@ -127,13 +127,8 @@ namespace Improbable.Gdk.Tools
             var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
             var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
             var configFileJsonDeserialized = Json.Deserialize(configFileJson);
+            var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
             Dictionary<string, object> tempDict;
-
-            var currentOS = "windows";
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                currentOS = "macos";
-            }
 
             if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue)) {
                 Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'external'.");
