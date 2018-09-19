@@ -1,0 +1,11 @@
+{
+    "name": "Improbable.Gdk.StandardLibraryUtils",
+    "references": [
+        "Improbable.Gdk.Generated"
+    ],
+    "optionalUnityReferences": [
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
