@@ -34,11 +34,11 @@ namespace Improbable.Gdk.GameObjectCreation
         [Inject] private WorkerSystem workerSystem;
 
         private ViewCommandBuffer viewCommandBuffer;
-        private GameObject gameObjectToLink;
+        private GameObject workerGameObject;
 
         public WorkerEntityGameObjectLinkerSystem(GameObject workerGameObject)
         {
-            gameObjectToLink = workerGameObject;
+            this.workerGameObject = workerGameObject;
         }
 
         protected override void OnCreateManager()
@@ -50,13 +50,13 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             for (int i = 0; i < connectedData.Length; i++)
             {
-                linkerSystem.Linker.LinkGameObjectToEntity(gameObjectToLink, connectedData.Entities[i],
+                linkerSystem.Linker.LinkGameObjectToEntity(workerGameObject, connectedData.Entities[i],
                     new EntityId(0), viewCommandBuffer);
             }
 
             for (int i = 0; i < disconnectedData.Length; i++)
             {
-                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObjectToLink, disconnectedData.Entities[i],
+                linkerSystem.Linker.UnlinkGameObjectFromEntity(workerGameObject, disconnectedData.Entities[i],
                     viewCommandBuffer);
             }
 

@@ -22,7 +22,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectReceiveGroup))]
-    public class GameObjectDispatcherSystem : ComponentSystem
+    internal class GameObjectDispatcherSystem : ComponentSystem
     {
         private struct HasActivationManagerSystemState : ISystemStateComponentData
         {
