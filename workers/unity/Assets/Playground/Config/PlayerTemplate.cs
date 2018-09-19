@@ -4,6 +4,7 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Transform;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 

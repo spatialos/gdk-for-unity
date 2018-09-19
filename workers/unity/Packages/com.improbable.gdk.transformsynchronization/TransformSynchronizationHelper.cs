@@ -7,9 +7,23 @@ namespace Improbable.Gdk.TransformSynchronization
     public static class TransformSynchronizationHelper
     {
         public static void AddComponents(ref EntityBuilder entityBuilder, string writeAccess,
-            Location location = new Location(),
-            Quaternion quaternion = default(Quaternion),
-            Velocity velocity = new Velocity(),
+            Location location = default(Location),
+            Velocity velocity = default(Velocity),
+            uint physicsTick = 0,
+            float ticksPerSecond = 0)
+        {
+            AddComponents(ref entityBuilder, writeAccess,
+                new Quaternion(1f, 0f, 0f, 0f),
+                location,
+                velocity,
+                physicsTick,
+                ticksPerSecond);
+        }
+
+        public static void AddComponents(ref EntityBuilder entityBuilder, string writeAccess,
+            Quaternion quaternion,
+            Location location = default(Location),
+            Velocity velocity = default(Velocity),
             uint physicsTick = 0,
             float ticksPerSecond = 0)
         {
