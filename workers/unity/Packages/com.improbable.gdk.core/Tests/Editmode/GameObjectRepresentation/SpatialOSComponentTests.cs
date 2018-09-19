@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var component = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(component);
 
-            var succeeded = component.TryGetGameObjectForEntity(testSpatialEntityId, out var linkedGameObject);
+            var succeeded = component.TryGetGameObjectForSpatialOSEntityId(testSpatialEntityId, out var linkedGameObject);
             Assert.IsTrue(succeeded);
             Assert.AreEqual(testGameObject, linkedGameObject);
         }
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var component = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(component);
 
-            var succeeded = component.TryGetGameObjectForEntity(testSpatialEntityId, out var linkedGameObject);
+            var succeeded = component.TryGetGameObjectForSpatialOSEntityId(testSpatialEntityId, out var linkedGameObject);
             Assert.IsFalse(succeeded);
             Assert.IsNull(linkedGameObject);
         }
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var component = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(component);
 
-            var succeeded = component.TryGetGameObjectForEntity(testSpatialEntityId, out var linkedGameObject);
+            var succeeded = component.TryGetGameObjectForSpatialOSEntityId(testSpatialEntityId, out var linkedGameObject);
             Assert.IsFalse(succeeded);
             Assert.IsNull(linkedGameObject);
         }

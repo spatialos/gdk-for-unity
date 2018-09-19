@@ -19,21 +19,17 @@ namespace Improbable.Gdk.GameObjectRepresentation
             return Worker.EntityIdToEntity.ContainsKey(entityId);
         }
 
-        public bool TryGetGameObjectForEntity(EntityId entityId, out GameObject linkedGameObject)
+        public bool TryGetGameObjectForSpatialOSEntityId(EntityId entityId, out GameObject linkedGameObject)
         {
             linkedGameObject = default(GameObject);
             if (!Worker.TryGetEntity(entityId, out var entity))
             {
-                Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Could not find ECS entity for given SpatialOS entity ID")
-                    .WithField("EntityId", entityId.Id));
                 return false;
             }
 
             entityManager = entityManager ?? World.GetOrCreateManager<EntityManager>();
             if (!entityManager.HasComponent<GameObjectReference>(entity))
             {
-                Worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent("Given entity is not linked to a game object")
-                    .WithField("EntityId", entityId.Id));
                 return false;
             }
 
