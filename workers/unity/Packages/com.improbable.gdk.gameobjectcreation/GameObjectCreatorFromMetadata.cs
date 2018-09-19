@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
 using UnityEngine;

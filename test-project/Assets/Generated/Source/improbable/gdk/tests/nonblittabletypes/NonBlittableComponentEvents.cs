@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -15,10 +15,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> Events
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
                 }
             }
 
@@ -26,10 +26,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> Events
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
                 }
             }
 
@@ -41,10 +41,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> Events
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
                 }
             }
 
@@ -52,10 +52,10 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
             {
                 internal uint handle;
 
-                public List<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> Events
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload> Events
                 {
-                    get => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
-                    internal set => Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
                 }
             }
 

@@ -1,5 +1,5 @@
-using Generated.Improbable.PlayerLifecycle;
 using Improbable.Gdk.Core;
+using Improbable.PlayerLifecycle;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Collections;
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             for (var i = 0; i < sendData.Length; ++i)
             {
-                var request = new CreatePlayerRequestType(new Generated.Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
+                var request = new CreatePlayerRequestType(new Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
                 var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
 
                 sendData.RequestSenders[i].RequestsToSend

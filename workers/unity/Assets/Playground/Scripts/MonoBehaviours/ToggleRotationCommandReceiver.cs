@@ -1,4 +1,4 @@
-using Generated.Playground;
+using Improbable.Common;
 using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 

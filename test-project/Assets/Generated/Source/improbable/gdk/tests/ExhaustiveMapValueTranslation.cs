@@ -14,7 +14,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 {
     public partial class ExhaustiveMapValue
     {
@@ -58,17 +58,14 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
-                var data = Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
+                var data = Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
-                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
 
-                var update = new Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update
+                var update = new Improbable.Gdk.Tests.ExhaustiveMapValue.Update
                 {
                     Field1 = data.Field1,
                     Field2 = data.Field2,
@@ -89,12 +86,12 @@ namespace Generated.Improbable.Gdk.Tests
                     Field17 = data.Field17,
                 };
 
-                var updates = new List<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update>
+                var updates = new List<Improbable.Gdk.Tests.ExhaustiveMapValue.Update>
                 {
                     update
                 };
 
-                var updatesComponent = new Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates
+                var updatesComponent = new Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates
                 {
                     handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                 };
@@ -102,32 +99,29 @@ namespace Generated.Improbable.Gdk.Tests
                 ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                 entityManager.AddComponentData(entity, updatesComponent);
 
-                if (entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                if (entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
+                        .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveMapValue")
                     );
                 }
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
-                var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
+                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
@@ -146,56 +140,53 @@ namespace Generated.Improbable.Gdk.Tests
                 ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
 
-                entityManager.RemoveComponent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
+                entityManager.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
 
-                if (entityManager.HasComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                if (entityManager.HasComponent<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    entityManager.RemoveComponent<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
+                    entityManager.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
                 }
-                else if (!entityManager.HasComponent<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                else if (!entityManager.HasComponent<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
                 }
                 else
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
+                        .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveMapValue")
                     );
                 }
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
-                if (entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    var data = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
-                    Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
+                    var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
+                    Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
                     data.DirtyBit = false;
                     entityManager.SetComponentData(entity, data);
                 }
 
-                var update = Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                var update = Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
-                List<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update> updates;
-                if (entityManager.HasComponent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entity))
+                List<Improbable.Gdk.Tests.ExhaustiveMapValue.Update> updates;
+                if (entityManager.HasComponent<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entity))
                 {
-                    updates = entityManager.GetComponentData<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entity).Updates;
+                    updates = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entity).Updates;
 
                 }
                 else
                 {
-                    var updatesComponent = new Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates
+                    var updatesComponent = new Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Update>());
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Improbable.Gdk.Tests.ExhaustiveMapValue.Update>());
                     updates = updatesComponent.Updates;
                     entityManager.AddComponentData(entity, updatesComponent);
                 }
@@ -206,32 +197,17 @@ namespace Generated.Improbable.Gdk.Tests
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
-                {
-                    return;
-                }
-
+                var entity = TryGetEntityFromEntityId(op.EntityId);
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
-
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
                 }
             }
 
@@ -241,13 +217,7 @@ namespace Generated.Improbable.Gdk.Tests
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
                 }
             }
 
@@ -260,54 +230,54 @@ namespace Generated.Improbable.Gdk.Tests
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                        entityManager.RemoveComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
 
                         // Add event senders
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
+                        entityManager.RemoveComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>());
 
                         // Remove event senders
                         break;
                 }
 
                 List<Authority> authorityChanges;
-                if (entityManager.HasComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
+                if (entityManager.HasComponent<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity))
                 {
-                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity).Changes;
+                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entity).Changes;
 
                 }
                 else
                 {
-                    var changes = new AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>
+                    var changes = new AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>
                     {
                         Handle = AuthorityChangesProvider.Allocate(World)
                     };
@@ -319,22 +289,6 @@ namespace Generated.Improbable.Gdk.Tests
                 authorityChanges.Add(authority);
             }
 
-            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
-            {
-                if (!Worker.TryGetEntity(entityId, out entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, entityId.Id)
-                        .WithField("Op", opType)
-                        .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
-                    );
-                    return false;
-                }
-
-                return true;
-            }
-
             private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
@@ -342,7 +296,7 @@ namespace Generated.Improbable.Gdk.Tests
                     .WithField(LoggingUtils.EntityId, entityId.Id)
                     .WithField("New Authority", newAuthority)
                     .WithField("Expected Old Authority", expectedOldAuthority)
-                    .WithField("Component", "Generated.Improbable.Gdk.Tests.ExhaustiveMapValue")
+                    .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveMapValue")
                 );
             }
 
@@ -353,8 +307,8 @@ namespace Generated.Improbable.Gdk.Tests
             public override uint ComponentId => 197718;
 
             public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.Create<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(),
-                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
+                ComponentType.Create<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(),
+                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             };
 
@@ -371,7 +325,7 @@ namespace Generated.Improbable.Gdk.Tests
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>();
+                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>();
 
                 for (var i = 0; i < componentDataArray.Length; i++)
                 {
@@ -381,7 +335,7 @@ namespace Generated.Improbable.Gdk.Tests
                     if (data.DirtyBit || dirtyEvents > 0)
                     {
                         var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(197718);
-                        Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.SerializeUpdate(data, update);
+                        Improbable.Gdk.Tests.ExhaustiveMapValue.Serialization.SerializeUpdate(data, update);
 
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
@@ -401,15 +355,15 @@ namespace Generated.Improbable.Gdk.Tests
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
+                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
+                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(),
             };
 
             public override ComponentType[] EventComponentTypes => new ComponentType[] {
             };
 
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
+            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>();
+            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
 
             public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
             };
@@ -417,10 +371,10 @@ namespace Generated.Improbable.Gdk.Tests
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>();
+                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entities[i]);
+                    buffer.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>(entities[i]);
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }
@@ -428,10 +382,10 @@ namespace Generated.Improbable.Gdk.Tests
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
                 var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
+                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
                 for (var i = 0; i < entities.Length; i++)
                 {
-                    buffer.RemoveComponent<AuthorityChanges<Generated.Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entities[i]);
+                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>(entities[i]);
                     AuthorityChangesProvider.Free(data[i].Handle);
                 }
             }

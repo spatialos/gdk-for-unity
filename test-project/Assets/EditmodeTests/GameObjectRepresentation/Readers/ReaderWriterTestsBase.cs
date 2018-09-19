@@ -1,9 +1,9 @@
-﻿using Generated.Improbable.Gdk.Tests.BlittableTypes;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
 {
     internal abstract class ReaderWriterTestsBase
     {

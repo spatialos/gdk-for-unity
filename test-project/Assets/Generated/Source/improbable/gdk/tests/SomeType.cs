@@ -5,7 +5,7 @@
 using System.Linq;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 { 
     
     public struct SomeType

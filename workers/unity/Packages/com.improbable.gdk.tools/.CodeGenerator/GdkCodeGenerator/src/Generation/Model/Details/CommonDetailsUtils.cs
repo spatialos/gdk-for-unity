@@ -13,7 +13,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
 
             return
-                $"global::{UnityTypeMappings.PackagePrefix}{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
+                $"global::{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
         }
 
         public static string GetFqnTypeFromTypeReference(TypeReferenceRaw typeReferenceRaw)

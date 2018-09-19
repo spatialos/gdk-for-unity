@@ -5,14 +5,14 @@
 using System.Linq;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests
+namespace Improbable.Gdk.Tests
 { 
     
     public struct TypeName
     {
-        public global::Generated.Improbable.Gdk.Tests.TypeName.Other OtherType;
+        public global::Improbable.Gdk.Tests.TypeName.Other OtherType;
     
-        public TypeName(global::Generated.Improbable.Gdk.Tests.TypeName.Other otherType)
+        public TypeName(global::Improbable.Gdk.Tests.TypeName.Other otherType)
         {
             OtherType = otherType;
         }
@@ -22,7 +22,7 @@ namespace Generated.Improbable.Gdk.Tests
             public static void Serialize(TypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
             {
                 {
-                    global::Generated.Improbable.Gdk.Tests.TypeName.Other.Serialization.Serialize(instance.OtherType, obj.AddObject(1));
+                    global::Improbable.Gdk.Tests.TypeName.Other.Serialization.Serialize(instance.OtherType, obj.AddObject(1));
                 }
             }
     
@@ -30,7 +30,7 @@ namespace Generated.Improbable.Gdk.Tests
             {
                 var instance = new TypeName();
                 {
-                    instance.OtherType = global::Generated.Improbable.Gdk.Tests.TypeName.Other.Serialization.Deserialize(obj.GetObject(1));
+                    instance.OtherType = global::Improbable.Gdk.Tests.TypeName.Other.Serialization.Deserialize(obj.GetObject(1));
                 }
                 return instance;
             }
@@ -39,9 +39,9 @@ namespace Generated.Improbable.Gdk.Tests
         
         public struct Other
         {
-            public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName SameName;
+            public global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName SameName;
         
-            public Other(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName sameName)
+            public Other(global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName sameName)
             {
                 SameName = sameName;
             }
@@ -51,7 +51,7 @@ namespace Generated.Improbable.Gdk.Tests
                 public static void Serialize(Other instance, global::Improbable.Worker.Core.SchemaObject obj)
                 {
                     {
-                        global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Serialize(instance.SameName, obj.AddObject(1));
+                        global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Serialize(instance.SameName, obj.AddObject(1));
                     }
                 }
         
@@ -59,7 +59,7 @@ namespace Generated.Improbable.Gdk.Tests
                 {
                     var instance = new Other();
                     {
-                        instance.SameName = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Deserialize(obj.GetObject(1));
+                        instance.SameName = global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Deserialize(obj.GetObject(1));
                     }
                     return instance;
                 }
@@ -68,10 +68,10 @@ namespace Generated.Improbable.Gdk.Tests
             
             public struct NestedTypeName
             {
-                public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 OtherZero;
-                public global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum EnumField;
+                public global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 OtherZero;
+                public global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum EnumField;
             
-                public NestedTypeName(global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 otherZero, global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum enumField)
+                public NestedTypeName(global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 otherZero, global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum enumField)
                 {
                     OtherZero = otherZero;
                     EnumField = enumField;
@@ -82,7 +82,7 @@ namespace Generated.Improbable.Gdk.Tests
                     public static void Serialize(NestedTypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
                     {
                         {
-                            global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Serialize(instance.OtherZero, obj.AddObject(1));
+                            global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Serialize(instance.OtherZero, obj.AddObject(1));
                         }
                         {
                             obj.AddEnum(2, (uint) instance.EnumField);
@@ -93,10 +93,10 @@ namespace Generated.Improbable.Gdk.Tests
                     {
                         var instance = new NestedTypeName();
                         {
-                            instance.OtherZero = global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Deserialize(obj.GetObject(1));
+                            instance.OtherZero = global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Deserialize(obj.GetObject(1));
                         }
                         {
-                            instance.EnumField = (global::Generated.Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum) obj.GetEnum(2);
+                            instance.EnumField = (global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.NestedEnum) obj.GetEnum(2);
                         }
                         return instance;
                     }

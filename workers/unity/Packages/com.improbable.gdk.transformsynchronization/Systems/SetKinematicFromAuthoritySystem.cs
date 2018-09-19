@@ -1,5 +1,5 @@
-﻿using Generated.Improbable.Transform;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;

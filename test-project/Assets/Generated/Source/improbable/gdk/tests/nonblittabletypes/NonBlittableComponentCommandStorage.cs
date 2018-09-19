@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -14,13 +14,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public class FirstCommand : CommandStorage
             {
-                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest>>();
             }
             public class SecondCommand : CommandStorage
             {
-                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>>();
+                public Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest>>();
             }
         }
     }

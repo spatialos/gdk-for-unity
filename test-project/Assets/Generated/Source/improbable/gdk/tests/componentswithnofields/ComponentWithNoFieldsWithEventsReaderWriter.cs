@@ -10,7 +10,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithEvents
     {
@@ -27,37 +27,37 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.ReaderWriter, 1004)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
-            public interface Reader : IReader<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>
+            public interface Reader : IReader<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>
             {
-                event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
+                event Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1004)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public interface Writer : Reader, IWriter<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>
+            public interface Writer : Reader, IWriter<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>
             {
-                void SendEvt( global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload);
+                void SendEvt( global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload);
             }
 
             internal class ReaderWriterImpl :
-                ReaderWriterBase<Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>, Reader, Writer
+                ReaderWriterBase<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>, Reader, Writer
             {
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
                 }
 
-                protected override void TriggerFieldCallbacks(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update)
+                protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update)
                 {
                 }
 
-                protected override void ApplyUpdate(Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update, ref Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component data)
+                protected override void ApplyUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update, ref Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component data)
                 {
                 }
 
-                private readonly List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> EvtDelegates = new List<Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
+                private readonly List<Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> EvtDelegates = new List<Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
 
-                public event Action<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
+                public event Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt
                 {
                     add
                     {
@@ -79,12 +79,12 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
 
-                public void OnEvtEvent(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                public void OnEvtEvent(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
                     GameObjectDelegates.DispatchWithErrorHandling(payload, EvtDelegates, logDispatcher);
                 }
 
-                public void SendEvt(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                public void SendEvt(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
                     if (!VerifyNotDisposed())
                     {

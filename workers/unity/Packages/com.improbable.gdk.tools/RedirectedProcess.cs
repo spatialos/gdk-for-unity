@@ -79,13 +79,16 @@ namespace Improbable.Gdk.Tools
                 // Ensure that the first line of the log is something useful in the Unity editor console.
                 var trimmedOutput = processOutput.ToString().Trim();
 
-                if (process.ExitCode == 0)
+                if (!string.IsNullOrEmpty(trimmedOutput))
                 {
-                    Debug.Log(trimmedOutput);
-                }
-                else
-                {
-                    Debug.LogError(trimmedOutput);
+                    if (process.ExitCode == 0)
+                    {
+                        Debug.Log(trimmedOutput);
+                    }
+                    else
+                    {
+                        Debug.LogError(trimmedOutput);
+                    }
                 }
 
                 return process.ExitCode;

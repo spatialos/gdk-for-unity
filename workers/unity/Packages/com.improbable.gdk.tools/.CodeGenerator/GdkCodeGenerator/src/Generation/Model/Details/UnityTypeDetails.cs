@@ -15,8 +15,7 @@ namespace Improbable.Gdk.CodeGenerator
             CamelCaseName = Formatting.SnakeCaseToCamelCase(typeDefinition.Name);
             FullyQualifiedSpatialTypeName =
                 "global::" + Formatting.CapitaliseQualifiedNameParts(typeDefinition.QualifiedName);
-            FullyQualifiedTypeName = "global::" + UnityTypeMappings.PackagePrefix +
-                Formatting.CapitaliseQualifiedNameParts(typeDefinition.QualifiedName);
+            FullyQualifiedTypeName = "global::" + Formatting.CapitaliseQualifiedNameParts(typeDefinition.QualifiedName);
         }
     }
 }
