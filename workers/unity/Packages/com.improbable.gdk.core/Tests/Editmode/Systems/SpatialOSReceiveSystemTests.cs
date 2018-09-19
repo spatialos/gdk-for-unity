@@ -404,7 +404,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(emptyRequest, response.RequestPayload);
                 Assert.AreEqual(context, response.Context);
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op, response.Op);
+                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId);
             }
         }
 
@@ -465,7 +467,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(emptyRequest, response.RequestPayload);
                 Assert.AreEqual(context, response.Context);
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op, response.Op);
+                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId);
             }
         }
 
@@ -526,7 +530,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(emptyRequest, response.RequestPayload);
                 Assert.AreEqual(context, response.Context);
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op, response.Op);
+                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+                Assert.AreEqual(wrappedOp.Op.Result, response.Result);
+                Assert.AreEqual(wrappedOp.Op.ResultCount, response.ResultCount);
             }
         }
 
@@ -587,7 +594,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(emptyRequest, response.RequestPayload);
                 Assert.AreEqual(context, response.Context);
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op, response.Op);
+                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+                Assert.AreEqual(wrappedOp.Op.FirstEntityId, response.FirstEntityId);
+                Assert.AreEqual(wrappedOp.Op.NumberOfEntityIds, response.NumberOfEntityIds);
             }
         }
 
