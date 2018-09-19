@@ -19,16 +19,20 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             var workerSystem = world.GetExistingManager<WorkerSystem>();
             var entityManager = world.GetOrCreateManager<EntityManager>();
+
+            if (world.GetExistingManager<GameObjectInitializationSystem>() != null)
+            {
+                workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        "You should only call EnableStandardGameobjectCreation() once on worker setup")
+                    .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationSystemHelper)));
+                return;
+            }
+
             world.CreateManager<GameObjectInitializationSystem>(creator);
+
             if (workerGameObject != null)
             {
-                if (world.GetExistingManager<WorkerEntityGameObjectLinkerSystem>() != null)
-                {
-                    workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            "You have already added a worker GameObject, calling it the second time will be ignored")
-                        .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationSystemHelper)));
-                }
-                else if (!entityManager.HasComponent<OnConnected>(workerSystem.WorkerEntity))
+                if (!entityManager.HasComponent<OnConnected>(workerSystem.WorkerEntity))
                 {
                     workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent("You cannot set the Worker " +
                             "GameObject once the World has already started running")
