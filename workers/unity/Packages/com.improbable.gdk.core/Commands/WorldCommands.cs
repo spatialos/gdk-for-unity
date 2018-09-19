@@ -702,7 +702,7 @@ namespace Improbable.Gdk.Core.Commands
             {
                 if (entityQuery.ResultType is SnapshotResultType)
                 {
-                    Debug.LogWarning("Cannot safely access component data from entity query - this is a known bug. To protect the integrity of this worker, this request will be dropped before sending.");
+                    Debug.LogWarning("Cannot safely access component data from entity query - this is a known issue. To protect its integrity, the worker will drop the request before sending.");
                 }
 
                 return new Request
