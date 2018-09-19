@@ -6,16 +6,17 @@ namespace Improbable.Gdk.GameObjectCreation
 {
     public static class GameObjectCreationSystemHelper
     {
-        public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator = null,
+        public static void EnableStandardGameObjectCreation(World world, GameObject workerGameObject = null)
+        {
+            var workerSystem = world.GetOrCreateManager<WorkerSystem>();
+            var creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin,
+                workerSystem.LogDispatcher);
+            EnableStandardGameObjectCreation(world, creator, workerGameObject);
+        }
+
+        public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator,
             GameObject workerGameObject = null)
         {
-            if (creator == null)
-            {
-                var workerSystem = world.GetOrCreateManager<WorkerSystem>();
-                creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin,
-                    workerSystem.LogDispatcher);
-            }
-
             world.CreateManager<GameObjectInitializationSystem>(creator);
             if (workerGameObject != null)
             {
