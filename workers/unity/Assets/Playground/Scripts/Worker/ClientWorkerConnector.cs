@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Playground;
 
