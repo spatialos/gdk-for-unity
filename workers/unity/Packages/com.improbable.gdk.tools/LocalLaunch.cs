@@ -160,27 +160,18 @@ namespace Improbable.Gdk.Tools
                     return DefaultLogFileName;
                 }
 
-                var arguments = (IList)argumentsValue;
+                var arguments = (List<object>) argumentsValue;
 
-                int argumentIdx = 0;
-                for (argumentIdx = 0; argumentIdx < arguments.Count; argumentIdx++)
-                {
-                    // The next argument would be the name of the log file
-                    if (arguments[argumentIdx].Equals("-logfile"))
-                    {
-                        argumentIdx++;
-                        break;
-                    }
-                }
+                var logFileArg = arguments.SkipWhile(arg => !string.Equals(arg, "-logfile")).FirstOrDefault(arg => !string.Equals(arg, "-logfile"));
 
                 // Logger file not found - using default one
-                if (argumentIdx >= arguments.Count)
+                if (logFileArg == null)
                 {
                     Debug.LogError($"Config file {ClientConfigFilename} doesn't contain '-logfile' argument within 'external' -> 'default' -> '{currentOS}' -> arguments.");
                     return DefaultLogFileName;
                 }
 
-                var logFileName = Path.GetFullPath(Path.Combine(logConfigPath, (string) arguments[argumentIdx]));
+                var logFileName = Path.GetFullPath(Path.Combine(logConfigPath, (string) logFileArg));
                 return logFileName;
             }
             catch (System.Exception e)
