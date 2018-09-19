@@ -17,7 +17,7 @@ namespace Playground
             var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
             var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
 
-            var entity = EntityBuilder.Begin()
+            var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
@@ -26,10 +26,10 @@ namespace Playground
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
                 .AddComponent(launchable, WorkerUtils.UnityGameLogic);
 
-            entity = TransformSynchronizationEntityBuilderHelper.AddComponents(entity, WorkerUtils.UnityGameLogic,
+            entityBuilder = TransformSynchronizationEntityBuilderHelper.AddComponents(entityBuilder, WorkerUtils.UnityGameLogic,
                 location: new Location((float) coords.X, (float) coords.Y, (float) coords.Z));
 
-            return entity.Build();
+            return entityBuilder.Build();
         }
     }
 }
