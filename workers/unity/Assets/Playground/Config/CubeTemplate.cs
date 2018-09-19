@@ -24,10 +24,9 @@ namespace Playground
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
-                .AddComponent(launchable, WorkerUtils.UnityGameLogic);
-
-            TransformSynchronizationHelper.AddComponents(ref entityBuilder, WorkerUtils.UnityGameLogic,
-                location: new Location((float) coords.X, (float) coords.Y, (float) coords.Z));
+                .AddComponent(launchable, WorkerUtils.UnityGameLogic)
+                .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
+                    location: new Location((float) coords.X, (float) coords.Y, (float) coords.Z));
 
             return entityBuilder.Build();
         }

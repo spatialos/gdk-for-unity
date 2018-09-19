@@ -40,10 +40,9 @@ namespace Playground
                 .AddComponent(playerInput, clientAttribute)
                 .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(score, WorkerUtils.UnityGameLogic)
-                .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic);
-
-            TransformSynchronizationHelper.AddComponents(ref entityBuilder, clientAttribute);
-            PlayerLifecycleHelper.AddComponents(ref entityBuilder, clientAttribute, WorkerUtils.UnityGameLogic);
+                .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic)
+                .AddTransformSynchronizationComponents(clientAttribute)
+                .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();
         }

@@ -4,13 +4,13 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    public class PlayerLifecycleHelper
+    public static class PlayerLifecycleHelper
     {
-        public static void AddComponents(ref EntityBuilder entityBuilder, string clientAccess, string serverAccess)
+        public static EntityBuilder AddPlayerLifecycleComponents(this EntityBuilder entityBuilder, string clientAccess, string serverAccess)
         {
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
-            entityBuilder = entityBuilder
+            return entityBuilder
                 .AddComponent(clientHeartbeat, clientAccess)
                 .AddComponent(serverHeartbeat, serverAccess);
         }

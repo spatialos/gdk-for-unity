@@ -6,13 +6,14 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationHelper
     {
-        public static void AddComponents(ref EntityBuilder entityBuilder, string writeAccess,
+        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
             Location location = default(Location),
             Velocity velocity = default(Velocity),
             uint physicsTick = 0,
             float ticksPerSecond = 0)
         {
-            AddComponents(ref entityBuilder, writeAccess,
+            return entityBuilder.AddTransformSynchronizationComponents(
+                writeAccess,
                 new Quaternion(1f, 0f, 0f, 0f),
                 location,
                 velocity,
@@ -20,7 +21,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ticksPerSecond);
         }
 
-        public static void AddComponents(ref EntityBuilder entityBuilder, string writeAccess,
+        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
             Quaternion quaternion,
             Location location = default(Location),
             Velocity velocity = default(Velocity),
@@ -34,7 +35,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 physicsTick,
                 ticksPerSecond
             );
-            entityBuilder = entityBuilder.AddComponent(transform, writeAccess);
+            return entityBuilder.AddComponent(transform, writeAccess);
         }
 
         public static void AddClientSystems(World world)
