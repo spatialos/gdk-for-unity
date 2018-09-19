@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
-    public static class GameObjectCreationSystemHelper
+    public static class GameObjectCreationHelper
     {
         public static void EnableStandardGameObjectCreation(World world)
         {

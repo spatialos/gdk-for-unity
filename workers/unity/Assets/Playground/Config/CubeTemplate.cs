@@ -26,7 +26,7 @@ namespace Playground
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
                 .AddComponent(launchable, WorkerUtils.UnityGameLogic);
 
-            entityBuilder = TransformSynchronizationEntityBuilderHelper.AddComponents(entityBuilder, WorkerUtils.UnityGameLogic,
+            TransformSynchronizationHelper.AddComponents(ref entityBuilder, WorkerUtils.UnityGameLogic,
                 location: new Location((float) coords.X, (float) coords.Y, (float) coords.Z));
 
             return entityBuilder.Build();
