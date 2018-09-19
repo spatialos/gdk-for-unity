@@ -65,7 +65,6 @@ namespace Improbable.Gdk.GameObjectRepresentation
                     {
                         // This behaviour does not want to be enabled for this worker.
                         RunWithExceptionHandling(() => behaviour.enabled = false);
-
                         continue;
                     }
 
