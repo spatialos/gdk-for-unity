@@ -15,7 +15,8 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
-        private const string DefaultLogFileName = "*unityclient.log";
+        private static readonly string
+            DefaultLogFileName = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "*unityclient.log"));
 
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
@@ -42,7 +43,6 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Launch standalone client")]
         private static void LaunchStandaloneClient()
         {
-            GetClientLogFilename();
             Debug.Log("Launching a standalone client");
             EditorApplication.delayCall += LaunchClient;
         }
@@ -95,18 +95,15 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var logPath = Path.Combine(SpatialProjectRootDir, "logs");
-                var latestLogFile = Directory.GetFiles(logPath, GetClientLogFilename())
-                    .Select(f => new FileInfo(f))
-                    .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
+                var latestLogFile = GetClientLogFileFullPath();
 
-                if (latestLogFile == null)
+                if (!File.Exists(latestLogFile))
                 {
-                    Debug.LogError($"Could not find a standalone client log file in {logPath}.");
+                    Debug.LogError($"Could not find a standalone client log file {latestLogFile}.");
                     return;
                 }
 
-                var message = $"Unity Standalone Client local launch logfile: {latestLogFile.FullName}";
+                var message = $"Unity Standalone Client local launch logfile: {latestLogFile}";
 
                 if (WasProcessKilled(process))
                 {
@@ -114,7 +111,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    var content = File.ReadAllText(latestLogFile.FullName);
+                    var content = File.ReadAllText(latestLogFile);
                     Debug.LogError($"{message}\n{content}");
                 }
 
@@ -123,11 +120,11 @@ namespace Improbable.Gdk.Tools
             };
         }
 
-        private static string GetClientLogFilename()
+        private static string GetClientLogFileFullPath()
         {
             try
             {
-                var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unitye");
+                var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
                 var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
                 var configFileJsonDeserialized = Json.Deserialize(configFileJson);
                 var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
@@ -183,8 +180,7 @@ namespace Improbable.Gdk.Tools
                     return DefaultLogFileName;
                 }
 
-                // Strip any relative pathing
-                var logFileName = ((string)arguments[argumentIdx]).Substring(((string)arguments[argumentIdx]).LastIndexOf('/'));
+                var logFileName = Path.GetFullPath(Path.Combine(logConfigPath, (string) arguments[argumentIdx]));
                 return logFileName;
             }
             catch (System.Exception e)
