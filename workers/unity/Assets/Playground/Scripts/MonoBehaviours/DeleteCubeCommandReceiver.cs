@@ -58,14 +58,13 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var op = response.Op;
             var entityId = response.RequestPayload.EntityId;
 
-            if (op.StatusCode != StatusCode.Success)
+            if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
                     new LogEvent(string.Format(CouldNotDeleteEntityWithId,
-                        entityId, op.Message)));
+                        entityId, response.Message)));
                 return;
             }
 
