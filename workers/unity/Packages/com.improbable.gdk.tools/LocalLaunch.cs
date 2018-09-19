@@ -42,6 +42,7 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Launch standalone client")]
         private static void LaunchStandaloneClient()
         {
+            GetClientLogFilename();
             Debug.Log("Launching a standalone client");
             EditorApplication.delayCall += LaunchClient;
         }
@@ -124,64 +125,73 @@ namespace Improbable.Gdk.Tools
 
         private static string GetClientLogFilename()
         {
-            var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
-            var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
-            var configFileJsonDeserialized = Json.Deserialize(configFileJson);
-            var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
-            Dictionary<string, object> tempDict;
-
-            if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue)) {
-                Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'external'.");
-                return DefaultLogFileName;
-            }
-
-            tempDict = externalValue as Dictionary<string, object>;
-
-            if (!tempDict.TryGetValue("default", out var defaultValue))
+            try
             {
-                Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'default' within 'external'.");
-                return DefaultLogFileName;
-            }
+                var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unitye");
+                var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
+                var configFileJsonDeserialized = Json.Deserialize(configFileJson);
+                var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
+                Dictionary<string, object> tempDict;
 
-            tempDict = defaultValue as Dictionary<string, object>;
-
-            if (!tempDict.TryGetValue(currentOS, out var currentOSValue))
-            {
-                Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key '{currentOS}' within 'external' -> 'default'.");
-                return DefaultLogFileName;
-            }
-
-            tempDict = currentOSValue as Dictionary<string, object>;
-
-            if (!tempDict.TryGetValue("arguments", out var argumentsValue))
-            {
-                Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'arguments' within 'external' -> 'default' -> '{currentOS}'.");
-                return DefaultLogFileName;
-            }
-
-            var arguments = (IList) argumentsValue;
-
-            int argumentIdx = 0;
-            for (argumentIdx = 0; argumentIdx < arguments.Count; argumentIdx++)
-            {
-                // The next argument would be the name of the log file
-                if (arguments[argumentIdx].Equals("-logfile"))
+                if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue))
                 {
-                    argumentIdx++;
-                    break;
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'external'.");
+                    return DefaultLogFileName;
                 }
-            }
 
-            // Logger file not found - using default one
-            if (argumentIdx >= arguments.Count)
+                tempDict = externalValue as Dictionary<string, object>;
+
+                if (!tempDict.TryGetValue("default", out var defaultValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'default' within 'external'.");
+                    return DefaultLogFileName;
+                }
+
+                tempDict = defaultValue as Dictionary<string, object>;
+
+                if (!tempDict.TryGetValue(currentOS, out var currentOSValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key '{currentOS}' within 'external' -> 'default'.");
+                    return DefaultLogFileName;
+                }
+
+                tempDict = currentOSValue as Dictionary<string, object>;
+
+                if (!tempDict.TryGetValue("arguments", out var argumentsValue))
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'arguments' within 'external' -> 'default' -> '{currentOS}'.");
+                    return DefaultLogFileName;
+                }
+
+                var arguments = (IList)argumentsValue;
+
+                int argumentIdx = 0;
+                for (argumentIdx = 0; argumentIdx < arguments.Count; argumentIdx++)
+                {
+                    // The next argument would be the name of the log file
+                    if (arguments[argumentIdx].Equals("-logfile"))
+                    {
+                        argumentIdx++;
+                        break;
+                    }
+                }
+
+                // Logger file not found - using default one
+                if (argumentIdx >= arguments.Count)
+                {
+                    Debug.LogError($"Config file {ClientConfigFilename} doesn't contain '-logfile' argument within 'external' -> 'default' -> '{currentOS}' -> arguments.");
+                    return DefaultLogFileName;
+                }
+
+                // Strip any relative pathing
+                var logFileName = ((string)arguments[argumentIdx]).Substring(((string)arguments[argumentIdx]).LastIndexOf('/'));
+                return logFileName;
+            }
+            catch (System.Exception e)
             {
-                Debug.LogError($"Config file {ClientConfigFilename} doesn't contain '-logfile' argument within 'external' -> 'default' -> '{currentOS}' -> arguments.");
+                Debug.LogError(e.ToString());
                 return DefaultLogFileName;
             }
-
-            // Strip any relative pathing
-            var logFileName = ((string)arguments[argumentIdx]).Substring(((string) arguments[argumentIdx]).LastIndexOf('/'));
-            return logFileName;
         }
 
         public static void LaunchLocalDeployment()
