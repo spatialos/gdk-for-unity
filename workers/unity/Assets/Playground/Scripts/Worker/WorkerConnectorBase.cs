@@ -130,10 +130,11 @@ namespace Playground
             return config;
         }
 
-        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int attempts,
+        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int maxAttempts,
             ILogDispatcher logger, string workerType)
         {
-            while (attempts > 0)
+            var remainingAttempts = maxAttempts;
+            while (remainingAttempts > 0)
             {
                 try
                 {
@@ -145,12 +146,12 @@ namespace Playground
                         new LogEvent($"Failed to create worker")
                             .WithField("WorkerType", workerType)
                             .WithField("Message", e.Message));
-                    attempts--;
+                    remainingAttempts--;
                 }
             }
 
             throw new ConnectionFailedException(
-                $"Tried to connect {attempts} times - giving up.",
+                $"Tried to connect {maxAttempts} times - giving up.",
                 ConnectionErrorReason.ExceededMaximumRetries);
         }
 
