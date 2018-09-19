@@ -128,7 +128,7 @@ namespace Improbable.Gdk.Tools
                 var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
                 var configFileJsonDeserialized = Json.Deserialize(configFileJson);
                 var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
-                Dictionary<string, object> tempDict;
+                Dictionary<string, object> partialJsonDict;
 
                 if (!configFileJsonDeserialized.TryGetValue("external", out var externalValue))
                 {
@@ -136,25 +136,25 @@ namespace Improbable.Gdk.Tools
                     return DefaultLogFileName;
                 }
 
-                tempDict = externalValue as Dictionary<string, object>;
+                partialJsonDict = externalValue as Dictionary<string, object>;
 
-                if (!tempDict.TryGetValue("default", out var defaultValue))
+                if (!partialJsonDict.TryGetValue("default", out var defaultValue))
                 {
                     Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'default' within 'external'.");
                     return DefaultLogFileName;
                 }
 
-                tempDict = defaultValue as Dictionary<string, object>;
+                partialJsonDict = defaultValue as Dictionary<string, object>;
 
-                if (!tempDict.TryGetValue(currentOS, out var currentOSValue))
+                if (!partialJsonDict.TryGetValue(currentOS, out var currentOSValue))
                 {
                     Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key '{currentOS}' within 'external' -> 'default'.");
                     return DefaultLogFileName;
                 }
 
-                tempDict = currentOSValue as Dictionary<string, object>;
+                partialJsonDict = currentOSValue as Dictionary<string, object>;
 
-                if (!tempDict.TryGetValue("arguments", out var argumentsValue))
+                if (!partialJsonDict.TryGetValue("arguments", out var argumentsValue))
                 {
                     Debug.LogError($"Config file {ClientConfigFilename} doesn't contain key 'arguments' within 'external' -> 'default' -> '{currentOS}'.");
                     return DefaultLogFileName;
