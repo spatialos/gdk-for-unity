@@ -33,14 +33,14 @@ namespace Improbable.Gdk.Tools
             EditorApplication.delayCall += BuildConfig;
         }
 
-        [MenuItem("SpatialOS/Local launch %l")]
+        [MenuItem("SpatialOS/Local launch %l", priority = 70)]
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
-        [MenuItem("SpatialOS/Launch standalone client")]
+        [MenuItem("SpatialOS/Launch standalone client %l", priority = 70)]
         private static void LaunchStandaloneClient()
         {
             Debug.Log("Launching a standalone client");
