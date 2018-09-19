@@ -69,7 +69,8 @@ namespace Improbable.Gdk.Core.CodegenAdapters
             /// <param name="commandIndex">The unknown command index.</param>
             /// <param name="componentName">The name of the component that the command was received on.</param>
             public UnknownCommandIndexException(uint commandIndex, string componentName)
-                : base($"Unknown command index: {commandIndex} received for {componentName}")
+                : base($"Unknown command index: {commandIndex} received for {componentName}. " +
+                    "This can be caused by adding commands to a component and not rebuilding workers.")
             {
             }
         }
