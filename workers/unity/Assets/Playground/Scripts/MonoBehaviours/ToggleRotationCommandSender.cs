@@ -1,4 +1,3 @@
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;

@@ -17,17 +17,18 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
 * [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
 * [Snapshots](content/snapshots.md)
+* [Creating entity templates](content/entity-templates.md)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
 * [Reading and writing component data](content/gameobject/reading-and-writing-component-data.md)
-* [Sending and receiving events](content/gameobject/sending-receiving-commands.md)
-* [Sending and receiving commands](content/gameobject/sending-receiving-events.md)
+* [Sending and receiving events](content/gameobject/sending-receiving-events.md)
+* [Sending and receiving commands](content/gameobject/sending-receiving-commands.md)
 * [World commands](content/gameobject/world-commands.md)
 * [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
 
 ##### Entity Component System
-The GDK currently uses the `0.0.12-preview.11` version of the entities preview packages.
+The GDK currently uses the `0.0.12-preview.13` version of the entities preview packages.
 The GDK documentation assumes you are familiar with the Unity Entity Component System. See:
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
@@ -37,10 +38,10 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 * [Components and component updates](content/ecs/component-data.md)
 * [Sending and receiving events](content/ecs/events.md)
 * [Sending and receiving commands](content/ecs/commands.md)
+* [World commands](content/ecs/world-commands.md)
 * [Receiving updates from SpatialOS: Reactive components](content/ecs/reactive-components.md)
 * [Custom replication systems](content/ecs/custom-replication-system.md)
 * [Authority](content/ecs/authority.md)
-* [Creating entities](content/ecs/create-entity.md)
 * [Entity checkout process](content/ecs/entity-checkout-process.md)
 * [The code generator](content/ecs/code-generator.md)
 * [Temporary components](content/ecs/temporary-components.md)

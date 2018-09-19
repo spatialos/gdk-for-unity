@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 #region Diagnostic control
 
@@ -31,9 +29,9 @@ namespace Playground
 
         private Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
         }
 

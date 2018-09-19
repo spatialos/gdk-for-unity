@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 namespace Playground
 {

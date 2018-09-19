@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
@@ -35,7 +34,7 @@ namespace Playground.MonoBehaviours
         private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
         {
             var entityId = requestResponder.Request.Payload.CubeEntityId;
-            var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data);
+            var spawnedCubes = cubeSpawnerWriter.Data.SpawnedCubes;
 
             if (!spawnedCubes.Contains(entityId))
             {
@@ -71,7 +70,7 @@ namespace Playground.MonoBehaviours
             }
 
             var spawnedCubesCopy =
-                new List<EntityId>(CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data));
+                new List<EntityId>(cubeSpawnerWriter.Data.SpawnedCubes);
 
             if (!spawnedCubesCopy.Remove(entityId))
             {
@@ -83,8 +82,7 @@ namespace Playground.MonoBehaviours
 
             cubeSpawnerWriter.Send(new CubeSpawner.Update
             {
-                SpawnedCubes = spawnedCubesCopy,
-                NumSpawnedCubes = (uint) spawnedCubesCopy.Count
+                SpawnedCubes = spawnedCubesCopy
             });
         }
     }

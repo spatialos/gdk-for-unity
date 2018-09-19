@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Generated.Improbable;
-using Generated.Improbable.Transform;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Transform;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using UnityEngine;
@@ -93,15 +92,14 @@ namespace Playground.MonoBehaviours
             }
 
             var spawnedCubesCopy =
-                new List<EntityId>(CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data));
+                new List<EntityId>(cubeSpawnerWriter.Data.SpawnedCubes);
             var newEntityId = createEntityResponseOp.EntityId.Value;
 
             spawnedCubesCopy.Add(newEntityId);
 
             cubeSpawnerWriter.Send(new CubeSpawner.Update
             {
-                SpawnedCubes = spawnedCubesCopy,
-                NumSpawnedCubes = (uint) spawnedCubesCopy.Count
+                SpawnedCubes = spawnedCubesCopy
             });
         }
     }

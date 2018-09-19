@@ -1,4 +1,3 @@
-using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Collections;
@@ -71,7 +70,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
 
                 var update = new SchemaComponentUpdate(position.ComponentId);
-                Position.Serialization.Serialize(position, update.GetFields());
+                Position.Serialization.SerializeUpdate(position, update);
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 position.DirtyBit = false;
