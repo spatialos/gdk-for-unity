@@ -123,7 +123,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    Debug.LogError($"{message}");
+                    Debug.LogError($"Errors occured - {message}");
                 }
 
                 process.Dispose();
@@ -251,7 +251,7 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    Debug.LogError($"{message}");
+                    Debug.LogError($"Errors occured - {message}");
                 }
 
                 process.Dispose();
