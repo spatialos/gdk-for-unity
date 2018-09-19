@@ -4,7 +4,7 @@
         "Improbable.Gdk.Core",
         "Improbable.Gdk.TransformSynchronization",
         "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.GameObjectRepresentation.GameObjectCreation",
+        "Improbable.Gdk.GameObjectCreation",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
