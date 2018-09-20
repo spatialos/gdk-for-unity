@@ -59,13 +59,39 @@ To start your client-workers (sometimes called "external workers"), from a termi
 Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world. 
 
 ### Cloud deployment
-To start a cloud deployment, follow these steps: 
-1. Specify the SpatialOS project name you want to deploy to. To do this, locate the spatialos.json file in the root folder of your SpatialOS project and edit the file so the name field matches your SpatialOS project name. You can find your project name in the [SpatialOS Console](https://console.improbable.io/). It’ll be something like `beta_someword_anotherword_000`. (To set up your project in SpatialOS, follow the instructions in the [Setup guide](../setup-and-installing.md).)
-2. Upload your server-worker and client-worker assemblies. To do this, in a terminal window, from any directory in your project, run `spatial cloud upload <assembly-name>` from the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
-</br>You can choose any assembly name you want (but note that the name can only contain alpha-numerical characters, hyphens, dots and underscores, and must be between 5 and 64 characters long).
-3. Once the server-worker and client-worker assemblies are successfully uploaded, from the same directory run `spatial cloud launch <assembly-name> <path/to/launch-config.json> <deployment-name> --snapshot=<path/to/snapshot.snapshot>`, replacing the `<example-content>` with file path and file names relevant to your game. For more information on snapshots, see [Snapshots](snapshots.md).
-4. The `spatial cloud launch` command automatically opens the SpatialOS [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) in your browser window once the deployment has started. Note that this process might take a couple of minutes. You can then view what’s happening in your game’s deployment in real time.
+<br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
+<br/> To start a cloud deployment:
 
+    1.  Open the `spatialos.json` file in the root folder of your game. 
+    1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
+1. Build and upload a game assembly for the deployment
+    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game). 
+    1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
+
+    2. To upload an assembly; open a terminal and navigate to the directory in which your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
+    - The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
+    > **It’s finished uploading when:** You see `spatial upload <assembly name> succeeded` printed in your terminal output.
+1. Launch a cloud deployment
+    - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
+    - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better latency.
+    > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
+   
+ - About the `spatial cloud launch` command 
+    - `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
+        `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
+        where:
+        - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
+        - `<launch configuration>` is the configuration file for the deployment.
+        - `<deployment name>` is the name you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
+        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](./content/snapshots.md).
+
+1. Launch a game client:
+    1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
+    1. In the SpatialOS Console, select the deployment’s name to open the overview page.
+    1. Select **Launch**.
+        > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
+    1. To get links to share the game with others, select **Share**.
+    1. Once you’ve finished playing, select **Stop** in the Console.
 ----
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
 
