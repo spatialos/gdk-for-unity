@@ -58,7 +58,7 @@ This starts a "local" version of the SpatialOS Runtime on your development machi
 To start your client-workers (sometimes called "external workers"), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game.
 Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world. 
 
-### Cloud deployment
+#### Cloud deployment
 <br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
 <br/> To start a cloud deployment:
 
