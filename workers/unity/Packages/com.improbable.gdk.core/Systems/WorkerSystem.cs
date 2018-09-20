@@ -27,9 +27,8 @@ namespace Improbable.Gdk.Core
             Origin = origin;
         }
 
-        public static WorkerSystem Instantiate(World world, Connection connection, ILogDispatcher logDispatcher,
-            string workerType,
-            Vector3 origin)
+        public static WorkerSystem Instantiate(World world,
+            Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
         {
             return world.CreateManager<WorkerSystem>(connection, logDispatcher, workerType, origin);
         }
