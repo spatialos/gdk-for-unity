@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -15,7 +14,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
     {
         // Needed for IPreprocessBuildWithReport
         public int callbackOrder => 0;
-        private static readonly Dictionary<Type, bool> ConditionalEnableCache = new Dictionary<Type, bool>();
 
         static PrefabPreprocessor()
         {
@@ -82,16 +80,11 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
 
         private static bool DoesBehaviourNeedConditionalEnabling(Type targetType)
         {
-            if (!ConditionalEnableCache.TryGetValue(targetType, out var needsConditionalEnabling))
-            {
-                needsConditionalEnabling = targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
-                    targetType
-                        .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                        .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
-                ConditionalEnableCache[targetType] = needsConditionalEnabling;
-            }
-
-            return needsConditionalEnabling;
+            return
+                targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
+                targetType
+                    .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                    .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
         }
 
         private static bool DoesBehaviourNeedFixing(MonoBehaviour monoBehaviour)
