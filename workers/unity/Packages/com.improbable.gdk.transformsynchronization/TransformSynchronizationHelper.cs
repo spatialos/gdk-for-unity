@@ -19,13 +19,13 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
-            Quaternion quaternion,
+            Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
             var transform = TransformInternal.Component.CreateSchemaComponentData(
                 location.ToImprobableLocation(),
-                quaternion.ToImprobableQuaternion(),
+                rotation.ToImprobableQuaternion(),
                 velocity.ToImprobableVelocity(),
                 0,
                 1f / Time.fixedDeltaTime

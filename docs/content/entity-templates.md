@@ -53,6 +53,57 @@ public static class CreatureTemplate
 
 You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
 
+### Feature Module Components
+
+To take advantage of some feature modules, you need to add the components that the modules will make use of.  This is done by calling the appropriate helper method for each desired feature module.
+
+#### Transform Synchronization
+
+The helper for this feature module requires the attribute of the worker you want to give authority over Transforms to. There is also the option to set a starting location, velocity and rotation. If not provided, location and velocity will be set to `default(Vector3)`, and rotation will be set to `Quaternion.identity`.
+
+```c#
+public static class CubeTemplate
+{
+    public static Entity CreateCubeEntityTemplate(Coordinates coords)
+    {
+        var entityBuilder = EntityBuilder.Begin()
+            .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
+            ...
+            ...
+            .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
+				location: coords.NarrowToUnityVector());
+
+        return entityBuilder.Build();
+    }
+}
+```
+
+#### Player Lifecycle
+
+This helper for this feature module requires a clientAttribute and a serverAttribute.
+
+```c#
+public static class PlayerTemplate
+{
+    public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
+                Improbable.Vector3f position)
+    {
+        // Obtain unique client attribute
+        var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
+
+        var entityBuilder = EntityBuilder.Begin()
+            .AddPosition(position.X, position.Y, position.Z, WorkerUtils.UnityGameLogic)
+            ...
+            ...
+            .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
+
+        return entityBuilder.Build();
+    }
+}
+```
+
+
+
 ------
 
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
