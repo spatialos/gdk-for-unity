@@ -16,10 +16,10 @@ To do this, either:
 * In a terminal window, from the root of your game project, run:  `spatial build build-config` in the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
 ### Configuring the build of your workers
-To configure the build of your server-workers and client-workers you can create a new [Scriptable object](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) (Unity documentation) containing the information needed to build your workers correctly. 
+To configure the build of your server-workers and client-workers you can create a new [Scriptable object](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) (Unity documentation) containing the information needed to build your workers correctly.
 
 To do this:
-1. In your Unity Editor, go to the Project window and select menu:  **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`. 
+1. In your Unity Editor, go to the Project window and select menu:  **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
 1. Click on this Asset to view it in the Unity Editor Inspector. Here you can configure each server-worker and client-worker and for both local and cloud deployments. You can configure:
     * Which Scenes each worker should contain in its build.
     * Which platforms you want to build it for. (We currently support Windows, Linux and OSX.)
@@ -31,7 +31,7 @@ To do this:
 
 ### Building your workers
 To build your workers:
-From the Unity Editor menu, select **SpatialOS** > **Build <WorkerName> for local** or  **Build <WorkerName> for  cloud** where `<WorkerName>` is the name of any worker you could build. 
+From the Unity Editor menu, select **SpatialOS** > **Build <WorkerName> for local** or  **Build <WorkerName> for  cloud** where `<WorkerName>` is the name of any worker you could build.
 This starts the build process for the worker you selected and deployment type (cloud or local). When the build is done, there is a message in the Unity Editor Console, you can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity  project.
 
 ### Run your built-out workers
@@ -48,24 +48,23 @@ To start a local deployment, either:
 
 * In the Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
 
-    or 
+    or
 * Open a terminal window and from the root of your game project directory run `spatial local launch` in the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
 (See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) for details of the launch configurations.)
 
-This starts a "local" version of the SpatialOS Runtime on your development machine together with all server-workers (sometimes called “managed workers”) specified in the launch configuration you used. 
+This starts a "local" version of the SpatialOS Runtime on your development machine together with all server-workers (sometimes called “managed workers”) specified in the launch configuration you used.
 
 To start your client-workers (sometimes called "external workers"), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game.
-Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world. 
+Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world.
 
 #### Cloud deployment
 <br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
 <br/> To start a cloud deployment:
-
-    1.  Open the `spatialos.json` file in the root folder of your game. 
-    1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
+1.  Open the `spatialos.json` file in the root folder of your game. 
+1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 1. Build and upload a game assembly for the deployment
-    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game). 
+    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
     1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
 
     2. To upload an assembly; open a terminal and navigate to the directory in which your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
@@ -75,8 +74,8 @@ Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/i
     - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
     - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better latency.
     > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
-   
- - About the `spatial cloud launch` command 
+
+ - About the `spatial cloud launch` command
     - `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
         `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
         where:
