@@ -20,7 +20,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 #### Windows
 
-1. [Unity 2018.2.0](https://unity3d.com/get-unity/download/archive) 
+1. [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) 
     - Make sure to select the following components:
         - **Linux Build Support**
         - **Mac Build Support**
@@ -29,7 +29,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
         - Select **Game development with Unity** 
         - Select **.NET Core cross-platform development** 
         - In the **Summary** on the right: 
-            - Deselect **Unity 2017.2 64-bit Editor** (the SpatialOS GDK for Unity requires Unity 2018.2.0f2)
+            - Deselect **Unity 2017.2 64-bit Editor** (the SpatialOS GDK for Unity requires Unity 2018.2.8)
             - Make sure **Visual Studio Tools for Unity** is selected
     - If you are using Rider: 
         - Install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
@@ -43,11 +43,11 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
     - _We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy._
 6. Reboot your machine to finish the setup.
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.0 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
 #### Mac
 
-1. [Unity 2018.2.0](https://unity3d.com/get-unity/download/archive) 
+1. [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) 
     - Make sure to select the following components:
         - **Linux Build Support** 
         - **Windows Build Support**
