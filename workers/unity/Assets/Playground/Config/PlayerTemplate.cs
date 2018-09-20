@@ -19,7 +19,7 @@ namespace Playground
             if (clientAttribute == null)
             {
                 throw new InvalidOperationException(
-                    "Expected an attribute that is not \"UnityClient\" but none was found.");
+                    $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
             }
 
             const string CharacterType = "Character";

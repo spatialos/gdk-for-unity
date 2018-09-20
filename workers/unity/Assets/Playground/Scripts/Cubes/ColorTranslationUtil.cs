@@ -5,7 +5,7 @@ namespace Playground
 {
     public static class ColorTranslationUtil
     {
-        public static readonly Dictionary<Color, UnityEngine.Color> ColorMapping =
+        private static readonly Dictionary<Color, UnityEngine.Color> ColorMapping =
             new Dictionary<Color, UnityEngine.Color>
             {
                 { Color.BLUE, UnityEngine.Color.blue },

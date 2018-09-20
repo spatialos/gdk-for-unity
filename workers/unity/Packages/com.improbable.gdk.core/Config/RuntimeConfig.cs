@@ -8,8 +8,6 @@ namespace Improbable.Gdk.Core
         public const string LocatorHost = "locator.improbable.io";
         public const string ReceptionistHost = "127.0.0.1";
         public const ushort ReceptionistPort = 7777;
-
-        public const int ConnectionTimeout = 10000;
     }
 
     public static class RuntimeConfigNames

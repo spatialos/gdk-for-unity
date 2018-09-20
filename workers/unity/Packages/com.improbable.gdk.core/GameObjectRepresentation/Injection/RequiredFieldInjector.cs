@@ -15,8 +15,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
     {
         private readonly Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>> fieldInfoCache
             = new Dictionary<Type, Dictionary<InjectableId, FieldInfo[]>>();
+
         private readonly Dictionary<Type, List<uint>> componentPresentRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
+
         private readonly Dictionary<Type, List<uint>> componentAuthRequirementsForBehaviours =
             new Dictionary<Type, List<uint>>();
         private readonly Dictionary<Type, string[]> workerTypeRequirementsForBehaviours =
@@ -26,18 +28,21 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private readonly InjectableFactory injectableFactory;
 
         private const string LoggerName = nameof(RequiredFieldInjector);
+
         private const string BadRequiredMemberWarning
             = "[Require] attribute found on member that is not Injectable. This member will be ignored. "
             + "Please make sure that types marked with [Require] are located in the <component name>.Requirable or WorldsCommands.Requirable namespace.";
+
         private const string MalformedInjectable
             = "Injectable found without required attributes, this is invalid.";
+
         private const string RequirableFieldDoesNotInheritRequirableBase
             = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the SpatialOS GDK.";
 
         public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
-            this.injectableFactory = new InjectableFactory(entityManager, logger);
+            injectableFactory = new InjectableFactory(entityManager, logger);
         }
 
         public bool IsSpatialOSBehaviour(Type behaviourType)
@@ -90,8 +95,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
                             .WithField("Behaviour", behaviour)
                             .WithField("Field", field.Name));
                     }
-
-                    requirableToBeDisposed.Dispose();
+                    else
+                    {
+                        requirableToBeDisposed.Dispose();
+                    }
                 }
             }
         }
