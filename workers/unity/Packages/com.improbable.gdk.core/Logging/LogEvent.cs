@@ -65,7 +65,6 @@ namespace Improbable.Gdk.Core
                 builder.AppendLine();
                 builder.Append($"'{entry.Key}': '{entry.Value}'");
             }
-            builder.AppendLine();
 
             return builder.ToString();
         }
