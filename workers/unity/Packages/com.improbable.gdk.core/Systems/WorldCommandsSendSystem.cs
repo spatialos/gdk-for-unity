@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
+using Improbable.Worker.Query;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -52,9 +53,9 @@ namespace Improbable.Gdk.Core
         private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
         private WorldCommands.EntityQuery.Storage entityQueryStorage;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -120,6 +121,11 @@ namespace Improbable.Gdk.Core
                 var entity = entityQuerySenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
+                    if (req.EntityQuery.ResultType is SnapshotResultType)
+                    {
+                        continue;
+                    }
+
                     var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
                     entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));

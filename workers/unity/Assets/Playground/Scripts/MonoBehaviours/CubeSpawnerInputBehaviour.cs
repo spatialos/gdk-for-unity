@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Generated.Playground;
+using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
@@ -24,19 +23,6 @@ namespace Playground.MonoBehaviours
 
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
-
-        public static List<EntityId> GetSpawnedCubes(CubeSpawner.Component spatialOSCubeSpawner)
-        {
-            if (spatialOSCubeSpawner.NumSpawnedCubes == 0)
-            {
-                // TODO UTY-1081 remove workaround when lists can be emptied again
-                return new List<EntityId>();
-            }
-            else
-            {
-                return spatialOSCubeSpawner.SpawnedCubes;
-            }
-        }
 
         private void OnEnable()
         {
@@ -90,7 +76,7 @@ namespace Playground.MonoBehaviours
 
         private void SendDeleteCubeCommand()
         {
-            var spawnedCubes = GetSpawnedCubes(cubeSpawnerReader.Data);
+            var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
 
             if (spawnedCubes.Count == 0)
             {

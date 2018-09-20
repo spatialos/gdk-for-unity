@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -8,6 +9,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
@@ -16,38 +18,13 @@ namespace Improbable.Gdk.Core
         private readonly List<ComponentReplicator> componentReplicators =
             new List<ComponentReplicator>();
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             connection = World.GetExistingManager<WorkerSystem>().Connection;
 
             PopulateDefaultComponentReplicators();
-        }
-
-        private void PopulateDefaultComponentReplicators()
-        {
-            // Find all component specific replicators and create an instance.
-            var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract);
-
-            foreach (var componentReplicationType in componentReplicationTypes)
-            {
-                var componentReplicationHandler =
-                    (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
-                        new object[] { EntityManager, World });
-
-                componentReplicators.Add(new ComponentReplicator
-                {
-                    ComponentId = componentReplicationHandler.ComponentId,
-                    Handler = componentReplicationHandler,
-                    ReplicationComponentGroup =
-                        GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
-                    CommandReplicationGroups = componentReplicationHandler.CommandTypes
-                        .Select(componentType => GetComponentGroup(componentType)).ToList()
-                });
-            }
         }
 
         public bool TryRegisterCustomReplicationSystem(uint componentId)
@@ -71,7 +48,36 @@ namespace Improbable.Gdk.Core
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(connection);
+                replicator.Execute(this, connection);
+            }
+        }
+
+        internal void AddComponentReplicator(ComponentReplicationHandler componentReplicationHandler)
+        {
+            componentReplicators.Add(new ComponentReplicator
+            {
+                ComponentId = componentReplicationHandler.ComponentId,
+                Handler = componentReplicationHandler,
+                ReplicationComponentGroup =
+                    GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
+            });
+        }
+
+        private void PopulateDefaultComponentReplicators()
+        {
+            // Find all component specific replicators and create an instance.
+            var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract
+                    && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) == null);
+
+            foreach (var componentReplicationType in componentReplicationTypes)
+            {
+                var componentReplicationHandler =
+                    (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
+                        EntityManager, World);
+
+                AddComponentReplicator(componentReplicationHandler);
             }
         }
 
@@ -80,12 +86,11 @@ namespace Improbable.Gdk.Core
             public uint ComponentId;
             public ComponentReplicationHandler Handler;
             public ComponentGroup ReplicationComponentGroup;
-            public List<ComponentGroup> CommandReplicationGroups;
 
-            public void Execute(Connection connection)
+            public void Execute(SpatialOSSendSystem sendSystem, Connection connection)
             {
                 Handler.ExecuteReplication(ReplicationComponentGroup, connection);
-                Handler.SendCommands(CommandReplicationGroups, connection);
+                Handler.SendCommands(sendSystem, connection);
             }
         }
     }

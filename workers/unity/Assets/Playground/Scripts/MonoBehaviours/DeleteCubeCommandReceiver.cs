@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Generated.Playground;
+using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
@@ -24,7 +24,6 @@ namespace Playground.MonoBehaviours
         [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
 
         private ILogDispatcher logDispatcher;
-        private const string CouldNotDeleteEntityWithId = "Could not delete entity with id {0}: {1}.";
 
         public void OnEnable()
         {
@@ -36,7 +35,7 @@ namespace Playground.MonoBehaviours
         private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
         {
             var entityId = requestResponder.Request.Payload.CubeEntityId;
-            var spawnedCubes = CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data);
+            var spawnedCubes = cubeSpawnerWriter.Data.SpawnedCubes;
 
             if (!spawnedCubes.Contains(entityId))
             {
@@ -59,32 +58,31 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var op = response.Op;
             var entityId = response.RequestPayload.EntityId;
 
-            if (op.StatusCode != StatusCode.Success)
+            if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format(CouldNotDeleteEntityWithId,
-                        entityId, op.Message)));
+                    new LogEvent("Could not delete entity.")
+                        .WithField(LoggingUtils.EntityId, entityId)
+                        .WithField("Reason", response.Message));
                 return;
             }
 
             var spawnedCubesCopy =
-                new List<EntityId>(CubeSpawnerInputBehaviour.GetSpawnedCubes(cubeSpawnerWriter.Data));
+                new List<EntityId>(cubeSpawnerWriter.Data.SpawnedCubes);
 
             if (!spawnedCubesCopy.Remove(entityId))
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format("The entity {0} has been unexpectedly removed from the list.",
-                        entityId)));
+                    new LogEvent("The entity has been unexpectedly removed from the list.")
+                        .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
 
             cubeSpawnerWriter.Send(new CubeSpawner.Update
             {
-                SpawnedCubes = spawnedCubesCopy,
-                NumSpawnedCubes = (uint) spawnedCubesCopy.Count
+                SpawnedCubes = spawnedCubesCopy
             });
         }
     }

@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     public class LocatorConfig : ConnectionConfig
     {
         public string LocatorHost = RuntimeConfigDefaults.LocatorHost;
-        public LocatorParameters LocatorParameters = new LocatorParameters();
+        public readonly LocatorParameters LocatorParameters = new LocatorParameters();
 
         public LocatorConfig()
         {
@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         public override void Validate()
         {
             ValidateConfig(LocatorHost, RuntimeConfigNames.LocatorHost);
-            if (LocatorParameters.CredentialsType.Equals(LocatorCredentialsType.LoginToken))
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
                 ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
                 ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);

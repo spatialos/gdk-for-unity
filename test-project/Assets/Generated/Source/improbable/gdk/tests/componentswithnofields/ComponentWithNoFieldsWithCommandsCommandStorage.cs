@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
@@ -14,8 +14,8 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public class Cmd : CommandStorage
             {
-                public Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
+                public Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>> CommandRequestsInFlight =
+                    new Dictionary<long, CommandRequestStore<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty>>();
             }
         }
     }

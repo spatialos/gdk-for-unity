@@ -1,9 +1,20 @@
-﻿using Generated.Improbable.Transform;
-using Improbable.Gdk.Core;
+﻿using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+
+#region Diagnostic control
+
+#pragma warning disable 169
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -25,7 +36,7 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<TransformToSet> CurrentTransform;
-            [ReadOnly] public ComponentArray<Transform> Transform;
+            [ReadOnly] public ComponentArray<UnityEngine.Transform> Transform;
             public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
 
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>>
@@ -34,7 +45,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         [Inject] private RigidbodyData rigidbodyData;
         [Inject] private TransformData transformData;
-        [Inject] private WorkerSystem worker;
 
         protected override void OnUpdate()
         {

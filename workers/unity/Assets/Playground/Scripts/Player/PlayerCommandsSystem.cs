@@ -1,6 +1,5 @@
 using System;
-using Generated.Improbable;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Playground.Scripts.UI;
@@ -13,6 +12,7 @@ using UnityEngine;
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -52,7 +52,7 @@ namespace Playground
 
             if (playerData.Length > 1)
             {
-                throw new InvalidOperationException($"Expected at most 1 playerData, got: {playerData.Length}");
+                throw new InvalidOperationException($"Expected at most 1 playerData but got {playerData.Length}");
             }
 
             PlayerCommand command;
@@ -86,8 +86,8 @@ namespace Playground
                 return;
             }
 
-            var impactPoint = new Vector3f(info.point.x, info.point.y, info.point.z);
-            var launchDirection = new Vector3f(ray.direction.x, ray.direction.y, ray.direction.z);
+            var impactPoint = info.point.ToSpatialVector3f();
+            var launchDirection = ray.direction.ToSpatialVector3f();
 
             sender.RequestsToSend.Add(Launcher.LaunchEntity.CreateRequest(playerId,
                 new LaunchCommandRequest(component.SpatialEntityId, impactPoint, launchDirection,

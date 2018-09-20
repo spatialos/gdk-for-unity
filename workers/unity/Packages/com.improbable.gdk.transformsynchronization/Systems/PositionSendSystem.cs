@@ -1,9 +1,17 @@
-using Generated.Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+#pragma warning disable 649
+// ReSharper disable UnassignedReadonlyField
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -62,7 +70,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 var entityId = positionData.SpatialEntityIds[i].EntityId;
 
                 var update = new SchemaComponentUpdate(position.ComponentId);
-                Position.Serialization.Serialize(position, update.GetFields());
+                Position.Serialization.SerializeUpdate(position, update);
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
                 position.DirtyBit = false;

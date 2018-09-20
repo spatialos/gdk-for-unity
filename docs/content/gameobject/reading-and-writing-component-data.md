@@ -10,8 +10,8 @@ We provide code-generated Readers and Writers for interacting with SpatialOS com
 
 For every component defined in SpatialOS schema, we generate a pair of Readers and Writers within:
 
-* `Generated.<namespace of schema component>.<component name>.Requirable.Reader`
-* `Generated.<namespace of schema component>.<component name>.Requirable.Writer` 
+* `<namespace of schema component>.<component name>.Requirable.Reader`
+* `<namespace of schema component>.<component name>.Requirable.Writer` 
 
 You can access Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
 
@@ -50,7 +50,7 @@ component Health {
 
 **Example**
 ```csharp
-using Generated.Improbable.Examples
+using Improbable.Examples
 
 public class ReadHealthBehaviour : MonoBehaviour
 {
@@ -71,11 +71,11 @@ public class ReadHealthBehaviour : MonoBehaviour
 </br>**Note**: The GDK only injects a Writer when your worker gains write authority over the `Health` component. The MonoBehaviour requiring the Writer remains disabled otherwise.
 
 2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
-</br>(`ISpatialComponentUpdate` types are generated under `Generated.<namespace of schema component>.<component name>.Update`.) 
+</br>(`ISpatialComponentUpdate` types are generated under `<namespace of schema component>.<component name>.Update`.) 
 
 **Example**
 ```csharp
-using Generated.Improbable.Examples
+using Improbable.Examples
 
 public class WriteHealthBehaviour : MonoBehaviour
 {
@@ -111,7 +111,7 @@ public class WriteHealthBehaviour : MonoBehaviour
 The following code example sets up a `Reader.ComponentUpdated` callback.
 
 ```csharp
-using Generated.Improbable.Examples
+using Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
@@ -140,7 +140,7 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 The following code example sets up a `Reader.<component property name>Updated` callback.
 
 ```csharp
-using Generated.Improbable.Examples
+using Improbable.Examples
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {

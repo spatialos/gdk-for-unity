@@ -1,15 +1,14 @@
 using System;
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using Color = Generated.Playground.Color;
 
 #region Diagnostic control
 
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 
@@ -27,12 +26,12 @@ namespace Playground
         [Inject] private CubeColorData cubeColorData;
 
         private Array colorValues;
-        private int colorIndex = 0;
-        private float nextColorChange = 0;
+        private int colorIndex;
+        private float nextColorChange;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             colorValues = Enum.GetValues(typeof(Color));
         }

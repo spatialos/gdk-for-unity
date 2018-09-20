@@ -1,15 +1,14 @@
-using Generated.Playground;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 #region Diagnostic control
 
 #pragma warning disable 649
 // ReSharper disable UnassignedReadonlyField
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
 

@@ -55,9 +55,9 @@ namespace Improbable.Gdk.GameObjectCreation
             this.gameObjectCreator = gameObjectCreator;
         }
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
         }
@@ -98,16 +98,20 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnDestroyManager()
         {
-            foreach (var entityToGameObject in entityToGameObjects)
+            if (entityToGameObjects.Count > 0)
             {
-                var entity = entityToGameObject.Key;
-                var gameObject = entityToGameObject.Value;
-                var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
-                linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
-                gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
-            }
+                foreach (var entityToGameObject in entityToGameObjects)
+                {
+                    var entity = entityToGameObject.Key;
+                    var gameObject = entityToGameObject.Value;
+                    var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
+                    linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
+                    gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
+                }
 
-            entityToGameObjects.Clear();
+                viewCommandBuffer.FlushBuffer();
+                entityToGameObjects.Clear();
+            }
 
             base.OnDestroyManager();
         }

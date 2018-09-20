@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Generated.Improbable.PlayerLifecycle;
-using Generated.Improbable.Transform;
-using Generated.Playground;
 using Improbable.Gdk.Core;
+using Improbable.PlayerLifecycle;
+using Improbable.Transform;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 
@@ -13,17 +12,15 @@ namespace Playground
     public static class PlayerTemplate
     {
         public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
-            Generated.Improbable.Vector3f position)
+            Improbable.Vector3f position)
         {
             var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
 
             if (clientAttribute == null)
             {
                 throw new InvalidOperationException(
-                    "Expected an attribute that is not \"UnityClient\" but none was found.");
+                    $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
             }
-
-            const string CharacterType = "Character";
 
             var transform =
                 TransformInternal.Component.CreateSchemaComponentData(new Location(),
@@ -33,11 +30,11 @@ namespace Playground
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();
             var score = Score.Component.CreateSchemaComponentData(0);
-            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>(), 0);
+            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
-                .AddMetadata(CharacterType, WorkerUtils.UnityGameLogic)
+                .AddMetadata("Character", WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)

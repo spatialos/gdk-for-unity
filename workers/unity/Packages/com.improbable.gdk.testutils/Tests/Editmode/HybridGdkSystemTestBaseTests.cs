@@ -33,7 +33,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
 
             public void TestInjection(World world)
             {
-                OnBeforeCreateManagerInternal(world, 10);
+                OnBeforeCreateManagerInternal(world);
             }
 
             public void ManualDispose()

@@ -73,11 +73,15 @@ namespace <#= qualifiedNamespace #>
 
         public static class Serialization
         {
-            public static void Serialize(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
+                var obj = updateObj.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
+<# } #>
                 }
 <# } #>
             }
@@ -97,9 +101,15 @@ namespace <#= qualifiedNamespace #>
                 return component;
             }
 
-            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaObject obj)
+            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var update = new <#= componentNamespace #>.Update();
+                var obj = updateObj.GetFields();
+
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                var clearedFields = updateObj.GetClearedFields();
+
+<# } #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetDeserializeUpdateIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 5) #>
@@ -108,8 +118,14 @@ namespace <#= qualifiedNamespace #>
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaObject obj, ref <#= componentNamespace #>.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
             {
+                var obj = updateObj.GetFields();
+
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                var clearedFields = updateObj.GetClearedFields();
+
+<# } #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
