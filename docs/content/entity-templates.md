@@ -85,8 +85,7 @@ This helper for this feature module requires a **clientAttribute** and a **serve
 ```c#
 public static class PlayerTemplate
 {
-    public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
-                Improbable.Vector3f position)
+    public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet, Improbable.Vector3f position)
     {
         // Obtain unique client attribute
         var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
