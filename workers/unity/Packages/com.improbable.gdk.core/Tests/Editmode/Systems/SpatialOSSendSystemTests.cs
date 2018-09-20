@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             world = new World("test-world");
             logDispatcher = new TestLogDispatcher();
-            WorkerSystem.Instantiate(world, null, logDispatcher, TestWorkerType, Vector3.zero);
+            world.CreateManager<WorkerSystem>(null, logDispatcher, TestWorkerType, Vector3.zero);
 
             sendSystem = world.GetOrCreateManager<SpatialOSSendSystem>();
 

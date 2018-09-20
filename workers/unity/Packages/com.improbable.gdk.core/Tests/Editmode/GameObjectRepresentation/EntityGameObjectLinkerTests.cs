@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             world = new World("TestWorld");
             entityManager = world.GetOrCreateManager<EntityManager>();
-            worker = WorkerSystem.Instantiate(world, null, new LoggingDispatcher(), "TestWorker", Vector3.zero);
+            worker = world.CreateManager<WorkerSystem>(null, new LoggingDispatcher(), "TestWorker", Vector3.zero);
             entityGameObjectLinker = new EntityGameObjectLinker(world, worker);
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
