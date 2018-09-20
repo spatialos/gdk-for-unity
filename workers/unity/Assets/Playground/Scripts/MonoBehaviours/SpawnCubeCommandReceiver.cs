@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Improbable;
 using Improbable.Common;
 using Improbable.Gdk.Core;
@@ -83,7 +83,7 @@ namespace Playground.MonoBehaviours
                 logDispatcher.HandleLog(LogType.Error,
                     new LogEvent("CreateEntity failed.")
                         .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
-                        .WithField("Reason", createEntityResponseOp.Message));
+                        .WithField("Reason", response.Message));
 
                 return;
             }

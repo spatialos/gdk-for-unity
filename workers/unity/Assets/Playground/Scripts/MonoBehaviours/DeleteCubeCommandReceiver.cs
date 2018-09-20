@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
@@ -65,7 +65,7 @@ namespace Playground.MonoBehaviours
                 logDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"Could not delete entity.")
                         .WithField(LoggingUtils.EntityId, entityId)
-                        .WithField("Reason", op.Message));
+                        .WithField("Reason", response.Message));
                 return;
             }
 
