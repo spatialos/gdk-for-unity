@@ -143,7 +143,7 @@ namespace Playground
                 catch (ConnectionFailedException e)
                 {
                     logger.HandleLog(LogType.Error,
-                        new LogEvent($"Failed to create worker")
+                        new LogEvent($"Failed attempt {remainingAttempts} to create worker")
                             .WithField("WorkerType", workerType)
                             .WithField("Message", e.Message));
                     remainingAttempts--;

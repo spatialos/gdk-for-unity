@@ -93,8 +93,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
                             .WithField("Behaviour", behaviour)
                             .WithField("Field", field.Name));
                     }
-
-                    requirableToBeDisposed?.Dispose();
+                    else
+                    {
+                        requirableToBeDisposed.Dispose();
+                    }
                 }
             }
         }
