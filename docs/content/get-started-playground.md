@@ -6,12 +6,12 @@
 
 Before following this guide - make sure you have followed the [setup guide](../setup-and-installing.md).
 
-### Run a game from your Unity Editor
+## Run a game from your Unity Editor
 
 You can now run a game from the Unity Editor, either using SpatialOS running locally on your computer, or using SpatialOS in the cloud.
 You can try this out using the `Playground` which is a basic Unity project using SpatialOS.
 
-####  Run the `Playground` locally using SpatialOS
+###  Run the `Playground` locally using SpatialOS
 
 1. Open the Unity Editor, and open the project at `UnityGDK/workers/unity`
     - Unity downloads several required SpatialOS libraries.
@@ -27,7 +27,7 @@ You can try this out using the `Playground` which is a basic Unity project using
     1. In the Editor, select the play icon to stop your client.
     1. Stop the SpatialOS deployment by closing the Unity Editor console window.
 
-#### Run the `Playground` in the cloud using SpatialOS
+### Run the `Playground` in the cloud using SpatialOS
 1. Tie the `Playground`  project with a SpatialOS project in the cloud. 
 <br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy the `Playground`  project but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy `Playground` to.  
 <br/> To do this:
