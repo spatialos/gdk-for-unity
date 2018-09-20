@@ -87,7 +87,6 @@ namespace Improbable.Gdk.Core.Commands
                     }
 
                     var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, context);
-
                     entityManager.GetComponentData<EntityQuery.CommandSender>(entity)
                         .RequestsToSend.Add(request);
 

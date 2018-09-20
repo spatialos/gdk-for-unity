@@ -59,10 +59,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var data = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
@@ -115,10 +112,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
                 NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
@@ -148,10 +142,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
@@ -249,21 +240,12 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
-                {
-                    return;
-                }
-
+                var entity = TryGetEntityFromEntityId(op.EntityId);
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
-
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
@@ -274,13 +256,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         OnSecondCommandRequest(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "NonBlittableComponent");
                 }
             }
 
@@ -296,13 +272,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         OnSecondCommandResponse(op);
                         break;
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "NonBlittableComponent");
                 }
             }
 
@@ -426,22 +396,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 authorityChanges.Add(authority);
             }
 
-            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
-            {
-                if (!Worker.TryGetEntity(entityId, out entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, entityId.Id)
-                        .WithField("Op", opType)
-                        .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
-                    );
-                    return false;
-                }
-
-                return true;
-            }
-
             private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
@@ -455,10 +409,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             private void OnFirstCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var deserializedRequest = global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
@@ -494,7 +445,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 firstCommandStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
                 if (!entityManager.Exists(entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                    LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Op", "CommandResponseOp - FirstCommand")
                         .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
@@ -533,10 +484,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             }
             private void OnSecondCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var deserializedRequest = global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
@@ -572,7 +520,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 secondCommandStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
                 if (!entityManager.Exists(entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                    LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Op", "CommandResponseOp - SecondCommand")
                         .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")

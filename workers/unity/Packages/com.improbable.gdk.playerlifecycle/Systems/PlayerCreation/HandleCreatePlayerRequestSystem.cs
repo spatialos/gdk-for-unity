@@ -75,13 +75,11 @@ namespace Improbable.Gdk.PlayerLifecycle
                         continue;
                     }
 
-                    var op = receivedResponse.Op;
-
-                    if (op.StatusCode != StatusCode.Success || !op.EntityId.HasValue)
+                    if (receivedResponse.StatusCode != StatusCode.Success || !receivedResponse.EntityId.HasValue)
                     {
                         responder.ResponsesToSend.Add(PlayerCreator.CreatePlayer
                             .CreateResponseFailure(requestContext.createPlayerRequest,
-                                $"Failed to create player: \"{op.Message}\""));
+                                $"Failed to create player: \"{receivedResponse.Message}\""));
 
                         continue;
                     }
@@ -89,7 +87,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                     responder.ResponsesToSend.Add(PlayerCreator.CreatePlayer
                         .CreateResponse(requestContext.createPlayerRequest, new CreatePlayerResponseType
                         {
-                            CreatedEntityId = op.EntityId.Value
+                            CreatedEntityId = receivedResponse.EntityId.Value
                         }));
                 }
             }

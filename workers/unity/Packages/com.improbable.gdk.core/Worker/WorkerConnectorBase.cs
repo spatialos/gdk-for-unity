@@ -8,7 +8,7 @@ using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Playground
+namespace Improbable.Gdk.Core
 {
     public class WorkerConnectorBase : MonoBehaviour, IDisposable
     {
@@ -74,7 +74,7 @@ namespace Playground
                             "Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")
                         .WithField("Reason", "A worker running in the Editor failed to connect"));
 #endif
-                Dispose();
+                HandleWorkerConnectionFailure();
             }
             finally
             {
@@ -130,6 +130,11 @@ namespace Playground
             return config;
         }
 
+        protected virtual void HandleWorkerConnectionFailure()
+        {
+            Dispose();
+        }
+
         private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int maxAttempts,
             ILogDispatcher logger, string workerType)
         {
@@ -180,6 +185,11 @@ namespace Playground
 
         private void InstantiateLevel()
         {
+            if (LevelPrefab == null)
+            {
+                return;
+            }
+
             levelInstance = Instantiate(LevelPrefab, transform);
             levelInstance.transform.SetParent(null);
         }
@@ -210,7 +220,11 @@ namespace Playground
             // A check is needed for the case that play mode is exited before the connection can complete.
             if (Application.isPlaying)
             {
-                Destroy(levelInstance);
+                if (levelInstance != null)
+                {
+                    Destroy(levelInstance);
+                }
+
                 Destroy(this);
             }
         }

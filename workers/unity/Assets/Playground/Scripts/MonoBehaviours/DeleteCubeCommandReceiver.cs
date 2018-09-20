@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
@@ -57,10 +58,9 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var op = response.Op;
             var entityId = response.RequestPayload.EntityId;
 
-            if (op.StatusCode != StatusCode.Success)
+            if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"Could not delete entity.")
