@@ -1,10 +1,11 @@
-﻿using Improbable.Gdk.Tests.ComponentsWithNoFields;
+﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.EditmodeTests.MonoBehaviours.CommandSenders
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
 {
     [TestFixture]
     public class CommandResponseHandlerTests

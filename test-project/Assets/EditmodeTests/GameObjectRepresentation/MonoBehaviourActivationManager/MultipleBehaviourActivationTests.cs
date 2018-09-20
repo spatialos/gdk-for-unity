@@ -2,7 +2,7 @@ using Improbable.Worker.Core;
 using NUnit.Framework;
 
 
-namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourActivationManagerTests
 {
     using ReaderBehaviour = ReaderBehaviourActivationTests.TestBehaviourWithReader;
     using WriterBehaviour = WriterBehaviourActivationTests.TestBehaviourWithWriter;
