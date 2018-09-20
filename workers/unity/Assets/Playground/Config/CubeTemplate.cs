@@ -10,15 +10,13 @@ namespace Playground
     {
         public static Entity CreateCubeEntityTemplate(Coordinates coords)
         {
-            const string entityType = "Cube";
-
             var cubeColor = CubeColor.Component.CreateSchemaComponentData();
             var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
             var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
-                .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
+                .AddMetadata("Cube", WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)

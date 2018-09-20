@@ -22,8 +22,6 @@ namespace Playground
                     $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
             }
 
-            const string CharacterType = "Character";
-
             var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
             var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
 
@@ -32,7 +30,7 @@ namespace Playground
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
-                .AddMetadata(CharacterType, WorkerUtils.UnityGameLogic)
+                .AddMetadata("Character", WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
