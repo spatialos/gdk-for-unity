@@ -36,5 +36,18 @@ namespace Improbable.Gdk.GameObjectRepresentation
             linkedGameObject = entityManager.GetComponentObject<GameObjectReference>(entity).GameObject;
             return true;
         }
+
+        public bool TryGetSpatialOSEntityIdForGameObject(GameObject linkedGameObject, out EntityId entityId)
+        {
+            var component = linkedGameObject.GetComponent<SpatialOSComponent>();
+            if (component == null)
+            {
+                entityId = default(EntityId);
+                return false;
+            }
+
+            entityId = component.SpatialEntityId;
+            return true;
+        }
     }
 }

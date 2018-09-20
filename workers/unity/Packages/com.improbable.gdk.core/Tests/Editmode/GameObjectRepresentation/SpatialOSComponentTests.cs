@@ -30,6 +30,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             spatialOSComponent.Worker = worker;
             spatialOSComponent.World = world;
             spatialOSComponent.Entity = testEntity;
+            spatialOSComponent.SpatialEntityId = testSpatialEntityId;
         }
 
         [TearDown]
@@ -80,6 +81,29 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var succeeded = component.TryGetGameObjectForSpatialOSEntityId(testSpatialEntityId, out var linkedGameObject);
             Assert.IsFalse(succeeded);
             Assert.IsNull(linkedGameObject);
+        }
+
+        [Test]
+        public void TryGetSpatialOSEntityIdForGameObject_returns_true_when_gameobject_is_linked()
+        {
+            var component = testGameObject.GetComponent<SpatialOSComponent>();
+            Assert.NotNull(component);
+
+            var succeeded = component.TryGetSpatialOSEntityIdForGameObject(testGameObject, out var linkedSpatialEntityId);
+            Assert.IsTrue(succeeded);
+            Assert.AreEqual(testSpatialEntityId, linkedSpatialEntityId);
+        }
+
+        [Test]
+        public void TryGetSpatialOSEntityIdForGameObject_returns_false_when_gameobject_is_not_linked()
+        {
+            worker.EntityIdToEntity.Add(testSpatialEntityId, testEntity);
+            var component = testGameObject.GetComponent<SpatialOSComponent>();
+            Assert.NotNull(component);
+
+            var succeeded = component.TryGetSpatialOSEntityIdForGameObject(new GameObject(), out var linkedSpatialEntityId);
+            Assert.IsFalse(succeeded);
+            Assert.AreEqual(default(EntityId), linkedSpatialEntityId);
         }
     }
 }
