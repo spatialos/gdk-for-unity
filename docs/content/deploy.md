@@ -3,9 +3,9 @@
 -----
 ## Deploying your game
 
-When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and starts up the workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment" or in the cloud (a "cloud deployment"). 
+When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment" or in the cloud (a "cloud deployment").
 
-Before you deploy your game, you need to set up its workers; see documentation on [building workers](build.md).
+Before you deploy your game, you need to build its workers; see documentation on [building workers](build.md).
 
 #### Configure your deployment
 
@@ -24,13 +24,13 @@ To start a local deployment, either:
 
 This starts a "local" version of the SpatialOS Runtime on your development machine together with all server-workers (sometimes called “managed workers”) specified in the launch configuration you used.
 
-To start your client-workers (sometimes called "external workers"), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game.
-Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world.
+To start your client-workers (sometimes called "external workers"), from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game. Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world.
 
 #### Cloud deployment
-<br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
+
+You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
 <br/> To start a cloud deployment:
-1.  Open the `spatialos.json` file in the root folder of your game. 
+1.  Open the `spatialos.json` file in the root folder of your game.
 1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 1. Build and upload a game assembly for the deployment
     - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
@@ -88,14 +88,14 @@ Before following this guide - make sure you have followed the [setup guide](../s
     1. Stop the SpatialOS deployment by closing the Unity Editor console window.
 
 #### Run the `Playground` in the cloud using SpatialOS
-1. Tie the `Playground`  project with a SpatialOS project in the cloud. 
+1. Tie the `Playground`  project with a SpatialOS project in the cloud.
 <br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy the `Playground`  project but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy `Playground` to.  
 <br/> To do this:
 
-    1.  Open the `spatialos.json` file in the root folder of the `Playground` project. 
+    1.  Open the `spatialos.json` file in the root folder of the `Playground` project.
     1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 1. Build and upload a game assembly for the deployment
-    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game). 
+    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
     1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
 
     2. To upload an assembly; open a terminal and navigate to the `UnityGDK` directory (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
@@ -113,7 +113,7 @@ Before following this guide - make sure you have followed the [setup guide](../s
         > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
     1. To get links to share the game with others, select **Share**.
     1. Once you’ve finished playing, select **Stop** in the Console.
-    
+
 ----
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
 
