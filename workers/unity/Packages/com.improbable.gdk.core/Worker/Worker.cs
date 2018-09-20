@@ -45,11 +45,6 @@ namespace Improbable.Gdk.Core
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
         }
 
-        public bool TryGetEntity(EntityId entityId, out Entity entity)
-        {
-            return World.GetExistingManager<WorkerSystem>().TryGetEntity(entityId, out entity);
-        }
-
         public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger,
             Vector3 origin)
         {
@@ -137,7 +132,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();
         }
 
         public void Dispose()

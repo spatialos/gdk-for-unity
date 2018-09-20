@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Improbable;
 using Improbable.Common;
 using Improbable.Gdk.Core;
@@ -56,7 +56,8 @@ namespace Playground.MonoBehaviours
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format("Failed to reserve entity id: {0}", response.Message)));
+                    new LogEvent("ReserveEntityIds failed.")
+                        .WithField("Reason", response.Message));
 
                 return;
             }
@@ -80,9 +81,9 @@ namespace Playground.MonoBehaviours
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent(string.Format("Create entity (for id {0}) failed with message: \"{1}\"",
-                        response.RequestPayload.EntityId,
-                        response.Message)));
+                    new LogEvent("CreateEntity failed.")
+                        .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
+                        .WithField("Reason", response.Message));
 
                 return;
             }
