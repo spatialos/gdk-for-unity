@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -23,21 +24,22 @@ namespace Improbable.Gdk.GameObjectCreation
             this.logger = logger;
         }
 
-        public GameObject OnEntityCreated(SpatialOSEntity entity)
+        public GameObject OnEntityCreated(Entity entity, EntityManager entityManager)
         {
-            if (!entity.HasComponent<Metadata.Component>())
+            var entityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
+            if (!entityManager.HasComponent<Metadata.Component>(entity))
             {
                 return null;
             }
 
-            var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
-            if (!entity.HasComponent<Position.Component>())
+            var prefabName = entityManager.GetComponentData<Metadata.Component>(entity).EntityType;
+            if (!entityManager.HasComponent<Position.Component>(entity))
             {
                 cachedPrefabs[prefabName] = null;
                 return null;
             }
 
-            var spatialOSPosition = entity.GetComponent<Position.Component>();
+            var spatialOSPosition = entityManager.GetComponentData<Position.Component>(entity);
             var position = new Vector3((float) spatialOSPosition.Coords.X, (float) spatialOSPosition.Coords.Y, (float) spatialOSPosition.Coords.Z) +
                 workerOrigin;
             var workerSpecificPath = Path.Combine("Prefabs", workerType, prefabName);
@@ -60,7 +62,7 @@ namespace Improbable.Gdk.GameObjectCreation
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entityId}, Worker: {workerType})";
             return gameObject;
         }
 
