@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Common;
 using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ namespace Playground.MonoBehaviours
             meshRenderer = GetComponent<MeshRenderer>();
             if (meshRenderer == null)
             {
-                Debug.LogError("No MeshRenderer on GameObject with MonoBehaviour ProcessSpinnerColorChange!");
+                Debug.LogError($"No MeshRenderer on GameObject with MonoBehaviour {nameof(ProcessSpinnerColorChange)}!");
             }
         }
 

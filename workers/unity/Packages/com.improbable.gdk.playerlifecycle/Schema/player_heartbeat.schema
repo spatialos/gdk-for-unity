@@ -1,11 +1,11 @@
 package improbable.player_lifecycle;
 
-type Empty {}
+import "from_gdk_packages/com.improbable.gdk.core/common.schema";
 
 component PlayerHeartbeatClient
 {
     id = 13001;
-    command Empty player_heartbeat(Empty);
+    command improbable.common.Empty player_heartbeat(improbable.common.Empty);
 }
 
 component PlayerHeartbeatServer

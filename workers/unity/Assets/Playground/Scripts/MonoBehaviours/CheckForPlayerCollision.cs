@@ -1,15 +1,16 @@
-﻿using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Common;
+using Improbable.Gdk.GameObjectRepresentation;
 using UnityEngine;
 
 namespace Playground
 {
     public class CheckForPlayerCollision : MonoBehaviour
     {
-        [Require] private Collisions.Requirable.Writer writer;
+        [Require] private Collisions.Requirable.Writer collisionWriter;
 
         void OnTriggerEnter(Collider other)
         {
-            writer?.SendPlayerCollided(new Empty());
+            collisionWriter?.SendPlayerCollided(new Empty());
         }
     }
 }
