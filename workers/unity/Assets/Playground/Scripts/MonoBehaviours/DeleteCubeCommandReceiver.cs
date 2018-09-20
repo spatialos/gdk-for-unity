@@ -75,7 +75,7 @@ namespace Playground.MonoBehaviours
             if (!spawnedCubesCopy.Remove(entityId))
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent($"The entity has been unexpectedly removed from the list.")
+                    new LogEvent("The entity has been unexpectedly removed from the list.")
                         .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
