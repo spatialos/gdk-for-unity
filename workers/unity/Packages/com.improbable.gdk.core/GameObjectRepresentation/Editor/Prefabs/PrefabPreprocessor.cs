@@ -82,15 +82,16 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
 
         private static bool DoesBehaviourNeedConditionalEnabling(Type targetType)
         {
-            if (!ConditionalEnableCache.ContainsKey(targetType))
+            if (!ConditionalEnableCache.TryGetValue(targetType, out var needsConditionalEnabling))
             {
-                ConditionalEnableCache[targetType] = targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
+                needsConditionalEnabling = targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
                     targetType
                         .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                         .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
+                ConditionalEnableCache[targetType] = needsConditionalEnabling;
             }
 
-            return ConditionalEnableCache[targetType];
+            return needsConditionalEnabling;
         }
 
         private static bool DoesBehaviourNeedFixing(MonoBehaviour monoBehaviour)
