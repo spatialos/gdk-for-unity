@@ -23,7 +23,7 @@ In the GDKs [`Playground` project](../../workers/unity/Assets/Playground) we pro
 
 * `GameLogicScene`: This Scene contains only the `UnityGameLogic` prefab and can be used to build your server worker for cloud deployments.  
 
-The position of these prefabs in the Scene define the origin of the worker, which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.
+The position of these prefabs in the Scene define the `origin` of the worker, which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.
 
 ----
 
