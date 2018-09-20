@@ -22,13 +22,7 @@ namespace Improbable.Gdk.Core
             return GetCommandLineValue(dict, configKey, defaultValue);
         }
 
-        public static bool TryGetCommandLineValue<T>(IList<string> arguments, string configKey, out T configValue)
-        {
-            var dict = ParseCommandLineArgs(arguments);
-            return TryGetConfigValue(dict, configKey, out configValue);
-        }
-
-        public static bool TryGetConfigValue<T>(Dictionary<string, string> dictionary, string configName, out T value)
+        private static bool TryGetConfigValue<T>(Dictionary<string, string> dictionary, string configName, out T value)
         {
             var desiredType = typeof(T);
             if (dictionary.TryGetValue(configName, out var strValue))

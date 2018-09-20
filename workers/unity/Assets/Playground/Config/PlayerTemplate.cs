@@ -19,10 +19,8 @@ namespace Playground
             if (clientAttribute == null)
             {
                 throw new InvalidOperationException(
-                    "Expected an attribute that is not \"UnityClient\" but none was found.");
+                    $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
             }
-
-            const string CharacterType = "Character";
 
             var transform =
                 TransformInternal.Component.CreateSchemaComponentData(new Location(),
@@ -36,7 +34,7 @@ namespace Playground
 
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
-                .AddMetadata(CharacterType, WorkerUtils.UnityGameLogic)
+                .AddMetadata("Character", WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
