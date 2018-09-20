@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             entityManager = world.GetOrCreateManager<EntityManager>();
             logDispatcher = new TestLogDispatcher();
 
-            worker = world.CreateManager<WorkerSystem>(null, logDispatcher, TestWorkerType, Vector3.zero);
+            worker = WorkerSystem.Instantiate(world, null, logDispatcher, TestWorkerType, Vector3.zero);
 
             firstComponentDispatcher = new FirstComponentDispatcher(worker, world);
             secondComponentDispatcher = new SecondComponentDispatcher(worker, world);

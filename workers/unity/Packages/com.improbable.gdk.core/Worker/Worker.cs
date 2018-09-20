@@ -131,13 +131,13 @@ namespace Improbable.Gdk.Core
 
         private void AddCoreSystems()
         {
-            World.CreateManager<WorkerSystem>(Connection, LogDispatcher, WorkerType, Origin);
+            WorkerSystem.Instantiate(World, Connection, LogDispatcher, WorkerType, Origin);
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();
         }
 
         public void Dispose()

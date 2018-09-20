@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Improbable.Gdk.GameObjectCreation
     {
         public static void EnableStandardGameObjectCreation(World world, GameObject workerGameObject = null)
         {
-            var workerSystem = world.GetOrCreateManager<WorkerSystem>();
+            var workerSystem = world.GetExistingManager(typeof(WorkerSystem)) as WorkerSystem;
             var creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin,
                 workerSystem.LogDispatcher);
             EnableStandardGameObjectCreation(world, creator, workerGameObject);
