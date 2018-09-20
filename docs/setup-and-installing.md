@@ -113,15 +113,14 @@ You can try this out using the `Playground` which is a basic Unity project using
     - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
     - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for better latency.
     > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
-   
- - About the `spatial cloud launch` command 
-    - `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
-        `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
-        where:
-        - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
-        - `<launch configuration>` is the configuration file for the deployment. The `playground` project includes one called `default_launch.json`.
-        - `<deployment name>` you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
-        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](./content/snapshots.md).
+    - About the `spatial cloud launch` command 
+        - `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
+            `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
+            where:
+            - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
+            - `<launch configuration>` is the configuration file for the deployment. The `playground` project includes one called `default_launch.json`.
+            - `<deployment name>` you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
+            - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](./content/snapshots.md).
 
 1. Launch a game client:
     1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
