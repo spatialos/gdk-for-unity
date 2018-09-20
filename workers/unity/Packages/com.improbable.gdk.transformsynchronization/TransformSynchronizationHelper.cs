@@ -1,39 +1,34 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
 using Unity.Entities;
+using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationHelper
     {
         public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
-            Location location = default(Location),
-            Velocity velocity = default(Velocity),
-            uint physicsTick = 0,
-            float ticksPerSecond = 0)
+            Vector3 location = default(Vector3),
+            Vector3 velocity = default(Vector3))
         {
-            return entityBuilder.AddTransformSynchronizationComponents(
-                writeAccess,
-                new Quaternion(1f, 0f, 0f, 0f),
+            return entityBuilder.AddTransformSynchronizationComponents(writeAccess,
+                Quaternion.identity,
                 location,
-                velocity,
-                physicsTick,
-                ticksPerSecond);
+                velocity);
         }
 
         public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
             Quaternion quaternion,
-            Location location = default(Location),
-            Velocity velocity = default(Velocity),
-            uint physicsTick = 0,
-            float ticksPerSecond = 0)
+            Vector3 location = default(Vector3),
+            Vector3 velocity = default(Vector3))
         {
             var transform = TransformInternal.Component.CreateSchemaComponentData(
-                location,
-                quaternion,
-                velocity,
-                physicsTick,
-                ticksPerSecond
+                location.ToImprobableLocation(),
+                quaternion.ToImprobableQuaternion(),
+                velocity.ToImprobableVelocity(),
+                0,
+                1f / Time.fixedDeltaTime
             );
             return entityBuilder.AddComponent(transform, writeAccess);
         }

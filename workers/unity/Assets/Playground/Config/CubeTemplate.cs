@@ -1,7 +1,6 @@
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.TransformSynchronization;
-using Improbable.Transform;
 using Improbable.Worker;
 using Improbable.Worker.Core;
 
@@ -26,7 +25,7 @@ namespace Playground
                 .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
                 .AddComponent(launchable, WorkerUtils.UnityGameLogic)
                 .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
-                    location: new Location((float) coords.X, (float) coords.Y, (float) coords.Z));
+                    location: coords.NarrowToUnityVector());
 
             return entityBuilder.Build();
         }
