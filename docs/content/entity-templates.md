@@ -59,7 +59,7 @@ To take advantage of some feature modules, you need to add the components that t
 
 #### Transform Synchronization
 
-The helper for this feature module requires the attribute of the worker you want to give authority over Transforms to. There is also the option to set a starting location, velocity and rotation. If not provided, location and velocity will be set to `default(Vector3)`, and rotation will be set to `Quaternion.identity`.
+The helper for this feature module requires the **attribute** of the worker you want to give authority over Transforms to. There is also the *option* to set a starting **location**, **velocity** and **rotation**. If not provided, location and velocity will be set to `default(Vector3)`, and rotation will be set to `Quaternion.identity`.
 
 ```c#
 public static class CubeTemplate
@@ -80,7 +80,7 @@ public static class CubeTemplate
 
 #### Player Lifecycle
 
-This helper for this feature module requires a clientAttribute and a serverAttribute.
+This helper for this feature module requires a **clientAttribute** and a **serverAttribute**.
 
 ```c#
 public static class PlayerTemplate
