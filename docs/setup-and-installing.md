@@ -82,7 +82,7 @@ You can try this out using the `Playground` which is a basic Unity project using
 
 ####  Run the `Playground` locally using SpatialOS
 
-1. Open the Unity Editor, and open the `unity` project.
+1. Open the Unity Editor, and open the project at `UnityGDK/workers/unity`
     - Unity downloads several required SpatialOS libraries.
     <br/>Unity may open a browser window prompting you to log in to your SpatialOS account. If this happens, please log in.
     <br>Note: This only happens the first time you open you project, or if the version of the required libraries changes.
