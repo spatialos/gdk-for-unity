@@ -6,7 +6,9 @@ namespace Improbable.Gdk.PlayerLifecycle
 {
     public static class PlayerLifecycleHelper
     {
-        public static EntityBuilder AddPlayerLifecycleComponents(this EntityBuilder entityBuilder, string clientAccess, string serverAccess)
+        public static EntityBuilder AddPlayerLifecycleComponents(this EntityBuilder entityBuilder,
+            string clientAccess,
+            string serverAccess)
         {
             var clientHeartbeat = PlayerHeartbeatClient.Component.CreateSchemaComponentData();
             var serverHeartbeat = PlayerHeartbeatServer.Component.CreateSchemaComponentData();

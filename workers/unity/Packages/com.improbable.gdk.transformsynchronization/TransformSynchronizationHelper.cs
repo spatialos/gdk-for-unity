@@ -8,7 +8,8 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationHelper
     {
-        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
+        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder,
+            string writeAccess,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
@@ -18,7 +19,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 velocity);
         }
 
-        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder, string writeAccess,
+        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder,
+            string writeAccess,
             Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
