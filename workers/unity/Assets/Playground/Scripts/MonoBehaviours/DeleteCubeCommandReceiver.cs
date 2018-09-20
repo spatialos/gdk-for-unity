@@ -63,7 +63,7 @@ namespace Playground.MonoBehaviours
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent($"Could not delete entity.")
+                    new LogEvent("Could not delete entity.")
                         .WithField(LoggingUtils.EntityId, entityId)
                         .WithField("Reason", response.Message));
                 return;
