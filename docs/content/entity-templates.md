@@ -55,7 +55,7 @@ You can use this entity template to spawn a Creature entity. This can be done us
 
 ### Feature Module Components
 
-To take advantage of some feature modules, you need to add the components that the modules will make use of.  This is done by calling the appropriate helper method for each desired feature module.
+To take advantage of some feature modules, you need to add the SpatialOS components that these modules will make use of. This is done by calling the appropriate helper method for each desired feature module.
 
 #### Transform Synchronization
 
