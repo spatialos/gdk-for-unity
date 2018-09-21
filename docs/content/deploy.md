@@ -7,8 +7,8 @@ When you want to try out your game, you need to run a deployment of the game. Th
 
 Before you deploy your game, you need to build its workers; see documentation on [building workers](build.md).
 This page contains:
-* [How to deploy your game](how-to-deploy-your-game) - Use this if you want to deploy your own game.
-* [Quickstart: How to deploy the `Playground` project](quickstart:-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
+* [How to deploy your game](#how-to-deploy-your-game) - Use this if you want to deploy your own game.
+* [Quickstart: How to deploy the `Playground` project](#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
 
 #### Configuring your deployment
 
@@ -54,7 +54,7 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
         - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
         - `<launch configuration>` is the configuration file for the deployment.
         - `<deployment name>` is the name you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
-        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](./content/snapshots.md).
+        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](snapshots.md).
 
 1. Launch a game client:
     1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
