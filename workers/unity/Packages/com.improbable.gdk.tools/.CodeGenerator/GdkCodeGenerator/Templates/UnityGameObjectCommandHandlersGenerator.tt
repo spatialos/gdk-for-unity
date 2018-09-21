@@ -54,8 +54,8 @@ namespace <#= qualifiedNamespace #>
                 }
             }
         }
-<# } #>
 
+<# } #>
         public partial class Requirable
         {
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
@@ -83,15 +83,18 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# foreach(var commandDetails in commandDetailsList) { #>
-                public void Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> request)
+                public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(<#= commandDetails.CommandName #>.CreateRequest(entityId, request));
+                    var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
 <# } #>

@@ -71,15 +71,18 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.logger = logger;
                 }
 
-                public void SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
+                public long SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
+                    var request = Cmd.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
             }
