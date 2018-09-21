@@ -17,7 +17,7 @@ using UnityEngine.Experimental.PlayerLoop;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class TickSystem : ComponentSystem
     {
         private struct Data

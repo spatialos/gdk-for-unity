@@ -17,7 +17,7 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    [UpdateInGroup(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class TickRateEstimationSystem : ComponentSystem
     {
         // Estimate of the the number of physics ticks that happen per second according the the system clock
