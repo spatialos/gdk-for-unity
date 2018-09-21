@@ -21,6 +21,7 @@ namespace Playground
         private readonly Queue<float> fpsMeasurements = new Queue<float>();
         private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
+        private const int DefaultTargetFrameRate = 60;
 
         protected override void OnCreateManager()
         {
@@ -54,6 +55,12 @@ namespace Playground
         private static float DefaultLoadCalculation(float fps)
         {
             float targetFps = Application.targetFrameRate;
+
+            if (targetFps == -1)
+            {
+                targetFps = DefaultTargetFrameRate;
+            }
+
             return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
         }
 
