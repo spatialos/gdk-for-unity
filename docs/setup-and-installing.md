@@ -6,8 +6,8 @@
 ## Quick version
 
 1. Sign up for a  [SpatialOS account](https://improbable.io/get-spatialos).
-2. Setup your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
-3. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`
+2. Set up your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
+3. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`.
 4. Follow the [Build and Deploy](./content/build-and-deploy.md) guide to run the example `Playground` project.
 
 ## Full version
@@ -22,7 +22,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 #### Windows
 
 1. [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) 
-    - Make sure to select the following components:
+    - Make sure to select the following components during installation:
         - **Linux Build Support**
         - **Mac Build Support**
 2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `15.8.4`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
@@ -49,7 +49,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 #### Mac
 
 1. [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) 
-    - Make sure to select the following components:
+    - Make sure to select the following components during installation:
         - **Linux Build Support** 
         - **Windows Build Support**
 2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
@@ -61,7 +61,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
     - The 32-bit and 64-bit Visual C++ Redistributables
 5. Reboot your machine to finish the setup.
 
-### Clone the SpatialOS GDK for Unity repository:
+### Clone the SpatialOS GDK for Unity repository
 
 |     |     |
 | --- | --- |
@@ -73,7 +73,7 @@ The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
 - SpatialOS features, such as the schema and snapshot files
 - development code
 
-## Next Steps
+## Next steps
 
 To learn how to build and run the included `Playground` project - follow the [Build and Deploy](./content/build-and-deploy.md) guide.
 
