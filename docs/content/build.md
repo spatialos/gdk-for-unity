@@ -3,7 +3,7 @@
 -----
 ## Building your workers
 
-Before running a deployment of your game, you need to configure your [workers](https://docs.improbable.io/reference/latest/shared/glossary#worker), configure the build of your workers and also build the workers. This applies to both server-workers and client-workers.
+Before running a deployment of your game, you need to configure your [workers](workers.md), configure the build of your workers and also build your workers. This applies to both server-workers and client-workers.
 
 ### Building the configuration of your workers
 To create the correct configurations for each of your server-workers and client-workers, cou can do either:
