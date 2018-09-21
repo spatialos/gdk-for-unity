@@ -105,5 +105,24 @@ namespace Improbable.Gdk.Core.EditmodeTests
             Assert.IsFalse(succeeded);
             Assert.AreEqual(default(EntityId), linkedSpatialEntityId);
         }
+
+        [Test]
+        public void TryGetSpatialOSEntityIdForGameObject_returns_false_when_entity_on_different_worker()
+        {
+            worker.EntityIdToEntity.Add(testSpatialEntityId, testEntity);
+            var component = testGameObject.GetComponent<SpatialOSComponent>();
+            Assert.NotNull(component);
+
+            var testGameObject2 = new GameObject();
+            var spatialOSComponent = testGameObject.AddComponent<SpatialOSComponent>();
+            spatialOSComponent.Worker = world.CreateManager<WorkerSystem>(null, new TestLogDispatcher(), "TestWorker", Vector3.zero);;
+            spatialOSComponent.World = world;
+            spatialOSComponent.Entity = testEntity;
+            spatialOSComponent.SpatialEntityId = testSpatialEntityId;
+
+            var succeeded = component.TryGetSpatialOSEntityIdForGameObject(testGameObject2, out var linkedSpatialEntityId);
+            Assert.IsFalse(succeeded);
+            Assert.AreEqual(default(EntityId), linkedSpatialEntityId);
+        }
     }
 }

@@ -46,6 +46,12 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return false;
             }
 
+            if (Worker != component.Worker)
+            {
+                entityId = default(EntityId);
+                return false;
+            }
+
             entityId = component.SpatialEntityId;
             return true;
         }
