@@ -75,20 +75,22 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
         private static bool IsBehaviourEnabledInEditor(Object obj)
         {
             return !ReferenceEquals(obj, null)
-                && EditorUtility.GetObjectEnabled(obj) == 1;
+                   && EditorUtility.GetObjectEnabled(obj) == 1;
         }
 
-        private static bool DoesBehaviourRequireReadersOrWriters(Type targetType)
+        private static bool DoesBehaviourNeedConditionalEnabling(Type targetType)
         {
-            return targetType
-                .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
+            return
+                targetType.GetCustomAttribute<WorkerTypeAttribute>() != null ||
+                targetType
+                    .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                    .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
         }
 
         private static bool DoesBehaviourNeedFixing(MonoBehaviour monoBehaviour)
         {
             return IsBehaviourEnabledInEditor(monoBehaviour) &&
-                DoesBehaviourRequireReadersOrWriters(monoBehaviour.GetType());
+                   DoesBehaviourNeedConditionalEnabling(monoBehaviour.GetType());
         }
     }
 }

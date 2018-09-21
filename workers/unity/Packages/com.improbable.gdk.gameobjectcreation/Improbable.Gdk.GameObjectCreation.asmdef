@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.GameObjectRepresentation.GameObjectCreation",
+    "name": "Improbable.Gdk.GameObjectCreation",
     "references": [
         "Unity.Entities",
         "Unity.Entities.Hybrid",

@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
+using Improbable.Worker.Query;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -120,6 +121,11 @@ namespace Improbable.Gdk.Core
                 var entity = entityQuerySenderData.Entities[i];
                 foreach (var req in sender.RequestsToSend)
                 {
+                    if (req.EntityQuery.ResultType is SnapshotResultType)
+                    {
+                        continue;
+                    }
+
                     var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
                     entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
                         new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));

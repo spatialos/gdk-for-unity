@@ -41,10 +41,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var data = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
@@ -88,10 +85,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>(entity);
 
@@ -115,10 +109,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(entity))
                 {
@@ -153,32 +144,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
-                {
-                    return;
-                }
-
+                var entity = TryGetEntityFromEntityId(op.EntityId);
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
-
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFields");
                 }
             }
 
@@ -188,13 +164,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 switch (commandIndex)
                 {
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFields");
                 }
             }
 
@@ -264,22 +234,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 authorityChanges.Add(authority);
-            }
-
-            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
-            {
-                if (!Worker.TryGetEntity(entityId, out entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, entityId.Id)
-                        .WithField("Op", opType)
-                        .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields")
-                    );
-                    return false;
-                }
-
-                return true;
             }
 
             private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
