@@ -39,7 +39,7 @@ public class CreateCreatureSystem : ComponentSystem
     {
         public readonly int Length;
         [ReadOnly] public ComponentDataArray<Foo> Foo;
-        [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+        public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
     }
 
     [Inject] Data data;
@@ -56,6 +56,7 @@ public class CreateCreatureSystem : ComponentSystem
             (
                 entity
             ));
+            data.CreateEntitySender[i] = requestSender;
         }
     }
 }
@@ -80,8 +81,8 @@ public class DeleteCreatureSystem : ComponentSystem
     {
         public readonly int Length;
         [ReadOnly] public ComponentDataArray<Bar> Bar;
-        [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> DeleteEntitySender;
         [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
+        public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> DeleteEntitySender;
     }
 
     [Inject] Data data;
@@ -97,6 +98,7 @@ public class DeleteCreatureSystem : ComponentSystem
             (
                 entityId
             ));
+            data.DeleteEntitySender[i] = requestSender;
         }
     }
 }
