@@ -39,7 +39,7 @@ public class CreateCreatureSystem : ComponentSystem
     {
         public readonly int Length;
         [ReadOnly] public ComponentDataArray<Foo> Foo;
-        public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+        [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
     }
 
     [Inject] Data data;
@@ -48,16 +48,14 @@ public class CreateCreatureSystem : ComponentSystem
     {
         for (var i = 0; i < data.Length; i++)
         {
-            var requests = data.CreateEntitySender[i].RequestsToSend;
+            var requestSender = data.CreateEntitySender[i];
             var entity = CreatureTemplate.CreateCreatureEntityTemplate(
                 new Coordinates(0, 0, 0));
 
-            requests.Add(WorldCommands.CreateEntity.CreateRequest
+            requestSender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
             (
                 entity
             ));
-
-            data.CreateEntitySender[i].RequestsToSend = requests;
         }
     }
 }
@@ -82,7 +80,7 @@ public class DeleteCreatureSystem : ComponentSystem
     {
         public readonly int Length;
         [ReadOnly] public ComponentDataArray<Bar> Bar;
-        public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> DeleteEntitySender;
+        [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> DeleteEntitySender;
         [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
     }
 
@@ -92,15 +90,13 @@ public class DeleteCreatureSystem : ComponentSystem
     {
         for (var i = 0; i < data.Length; i++)
         {
-            var requests = data.DeleteEntitySender[i].RequestsToSend;
+            var requestSender = data.DeleteEntitySender[i];
             var entityId = data.SpatialEntityIds[i].EntityId;
         	
-            requests.Add(WorldCommands.DeleteEntity.CreateRequest
+            requestSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
             (
                 entityId
             ));
-
-            data.DeleteEntitySender[i].RequestsToSend = requests;
         }
     }
 }
