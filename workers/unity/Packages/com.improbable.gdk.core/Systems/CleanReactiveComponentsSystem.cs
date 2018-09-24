@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
+using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -85,13 +86,34 @@ namespace Improbable.Gdk.Core
             var buffer = PostUpdateCommands;
             foreach (var cleanup in componentCleanups)
             {
+                Profiler.BeginSample("CleanupUpdates");
                 cleanup.Handler.CleanupUpdates(cleanup.UpdateGroup, ref buffer);
+                Profiler.EndSample();
+            }
+
+            foreach (var cleanup in componentCleanups)
+            {
+                Profiler.BeginSample("CleanupEvents");
                 cleanup.Handler.CleanupEvents(cleanup.EventGroups, ref buffer);
+                Profiler.EndSample();
+            }
+
+            foreach (var cleanup in componentCleanups)
+            {
+                Profiler.BeginSample("CleanupAuthChanges");
                 cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
+                Profiler.EndSample();
+            }
+
+            foreach (var cleanup in componentCleanups)
+            {
+                Profiler.BeginSample("CleanupCommands");
                 cleanup.Handler.CleanupCommands(cleanup.CommandsGroups, ref buffer);
+                Profiler.EndSample();
             }
 
             // Clean components with RemoveAtEndOfTick attribute
+            Profiler.BeginSample("RemoveRemoveAtEndOfTick");
             foreach ((var componentGroup, var componentType) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
@@ -105,6 +127,8 @@ namespace Improbable.Gdk.Core
                     PostUpdateCommands.RemoveComponent(entityArray[i], componentType);
                 }
             }
+
+            Profiler.EndSample();			
         }
 
         private struct ComponentCleanup

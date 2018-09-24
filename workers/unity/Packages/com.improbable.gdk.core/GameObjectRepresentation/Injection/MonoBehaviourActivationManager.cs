@@ -156,11 +156,17 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 store.RemoveInjectablesForBehaviour(behaviour);
             }
 
-            // Make a copy because the behaviours argument could potentially be the enabledBehaviours set itself.
-            var removedBehaviours = new List<MonoBehaviour>(behaviours);
-            foreach (var removedBehaviour in removedBehaviours)
+            // Make sure we don't remove from our self while iterating
+            if (behaviours == enabledBehaviours)
             {
-                enabledBehaviours.Remove(removedBehaviour);
+                enabledBehaviours.Clear();
+            }
+            else
+            {
+                foreach (var removedBehaviour in behaviours)
+                {
+                    enabledBehaviours.Remove(removedBehaviour);
+                }
             }
         }
 
