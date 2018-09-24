@@ -258,8 +258,9 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("NonBlittableComponent");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+
+                Profiler.BeginSample("NonBlittableComponent");
                 switch (commandIndex)
                 {
                     case 1:
@@ -277,8 +278,9 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("NonBlittableComponent");
                 var commandIndex = op.Response.CommandIndex;
+
+                Profiler.BeginSample("NonBlittableComponent");
                 switch (commandIndex)
                 {
                     case 1:

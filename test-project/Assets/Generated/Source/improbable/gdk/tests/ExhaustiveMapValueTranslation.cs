@@ -215,28 +215,14 @@ namespace Improbable.Gdk.Tests
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("ExhaustiveMapValue");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("ExhaustiveMapValue");
                 var commandIndex = op.Response.CommandIndex;
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "ExhaustiveMapValue");
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)

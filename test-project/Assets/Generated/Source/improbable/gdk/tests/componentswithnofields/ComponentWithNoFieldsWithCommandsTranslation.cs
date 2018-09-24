@@ -168,8 +168,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 switch (commandIndex)
                 {
                     case 1:
@@ -184,8 +185,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var commandIndex = op.Response.CommandIndex;
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 switch (commandIndex)
                 {
                     case 1:

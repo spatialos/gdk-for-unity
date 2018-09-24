@@ -163,28 +163,14 @@ namespace Improbable.Gdk.Tests
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("NestedComponent");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("NestedComponent");
                 var commandIndex = op.Response.CommandIndex;
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "NestedComponent");
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
