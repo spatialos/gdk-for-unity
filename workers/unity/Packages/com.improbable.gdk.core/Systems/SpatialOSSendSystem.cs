@@ -47,10 +47,10 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(this, connection);
+                replicator.ReplicateComponent(connection);
+                replicator.SendCommands(this, connection);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Core
             public ComponentReplicationHandler Handler;
             public ComponentGroup ReplicationComponentGroup;
 
-            public void Execute(SpatialOSSendSystem sendSystem, Connection connection)
+            public void ReplicateComponent(Connection connection)
             {
                 if (!ReplicationComponentGroup.IsEmptyIgnoreFilter)
                 {
@@ -97,7 +97,10 @@ namespace Improbable.Gdk.Core
                     Handler.ExecuteReplication(ReplicationComponentGroup, connection);
                     Profiler.EndSample();
                 }
+            }
 
+            public void SendCommands(SpatialOSSendSystem sendSystem, Connection connection)
+            {
                 Profiler.BeginSample("SendCommands");
                 Handler.SendCommands(sendSystem, connection);
                 Profiler.EndSample();
