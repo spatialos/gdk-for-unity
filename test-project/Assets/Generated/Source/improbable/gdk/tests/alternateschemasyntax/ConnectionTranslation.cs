@@ -195,28 +195,14 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("Connection");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "Connection");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "Connection");
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("Connection");
                 var commandIndex = op.Response.CommandIndex;
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "Connection");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "Connection");
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
