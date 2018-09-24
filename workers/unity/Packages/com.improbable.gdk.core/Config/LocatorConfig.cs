@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
-            if (loginToken.Equals(string.Empty) && LocatorParameters.CredentialsType.Equals(null))
+            if (loginToken.Equals(string.Empty) && !LocatorParameters.CredentialsType.Equals(null))
             {
                 return;
             }
