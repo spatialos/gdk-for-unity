@@ -7,6 +7,7 @@ namespace Improbable.Gdk.Core
     public interface ILogDispatcher : IDisposable
     {
         Connection Connection { get; set; }
+        string WorkerType { get; set; }
 
         void HandleLog(LogType type, LogEvent logEvent);
     }

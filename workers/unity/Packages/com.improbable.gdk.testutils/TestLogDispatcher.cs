@@ -17,17 +17,10 @@ namespace Improbable.Gdk.TestUtils
     /// </summary>
     public class TestLogDispatcher : ILogDispatcher
     {
-        private static readonly string AttemptToAccessConnectionError =
-            $"Cannot access or set the Connection in the {nameof(TestLogDispatcher)}";
-
         private ExpectingScope currentExpectingScope;
 
-        // The connection will never be valid - so any attempt to get or set will throw.
-        public Connection Connection
-        {
-            get => throw new InvalidOperationException(AttemptToAccessConnectionError);
-            set => throw new InvalidOperationException(AttemptToAccessConnectionError);
-        }
+        public Connection Connection { get; set; }
+        public string WorkerType { get; set; }
 
         public void HandleLog(LogType type, LogEvent logEvent)
         {
