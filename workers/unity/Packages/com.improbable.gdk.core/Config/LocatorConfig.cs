@@ -61,10 +61,10 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.LoginToken, string.Empty);
             var projectName = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.ProjectName, string.Empty);
-            var steamToken = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
             var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
+            var steamToken = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
             config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
             config.SetSteamCredentials(steamToken, steamDeploymentTag);
