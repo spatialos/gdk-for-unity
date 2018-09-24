@@ -5,6 +5,7 @@ using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Worker.Core;
 using Unity.Entities;
+using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -48,7 +49,8 @@ namespace Improbable.Gdk.Core
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.Execute(this, connection);
+                replicator.ReplicateComponent(connection);
+                replicator.SendCommands(this, connection);
             }
         }
 
@@ -87,10 +89,21 @@ namespace Improbable.Gdk.Core
             public ComponentReplicationHandler Handler;
             public ComponentGroup ReplicationComponentGroup;
 
-            public void Execute(SpatialOSSendSystem sendSystem, Connection connection)
+            public void ReplicateComponent(Connection connection)
             {
-                Handler.ExecuteReplication(ReplicationComponentGroup, connection);
+                if (!ReplicationComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    Profiler.BeginSample("ExecuteReplication");
+                    Handler.ExecuteReplication(ReplicationComponentGroup, connection);
+                    Profiler.EndSample();
+                }
+            }
+
+            public void SendCommands(SpatialOSSendSystem sendSystem, Connection connection)
+            {
+                Profiler.BeginSample("SendCommands");
                 Handler.SendCommands(sendSystem, connection);
+                Profiler.EndSample();
             }
         }
     }

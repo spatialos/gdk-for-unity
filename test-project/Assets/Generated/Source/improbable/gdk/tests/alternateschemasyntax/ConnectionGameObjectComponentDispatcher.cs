@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
@@ -70,12 +71,15 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -85,12 +89,15 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -100,6 +107,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -111,6 +119,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -120,6 +130,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -131,6 +142,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -139,6 +152,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("Connection");
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
@@ -152,7 +166,6 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         }
 
                         var eventList = eventLists[i];
-
                         foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
@@ -163,6 +176,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
                 }
 
+                Profiler.EndSample();
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -180,6 +194,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
 
@@ -200,6 +215,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -209,6 +226,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
 
@@ -229,6 +247,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component> changeOps)
@@ -240,6 +260,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         return auth == authToMatch;
                     }
                 }
+
                 return false;
             }
 
@@ -250,6 +271,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     return;
                 }
 
+                Profiler.BeginSample("Connection");
                 var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
 
                 // Call once on all entities
@@ -260,11 +282,14 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     {
                         continue;
                     }
+
                     foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
+
+                Profiler.EndSample();
             }
         }
     }

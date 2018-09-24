@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
@@ -70,12 +71,15 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -85,12 +89,15 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -100,6 +107,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -111,6 +119,8 @@ namespace Improbable.Gdk.Tests
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -120,6 +130,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -131,6 +142,8 @@ namespace Improbable.Gdk.Tests
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -140,6 +153,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
@@ -159,6 +173,8 @@ namespace Improbable.Gdk.Tests
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -180,6 +196,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>();
 
@@ -200,6 +217,8 @@ namespace Improbable.Gdk.Tests
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -209,6 +228,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component>>();
 
@@ -229,6 +249,8 @@ namespace Improbable.Gdk.Tests
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component> changeOps)
@@ -240,6 +262,7 @@ namespace Improbable.Gdk.Tests
                         return auth == authToMatch;
                     }
                 }
+
                 return false;
             }
 
@@ -250,6 +273,7 @@ namespace Improbable.Gdk.Tests
                     return;
                 }
 
+                Profiler.BeginSample("ExhaustiveBlittableSingular");
                 var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
 
                 // Call once on all entities
@@ -260,11 +284,14 @@ namespace Improbable.Gdk.Tests
                     {
                         continue;
                     }
+
                     foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
+
+                Profiler.EndSample();
             }
         }
     }

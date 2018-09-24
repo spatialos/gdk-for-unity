@@ -7,12 +7,15 @@
     var eventDetailsList = GetEventDetailsList();
     var commandDetailsList = GetCommandDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
+    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
@@ -93,12 +96,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -108,12 +114,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -123,6 +132,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -134,6 +144,8 @@ namespace <#= qualifiedNamespace #>
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -143,6 +155,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -154,6 +167,8 @@ namespace <#= qualifiedNamespace #>
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -164,6 +179,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
                 var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<<#= componentNamespace #>.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
@@ -183,11 +199,15 @@ namespace <#= qualifiedNamespace #>
                         }
                     }
                 }
+
+                <#= profilingEnd #>
 <# } #>
             }
 
             public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+<# if (eventDetailsList.Count > 0) { #>
+                <#= profilingStart #>
 <# for (var j = 0; j < eventDetailsList.Count; j++) { #>
                 if (!EventsReceivedComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
@@ -202,7 +222,6 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         var eventList = eventLists[i];
-
                         foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
@@ -214,10 +233,14 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# } #>
+                <#= profilingEnd #>
+<# } #>
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+<# if (commandDetailsList.Count > 0) { #>
+                <#= profilingStart #>
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
                 if (!CommandRequestsComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
@@ -230,8 +253,9 @@ namespace <#= qualifiedNamespace #>
                         {
                             continue;
                         }
-                         var commandRequestList = commandRequestLists[i];
-                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+
+                        var commandRequestList = commandRequestLists[i];
+                        foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -242,10 +266,14 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# } #>
+                <#= profilingEnd #>
+<# } #>
             }
 
             public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+<# if (commandDetailsList.Count > 0) { #>
+                <#= profilingStart #>
 <# for (var j = 0; j < commandDetailsList.Count; j++) { #>
 
                 if (!CommandResponsesComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
@@ -271,6 +299,8 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
 <# } #>
+                <#= profilingEnd #>
+<# } #>
             }
 
             public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -280,6 +310,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
 
@@ -300,6 +331,8 @@ namespace <#= qualifiedNamespace #>
                         }
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -309,6 +342,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
 
@@ -329,6 +363,8 @@ namespace <#= qualifiedNamespace #>
                         }
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<<#= componentNamespace #>.Component> changeOps)
@@ -340,6 +376,7 @@ namespace <#= qualifiedNamespace #>
                         return auth == authToMatch;
                     }
                 }
+
                 return false;
             }
 
@@ -350,6 +387,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                <#= profilingStart #>
                 var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
 
                 // Call once on all entities
@@ -360,11 +398,14 @@ namespace <#= qualifiedNamespace #>
                     {
                         continue;
                     }
+
                     foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
+
+                <#= profilingEnd #>
             }
         }
     }
