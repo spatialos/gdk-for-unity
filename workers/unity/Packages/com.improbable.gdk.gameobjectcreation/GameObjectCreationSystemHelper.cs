@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -6,9 +7,16 @@ namespace Improbable.Gdk.GameObjectCreation
 {
     public static class GameObjectCreationSystemHelper
     {
+        private static readonly string WorkerNotCreatedErrorMessage = $"{nameof(EnableStandardGameObjectCreation)} should be called only after a worker has been initialised for the world.";
+
         public static void EnableStandardGameObjectCreation(World world, GameObject workerGameObject = null)
         {
-            var workerSystem = world.GetOrCreateManager<WorkerSystem>();
+            var workerSystem = world.GetExistingManager<WorkerSystem>();
+            if (workerSystem == null)
+            {
+                throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
+            }
+
             var creator = new GameObjectCreatorFromMetadata(workerSystem.WorkerType, workerSystem.Origin,
                 workerSystem.LogDispatcher);
             EnableStandardGameObjectCreation(world, creator, workerGameObject);
@@ -18,6 +26,11 @@ namespace Improbable.Gdk.GameObjectCreation
             GameObject workerGameObject = null)
         {
             var workerSystem = world.GetExistingManager<WorkerSystem>();
+            if (workerSystem == null)
+            {
+                throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
+            }
+
             var entityManager = world.GetOrCreateManager<EntityManager>();
 
             if (world.GetExistingManager<GameObjectInitializationSystem>() != null)
