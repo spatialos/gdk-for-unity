@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
@@ -73,12 +74,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -88,12 +92,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -103,6 +110,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -114,6 +122,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -123,6 +133,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
@@ -134,6 +145,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -146,6 +159,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
@@ -157,8 +171,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         {
                             continue;
                         }
-                         var commandRequestList = commandRequestLists[i];
-                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+
+                        var commandRequestList = commandRequestLists[i];
+                        foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -168,10 +183,12 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
 
+                Profiler.EndSample();
             }
 
             public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
 
                 if (!CommandResponsesComponentGroups[0].IsEmptyIgnoreFilter)
                 {
@@ -195,6 +212,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -204,6 +222,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
 
@@ -224,6 +243,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -233,6 +254,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
 
@@ -253,6 +275,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component> changeOps)
@@ -264,6 +288,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         return auth == authToMatch;
                     }
                 }
+
                 return false;
             }
 
@@ -274,6 +299,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return;
                 }
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
 
                 // Call once on all entities
@@ -284,11 +310,14 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     {
                         continue;
                     }
+
                     foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
+
+                Profiler.EndSample();
             }
         }
     }

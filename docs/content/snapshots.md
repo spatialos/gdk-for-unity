@@ -22,7 +22,7 @@ To generate the snapshot, in the Unity Editor menu: **SpatialOS** > **Generate s
 This saves the generated snapshot to `snapshots/default.snapshot`, which is where SpatialOS expects to find it unless explicitly told to use another path when you start the deployment.
 
 ## How to start a deployment from a snapshot
-You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Building workers and deploying your game](build-and-deploy.md) for details. 
+You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Deploying your game](deploy.md) for details. 
 
 Both of these commands can take the optional command line parameter  `--snapshot=<path>`. This  starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.
 
