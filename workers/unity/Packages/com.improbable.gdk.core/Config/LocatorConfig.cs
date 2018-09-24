@@ -27,6 +27,7 @@ namespace Improbable.Gdk.Core
                     ValidateConfig(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.SteamDeploymentTag);
                     break;
                 default:
+                    ValidateConfig(string.Empty, RuntimeConfigNames.LoginToken);
                     break;
             }
         }
@@ -38,6 +39,11 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
+            if (loginToken.Equals(string.Empty) == true)
+            {
+                return;
+            }
+
             LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
             LocatorParameters.LoginToken = new LoginTokenCredentials
             {
@@ -47,6 +53,11 @@ namespace Improbable.Gdk.Core
 
         public void SetSteamCredentials(string steamToken, string deploymentTag)
         {
+            if (steamToken.Equals(string.Empty) == true)
+            {
+                return;
+            }
+
             LocatorParameters.Steam = new SteamCredentials
             {
                 Ticket = steamToken,
