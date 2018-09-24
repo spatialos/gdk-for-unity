@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Tools
 
         private readonly GUIStyle errorLayoutOption = new GUIStyle();
 
-        [MenuItem("SpatialOS/GDK tools configuration")]
+        [MenuItem("SpatialOS/GDK tools configuration", false, 201)]
         public static void ShowWindow()
         {
             GetWindow<GdkToolsConfigurationWindow>().Show();

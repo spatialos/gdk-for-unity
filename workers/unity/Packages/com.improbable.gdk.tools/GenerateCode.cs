@@ -23,6 +23,9 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
+        private static readonly string WorkerJsonRelativePath =
+            "./";
+
         /// <summary>
         ///     Ensure that code is generated on editor startup.
         /// </summary>
@@ -125,7 +128,8 @@ namespace Improbable.Gdk.Tools
                 $"\"{projectPath}\"",
                 "--",
                 $"--json-dir=\"{ImprobableJsonDir}\"",
-                $"--schema-compiler-path=\"{schemaCompilerPath}\""
+                $"--schema-compiler-path=\"{schemaCompilerPath}\"",
+                $"--worker-json-dir=\"{WorkerJsonRelativePath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();

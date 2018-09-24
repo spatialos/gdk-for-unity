@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Improbable.CodeGeneration.FileHandling;
 using Improbable.CodeGeneration.Jobs;
 
@@ -61,11 +62,15 @@ namespace Improbable.Gdk.CodeGenerator
             var schemaFilesRaw = SchemaFiles.GetSchemaFilesRaw(options.JsonDirectory, fileSystem).ToList();
             var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
             var globalEnumSet = ExtractEnums(schemaProcessor.ProcessedSchemaFiles);
-
+            var workerTypes = ExtractWorkerTypes(options.WorkerJsonDirectory);
+            
+            var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, fileSystem, workerTypes);
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
+            
             var runner = new JobRunner(fileSystem);
-            runner.Run(new List<ICodegenJob> { aggegrateJob }, new[] { options.NativeOutputDirectory });
-
+            
+            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob }, 
+                new[] { options.NativeOutputDirectory });
             return 0;
         }
 
@@ -102,6 +107,12 @@ namespace Improbable.Gdk.CodeGenerator
             }
 
             return enumSet;
+        }
+
+        private List<string> ExtractWorkerTypes(string path)
+        {
+            var fileNames = Directory.EnumerateFiles(path, "spatialos.*.worker.json");
+            return fileNames.Select(fileName => Path.GetFileName(fileName).Split('.')[1]).ToList();
         }
 
         private void ExtractEnums(UnityTypeDefinition typeDefinition, HashSet<string> enumSet)
