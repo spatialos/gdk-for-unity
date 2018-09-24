@@ -240,8 +240,10 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                <#= profilingStart #>
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+<# if (commandDetailsList.Count > 0) { #>
+
+                <#= profilingStart #>
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -254,12 +256,17 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 <#= profilingEnd #>
+<# } else { #>
+                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
+<# } #>
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                <#= profilingStart #>
                 var commandIndex = op.Response.CommandIndex;
+<# if (commandDetailsList.Count > 0) { #>
+
+                <#= profilingStart #>
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -272,6 +279,9 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 <#= profilingEnd #>
+<# } else { #>
+                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
+<# } #>
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
