@@ -59,7 +59,7 @@ To take advantage of some Feature Modules, you need to add the SpatialOS compone
 
 #### Transform synchronization module
 
-When you want to give a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/content/workers.md) [authority](https://github.com/spatialos/UnityGDK/blob/master/docs/content/ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the attribute of the worker you are giving authority to.
+When you want to give a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/content/workers.md) [authority](https://github.com/spatialos/UnityGDK/blob/master/docs/content/ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [attribute](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) of the worker you are giving authority to.
 
 You have the option to set a starting `location`, `velocity` and `rotation`. If you do not provide these, location and velocity are set to `default(Vector3)`, and rotation is set to `Quaternion.identity`.
 
@@ -86,7 +86,7 @@ public static class CubeTemplate
 
 The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires a `clientAttribute` and a `serverAttribute`.
 
-Example showing how to pass worker attributes into the `AddPlayerLifecycleComponents` extension method.
+Example showing how to pass [worker attributes](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) into the `AddPlayerLifecycleComponents` extension method.
 
 ```csharp
 public static class PlayerTemplate
