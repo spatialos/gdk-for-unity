@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
@@ -61,6 +62,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var data = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
@@ -108,11 +110,15 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("NonBlittableComponent");
 
                 var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
                 NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
@@ -138,12 +144,15 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         .WithField("Component", "Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("NonBlittableComponent");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
@@ -158,7 +167,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity))
                 {
                     updates = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entity).Updates;
-
                 }
                 else
                 {
@@ -236,16 +244,21 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
+                Profiler.EndSample();
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("NonBlittableComponent");
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                Profiler.EndSample();
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
+                Profiler.BeginSample("NonBlittableComponent");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 switch (commandIndex)
                 {
@@ -258,10 +271,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "NonBlittableComponent");
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
+                Profiler.BeginSample("NonBlittableComponent");
                 var commandIndex = op.Response.CommandIndex;
                 switch (commandIndex)
                 {
@@ -274,6 +290,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "NonBlittableComponent");
                 }
+
+                Profiler.EndSample();
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
@@ -482,6 +500,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     requestBundle.Context,
                     requestBundle.RequestId));
             }
+
             private void OnSecondCommandRequest(CommandRequestOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
@@ -574,7 +593,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             private CommandStorages.FirstCommand firstCommandStorage;
             private CommandStorages.SecondCommand secondCommandStorage;
 
-            private EntityArchetypeQuery[] CommandQueries =
+            private readonly EntityArchetypeQuery[] CommandQueries =
             {
                 new EntityArchetypeQuery()
                 {
@@ -607,6 +626,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
+                Profiler.BeginSample("NonBlittableComponent");
+
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
                 var eventFirstEventArray = replicationGroup.GetComponentDataArray<EventSender.FirstEvent>();
@@ -657,10 +678,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         componentDataArray[i] = data;
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+                Profiler.BeginSample("NonBlittableComponent");
                 var entityType = sendSystem.GetArchetypeChunkEntityType();
                 {
                     var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
@@ -780,6 +804,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                     chunks.Dispose();
                 }
+
+                Profiler.EndSample();
             }
         }
 
