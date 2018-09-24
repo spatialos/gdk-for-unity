@@ -30,6 +30,7 @@ namespace Improbable.Gdk.TransformSynchronization
             // If authority is gained on the first tick there will be an auth changed component
             public SubtractiveComponent<Authoritative<TransformInternal.Component>> DenotesNotAuthoritative;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewEntity;
+            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
         }
 
         private struct AuthChangeData
@@ -37,6 +38,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
             [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
         }
 
         [Inject] private AuthChangeData authChangeData;

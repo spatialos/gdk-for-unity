@@ -45,7 +45,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 positionData.LastPositionSent[i] = lastPositionSent;
 
                 if (lastPositionSent.TimeSinceLastUpdate <
-                    1.0f / TransformSynchronizationConfig.MaxPositionUpdateRateHz)
+                    1.0f / TransformDefaults.MaxPositionUpdateRateHz)
                 {
                     continue;
                 }
@@ -59,9 +59,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 if (lastPositionSent.TimeSinceLastUpdate <
-                    TransformSynchronizationConfig.MaxTimeForStalePositionWithoutUpdateS)
+                    TransformDefaults.MaxTimeForStalePositionWithoutUpdateS)
                 {
-                    if (squareDistance < TransformSynchronizationConfig.MaxSquarePositionChangeWithoutUpdate)
+                    if (squareDistance < TransformDefaults.MaxSquarePositionChangeWithoutUpdate)
                     {
                         continue;
                     }

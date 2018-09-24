@@ -46,7 +46,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 transformData.LastTransformSent[i] = lastTransformSent;
 
                 if (lastTransformSent.TimeSinceLastUpdate <
-                    1.0f / TransformSynchronizationConfig.MaxTransformUpdateRateHz)
+                    1.0f / TransformDefaults.MaxTransformUpdateRateHz)
                 {
                     continue;
                 }

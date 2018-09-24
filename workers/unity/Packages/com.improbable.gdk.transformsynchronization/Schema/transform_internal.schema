@@ -28,4 +28,7 @@ component TransformInternal {
     Velocity velocity = 3;
     uint32 physics_tick = 4;
     float ticks_per_second = 5;
+    // todo This should likely be an event but this is correct for now
+    // todo Not needed for this pr
+    // uint32 last_teleport_tick = 6;
 }
