@@ -44,6 +44,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
         }
+
         public partial class SecondCommand
         {
             public struct RequestResponder
@@ -99,26 +100,32 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     this.logger = logger;
                 }
 
-                public void SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request)
+                public long SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
+                    var request = FirstCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
-                public void SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request)
+                public long SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(SecondCommand.CreateRequest(entityId, request));
+                    var request = SecondCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
             }
