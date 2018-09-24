@@ -53,15 +53,19 @@ public static class CreatureTemplate
 
 You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
 
-### Feature Module Components
+### Feature Module components
 
-To take advantage of some feature modules, you need to add the SpatialOS components that these modules will make use of. This is done by calling the appropriate helper method for each desired feature module.
+To take advantage of some Feature Modules, you need to add the SpatialOS components that these modules make use of to your entity. You do this by calling the appropriate extension method on the `EntityBuilder` for each feature module. This document lists the helper methods and how to use them.
 
-#### Transform Synchronization
+#### Transform synchronization module
 
-The helper for this feature module requires the **attribute** of the worker you want to give authority over Transforms to. There is also the *option* to set a starting **location**, **velocity** and **rotation**. If not provided, location and velocity will be set to `default(Vector3)`, and rotation will be set to `Quaternion.identity`.
+When you want to give a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/content/workers.md) [authority](https://github.com/spatialos/UnityGDK/blob/master/docs/content/ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the attribute of the worker you are giving authority to.
 
-```c#
+You have the option to set a starting `location`, `velocity` and `rotation`. If you do not provide these, location and velocity are set to `default(Vector3)`, and rotation is set to `Quaternion.identity`.
+
+Example showing how to use the `AddTransformSynchronizationComponents` extension method with an optional `location` parameter.
+
+```csharp
 public static class CubeTemplate
 {
     public static Entity CreateCubeEntityTemplate(Coordinates coords)
@@ -78,11 +82,13 @@ public static class CubeTemplate
 }
 ```
 
-#### Player Lifecycle
+#### Player lifecycle module
 
-This helper for this feature module requires a **clientAttribute** and a **serverAttribute**.
+The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires a `clientAttribute` and a `serverAttribute`.
 
-```c#
+Example showing how to pass worker attributes into the `AddPlayerLifecycleComponents` extension method.
+
+```csharp
 public static class PlayerTemplate
 {
     public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet, Improbable.Vector3f position)
