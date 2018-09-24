@@ -1,15 +1,39 @@
 ﻿using Improbable.Gdk.Core;
-using Playground;
+using UnityEngine;
 
-public class GameLogicWorkerConnector : WorkerConnectorBase
+namespace Playground
 {
-    private async void Start()
+    public class GameLogicWorkerConnector : WorkerConnector
     {
-        await Connect(WorkerUtils.UnityGameLogic, new ForwardingDispatcher()).ConfigureAwait(false);
-    }
+        public GameObject Level;
 
-    protected override void AddWorkerSystems()
-    {
-        WorkerUtils.AddGameLogicSystems(Worker.World);
+        private GameObject levelInstance;
+
+        private async void Start()
+        {
+            await Connect(WorkerUtils.UnityGameLogic, new ForwardingDispatcher()).ConfigureAwait(false);
+        }
+
+        protected override void HandleWorkerConnectionEstablished()
+        {
+            WorkerUtils.AddGameLogicSystems(Worker.World);
+            if (Level == null)
+            {
+                return;
+            }
+
+            levelInstance = Instantiate(Level, transform);
+            levelInstance.transform.SetParent(null);
+        }
+
+        public override void Dispose()
+        {
+            if (levelInstance != null)
+            {
+                Destroy(levelInstance);
+            }
+
+            base.Dispose();
+        }
     }
 }
