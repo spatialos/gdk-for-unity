@@ -26,9 +26,6 @@ namespace Improbable.Gdk.Core
                     ValidateConfig(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamToken);
                     ValidateConfig(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.SteamDeploymentTag);
                     break;
-                default:
-                    ValidateConfig(string.Empty, RuntimeConfigNames.LoginToken);
-                    break;
             }
         }
 
