@@ -1,11 +1,13 @@
 using System;
+using Improbable.Worker.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public interface ILogDispatcher : IDisposable
     {
-        Worker Worker { get; set; }
+        Connection Connection { get; set; }
+        string WorkerType { get; set; }
 
         void HandleLog(LogType type, LogEvent logEvent);
     }

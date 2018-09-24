@@ -36,7 +36,8 @@ namespace Improbable.Gdk.Core
 
             Connection = connection;
             LogDispatcher = logDispatcher;
-            logDispatcher.Worker = this;
+            logDispatcher.Connection = connection;
+            logDispatcher.WorkerType = workerType;
 
             World = new World(Connection.GetWorkerId());
             AddCoreSystems();
