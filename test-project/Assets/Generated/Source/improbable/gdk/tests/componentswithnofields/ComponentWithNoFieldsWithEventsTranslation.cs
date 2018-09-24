@@ -195,28 +195,14 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithEvents");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithEvents");
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
                 var commandIndex = op.Response.CommandIndex;
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithEvents");
-                }
-
-                Profiler.EndSample();
+                throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithEvents");
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
