@@ -16,10 +16,18 @@ namespace Improbable.Gdk.Core
         public override void Validate()
         {
             ValidateConfig(LocatorHost, RuntimeConfigNames.LocatorHost);
-            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
+            switch (LocatorParameters.CredentialsType)
             {
-                ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
-                ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+                case LocatorCredentialsType.LoginToken:
+                    ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
+                    ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+                    break;
+                case LocatorCredentialsType.Steam:
+                    ValidateConfig(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamToken);
+                    ValidateConfig(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.SteamDeploymentTag);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -37,9 +45,13 @@ namespace Improbable.Gdk.Core
             };
         }
 
-        public void SetSteamToken(string steamToken)
+        public void SetSteamCredentials(string steamToken, string deploymentTag)
         {
-            LocatorParameters.Steam = new SteamCredentials();
+            LocatorParameters.Steam = new SteamCredentials
+            {
+                Ticket = steamToken,
+                DeploymentTag = deploymentTag
+            };
         }
 
         public static LocatorConfig CreateConnectionConfigFromCommandLine(Dictionary<string, string> parsedArgs)
@@ -50,10 +62,12 @@ namespace Improbable.Gdk.Core
             var projectName = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.ProjectName, string.Empty);
             var steamToken = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.SteamCredentials, string.Empty);
+                parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
+            var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
             config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
-            config.SetSteamToken(steamToken);
+            config.SetSteamCredentials(steamToken, steamDeploymentTag);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
