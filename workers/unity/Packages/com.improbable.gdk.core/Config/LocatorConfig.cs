@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
-            if (loginToken.Equals(string.Empty) == true)
+            if (loginToken.Equals(string.Empty) == true && LocatorParameters.CredentialsType.Equals(null))
             {
                 return;
             }
@@ -55,6 +55,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
             LocatorParameters.Steam = new SteamCredentials
             {
                 Ticket = steamToken,
@@ -73,9 +74,9 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
             var steamToken = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
-            config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
             config.SetSteamCredentials(steamToken, steamDeploymentTag);
+            config.SetLoginToken(loginToken);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(
