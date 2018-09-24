@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core
         {
             const string regex = @"^[A-Za-z0-9][A-Za-z0-9_]*$";
             var match = Regex.Match(deploymentTag, regex);
-            
+
             if (!match.Success)
             {
                 throw new ConnectionFailedException(
@@ -91,11 +91,8 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
             var steamToken = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
-
-            // Assign Steam Credentials first so that loginToken can fall back to default values if not provided
-            config.SetSteamCredentials(steamToken, steamDeploymentTag);
-
             config.SetLoginToken(loginToken);
+            config.SetSteamCredentials(steamToken, steamDeploymentTag);
             config.SetProjectName(projectName);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
