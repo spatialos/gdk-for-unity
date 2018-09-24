@@ -35,7 +35,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
             workerGameObject = new GameObject();
             workerGameObject.AddComponent<MonoBehaviourOnWorker>();
-            GameObjectCreationSystemHelper.EnableStandardGameObjectCreation(world, workerGameObject: workerGameObject);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(world, workerGameObject: workerGameObject);
             workerLinkerSystem = world.GetExistingManager<WorkerEntityGameObjectLinkerSystem>();
         }
 
