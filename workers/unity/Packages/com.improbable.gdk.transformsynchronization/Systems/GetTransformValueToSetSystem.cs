@@ -41,10 +41,14 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
+                var bufferHead = buffer[0];
+
                 var currentTransform = new TransformToSet
                 {
-                    Position = buffer[0].Position + worker.Origin,
-                    Orientation = buffer[0].Orientation
+                    Position = bufferHead.Position + worker.Origin,
+                    Orientation = bufferHead.Orientation,
+                    Velocity = bufferHead.Velocity,
+                    ApproximateRemoteTick = bufferHead.PhysicsTick
                 };
 
                 data.CurrentTransform[i] = currentTransform;
