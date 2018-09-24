@@ -10,7 +10,8 @@ Once you are comfortable with the GDK and want to start a separate project, look
 
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)
-* [Building and deploying your game](content/build-and-deploy.md)
+* [Building your workers](content/build.md)
+* [Deploying your game](content/deploy.md)
 
 ##### Concepts and features
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
@@ -18,6 +19,11 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
 * [Snapshots](content/snapshots.md)
 * [Creating entity templates](content/entity-templates.md)
+
+##### Configuring your project
+
+- [Starting workers](content/workers.md)
+- [Setting up a new project](content/set-up-new-project.md)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
 * [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
@@ -27,13 +33,17 @@ Once you are comfortable with the GDK and want to start a separate project, look
 * [World commands](content/gameobject/world-commands.md)
 * [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
 
-##### Entity Component System
+##### Using the GDK with Unity ECS
 The GDK currently uses the `0.0.12-preview.13` version of the entities preview packages.
-The GDK documentation assumes you are familiar with the Unity Entity Component System. See:
+The GDK documentation assumes you are familiar with the Unity Entity Component System (ECS). 
+
+ECS documentation:
+
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
 * The more detailed documentation from Unity on the ECS [GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/index.md).
 
-##### Using the GDK with Unity ECS
+GDK documentation:
+
 * [System update order](content/ecs/system-update-order.md)
 * [Components and component updates](content/ecs/component-data.md)
 * [Sending and receiving events](content/ecs/events.md)
@@ -47,10 +57,6 @@ The GDK documentation assumes you are familiar with the Unity Entity Component S
 * [Temporary components](content/ecs/temporary-components.md)
 * [Logging](content/ecs/logging.md)
 * [Accessing information about the worker during runtime](content/ecs/accessing-worker-info.md)
-
-##### Configuring your project
-* [Starting workers](content/workers.md)
-* [Setting up a new project](content/set-up-new-project.md)
 
 ##### Frequently asked questions (FAQs)
 * [FAQs](content/faqs/faqs.md)

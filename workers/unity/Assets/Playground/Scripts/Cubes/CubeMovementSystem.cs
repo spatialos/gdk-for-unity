@@ -16,7 +16,7 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Playground
 {
-    [UpdateBefore(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
         private struct Data

@@ -19,7 +19,7 @@ using UnityEngine.Experimental.PlayerLoop;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class DefaultApplyLatestTransformSystem : ComponentSystem
     {
         private struct RigidbodyData
