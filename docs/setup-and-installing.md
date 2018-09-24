@@ -6,9 +6,9 @@
 ## Quick version
 
 1. Sign up for a  [SpatialOS account](https://improbable.io/get-spatialos).
-2. Set up your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
-3. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`.
-4. Follow the [quickstart](./content/deploy.md#quickstart-how-to-deploy-the-playground-project) guide to run the example `Playground` project.
+1. Set up your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
+1. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`.
+1. Follow the [quickstart](./content/deploy.md#quickstart-how-to-deploy-the-playground-project) guide to run the example `Playground` project.
 
 ## Full version
 
@@ -25,7 +25,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
     - Make sure to select the following components during installation:
         - **Linux Build Support**
         - **Mac Build Support**
-2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `15.8.4`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
+1. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `15.8.4`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
     - If you are using Visual Studio, within the Visual Studio Installer, on the **Workloads** tab:
         - Select **Game development with Unity** 
         - Select **.NET Core cross-platform development** 
@@ -34,15 +34,12 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
             - Make sure **Visual Studio Tools for Unity** is selected
     - If you are using Rider: 
         - Install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
-3. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` or `2.1.4xx`)
-4. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win). This installs:
+1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` or `2.1.4xx`)
+1. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win). This installs:
     - the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
     - the SpatialOS [Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
     - the 32-bit and 64-bit Visual C++ Redistributables
-5. (Optional) [ReSharper](https://www.jetbrains.com/resharper/) if you are using Visual Studio
-    - It’s useful to have ReSharper installed if you want to contribute to the SpatialOS Unity GDK repository, as it makes it easy to stick to our [coding standards](contributions/unity-gdk-coding-standards.md). 
-    - _We are currently not accepting public contributions - see our [contributions](../.github/CONTRIBUTING.md) policy._
-6. Reboot your machine to finish the setup.
+1. Reboot your machine to finish the setup.
 
 > **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
@@ -52,14 +49,14 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
     - Make sure to select the following components during installation:
         - **Linux Build Support** 
         - **Windows Build Support**
-2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
+1. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
     - If you are using Visual Studio, within the Visual Studio Installer, select **.NET Core + ASP .NET Core**
-3. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` and `2.1.4xx`)
-4. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
+1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` and `2.1.4xx`)
+1. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
     - The [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
     - The SpatialOS [Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
     - The 32-bit and 64-bit Visual C++ Redistributables
-5. Reboot your machine to finish the setup.
+1. Reboot your machine to finish the setup.
 
 ### Clone the SpatialOS GDK for Unity repository
 
