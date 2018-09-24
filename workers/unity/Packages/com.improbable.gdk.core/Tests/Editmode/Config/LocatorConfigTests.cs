@@ -76,6 +76,18 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
+        public void Validate_should_return_false_when_SteamDeploymentTag_is_invalid()
+        {
+            var config = GetDefaultWorkingConfig();
+            config.LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            config.LocatorParameters.Steam.Ticket = "RandomTicket";
+            config.LocatorParameters.Steam.DeploymentTag = "_invalid deployment tag";
+
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
+            Assert.IsTrue(exception.Message.Contains("regex"));
+        }
+
+        [Test]
         public void SetProjectName_should_update_ProjectName_property()
         {
             var config = GetDefaultWorkingConfig();

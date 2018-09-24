@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
@@ -26,7 +28,21 @@ namespace Improbable.Gdk.Core
                 case LocatorCredentialsType.Steam:
                     ValidateConfig(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamToken);
                     ValidateConfig(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.SteamDeploymentTag);
+                    ValidateSteamDeploymentTag(LocatorParameters.Steam.DeploymentTag);
                     break;
+            }
+        }
+
+        private void ValidateSteamDeploymentTag(string deploymentTag)
+        {
+            const string regex = @"^[A-Za-z0-9][A-Za-z0-9_]*$";
+            var match = Regex.Match(deploymentTag, regex);
+            
+            if (!match.Success)
+            {
+                throw new ConnectionFailedException(
+                    $"Config validation failed with: No valid {RuntimeConfigNames.SteamDeploymentTag} - must match the following regex: {regex} ",
+                    ConnectionErrorReason.InvalidConfig);
             }
         }
 
@@ -37,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
-            if (loginToken.Equals(string.Empty) == true && LocatorParameters.CredentialsType.Equals(null))
+            if (loginToken.Equals(string.Empty) && LocatorParameters.CredentialsType.Equals(null))
             {
                 return;
             }
@@ -51,7 +67,7 @@ namespace Improbable.Gdk.Core
 
         public void SetSteamCredentials(string steamToken, string deploymentTag)
         {
-            if (steamToken.Equals(string.Empty) == true)
+            if (steamToken.Equals(string.Empty))
             {
                 return;
             }
