@@ -10,12 +10,8 @@ Once you are comfortable with the GDK and want to start a separate project, look
 
 ##### Getting started
 * [Installation and setup](setup-and-installing.md)
-<<<<<<< HEAD
 * [Building your workers](content/build.md)
 * [Deploying your game](content/deploy.md)
-=======
-* [Building and deploying your game](content/build-and-deploy.md)
->>>>>>> remove from toc
 
 ##### Concepts and features
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
