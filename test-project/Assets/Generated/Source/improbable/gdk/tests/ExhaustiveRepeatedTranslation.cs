@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
@@ -60,6 +61,7 @@ namespace Improbable.Gdk.Tests
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("ExhaustiveRepeated");
                 var data = Improbable.Gdk.Tests.ExhaustiveRepeated.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
@@ -115,11 +117,15 @@ namespace Improbable.Gdk.Tests
                         .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveRepeated")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("ExhaustiveRepeated");
 
                 var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveRepeated.Component>(entity);
                 ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
@@ -158,12 +164,15 @@ namespace Improbable.Gdk.Tests
                         .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveRepeated")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("ExhaustiveRepeated");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveRepeated.Component>(entity);
@@ -178,7 +187,6 @@ namespace Improbable.Gdk.Tests
                 if (entityManager.HasComponent<Improbable.Gdk.Tests.ExhaustiveRepeated.ReceivedUpdates>(entity))
                 {
                     updates = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveRepeated.ReceivedUpdates>(entity).Updates;
-
                 }
                 else
                 {
@@ -193,32 +201,28 @@ namespace Improbable.Gdk.Tests
 
                 updates.Add(update);
 
+                Profiler.EndSample();
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("ExhaustiveRepeated");
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                Profiler.EndSample();
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveRepeated");
-                }
+                throw new UnknownCommandIndexException(commandIndex, "ExhaustiveRepeated");
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
                 var commandIndex = op.Response.CommandIndex;
-                switch (commandIndex)
-                {
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "ExhaustiveRepeated");
-                }
+                throw new UnknownCommandIndexException(commandIndex, "ExhaustiveRepeated");
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
@@ -299,7 +303,6 @@ namespace Improbable.Gdk.Tests
                     .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveRepeated")
                 );
             }
-
         }
 
         internal class ComponentReplicator : ComponentReplicationHandler
@@ -313,7 +316,7 @@ namespace Improbable.Gdk.Tests
             };
 
 
-            private EntityArchetypeQuery[] CommandQueries =
+            private readonly EntityArchetypeQuery[] CommandQueries =
             {
             };
 
@@ -324,6 +327,8 @@ namespace Improbable.Gdk.Tests
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
+                Profiler.BeginSample("ExhaustiveRepeated");
+
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.ExhaustiveRepeated.Component>();
 
@@ -344,11 +349,12 @@ namespace Improbable.Gdk.Tests
                         componentDataArray[i] = data;
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
-                var entityType = sendSystem.GetArchetypeChunkEntityType();
             }
         }
 
