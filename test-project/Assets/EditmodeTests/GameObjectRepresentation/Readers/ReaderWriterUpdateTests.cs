@@ -5,7 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
 {
     [TestFixture]
     internal class ReaderWriterUpdateTests : ReaderWriterTestsBase

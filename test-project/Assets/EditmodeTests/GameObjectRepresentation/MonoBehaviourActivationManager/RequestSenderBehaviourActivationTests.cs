@@ -1,10 +1,11 @@
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using Improbable.Worker.Core;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
     public class RequestSenderBehaviourActivationTests : ActivationManagerTestBase

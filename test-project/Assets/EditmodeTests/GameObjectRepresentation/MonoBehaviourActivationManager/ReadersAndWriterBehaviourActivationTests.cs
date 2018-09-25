@@ -1,7 +1,8 @@
+using Improbable.Gdk.GameObjectRepresentation;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourActivationManagerTests
 {
     [TestFixture]
     public class ReadersAndWriterBehaviourActivationTests :

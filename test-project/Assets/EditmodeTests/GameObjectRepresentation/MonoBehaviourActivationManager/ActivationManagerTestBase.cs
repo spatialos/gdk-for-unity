@@ -1,9 +1,10 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectRepresentation;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourActivationManagerTests
 {
     public abstract class ActivationManagerTestBase
     {

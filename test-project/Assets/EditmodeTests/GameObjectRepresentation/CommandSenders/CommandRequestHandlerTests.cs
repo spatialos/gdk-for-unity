@@ -3,7 +3,7 @@ using Improbable.Gdk.Tests.ComponentsWithNoFields;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.EditModeTests.MonoBehaviours.CommandSenders
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
 {
     [TestFixture]
     public class CommandRequestHandlerTests
