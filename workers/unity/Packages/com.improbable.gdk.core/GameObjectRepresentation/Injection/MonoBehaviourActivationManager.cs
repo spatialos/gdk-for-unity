@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using System.Linq;
 using Improbable.Worker.Core;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -42,6 +43,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             this.injector = injector;
 
             var spatialComponent = gameObject.GetComponent<SpatialOSComponent>();
+            var workerType = spatialComponent.Worker.WorkerType;
             entity = spatialComponent.Entity;
 
             foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
@@ -52,10 +54,20 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 }
 
                 var behaviourType = behaviour.GetType();
-                if (injector.HasRequiredFields(behaviourType))
+                if (injector.IsSpatialOSBehaviour(behaviourType))
                 {
                     var componentReadRequirements = injector.GetComponentPresenceRequirements(behaviourType);
                     var componentAuthRequirements = injector.GetComponentAuthorityRequirements(behaviourType);
+                    var workerTypeRequirements =
+                        injector.GetComponentWorkerTypeRequirementsForBehaviours(behaviourType);
+
+                    if (workerTypeRequirements != null && !workerTypeRequirements.Contains(workerType))
+                    {
+                        // This behaviour does not want to be enabled for this worker.
+                        RunWithExceptionHandling(() => behaviour.enabled = false);
+                        continue;
+                    }
+
                     var readRequirementCount = componentReadRequirements.Count;
                     var authRequirementCount = componentAuthRequirements.Count;
 
@@ -144,11 +156,17 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 store.RemoveInjectablesForBehaviour(behaviour);
             }
 
-            // Make a copy because the behaviours argument could potentially be the enabledBehaviours set itself.
-            var removedBehaviours = new List<MonoBehaviour>(behaviours);
-            foreach (var removedBehaviour in removedBehaviours)
+            // Make sure we don't remove from our self while iterating
+            if (behaviours == enabledBehaviours)
             {
-                enabledBehaviours.Remove(removedBehaviour);
+                enabledBehaviours.Clear();
+            }
+            else
+            {
+                foreach (var removedBehaviour in behaviours)
+                {
+                    enabledBehaviours.Remove(removedBehaviour);
+                }
             }
         }
 

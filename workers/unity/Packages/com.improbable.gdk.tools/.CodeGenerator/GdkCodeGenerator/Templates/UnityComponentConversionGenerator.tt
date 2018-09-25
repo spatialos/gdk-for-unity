@@ -7,6 +7,8 @@
     var commandDetailsList = GetCommandDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
+    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
@@ -14,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
@@ -69,11 +72,9 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AddComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                <#= profilingStart #>
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
@@ -115,14 +116,15 @@ namespace <#= qualifiedNamespace #>
                         .WithField("Component", "<#= componentNamespace #>")
                     );
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "RemoveComponentOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                <#= profilingStart #>
 <# if (!componentDetails.IsBlittable) { #>
 
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -151,15 +153,15 @@ namespace <#= qualifiedNamespace #>
                         .WithField("Component", "<#= componentNamespace #>")
                     );
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "OnComponentUpdate", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                <#= profilingStart #>
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -174,7 +176,6 @@ namespace <#= qualifiedNamespace #>
                 if (entityManager.HasComponent<<#= componentNamespace #>.ReceivedUpdates>(entity))
                 {
                     updates = entityManager.GetComponentData<<#= componentNamespace #>.ReceivedUpdates>(entity).Updates;
-
                 }
                 else
                 {
@@ -225,26 +226,24 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
 <# } #>
+                <#= profilingEnd #>
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "AuthorityChangeOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                <#= profilingStart #>
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                <#= profilingEnd #>
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
-
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+<# if (commandDetailsList.Count > 0) { #>
+
+                <#= profilingStart #>
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -253,19 +252,21 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "<#= componentNamespace #>")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
+
+                <#= profilingEnd #>
+<# } else { #>
+                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
+<# } #>
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
                 var commandIndex = op.Response.CommandIndex;
+<# if (commandDetailsList.Count > 0) { #>
+
+                <#= profilingStart #>
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -274,14 +275,13 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                     default:
-                        LogDispatcher.HandleLog(LogType.Error, new LogEvent(CommandIndexNotFound)
-                            .WithField(LoggingUtils.LoggerName, LoggerName)
-                            .WithField(LoggingUtils.EntityId, op.EntityId.Id)
-                            .WithField("CommandIndex", commandIndex)
-                            .WithField("Component", "<#= componentNamespace #>")
-                        );
-                        break;
+                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
                 }
+
+                <#= profilingEnd #>
+<# } else { #>
+                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
+<# } #>
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
@@ -384,22 +384,6 @@ namespace <#= qualifiedNamespace #>
                 authorityChanges.Add(authority);
             }
 
-            private bool IsValidEntityId(global::Improbable.Worker.EntityId entityId, string opType, out Unity.Entities.Entity entity)
-            {
-                if (!Worker.TryGetEntity(entityId, out entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, entityId.Id)
-                        .WithField("Op", opType)
-                        .WithField("Component", "<#= componentNamespace #>")
-                    );
-                    return false;
-                }
-
-                return true;
-            }
-
             private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
@@ -410,7 +394,6 @@ namespace <#= qualifiedNamespace #>
                     .WithField("Component", "<#= componentNamespace #>")
                 );
             }
-
 <# foreach (var commandDetails in commandDetailsList) {
     var wrappedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
     var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
@@ -420,12 +403,10 @@ namespace <#= qualifiedNamespace #>
 
     var commandStorage = $"{commandDetails.CamelCaseCommandName}Storage";
 #>
+
             private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
             {
-                if (!IsValidEntityId(op.EntityId, "CommandRequestOp", out var entity))
-                {
-                    return;
-                }
+                var entity = TryGetEntityFromEntityId(op.EntityId);
 
                 var deserializedRequest = <#= commandDetails.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
@@ -461,7 +442,7 @@ namespace <#= qualifiedNamespace #>
                 <#= commandStorage #>.CommandRequestsInFlight.Remove(op.RequestId.Id);
                 if (!entityManager.Exists(entity))
                 {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(EntityNotFound)
+                    LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
                         .WithField("Op", "CommandResponseOp - <#= commandDetails.CommandName #>")
                         .WithField("Component", "<#= componentNamespace #>")
@@ -518,7 +499,7 @@ namespace <#= qualifiedNamespace #>
             private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
 <# } #>
 
-            private EntityArchetypeQuery[] CommandQueries =
+            private readonly EntityArchetypeQuery[] CommandQueries =
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
                 new EntityArchetypeQuery()
@@ -544,6 +525,8 @@ namespace <#= qualifiedNamespace #>
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
+                <#= profilingStart #>
+
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentNamespace #>.Component>();
 <# foreach (var eventDetail in eventDetailsList) { #>
@@ -588,10 +571,14 @@ namespace <#= qualifiedNamespace #>
                         componentDataArray[i] = data;
                     }
                 }
+
+                <#= profilingEnd #>
             }
 
             public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+<# if (commandDetailsList.Count > 0) { #>
+                <#= profilingStart #>
                 var entityType = sendSystem.GetArchetypeChunkEntityType();
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {
@@ -658,6 +645,9 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                     chunks.Dispose();
                 }
+<# } #>
+
+                <#= profilingEnd #>
 <# } #>
             }
         }

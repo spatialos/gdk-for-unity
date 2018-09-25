@@ -5,11 +5,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.Core;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -17,35 +18,35 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
         {
             public override ComponentType[] ComponentAddedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentAdded<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] ComponentRemovedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<ComponentRemoved<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[] AuthorityGainedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<Authoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
             };
 
             public override ComponentType[] AuthorityLostComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<NotAuthoritative<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
             };
 
             public override ComponentType[] AuthorityLossImminentComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
-                ComponentType.ReadOnly<AuthorityLossImminent<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
+                ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(), ComponentType.ReadOnly<GameObjectReference>(),
+                ComponentType.ReadOnly<AuthorityLossImminent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>()
             };
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
-                ComponentType.ReadOnly<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
+                ComponentType.ReadOnly<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
@@ -78,12 +79,15 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = ComponentAddedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.AddComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkComponentsRemovedForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -93,12 +97,15 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = ComponentRemovedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var activationManager = entityToManagers[entities[i]];
                     activationManager.RemoveComponent(componentId);
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityGainedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -108,7 +115,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                Profiler.BeginSample("NonBlittableComponent");
+                var authoritiesChangedTags = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -119,6 +127,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         activationManager.ChangeAuthority(componentId, Authority.Authoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void MarkAuthorityLostForDeactivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
@@ -128,7 +138,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
-                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                Profiler.BeginSample("NonBlittableComponent");
+                var authoritiesChangedTags = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
                 for (var i = 0; i < entities.Length; i++)
                 {
@@ -139,6 +150,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         activationManager.ChangeAuthority(componentId, Authority.NotAuthoritative);
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -148,8 +161,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
-                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
                 {
                     var injectableStore = entityToInjectableStore[entities[i]];
@@ -167,10 +181,13 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("NonBlittableComponent");
                 if (!EventsReceivedComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = EventsReceivedComponentGroups[0].GetEntityArray();
@@ -184,7 +201,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
 
                         var eventList = eventLists[i];
-
                         foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
@@ -208,7 +224,6 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
 
                         var eventList = eventLists[i];
-
                         foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                         {
                             foreach (var e in eventList.Events)
@@ -219,10 +234,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
+                Profiler.EndSample();
             }
 
             public override void InvokeOnCommandRequestCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("NonBlittableComponent");
                 if (!CommandRequestsComponentGroups[0].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandRequestsComponentGroups[0].GetEntityArray();
@@ -234,8 +251,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         {
                             continue;
                         }
-                         var commandRequestList = commandRequestLists[i];
-                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+
+                        var commandRequestList = commandRequestLists[i];
+                        foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -256,8 +274,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         {
                             continue;
                         }
-                         var commandRequestList = commandRequestLists[i];
-                         foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+
+                        var commandRequestList = commandRequestLists[i];
+                        foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
@@ -267,10 +286,12 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
+                Profiler.EndSample();
             }
 
             public override void InvokeOnCommandResponseCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                Profiler.BeginSample("NonBlittableComponent");
 
                 if (!CommandResponsesComponentGroups[0].IsEmptyIgnoreFilter)
                 {
@@ -317,6 +338,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityGainedCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -326,8 +348,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = AuthorityGainedComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var changeOpsLists = AuthorityGainedComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -346,6 +369,8 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnAuthorityLostCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
@@ -355,8 +380,9 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = AuthorityLostComponentGroup.GetEntityArray();
-                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var changeOpsLists = AuthorityLostComponentGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
 
                 // Call once on all entities unless they flip-flopped back into the state they started in
                 for (var i = 0; i < entities.Length; i++)
@@ -375,9 +401,11 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
+
+                Profiler.EndSample();
             }
 
-            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Generated.Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component> changeOps)
+            private bool IsFirstAuthChange(Authority authToMatch, AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component> changeOps)
             {
                 foreach (var auth in changeOps.Changes)
                 {
@@ -386,6 +414,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                         return auth == authToMatch;
                     }
                 }
+
                 return false;
             }
 
@@ -396,6 +425,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     return;
                 }
 
+                Profiler.BeginSample("NonBlittableComponent");
                 var entities = AuthorityLossImminentComponentGroup.GetEntityArray();
 
                 // Call once on all entities
@@ -406,11 +436,14 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     {
                         continue;
                     }
+
                     foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
                     {
                         readerWriter.OnAuthorityChange(Authority.AuthorityLossImminent);
                     }
                 }
+
+                Profiler.EndSample();
             }
         }
     }

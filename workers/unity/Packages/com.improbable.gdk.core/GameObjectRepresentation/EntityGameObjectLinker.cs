@@ -72,6 +72,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
                         viewCommandBuffer.RemoveComponent(entity, componentType);
                     }
                 }
+
+                if (entityManager.HasComponent<GameObjectReference>(entity))
+                {
+                    viewCommandBuffer.RemoveComponent(entity, typeof(GameObjectReference));
+                }
             }
 
             var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();

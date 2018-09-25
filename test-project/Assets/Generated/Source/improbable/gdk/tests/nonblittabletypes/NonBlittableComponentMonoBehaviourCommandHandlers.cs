@@ -12,7 +12,7 @@ using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
+namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
@@ -31,7 +31,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse payload)
                 {
                     entityManager.GetComponentData<CommandResponders.FirstCommand>(entity).ResponsesToSend
                         .Add(FirstCommand.CreateResponse(Request, payload));
@@ -44,6 +44,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
         }
+
         public partial class SecondCommand
         {
             public struct RequestResponder
@@ -59,7 +60,7 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse payload)
                 {
                     entityManager.GetComponentData<CommandResponders.SecondCommand>(entity).ResponsesToSend
                         .Add(SecondCommand.CreateResponse(Request, payload));
@@ -99,26 +100,32 @@ namespace Generated.Improbable.Gdk.Tests.NonblittableTypes
                     this.logger = logger;
                 }
 
-                public void SendFirstCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request)
+                public long SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(FirstCommand.CreateRequest(entityId, request));
+                    var request = FirstCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
-                public void SendSecondCommandRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request)
+                public long SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(SecondCommand.CreateRequest(entityId, request));
+                    var request = SecondCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
             }

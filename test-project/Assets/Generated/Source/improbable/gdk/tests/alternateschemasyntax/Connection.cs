@@ -5,7 +5,7 @@
 using Unity.Entities;
 using Improbable.Gdk.Core;
 
-namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     public partial class Connection
     {
@@ -26,27 +26,27 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
 
         public static class Serialization
         {
-            public static void SerializeUpdate(Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
             }
 
-            public static Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component();
+                var component = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component();
 
                 return component;
             }
 
-            public static Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
-                var update = new Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update();
+                var update = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update();
                 var obj = updateObj.GetFields();
 
                 return update;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -62,7 +62,7 @@ namespace Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax
             internal uint handle;
             public global::System.Collections.Generic.List<Update> Updates
             {
-                get => Generated.Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+                get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
     }

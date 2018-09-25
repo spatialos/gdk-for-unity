@@ -1,5 +1,4 @@
-using Generated.Improbable;
-using Generated.Playground;
+using Improbable;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -17,7 +16,7 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Playground
 {
-    [UpdateBefore(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
         private struct Data
@@ -32,9 +31,9 @@ namespace Playground
 
         private Vector3 origin;
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
 
             origin = World.GetExistingManager<WorkerSystem>().Origin;
         }

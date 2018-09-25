@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core.Commands;
@@ -24,9 +24,9 @@ namespace Improbable.Gdk.Core
             return (TConcreteCommandStorage) storage;
         }
 
-        protected override void OnCreateManager(int capacity)
+        protected override void OnCreateManager()
         {
-            base.OnCreateManager(capacity);
+            base.OnCreateManager();
             Enabled = false;
             CreateConcreteCommandStorage();
         }

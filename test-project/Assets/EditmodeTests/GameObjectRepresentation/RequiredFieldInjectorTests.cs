@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
-using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Tests.BlittableTypes;
+using Improbable.Gdk.Tests.NonblittableTypes;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.Generated.EditmodeTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation
 {
     [TestFixture]
     public class RequiredFieldInjectorTests
@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Generated.EditmodeTests
         {
             if (testGameObject != null)
             {
-                Object.DestroyImmediate(testGameObject);
+                UnityObjectDestroyer.Destroy(testGameObject);
             }
 
             world.Dispose();

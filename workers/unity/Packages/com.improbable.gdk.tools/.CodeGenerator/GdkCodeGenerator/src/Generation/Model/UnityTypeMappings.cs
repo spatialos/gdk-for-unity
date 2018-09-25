@@ -5,8 +5,6 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityTypeMappings
     {
-        public const string PackagePrefix = "Generated.";
-
         private const int EntityAclComponentId = 50;
         private const int MetadataComponentId = 53;
         private const int PositionComponentId = 54;
@@ -39,9 +37,9 @@ namespace Improbable.Gdk.CodeGenerator
                 { BuiltInTypeConstants.builtInString, "string" },
                 { BuiltInTypeConstants.builtInBytes, "byte[]" },
                 { BuiltInTypeConstants.builtInEntityId, "global::Improbable.Worker.EntityId" },
-                { BuiltInTypeConstants.builtInCoordinates, "global::Generated.Improbable.Coordinates" },
-                { BuiltInTypeConstants.builtInVector3d, "global::Generated.Improbable.Vector3d" },
-                { BuiltInTypeConstants.builtInVector3f, "global::Generated.Improbable.Vector3f" }
+                { BuiltInTypeConstants.builtInCoordinates, "global::Improbable.Coordinates" },
+                { BuiltInTypeConstants.builtInVector3d, "global::Improbable.Vector3d" },
+                { BuiltInTypeConstants.builtInVector3f, "global::Improbable.Vector3f" }
             };
     }
 }

@@ -1,5 +1,5 @@
-using Generated.Improbable.Transform;
 using Improbable.Gdk.Core;
+using Improbable.Transform;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Experimental.PlayerLoop;
@@ -17,7 +17,7 @@ using UnityEngine.Experimental.PlayerLoop;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate))]
+    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class TickSystem : ComponentSystem
     {
         private struct Data

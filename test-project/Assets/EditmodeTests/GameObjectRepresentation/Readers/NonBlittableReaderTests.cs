@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Generated.Improbable.Gdk.Tests.NonblittableTypes;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.NonblittableTypes;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
 {
     [TestFixture]
     public class NonBlittableReaderTests

@@ -1,11 +1,11 @@
 ﻿using System;
-using Generated.Improbable.Gdk.Tests.BlittableTypes;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Improbable.Gdk.Generated.EditmodeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
 {
     [TestFixture]
     internal class ReaderWriterUpdateTests : ReaderWriterTestsBase

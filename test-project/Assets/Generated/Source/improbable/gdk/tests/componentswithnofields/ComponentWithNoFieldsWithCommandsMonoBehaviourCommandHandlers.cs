@@ -12,7 +12,7 @@ using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
+namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
@@ -31,7 +31,7 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     Request = request;
                 }
 
-                public void SendResponse(global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
+                public void SendResponse(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
                     entityManager.GetComponentData<CommandResponders.Cmd>(entity).ResponsesToSend
                         .Add(Cmd.CreateResponse(Request, payload));
@@ -71,15 +71,18 @@ namespace Generated.Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.logger = logger;
                 }
 
-                public void SendCmdRequest(EntityId entityId, global::Generated.Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
+                public long SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload,
+                    uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
                     if (!VerifyNotDisposed())
                     {
-                        return;
+                        return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
-                    ecsCommandRequestSender.RequestsToSend.Add(Cmd.CreateRequest(entityId, request));
+                    var request = Cmd.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
                 }
 
             }

@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Core
         private bool inHandleLog;
 
         public Connection Connection { get; set; }
+        public string WorkerType { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
         {
@@ -53,6 +54,11 @@ namespace Improbable.Gdk.Core
             inHandleLog = true;
             try
             {
+                if (!string.IsNullOrEmpty(WorkerType))
+                {
+                    logEvent.WithField(LoggingUtils.WorkerType, WorkerType);
+                }
+
                 if (type == LogType.Exception)
                 {
                     // For exception types, Unity expects an exception object to be passed.

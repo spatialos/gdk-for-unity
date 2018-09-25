@@ -36,18 +36,14 @@ namespace Improbable.Gdk.Core
 
             Connection = connection;
             LogDispatcher = logDispatcher;
-            logDispatcher.Connection = Connection;
+            logDispatcher.Connection = connection;
+            logDispatcher.WorkerType = workerType;
 
             World = new World(Connection.GetWorkerId());
             AddCoreSystems();
 
             // This isn't a core system, this is for an easy disconnect event
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
-        }
-
-        public bool TryGetEntity(EntityId entityId, out Entity entity)
-        {
-            return World.GetExistingManager<WorkerSystem>().TryGetEntity(entityId, out entity);
         }
 
         public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger,
@@ -66,7 +62,6 @@ namespace Improbable.Gdk.Core
 
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
                 logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                    .WithField("WorkerType", worker.WorkerType)
                     .WithField("WorkerId", worker.WorkerId));
                 return worker;
             }
@@ -98,7 +93,6 @@ namespace Improbable.Gdk.Core
 
                     var worker = new Worker(config.WorkerType, connection, logger, origin);
                     logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                        .WithField("WorkerType", worker.WorkerType)
                         .WithField("WorkerId", worker.WorkerId));
                     return worker;
                 }
@@ -137,7 +131,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();            
+            World.GetOrCreateManager<CommandRequestTrackerSystem>();
         }
 
         public void Dispose()

@@ -1,32 +1,34 @@
-using Generated.Playground;
 using Improbable.Gdk.GameObjectRepresentation;
 using Unity.Entities;
 using UnityEngine;
 
-public class ScoreCollision : MonoBehaviour
+namespace Playground
 {
-    private EntityManager entityManager;
-    private SpatialOSComponent component;
-
-    private void Start()
+    public class ScoreCollision : MonoBehaviour
     {
-        component = GetComponent<SpatialOSComponent>();
-        entityManager = component.World.GetExistingManager<EntityManager>();
-    }
+        private EntityManager entityManager;
+        private SpatialOSComponent component;
 
-    public void OnCollisionEnter(Collision col)
-    {
-        if (!col.gameObject || !col.gameObject.CompareTag("Cube"))
+        private void Start()
         {
-            return;
+            component = GetComponent<SpatialOSComponent>();
+            entityManager = component.World.GetExistingManager<EntityManager>();
         }
 
-        var otherComponent = col.gameObject.GetComponentInParent<SpatialOSComponent>();
-        if (entityManager.HasComponent<Launchable.Component>(component.Entity)
-            && !entityManager.HasComponent<Playground.CollisionComponent>(component.Entity)
-            && otherComponent)
+        public void OnCollisionEnter(Collision col)
         {
-            entityManager.AddComponentData(component.Entity, new Playground.CollisionComponent(otherComponent.Entity));
+            if (!col.gameObject || !col.gameObject.CompareTag("Cube"))
+            {
+                return;
+            }
+
+            var otherComponent = col.gameObject.GetComponentInParent<SpatialOSComponent>();
+            if (entityManager.HasComponent<Launchable.Component>(component.Entity)
+                && !entityManager.HasComponent<CollisionComponent>(component.Entity)
+                && otherComponent)
+            {
+                entityManager.AddComponentData(component.Entity, new CollisionComponent(otherComponent.Entity));
+            }
         }
     }
 }

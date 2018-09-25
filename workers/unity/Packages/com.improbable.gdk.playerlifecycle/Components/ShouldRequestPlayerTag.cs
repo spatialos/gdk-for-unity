@@ -1,5 +1,4 @@
-﻿using Improbable.Gdk.Core;
-using Unity.Entities;
+﻿using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
