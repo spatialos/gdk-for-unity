@@ -62,7 +62,6 @@ namespace Playground
                 {
                     var info = requests[j].RawRequest;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-
                     sender.RequestsToSend.Add(new Launchable.LaunchMe.Request(info.EntityToLaunch, new Generated.Playground.LaunchMeCommandRequest
                     {
                         ImpactPoint = info.ImpactPoint,
