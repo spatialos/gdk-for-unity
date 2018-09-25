@@ -1,26 +1,38 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class WorkerConnectorBase : MonoBehaviour, IDisposable
+    public class WorkerConnector : MonoBehaviour, IDisposable
     {
         private delegate Task<Worker> ConnectionDelegate();
 
-        public GameObject LevelPrefab;
         public int MaxConnectionAttempts = 3;
         public bool UseExternalIp;
 
         public Worker Worker;
 
-        private GameObject levelInstance;
+        private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
+
+        public event Action<Worker> OnWorkerCreationFinished
+        {
+            add
+            {
+                workerConnectedCallbacks.Add(value);
+                if (Worker != null)
+                {
+                    value.Invoke(Worker);
+                }
+            }
+            remove { workerConnectedCallbacks.Remove(value); }
+        }
 
         private static readonly SemaphoreSlim WorkerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
@@ -35,13 +47,19 @@ namespace Improbable.Gdk.Core
             Dispose();
         }
 
-        protected async Task Connect(string workerType, ILogDispatcher logger)
+        public async Task Connect(string workerType, ILogDispatcher logger)
         {
-            // Check that other workers have finished trying to connect before this one starts
-            // This prevents races on the workers starting and races on when we start ticking systems
+            // Check that other workers have finished trying to connect before this one starts.
+            // This prevents races on the workers starting and races on when we start ticking systems.
             await WorkerConnectionSemaphore.WaitAsync();
             try
             {
+                // A check is needed for the case that play mode is exited before the semaphore was released.
+                if (!Application.isPlaying)
+                {
+                    return;
+                }
+
                 var origin = transform.position;
                 ConnectionDelegate connectionDelegate;
                 if (ShouldUseLocator())
@@ -58,8 +76,14 @@ namespace Improbable.Gdk.Core
                             .ConfigureAwait(false);
                 }
 
-                var worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
-                InitializeWorker(worker);
+                Worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
+
+                Worker.OnDisconnect += OnDisconnected;
+
+                HandleWorkerConnectionEstablished();
+
+                World.Active = World.Active ?? Worker.World;
+                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
             }
             catch (Exception e)
             {
@@ -74,16 +98,34 @@ namespace Improbable.Gdk.Core
                             "Is a local runtime running? If not, you can start one from 'SpatialOS -> Local launch' or by pressing Cmd/Ctrl-L")
                         .WithField("Reason", "A worker running in the Editor failed to connect"));
 #endif
-                HandleWorkerConnectionFailure();
+                // A check is needed for the case that play mode is exited before the connection can complete.
+                if (Application.isPlaying)
+                {
+                    HandleWorkerConnectionFailure();
+                    Dispose();
+                }
             }
             finally
             {
                 WorkerConnectionSemaphore.Release();
             }
+
+            foreach (var callback in workerConnectedCallbacks)
+            {
+                callback(Worker);
+            }
         }
 
-        protected virtual void AddWorkerSystems()
+        protected virtual bool ShouldUseLocator()
         {
+            if (Application.isEditor)
+            {
+                return false;
+            }
+
+            var commandLineArguments = Environment.GetCommandLineArgs();
+            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
+            return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
         }
 
         protected virtual string SelectDeploymentName(DeploymentList deployments)
@@ -130,9 +172,12 @@ namespace Improbable.Gdk.Core
             return config;
         }
 
+        protected virtual void HandleWorkerConnectionEstablished()
+        {
+        }
+
         protected virtual void HandleWorkerConnectionFailure()
         {
-            Dispose();
         }
 
         private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int maxAttempts,
@@ -147,11 +192,11 @@ namespace Improbable.Gdk.Core
                 }
                 catch (ConnectionFailedException e)
                 {
+                    --remainingAttempts;
                     logger.HandleLog(LogType.Error,
-                        new LogEvent($"Failed attempt {remainingAttempts} to create worker")
+                        new LogEvent($"Failed attempt {maxAttempts - remainingAttempts} to create worker")
                             .WithField("WorkerType", workerType)
                             .WithField("Message", e.Message));
-                    remainingAttempts--;
                 }
             }
 
@@ -160,39 +205,11 @@ namespace Improbable.Gdk.Core
                 ConnectionErrorReason.ExceededMaximumRetries);
         }
 
-        private static bool ShouldUseLocator()
+        private static string CreateNewWorkerId(string workerType)
         {
-            if (Application.isEditor)
-            {
-                return false;
-            }
-
-            var commandLineArguments = Environment.GetCommandLineArgs();
-            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-            return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
+            return $"{workerType}-{Guid.NewGuid()}";
         }
 
-        private void InitializeWorker(Worker worker)
-        {
-            Worker = worker;
-            AddWorkerSystems();
-            InstantiateLevel();
-            Worker.OnDisconnect += OnDisconnected;
-            World.Active = World.Active ?? Worker.World;
-
-            ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
-        }
-
-        private void InstantiateLevel()
-        {
-            if (LevelPrefab == null)
-            {
-                return;
-            }
-
-            levelInstance = Instantiate(LevelPrefab, transform);
-            levelInstance.transform.SetParent(null);
-        }
 
         private void OnDisconnected(string reason)
         {
@@ -208,25 +225,11 @@ namespace Improbable.Gdk.Core
             Dispose();
         }
 
-        private static string CreateNewWorkerId(string workerType)
-        {
-            return $"{workerType}-{Guid.NewGuid()}";
-        }
-
-        public void Dispose()
+        public virtual void Dispose()
         {
             Worker?.Dispose();
             Worker = null;
-            // A check is needed for the case that play mode is exited before the connection can complete.
-            if (Application.isPlaying)
-            {
-                if (levelInstance != null)
-                {
-                    Destroy(levelInstance);
-                }
-
-                Destroy(this);
-            }
+            Destroy(this);
         }
     }
 }
