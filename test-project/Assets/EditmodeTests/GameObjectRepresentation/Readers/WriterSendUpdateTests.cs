@@ -2,7 +2,7 @@
 using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 
-namespace Improbable.Gdk.EditModeTests.MonoBehaviours.Readers
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
 {
     [TestFixture]
     internal class WriterSendUpdateTests : ReaderWriterTestsBase

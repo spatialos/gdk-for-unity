@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Improbable.Gdk.EditModeTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation
 {
     [TestFixture]
     public class RequiredFieldInjectorTests

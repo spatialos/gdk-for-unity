@@ -2,7 +2,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Tests.BlittableTypes;
 using NUnit.Framework;
 
-namespace Improbable.Gdk.CodeGenerator.End2EndTests
+namespace Improbable.Gdk.EditmodeTests.Ecs
 {
     [TestFixture]
     public class BlittableComponentTests
