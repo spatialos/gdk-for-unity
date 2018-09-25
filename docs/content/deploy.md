@@ -50,14 +50,14 @@ To start a cloud deployment:
 
    > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
    
-   **About the `spatial cloud launch` command**
+   **About the `spatial cloud launch` command**   
    `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
     `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
     where:
     - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
-    - `<launch configuration>` is the configuration file for the deployment.
-    - `<deployment name>` is the name you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
-    - `<snapshot file>` is the snapshot of the world you want to start from. See the the GDK documentation for further information on [snapshots](snapshots.md).
+    - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is intended for use with local deployments.
+    - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
+    - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation](snapshots.md) for further information.
 1. Launch a game client:
     1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
     1. In the SpatialOS Console, select the deployment’s name to open the overview page.
