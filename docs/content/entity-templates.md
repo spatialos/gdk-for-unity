@@ -53,6 +53,60 @@ public static class CreatureTemplate
 
 You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
 
+### Feature Module components
+
+To take advantage of some Feature Modules, you need to add the SpatialOS components that these modules make use of to your entity. You do this by calling the appropriate extension method on the `EntityBuilder` for each feature module. This document lists the helper methods and how to use them.
+
+#### Transform synchronization module
+
+When you want to give a [worker](workers.md) [authority](ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [attribute](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) of the worker you are giving authority to.
+
+You have the option to set a starting `location`, `velocity` and `rotation`. If you do not provide these, location and velocity are set to `default(Vector3)`, and rotation is set to `Quaternion.identity`.
+
+Example showing how to use the `AddTransformSynchronizationComponents` extension method with an optional `location` parameter.
+
+```csharp
+public static class CubeTemplate
+{
+    public static Entity CreateCubeEntityTemplate(Coordinates coords)
+    {
+        var entityBuilder = EntityBuilder.Begin()
+            .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
+            ...
+            ...
+            .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
+				location: coords.NarrowToUnityVector());
+
+        return entityBuilder.Build();
+    }
+}
+```
+
+#### Player lifecycle module
+
+The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires a `clientAttribute` and a `serverAttribute`.
+
+Example showing how to pass [worker attributes](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) into the `AddPlayerLifecycleComponents` extension method.
+
+```csharp
+public static class PlayerTemplate
+{
+    public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet, Improbable.Vector3f position)
+    {
+        // Obtain unique client attribute
+        var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
+
+        var entityBuilder = EntityBuilder.Begin()
+            .AddPosition(position.X, position.Y, position.Z, WorkerUtils.UnityGameLogic)
+            ...
+            ...
+            .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
+
+        return entityBuilder.Build();
+    }
+}
+```
+
 ------
 
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).

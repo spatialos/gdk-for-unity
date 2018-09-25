@@ -22,10 +22,10 @@ namespace Playground
         public static void AddClientSystems(World world)
         {
             AddLifecycleSystems(world);
-            TransformSynchronizationSystemHelper.AddClientSystems(world);
-            PlayerLifecycleConfig.AddClientSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world);
-            GameObjectCreationSystemHelper.EnableStandardGameObjectCreation(world);
+            TransformSynchronizationHelper.AddClientSystems(world);
+            PlayerLifecycleHelper.AddClientSystems(world);
+            GameObjectRepresentationHelper.AddSystems(world);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
             world.GetOrCreateManager<MoveLocalPlayerSystem>();
@@ -40,10 +40,10 @@ namespace Playground
         public static void AddGameLogicSystems(World world)
         {
             AddLifecycleSystems(world);
-            TransformSynchronizationSystemHelper.AddServerSystems(world);
-            PlayerLifecycleConfig.AddServerSystems(world);
-            GameObjectRepresentationSystemHelper.AddSystems(world);
-            GameObjectCreationSystemHelper.EnableStandardGameObjectCreation(world);
+            TransformSynchronizationHelper.AddServerSystems(world);
+            PlayerLifecycleHelper.AddServerSystems(world);
+            GameObjectRepresentationHelper.AddSystems(world);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<CubeMovementSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();
             world.GetOrCreateManager<ProcessLaunchCommandSystem>();

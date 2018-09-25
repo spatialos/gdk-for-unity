@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
-    public static class GameObjectCreationSystemHelper
+    public static class GameObjectCreationHelper
     {
         private static readonly string WorkerNotCreatedErrorMessage = $"{nameof(EnableStandardGameObjectCreation)} should be called only after a worker has been initialised for the world.";
 
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                         "You should only call EnableStandardGameobjectCreation() once on worker setup")
-                    .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationSystemHelper)));
+                    .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationHelper)));
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 {
                     workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent("You cannot set the Worker " +
                             "GameObject once the World has already started running")
-                        .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationSystemHelper)));
+                        .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationHelper)));
                 }
                 else
                 {

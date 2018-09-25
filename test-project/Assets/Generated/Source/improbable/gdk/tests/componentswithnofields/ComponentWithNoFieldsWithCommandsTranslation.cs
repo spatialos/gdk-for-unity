@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
@@ -49,6 +50,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var data = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.DirtyBit = false;
                 entityManager.AddComponentData(entity, data);
@@ -87,11 +89,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(entity);
 
@@ -111,12 +117,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands")
                     );
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
 
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(entity);
@@ -131,7 +140,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 if (entityManager.HasComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(entity))
                 {
                     updates = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(entity).Updates;
-
                 }
                 else
                 {
@@ -146,17 +154,23 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 updates.Add(update);
 
+                Profiler.EndSample();
             }
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
                 var entity = TryGetEntityFromEntityId(op.EntityId);
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                Profiler.EndSample();
             }
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 switch (commandIndex)
                 {
                     case 1:
@@ -165,11 +179,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithCommands");
                 }
+
+                Profiler.EndSample();
             }
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
                 var commandIndex = op.Response.CommandIndex;
+
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 switch (commandIndex)
                 {
                     case 1:
@@ -178,6 +196,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     default:
                         throw new UnknownCommandIndexException(commandIndex, "ComponentWithNoFieldsWithCommands");
                 }
+
+                Profiler.EndSample();
             }
 
             public override void AddCommandComponents(Unity.Entities.Entity entity)
@@ -361,7 +381,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private CommandStorages.Cmd cmdStorage;
 
-            private EntityArchetypeQuery[] CommandQueries =
+            private readonly EntityArchetypeQuery[] CommandQueries =
             {
                 new EntityArchetypeQuery()
                 {
@@ -383,6 +403,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
             {
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
+
                 var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
                 var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>();
 
@@ -403,10 +425,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         componentDataArray[i] = data;
                     }
                 }
+
+                Profiler.EndSample();
             }
 
             public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
             {
+                Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entityType = sendSystem.GetArchetypeChunkEntityType();
                 {
                     var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
@@ -467,6 +492,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                     chunks.Dispose();
                 }
+
+                Profiler.EndSample();
             }
         }
 

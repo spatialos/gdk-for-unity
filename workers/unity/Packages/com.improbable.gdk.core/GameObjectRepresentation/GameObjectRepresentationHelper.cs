@@ -2,7 +2,7 @@
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
-    public static class GameObjectRepresentationSystemHelper
+    public static class GameObjectRepresentationHelper
     {
         public static void AddSystems(World world)
         {

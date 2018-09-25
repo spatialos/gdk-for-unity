@@ -4,6 +4,7 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine.Profiling;
 
 #region Diagnostic control
 
@@ -74,6 +75,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         protected override void OnUpdate()
         {
+            Profiler.BeginSample("CreateActivationManagerAndReaderWriterStore");
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
                 var entity = addedEntitiesData.Entities[i];
@@ -81,6 +83,9 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 PostUpdateCommands.AddComponent(entity, new HasActivationManagerSystemState());
             }
 
+            Profiler.EndSample();
+
+            Profiler.BeginSample("RemoveActivationManagerAndReaderWriterStore");
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
@@ -88,7 +93,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 PostUpdateCommands.RemoveComponent<HasActivationManagerSystemState>(entity);
             }
 
+            Profiler.EndSample();
+
+            Profiler.BeginSample("UpdateMonoBehaviours");
             UpdateMonoBehaviours();
+            Profiler.EndSample();
         }
 
         protected override void OnDestroyManager()
@@ -170,50 +179,67 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         private void UpdateMonoBehaviours()
         {
+            Profiler.BeginSample("MarkForDeactivation");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.MarkComponentsRemovedForDeactivation(entityToActivationManager);
                 gameObjectComponentDispatcher.MarkAuthorityLostForDeactivation(entityToActivationManager);
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("DisableSpatialOSBehaviours");
             foreach (var indexManagerPair in entityToActivationManager)
             {
                 indexManagerPair.Value.DisableSpatialOSBehaviours();
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("InvokeOnAuthorityLostCallbacks");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.InvokeOnAuthorityLostCallbacks(EntityToReaderWriterStore);
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("InvokeUpdateEventsCallbacks");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.InvokeOnComponentUpdateCallbacks(EntityToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnEventCallbacks(EntityToReaderWriterStore);
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("InvokeOnAuthorityGainedCallbacks");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.InvokeOnAuthorityGainedCallbacks(EntityToReaderWriterStore);
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("MarkForActivation");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.MarkAuthorityGainedForActivation(entityToActivationManager);
                 gameObjectComponentDispatcher.MarkComponentsAddedForActivation(entityToActivationManager);
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("EnableSpatialOSBehaviours");
             foreach (var indexManagerPair in entityToActivationManager)
             {
                 indexManagerPair.Value.EnableSpatialOSBehaviours();
             }
 
+            Profiler.EndSample();
+            Profiler.BeginSample("InvokeAuthorityCommandsCallbacks");
             foreach (var gameObjectComponentDispatcher in gameObjectComponentDispatchers)
             {
                 gameObjectComponentDispatcher.InvokeOnAuthorityLossImminentCallbacks(EntityToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnCommandRequestCallbacks(EntityToReaderWriterStore);
                 gameObjectComponentDispatcher.InvokeOnCommandResponseCallbacks(EntityToReaderWriterStore);
             }
+
+            Profiler.EndSample();
         }
 
         private void CreateActivationManagerAndReaderWriterStore(Entity entity)
