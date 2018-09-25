@@ -50,17 +50,17 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
     - Make sure to select the following components during installation:
         - **Linux Build Support**
         - **Windows Build Support**
-    - *Estimated Time: 20-25 minutes*
+    - *Estimated time: 20-25 minutes*
 1. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
     - If you are using Visual Studio, within the Visual Studio Installer, select **.NET Core + ASP .NET Core**
-    - *Estimated Time: 5-10 minutes*
+    - *Estimated time: 5-10 minutes*
 1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` and `2.1.4xx`)
-    * *Estimated Time: 1-2 minutes*
+    * *Estimated time: 1-2 minutes*
 1. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
     - The [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
     - The SpatialOS [Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
     - The 32-bit and 64-bit Visual C++ Redistributables
-    - *Estimated Time: 1-2 minutes*
+    - *Estimated time: 1-2 minutes*
 1. Reboot your machine to finish the setup.
 
 ### Clone the SpatialOS GDK for Unity repository
