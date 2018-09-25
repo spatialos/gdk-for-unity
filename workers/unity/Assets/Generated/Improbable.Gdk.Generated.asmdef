@@ -6,7 +6,6 @@
         "Unity.Mathematics", 
         "Unity.Entities.Hybrid",
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.BuildSystem",
         "Improbable.Gdk.Tools"
     ],
     "includePlatforms": [],

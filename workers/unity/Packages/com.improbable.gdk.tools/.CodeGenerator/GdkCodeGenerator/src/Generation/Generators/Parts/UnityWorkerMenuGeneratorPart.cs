@@ -4,12 +4,10 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public partial class UnityWorkerMenuGenerator
     {
-        private string qualifiedNamespace;
         private List<string> workerTypes;
 
-        public string Generate(List<string> workerTypes, string package)
+        public string Generate(List<string> workerTypes)
         {
-            qualifiedNamespace = package;
             this.workerTypes = workerTypes;
 
             return TransformText();

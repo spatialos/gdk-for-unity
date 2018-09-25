@@ -23,11 +23,11 @@ namespace Improbable.Gdk.CodeGenerator
             var optionSet = new OptionSet
             {
                 {
-                    "worker-json-dir=", "REQUIRED: the directory that will contain the json representation of your workers",
+                    "worker-json-dir=", "REQUIRED: the directory that will contain the JSON representation of your workers",
                     j => options.WorkerJsonDirectory = j
                 },
                 {
-                    "json-dir=", "REQUIRED: the directory that will contain the json representation of your schema",
+                    "json-dir=", "REQUIRED: the directory that will contain the JSON representation of your schema",
                     j => options.JsonDirectory = j
                 },
                 {

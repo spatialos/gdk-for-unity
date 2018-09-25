@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Tools
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
         private static readonly string WorkerJsonRelativePath =
-            "./";
+            ".";
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
@@ -77,6 +77,9 @@ namespace Improbable.Gdk.Tools
                 var schemaCompilerPath =
                     Path.GetFullPath(Path.Combine(Application.dataPath, SchemaCompilerRelativePath));
 
+                var workerJsonPath =
+                    Path.GetFullPath(Path.Combine(Application.dataPath, WorkerJsonRelativePath));
+
                 switch (Application.platform)
                 {
                     case RuntimePlatform.WindowsEditor:
@@ -95,7 +98,7 @@ namespace Improbable.Gdk.Tools
                 using (new ShowProgressBarScope("Generating code..."))
                 {
                     var exitCode = RedirectedProcess.Run(Common.DotNetBinary,
-                        ConstructArgs(projectPath, schemaCompilerPath));
+                        ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath));
 
                     if (exitCode != 0)
                     {
@@ -119,7 +122,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath)
+        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath)
         {
             var baseArgs = new List<string>
             {
@@ -129,7 +132,7 @@ namespace Improbable.Gdk.Tools
                 "--",
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
-                $"--worker-json-dir=\"{WorkerJsonRelativePath}\""
+                $"--worker-json-dir=\"{workerJsonPath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();

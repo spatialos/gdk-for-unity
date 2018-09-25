@@ -1,8 +1,9 @@
 namespace Improbable.Gdk.BuildSystem
 {
-    public class EditorConfig
+    public static class EditorConfig
     {
+        public const int MenuOffset = 0;
         public const string ParentMenu = "SpatialOS";
-        internal const string BuildConfigurationMenu = "Build Configuration";
+        internal const string BuildConfigurationMenu = ParentMenu + "/Build Configuration";
     }
 }
