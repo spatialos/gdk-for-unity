@@ -12,13 +12,13 @@ We use tests to validate functionality and to ensure that the SpatialOS GDK for 
 
 We have two main test categories:
 - Tools tests, such as testing the linter
-- Unity tests  - these test the Unity project which forms part of the GDK
+- Unity tests - these test the Unity project which forms part of the GDK
 
 The tests in both of these categories use the NUnit testing framework. NUnit is the open source library that’s included with Unity; it forms the basis of the Unity Test Runner. See the [NUnit’s documentation](https://github.com/nunit/docs/wiki/NUnit-Documentation) and Unity’s User Manual [Test Runner documentation](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) for further information.
 
 ## Where to find test code
 
-* The documentation linter tests are in  `tools\DocsLinter\Tests`.
+* The documentation linter tests are in `tools\DocsLinter\Tests`.
 * The code generator tests are in `code_generator\GdkCodeGenerator\src\Tests`.
 * For the Unity tests, each GDK Module has its own `Tests` directory.<br/>
 For example:

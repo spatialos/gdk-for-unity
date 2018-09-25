@@ -27,16 +27,16 @@ To start a local deployment, either:
 
 This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used.
 
-To start your client-workers, from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`,  replacing the `<example-content>` with names relevant to your game. Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)  to look at the current state of your game world.
+To start your client-workers, from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`, replacing the `<example-content>` with names relevant to your game. Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector) to look at the current state of your game world.
 
 #### Cloud deployment
 
-You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.  
+You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.
 <br/> To start a cloud deployment:
 1.  Open the `spatialos.json` file in the root folder of your game.
-1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
+1. Change the `name` field so it matches the name of your SpatialOS project. You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 1. Build and upload a game assembly for the deployment
-    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
+    - The assembly includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
     1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
 
     2. To upload an assembly; open a terminal and navigate to the directory in which your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
@@ -54,10 +54,10 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
         - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
         - `<launch configuration>` is the configuration file for the deployment.
         - `<deployment name>` is the name you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
-        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](snapshots.md).
+        - `<snapshot file>` is the snapshot of the world you want to start from. See the the GDK documentation for further information on [snapshots](snapshots.md).
 
 1. Launch a game client:
-    1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
+    1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
     1. In the SpatialOS Console, select the deployment’s name to open the overview page.
     1. Select **Launch**.
         > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
@@ -74,7 +74,7 @@ It uses the `Playground` as an example; the `Playground` comes with the GDK. It 
 
 Before following this guide - make sure you have followed the [setup guide](../setup-and-installing.md).
 
-####  Run the `Playground` locally using SpatialOS
+#### Run the `Playground` locally using SpatialOS
 
 1. Open the Unity Editor, and open the project at `UnityGDK/workers/unity`
     - Unity downloads several required SpatialOS libraries.
@@ -91,14 +91,14 @@ Before following this guide - make sure you have followed the [setup guide](../s
     1. Stop the SpatialOS deployment by closing the Unity Editor console window.
 
 #### Run the `Playground` in the cloud using SpatialOS
-1. Tie the `Playground`  project with a SpatialOS project in the cloud.
-<br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy the `Playground`  project, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy `Playground` to.  
+1. Tie the `Playground` project with a SpatialOS project in the cloud.
+<br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy the `Playground` project, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy `Playground` to.
 <br/> To do this:
 
-    1.  Open the `spatialos.json` file in the root folder of the `Playground` project.
-    1. Change the `name` field so it matches the name of your SpatialOS project.  You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
+    1. Open the `spatialos.json` file in the root folder of the `Playground` project.
+    1. Change the `name` field so it matches the name of your SpatialOS project. You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 1. Build and upload a game assembly for the deployment
-    - The assembly  includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
+    - The assembly includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
     1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
 
     2. To upload an assembly; open a terminal and navigate to the `UnityGDK` directory (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
@@ -110,7 +110,7 @@ Before following this guide - make sure you have followed the [setup guide](../s
     > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
 
 1. Launch a game client:
-    1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
+    1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
     1. In the SpatialOS Console, select the deployment’s name to open the overview page.
     1. Select **Launch**.
         > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
@@ -118,7 +118,7 @@ Before following this guide - make sure you have followed the [setup guide](../s
     1. Once you’ve finished playing, select **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
 
 [//]: # (Document the options UTY-1168)
 [//]: # (Document the options UTY-1170)

@@ -64,7 +64,7 @@ public class CreateCreatureSystem : ComponentSystem
 
 This system iterates through every entity with a `Foo` component and sends a create entity request.
 
-### 3.  Delete an entity
+### 3. Delete an entity
 
 You can delete entities via the `DeleteEntity` world command. You need to know the SpatialOS entity ID of the entity you want to delete.
 
@@ -117,8 +117,8 @@ To send a request use a `WorldCommands.EntityQuery.CommandSender` component. Thi
 
 To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
-**Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information  safely in the responses. It is not recommended to use them at this time.
+**Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information safely in the responses. It is not recommended to use them at this time.
 
 ------
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

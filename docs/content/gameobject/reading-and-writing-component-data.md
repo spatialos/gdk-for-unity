@@ -100,8 +100,8 @@ public class WriteHealthBehaviour : MonoBehaviour
 1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
 
 2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update) +=` or for `Reader.<component property name>Updated() +=` during `OnEnable()`.
-    *  `Reader.ComponentUpdated` is invoked when any component property is updated.
-    *  `Reader.<component property name>Updated` is invoked when a specific component property is updated.
+    * `Reader.ComponentUpdated` is invoked when any component property is updated.
+    * `Reader.<component property name>Updated` is invoked when a specific component property is updated.
 
 **Note:** 
 `Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated(ISpatialComponentUpdate update) -=` and `Reader.<component property name>Updated() -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
@@ -160,4 +160,4 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
 ----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).
