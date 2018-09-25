@@ -2,7 +2,7 @@ using Improbable.Worker.Core;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Improbable.Gdk.GameObjectRepresentation.EditModeTests.MonoBehaviourActivationManagerTests
+namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourActivationManagerTests
 {
     public abstract class AuthorityRequiredBehaviourActivationTestsBase<TBehaviour> : ActivationManagerTestBase
         where TBehaviour : MonoBehaviour
