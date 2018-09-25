@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Tools
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
         private static readonly string WorkerJsonRelativePath =
-            ".";
+            "..";
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
