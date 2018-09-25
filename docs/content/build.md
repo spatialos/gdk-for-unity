@@ -1,6 +1,9 @@
 **Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 ---
+
+## How to build your game.
+
 Before running a [deployment of your game](deploy.md) locally or in the cloud, you need to:
 
 1. Build your workers.
