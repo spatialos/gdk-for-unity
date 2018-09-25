@@ -35,7 +35,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
             - Make sure **Visual Studio Tools for Unity** is selected
     - If you are using Rider:
         - Install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
-1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` or `2.1.4xx`)
+1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/dotnet-core/2.1) (Verified with version `2.1.3xx` or `2.1.4xx`)
 1. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/win). This installs:
     - the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
     - the SpatialOS [Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
@@ -52,7 +52,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
         - **Windows Build Support**
 1. [Visual Studio 2017](https://www.visualstudio.com/downloads/) (Verified with version `7.6.5`) or [Rider](https://www.jetbrains.com/rider/) (Verified with version `2018.2.1`)
     - If you are using Visual Studio, within the Visual Studio Installer, select **.NET Core + ASP .NET Core**
-1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/) (Verified with version `2.1.3xx` and `2.1.4xx`)
+1. [.NET Core SDK (x64)](https://www.microsoft.com/net/download/dotnet-core/2.1) (Verified with version `2.1.3xx` and `2.1.4xx`)
 1. SpatialOS, using the the [SpatialOS installer](https://console.improbable.io/installer/download/stable/latest/mac). This installs:
     - The [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
     - The SpatialOS [Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)

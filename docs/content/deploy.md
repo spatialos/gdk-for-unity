@@ -21,7 +21,7 @@ To start a local deployment, either:
 * In the Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
 
     or
-* Open a terminal window and from the root of your game project directory run `spatial local launch` in the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
+* Open a terminal window and from the root of your game project directory run `spatial local launch` via the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
 (See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) for details of the launch configurations.)
 
