@@ -53,7 +53,8 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
-            if (loginToken.Equals(string.Empty) && !LocatorParameters.CredentialsType.Equals(null))
+            // Steam token already provided, no need to initialise default values
+            if (loginToken.Equals(string.Empty) && LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
             {
                 return;
             }
@@ -91,8 +92,8 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
             var steamToken = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
-            config.SetLoginToken(loginToken);
             config.SetSteamCredentials(steamToken, steamDeploymentTag);
+            config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
