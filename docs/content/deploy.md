@@ -42,7 +42,7 @@ To start a cloud deployment:
 
     1. To upload an assembly; open a terminal and navigate to the directory in which your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
     - The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
-    > **It’s finished uploading when:** You see `spatial upload <assembly name> succeeded` printed in your terminal output.
+    > **It’s finished uploading when:** You see `spatial upload <assembly name> succeeded` printed in your terminal output, and your browser will open a console.improbable.io page dispaying the deployment.
 1. Launch a cloud deployment
 
    - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
