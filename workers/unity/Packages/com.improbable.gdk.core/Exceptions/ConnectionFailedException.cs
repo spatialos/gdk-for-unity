@@ -7,7 +7,8 @@ namespace Improbable.Gdk.Core
         CannotEstablishConnection,
         DeploymentNotFound,
         InvalidConfig,
-        ExceededMaximumRetries
+        ExceededMaximumRetries,
+        EditorApplicationStopped
     }
 
     public class ConnectionFailedException : Exception
