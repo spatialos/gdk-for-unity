@@ -14,8 +14,8 @@ namespace Improbable.Gdk.BuildSystem
 {
     public static class WorkerBuilder
     {
-        internal const string IncompatibleWindowsPlatformsErrorMessage = 
-            "Please choose only one of Windows32 or Windows64 as a build platform.";
+        internal static readonly string IncompatibleWindowsPlatformsErrorMessage =
+            $"Please choose only one of {SpatialBuildPlatforms.Windows32} or {SpatialBuildPlatforms.Windows32} as a build platform.";
         
         private static readonly string PlayerBuildDirectory =
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.BuildSystem
         {
             Debug.LogFormat("Building \"{0}\" for worker platform: \"{1}\", environment: \"{2}\"", buildTarget,
                 workerType, targetEnvironment);
-            
+
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.instance;
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
             var scenes = spatialOSBuildConfiguration.GetScenePathsForWorker(workerType);

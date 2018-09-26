@@ -11,12 +11,11 @@ namespace Improbable.Gdk.CodeGenerator
     public class WorkerGenerationJob : CodegenJob
     {
         private readonly List<string> workerTypesToGenerate;
+        private readonly string workerTypeFlag = "+workerType";
+        private readonly string workerFileName = "WorkerMenu.cs";
+        private readonly string buildSystemFileName = "Improbable.Gdk.Generated.BuildSystem.asmdef";
         private readonly string relativeOutputPath = Path.Combine("improbable", "buildsystem");
         private readonly string relativeEditorPath = Path.Combine("improbable", "buildsystem", "Editor");
-        private readonly string workerFileName = Path.ChangeExtension("WorkerMenu", ".cs");
-        private readonly string buildSystemFileName = Path.ChangeExtension("Improbable.Gdk.Generated.BuildSystem", ".asmdef");
-
-        private readonly string workerTypeFlag = "+workerType";
 
         public WorkerGenerationJob(string outputDir, CodeGeneratorOptions options, IFileSystem fileSystem) : base(
             outputDir, fileSystem)

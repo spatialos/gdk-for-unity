@@ -16,6 +16,6 @@ namespace Improbable.Gdk.BuildSystem
             Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker"));
 
         public static readonly string AssetDatabaseDirectory =
-            Path.Combine(Application.dataPath, "..", "..", "..", "build", "assembly");   
+            Path.Combine(Application.dataPath, "..", "..", "..", "build", "assembly");
     }
 }
