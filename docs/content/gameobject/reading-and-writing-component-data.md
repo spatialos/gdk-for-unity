@@ -74,7 +74,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 </br>(`ISpatialComponentUpdate` types are generated under `<namespace of schema component>.<component name>.Update`.) 
 
 **Known issue warning:** 
-- At the moment, updating a component using `Writer.Send` will lead to the SpatialOS GDK updating all properties of the component even if you indicated to only partially update a component. The values of all other properties will be updated to the same value that they already assume. This is a bug and not intended behaviour and will be fixed in an upcoming update.
+- When you use `Writer.Send` to update a component's properties, it causes the SpatialOS GDK to update all properties of the component, even if you have set it to only update some of the properties. Note that the SpatialOS GDK updates unchanged properties to the value they already have. This is unintended behavior which we will fix in an upcoming update.
 
 **Example**
 ```csharp
@@ -107,11 +107,11 @@ public class WriteHealthBehaviour : MonoBehaviour
     *  `Reader.<component property name>Updated` is invoked when a specific component property is updated.
 
 **Note:** 
-`Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated -=` and `Reader.<component property name>Updated -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
+`Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. You can deregister callbacks using `Reader.ComponentUpdated -=` and `Reader.<component property name>Updated -=`. The SpatialOS also automatically deregisters all callbacks of a Reader or Writer upon validating them when requirements are not met anymore. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
-**Known issue warning:** 
-- At the moment, the `ISpatialComponentUpdate update` argument of `Reader.ComponentUpdated` may indicate that a component property was changed even if it was not truly changed. This is a bug and not intended behaviour and will be fixed in an upcoming update.
-- At the moment, `Reader.<component property name>Updated` is may be invoked even if `<component property name>` did not truly change. This is a bug and not intended behaviour and will be fixed in an upcoming update.
+**Known issue warning:**
+- The `ISpatialComponentUpdate update` argument of `Reader.ComponentUpdated` may indicate that a component property was changed even when it has not. This is unintended behavior which we will fix in an upcoming update.
+- `Reader.<component property name>Updated` is may be invoked even if `<component property name>` did not truly change. This is unintended behavior which we will fix in an upcoming update.
 
 **Example 1**
 
