@@ -7,8 +7,8 @@
 Before running a [deployment of your game](deploy.md) locally or in the cloud, you need to:
 
 1. Build your workers.
-2. Build the [bridge configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#bridge-configuration) and [launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) of your [workers](workers.md).
-3. Prepare the build configuration of your workers.
+1. Build the [bridge configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#bridge-configuration) and [launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) of your [workers](workers.md).
+1. Prepare the build configuration of your workers.
 
 ### Building your workers
 
