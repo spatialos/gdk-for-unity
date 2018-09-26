@@ -16,7 +16,7 @@ namespace Improbable.Gdk.BuildSystem
     {
         internal static readonly string IncompatibleWindowsPlatformsErrorMessage =
             $"Please choose only one of {SpatialBuildPlatforms.Windows32} or {SpatialBuildPlatforms.Windows32} as a build platform.";
-        
+
         private static readonly string PlayerBuildDirectory =
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
                 "worker"));
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.BuildSystem
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             var buildPlatforms = environmentConfig.BuildPlatforms;
             var buildOptions = environmentConfig.BuildOptions;
-            
+
             if (!Directory.Exists(PlayerBuildDirectory))
             {
                 Directory.CreateDirectory(PlayerBuildDirectory);
@@ -88,7 +88,7 @@ namespace Improbable.Gdk.BuildSystem
                 BuildWorkerForTarget(workerType, unityBuildTarget, buildOptions, targetEnvironment);
             }
         }
-        
+
         public static void Clean()
         {
             Directory.Delete(PlayerBuildDirectory);
@@ -119,7 +119,7 @@ namespace Improbable.Gdk.BuildSystem
                 {
                     throw new Exception(IncompatibleWindowsPlatformsErrorMessage);
                 }
-                
+
                 result.Add(BuildTarget.StandaloneWindows);
             } 
             else if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
@@ -129,8 +129,8 @@ namespace Improbable.Gdk.BuildSystem
 
             return result.ToArray();
         }
-        
-        private static SpatialBuildPlatforms GetCurrentBuildPlatform()
+
+        internal static SpatialBuildPlatforms GetCurrentBuildPlatform()
         {
             switch (Application.platform)
             {

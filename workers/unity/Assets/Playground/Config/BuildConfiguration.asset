@@ -16,18 +16,18 @@ MonoBehaviour:
     ScenesForWorker:
     - {fileID: 102900000, guid: 3f6e3d421576ca644b07380deacd35bb, type: 3}
     LocalBuildConfig:
-      BuildOptions: 1
       BuildPlatforms: 1
+      BuildOptions: 1
     CloudBuildConfig:
-      BuildOptions: 0
       BuildPlatforms: 20
+      BuildOptions: 0
   - WorkerType: UnityGameLogic
     ScenesForWorker:
     - {fileID: 102900000, guid: f5fda56aad5d91d408ff123b26ab6ade, type: 3}
     LocalBuildConfig:
-      BuildOptions: 16384
       BuildPlatforms: 1
-    CloudBuildConfig:
       BuildOptions: 16384
+    CloudBuildConfig:
       BuildPlatforms: 8
+      BuildOptions: 16384
   isInitialised: 1

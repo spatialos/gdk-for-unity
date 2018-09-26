@@ -262,9 +262,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     (newBuildOptions & BuildOptions.Development) != 0)
                 {
                     EditorGUILayout.HelpBox(
-                        "You cannot have EnableHeadlessMode and Development build enabled.\n" +
+                        "You cannot have both EnableHeadlessMode and Development build enabled.\n" +
                         "This will crash the Unity Editor during the build.",
                         MessageType.Error);
+                }
+
+                if ((newBuildOptions & BuildOptions.EnableHeadlessMode) != 0 &&
+                    (environmentConfiguration.BuildPlatforms & ~SpatialBuildPlatforms.Linux) != 0)
+                {
+                    EditorGUILayout.HelpBox(
+                        "EnableHeadlessMode is only available for Linux builds.",
+                        MessageType.Warning);
                 }
 
                 if (EditorGUI.EndChangeCheck())
@@ -277,31 +285,28 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
             }
         }
-        
-        private static string EnumFlagToString<TEnum>(TEnum value)
-            where TEnum : struct, IConvertible
+        private static string BuildPlatformToString(SpatialBuildPlatforms value)
         {
-            if (!typeof(TEnum).IsEnum)
+            if (value == SpatialBuildPlatforms.Current)
             {
-                throw new ArgumentException("TEnum must be an enum type");
+                return $"Current ({WorkerBuilder.GetCurrentBuildPlatform()})";
             }
 
-            var enumNonZeroValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>()
-                .Where(options => options.ToInt32(NumberFormatInfo.CurrentInfo) != 0)
-                .ToArray();
+            return value.ToString();
+        }
 
-            var sourceBitValue = value.ToInt32(NumberFormatInfo.CurrentInfo);
-
-            if (sourceBitValue == 0)
+        private static string SelectedPlatformsToString(SpatialBuildPlatforms value)
+        {
+            var enumValues = Enum.GetValues(typeof(SpatialBuildPlatforms)).Cast<SpatialBuildPlatforms>().ToArray();
+            if (value == 0)
             {
                 return "None";
             }
 
             return string.Join(", ",
-                enumNonZeroValues
-                    .Where(enumValue =>
-                        (sourceBitValue & enumValue.ToInt32(NumberFormatInfo.CurrentInfo)) != 0)
-                    .Select(enumValue => enumValue.ToString(CultureInfo.InvariantCulture)).ToArray());
+                enumValues
+                    .Where(enumValue => (value & enumValue) != 0)
+                    .Select(BuildPlatformToString).ToArray());
         }
 
         private void ConfigureBuildPlatforms(BuildEnvironmentConfig environmentConfiguration)
@@ -310,7 +315,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 EditorGUI.BeginChangeCheck();
                 
-                var buildPlatformsString = EnumFlagToString(environmentConfiguration.BuildPlatforms);
+                var buildPlatformsString = SelectedPlatformsToString(environmentConfiguration.BuildPlatforms);
                 var newBuildPlatforms = environmentConfiguration.BuildPlatforms;
                 var showBuildPlatforms = EditorGUILayout.Foldout(environmentConfiguration.ShowBuildPlatforms,
                     "Build Platforms: " + buildPlatformsString);
