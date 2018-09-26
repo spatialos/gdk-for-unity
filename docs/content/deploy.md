@@ -48,7 +48,7 @@ To start a cloud deployment:
    - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
    - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
-   > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
+   > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output. This might take a couple of minutes.
    
    **About the `spatial cloud launch` command**   
    `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
