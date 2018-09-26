@@ -55,7 +55,7 @@ To start a cloud deployment:
     `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
     where:
     - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
-    - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is intended for use with local deployments.
+    - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
     - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
     - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation](snapshots.md) for further information.
 1. Launch a game client:
