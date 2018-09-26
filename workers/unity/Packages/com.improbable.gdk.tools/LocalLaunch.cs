@@ -204,7 +204,7 @@ namespace Improbable.Gdk.Tools
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
                                      activate
-                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} local launch""
+                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
                                      end tell'";
             }
 
