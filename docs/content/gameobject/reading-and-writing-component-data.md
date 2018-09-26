@@ -73,7 +73,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
 </br>(`ISpatialComponentUpdate` types are generated under `<namespace of schema component>.<component name>.Update`.) 
 
-**Known Issue Warning:** 
+**Known issue warning:** 
 - At the moment, updating a component using `Writer.Send` will lead to the SpatialOS GDK updating all properties of the component even if you indicated to only partially update a component. The values of all other properties will be updated to the same value that they already assume. This is a bug and not intended behaviour and will be fixed in an upcoming update.
 
 **Example**
@@ -109,7 +109,7 @@ public class WriteHealthBehaviour : MonoBehaviour
 **Note:** 
 `Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated -=` and `Reader.<component property name>Updated -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
-**Known Issue Warning:** 
+**Known issue warning:** 
 - At the moment, the `ISpatialComponentUpdate update` argument of `Reader.ComponentUpdated` may indicate that a component property was changed even if it was not truly changed. This is a bug and not intended behaviour and will be fixed in an upcoming update.
 - At the moment, `Reader.<component property name>Updated` is may be invoked even if `<component property name>` did not truly change. This is a bug and not intended behaviour and will be fixed in an upcoming update.
 
