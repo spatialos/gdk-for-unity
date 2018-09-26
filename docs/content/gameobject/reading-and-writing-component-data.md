@@ -107,11 +107,11 @@ public class WriteHealthBehaviour : MonoBehaviour
     *  `Reader.<component property name>Updated` is invoked when a specific component property is updated.
 
 **Note:** 
-`Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. You can deregister callbacks using `Reader.ComponentUpdated -=` and `Reader.<component property name>Updated -=`. The SpatialOS also automatically deregisters all callbacks of a Reader or Writer upon validating them when requirements are not met anymore. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
+`Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. You can deregister callbacks using `Reader.ComponentUpdated -=` and `Reader.<component property name>Updated -=`. The SpatialOS GDK also automatically deregisters all callbacks of a Reader or Writer upon validating them when requirements are not met anymore. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
 **Known issue warning:**
-- The `ISpatialComponentUpdate update` argument of `Reader.ComponentUpdated` may indicate that a component property was changed even when it has not. This is unintended behavior which we will fix in an upcoming update.
-- `Reader.<component property name>Updated` is may be invoked even if `<component property name>` did not truly change. This is unintended behavior which we will fix in an upcoming update.
+- The `ISpatialComponentUpdate update` argument of `Reader.ComponentUpdated` may indicate that a component property has changed even when it has not. This is unintended behavior which we will fix in an upcoming update.
+- `Reader.<component property name>Updated` may be invoked even if `<component property name>` did not truly change. This is unintended behavior which we will fix in an upcoming update.
 
 **Example 1**
 
