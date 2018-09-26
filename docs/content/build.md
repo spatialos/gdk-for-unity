@@ -2,13 +2,13 @@
 
 ---
 
-## How to build your game.
+## How to build your game
 
 Before running a [deployment of your game](deploy.md) locally or in the cloud, you need to:
 
 1. Build your workers.
-1. Build the [bridge configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#bridge-configuration) and [launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) of your [workers](workers.md).
-1. Prepare the build configuration of your workers.
+2. Build the bridge configuration and launch configuration of your [workers](workers.md).
+3. Prepare the build configuration of your workers.
 
 ### Building your workers
 
@@ -24,7 +24,7 @@ You can now find the built-out workers in `build/assembly/worker` in the root of
 
 ### Building the bridge and launch configuration of your workers
 
-To build the bridge and launch configurations for each of your [server-workers](https://docs.improbable.io/reference/latest/shared/glossary#server-worker) and [client-workers](https://docs.improbable.io/reference/latest/shared/glossary#client-worker), you can either:
+The [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-bridge-configuration) and [launch](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) confgurations are pre-configued for you. You only need to build them. You do this for each of your [server-workers](https://docs.improbable.io/reference/latest/shared/glossary#server-worker) and [client-workers](https://docs.improbable.io/reference/latest/shared/glossary#client-worker). To do this you can either:
 
 * With your project open in the Unity Editor, select **SpatialOS** > **Build worker configs**.
 
@@ -40,14 +40,13 @@ To prepare the build of your server-workers and client-workers you can create a 
 To do this:
 
 1. With your project open in the Unity Editor, go to the Project window and select **Assets** > **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
-1. Click on this Asset to view it in the Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
+2. Click on this Asset to view it in the Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
     * Which Scenes each worker should contain in its build.
     * Which platforms you want to build it for.
     * Which build options you want enabled.
 
 > Note: You cannot create the SpatialOS Build Configuration via the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
-
-[//]: # (Document the options UTY-1168)
+> 
 ---
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
 
