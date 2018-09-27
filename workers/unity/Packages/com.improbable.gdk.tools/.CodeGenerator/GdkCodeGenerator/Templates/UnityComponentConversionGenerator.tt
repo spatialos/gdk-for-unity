@@ -76,7 +76,7 @@ namespace <#= qualifiedNamespace #>
 
                 <#= profilingStart #>
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.DirtyBit = false;
+                data.ClearDirtyBits();
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
 
@@ -166,7 +166,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
                     <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.DirtyBit = false;
+                    data.ClearDirtyBits();
                     entityManager.SetComponentData(entity, data);
                 }
 
@@ -567,7 +567,7 @@ namespace <#= qualifiedNamespace #>
                         // Send serialized update over the wire
                         connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-                        data.DirtyBit = false;
+                        data.ClearDirtyBits();
                         componentDataArray[i] = data;
                     }
                 }
