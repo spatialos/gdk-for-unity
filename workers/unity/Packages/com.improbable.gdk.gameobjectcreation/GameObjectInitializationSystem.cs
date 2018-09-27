@@ -75,7 +75,7 @@ namespace Improbable.Gdk.GameObjectCreation
                     continue;
                 }
 
-                linkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, spatialEntityId, viewCommandBuffer);
+                linkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, viewCommandBuffer);
                 entityToGameObjects.Add(entity, gameObject);
             }
 

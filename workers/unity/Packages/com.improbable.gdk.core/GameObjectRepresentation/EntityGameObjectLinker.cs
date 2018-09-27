@@ -21,9 +21,29 @@ namespace Improbable.Gdk.GameObjectRepresentation
             entityManager = world.GetExistingManager<EntityManager>();
         }
 
-        public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, EntityId spatialEntityId,
-            ViewCommandBuffer viewCommandBuffer)
+        public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
+            bool hasSpatialEntityId = entityManager.HasComponent<SpatialEntityId>(entity);
+            bool isWorkerEntity = entityManager.HasComponent<WorkerEntityTag>(entity);
+            if (!hasSpatialEntityId && !isWorkerEntity)
+            {
+                worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                        "Attempted to link GameObject to an Entity that is not a SpatialOS Entity or the worker entity," +
+                        "this is not possible")
+                    .WithField(LoggingUtils.LoggerName, nameof(EntityGameObjectLinker)));
+                return;
+            }
+
+            EntityId spatialEntityId;
+            if (hasSpatialEntityId)
+            {
+                spatialEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
+            }
+            else // worker entity
+            {
+                spatialEntityId = new EntityId(0);
+            }
+
             gameObjectComponentTypes.Clear();
             foreach (var component in gameObject.GetComponents<Component>())
             {

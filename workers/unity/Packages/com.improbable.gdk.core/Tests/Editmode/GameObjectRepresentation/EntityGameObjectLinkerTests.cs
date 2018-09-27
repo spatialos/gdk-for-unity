@@ -49,8 +49,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void LinkGameObjectToEntity_adds_SpatialOSComponent_component()
         {
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
-                viewCommandBuffer);
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, viewCommandBuffer);
             var spatialOSComponent = testGameObject.GetComponent<SpatialOSComponent>();
             Assert.NotNull(spatialOSComponent);
             Assert.AreEqual(testEntity, spatialOSComponent.Entity);
@@ -62,8 +61,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void LinkGameObjectToEntity_adds_GameObject_components_to_entity()
         {
             testGameObject.AddComponent<TestMonoBehaviour>();
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
-                viewCommandBuffer);
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, viewCommandBuffer);
             Assert.IsFalse(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
             viewCommandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
@@ -74,8 +72,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             testGameObject.AddComponent<TestMonoBehaviour>();
             testGameObject.AddComponent<TestMonoBehaviour>();
-            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, testSpatialEntityId,
-                viewCommandBuffer);
+            entityGameObjectLinker.LinkGameObjectToEntity(testGameObject, testEntity, viewCommandBuffer);
             viewCommandBuffer.FlushBuffer();
             Assert.IsTrue(entityManager.HasComponent<TestMonoBehaviour>(testEntity));
         }
