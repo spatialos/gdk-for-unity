@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -16,10 +16,10 @@ At the end of the tick, the GDK removes the reactive component.
 These are the types of reactive component available:
 
 1. `ReceivedUpdates`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/latest/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-2. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority](authority.md) for information on how this works.
-3. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events](events.md) for information on how this works.
-4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands](commands.md) for information on how this works.
-5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands](commands.md) for information on how this works.
+2. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/ecs/authority.md) for information on how this works.
+3. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/ecs/events.md) for information on how this works.
+4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
+5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
 
 ### Component Lifecycle tags
 
@@ -64,4 +64,4 @@ The GDK automatically removes reactive components from the ECS entity as soon as
 
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

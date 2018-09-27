@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -46,7 +46,7 @@ Given the example schema, the GDK generates these types:
 * `ColorData` - Equivalent of the schema type.
 * `CubeColor.EventSenders.ChangeColor` - The event sender type.
 
-The GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority](authority.md) for more on how authority works in the GDK.
+The GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority]({{urlRoot}}/content/ecs/authority) for more on how authority works in the GDK.
 
 On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of type `ColorData`. To send an event, add a `ColorData` struct to the list.
 
@@ -118,4 +118,4 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 ```
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

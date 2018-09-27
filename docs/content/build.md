@@ -1,10 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 ## Building your workers
 
-Before running a [deployment of your game](deploy.md), you need to:
-1. Build the bridge and launch configuration of your [workers](workers.md)
+Before running a [deployment of your game]({{urlRoot}}/content/deploy.md), you need to:
+1. Build the bridge and launch configuration of your [workers]({{urlRoot}}/content/workers.md)
 2. Prepare the build configuration of your workers
 3. Build your workers
 
@@ -40,7 +40,7 @@ This starts the build process for the worker you selected and deployment type (c
 > Note: You cannot prepare the build of your workers via the  [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
 
 [//]: # (Document the options UTY-1168)
 [//]: # (Document the options UTY-1170)

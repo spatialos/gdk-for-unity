@@ -1,13 +1,13 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
 
 ## ECS: World commands
 
-World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.) 
+World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
 
-Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response. 
+Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response.
 
 ### 1. Reserve an entity ID
 
@@ -21,7 +21,7 @@ To receive a response use `WorldCommands.ReserveEntityIds.CommandResponses`. Thi
 
 ### 2. Create an entity
 
-You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template](../entity-templates.md).
+You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template]({{urlRoot}}/content/entity-templates).
 
 To send a request use a `WorldCommands.CreateEntity.CommandSender` component. This contains a list of `WorldCommands.CreateEntity.Request` structs. Add a struct to the list to send the command.
 
@@ -30,7 +30,7 @@ To send a request use a `WorldCommands.CreateEntity.CommandSender` component. Th
 
 To receive a response use `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
 
-Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates](../entity-templates.md) page. 
+Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates]({{urlRoot}}/content/entity-templates.md) page.
 
 ```csharp
 public class CreateCreatureSystem : ComponentSystem
@@ -93,7 +93,7 @@ public class DeleteCreatureSystem : ComponentSystem
         {
             var requestSender = data.DeleteEntitySender[i];
             var entityId = data.SpatialEntityIds[i].EntityId;
-        	
+
             requestSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
             (
                 entityId
@@ -108,7 +108,7 @@ This system iterates through every entity with a `Bar` and a SpatialEntityId com
 
 ### 4. Entity query
 
-You can use entity queries to get information about entities in the world. 
+You can use entity queries to get information about entities in the world.
 
 To send a request use a `WorldCommands.EntityQuery.CommandSender` component. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command.
 
@@ -121,4 +121,4 @@ To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This con
 
 ------
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

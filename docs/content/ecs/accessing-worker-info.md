@@ -1,8 +1,8 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
-## ECS: Accessing information about the worker during runtime 
+## ECS: Accessing information about the worker during runtime
 
 ### Worker System
 
@@ -32,7 +32,7 @@ The `WorkerSystem` stores the following data:
 
 * `World`: The ECS World that this worker will run its logic in.
 
-* `LogDispatcher`: A reference to the [logger](logging.md) that can be used to log to the Unity Console and the SpatialOS Runtime.
+* `LogDispatcher`: A reference to the [logger]({{urlRoot}}/content/ecs/logging) that can be used to log to the Unity Console and the SpatialOS Runtime.
 
 * `WorkerType`: The type of this worker.
 
@@ -42,11 +42,11 @@ The `WorkerSystem` stores the following data:
 
 ### Worker Entity
 
-The Worker Entity provides the API to send and receive [commands](commands.md).
+The Worker Entity provides the API to send and receive [commands]({{urlRoot}}/content/ecs/commands).
 
-To check whether the worker just connected or disconnected, you can filter for the following [temporary components](temporary-components.md):
+To check whether the worker just connected or disconnected, you can filter for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components.md):
 
-* `OnConnected`: the worker just connected to the SpatialOS Runtime. 
+* `OnConnected`: the worker just connected to the SpatialOS Runtime.
 
 * `OnDisconnected`: the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
@@ -61,8 +61,8 @@ namespace YourProject
 {
     public class YourSystem : ComponentSystem
     {
-	
-        private struct Data 
+
+        private struct Data
         {
             Public readonly int Length;
             [ReadOnly] public EntityArray Entities;
@@ -80,4 +80,4 @@ namespace YourProject
 
 ----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

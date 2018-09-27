@@ -1,4 +1,4 @@
-**Warning:** The alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../README.md#recommended-use).
+**Warning:** The alpha release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -9,7 +9,7 @@
 1. Sign up for a  [SpatialOS account](https://improbable.io/get-spatialos).
 1. Set up your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
 1. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`.
-1. Follow the [quickstart](./content/deploy.md#quickstart-how-to-deploy-the-playground-project) guide to run the example `Playground` project.
+1. Follow the [quickstart]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project) guide to run the example `Playground` project.
 
 ## Full version
 
@@ -74,7 +74,7 @@ The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
 
 ## Next steps
 
-To learn how to build and run the included `Playground` project - follow the [quickstart](./content/deploy.md#quickstart-how-to-deploy-the-playground-project).
+To learn how to build and run the included `Playground` project - follow the [quickstart]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project).
 
 -----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

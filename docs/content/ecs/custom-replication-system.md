@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -20,11 +20,11 @@ When a worker sends a SpatialOS event, the GDK puts the event object into an int
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order](./system-update-order.md).
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/system-update-order).
 
 * Handle replication of properties:
 
-    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because standard replication won't happen. This means that you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](../../../workers/unity/Packages/com.improbable.gdk.transformsynchronization/Systems/TransformSendSystem.cs) for an example.
+    If you write a custom replication system that works with properties, it needs to handle the testing and setting of the `DirtyBit` explictly, because standard replication won't happen. This means that you must manually set `DirtyBit` back to `false`. See [TransformSendSystem.cs](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization/Systems/TransformSendSystem.cs) for an example.
 
 * Handle replication of events:
 
@@ -142,4 +142,4 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<CubeColor.Component
 ```
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

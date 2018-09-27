@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -10,11 +10,11 @@ The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of 
 *  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
     * Note: By default, messages with the log level `LogType.Log` are not sent to SpatialOS. This can be changed by instantiating the `ForwardingDispatcher` with a different `minimumLogLevel` parameter.
 
-All workers use the `ForwardingDispatcher` by default in the Playground. If you want to use the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](#creating-and-using-your-own-dispatcher).
+All workers use the `ForwardingDispatcher` by default in the Playground. If you want to use the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher]({{urlRoot}}/content/ecs/logging#creating-and-using-your-own-dispatcher).
 
 ### Using the ILogDispatcher
 
-You can access the dispatcher through the [WorkerSystem](accessing-worker-info.md). The dispatcher provides a single `HandleLog` function, which takes two arguments:
+You can access the dispatcher through the [WorkerSystem]({{urlRoot}}/content/ecs/accessing-worker-info). The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
 * `LogType` (e.g. `UnityEngine.LogType.Error`)
 * `LogEvent`, which stores the message and other context variables in the Data dictionary
@@ -73,4 +73,4 @@ public class ClientWorkerConnector : WorkerConnectorBase
 ```
 
 -----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

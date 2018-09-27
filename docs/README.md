@@ -9,33 +9,33 @@ If you're new to the SpatialOS GDK for Unity, check out the docs under [Getting 
 Once you are comfortable with the GDK and want to start a separate project, look at [Configuring your project](#configuring-your-project).
 
 ##### Getting started
-* [Installation and setup](setup-and-installing.md)
-* [Building your workers](content/build.md)
-* [Deploying your game](content/deploy.md)
+* [Installation and setup]({{urlRoot}}/setup-and-installing)
+* [Building your workers]({{urlRoot}}/content/build)
+* [Deploying your game]({{urlRoot}}/content/deploy)
 
 ##### Concepts and features
 * [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) (on the SpatialOS docs site)
 * [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary) (on the SpatialOS docs site)
-* [Core Module and Feature Modules overview](content/ecs/core-and-feature-module-overview.md)
-* [Snapshots](content/snapshots.md)
-* [Creating entity templates](content/entity-templates.md)
+* [Core Module and Feature Modules overview]({{urlRoot}}/content/ecs/core-and-feature-module-overview)
+* [Snapshots]({{urlRoot}}/content/snapshots)
+* [Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ##### Configuring your project
 
-- [Starting workers](content/workers.md)
-- [Setting up a new project](content/set-up-new-project.md)
+- [Starting workers]({{urlRoot}}/content/workers)
+- [Setting up a new project]({{urlRoot}}/content/set-up-new-project)
 
 ##### Using the GDK with GameObjects and MonoBehaviours
-* [Setting up GameObjects for interaction with SpatialOS](content/gameobject/set-up-gameobjects.md)
-* [Reading and writing component data](content/gameobject/reading-and-writing-component-data.md)
-* [Sending and receiving events](content/gameobject/sending-receiving-events.md)
-* [Sending and receiving commands](content/gameobject/sending-receiving-commands.md)
-* [World commands](content/gameobject/world-commands.md)
-* [Retrieving your EntityId and accessing the worker](content/gameobject/retrieving-your-entityid-and-accessing-the-worker.md)
+* [Setting up GameObjects for interaction with SpatialOS]({{urlRoot}}/content/gameobject/set-up-gameobjects)
+* [Reading and writing component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
+* [Sending and receiving events]({{urlRoot}}/content/gameobject/sending-receiving-events)
+* [Sending and receiving commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+* [World commands]({{urlRoot}}/content/gameobject/world-commands)
+* [Retrieving your EntityId and accessing the worker]({{urlRoot}}/content/gameobject/retrieving-your-entityid-and-accessing-the-worker)
 
 ##### Using the GDK with Unity ECS
 The GDK currently uses the `0.0.12-preview.13` version of the entities preview packages.
-The GDK documentation assumes you are familiar with the Unity Entity Component System (ECS). 
+The GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
 
 ECS documentation:
 
@@ -44,22 +44,22 @@ ECS documentation:
 
 GDK documentation:
 
-* [System update order](content/ecs/system-update-order.md)
-* [Components and component updates](content/ecs/component-data.md)
-* [Sending and receiving events](content/ecs/events.md)
-* [Sending and receiving commands](content/ecs/commands.md)
-* [World commands](content/ecs/world-commands.md)
-* [Receiving updates from SpatialOS: Reactive components](content/ecs/reactive-components.md)
-* [Custom replication systems](content/ecs/custom-replication-system.md)
-* [Authority](content/ecs/authority.md)
-* [Entity checkout process](content/ecs/entity-checkout-process.md)
-* [The code generator](content/ecs/code-generator.md)
-* [Temporary components](content/ecs/temporary-components.md)
-* [Logging](content/ecs/logging.md)
-* [Accessing information about the worker during runtime](content/ecs/accessing-worker-info.md)
+* [System update order]({{urlRoot}}/content/ecs/system-update-order)
+* [Components and component updates]({{urlRoot}}/content/ecs/component-data)
+* [Sending and receiving events]({{urlRoot}}/content/ecs/events)
+* [Sending and receiving commands]({{urlRoot}}/content/ecs/commands)
+* [World commands]({{urlRoot}}/content/ecs/world-commands)
+* [Receiving updates from SpatialOS: Reactive components]({{urlRoot}}/content/ecs/reactive-components)
+* [Custom replication systems]({{urlRoot}}/content/ecs/custom-replication-system)
+* [Authority]({{urlRoot}}/content/ecs/authority)
+* [Entity checkout process]({{urlRoot}}/content/ecs/entity-checkout-process)
+* [The code generator]({{urlRoot}}/content/ecs/code-generator)
+* [Temporary components]({{urlRoot}}/content/ecs/temporary-components)
+* [Logging]({{urlRoot}}/content/ecs/logging)
+* [Accessing information about the worker during runtime]({{urlRoot}}/content/ecs/accessing-worker-info)
 
 ##### Frequently asked questions (FAQs)
-* [FAQs](content/faqs/faqs.md)
+* [FAQs]({{urlRoot}}/content/faqs/faqs.md)
 
 ---
 #### Warning

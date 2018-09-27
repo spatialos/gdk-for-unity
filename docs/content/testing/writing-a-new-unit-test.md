@@ -1,6 +1,6 @@
 [google-docs-link]: https://docs.google.com/document/d/14_FY-Chu_illhaCCym-pv6P8NHtyN9PLzVBGSuK0ou4/edit (Please place reviews as comments into this document here)
 
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -11,9 +11,9 @@ This document covers Unity tests only (that is tests of the Unity project which 
 ## Prerequisites
 
 Please look through and understand the following documentation and videos before writing a new test:
-* SpatialOS GDK for Unity documentation - [Testing overview](./testing-overview.md)
-* SpatialOS GDK for Unity documentation - [How to run tests](./how-to-run-tests.md)
-* SpatialOS GDK for Unity documentation - [Testing guidelines](./testing-guidelines.md)
+* SpatialOS GDK for Unity documentation - [Testing overview]({{urlRoot}}/content/testing/testing-overview)
+* SpatialOS GDK for Unity documentation - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
+* SpatialOS GDK for Unity documentation - [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines)
 * NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
 **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
@@ -73,7 +73,7 @@ The package for this class would be: `workers/Unity/Packages/com.improbable.gdk.
 
 The path within the package would be: `Utility/MyClass.cs`.
 
-Following the [test directory structure instructions](./testing-guidelines.md#test-directory-structure-and-file-names), the test filename would be:
+Following the [test directory structure instructions]({{urlRoot}}/content/testing/testing-guidelines#test-directory-structure-and-file-names), the test filename would be:
 
 `workers/Unity/Assets/Gdk/Core/Tests/EditMode/Utility/MyClassTests.cs`.
 

@@ -1,6 +1,6 @@
 [google-docs-link]: https://docs.google.com/document/d/1VMK37eVnMy-CMNMjRE8tZGRniqq7SoRAbG9kZ5rIAgw/edit# (Please place reviews as comments into this document here)
 
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -25,12 +25,12 @@ For example:
   - `workers\unity\Assets\Gdk\Core\Tests`
   - `workers\unity\Assets\Gdk\PlayerLifecycle\Tests`
 
-Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines](./testing-guidelines.md#test-directory-structure-and-file-names).
+Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines.md#test-directory-structure-and-file-names).
 
 ## Further information
 
-* [How to run tests](./how-to-run-tests.md)
-* [Testing guidelines](./testing-guidelines.md) - covers Unity tests only (contains information on the GDK Unity project test directory structure and file names).
-* [Writing a new test](./writing-a-new-unit-test.md) covers Unity tests only.
+* [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
+* [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines) - covers Unity tests only (contains information on the GDK Unity project test directory structure and file names).
+* [Writing a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test) covers Unity tests only.
 
 [//]: # (Editorial review status: Full review 2018-07-13)

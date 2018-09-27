@@ -15,7 +15,7 @@ The GIF below shows the game client and server running simultaneously in the sam
 <br/>
 <br/>
 
-![The game client and server running simultaneously in the same Unity Editor](../../assets/key-features-page-client-server.gif)
+![The game client and server running simultaneously in the same Unity Editor]({{assetRoot}}assets/key-features-page-client-server.gif)
 *The game client and server running simultaneously in the same Unity Editor*
 
 In the single Editor instance, you can configure the *spatial offset* between the client and server, placing them adjacent to one another, or even occupying the same space. Unity is currently investigating the ability to run separate physics scenes in the same Editor. When they introduce this, we plan to simulate the client and server in separate physics scenes.
@@ -29,7 +29,7 @@ With the GDK, you’ll be able to iterate on your game code with a Unity refresh
 In our earlier product, the SpatialOS SDK for Unity, this would have required a full rebuild, and a relaunch of the game client and server.
 <br/>
 <br/>
-![Code changes to the movement direction of cubes are reflected in the Scene windows with a refresh (no rebuild necessary](../../assets/key-features-page-refresh.gif)
+![Code changes to the movement direction of cubes are reflected in the Scene windows with a refresh (no rebuild necessary]({{assetRoot}}assets/key-features-page-refresh.gif)
 *Code changes to the movement direction of cubes are reflected in the Scene windows with a refresh (no rebuild necessary)*
 
 #### SpatialOS schema auto-generation

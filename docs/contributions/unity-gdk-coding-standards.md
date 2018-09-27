@@ -1,14 +1,14 @@
-**Contributions**: We are not currently taking public contributions - see our [contributions](../../.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your [feedback](../../README.md#give-us-feedback).
+**Contributions**: We are not currently taking public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
 
 -------
 
 # SpatialOS GDK for Unity C# coding standards
 
-![Header Image](../assets/unity-gdk-header-cartoon.png)
+![Header Image]({{assetRoot}}assets/unity-gdk-header-cartoon.png)
 
 _[&copy; 2018 xkcd](https://xkcd.com/license.html)_
 
-**Contributions**: We are not currently taking public contributions - see our [contributions](../../README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](../../README.md#give-us-feedback).
+**Contributions**: We are not currently taking public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
 
 ## Table of contents
 

@@ -1,14 +1,14 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 ## How to deploy your game
 
 When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment" or in the cloud (a "cloud deployment").
 
-Before you deploy your game, you need to build its workers; see documentation on [building workers](build.md).
+Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/content/build.md).
 This page contains:
-* [How to deploy your game](#how-to-deploy-your-game) - Use this if you want to deploy your own game.
-* [Quickstart: How to deploy the `Playground` project](#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
+* [How to deploy your game]({{urlRoot}}/content/deploy#how-to-deploy-your-game) - Use this if you want to deploy your own game.
+* [Quickstart: How to deploy the `Playground` project]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
 
 #### Configuring your deployment
 
@@ -54,7 +54,7 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
         - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
         - `<launch configuration>` is the configuration file for the deployment.
         - `<deployment name>` is the name you choose as you enter the command; , you’ll use this to identify the deployment. This must be in lowercase.
-        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots](snapshots.md).
+        - `<snapshot file>` is the snapshot of the world you want to start from.  See the the GDK documentation for further information on [snapshots]({{urlRoot}}/content/snapshots).
 
 1. Launch a game client:
     1. Open the SpatialOS  [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
@@ -72,7 +72,7 @@ It uses the `Playground` as an example; the `Playground` comes with the GDK. It 
 
 ### Prerequisites
 
-Before following this guide - make sure you have followed the [setup guide](../setup-and-installing.md).
+Before following this guide - make sure you have followed the [setup guide]({{urlRoot}}/setup-and-installing).
 
 ####  Run the `Playground` locally using SpatialOS
 
@@ -118,7 +118,7 @@ Before following this guide - make sure you have followed the [setup guide](../s
     1. Once you’ve finished playing, select **Stop** in the Console.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
 
 [//]: # (Document the options UTY-1168)
 [//]: # (Document the options UTY-1170)

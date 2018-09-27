@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 -----
 
@@ -30,7 +30,7 @@ The SpatialOS GDK for Unity (GDK) defines several update groups which run relati
 
 Here's a diagram of the update order:  
 
-![Update order](../../assets/update-order.png)
+![Update order]({{assetRoot}}assets/update-order.png)
 
 ### Update vs FixedUpdate
 
@@ -42,4 +42,4 @@ Reactive components have to be buffered. To do this there must be a system which
 
 -----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

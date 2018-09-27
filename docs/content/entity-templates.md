@@ -1,10 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
 
 ------
 
 ## Creating entity templates
 
-To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](ecs/authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
+To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority]({{urlRoot}}/content/ecs/authority) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
 
 Create the entity template using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
 
@@ -18,7 +18,7 @@ Create the entity template using the `EntityBuilder` which is part of the `Impro
 | `AddComponent(ComponentData data, string writeAccess)`       | Add a user-defined component to your entity and specify which worker type(s) can have authority over it. |
 | `Build()`                                                    | Create a finished entity template.                           |
 
-For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](ecs/code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
+For each [schema component](https://docs.improbable.io/reference/latest/shared/glossary#schema) you define, [the code generator]({{urlRoot}}/content/ecs//code-generator) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
 
 ```
 component Health {
@@ -51,7 +51,7 @@ public static class CreatureTemplate
 }
 ```
 
-You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
+You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour]({{urlRoot}}/content/gameobject/world-commands) or [ECS]({{urlRoot}}/content/ecs/world-commands) workflow.
 
 ### Feature Module components
 
@@ -59,7 +59,7 @@ To take advantage of some Feature Modules, you need to add the SpatialOS compone
 
 #### Transform synchronization module
 
-When you want to give a [worker](workers.md) [authority](ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [attribute](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) of the worker you are giving authority to.
+When you want to give a [worker]({{urlRoot}}/content/workers) [authority]({{urlRoot}}/content/ecs/authority) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [attribute](https://docs.improbable.io/reference/latest/shared/design/understanding-access#worker-attributes) of the worker you are giving authority to.
 
 You have the option to set a starting `location`, `velocity` and `rotation`. If you do not provide these, location and velocity are set to `default(Vector3)`, and rotation is set to `Quaternion.identity`.
 
@@ -86,7 +86,7 @@ public static class CubeTemplate
 
 The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires a `clientAttribute` and a `serverAttribute`.
 
-Example showing how to pass [worker attributes](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) into the `AddPlayerLifecycleComponents` extension method.
+Example showing how to pass [worker attributes](https://docs.improbable.io/reference/latest/shared/design/understanding-access#worker-attributes) into the `AddPlayerLifecycleComponents` extension method.
 
 ```csharp
 public static class PlayerTemplate
@@ -109,4 +109,4 @@ public static class PlayerTemplate
 
 ------
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
