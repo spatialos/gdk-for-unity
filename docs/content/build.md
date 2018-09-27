@@ -22,7 +22,7 @@ This starts the build process for the worker you selected and deployment type (c
 
 You can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity project.
 
-### Building the bridge and launch configuration of your workers
+### Building the bridge and launch configurations of your workers
 
 The [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-bridge-configuration) and [launch](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) confgurations are pre-configued for you. You only need to build them. You do this for each of your [server-workers](https://docs.improbable.io/reference/latest/shared/glossary#server-worker) and [client-workers](https://docs.improbable.io/reference/latest/shared/glossary#client-worker). To do this you can either:
 
