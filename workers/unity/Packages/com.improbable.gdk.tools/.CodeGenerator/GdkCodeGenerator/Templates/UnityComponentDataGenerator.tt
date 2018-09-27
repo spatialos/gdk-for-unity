@@ -30,7 +30,26 @@ namespace <#= qualifiedNamespace #>
 <# currentFieldBinaryIdx = currentFieldBinaryIdx << 1; #>
 <# } #>
             }
-            
+
+            private DirtyBitsEnum dirtyBits;
+
+            public DirtyBitsEnum DirtyBits => dirtyBits;
+
+            private void AddDirtyBit(DirtyBitsEnum currentField)
+            {
+                dirtyBits = dirtyBits | currentField;
+            }
+
+            public bool ContainsDirty()
+            {
+                return (DirtyBits != DirtyBitsEnum.None);
+            }
+
+            public bool IsDirty(DirtyBitsEnum currentField)
+            {
+                return (dirtyBits & currentField) != DirtyBitsEnum.None;
+            }
+
             public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
@@ -42,6 +61,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
+                    AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
                     DirtyBit = true;
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
@@ -55,6 +75,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
+                    AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
                     DirtyBit = true;
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
