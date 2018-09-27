@@ -10,6 +10,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using System;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -18,7 +19,10 @@ namespace <#= qualifiedNamespace #>
         public struct Component : IComponentData, ISpatialComponentData
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
-
+            [Flags]
+            public enum DirtyBitsEnum
+            {
+            }
             public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
