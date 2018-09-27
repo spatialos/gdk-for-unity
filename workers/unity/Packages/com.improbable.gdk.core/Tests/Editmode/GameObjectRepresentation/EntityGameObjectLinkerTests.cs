@@ -30,6 +30,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             entityGameObjectLinker = new EntityGameObjectLinker(world, worker);
             testGameObject = new GameObject();
             testEntity = entityManager.CreateEntity();
+            entityManager.AddComponentData(testEntity, new SpatialEntityId { EntityId = testSpatialEntityId });
             viewCommandBuffer = new ViewCommandBuffer(entityManager, new LoggingDispatcher());
             entityCommandBuffer = new EntityCommandBuffer(Allocator.TempJob);
         }
