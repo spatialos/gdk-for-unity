@@ -95,9 +95,7 @@ namespace <#= qualifiedNamespace #>
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
-                }
+                <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
 <# } #>
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -110,12 +108,10 @@ namespace <#= qualifiedNamespace #>
             {
                 var obj = updateObj.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
 <# if (ShouldGenerateClearedFieldsSet()) { #>
-                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
+                <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
 <# } #>
-                }
 <# } #>
             }
 
@@ -127,9 +123,7 @@ namespace <#= qualifiedNamespace #>
 <# if (!fieldDetails.IsBlittable) { #>
                 component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
-                {
-                    <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
 <# } #>
                 return component;
             }
