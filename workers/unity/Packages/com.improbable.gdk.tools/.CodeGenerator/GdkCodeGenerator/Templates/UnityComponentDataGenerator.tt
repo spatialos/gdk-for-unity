@@ -62,7 +62,6 @@ namespace <#= qualifiedNamespace #>
                 set
                 {
                     AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
-                    DirtyBit = true;
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -76,7 +75,6 @@ namespace <#= qualifiedNamespace #>
                 set
                 {
                     AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
-                    DirtyBit = true;
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
@@ -108,7 +106,11 @@ namespace <#= qualifiedNamespace #>
             {
                 var obj = updateObj.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                if (component.IsDirty(<#= componentNamespace #>.Component.DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>))
+                {
+                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+
 <# if (ShouldGenerateClearedFieldsSet()) { #>
                 <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
 <# } #>
