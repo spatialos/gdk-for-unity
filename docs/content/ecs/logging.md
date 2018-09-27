@@ -21,8 +21,8 @@ You can access the dispatcher through the [WorkerSystem](accessing-worker-info.m
 
 There are two log context variables:
 
-* `LoggingUtils.LoggerName`, which specifies where the log was sent from
-* `LoggingUtils.EntityId`, which links the log to a specific entity
+* `LoggingUtils.LoggerName`, which specifies where the log was sent from.
+* `LoggingUtils.EntityId`, which links the log to a specific entity. When running the game in the cloud using the `ForwardingDispatcher`, this lets you filter for a particular entity's logs using the Inspector and Logger.
 
 These are automatically picked up by the `ForwardingDispatcher` if provided. Other context variables are formatted in a string and sent with the log message.
 
