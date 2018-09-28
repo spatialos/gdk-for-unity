@@ -34,11 +34,7 @@ This release is for evaluation and feedback only, with limited documentation; we
 
 ## Contributions
 
-**Public contributors**<br/>
-We are not currently accepting public contributions - see our [contributions](.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your feedback.
-
-**Improbable developers**<br/>
-See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
+We are not currently accepting public contributions - see our [contributions policy]({{urlRoot}}/contributing). However, we are accepting issues and we do want your [feedback](#give-us-feedback).
 
 ## Give us feedback
 
