@@ -9,11 +9,12 @@ namespace Improbable.Gdk.GameObjectRepresentation
 {
     public class EntityGameObjectLinker
     {
+        private static readonly EntityId WorkerEntityId = new EntityId(0);
+
         private readonly World world;
         private readonly WorkerSystem worker;
         private readonly EntityManager entityManager;
         private readonly HashSet<Type> gameObjectComponentTypes = new HashSet<Type>();
-        private const long WorkerEntityId = 0;
 
         public EntityGameObjectLinker(World world, WorkerSystem worker)
         {
@@ -41,7 +42,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
             else // worker entity
             {
-                spatialEntityId = new EntityId(WorkerEntityId);
+                spatialEntityId = WorkerEntityId;
             }
 
             gameObjectComponentTypes.Clear();
