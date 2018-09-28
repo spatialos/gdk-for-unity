@@ -36,7 +36,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 var transform = transformData.Transform[i];
 
-                if (transform.DirtyBit != true)
+                if (transform.ContainsDirtyBits() != true)
                 {
                     continue;
                 }
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 TransformInternal.Serialization.SerializeUpdate(transform, update);
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
-                transform.DirtyBit = false;
+                transform.ClearDirtyBits();
                 transformData.Transform[i] = transform;
 
                 lastTransformSent.TimeSinceLastUpdate = 0.0f;

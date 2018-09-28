@@ -35,7 +35,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 var position = positionData.Position[i];
 
-                if (position.DirtyBit != true)
+                if (position.ContainsDirtyBits() != true)
                 {
                     continue;
                 }
@@ -73,7 +73,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 Position.Serialization.SerializeUpdate(position, update);
                 WorkerSystem.Connection.SendComponentUpdate(entityId, new ComponentUpdate(update));
 
-                position.DirtyBit = false;
+                position.ClearDirtyBits();
                 positionData.Position[i] = position;
 
                 lastPositionSent.TimeSinceLastUpdate = 0.0f;

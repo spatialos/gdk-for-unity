@@ -54,8 +54,6 @@ namespace <#= qualifiedNamespace #>
             {
                 dirtyBits = DirtyBitsEnum.None;
             }
-
-            public BlittableBool DirtyBit { get; set; }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
 
