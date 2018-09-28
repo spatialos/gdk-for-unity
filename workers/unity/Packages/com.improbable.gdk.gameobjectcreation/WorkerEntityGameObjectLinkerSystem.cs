@@ -51,7 +51,7 @@ namespace Improbable.Gdk.GameObjectCreation
             for (int i = 0; i < connectedData.Length; i++)
             {
                 linkerSystem.Linker.LinkGameObjectToEntity(workerGameObject, connectedData.Entities[i],
-                    new EntityId(0), viewCommandBuffer);
+                    viewCommandBuffer);
             }
 
             for (int i = 0; i < disconnectedData.Length; i++)
