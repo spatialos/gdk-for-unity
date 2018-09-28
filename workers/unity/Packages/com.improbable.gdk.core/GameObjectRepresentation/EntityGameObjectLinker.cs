@@ -28,7 +28,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             if (!hasSpatialEntityId && !isWorkerEntity)
             {
                 worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
-                        "Attempted to link GameObject to an Entity that is not a SpatialOS Entity or the worker entity,")
+                        "Attempted to link GameObject to an Entity that is not a SpatialOS Entity or the worker entity")
                     .WithField(LoggingUtils.LoggerName, nameof(EntityGameObjectLinker)));
                 return;
             }
