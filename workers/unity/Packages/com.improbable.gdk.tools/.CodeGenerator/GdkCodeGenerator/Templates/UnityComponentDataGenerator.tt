@@ -33,11 +33,6 @@ namespace <#= qualifiedNamespace #>
 
             public DirtyBitsEnum DirtyBits => dirtyBits;
 
-            private void AddDirtyBit(DirtyBitsEnum currentField)
-            {
-                dirtyBits = dirtyBits | currentField;
-            }
-
             public bool IsDirty()
             {
                 return (DirtyBits != DirtyBitsEnum.None);
@@ -62,7 +57,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
-                    AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
+                    dirtyBits = dirtyBits | DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>;
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -75,7 +70,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
-                    AddDirtyBit(DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>);
+                    dirtyBits = dirtyBits | DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>;
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
