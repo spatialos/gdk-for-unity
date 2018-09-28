@@ -35,7 +35,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 var position = positionData.Position[i];
 
-                if (position.ContainsDirtyBits() != true)
+                if (position.IsDirty() != true)
                 {
                     continue;
                 }

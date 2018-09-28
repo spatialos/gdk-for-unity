@@ -40,7 +40,7 @@ namespace <#= qualifiedNamespace #>
                 dirtyBits = dirtyBits | currentField;
             }
 
-            public bool ContainsDirtyBits()
+            public bool IsDirty()
             {
                 return (DirtyBits != DirtyBitsEnum.None);
             }

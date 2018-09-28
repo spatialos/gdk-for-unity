@@ -36,7 +36,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 var transform = transformData.Transform[i];
 
-                if (transform.ContainsDirtyBits() != true)
+                if (transform.IsDirty() != true)
                 {
                     continue;
                 }
