@@ -14,7 +14,7 @@ Before running a [deployment of your game](deploy.md) locally or in the cloud, y
 
 To build your workers:
 
-* With your project open in the Unity Editor, select **SpatialOS** > **Build `<WorkerName>` for local** or **Build `<WorkerName>` for cloud** where `<WorkerName>` is the name of any worker you want to build.
+* With your project open in the Unity Editor, select **SpatialOS** > **Build <WorkerName> for local** or **Build <WorkerName> for cloud** where <WorkerName> is the name of any worker you want to build.
 
 This starts the build process for the worker you selected and deployment type (cloud or local).
 
