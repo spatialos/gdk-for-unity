@@ -4,7 +4,9 @@
         "Improbable.Gdk.BuildSystem",
         "Improbable.Gdk.Tools"        
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false
 }

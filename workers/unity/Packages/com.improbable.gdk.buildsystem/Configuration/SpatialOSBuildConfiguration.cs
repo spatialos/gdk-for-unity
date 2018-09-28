@@ -35,15 +35,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         
         internal void UpdateEditorScenesForBuild()
         {
-            EditorApplication.delayCall += () =>
-            {
-                EditorBuildSettings.scenes =
-                    WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerType))
-                        .Select(AssetDatabase.GetAssetPath)
-                        .Distinct()
-                        .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
-                        .ToArray();
-            };
+            EditorBuildSettings.scenes =
+                WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerType))
+                    .Select(AssetDatabase.GetAssetPath)
+                    .Distinct()
+                    .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
+                    .ToArray();
         }
 
         private void OnEnable()
@@ -55,7 +52,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(this)))
             {
-                UpdateEditorScenesForBuild();
+                EditorApplication.delayCall += UpdateEditorScenesForBuild;
             }
         }
 

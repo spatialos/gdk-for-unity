@@ -15,19 +15,19 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private bool scenesChanged;
         private SceneAsset[] scenesInAssetDatabase;
         private string workerTypeName = "WorkerType";
-        
+
         private static readonly GUIContent AddWorkerTypeButtonContents = new GUIContent("+", "AddWorkerType");
         private static readonly GUIContent RemoveWorkerTypeButtonContents = new GUIContent("-", "RemoveWorkerType");
         private static readonly GUIContent MoveUpButtonContents = new GUIContent("^", "Move item up");
         private static readonly GUIContent MoveDownButtonContents = new GUIContent("v", "Move item down");
-        
+
         public void OnEnable()
         {
             scenesInAssetDatabase = AssetDatabase.FindAssets("t:Scene")
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>).ToArray();
         }
-        
+
         public override void OnInspectorGUI()
         {
             var workerConfiguration = (SpatialOSBuildConfiguration) target;
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             if (scenesChanged)
             {
                 scenesChanged = false;
-                workerConfiguration.UpdateEditorScenesForBuild();
+                EditorApplication.delayCall += workerConfiguration.UpdateEditorScenesForBuild;
             }
         }
 
@@ -118,14 +118,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 var scenesToShowInList = configurationForWorker
                     .ScenesForWorker
                     .Select((sceneAsset, index) =>
-                        new SceneItem(sceneAsset, true, scenesInAssetDatabase))
+                        new SceneItem(sceneAsset, true))
                     .ToList();
 
                 EditorGUI.BeginChangeCheck();
 
                 var sceneItems = scenesInAssetDatabase
                     .Where(sceneAsset => !configurationForWorker.ScenesForWorker.Contains(sceneAsset))
-                    .Select(sceneAsset => new SceneItem(sceneAsset, false, scenesInAssetDatabase))
+                    .Select(sceneAsset => new SceneItem(sceneAsset, false))
                     .ToList();
 
                 var horizontalLayout = Screen.width > ScreenWidthForHorizontalLayout;
@@ -285,6 +285,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
             }
         }
+
         private static string BuildPlatformToString(SpatialBuildPlatforms value)
         {
             if (value == SpatialBuildPlatforms.Current)
@@ -303,8 +304,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 return "None";
             }
 
-            return string.Join(", ",
-                enumValues
+            return string.Join(", ", enumValues
                     .Where(enumValue => (value & enumValue) != 0)
                     .Select(BuildPlatformToString).ToArray());
         }
@@ -314,7 +314,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             using (IndentLevelScope(1))
             {
                 EditorGUI.BeginChangeCheck();
-                
+
                 var buildPlatformsString = SelectedPlatformsToString(environmentConfiguration.BuildPlatforms);
                 var newBuildPlatforms = environmentConfiguration.BuildPlatforms;
                 var showBuildPlatforms = EditorGUILayout.Foldout(environmentConfiguration.ShowBuildPlatforms,
@@ -323,7 +323,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     newBuildPlatforms = EnumFlagsToggleField(environmentConfiguration.BuildPlatforms);
                 }
-                
+
                 var currentAdjustedPlatforms = newBuildPlatforms;
                 if ((currentAdjustedPlatforms & SpatialBuildPlatforms.Windows32) != 0 &&
                     (currentAdjustedPlatforms & SpatialBuildPlatforms.Windows64) != 0)
@@ -342,15 +342,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
             }
         }
-        
-        private static void Drawer(Rect position, SceneItem item)
+
+        private void Drawer(Rect position, SceneItem item)
         {
             var oldColor = GUI.color;
-            if (!item.Exists)
+            if (!scenesInAssetDatabase.Contains(item.SceneAsset))
             {
                 GUI.color = Color.red;
             }
-            
+
             var positionWidth = position.width;
             var labelWidth = GUI.skin.toggle.CalcSize(GUIContent.none).x + 5;
 
@@ -362,7 +362,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             EditorGUI.ObjectField(position, item.SceneAsset, typeof(SceneAsset), false);
             GUI.color = oldColor;
         }
-        
+
         private void DrawSceneList(List<SceneItem> list, bool enableReordering, bool showIndices)
         {
             if (list.Count == 0)
@@ -370,7 +370,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 EditorGUILayout.HelpBox("No items in list", MessageType.Info);
                 return;
             }
-            
+
             var indentLevel = EditorGUI.indentLevel;
             using (IndentLevelScope(-EditorGUI.indentLevel))
             {

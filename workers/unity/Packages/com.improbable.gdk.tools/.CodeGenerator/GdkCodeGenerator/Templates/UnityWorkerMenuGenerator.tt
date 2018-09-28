@@ -6,7 +6,6 @@
 #>
 <#= generatedHeader #>
 
-#if UNITY_EDITOR
 using Improbable.Gdk.BuildSystem;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Tools;
@@ -81,4 +80,3 @@ var workerType = workerTypeList[i];
         }
     }
 }
-#endif
