@@ -62,5 +62,13 @@ namespace Improbable.Gdk.GameObjectCreation
 
             viewCommandBuffer.FlushBuffer();
         }
+
+        protected override void OnDestroyManager()
+        {
+            linkerSystem.Linker.UnlinkGameObjectFromEntity(workerGameObject, workerSystem.WorkerEntity,
+                viewCommandBuffer);
+
+            viewCommandBuffer.FlushBuffer();
+        }
     }
 }
