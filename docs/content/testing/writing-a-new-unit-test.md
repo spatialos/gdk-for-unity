@@ -19,7 +19,7 @@ Please look through and understand the following documentation and videos before
 **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
 * [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
 - Unity documentation - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
-* Infallible Code video -  [How To Test Unity ECS Code](http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
+* Infallible Code video - [How To Test Unity ECS Code](http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
 
 ## Example new test
 
@@ -79,7 +79,7 @@ Following the [test directory structure instructions](./testing-guidelines.md#te
 
 (This assumes that the `workers/Unity/Packages/com.improbable.gdk.core/Tests/` directory exists.
  If it does not exist, see the section on
- [How to  create a new test folder and assembly](#how-to-create-a-new-test-folder-and-assembly).).
+ [How to create a new test folder and assembly](#how-to-create-a-new-test-folder-and-assembly).).
 
 ### Test fixtures
 
@@ -110,7 +110,7 @@ fixture.TearDown();
 fixture.OneTimeTearDown();
 ```
 
-The namespace for the fixture should be  `Improbable.Gdk.Core.EditModeTests.Utility`, because the class you are testing
+The namespace for the fixture should be `Improbable.Gdk.Core.EditModeTests.Utility`, because the class you are testing
  is in the `Improbable.Gdk.Core.Utility` namespace.
 
 The following code snippet is showing the first step to write tests for a class, declaring the fixtures and placing the setup and teardown code.
@@ -234,8 +234,8 @@ In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.
 
 You can follow the namespace and fixture name in the hierarchy:
 
-- **Improbable** > **Gdk**  > **Core**  > **EditModeTests** > **Utility**  > **MyClassStaticTests**
-- **Improbable**  > **Gdk**  > **Core**  > **EditModeTests**  > **Utility**  > **MyClassInstanceTests**
+- **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassStaticTests**
+- **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassInstanceTests**
 
 Double-click the test fixture name to run all tests within that fixture.
 
@@ -251,7 +251,7 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
 1. Select this file, and change the **name** property in the Unity Inspector to match the filename:`Improbable.Gdk.Legacy.EditModeTests`.
 
-1. Click  **Apply** .
+1. Click **Apply** .
 
 1. Check the **Test Assemblies** checkbox.
 

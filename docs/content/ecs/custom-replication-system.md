@@ -142,4 +142,4 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<CubeColor.Component
 ```
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

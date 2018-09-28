@@ -192,4 +192,4 @@ public class BuildWallResponseHandler : ComponentSystem
 `build_wall` command responses are on a `Builder.CommandResponses.BuildWall` ECS component.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).
