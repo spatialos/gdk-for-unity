@@ -1,6 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
-
------
+<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
 
 ## Snapshots
 A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/latest/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/latest/shared/glossary#component) [properties](https://docs.improbable.io/reference/latest/shared/glossary#property).

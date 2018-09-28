@@ -1,17 +1,15 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
-
------
+<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
 
 ## GameObject: Reading and writing SpatialOS component property data
 
 SpatialOS schema defines what objects in your game interact with SpatialOS. Find out about [what schema does](https://docs.improbable.io/reference/latest/shared/glossary#schema) and how to implement schema via the [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference) in the SpatialOS documentation.
 
-We provide code-generated Readers and Writers for interacting with SpatialOS component [properties](https://docs.improbable.io/reference/latest/shared/glossary#property). 
+We provide code-generated Readers and Writers for interacting with SpatialOS component [properties](https://docs.improbable.io/reference/latest/shared/glossary#property).
 
 For every component defined in SpatialOS schema, we generate a pair of Readers and Writers within:
 
 * `<namespace of schema component>.<component name>.Requirable.Reader`
-* `<namespace of schema component>.<component name>.Requirable.Writer` 
+* `<namespace of schema component>.<component name>.Requirable.Writer`
 
 You can access Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute. `[Require]` fields are automatically injected and removed based on certain requirements:
 
@@ -43,9 +41,9 @@ component Health {
 
 ## How to read component properties
 
-1. Declare a field of type `Health` Reader or Writer and decorate it with a `[Require]` attribute. 
+1. Declare a field of type `Health` Reader or Writer and decorate it with a `[Require]` attribute.
 
-2. Access the current component property values using `Reader.Data`. 
+2. Access the current component property values using `Reader.Data`.
 </br>(This returns a generated `ISpatialComponentData` struct which contains all the component property values of a component.)
 
 **Example**
@@ -71,7 +69,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 </br>**Note**: The GDK only injects a Writer when your worker gains write authority over the `Health` component. The MonoBehaviour requiring the Writer remains disabled otherwise.
 
 2. Send a component update to specify the new component values that your component should be updated to using `Writer.Send(TComponentUpdate update)`.
-</br>(`ISpatialComponentUpdate` types are generated under `<namespace of schema component>.<component name>.Update`.) 
+</br>(`ISpatialComponentUpdate` types are generated under `<namespace of schema component>.<component name>.Update`.)
 
 **Example**
 ```csharp
@@ -97,13 +95,13 @@ public class WriteHealthBehaviour : MonoBehaviour
 
 ## How to react to component property changes
 
-1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute. 
+1. Declare a field of type `Health` Writer and decorate it with a `[Require]` attribute.
 
 2. Register a callback for `Reader.ComponentUpdated(ISpatialComponentUpdate update) +=` or for `Reader.<component property name>Updated() +=` during `OnEnable()`.
     *  `Reader.ComponentUpdated` is invoked when any component property is updated.
     *  `Reader.<component property name>Updated` is invoked when a specific component property is updated.
 
-**Note:** 
+**Note:**
 `Reader.ComponentUpdated` callbacks are invoked before specific property update callbacks. Callbacks can be deregistered using `Reader.ComponentUpdated(ISpatialComponentUpdate update) -=` and `Reader.<component property name>Updated() -=`. Callbacks are also automatically deregistered when a Reader or Writer is removed. Do not deregister callbacks during `OnDisable()` as that’s an invalid operation.
 
 **Example 1**

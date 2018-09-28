@@ -1,6 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use).
-
------
+<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
 
 ## ECS: Components and component updates
 The [code generator]({{urlRoot}}/content/ecs/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
