@@ -77,4 +77,4 @@ The process of editing the code generator is simple:
 If any changes you make change the input parameters or add new ones, you should add them to `Packages/com.improbable.gdk.tools/GenerateCode.cs` so it runs correctly!
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

@@ -143,4 +143,4 @@ public enum Color : uint
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

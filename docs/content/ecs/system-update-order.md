@@ -28,7 +28,7 @@ The SpatialOS GDK for Unity (GDK) defines several update groups which run relati
   * `CustomSpatialOSSendGroup` - Systems which contain custom replication logic should run in this group.
   * `InternalSpatialOSCleanGroup` - This group is used by `CleanReactiveComponentsSystem` which removes all reactive components. **(Internal use only)**
 
-Here's a diagram of the update order:  
+Here's a diagram of the update order:
 
 ![Update order](../../assets/update-order.png)
 
@@ -42,4 +42,4 @@ Reactive components have to be buffered. To do this there must be a system which
 
 -----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

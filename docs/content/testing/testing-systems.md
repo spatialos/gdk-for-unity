@@ -102,7 +102,7 @@ public class CleanReactiveComponentsSystemTests
 ```
 
 ## Hybrid Systems
-Your system is not pure and is hybrid if it  `[Inject]`s a struct that has any
+Your system is not pure and is hybrid if it `[Inject]`s a struct that has any
  one of these types as fields:
 - `ComponentArray<>`,
 - `GameObjectArray`,
