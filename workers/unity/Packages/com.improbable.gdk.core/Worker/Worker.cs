@@ -60,6 +60,14 @@ namespace Improbable.Gdk.Core
                         ConnectionErrorReason.CannotEstablishConnection);
                 }
 
+                // A check is needed for the case that play mode is exited before the connection can complete.
+                if (!Application.isPlaying)
+                {
+                    connection.Dispose();
+                    throw new ConnectionFailedException("Editor application stopped",
+                        ConnectionErrorReason.EditorApplicationStopped);
+                }
+
                 var worker = new Worker(config.WorkerType, connection, logger, origin);
                 logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
                     .WithField("WorkerId", worker.WorkerId));
@@ -89,6 +97,14 @@ namespace Improbable.Gdk.Core
                     {
                         throw new ConnectionFailedException(GetConnectionFailureReason(connection),
                             ConnectionErrorReason.CannotEstablishConnection);
+                    }
+
+                    // A check is needed for the case that play mode is exited before the connection can complete.
+                    if (!Application.isPlaying)
+                    {
+                        connection.Dispose();
+                        throw new ConnectionFailedException("Editor application stopped",
+                            ConnectionErrorReason.EditorApplicationStopped);
                     }
 
                     var worker = new Worker(config.WorkerType, connection, logger, origin);
