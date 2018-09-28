@@ -24,10 +24,8 @@ namespace <#= qualifiedNamespace #>
             public enum DirtyBitsEnum
             {
                 None = 0,
-<# int currentFieldBinaryIdx = 1; #>
-<# foreach(var fieldDetails in fieldDetailsList) { #>
-                <#= fieldDetails.PascalCaseName #> = <#= currentFieldBinaryIdx #>,
-<# currentFieldBinaryIdx = currentFieldBinaryIdx << 1; #>
+<# for(int i = 0; i < fieldDetailsList.Count; i++) { #>
+                <#= fieldDetailsList[i].PascalCaseName #> = <#= 1 << i #>,
 <# } #>
             }
 
