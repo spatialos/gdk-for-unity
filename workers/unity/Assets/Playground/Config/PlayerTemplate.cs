@@ -11,7 +11,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
+        public static Entity CreatePlayerEntityTemplate(string workerId, List<string> clientAttributeSet,
             Improbable.Vector3f position)
         {
             var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
@@ -39,7 +39,7 @@ namespace Playground
                 .AddComponent(score, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic)
                 .AddTransformSynchronizationComponents(clientAttribute)
-                .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
+                .AddPlayerLifecycleComponents(workerId, clientAttribute, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();
         }
