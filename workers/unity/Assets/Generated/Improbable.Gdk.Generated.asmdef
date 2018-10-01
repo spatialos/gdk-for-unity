@@ -5,8 +5,7 @@
         "Unity.Entities", 
         "Unity.Mathematics", 
         "Unity.Entities.Hybrid",
-        "Improbable.Gdk.Core",
-        "Improbable.Gdk.Tools"
+        "Improbable.Gdk.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
