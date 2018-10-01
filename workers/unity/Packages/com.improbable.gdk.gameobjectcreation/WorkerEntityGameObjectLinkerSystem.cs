@@ -51,7 +51,7 @@ namespace Improbable.Gdk.GameObjectCreation
             for (int i = 0; i < connectedData.Length; i++)
             {
                 linkerSystem.Linker.LinkGameObjectToEntity(workerGameObject, connectedData.Entities[i],
-                    new EntityId(0), viewCommandBuffer);
+                    viewCommandBuffer);
             }
 
             for (int i = 0; i < disconnectedData.Length; i++)
@@ -59,6 +59,14 @@ namespace Improbable.Gdk.GameObjectCreation
                 linkerSystem.Linker.UnlinkGameObjectFromEntity(workerGameObject, disconnectedData.Entities[i],
                     viewCommandBuffer);
             }
+
+            viewCommandBuffer.FlushBuffer();
+        }
+
+        protected override void OnDestroyManager()
+        {
+            linkerSystem.Linker.UnlinkGameObjectFromEntity(workerGameObject, workerSystem.WorkerEntity,
+                viewCommandBuffer);
 
             viewCommandBuffer.FlushBuffer();
         }

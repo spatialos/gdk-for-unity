@@ -62,7 +62,7 @@ The new SpatialOS **GDK** for Unity directly deserializes networked data into EC
 
 #### GameObjects are optional
 
-You only use GameObjects when you want to. You have the option to do computation on entity data without the overhead of MonoBehaviours. Built-in functionality, such as the spawning pipeline, makes use of this.   
+You only use GameObjects when you want to. You have the option to do computation on entity data without the overhead of MonoBehaviours. Built-in functionality, such as the spawning pipeline, makes use of this. 
 
 ## Customizability
 

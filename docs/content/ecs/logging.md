@@ -19,8 +19,8 @@ You can access the dispatcher through the [WorkerSystem]({{urlRoot}}/content/ecs
 
 There are two log context variables:
 
-* `LoggingUtils.LoggerName`, which specifies where the log was sent from
-* `LoggingUtils.EntityId`, which links the log to a specific entity
+* `LoggingUtils.LoggerName`, which specifies where the log was sent from.
+* `LoggingUtils.EntityId`, which links the log to a specific entity. When running the game in the cloud using the `ForwardingDispatcher`, this lets you filter for a particular entity's logs using the Inspector and Logger.
 
 These are automatically picked up by the `ForwardingDispatcher` if provided. Other context variables are formatted in a string and sent with the log message.
 
@@ -71,4 +71,4 @@ public class ClientWorkerConnector : WorkerConnectorBase
 ```
 
 -----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
