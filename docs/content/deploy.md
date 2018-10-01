@@ -56,7 +56,7 @@ To start a cloud deployment:
     - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
     - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
     - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
-    - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation](snapshots.md) for further information.
+    - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots.md) for further information.
 1. Launch a game client:
     1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
     1. In the SpatialOS Console, select the deployment’s name to open the overview page.
