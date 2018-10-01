@@ -16,8 +16,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private SceneAsset[] scenesInAssetDatabase;
         private string workerTypeName = "WorkerType";
 
-        private static readonly GUIContent AddWorkerTypeButtonContents = new GUIContent("+", "AddWorkerType");
-        private static readonly GUIContent RemoveWorkerTypeButtonContents = new GUIContent("-", "RemoveWorkerType");
+        private static readonly GUIContent AddWorkerTypeButtonContents = new GUIContent("+", "Add worker type");
+        private static readonly GUIContent RemoveWorkerTypeButtonContents = new GUIContent("-", "Remove worker type");
         private static readonly GUIContent MoveUpButtonContents = new GUIContent("^", "Move item up");
         private static readonly GUIContent MoveDownButtonContents = new GUIContent("v", "Move item down");
 

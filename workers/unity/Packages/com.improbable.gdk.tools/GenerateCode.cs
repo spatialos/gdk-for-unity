@@ -14,8 +14,7 @@ namespace Improbable.Gdk.Tools
         private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
 
-        private const int GenerateCodePriority = 38;
-        private const int GenerateCodeForcePriority = 39;
+
 
         private static readonly string SchemaCompilerRelativePath =
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
@@ -47,7 +46,7 @@ namespace Improbable.Gdk.Tools
             return !File.Exists(StartupCodegenMarkerFile);
         }
 
-        [MenuItem("SpatialOS/Generate code", false, GenerateCodePriority)]
+        [MenuItem("SpatialOS/Generate code", false, MenuPriorities.GenerateCodePriority)]
         private static void GenerateMenu()
         {
             Debug.Log("Generating code...");
@@ -145,7 +144,7 @@ namespace Improbable.Gdk.Tools
             return baseArgs.ToArray();
         }
 
-        [MenuItem("SpatialOS/Generate code (force)", false, GenerateCodeForcePriority)]
+        [MenuItem("SpatialOS/Generate code (force)", false, MenuPriorities.GenerateCodeForcePriority)]
         private static void ForceGenerateMenu()
         {
             Debug.Log("Generating code (forced rebuild)...");
