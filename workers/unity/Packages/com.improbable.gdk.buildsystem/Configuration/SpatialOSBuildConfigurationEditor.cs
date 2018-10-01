@@ -8,11 +8,18 @@ using UnityEngine;
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CustomEditor(typeof(SpatialOSBuildConfiguration))]
-    public class SpatialOSBuildConfigurationEditor : UnityEditor.Editor
+    public class SpatialOSBuildConfigurationEditor : Editor
     {
         private const int ScreenWidthForHorizontalLayout = 450;
 
+        private bool scenesChanged;
         private SceneAsset[] scenesInAssetDatabase;
+        private string workerTypeName = "WorkerType";
+
+        private static readonly GUIContent AddWorkerTypeButtonContents = new GUIContent("+", "Add worker type");
+        private static readonly GUIContent RemoveWorkerTypeButtonContents = new GUIContent("-", "Remove worker type");
+        private static readonly GUIContent MoveUpButtonContents = new GUIContent("^", "Move item up");
+        private static readonly GUIContent MoveDownButtonContents = new GUIContent("v", "Move item down");
 
         public void OnEnable()
         {
@@ -20,9 +27,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>).ToArray();
         }
-
-        private bool scenesChanged;
-        private string workerTypeName = "WorkerType";
 
         public override void OnInspectorGUI()
         {
@@ -36,22 +40,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             if (GUI.Button(buttonRect, AddWorkerTypeButtonContents))
             {
-                var workerType = new WorkerPlatform(workerTypeName);
-                var exists = workerConfiguration.WorkerBuildConfigurations.Any(x => x.WorkerPlatform == workerType);
-                if (!exists)
+                if (workerConfiguration.WorkerBuildConfigurations.All(x => x.WorkerType != workerTypeName))
                 {
                     var config = new WorkerBuildConfiguration
                     {
-                        WorkerPlatform = new WorkerPlatform(workerTypeName),
-                        ScenesForWorker = new SceneAsset[] { },
-                        LocalBuildConfig = new BuildEnvironmentConfig()
+                        WorkerType = workerTypeName,
+                        LocalBuildConfig = new BuildEnvironmentConfig
                         {
-                            BuildPlatforms = SpatialBuildPlatforms.Current,
-                            BuildOptions = BuildOptions.Development
+                            BuildOptions = BuildOptions.Development,
                         },
-                        CloudBuildConfig = new BuildEnvironmentConfig()
+                        CloudBuildConfig = new BuildEnvironmentConfig
                         {
-                            BuildPlatforms = SpatialBuildPlatforms.Current
+                            BuildOptions = BuildOptions.EnableHeadlessMode,
                         }
                     };
                     workerConfiguration.WorkerBuildConfigurations.Add(config);
@@ -75,17 +75,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             if (scenesChanged)
             {
                 scenesChanged = false;
-                workerConfiguration.UpdateEditorScenesForBuild();
+                EditorApplication.delayCall += workerConfiguration.UpdateEditorScenesForBuild;
             }
         }
 
         private bool DrawWorkerConfiguration(WorkerBuildConfiguration configurationForWorker)
         {
-            var platformName = configurationForWorker.WorkerPlatform.ToString();
+            var workerType = configurationForWorker.WorkerType;
 
             EditorGUILayout.BeginHorizontal();
             configurationForWorker.ShowFoldout =
-                EditorGUILayout.Foldout(configurationForWorker.ShowFoldout, platformName);
+                EditorGUILayout.Foldout(configurationForWorker.ShowFoldout, workerType);
 
             var controlRect = EditorGUILayout.GetControlRect(false);
             var buttonRect = new Rect(controlRect);
@@ -107,14 +107,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
 
             return true;
-        }
-
-        [Flags]
-        private enum ReorderableListFlags
-        {
-            None = 0,
-            ShowIndices = 1 << 0,
-            EnableReordering = 1 << 1,
         }
 
         private void DrawScenesInspectorForWorker(WorkerBuildConfiguration configurationForWorker)
@@ -143,10 +135,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     using (horizontalLayout ? new EditorGUILayout.VerticalScope() : null)
                     {
                         EditorGUILayout.LabelField("Scenes to include (in order)");
-
-                        DrawIndentedList(scenesToShowInList,
-                            ReorderableListFlags.ShowIndices | ReorderableListFlags.EnableReordering,
-                            SceneItem.Drawer);
+                        DrawSceneList(scenesToShowInList, true, true);
                     }
 
                     using (horizontalLayout ? new EditorGUILayout.VerticalScope() : null)
@@ -154,10 +143,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         using (horizontalLayout ? IndentLevelScope(-EditorGUI.indentLevel) : null)
                         {
                             EditorGUILayout.LabelField("Exclude");
-
-                            DrawIndentedList(sceneItems,
-                                ReorderableListFlags.None,
-                                SceneItem.Drawer);
+                            DrawSceneList(sceneItems, false, false);
                         }
                     }
                 }
@@ -185,12 +171,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             DrawEnvironmentInspector(BuildEnvironment.Cloud, configurationForWorker);
         }
 
-        private static TEnum EnumFlagsToggleField<TEnum>(TEnum source) where TEnum : struct, IConvertible
-        {
-            return EnumFlagsToggleField(source, SimpleToString);
-        }
-
-        private static TEnum EnumFlagsToggleField<TEnum>(TEnum source, Func<TEnum, string> nameFunction)
+        private static TEnum EnumFlagsToggleField<TEnum>(TEnum source)
             where TEnum : struct, IConvertible
         {
             if (!typeof(TEnum).IsEnum)
@@ -211,18 +192,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 using (IndentLevelScope(-EditorGUI.indentLevel))
                 {
                     var sourceBitValue = source.ToInt32(NumberFormatInfo.CurrentInfo);
-
                     foreach (var enumValue in enumNonZeroValues)
                     {
                         var targetBitValue = enumValue.ToInt32(NumberFormatInfo.CurrentInfo);
-
                         var hasFlag = (sourceBitValue & targetBitValue) != 0;
-
-                        var newFlag = EditorGUILayout.ToggleLeft(nameFunction(enumValue), hasFlag);
-
+                        var newFlag = EditorGUILayout.ToggleLeft(enumValue.ToString(CultureInfo.InvariantCulture), hasFlag);
                         if (hasFlag != newFlag)
                         {
-                            // the flag has changed, doing an XOR will flip that value
                             source = (TEnum) (object) (sourceBitValue ^ targetBitValue);
                         }
                     }
@@ -251,33 +227,56 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             using (IndentLevelScope(1))
             {
-                var buildOptionsString = EnumFlagToString(environmentConfiguration.BuildOptions);
-
                 EditorGUI.BeginChangeCheck();
-
-                var showBuildOptions = EditorGUILayout.Foldout(environmentConfiguration.ShowBuildOptions,
-                    "Build Options: " + buildOptionsString);
-
+                var showBuildOptions = EditorGUILayout.Foldout(environmentConfiguration.ShowBuildOptions, "Build Options");
                 var newBuildOptions = environmentConfiguration.BuildOptions;
-
                 if (showBuildOptions)
                 {
-                    newBuildOptions = EnumFlagsToggleField(environmentConfiguration.BuildOptions);
+                    using (IndentLevelScope(1))
+                    {
+                        var indentedHelpBox =
+                            new GUIStyle(EditorStyles.helpBox) { margin = { left = EditorGUI.indentLevel * 16 } };
+
+                        using (new EditorGUILayout.VerticalScope(indentedHelpBox))
+                        using (IndentLevelScope(-EditorGUI.indentLevel))
+                        {
+                            var prevValue = (newBuildOptions & BuildOptions.Development) != 0;
+                            var newValue = EditorGUILayout.ToggleLeft("Development Build", prevValue);
+                            if (prevValue != newValue)
+                            {
+                                newBuildOptions ^= BuildOptions.Development;
+                            }
+
+                            prevValue = (newBuildOptions & BuildOptions.EnableHeadlessMode) != 0;
+                            newValue = EditorGUILayout.ToggleLeft("Headless Mode", prevValue);
+                            if (prevValue != newValue)
+                            {
+                                newBuildOptions ^= BuildOptions.EnableHeadlessMode;
+                            }
+                        }
+                    }
                 }
+
 
                 if ((newBuildOptions & BuildOptions.EnableHeadlessMode) != 0 &&
                     (newBuildOptions & BuildOptions.Development) != 0)
                 {
                     EditorGUILayout.HelpBox(
-                        "\nYou cannot have both EnableHeadlessMode and Development in BuildOptions.\n\n" +
-                        "This will crash Unity Editor while building.\n",
+                        "You cannot have both EnableHeadlessMode and Development build enabled.\n" +
+                        "This will crash the Unity Editor during the build.",
                         MessageType.Error);
+                }
+
+                if ((newBuildOptions & BuildOptions.EnableHeadlessMode) != 0 &&
+                    (environmentConfiguration.BuildPlatforms & ~SpatialBuildPlatforms.Linux) != 0)
+                {
+                    EditorGUILayout.HelpBox(
+                        "EnableHeadlessMode is only available for Linux builds.",
+                        MessageType.Warning);
                 }
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // build options have changed
-
                     EditorUtility.SetDirty(target);
                     Undo.RecordObject(target, "Configure build options for worker");
 
@@ -287,81 +286,54 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        private static string EnumFlagToString<TEnum>(TEnum value) where TEnum : struct, IConvertible
+        private static string BuildPlatformToString(SpatialBuildPlatforms value)
         {
-            return EnumFlagToString(value, SimpleToString);
-        }
-
-        private static string SimpleToString<TValue>(TValue activeValue) where TValue : IConvertible
-        {
-            return activeValue.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private static string EnumFlagToString<TEnum>(TEnum value, Func<TEnum, string> nameFunction)
-            where TEnum : struct, IConvertible
-        {
-            if (!typeof(TEnum).IsEnum)
+            if (value == SpatialBuildPlatforms.Current)
             {
-                throw new ArgumentException("TEnum must be an enum type");
+                return $"Current ({WorkerBuilder.GetCurrentBuildPlatform()})";
             }
 
-            var enumNonZeroValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>()
-                .Where(options => options.ToInt32(NumberFormatInfo.CurrentInfo) != 0)
-                .ToArray();
+            return value.ToString();
+        }
 
-            var sourceBitValue = value.ToInt32(NumberFormatInfo.CurrentInfo);
-
-            if (sourceBitValue == 0)
+        private static string SelectedPlatformsToString(SpatialBuildPlatforms value)
+        {
+            var enumValues = Enum.GetValues(typeof(SpatialBuildPlatforms)).Cast<SpatialBuildPlatforms>().ToArray();
+            if (value == 0)
             {
                 return "None";
             }
 
-            return string.Join(", ",
-                enumNonZeroValues
-                    .Where(enumValue =>
-                        (sourceBitValue & enumValue.ToInt32(NumberFormatInfo.CurrentInfo)) != 0)
-                    .Select(nameFunction).ToArray());
+            return string.Join(", ", enumValues
+                    .Where(enumValue => (value & enumValue) != 0)
+                    .Select(BuildPlatformToString).ToArray());
         }
 
         private void ConfigureBuildPlatforms(BuildEnvironmentConfig environmentConfiguration)
         {
             using (IndentLevelScope(1))
             {
-                var buildPlatformsString = EnumFlagToString(environmentConfiguration.BuildPlatforms,
-                    BuildPlatformToString);
-
                 EditorGUI.BeginChangeCheck();
 
+                var buildPlatformsString = SelectedPlatformsToString(environmentConfiguration.BuildPlatforms);
+                var newBuildPlatforms = environmentConfiguration.BuildPlatforms;
                 var showBuildPlatforms = EditorGUILayout.Foldout(environmentConfiguration.ShowBuildPlatforms,
                     "Build Platforms: " + buildPlatformsString);
-
-                var newBuildPlatforms = environmentConfiguration.BuildPlatforms;
-
                 if (showBuildPlatforms)
                 {
-                    newBuildPlatforms = EnumFlagsToggleField(environmentConfiguration.BuildPlatforms,
-                        BuildPlatformToString);
+                    newBuildPlatforms = EnumFlagsToggleField(environmentConfiguration.BuildPlatforms);
                 }
 
                 var currentAdjustedPlatforms = newBuildPlatforms;
-
-                if ((currentAdjustedPlatforms & SpatialBuildPlatforms.Current) != 0)
-                {
-                    currentAdjustedPlatforms &= ~SpatialBuildPlatforms.Current;
-                    currentAdjustedPlatforms |= WorkerBuilder.GetCurrentBuildPlatform();
-                }
-
                 if ((currentAdjustedPlatforms & SpatialBuildPlatforms.Windows32) != 0 &&
                     (currentAdjustedPlatforms & SpatialBuildPlatforms.Windows64) != 0)
                 {
-                    EditorGUILayout.HelpBox(
-                        "\n" + WorkerBuilder.IncompatibleWindowsPlatformsErrorMessage + "\n",
+                    EditorGUILayout.HelpBox(WorkerBuilder.IncompatibleWindowsPlatformsErrorMessage,
                         MessageType.Error);
                 }
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    // build platforms have changed
                     EditorUtility.SetDirty(target);
                     Undo.RecordObject(target, "Configure build platforms for worker");
 
@@ -371,23 +343,27 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        private static string BuildPlatformToString(SpatialBuildPlatforms value)
+        private void Drawer(Rect position, SceneItem item)
         {
-            if (value == SpatialBuildPlatforms.Current)
+            var oldColor = GUI.color;
+            if (!item.Exists)
             {
-                return string.Format("Current ({0})", WorkerBuilder.GetCurrentBuildPlatform());
+                GUI.color = Color.red;
             }
 
-            return value.ToString();
+            var positionWidth = position.width;
+            var labelWidth = GUI.skin.toggle.CalcSize(GUIContent.none).x + 5;
+
+            position.width = labelWidth;
+            item.Included = EditorGUI.Toggle(position, item.Included);
+            position.x += labelWidth;
+            position.width = positionWidth - labelWidth;
+
+            EditorGUI.ObjectField(position, item.SceneAsset, typeof(SceneAsset), false);
+            GUI.color = oldColor;
         }
 
-        private static readonly GUIContent AddWorkerTypeButtonContents = new GUIContent("+", "AddWorkerType");
-        private static readonly GUIContent RemoveWorkerTypeButtonContents = new GUIContent("-", "RemoveWorkerType");
-        private static readonly GUIContent MoveUpButtonContents = new GUIContent("^", "Move item up");
-        private static readonly GUIContent MoveDownButtonContents = new GUIContent("v", "Move item down");
-
-        private static void DrawIndentedList<T>(IList<T> list,
-            ReorderableListFlags flags, Func<Rect, T, T> drawer)
+        private void DrawSceneList(List<SceneItem> list, bool enableReordering, bool showIndices)
         {
             if (list.Count == 0)
             {
@@ -395,10 +371,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 return;
             }
 
-            var enableReordering = (flags & ReorderableListFlags.EnableReordering) != 0;
-            var showIndices = (flags & ReorderableListFlags.ShowIndices) != 0;
             var indentLevel = EditorGUI.indentLevel;
-
             using (IndentLevelScope(-EditorGUI.indentLevel))
             {
                 for (var i = 0; i < list.Count; i++)
@@ -414,8 +387,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     if (showIndices)
                     {
                         var indexContent = new GUIContent(i.ToString());
-                        var indexRect = new Rect(controlRect);
-                        indexRect.width = GUI.skin.label.CalcSize(indexContent).x;
+                        var indexRect = new Rect(controlRect) { width = GUI.skin.label.CalcSize(indexContent).x };
 
                         GUI.Label(indexRect, indexContent);
 
@@ -430,7 +402,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         drawerRect.width -= 40;
                     }
 
-                    drawer(drawerRect, item);
+                    Drawer(drawerRect, item);
 
                     if (enableReordering)
                     {
