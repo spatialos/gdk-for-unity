@@ -15,7 +15,7 @@
 
 ***
 - <h3>+ Projects</h3>
-    - [Overview]({{urlRoot}}/projects/overview)
+    - [Projects overview]({{urlRoot}}/projects/overview)
     - [Blank Project]({{urlRoot}}/projects/template-blank/overview)
     - [FPS Template]({{urlRoot}}/projects/template-fps/overview)
 
