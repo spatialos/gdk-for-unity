@@ -12,18 +12,6 @@ For further high-level information about this, see the [summary of key features]
 
 This is an alpha release of the GDK Core which is the foundation of the product. To find out more see the [GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps).
 
----
-* [Setup Guide]({{urlRoot}}/setup-and-installing)
-* [Documentation]({{urlRoot}}/index)
-* [Development Roadmap](https://trello.com/b/29tMKyQC)
-* [FAQs]({{urlRoot}}/content/faqs/faqs)
-* [Discord](https://discord.gg/SCZTCYm)
-* [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
-* [Github Issues](https://github.com/spatialos/UnityGDK/issues)
-* [Known Issues]({{urlRoot}}/known-issues)
-* [Sign up for e-mail updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
----
-
 ## Recommended use
 
 This alpha release is for experienced Unity developers who have some understanding of [SpatialOS concepts](https://docs.improbable.io/reference/13.0/shared/concepts/spatialos), and want to give early feedback.
