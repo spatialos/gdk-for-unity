@@ -16,8 +16,35 @@ namespace Playground
             new List<string>
             {
                 UnityGameLogic,
-                UnityClient
+                UnityClient,
             };
+
+        /// <summary>
+        /// Useful for specifying write access for a single client.
+        /// For example, an input component that drives your character.
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <returns></returns>
+        public static string SpecificClient(string workerId)
+        {
+            return "workerId:" + workerId;
+        }
+
+        /// <summary>
+        /// Useful for specifying read access for game logic and a specific client.
+        /// For example, an inventory only needs to be read by the client that owns it
+        /// and game logic workers.
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <returns></returns>
+        public static List<string> UnityGameLogicOrSpecificClient(string workerId)
+        {
+            return new List<string>
+            {
+                UnityGameLogic,
+                SpecificClient(workerId),
+            };
+        }
 
         public static void AddClientSystems(World world)
         {

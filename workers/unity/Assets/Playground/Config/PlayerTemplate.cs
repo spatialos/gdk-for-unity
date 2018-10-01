@@ -11,17 +11,10 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
+        public static Entity CreatePlayerEntityTemplate(string clientWorkerId,
             Improbable.Vector3f position)
         {
-            var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
-
-            if (clientAttribute == null)
-            {
-                throw new InvalidOperationException(
-                    $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
-            }
-
+            var clientAttribute = WorkerUtils.SpecificClient(clientWorkerId);
             var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
             var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
 
