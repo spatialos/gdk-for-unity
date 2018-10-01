@@ -118,14 +118,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 var scenesToShowInList = configurationForWorker
                     .ScenesForWorker
                     .Select((sceneAsset, index) =>
-                        new SceneItem(sceneAsset, true))
+                        new SceneItem(sceneAsset, true, scenesInAssetDatabase))
                     .ToList();
 
                 EditorGUI.BeginChangeCheck();
 
                 var sceneItems = scenesInAssetDatabase
                     .Where(sceneAsset => !configurationForWorker.ScenesForWorker.Contains(sceneAsset))
-                    .Select(sceneAsset => new SceneItem(sceneAsset, false))
+                    .Select(sceneAsset => new SceneItem(sceneAsset, false, scenesInAssetDatabase))
                     .ToList();
 
                 var horizontalLayout = Screen.width > ScreenWidthForHorizontalLayout;
@@ -346,7 +346,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private void Drawer(Rect position, SceneItem item)
         {
             var oldColor = GUI.color;
-            if (!scenesInAssetDatabase.Contains(item.SceneAsset))
+            if (!item.Exists)
             {
                 GUI.color = Color.red;
             }
