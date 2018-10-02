@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Encapsulates the logic required to link a GameObject and an ECS Entity.
+    /// </summary>
     public class EntityGameObjectLinker
     {
         private static readonly EntityId WorkerEntityId = new EntityId(0);
@@ -23,6 +26,22 @@ namespace Improbable.Gdk.GameObjectRepresentation
             entityManager = world.GetExistingManager<EntityManager>();
         }
 
+        /// <summary>
+        ///     Links a GameObject to an ECS Entity.
+        /// </summary>
+        /// <remarks>
+        ///     All <see cref="UnityEngine.Component"/>s on the GameObject will be inserted onto the ECS Entity.
+        ///     A <see cref="SpatialOSComponent"/> will be added to the GameObject.
+        /// </remarks>
+        /// <remarks>
+        ///     If a Monobehaviour exists multiple times on the GameObject, only the first occurence will be inserted
+        ///     onto the ECS entity.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject to link.</param>
+        /// <param name="entity">The entity to link.</param>
+        /// <param name="viewCommandBuffer">
+        ///     An instance of the ViewCommandBuffer. Should be flushed after this method returns.
+        /// </param>
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
             bool hasSpatialEntityId = entityManager.HasComponent<SpatialEntityId>(entity);
@@ -76,6 +95,17 @@ namespace Improbable.Gdk.GameObjectRepresentation
             spatialOSComponent.SpatialEntityId = spatialEntityId;
         }
 
+        /// <summary>
+        ///     Un-links a GameObject and ECS Entity
+        /// </summary>
+        /// <remarks>
+        ///    The GameObject and ECS Entity should already be linked before this method call.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject to unlink.</param>
+        /// <param name="entity">The ECS Entity to unlink.</param>
+        /// <param name="viewCommandBuffer">
+        ///     An instance of the ViewCommandBuffer. Should be flushed after this method returns.
+        /// </param>
         public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
             if (entityManager.Exists(entity))
