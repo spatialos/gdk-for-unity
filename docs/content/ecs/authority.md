@@ -107,4 +107,4 @@ public class OnPlayerSpawnSystem : ComponentSystem
 The GDK automatically adds and removes authority tags: see [Reactive components](reactive-components.md) for more information.
 
 ----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

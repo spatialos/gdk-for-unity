@@ -6,138 +6,90 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = CreateMenuPath)]
-    public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>
-    {
-        internal const string CreateMenuPath = "SpatialOS/Build Configuration";
-
+    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
+    public class SpatialOSBuildConfiguration : ScriptableSingleton<SpatialOSBuildConfiguration>
+    {        
+        [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations = 
+            new List<WorkerBuildConfiguration>();
+        
         [SerializeField] private bool isInitialised;
-
-        [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations;
-
-        public override void OnEnable()
+        
+        public BuildEnvironmentConfig GetEnvironmentConfigForWorker(string workerType, BuildEnvironment environment)
         {
-            base.OnEnable();
-
-            if (!isInitialised)
-            {
-                ResetToDefault();
-            }
-
-            if (IsAnAsset())
-            {
-                UpdateEditorScenesForBuild();
-            }
-        }
-
-        private void ResetToDefault()
-        {
-            // Build default settings
-            var client = new WorkerBuildConfiguration()
-            {
-                WorkerPlatform = WorkerPlatform.UnityClient,
-                ScenesForWorker = AssetDatabase.FindAssets("t:Scene")
-                    .Select(AssetDatabase.GUIDToAssetPath)
-                    .Where(path => path.Contains(WorkerPlatform.UnityClient.ToString()))
-                    .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>).ToArray(),
-                LocalBuildConfig = new BuildEnvironmentConfig()
-                {
-                    BuildPlatforms = SpatialBuildPlatforms.Current,
-                    BuildOptions = BuildOptions.Development
-                },
-                CloudBuildConfig = new BuildEnvironmentConfig()
-                {
-                    BuildPlatforms = SpatialBuildPlatforms.Current
-                }
-            };
-
-            var worker = new WorkerBuildConfiguration()
-            {
-                WorkerPlatform = WorkerPlatform.UnityGameLogic,
-                ScenesForWorker = AssetDatabase.FindAssets("t:Scene")
-                    .Select(AssetDatabase.GUIDToAssetPath)
-                    .Where(path => path.Contains(WorkerPlatform.UnityGameLogic.ToString()))
-                    .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>).ToArray(),
-                LocalBuildConfig = new BuildEnvironmentConfig()
-                {
-                    BuildPlatforms = SpatialBuildPlatforms.Current,
-                    BuildOptions = BuildOptions.EnableHeadlessMode
-                },
-                CloudBuildConfig = new BuildEnvironmentConfig()
-                {
-                    BuildPlatforms = SpatialBuildPlatforms.Linux,
-                    BuildOptions = BuildOptions.EnableHeadlessMode
-                }
-            };
-
-            WorkerBuildConfigurations = new List<WorkerBuildConfiguration>
-            {
-                client,
-                worker
-            };
-
-            isInitialised = true;
-        }
-
-        private void OnValidate()
-        {
-            if (!isInitialised)
-            {
-                ResetToDefault();
-            }
-
-            if (IsAnAsset())
-            {
-                UpdateEditorScenesForBuild();
-            }
-        }
-
-        private SceneAsset[] GetScenesForWorker(WorkerPlatform workerPlatform)
-        {
-            WorkerBuildConfiguration configurationForWorker = null;
-
-            if (WorkerBuildConfigurations != null)
-            {
-                configurationForWorker =
-                    WorkerBuildConfigurations.FirstOrDefault(config => config.WorkerPlatform == workerPlatform);
-            }
-
-            return configurationForWorker == null
-                ? new SceneAsset[0]
-                : configurationForWorker.ScenesForWorker;
-        }
-
-        internal void UpdateEditorScenesForBuild()
-        {
-            EditorApplication.delayCall += () =>
-            {
-                EditorBuildSettings.scenes =
-                    WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerPlatform))
-                        .Select(AssetDatabase.GetAssetPath)
-                        .Distinct()
-                        .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
-                        .ToArray();
-            };
-        }
-
-        public BuildEnvironmentConfig GetEnvironmentConfigForWorker(WorkerPlatform platform,
-            BuildEnvironment targetEnvironment)
-        {
-            var config = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerPlatform == platform);
+            var config = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             if (config == null)
             {
-                throw new ArgumentException("Unknown WorkerPlatform " + platform);
+                throw new ArgumentException($"Unknown worker type {workerType}.");
             }
 
-            return config.GetEnvironmentConfig(targetEnvironment);
+            return config.GetEnvironmentConfig(environment);
         }
 
-        public string[] GetScenePathsForWorker(WorkerPlatform workerType)
+        internal string[] GetScenePathsForWorker(string workerType)
         {
             return GetScenesForWorker(workerType)
                 .Where(sceneAsset => sceneAsset != null)
                 .Select(AssetDatabase.GetAssetPath)
                 .ToArray();
+        }
+        
+        internal void UpdateEditorScenesForBuild()
+        {
+            EditorBuildSettings.scenes =
+                WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerType))
+                    .Select(AssetDatabase.GetAssetPath)
+                    .Distinct()
+                    .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
+                    .ToArray();
+        }
+
+        private void OnEnable()
+        {
+            if (!isInitialised)
+            {
+                ResetToDefault();
+            }
+
+            if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(this)))
+            {
+                EditorApplication.delayCall += UpdateEditorScenesForBuild;
+            }
+        }
+
+        private void ResetToDefault()
+        {
+            WorkerBuildConfigurations = new List<WorkerBuildConfiguration>
+            {
+                {
+                    new WorkerBuildConfiguration
+                    {
+                        WorkerType = "UnityClient",
+                        LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                    }
+                },
+                {
+                    new WorkerBuildConfiguration
+                    {
+                        WorkerType = "UnityGameLogic",
+                        LocalBuildConfig =
+                            new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
+                        CloudBuildConfig = new BuildEnvironmentConfig
+                        {
+                            BuildPlatforms = SpatialBuildPlatforms.Linux,
+                            BuildOptions = BuildOptions.EnableHeadlessMode
+                        }
+                    }
+                }
+            };
+            isInitialised = true;
+        }
+
+        private SceneAsset[] GetScenesForWorker(string workerType)
+        {
+            var configurationForWorker = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
+            return configurationForWorker == null
+                ? new SceneAsset[0]
+                : configurationForWorker.ScenesForWorker;
         }
     }
 }

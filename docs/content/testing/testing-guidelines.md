@@ -15,7 +15,7 @@ You can set up your own tests to validate that your functionality is resilient. 
 - Make assertions in the new state against the expected changes.
 - Clean up.
 
-With [NUnit](https://github.com/nunit/docs/wiki/NUnit-Documentation), you can set up your test using the [TestFixture attribute](https://github.com/nunit/docs/wiki/TestFixture-Attribute)  method annotations.
+With [NUnit](https://github.com/nunit/docs/wiki/NUnit-Documentation), you can set up your test using the [TestFixture attribute](https://github.com/nunit/docs/wiki/TestFixture-Attribute) method annotations.
 
 ## Test directory structure and file names
 
@@ -75,7 +75,7 @@ You can have multiple fixtures within a test file. These fixtures set up and cle
 * If you would like to test different pre-conditions.
 
 * If a class has both static and instance methods, you can test this within two fixtures, shown below:
-    *  `<ClassName>StaticTests`
+    * `<ClassName>StaticTests`
     * `<ClassName>InstanceTests`
 
 Note: The `StaticTests` may not need to set anything up, but the `InstanceTests` may need to create an instance of the class to be able to verify the instance methods.
@@ -188,7 +188,7 @@ public void World_should_have_an_EntityManager()
 }
 ```
 
-However, if you are going to  add a similar test to the same
+However, if you are going to add a similar test to the same
  fixture (for example, you need to create another `World` to assert something else about
  the `World`) move the creation and disposal of the instance into the `[SetUp]`
  and `[TearDown]` functions, as in the code snippet below.
@@ -226,7 +226,7 @@ public void World_should_not_have_behaviour_managers_when_created()
 By default, any error log will fail your test.
 
 You can choose to expect these errors or ignore them using the `LogAssert`
- class. Please refer to the [Unity  documentation](https://docs.unity3d.com/ScriptReference/TestTools.LogAssert.html)
+ class. Please refer to the [Unity documentation](https://docs.unity3d.com/ScriptReference/TestTools.LogAssert.html)
  for use details.
 
 We recommend that you:

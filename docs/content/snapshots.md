@@ -24,8 +24,8 @@ This saves the generated snapshot to `snapshots/default.snapshot`, which is wher
 ## How to start a deployment from a snapshot
 You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Deploying your game](deploy.md) for details. 
 
-Both of these commands can take the optional command line parameter  `--snapshot=<path>`. This  starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.
+Both of these commands can take the optional command line parameter `--snapshot=<path>`. This starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.
 
 -----
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation  - see [How to give us feedback](../../README.md#give-us-feedback).
+**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
