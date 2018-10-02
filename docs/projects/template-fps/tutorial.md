@@ -160,6 +160,56 @@ While they are human-readable you are able to manually edit the values of the pr
 
 ### Representing the entity on your workers
 
+If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because every worker needs to know how to represent the entity.
+
+SpatialOS will manage which subset of the world's entities each worker knows about, and provide them with the corresponding component data. You must define what the worker will do when it finds out about an entity it isn't currently tracking. Fortunately the SpatialOS GDK for Unity provides some great tools for exactly that!
+
+#### Planning your entity representations
+
+First we must think about how each of the workers will want to represent the entity, so let's return to how we want our game mechanic to play out:
+
+* Players should see a hovering health pack.
+* When a player runs through the health pack it is consumed and 'disappears', leaving just a marker on the ground.
+* Consuming a health pack should only occur if the player has taken damage.
+* Consumed health packs re-appear after a cool-down, and are ready for use again.
+
+We can neatly separate this logic between the client-side and server-side representations:
+
+* The `UnityClient` worker should display a visual representation for each health pack, based on whether the health pack is currently 'active'.
+* The `UnityGameLogic` worker should react to collisions with players, check whether they are injured, and consume the health pack if they are.
+
+#### Creating GameObject representations
+
+The FPS Template project uses the SpatialOS GDK's GameObject workflow, which is the familiar way of working with Unity Engine.
+
+In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `/Assets/Resources/Prefabs/UnityClient` and `/Assets/Resources/Prefabs/UnityGameLogic` respectively.
+
+
+
+<%(#Expandable title="What are the Authoritative and NonAuthoritative sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
+
+At any point in time a single entity may be known about by multiple workers, even of the same type. In a large game you might have multiple `UnityGameLogic` workers. These often overlap, which means that they both 'know about' some of the same entities. However, only **one** of those workers can have write-access permissions to components on an entity at any given time.
+
+That means even two workers of the same type (e.g. `UnityGameLogic`) may not have the same responsibilities for a particular entity. The **authoritative** worker (i.e. the one that has write-access) may be responsible for executing some logic and updating the entity's component data. The **non-authoritative** worker only has read-access, which it may use to drive its own local representation of that entity, but it shouldn't try to update the entity's component values (and wouldn't be able to if it tried!). These two workers have _different representations_ of the same entity, even though they are the same type of worker.
+
+This is why the `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders. They are for keeping separate the differing local representations that worker will use, depending on whether it is trying to represent an entity over which it has authority or not.
+
+Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority](fix).<%(/Expandable)%>
+
+
+
+<%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
+
+The GDK also offers an [ECS workflow](fix) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow](fix) for you too.
+
+You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type. To find out more about you can read up about [entity representations](fix).<%(/Expandable)%>
+
+
+
+<%(#Expandable title="Can workers differ in how they represent the same entity?")%>Yes! The local in-worker representation for entities can be customized for each of your worker types. For example, the server-side `UnityGameLogic` worker may represent the `Player` entity with a GameObject that contains no visual assets or sound effects, because the server does not need those assets to perform its duties.
+
+Similarly, !!!!!!! COME BACK TO THIS [!!!](fix)<%(/Expandable)%>
+
 [!!!](TODO: Write stuff about hooking up game object)
 
 ### Testing your changes
@@ -178,8 +228,12 @@ Once the world is ready you can:
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
 * Click Play in your Unity editor (if you have the `FPS-Development` scene open) to play the game.
 
-You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game.
+You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently they just sit there, inert. If you walk into them then nothing happens. Let's fix that!
 
 Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
 
 <%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.<%(/Expandable)%>
+
+# Adding health pack logic
+
+// Where is the logic going to run?
