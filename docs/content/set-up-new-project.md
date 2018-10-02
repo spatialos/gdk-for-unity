@@ -15,7 +15,6 @@ For a basic set up of two workers, one `UnityGameLogic` and one `UnityClient`, w
 - [spatialos.UnityClient.worker.json](../../workers/unity/spatialos.UnityClient.worker.json)
 
 ### Set up base assets and directories
-- Copy [this file](../../workers/unity/Assets/Config/GdkToolsConfiguration.json) into `workers/unity/Assets/Config/GdkToolsConfiguration.json`.
 - Copy [this file](../../workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef) into `workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
 
 ### Set up your project manifest
