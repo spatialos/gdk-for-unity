@@ -26,10 +26,10 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
 
                 var receivedRequest = new ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest();
 
-                var cmdRequestResponder =
-                    new ComponentWithNoFieldsWithCommands.Cmd.RequestResponder(entityManager, entity, receivedRequest);
+                var cmdResponseSender =
+                    new ComponentWithNoFieldsWithCommands.Cmd.ResponseSender(entityManager, entity, receivedRequest);
 
-                cmdRequestResponder.SendResponse(new Empty());
+                cmdResponseSender.SendResponse(new Empty());
 
                 var componentData =
                     entityManager.GetComponentData<ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(entity);

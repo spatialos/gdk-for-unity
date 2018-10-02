@@ -28,13 +28,13 @@ namespace <#= qualifiedNamespace #>
 #>
         public partial class <#= commandDetails.CommandName #>
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public <#= rawRequestType #> Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -127,11 +127,11 @@ namespace <#= qualifiedNamespace #>
            var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
            var rawRequestType = commandDetails.CommandName + ".ReceivedRequest";
            var rawResponseType = commandDetails.CommandName + ".Response";
-           var wrappedRequestType = commandDetails.CommandName + ".RequestResponder";
+           var responseSenderType = commandDetails.CommandName + ".ResponseSender";
            var responsePayloadType = commandDetails.FqnResponseType;
 #>
-                private readonly List<Action<<#= wrappedRequestType #>>> <#= delegateList #> = new List<Action<<#= wrappedRequestType #>>>();
-                public event Action<<#= wrappedRequestType #>> On<#= commandDetails.CommandName #>Request
+                private readonly List<Action<<#= responseSenderType #>>> <#= delegateList #> = new List<Action<<#= responseSenderType #>>>();
+                public event Action<<#= responseSenderType #>> On<#= commandDetails.CommandName #>Request
                 {
                     add
                     {
@@ -155,7 +155,7 @@ namespace <#= qualifiedNamespace #>
 
                 internal void On<#= commandDetails.CommandName #>RequestInternal(<#= rawRequestType #> request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new <#= wrappedRequestType #>(entityManager, entity, request), <#= delegateList #>, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new <#= responseSenderType #>(entityManager, entity, request), <#= delegateList #>, logger);
                 }
 <# } #>
             }

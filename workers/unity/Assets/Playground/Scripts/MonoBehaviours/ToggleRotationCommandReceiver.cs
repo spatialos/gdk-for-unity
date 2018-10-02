@@ -32,7 +32,7 @@ namespace Playground.MonoBehaviours
             nextAvailableSpinChangeTime = Time.time;
         }
 
-        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.RequestResponder spinnerToggleRotationRequest)
+        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ResponseSender spinnerToggleRotationRequest)
         {
             if (Time.time < nextAvailableSpinChangeTime)
             {

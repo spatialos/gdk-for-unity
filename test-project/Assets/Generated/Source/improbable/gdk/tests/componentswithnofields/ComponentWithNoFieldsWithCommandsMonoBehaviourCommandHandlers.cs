@@ -18,13 +18,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Cmd
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public Cmd.ReceivedRequest Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -110,8 +110,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-                private readonly List<Action<Cmd.RequestResponder>> cmdDelegates = new List<Action<Cmd.RequestResponder>>();
-                public event Action<Cmd.RequestResponder> OnCmdRequest
+                private readonly List<Action<Cmd.ResponseSender>> cmdDelegates = new List<Action<Cmd.ResponseSender>>();
+                public event Action<Cmd.ResponseSender> OnCmdRequest
                 {
                     add
                     {
@@ -135,7 +135,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new Cmd.RequestResponder(entityManager, entity, request), cmdDelegates, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new Cmd.ResponseSender(entityManager, entity, request), cmdDelegates, logger);
                 }
             }
 

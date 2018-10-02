@@ -38,9 +38,9 @@ namespace Playground.MonoBehaviours
             worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
         }
 
-        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder requestResponder)
+        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ResponseSender responseSender)
         {
-            requestResponder.SendResponse(new Empty());
+            responseSender.SendResponse(new Empty());
 
             worldCommandRequestSender.ReserveEntityIds(1, context: this);
         }

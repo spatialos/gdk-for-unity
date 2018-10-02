@@ -32,18 +32,18 @@ namespace Playground.MonoBehaviours
             worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
-        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
+        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.ResponseSender responseSender)
         {
-            var entityId = requestResponder.Request.Payload.CubeEntityId;
+            var entityId = responseSender.Request.Payload.CubeEntityId;
             var spawnedCubes = cubeSpawnerWriter.Data.SpawnedCubes;
 
             if (!spawnedCubes.Contains(entityId))
             {
-                requestResponder.SendResponseFailure($"Requested entity id {entityId} not found in list.");
+                responseSender.SendResponseFailure($"Requested entity id {entityId} not found in list.");
             }
             else
             {
-                requestResponder.SendResponse(new Empty());
+                responseSender.SendResponse(new Empty());
             }
 
             worldCommandRequestSender.DeleteEntity(entityId, context: this);

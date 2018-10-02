@@ -18,13 +18,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     {
         public partial class FirstCommand
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public FirstCommand.ReceivedRequest Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, FirstCommand.ReceivedRequest request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, FirstCommand.ReceivedRequest request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -47,13 +47,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
         public partial class SecondCommand
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public SecondCommand.ReceivedRequest Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, SecondCommand.ReceivedRequest request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, SecondCommand.ReceivedRequest request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -153,8 +153,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-                private readonly List<Action<FirstCommand.RequestResponder>> firstCommandDelegates = new List<Action<FirstCommand.RequestResponder>>();
-                public event Action<FirstCommand.RequestResponder> OnFirstCommandRequest
+                private readonly List<Action<FirstCommand.ResponseSender>> firstCommandDelegates = new List<Action<FirstCommand.ResponseSender>>();
+                public event Action<FirstCommand.ResponseSender> OnFirstCommandRequest
                 {
                     add
                     {
@@ -178,10 +178,10 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 internal void OnFirstCommandRequestInternal(FirstCommand.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new FirstCommand.RequestResponder(entityManager, entity, request), firstCommandDelegates, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new FirstCommand.ResponseSender(entityManager, entity, request), firstCommandDelegates, logger);
                 }
-                private readonly List<Action<SecondCommand.RequestResponder>> secondCommandDelegates = new List<Action<SecondCommand.RequestResponder>>();
-                public event Action<SecondCommand.RequestResponder> OnSecondCommandRequest
+                private readonly List<Action<SecondCommand.ResponseSender>> secondCommandDelegates = new List<Action<SecondCommand.ResponseSender>>();
+                public event Action<SecondCommand.ResponseSender> OnSecondCommandRequest
                 {
                     add
                     {
@@ -205,7 +205,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 internal void OnSecondCommandRequestInternal(SecondCommand.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new SecondCommand.RequestResponder(entityManager, entity, request), secondCommandDelegates, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new SecondCommand.ResponseSender(entityManager, entity, request), secondCommandDelegates, logger);
                 }
             }
 
