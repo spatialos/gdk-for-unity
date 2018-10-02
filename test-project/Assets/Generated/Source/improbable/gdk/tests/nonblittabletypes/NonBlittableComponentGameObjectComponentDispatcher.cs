@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             private const uint componentId = 1002;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
             private static readonly InjectableId commandRequestReceiverInjectableId = new InjectableId(InjectableType.CommandRequestReceiver, componentId);
-            private static readonly InjectableId commandResponseHandlerInjectableId = new InjectableId(InjectableType.CommandResponseHandler, componentId);
+            private static readonly InjectableId commandResponseReceiverInjectableId = new InjectableId(InjectableType.CommandResponseReceiver, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
@@ -300,17 +300,17 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
+                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseReceiverInjectableId, out var commandResponseReceivers))
                         {
                             continue;
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseReceiver commandResponseReceiver in commandResponseReceivers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
-                                commandResponseHandler.OnFirstCommandResponseInternal(commandResponse);
+                                commandResponseReceiver.OnFirstCommandResponseInternal(commandResponse);
                             }
                         }
                     }
@@ -323,17 +323,17 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
+                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseReceiverInjectableId, out var commandResponseReceivers))
                         {
                             continue;
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseReceiver commandResponseReceiver in commandResponseReceivers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
-                                commandResponseHandler.OnSecondCommandResponseInternal(commandResponse);
+                                commandResponseReceiver.OnSecondCommandResponseInternal(commandResponse);
                             }
                         }
                     }

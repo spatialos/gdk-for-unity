@@ -21,7 +21,7 @@ namespace Playground.MonoBehaviours
         [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
         [Require] private CubeSpawner.Requirable.CommandRequestReceiver cubeSpawnerCommandRequestReceiver;
         [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private WorldCommands.Requirable.WorldCommandResponseReceiver worldCommandResponseReceiver;
 
         private ILogDispatcher logDispatcher;
 
@@ -29,7 +29,7 @@ namespace Playground.MonoBehaviours
         {
             logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerCommandRequestReceiver.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
-            worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
+            worldCommandResponseReceiver.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
         private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.ResponseSender responseSender)

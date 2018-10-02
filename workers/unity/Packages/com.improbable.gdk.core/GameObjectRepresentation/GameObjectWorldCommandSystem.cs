@@ -57,24 +57,24 @@ namespace Improbable.Gdk.GameObjectRepresentation
         [Inject] private DeleteEntityResponseData deleteEntityResponseData;
         [Inject] private EntityQueryResponseData entityQueryResponseData;
 
-        private static readonly InjectableId WorldCommandResponseHandlerInjectableId =
-            new InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId);
+        private static readonly InjectableId WorldCommandResponseReceiverInjectableId =
+            new InjectableId(InjectableType.WorldCommandResponseReceiver, InjectableId.NullComponentId);
 
         protected override void OnUpdate()
         {
             for (var i = 0; i < reserveEntityIdsResponseData.Length; ++i)
             {
                 var entity = reserveEntityIdsResponseData.Entities[i];
-                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseReceivers = GetWorldCommandResponseReceiversForEntity(entity);
 
-                if (worldCommandResponseHandlers == null)
+                if (worldCommandResponseReceivers == null)
                 {
                     continue;
                 }
 
                 foreach (var receivedResponse in reserveEntityIdsResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseReceivers)
                     {
                         worldCommandHandler.OnReserveEntityIdsResponseInternal(receivedResponse);
                     }
@@ -84,16 +84,16 @@ namespace Improbable.Gdk.GameObjectRepresentation
             for (var i = 0; i < createEntityResponseData.Length; ++i)
             {
                 var entity = createEntityResponseData.Entities[i];
-                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseReceivers = GetWorldCommandResponseReceiversForEntity(entity);
 
-                if (worldCommandResponseHandlers == null)
+                if (worldCommandResponseReceivers == null)
                 {
                     continue;
                 }
 
                 foreach (var receivedResponse in createEntityResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseReceivers)
                     {
                         worldCommandHandler.OnCreateEntityResponseInternal(receivedResponse);
                     }
@@ -103,16 +103,16 @@ namespace Improbable.Gdk.GameObjectRepresentation
             for (var i = 0; i < deleteEntityResponseData.Length; ++i)
             {
                 var entity = deleteEntityResponseData.Entities[i];
-                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseReceivers = GetWorldCommandResponseReceiversForEntity(entity);
 
-                if (worldCommandResponseHandlers == null)
+                if (worldCommandResponseReceivers == null)
                 {
                     continue;
                 }
 
                 foreach (var receivedResponse in deleteEntityResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseReceivers)
                     {
                         worldCommandHandler.OnDeleteEntityResponseInternal(receivedResponse);
                     }
@@ -122,16 +122,16 @@ namespace Improbable.Gdk.GameObjectRepresentation
             for (var i = 0; i < entityQueryResponseData.Length; ++i)
             {
                 var entity = entityQueryResponseData.Entities[i];
-                var worldCommandResponseHandlers = GetWorldCommandResponseHandlersForEntity(entity);
+                var worldCommandResponseReceivers = GetWorldCommandResponseReceiversForEntity(entity);
 
-                if (worldCommandResponseHandlers == null)
+                if (worldCommandResponseReceivers == null)
                 {
                     continue;
                 }
 
                 foreach (var receivedResponse in entityQueryResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseReceivers)
                     {
                         worldCommandHandler.OnEntityQueryResponseInternal(receivedResponse);
                     }
@@ -139,7 +139,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
         }
 
-        private WorldCommands.Requirable.WorldCommandResponseHandler[] GetWorldCommandResponseHandlersForEntity(
+        private WorldCommands.Requirable.WorldCommandResponseReceiver[] GetWorldCommandResponseReceiversForEntity(
             Entity entity)
         {
             var entityToReaderWriterStore = gameObjectDispatcherSystem.EntityToReaderWriterStore;
@@ -149,7 +149,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return null;
             }
 
-            if (!injectableStore.TryGetInjectablesForComponent(WorldCommandResponseHandlerInjectableId,
+            if (!injectableStore.TryGetInjectablesForComponent(WorldCommandResponseReceiverInjectableId,
                 out var injectables))
             {
                 return null;
@@ -161,7 +161,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
 
             return Array.ConvertAll(injectables.ToArray(),
-                injectable => (WorldCommands.Requirable.WorldCommandResponseHandler) injectable);
+                injectable => (WorldCommands.Requirable.WorldCommandResponseReceiver) injectable);
         }
     }
 }

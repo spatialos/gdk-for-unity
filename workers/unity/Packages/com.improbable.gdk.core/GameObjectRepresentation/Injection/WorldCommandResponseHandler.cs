@@ -17,9 +17,9 @@ namespace Improbable.Gdk.Core.Commands
     {
         public static partial class Requirable
         {
-            [InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId)]
+            [InjectableId(InjectableType.WorldCommandResponseReceiver, InjectableId.NullComponentId)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class WorldCommandResponseHandler : RequirableBase
+            public class WorldCommandResponseReceiver : RequirableBase
             {
                 private readonly ILogDispatcher logDispatcher;
 
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core.Commands
                 private readonly List<Action<DeleteEntity.ReceivedResponse>> deleteEntityDelegates;
                 private readonly List<Action<EntityQuery.ReceivedResponse>> entityQueryDelegates;
 
-                private WorldCommandResponseHandler(ILogDispatcher logDispatcher) : base(logDispatcher)
+                private WorldCommandResponseReceiver(ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
                     this.logDispatcher = logDispatcher;
                     reserveEntityIdsDelegates = new List<Action<ReserveEntityIds.ReceivedResponse>>();
@@ -151,13 +151,13 @@ namespace Improbable.Gdk.Core.Commands
                         logDispatcher);
                 }
 
-                [InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId)]
-                private class WorldCommandResponseHandlerCreator : IInjectableCreator
+                [InjectableId(InjectableType.WorldCommandResponseReceiver, InjectableId.NullComponentId)]
+                private class WorldCommandResponseReceiverCreator : IInjectableCreator
                 {
                     public IInjectable CreateInjectable(Entity entity, EntityManager entityManager,
                         ILogDispatcher logDispatcher)
                     {
-                        return new WorldCommandResponseHandler(logDispatcher);
+                        return new WorldCommandResponseReceiver(logDispatcher);
                     }
                 }
             }
