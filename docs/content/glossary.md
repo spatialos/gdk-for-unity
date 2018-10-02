@@ -74,7 +74,7 @@ When you make changes to the code of a [worker](#worker), you need to build thos
 ## Deploying
 
 When you want to try out your game, you need to deploy it. This means
-launching SpatialOS itself. SpatialOS sets up the [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) based on a [snapshot](#snapshot),
+launching SpatialOS itself. SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot),
 then starts up the [server-workers](#worker) needed to run the game world.
 
 Once the deployment is running, you can connect [client-workers](#client-worker) to it. People can then use these clients to play the game.
@@ -85,7 +85,7 @@ Once the deployment is running, you can connect [client-workers](#client-worker)
 
 ### Inspector
 
-The Inspector is a web-based tool that you use to explore the internal state of a [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world).
+The Inspector is a web-based tool that you use to explore the internal state of a [SpatialOS world](#spatialos-world).
 It gives you realtime view of what’s happening in a [deployment](#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment)
 or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). Among other things, it displays:
 
@@ -121,7 +121,7 @@ The Console ([console.improbable.io](https://console.improbable.io/)) is the mai
 
 ## Worker
 
-SpatialOS manages the [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) itself: it keeps track of all the [entities](#entity) and their
+SpatialOS manages the [world](#spatialos-world) itself: it keeps track of all the [entities](#entity) and their
 [properties](#property). But on its own, it doesn’t make any changes to the world.
 
 Workers are programs that connect to a SpatialOS world. They perform the computation associated with a world:
@@ -139,11 +139,11 @@ As the world changes over time, where entities are and the amount of work associ
 SpatialOS adjusts which workers have write access to components on which entities (and starts up new workers when
 needed). This is called [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
 
-Around the entities they have write access to, each worker has an area of the world they are [interested in](#interest).
+Around the entities they have write access to, each worker has an area of the world they are [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
 A worker can read the current properties of the entities within this area, and SpatialOS sends
-[updates](#sending-an-update) about these entities to the worker.
+[updates](#https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) about these entities to the worker.
 
-If the worker has [write access](#read-and-write-access-authority) to a component, it can [send updates](#sending-an-update):
+If the worker has [write access](#read-and-write-access-authority) to a component, it can [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update):
 it can update [properties](#property), and trigger [events](#event).
 
 > Related:
@@ -158,38 +158,40 @@ A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. 
 Server-workers are usually tasked with implementing game logic and physics simulation.
 
 You can have one server-worker connected to your [deployment](#deploying), or dozens, depending on the size and complexity of the
-[world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world).
+[world](#spatialos-world).
 
 ### Client-worker
 
-A client-worker is a [worker](#worker) that is run by a player, in their game executable program; their game executable program uses it to connect
-to and interact with the [SpatialOS world](#spatialos-world). 
+A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. It is used to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
 
 Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by
 SpatialOS. In a running [deployment](#deploying), there will be one
-client-worker per player. Players' game executables start client-workers when connecting to the [SpatialOS world](#spatialos-world), and stop them upon disconnect.
+client-worker per player.
 
-Client-workers are mostly tasked with visualising what’s happening in the world. You’d also use them for dealing with player input. In general, you want to give client-workers
+Client-workers are mostly tasked with visualising what’s happening in the [SpatialOS world](#spatialos-world). They also dealing with player input. In general, you want to give client-workers
 [write access](#read-and-write-access-authority) to as few components as possible,
 to make cheating difficult.
 
 > Related:
 > * [External worker (server-worker) launch configuration]({{urlRoot}}/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
 
+### Game client
+
+A game client is a binary. A [client-worker](client-worker) is an object instantiated by said binary.
+
 ### SpatialOS world
+
 Also known as "the world" and "the game world".
 
-The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's
-data is stored within [entities](#entity) - specifically, within their [components](#component).
+The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [entities](#entity) - specifically, within their [components](#component).
 
 SpatialOS manages the world, keeping track of all the entities and what state they’re in.
 
 *Changes* to the world are made by [workers](#worker). Each worker has a view onto the world (the
-part of the world that they're [interested](#interest) in), and SpatialOS sends them updates when anything changes
+part of the world that they're [interested](https://docs.improbable.io/reference/latest/shared/glossary#interest) in), and SpatialOS sends them updates when anything changes
 in that view.
 
-It's important to recognise this fundamental separation between the SpatialOS world and the view/representation of
-that world that a worker [checks out](#checking-out) locally. This is why workers must [send updates](#sending-an-update)
+It's important to recognise this fundamental separation between the SpatialOS world and the subset view/representation of that world that an individual worker [checks out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update)
 to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must
 use SpatialOS APIs to change it.
 
@@ -199,18 +201,15 @@ Node refers to a single machine used by a [cloud deployment](#deploying). Its na
 
 ## Entity
 
-All of the objects inside a [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) are entities: they’re the basic building
-block of the world. Examples include players, NPCs, and objects in the world like trees.
+All of the objects inside a [SpatialOS world](#spatialos-world) are entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
 
 Entities are made up of [components](#component), which store the data associated with that entity.
 
-[Workers](#worker) can only see the entities they're [interested in](#interest). Workers can represent these
-entities locally any way you like.
+[Workers](#worker) can only see the entities they're [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest). Client-workers can represent these entities in any way you like.
 
-For example, for workers built using Unity, you might want to have a prefab associated with each entity type, and spawn a GameObject for each entity the worker has [checked out](#checking-out).
+For example, for client-workers built using Unity, you might want to have a prefab associated with each entity type, and spawn a GameObject for each entity the worker has [checked out](#https://docs.improbable.io/reference/latest/shared/glossary#checking-out).
 
-You can have other objects that are *not* entities locally on workers - like UI for a player - but no other
-worker will be able to see them, because they're not part of the [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world).
+You can have other objects that are *not* entities locally on workers - like UI for a player - but no other worker will be able to see them, because they're not part of the [SpatialOS world](#spatialos-world).
 
 > Related:
 > * [Concepts: Entities]({{urlRoot}}/shared/concepts/world-entities-components)
@@ -223,7 +222,7 @@ worker will be able to see them, because they're not part of the [SpatialOS worl
 ### Component
 
 An [entity](#entity) is defined by a set of components. Common components in a game might be things like `Health`,
-`Position`, or `PlayerControls`. They're the storage mechanism for data about the [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) that you
+`Position`, or `PlayerControls`. They're the storage mechanism for data about the [world](#spatialos-world) that you
 want to be shared between [workers](#worker).
 
 Components can contain:
@@ -267,14 +266,14 @@ Use the [command](#the-spatial-command-line-tool-cli)
 [schema](#schema) (in C#, C++ and Java).
 
 This code is used by [workers](#worker) to interact with [entities](#entity): to read from their
-[components](#component), and to [make changes](#sending-an-update) to them.
+[components](#component), and to [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to them.
 
 > Related:
 > * [Generating code from the schema]({{urlRoot}}/shared/schema/introduction#generating-code-from-the-schema)
 
 ## Read and write access ("authority")
 
-Many [workers](#worker) can connect to a [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world). To prevent them from clashing, only one
+Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, only one
 worker instance at a time is allowed to write to each [component](#component) on each [entity](#entity): ie,
 given write access. Write access is sometimes also referred to as authority.
 
@@ -291,7 +290,7 @@ can read from an entity, it is allowed to read from all components on that entit
 
 ## Snapshot
 
-A snapshot is a representation of the state of a [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) at some point in time. It
+A snapshot is a representation of the state of a [world](#spatialos-world) at some point in time. It
 stores each [persistent](#persistence) [entity](#entity) and the values of their [components](#component)'
 [properties](#property).
 
@@ -351,8 +350,6 @@ Events
 
 Feature module
 
-Interest
-
 Package
 Each package contains one or multiple assemblies and contains one specific functionality that can be added to your game to make the development of your SpatialOS game simpler.
 Read access
@@ -383,7 +380,7 @@ The SpatialOS world, also known as “the world” and “the game world”.
 The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world’s data is stored within SpatialOS [entities](link!!); specifically, within their [components](link!!! to ECS components).
 SpatialOS manages the world, keeping track of all the SpatialOS entities and what state they’re in.
 Changes to the world are made by [workers](link). Each worker has a view onto the world (the part of the world that they’re [interested](link) in), and SpatialOS sends them updates when anything changes in that view.
-It’s important to recognise this fundamental separation between the SpatialOS world and the view (or representation) of that world that a worker [checks out](link!!) locally. This is why workers must send updates to SpatialOS when they want to change the world: they don’t control the canonical state of the world, they must use SpatialOS APIs to change it.
+It’s important to recognise this fundamental separation between the SpatialOS world and the view (or representation) of that world that a worker [checks out](https://docs.improbable.io/reference/13.3/shared/glossary#checking-out) locally. This is why workers must send updates to SpatialOS when they want to change the world: they don’t control the canonical state of the world, they must use SpatialOS APIs to change it.
 
 Write access
 
