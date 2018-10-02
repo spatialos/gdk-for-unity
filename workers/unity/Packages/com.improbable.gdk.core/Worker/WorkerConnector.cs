@@ -10,17 +10,33 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     A base class to use to connect workers via Monobehaviours.
+    /// </summary>
     public class WorkerConnector : MonoBehaviour, IDisposable
     {
         private delegate Task<Worker> ConnectionDelegate();
 
+        /// <summary>
+        ///     The number of connection attempts before giving up.
+        /// </summary>
         public int MaxConnectionAttempts = 3;
+
+        /// <summary>
+        ///     Denotes whether to connect using an external IP address.
+        /// </summary>
         public bool UseExternalIp;
 
+        /// <summary>
+        ///     The Worker representation.
+        /// </summary>
         public Worker Worker;
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
+        /// <summary>
+        ///     An event that triggers when the worker has been created.
+        /// </summary>
         public event Action<Worker> OnWorkerCreationFinished
         {
             add
@@ -47,6 +63,16 @@ namespace Improbable.Gdk.Core
             Dispose();
         }
 
+        /// <summary>
+        ///     Connects a worker to the SpatialOS runtime.
+        /// </summary>
+        /// <remarks>
+        ///     Uses the location of this GameObject as the worker origin.
+        ///     Uses <see cref="ShouldUseLocator"/> to determine whether to connect via the Locator.
+        /// </remarks>
+        /// <param name="workerType">The type of the worker to connect as</param>
+        /// <param name="logger">The logger for the worker to use.</param>
+        /// <returns></returns>
         public async Task Connect(string workerType, ILogDispatcher logger)
         {
             // Check that other workers have finished trying to connect before this one starts.
@@ -116,6 +142,10 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        /// <summary>
+        ///     Determines whether to connect via the locator.
+        /// </summary>
+        /// <returns>True if should connect via the Locator, false otherwise.</returns>
         protected virtual bool ShouldUseLocator()
         {
             if (Application.isEditor)
@@ -128,11 +158,25 @@ namespace Improbable.Gdk.Core
             return commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken);
         }
 
+        /// <summary>
+        ///     Selects which deployment to connect to.
+        /// </summary>
+        /// <param name="deployments">The list of deployments.</param>
+        /// <returns>The name of the deployment to connect to.</returns>
         protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
             return null;
         }
 
+        /// <summary>
+        ///     Gets the Receptionist configuration.
+        /// </summary>
+        /// <remarks>
+        ///    If in the Unity Editor, an auto-generated worker id is used. If via the command line, will only
+        ///    auto-generate if no worker id is provided.
+        /// </remarks>
+        /// <param name="workerType">The type of the worker to create.</param>
+        /// <returns>The Receptionist connection configuration</returns>
         protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
         {
             ReceptionistConfig config;
@@ -162,6 +206,11 @@ namespace Improbable.Gdk.Core
             return config;
         }
 
+        /// <summary>
+        ///     Gets the Locator configuration.
+        /// </summary>
+        /// <param name="workerType">The type of the worker to create.</param>
+        /// <returns>The Locator connection configuration</returns>
         protected virtual LocatorConfig GetLocatorConfig(string workerType)
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
