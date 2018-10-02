@@ -3,7 +3,7 @@
 ----
 ## Glossary
 
->This glossary **only** contains the terms you need to understand to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/13.2/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic terms related to SpatialOS.
+>This glossary **only** contains the terms you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/13.2/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic terms related to SpatialOS.
 
 ### SpatialOS Project
 
@@ -13,7 +13,7 @@ A SpatialOS project includes (but isn't limited to):
 
 * The source code of all [workers](#worker) used by the project
 * The project’s [schema](#schema)
-* (optional) [Snapshots](#snapshot) of the project’s [SpatialOS world](#spatialos-world)
+* (optional) [Snapshots](#snapshot) of the project’s [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world)
 * Configuration files, mostly containing settings for [deployments](#deploying) (for example,
 [launch configuration files](#launch-configuration-file))
 
@@ -38,7 +38,7 @@ You can find your project name in the [Console](https://console.improbable.io/).
 
 ### Assembly
 
-An assembly is what's created when you [build your workers](/build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes executable files for [client-workers](#client-worker) and [server-workers](#server-worker), and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
+An assembly is what's created when you [build your workers](build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes executable files for [client-workers](#client-worker) and [server-workers](#server-worker), and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
 
 The assembly is stored locally at `UnityGDK\build\assembly`. When you run a [cloud deployment](#cloud-deployment), your assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
 
@@ -52,44 +52,25 @@ The assembly is stored locally at `UnityGDK\build\assembly`. When you run a [clo
 Also known as the "`spatial` CLI".
 
 The `spatial` command-line tool provides a set of commands that you use to interact with a
-[SpatialOS project](#project). Among other things, you use it to:
-
-* [deploy](#deploying) your game
+[SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game
 (using [`spatial local launch`]({{urlRoot}}/shared/spatial-cli/spatial-local-launch) or
-[`spatial cloud launch`]({{urlRoot}}/shared/spatial-cli/spatial-cloud-launch))
-
-* install software dependencies required for SpatialOS development
-(using [`spatial setup install-dependencies`]({{urlRoot}}/shared/spatial-cli/spatial-setup))
-* check you have the correct versions of software dependencies
-(using [`spatial diagnose`]({{urlRoot}}/shared/spatial-cli/spatial-diagnose))
+[`spatial cloud launch`]({{urlRoot}}/shared/spatial-cli/spatial-cloud-launch)).
 
 > Related pages:
 >
-> * [The `spatial` command-line tool]({{urlRoot}}/shared/spatial-cli-introduction)
-> * [`spatial` reference documentation]({{urlRoot}}/shared/spatial-cli/spatial)
+> * [An introducion to the `spatial` command-line tool](https://docs.improbable.io/reference/13.3/shared/spatial-cli-introduction)
+> * [`spatial` reference documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial)
 
 ## Building
 
-When you make changes to the code of a [worker](#worker), you need to build those changes in order to try them
-out in a [local](#local-deployment) or [cloud deployment](#cloud-deployment).
+When you make changes to the code of a [worker](#worker), you need to build those changes in order to try them out in a [local](#local-deployment) or [cloud deployment](#cloud-deployment).
 
-You can:
-
-* build using the [command line](#the-spatial-command-line-tool-cli) with the command
-[`spatial worker build <worker whose code changed>`]({{urlRoot}}/shared/spatial-cli/spatial-worker-build):
-for example, `spatial worker build MyCSharpWorker`.
-
-We recommend only building the bits of your project that you’ve changed, to save time. For example, if you’ve
-only changed the source code of one worker, you should only build that worker’s code.
-
-You can build *all* workers in your project using the command
-[`spatial worker build`]({{urlRoot}}/shared/spatial-cli/spatial-worker-build).
+[How to build your game](build.md) explains this process step by step.
 
 > Related pages:
 >
-> * [Building from the command line]({{urlRoot}}/shared/build)
-> * [Build configuration]({{urlRoot}}/shared/worker-configuration/worker-build)
-> * [`spatial worker build`]({{urlRoot}}/shared/spatial-cli/spatial-worker-build)
+> * [Building the bridge and launch configurations of your workers](build.md#building-the-bridge-and-launch-configurations-of-your-workers)
+> * [Preparing the build configuration of your workers](build.md#preparing-the-build-configuration-of-your-workers)
 
 ## Deploying
 
@@ -109,87 +90,6 @@ You can run a deployment:
 >
 > * [Deploying locally]({{urlRoot}}/shared/deploy/deploy-local)
 > * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
-
-### Local deployment
-
-A local deployment is a [deployment](#deploying) of your game/[project](#project) on your local
-development machine.
-
-Before you run a local deployment, you need to:
-
-* Have a [snapshot](#snapshot) to be the starting point of your [world](#spatialos-world).
-* [Build](#building), if you’ve made any changes to your project/[worker](#worker) code.
-
-You can launch a local deployment using the [command](#the-spatial-command-line-tool-cli)
-`spatial local launch`.
-
-Launching a local deployment runs SpatialOS locally. SpatialOS will start (and stop) the
-[server-workers](#server-worker) needed by the [game world](#spatialos-world).
-
-Once the deployment is running, you can connect [clients](#client-worker) to it in order to play
-the game (only on your local machine) using the command [`spatial local worker launch`]({{urlRoot}}/shared/spatial-cli/spatial-local-worker-launch)
-
-> Related pages:
->
-> * [Deploying locally]({{urlRoot}}/shared/deploy/deploy-local)
->   * [`spatial local launch`]({{urlRoot}}/shared/spatial-cli/spatial-local-launch)
-> * [Connecting a client]({{urlRoot}}/shared/deploy/deploy-local#connect-workers-to-the-deployment)
-> * [`spatial local worker launch`]({{urlRoot}}/shared/spatial-cli/spatial-local-worker-launch)
-
-### Cloud deployment
-
-A cloud deployment is a [deployment](#deploying) of your game/[project](#project) in the cloud.
-
-Before you can run a cloud deployment, you need to:
-
-* Know your [project name](#project-name), and specify it (either in
-[spatialos.json]({{urlRoot}}/shared/reference/file-formats/spatialos-json), or pass it to `spatial cloud launch`
-using the argument `--project-name`).
-* Have a [snapshot](#snapshot) to be the starting point of your [world](#spatialos-world).
-* [Build](#building) a new [assembly](#assembly), if you’ve made any changes to your project/[worker](#worker) code.
-* Upload the [assembly](#assembly).
-
-You can launch a cloud deployment using [command](#the-spatial-command-line-tool-cli)
-[`spatial cloud launch`]({{urlRoot}}/shared/spatial-cli/spatial-cloud-launch).
-
-When you run the launch command, you specify:
-
-* the name of the [assembly](#assembly) to use
-* the [launch configuration file](#launch-configuration-file) to use
-* a label for the deployment (the [deployment name](#deployment-name))
-* the snapshot to start from
-
-Launching a deployment runs SpatialOS in the cloud. SpatialOS will start (and stop) the
-[server-workers](#server-worker) needed by the [game world](#spatialos-world).
-
-Once the deployment is running, you can connect [client-workers](#client-worker) to it, using the command 
-`spatial cloud connect external <deployment name>`
-
-> Related pages:
->
-> * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
-> * [`spatial cloud launch`]({{urlRoot}}/shared/spatial-cli/spatial-cloud-launch)
-> * [`spatial cloud connect external`]({{urlRoot}}/shared/spatial-cli/spatial-cloud-connect-external)
-
-### Deployment name
-
-A deployment name is a label to identify a [cloud deployment](#cloud-deployment) in the [Console](#console).
-You choose/make up this name when you run a cloud deployment.
-
-### Launch configuration file
-
-A launch configuration file contains settings that the [`spatial` command-line tool](#the-spatial-command-line-tool-cli)
-uses when it launches a [deployment](#deploying). This includes things like how big the [world](#spatialos-world)
-is, which [workers](#worker) to use in the deployment, and what permissions to give them.
-
-Easily confused with the launch configuration _section_ in the [worker configuration file (worker.json)](#worker-configuration-worker-json).
-
-> Related pages:
->
-> * [Launch configuration file]({{urlRoot}}/shared/reference/file-formats/launch-config)
-> * [Worker flags]({{urlRoot}}/shared/worker-configuration/worker-flags)
-> * [Load balancing]({{urlRoot}}/shared/worker-configuration/loadbalancer-config)
-> * [Worker permissions]({{urlRoot}}/shared/worker-configuration/permissions)
 
 ### Inspector
 
