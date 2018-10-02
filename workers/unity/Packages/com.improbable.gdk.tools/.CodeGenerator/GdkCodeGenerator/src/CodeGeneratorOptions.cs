@@ -9,6 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     /// </summary>
     public class CodeGeneratorOptions
     {
+        public string WorkerJsonDirectory { get; private set; }
         public string JsonDirectory { get; private set; }
         public string NativeOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
@@ -22,7 +23,11 @@ namespace Improbable.Gdk.CodeGenerator
             var optionSet = new OptionSet
             {
                 {
-                    "json-dir=", "REQUIRED: the directory that will contain the json representation of your schema",
+                    "worker-json-dir=", "REQUIRED: the directory that will contain the JSON representation of your workers",
+                    j => options.WorkerJsonDirectory = j
+                },
+                {
+                    "json-dir=", "REQUIRED: the directory that will contain the JSON representation of your schema",
                     j => options.JsonDirectory = j
                 },
                 {

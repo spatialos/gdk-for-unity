@@ -6,34 +6,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 {
     internal class SceneItem
     {
-        public readonly SceneAsset SceneAsset;
         public bool Included;
-        private readonly bool exists;
+        public bool Exists;
+        public readonly SceneAsset SceneAsset;
 
-        public SceneItem(SceneAsset sceneAsset, bool included, SceneAsset[] inAssetDatabase)
+        public SceneItem(SceneAsset sceneAsset, bool included, SceneAsset[] scenesInAssetDatabase)
         {
             SceneAsset = sceneAsset;
             Included = included;
-            exists = inAssetDatabase.Contains(sceneAsset);
-        }
-
-        public static SceneItem Drawer(Rect position, SceneItem item)
-        {
-            using (item.exists ? null : new GUIColorScope(Color.red))
-            {
-                var positionWidth = position.width;
-                var labelWidth = GUI.skin.toggle.CalcSize(GUIContent.none).x + 5;
-
-                position.width = labelWidth;
-                item.Included = EditorGUI.Toggle(position, item.Included);
-
-                position.x += labelWidth;
-                position.width = positionWidth - labelWidth;
-
-                EditorGUI.ObjectField(position, item.SceneAsset, typeof(SceneAsset), false);
-            }
-
-            return item;
+            Exists = scenesInAssetDatabase.Contains(sceneAsset);
         }
     }
 }
