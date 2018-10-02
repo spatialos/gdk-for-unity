@@ -25,6 +25,14 @@ namespace Improbable.Gdk.Tools
 
         private const string DownloadForceMenuItem = "SpatialOS/Download CoreSdk (force)";
 
+        private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
+        {
+            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/OSX", false, new List<BuildTarget> { BuildTarget.StandaloneOSX }, null, true),
+            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Linux", false, new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, null, true),
+            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Windows", false, new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, null, true),
+            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Sdk/OSX", true, null, null, true),
+        };
+
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()
         {
@@ -38,6 +46,7 @@ namespace Improbable.Gdk.Tools
 
             Download();
             AssetDatabase.Refresh();
+            SetPluginsCompatibility();
         }
 
         private static void RemoveMarkerFile()
@@ -100,7 +109,9 @@ namespace Improbable.Gdk.Tools
                 return DownloadResult.AlreadyInstalled;
             }
 
-            return Download();
+            DownloadResult result = Download();
+            SetPluginsCompatibility();
+            return result;
         }
 
         /// <summary>
@@ -134,6 +145,73 @@ namespace Improbable.Gdk.Tools
             }
 
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
+        }
+
+        private static void SetPluginsCompatibility()
+        {
+            foreach (var pluginDirectoryCompatibility in PluginsCompatibilityList)
+            {
+                var pluginPaths = AssetDatabase.FindAssets("", new[] { pluginDirectoryCompatibility.Path });
+                foreach (var pluginPath in pluginPaths)
+                {
+                    var plugin = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(pluginPath)) as PluginImporter;
+                    if (plugin == null)
+                    {
+                        continue;
+                    }
+
+                    plugin.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.AnyPlatformCompatible);
+                    plugin.SetCompatibleWithEditor(pluginDirectoryCompatibility.EditorCompatible);
+                    if (pluginDirectoryCompatibility.AnyPlatformCompatible)
+                    {
+                        foreach (var buildTarget in pluginDirectoryCompatibility.IncompatiblePlatforms)
+                        {
+                            plugin.SetExcludeFromAnyPlatform(buildTarget, true);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var buildTarget in pluginDirectoryCompatibility.CompatiblePlatforms)
+                        {
+                            plugin.SetCompatibleWithPlatform(buildTarget, true);
+                        }
+                    }
+
+                    plugin.SaveAndReimport();
+                }
+            }
+        }
+
+        private class PluginDirectoryCompatibility
+        {
+            public PluginDirectoryCompatibility(string path,
+                bool anyPlatformCompatible,
+                List<BuildTarget> compatiblePlatforms,
+                List<BuildTarget> incompatiblePlatforms,
+                bool editorCompatible)
+            {
+                Path = path;
+                AnyPlatformCompatible = anyPlatformCompatible;
+                if (anyPlatformCompatible && compatiblePlatforms != null)
+                {
+                    Debug.LogError($"Bad plugin compatibility configuration for  {path}. Compatible with any shouldn't be used with a list of compatible platforms");
+                }
+
+                if (!anyPlatformCompatible && incompatiblePlatforms != null)
+                {
+                    Debug.LogError($"Bad plugin compatibility configuration for  {path}. Not compatible with any shouldn't be used with a list of incompatible platforms");
+                }
+
+                CompatiblePlatforms = compatiblePlatforms ?? new List<BuildTarget>();
+                IncompatiblePlatforms = incompatiblePlatforms ?? new List<BuildTarget>();
+                EditorCompatible = editorCompatible;
+            }
+
+            public string Path { get; }
+            public bool AnyPlatformCompatible { get; }
+            public List<BuildTarget> CompatiblePlatforms { get; }
+            public List<BuildTarget> IncompatiblePlatforms { get; }
+            public bool EditorCompatible { get; }
         }
 
         private static string[] ConstructArguments()
