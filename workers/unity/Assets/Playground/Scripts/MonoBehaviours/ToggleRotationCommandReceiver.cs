@@ -15,7 +15,7 @@ namespace Playground.MonoBehaviours
     {
         public float TimeBetweenSpinChanges = 1.0f;
 
-        [Require] private SpinnerRotation.Requirable.CommandRequestHandler requestHandler;
+        [Require] private SpinnerRotation.Requirable.CommandRequestReceiver requestReceiver;
 
         private RotationBehaviour rotationBehaviour;
 
@@ -24,7 +24,7 @@ namespace Playground.MonoBehaviours
         private void OnEnable()
         {
             rotationBehaviour = GetComponent<RotationBehaviour>();
-            requestHandler.OnSpinnerToggleRotationRequest += OnSpinnerToggleRotationRequest;
+            requestReceiver.OnSpinnerToggleRotationRequest += OnSpinnerToggleRotationRequest;
         }
 
         private void OnDisable()

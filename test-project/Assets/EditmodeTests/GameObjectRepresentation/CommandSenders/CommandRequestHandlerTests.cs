@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
 {
     [TestFixture]
-    public class CommandRequestHandlerTests
+    public class CommandRequestReceiverTests
     {
         [Test]
         public void SendResponse_queues_responses()

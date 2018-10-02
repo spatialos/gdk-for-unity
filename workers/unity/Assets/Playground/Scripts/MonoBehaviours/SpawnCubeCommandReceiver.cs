@@ -23,7 +23,7 @@ namespace Playground.MonoBehaviours
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
         [Require] private TransformInternal.Requirable.Reader transformReader;
-        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
+        [Require] private CubeSpawner.Requirable.CommandRequestReceiver cubeSpawnerCommandRequestReceiver;
         [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
         [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
         [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
@@ -33,7 +33,7 @@ namespace Playground.MonoBehaviours
         public void OnEnable()
         {
             logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
-            cubeSpawnerCommandRequestHandler.OnSpawnCubeRequest += OnSpawnCubeRequest;
+            cubeSpawnerCommandRequestReceiver.OnSpawnCubeRequest += OnSpawnCubeRequest;
             worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
             worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
         }

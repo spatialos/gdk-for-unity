@@ -100,24 +100,24 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
-            internal class CommandRequestHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandRequestReceiver, <#= unityComponentDefinition.Id #>)]
+            internal class CommandRequestReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandRequestReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestReceiver, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : RequirableBase
+            public class CommandRequestReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandRequestReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;

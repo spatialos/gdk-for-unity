@@ -87,24 +87,24 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
-            internal class CommandRequestHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandRequestReceiver, 1005)]
+            internal class CommandRequestReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandRequestReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
+            [InjectableId(InjectableType.CommandRequestReceiver, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : RequirableBase
+            public class CommandRequestReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandRequestReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
