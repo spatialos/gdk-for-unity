@@ -120,17 +120,29 @@ For health packs we will do the latter. When the game begins there will already 
 
 The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `/Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor.
 
+We will modify the snapshot generating logic in two steps:
+1. Adding a function to create and add a `HealthPack` entity.
+2. Fix the package import settings so use of `Vector3f` is valid.
+
 Within the `SnapshotMenu` class, add a new function that will contain logic for adding health pack entities to the snapshot object:
 
 ```
 private static void AddHealthPacks(Snapshot snapshot)
 {
-    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(0, 0, 0), 100f);
+    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f { X = 5, Y = 0, Z = 0 }, 100);
     snapshot.AddEntity(healthPack);
 }
 ```
 
-This creates a health pack entity at the origin, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it wont be run during snapshot generation.
+The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. Adding `using Improbable;` to the top of `SnapshotMenu.cs` is necessary, but an additional change is necessary. In your Unity editor Project hierarchy, navigate to `/Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
+
+The `Improbable.FPS.Editor Import Settings` contains a section called `References`. You must click the `+` button to add a new reference, double-click the new field and in the asset-finder pop-up that appears you must double-click `Improbable.Gdk.Generated`. This is because the `Vector3f` struct is defined within that particular package, and we must declare our intent.
+
+Once you've added and applied this new package reference your use of `Vector3f` in `SnapshotGenerator.cs` will now be valid.
+
+<%(#Expandable title="Why does the FPS Template use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules](fix) which make good use of packages.<%(/Expandable)%>
+
+This script now creates a health pack entity at the origin, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it wont be run during snapshot generation!
 
 It's a great idea to separate default values (such as health pack positions, and health values) into a settings file. In the FPS Template project you can find lots of examples of using Unity `ScriptableObject` components for exactly that. But for now, we will keep this example simple.
 
@@ -140,7 +152,7 @@ Snapshot files are found in your project root directory, in a directory named `s
 
 If you have updated the snapshot generation function (as you just did in the step above), or if you've altered which components are specified in one of your entity templates, then your snapshot will be out of date. The snapshot is a big list of entities, and all their individual component values, so any change to these and the snapshot file must be regenerated.
 
-You can regenerate the `default.snapshot` file from the SpatialOS menu option in the Unity editor, but running **"Generate FPS Snapshot"**.
+You can regenerate the `default.snapshot` file from the SpatialOS menu option in the Unity editor, by running **"Generate FPS Snapshot"**.
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](fix).
 
