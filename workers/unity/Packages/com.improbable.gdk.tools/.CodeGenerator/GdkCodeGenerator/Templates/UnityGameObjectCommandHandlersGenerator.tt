@@ -28,13 +28,13 @@ namespace <#= qualifiedNamespace #>
 #>
         public partial class <#= commandDetails.CommandName #>
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public <#= rawRequestType #> Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, <#= rawRequestType #> request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -100,24 +100,24 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
-            internal class CommandRequestHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandRequestReceiver, <#= unityComponentDefinition.Id #>)]
+            internal class CommandRequestReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandRequestReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestReceiver, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : RequirableBase
+            public class CommandRequestReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandRequestReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -127,11 +127,11 @@ namespace <#= qualifiedNamespace #>
            var delegateList = commandDetails.CamelCaseCommandName + "Delegates";
            var rawRequestType = commandDetails.CommandName + ".ReceivedRequest";
            var rawResponseType = commandDetails.CommandName + ".Response";
-           var wrappedRequestType = commandDetails.CommandName + ".RequestResponder";
+           var responseSenderType = commandDetails.CommandName + ".ResponseSender";
            var responsePayloadType = commandDetails.FqnResponseType;
 #>
-                private readonly List<Action<<#= wrappedRequestType #>>> <#= delegateList #> = new List<Action<<#= wrappedRequestType #>>>();
-                public event Action<<#= wrappedRequestType #>> On<#= commandDetails.CommandName #>Request
+                private readonly List<Action<<#= responseSenderType #>>> <#= delegateList #> = new List<Action<<#= responseSenderType #>>>();
+                public event Action<<#= responseSenderType #>> On<#= commandDetails.CommandName #>Request
                 {
                     add
                     {
@@ -155,29 +155,29 @@ namespace <#= qualifiedNamespace #>
 
                 internal void On<#= commandDetails.CommandName #>RequestInternal(<#= rawRequestType #> request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new <#= wrappedRequestType #>(entityManager, entity, request), <#= delegateList #>, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new <#= responseSenderType #>(entityManager, entity, request), <#= delegateList #>, logger);
                 }
 <# } #>
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
-            internal class CommandResponseHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandResponseReceiver, <#= unityComponentDefinition.Id #>)]
+            internal class CommandResponseReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandResponseReceiver, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : RequirableBase
+            public class CommandResponseReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandResponseReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;

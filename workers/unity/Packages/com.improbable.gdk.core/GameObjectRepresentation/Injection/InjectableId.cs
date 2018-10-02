@@ -9,10 +9,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
     {
         ReaderWriter,
         CommandRequestSender,
-        CommandRequestHandler,
-        CommandResponseHandler,
+        CommandRequestReceiver,
+        CommandResponseReceiver,
         WorldCommandRequestSender,
-        WorldCommandResponseHandler,
+        WorldCommandResponseReceiver,
     }
 
     /// <summary>

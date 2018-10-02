@@ -14,12 +14,12 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourAct
 
         public class TestBehaviourWithCommandHandlers : MonoBehaviour
         {
-            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandRequestHandler CommandRequestHandler;
+            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandRequestReceiver CommandRequestReceiver;
         }
 
         protected override void ValidateRequirablesNotNull()
         {
-            Assert.IsNotNull(TestGameObject.GetComponent<TestBehaviourWithCommandHandlers>().CommandRequestHandler);
+            Assert.IsNotNull(TestGameObject.GetComponent<TestBehaviourWithCommandHandlers>().CommandRequestReceiver);
         }
     }
 }

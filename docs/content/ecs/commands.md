@@ -155,7 +155,7 @@ The ECS entity that sent the request receives the response.
 Here's an example of receiving a command response, using the same schema as above:
 
 ```csharp
-public class BuildWallResponseHandler : ComponentSystem
+public class BuildWallResponseReceiver : ComponentSystem
 {
     public struct Data
     {

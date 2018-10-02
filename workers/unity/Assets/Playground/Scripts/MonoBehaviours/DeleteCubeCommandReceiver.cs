@@ -19,31 +19,31 @@ namespace Playground.MonoBehaviours
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
         [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
-        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
+        [Require] private CubeSpawner.Requirable.CommandRequestReceiver cubeSpawnerCommandRequestReceiver;
         [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private WorldCommands.Requirable.WorldCommandResponseReceiver worldCommandResponseReceiver;
 
         private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
             logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
-            cubeSpawnerCommandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
-            worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
+            cubeSpawnerCommandRequestReceiver.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
+            worldCommandResponseReceiver.OnDeleteEntityResponse += OnDeleteEntityResponse;
         }
 
-        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
+        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.ResponseSender responseSender)
         {
-            var entityId = requestResponder.Request.Payload.CubeEntityId;
+            var entityId = responseSender.Request.Payload.CubeEntityId;
             var spawnedCubes = cubeSpawnerWriter.Data.SpawnedCubes;
 
             if (!spawnedCubes.Contains(entityId))
             {
-                requestResponder.SendResponseFailure($"Requested entity id {entityId} not found in list.");
+                responseSender.SendResponseFailure($"Requested entity id {entityId} not found in list.");
             }
             else
             {
-                requestResponder.SendResponse(new Empty());
+                responseSender.SendResponse(new Empty());
             }
 
             worldCommandRequestSender.DeleteEntity(entityId, context: this);

@@ -23,24 +23,24 @@ namespace Playground.MonoBehaviours
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
         [Require] private TransformInternal.Requirable.Reader transformReader;
-        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
+        [Require] private CubeSpawner.Requirable.CommandRequestReceiver cubeSpawnerCommandRequestReceiver;
         [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
         [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private WorldCommands.Requirable.WorldCommandResponseReceiver worldCommandResponseReceiver;
 
         private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
             logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
-            cubeSpawnerCommandRequestHandler.OnSpawnCubeRequest += OnSpawnCubeRequest;
-            worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
-            worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
+            cubeSpawnerCommandRequestReceiver.OnSpawnCubeRequest += OnSpawnCubeRequest;
+            worldCommandResponseReceiver.OnReserveEntityIdsResponse += OnEntityIdsReserved;
+            worldCommandResponseReceiver.OnCreateEntityResponse += OnEntityCreated;
         }
 
-        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder requestResponder)
+        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ResponseSender responseSender)
         {
-            requestResponder.SendResponse(new Empty());
+            responseSender.SendResponse(new Empty());
 
             worldCommandRequestSender.ReserveEntityIds(1, context: this);
         }

@@ -16,10 +16,10 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourAct
         {
             [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandRequestSender CommandRequestSender;
 
-            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandResponseHandler CommandResponseHandler;
+            [Require] public ComponentWithNoFieldsWithCommands.Requirable.CommandResponseReceiver CommandResponseReceiver;
 
             [Require] public WorldCommands.Requirable.WorldCommandRequestSender WorldCommandRequestSender;
-            [Require] public WorldCommands.Requirable.WorldCommandResponseHandler WorldCommandResponseHandler;
+            [Require] public WorldCommands.Requirable.WorldCommandResponseReceiver WorldCommandResponseReceiver;
         }
 
         protected override void PopulateBehaviours()
@@ -31,9 +31,9 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourAct
         {
             var testBehaviour = TestGameObject.GetComponent<TestBehaviourWithCommandSender>();
             Assert.IsNotNull(testBehaviour.CommandRequestSender);
-            Assert.IsNotNull(testBehaviour.CommandResponseHandler);
+            Assert.IsNotNull(testBehaviour.CommandResponseReceiver);
             Assert.IsNotNull(testBehaviour.WorldCommandRequestSender);
-            Assert.IsNotNull(testBehaviour.WorldCommandResponseHandler);
+            Assert.IsNotNull(testBehaviour.WorldCommandResponseReceiver);
         }
 
         [Test]

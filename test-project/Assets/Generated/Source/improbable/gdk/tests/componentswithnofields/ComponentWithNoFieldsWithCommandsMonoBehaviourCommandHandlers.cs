@@ -18,13 +18,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public partial class Cmd
         {
-            public struct RequestResponder
+            public struct ResponseSender
             {
                 private readonly EntityManager entityManager;
                 private readonly Entity entity;
                 public Cmd.ReceivedRequest Request { get; }
 
-                internal RequestResponder(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
+                internal ResponseSender(EntityManager entityManager, Entity entity, Cmd.ReceivedRequest request)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
@@ -87,31 +87,31 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
-            internal class CommandRequestHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandRequestReceiver, 1005)]
+            internal class CommandRequestReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestHandler(entity, entityManager, logDispatcher);
+                    return new CommandRequestReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, 1005)]
+            [InjectableId(InjectableType.CommandRequestReceiver, 1005)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
-            public class CommandRequestHandler : RequirableBase
+            public class CommandRequestReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandRequestHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandRequestReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
-                private readonly List<Action<Cmd.RequestResponder>> cmdDelegates = new List<Action<Cmd.RequestResponder>>();
-                public event Action<Cmd.RequestResponder> OnCmdRequest
+                private readonly List<Action<Cmd.ResponseSender>> cmdDelegates = new List<Action<Cmd.ResponseSender>>();
+                public event Action<Cmd.ResponseSender> OnCmdRequest
                 {
                     add
                     {
@@ -135,28 +135,28 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 internal void OnCmdRequestInternal(Cmd.ReceivedRequest request)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(new Cmd.RequestResponder(entityManager, entity, request), cmdDelegates, logger);
+                    GameObjectDelegates.DispatchWithErrorHandling(new Cmd.ResponseSender(entityManager, entity, request), cmdDelegates, logger);
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
-            internal class CommandResponseHandlerCreator : IInjectableCreator
+            [InjectableId(InjectableType.CommandResponseReceiver, 1005)]
+            internal class CommandResponseReceiverCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandResponseHandler(entity, entityManager, logDispatcher);
+                    return new CommandResponseReceiver(entity, entityManager, logDispatcher);
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, 1005)]
+            [InjectableId(InjectableType.CommandResponseReceiver, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandResponseHandler : RequirableBase
+            public class CommandResponseReceiver : RequirableBase
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
 
-                public CommandResponseHandler(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandResponseReceiver(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;

@@ -19,7 +19,7 @@ namespace Playground.MonoBehaviours
         [Require] private PlayerInput.Requirable.Writer playerInputWriter;
         [Require] private CubeSpawner.Requirable.Reader cubeSpawnerReader;
         [Require] private CubeSpawner.Requirable.CommandRequestSender cubeSpawnerCommandSender;
-        [Require] private CubeSpawner.Requirable.CommandResponseHandler cubeSpawnerCommandResponseHandler;
+        [Require] private CubeSpawner.Requirable.CommandResponseReceiver cubeSpawnerCommandResponseReceiver;
 
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
@@ -30,8 +30,8 @@ namespace Playground.MonoBehaviours
             logDispatcher = spatialOSComponent.Worker.LogDispatcher;
             ownEntityId = spatialOSComponent.SpatialEntityId;
 
-            cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
-            cubeSpawnerCommandResponseHandler.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
+            cubeSpawnerCommandResponseReceiver.OnSpawnCubeResponse += OnSpawnCubeResponse;
+            cubeSpawnerCommandResponseReceiver.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
         }
 
         private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)

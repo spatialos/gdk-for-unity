@@ -8,7 +8,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
 {
     [TestFixture]
-    public class CommandResponseHandlerTests
+    public class CommandResponseReceiverTests
     {
         [Test]
         public void OnCmdResponseInternal_calls_OnCmdResponse_delegates()
@@ -18,15 +18,15 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.CommandSenders
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity();
 
-                var commandResponseHandler =
-                    new ComponentWithNoFieldsWithCommands.Requirable.CommandResponseHandler(entity, entityManager,
+                var commandResponseReceiver =
+                    new ComponentWithNoFieldsWithCommands.Requirable.CommandResponseReceiver(entity, entityManager,
                         new LoggingDispatcher());
 
                 var responseCallbackCalled = false;
 
-                commandResponseHandler.OnCmdResponse += response => { responseCallbackCalled = true; };
+                commandResponseReceiver.OnCmdResponse += response => { responseCallbackCalled = true; };
 
-                commandResponseHandler.OnCmdResponseInternal(
+                commandResponseReceiver.OnCmdResponseInternal(
                     new ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse(
                         new EntityId(0),
                         string.Empty,

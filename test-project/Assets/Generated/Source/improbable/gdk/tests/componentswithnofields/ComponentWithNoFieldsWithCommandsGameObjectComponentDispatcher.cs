@@ -64,8 +64,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private const uint componentId = 1005;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
-            private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);
-            private static readonly InjectableId commandResponseHandlerInjectableId = new InjectableId(InjectableType.CommandResponseHandler, componentId);
+            private static readonly InjectableId commandRequestReceiverInjectableId = new InjectableId(InjectableType.CommandRequestReceiver, componentId);
+            private static readonly InjectableId commandResponseReceiverInjectableId = new InjectableId(InjectableType.CommandResponseReceiver, componentId);
 
             public override void MarkComponentsAddedForActivation(Dictionary<Unity.Entities.Entity, MonoBehaviourActivationManager> entityToManagers)
             {
@@ -167,17 +167,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestHandlerInjectableId, out var commandRequestHandlers))
+                        if (!injectableStore.TryGetInjectablesForComponent(commandRequestReceiverInjectableId, out var commandRequestReceivers))
                         {
                             continue;
                         }
 
                         var commandRequestList = commandRequestLists[i];
-                        foreach (Requirable.CommandRequestHandler commandRequestHandler in commandRequestHandlers)
+                        foreach (Requirable.CommandRequestReceiver commandRequestReceiver in commandRequestReceivers)
                         {
                             foreach (var commandRequest in commandRequestList.Requests)
                             {
-                                commandRequestHandler.OnCmdRequestInternal(commandRequest);
+                                commandRequestReceiver.OnCmdRequestInternal(commandRequest);
                             }
                         }
                     }
@@ -197,17 +197,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
+                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseReceiverInjectableId, out var commandResponseReceivers))
                         {
                             continue;
                         }
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (Requirable.CommandResponseReceiver commandResponseReceiver in commandResponseReceivers)
                         {
                             foreach (var commandResponse in commandResponseList.Responses)
                             {
-                                commandResponseHandler.OnCmdResponseInternal(commandResponse);
+                                commandResponseReceiver.OnCmdResponseInternal(commandResponse);
                             }
                         }
                     }
