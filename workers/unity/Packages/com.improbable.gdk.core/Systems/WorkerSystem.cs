@@ -7,6 +7,9 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Encapsulates a SpatialOS worker instance.
+    /// </summary>
     [DisableAutoCreation]
     public class WorkerSystem : ComponentSystem
     {

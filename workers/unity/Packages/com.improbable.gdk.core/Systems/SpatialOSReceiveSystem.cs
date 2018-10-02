@@ -12,6 +12,9 @@ using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Receives incoming ops from the SpatiaLOS runtime and dispatches them.
+    /// </summary>
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem

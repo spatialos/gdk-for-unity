@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Enables users to add a callback onto the disconnection event.
+    /// </summary>
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateAfter(typeof(SpatialOSReceiveSystem))]

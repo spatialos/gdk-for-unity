@@ -6,6 +6,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Sends World Command requests.
+    /// </summary>
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
