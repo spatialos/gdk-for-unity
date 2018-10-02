@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Tools
             new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/OSX", false, new List<BuildTarget> { BuildTarget.StandaloneOSX }, null, true),
             new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Linux", false, new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, null, true),
             new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Windows", false, new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, null, true),
-            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Sdk/OSX", true, null, null, true),
+            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Sdk/Common", true, null, null, true),
         };
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
