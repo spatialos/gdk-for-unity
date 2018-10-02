@@ -194,7 +194,13 @@ That means even two workers of the same type (e.g. `UnityGameLogic`) may not hav
 
 This is why the `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders. They are for keeping separate the differing local representations that worker will use, depending on whether it is trying to represent an entity over which it has authority or not.
 
+Separating your prefabs like this is **not** mandatory. If you would rather use the same single prefab in multiple circumstances, but write your logic so that it will execute differently based on having or not having authority then that is legitimate too.
+
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority](fix).<%(/Expandable)%>
+
+
+
+
 
 
 
@@ -209,8 +215,6 @@ You are not limited to these options either, and can configure your worker to cr
 <%(#Expandable title="Can workers differ in how they represent the same entity?")%>Yes! The local in-worker representation for entities can be customized for each of your worker types. For example, the server-side `UnityGameLogic` worker may represent the `Player` entity with a GameObject that contains no visual assets or sound effects, because the server does not need those assets to perform its duties.
 
 Similarly, !!!!!!! COME BACK TO THIS [!!!](fix)<%(/Expandable)%>
-
-[!!!](TODO: Write stuff about hooking up game object)
 
 ### Testing your changes
 
