@@ -27,6 +27,10 @@ namespace Improbable.Gdk.Core
             { LogType.Log, LogLevel.Info }
         };
 
+        /// <summary>
+        ///     Constructor for the Forwarding Dispatcher
+        /// </summary>
+        /// <param name="minimumLogLevel">The minimum log level to forward logs to the SpatialOS runtime.</param>
         public ForwardingDispatcher(LogLevel minimumLogLevel = LogLevel.Warn)
         {
             this.minimumLogLevel = minimumLogLevel;
@@ -49,6 +53,11 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        /// <summary>
+        ///     Log locally and conditionally forward to the SpatialOS runtime.
+        /// </summary>
+        /// <param name="type">The type of the log.</param>
+        /// <param name="logEvent">A LogEvent instance.</param>
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             inHandleLog = true;
@@ -100,6 +109,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        /// <summary>
+        ///     Unregisters callbacks and ensures that the SpatialOS connection is no longer referenced
+        /// </summary>
         public void Dispose()
         {
             Connection = null;

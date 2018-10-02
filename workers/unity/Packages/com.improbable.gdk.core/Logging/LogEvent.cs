@@ -4,13 +4,35 @@ using System.Text;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Represents a single log. Can contain data used for structured logging.
+    /// </summary>
     public struct LogEvent
     {
+        /// <summary>
+        ///     The main content of the log.
+        /// </summary>
         public readonly string Message;
+
+        /// <summary>
+        ///     The data used for structured logging.
+        /// </summary>
         public readonly Dictionary<string, object> Data;
+
+        /// <summary>
+        ///     Optional context object used with Unity logging.
+        /// </summary>
         public UnityEngine.Object Context;
+
+        /// <summary>
+        ///     An exception if the LogEvent is associated with an exception.
+        /// </summary>
         public Exception Exception;
 
+        /// <summary>
+        ///     Constructor for the log event
+        /// </summary>
+        /// <param name="message">The log content.</param>
         public LogEvent(string message)
         {
             Message = message;
@@ -24,7 +46,7 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <returns>Itself</returns>
         public LogEvent WithField(string key, object value)
         {
             Data[key] = value;
@@ -36,13 +58,18 @@ namespace Improbable.Gdk.Core
         ///     <see cref="UnityEngine.Debug.Log(object, UnityEngine.Object)" />
         /// </summary>
         /// <param name="context">The context object</param>
-        /// <returns>itself</returns>
+        /// <returns>Itself</returns>
         public LogEvent WithContext(UnityEngine.Object context)
         {
             Context = context;
             return this;
         }
 
+        /// <summary>
+        ///     Associates an exception to the LogEvent.
+        /// </summary>
+        /// <param name="exception">The exception</param>
+        /// <returns>Itself</returns>
         public LogEvent WithException(Exception exception)
         {
             Exception = exception;
