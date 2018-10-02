@@ -2,6 +2,9 @@ using System;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Describes why the connection failed.
+    /// </summary>
     public enum ConnectionErrorReason
     {
         CannotEstablishConnection,
@@ -11,6 +14,9 @@ namespace Improbable.Gdk.Core
         EditorApplicationStopped
     }
 
+    /// <summary>
+    ///     Represents an error that occurs when a connection attempt failed.
+    /// </summary>
     public class ConnectionFailedException : Exception
     {
         public ConnectionErrorReason Reason;
