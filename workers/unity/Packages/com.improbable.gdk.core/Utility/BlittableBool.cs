@@ -2,6 +2,9 @@ using System;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     A blittable bool implementation to use in Unity's ECS.
+    /// </summary>
     public struct BlittableBool : IEquatable<BlittableBool>
     {
         private readonly byte value;
