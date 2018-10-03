@@ -3,9 +3,9 @@ using Improbable.Worker.Core;
 
 namespace Improbable.Gdk.Core
 {
-    public class EntityTemplate
+    public class EntityTemplate : IDisposable
     {
-        internal readonly Entity template; //Internal for tests
+        private readonly Entity template;
         private bool hasBeenUsed;
 
         internal EntityTemplate(Entity entity)
@@ -22,6 +22,20 @@ namespace Improbable.Gdk.Core
 
             hasBeenUsed = true;
             return template;
+        }
+
+        public void Dispose()
+        {
+            if (hasBeenUsed)
+            {
+                return;
+            }
+
+            foreach (var id in template.GetComponentIds())
+            {
+                var componentData = template.Get(id);
+                componentData?.SchemaData?.Dispose();
+            }
         }
     }
 }

@@ -122,9 +122,10 @@ namespace Improbable.Gdk.Core
                 throw new InvalidOperationException("Cannot call Build() multiple times on the same EntityBuilder instance.");
             }
 
+            CheckRequiredComponents();
+
             entity.Add(acl.Build());
             componentsAdded.Add(EntityAclComponentId);
-            CheckRequiredComponents();
             hasBuiltOnce = true;
             return new EntityTemplate(entity);
         }

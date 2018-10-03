@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             builder.AddPosition(0, 0, 0, "write-access");
             Assert.Throws<InvalidOperationException>(() => builder.AddPosition(0, 0, 0, "write-access"));
 
-            DisposeEntityTemplate(builder.Build());
+            builder.Build().Dispose();
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var template = builder.Build();
             Assert.Throws<InvalidOperationException>(() => builder.Build());
 
-            DisposeEntityTemplate(template);
+            template.Dispose();
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             }
             finally
             {
-                DisposeEntityTemplate(template);
+                template.Dispose();
             }
         }
 
@@ -73,7 +73,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             }
             finally
             {
-                DisposeEntityTemplate(template);
+                template.Dispose();
             }
         }
 
@@ -93,7 +93,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             }
             finally
             {
-                DisposeEntityTemplate(template);
+                template.Dispose();
             }
         }
 
@@ -101,22 +101,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var schemaComponentData = new SchemaComponentData(componentId);
             return new ComponentData(schemaComponentData);
-        }
-
-        /// <summary>
-        ///     Disposes the underlying SchemaComponentData in native memory for a given Entity.
-        ///     If the memory is not manually disposed, it will cause a leak!
-        /// </summary>
-        private void DisposeEntityTemplate(EntityTemplate template)
-        {
-            var entity = template.template;
-            var componentIds = entity.GetComponentIds();
-
-            foreach (var id in componentIds)
-            {
-                var componentData = entity.Get(id);
-                componentData.Value.SchemaData.Value.Dispose();
-            }
         }
     }
 }
