@@ -8,6 +8,15 @@ Follow the [Setup and installation guide](../setup-and-installing.md) to make su
 
 To use the SpatialOS GDK for Unity in a new project, you need to set up your project manifest, and then set up world initialization. Your new project must have the [same structure as a SpatialOS project](https://docs.improbable.io/reference/latest/shared/reference/project-structure).
 
+The **spatialos.json** file for your project needs to have the same `sdk_version` and `dependencies` as the GDK's [spatialos.json](../../spatialos.json).
+
+For a basic set up of two workers, one `UnityGameLogic` and one `UnityClient`, we recommend you to reuse these files (within `workers/unity`):
+- [spatialos.UnityGameLogic.worker.json](../../workers/unity/spatialos.UnityGameLogic.worker.json)
+- [spatialos.UnityClient.worker.json](../../workers/unity/spatialos.UnityClient.worker.json)
+
+### Set up base assets and directories
+- Copy [this file](../../workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef) into `workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
+
 ### Set up your project manifest
 Add the following dependencies to the `packages` manifest located inside `workers/unity/Packages/manifest.json`:
 ```
