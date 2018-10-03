@@ -9,7 +9,9 @@
 
 ### SpatialOS Project
 
-Also referred to as "your game".
+> Also referred to as "your game".
+> 
+> Not to be confused with [Unity Project](unity-project) or [project name](project-name).
 
 A SpatialOS project is the source code of a game that runs on SpatialOS. We often use this to refer to the directory that contains the source code, the `UnityGDK` directory in this case.
 
@@ -21,20 +23,19 @@ A SpatialOS project includes (but isn't limited to):
 * Configuration files, mostly containing settings for [deployments](#deploying) (for example,
 [launch configuration files](#launch-configuration-file))
 
-> Related:
->
-> * [Project directory structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure)
+> Related: [Project directory structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure)
 
 ### Unity Project
+
+> Not to be confused with [SpatialOS Project](spatialos-project) or [project name](project-name).
 
 A Unity project is the source code of a SpatialOS game's Unity [workers](#worker). We often use this to refer to the directory that contains Unity code, `UnityGDK/workers/unity` in this case.
 
 ### Project name
 
-Your project name is randomly generated when you sign up for SpatialOS. It’s usually something like `beta_someword_anotherword_000`.
+> Not to be confused with [SpatialOS Project](spatialos-project) or [Unity Project](unity-project).
 
->Note that your project name is **not** the same as the name of the
-directory your [SpatialOS project](spatialos-project) is in.
+Your project name is randomly generated when you sign up for SpatialOS. It’s usually something like `beta_someword_anotherword_000`.
 
 You must specify this name in the [spatialos.json](#spatialos-json) file in the root of your [SpatialOS project](spatialos-project) when you run a [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
@@ -42,7 +43,7 @@ You can find your project name in the [Console](https://console.improbable.io/).
 
 ### The `spatial` command-line tool (CLI)
 
-Also known as the "`spatial` CLI".
+>Also known as the "`spatial` CLI".
 
 The `spatial` command-line tool provides a set of commands that you use to interact with a
 [SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game
@@ -54,6 +55,8 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 > * [`spatial` reference documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial)
 
 ### Building
+
+> The [`spatial` command-line tool](the-spatial-command-line-tool-cli) command `spatial worker build` does not function in the SpatialOS GDK for Unity.
 
 When you make changes to the code of a [worker](#worker), you need to build those changes in order to try them out in a [local](#local-deployment) or [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
@@ -86,17 +89,15 @@ or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cl
 * which [workers](#worker) are connected to the [deployment](#deploying)
 * how much [load](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) the workers are under
 
-> Related:
-> * [The Inspector]({{urlRoot}}/shared/operate/inspector)
+> Related: [The Inspector]({{urlRoot}}/shared/operate/inspector)
 
 ### Launcher
 
-The Launcher is a tool that can download and launch [clients](#client-worker) that connect to [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It's available as an application for Windows and macOS. From the [Console](#console), you can use the Launcher to connect a local client to your own [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment), or generate a share link so anyone with the link can join your game.
+The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It's available as an application for Windows and macOS. From the [Console](#console), you can use the Launcher to connect a game client to your own [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment), or generate a share link so anyone with the link can download a game client and join your game.
 
 The Launcher downloads the client executable from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
-> Related:
-> * [The Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
+> Related: [The Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
 
 ### Console
 
@@ -111,65 +112,6 @@ The Console ([console.improbable.io](https://console.improbable.io/)) is the mai
 > * [Logs](https://docs.improbable.io/reference/latest/shared/operate/logs#cloud-deployments)
 > * [Metrics](https://docs.improbable.io/reference/13.3/shared/operate/metrics)
 
-### Worker
-
-SpatialOS manages the [SpatialOS world](#spatialos-world) itself: it keeps track of all the [SpatailOS entities](#spatialos-entity) and their
-[properties](#property). But on its own, it doesn’t make any changes to the world.
-
-Workers are programs that connect to a SpatialOS world. They perform the computation associated with a world:
-they can read what’s happening, watch for changes, and make changes of their own.
-
-There are two types of workers, [server-workers](#server-worker) and [client-workers](#client-worker).
-
-In order to achieve huge scale, SpatialOS divides up the entities in the world between workers, balancing the work
-so none of them are overloaded. For each entity in the world, it decides which worker should have
-[write access](#read-and-write-access-authority) to each [SpatialOS component](#spatialos-component) on the entity. (To prevent multiple workers clashing, ony one worker at a time can have write access to a SpatialOS component.)
-
-As the world changes over time, where entities are and the amount of work associated with them changes.
-[server-workers](#server-worker) report back to SpatialOS how much load they're under, and
-SpatialOS adjusts which workers have write access to components on which entities (and starts up new workers when
-needed). This is called [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
-
-Around the entities they have write access to, each worker has an area of the world they are [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
-A worker can read the current properties of the entities within this area, and SpatialOS sends
-[updates](#https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) about these entities to the worker.
-
-If the worker has [write access](#read-and-write-access-authority) to a component, it can [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update):
-it can update [properties](#property), and trigger [events](#event).
-
-> Related:
-> * [Concepts: Workers and load balancing](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing)
-
-### Server-worker
-
-A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. This means that, when a
-[deployment](#deploying) is running, SpatialOS is in charge of starting and stopping server-workers, as part of
-[load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) - unlike [client-workers](#client), which are not managed by SpatialOS.
-
-Server-workers are usually tasked with implementing game logic and physics simulation.
-
-You can have one server-worker connected to your [deployment](#deploying), or dozens, depending on the size and complexity of the
-[world](#spatialos-world).
-
-### Client-worker
-
-A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. It is used to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
-
-Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by
-SpatialOS. In a running [deployment](#deploying), there will be one
-client-worker per player.
-
-Client-workers are mostly tasked with visualising what’s happening in the [SpatialOS world](#spatialos-world). They also dealing with player input. In general, you want to give client-workers
-[write access](#read-and-write-access-authority) to as few components as possible,
-to make cheating difficult.
-
-> Related:
-> * [External worker (server-worker) launch configuration]({{urlRoot}}/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
-
-### Game client
-
-A game client is a binary. A [client-worker](client-worker) is an object instantiated by said binary.
-
 ### SpatialOS world
 
 The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
@@ -183,10 +125,6 @@ in that view.
 It's important to recognise this fundamental separation between the SpatialOS world and the subset view/representation of that world that an individual worker [checks out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update)
 to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must
 use SpatialOS APIs to change it.
-
-### Node
-
-Node refers to a single machine used by a [cloud deployment](#deploying). Its name indicates the role it plays in your [deployment](#deploying). You can see these on the advanced tab of your deployment details in the [Console](#console).
 
 ### SpatialOS Entity
 
@@ -230,31 +168,86 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Component best practices]({{urlRoot}}/shared/design/component-best-practices)
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
 
+### Worker
+
+SpatialOS manages the [SpatialOS world](#spatialos-world) itself: it keeps track of all the [SpatailOS entities](#spatialos-entity) and their
+[properties](#property). But on its own, it doesn’t make any changes to the world.
+
+Workers are programs that connect to a SpatialOS world. They perform the computation associated with a world:
+they can read what’s happening, watch for changes, and make changes of their own.
+
+There are two types of workers, [server-workers](#server-worker) and [client-workers](#client-worker).
+
+In order to achieve huge scale, SpatialOS divides up the SpatialOS entities in the world between workers, balancing the work so none of them are overloaded. For each SpatialOS entity in the world, it decides which worker should have [write access](#read-and-write-access-authority) to each [SpatialOS component](#spatialos-component) on the SpatialOS entity. To prevent multiple workers clashing, ony one worker at a time can have write access to a SpatialOS component.
+
+As the world changes over time, where SpatialOS entities are and the amount of work associated with them changes. [Server-workers](#server-worker) report back to SpatialOS how much load they're under, and SpatialOS adjusts which workers have write access to components on which SpatialOS entities (and starts up new workers when needed). This is called [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
+
+Around the SpatialOS entities they have write access to, each worker has an area of the world they are [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
+A worker can read the current properties of the SpatialOS entities within this area, and SpatialOS sends [updates](#https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) about these SpatialOS entities to the worker.
+
+If the worker has [write access](#read-and-write-access-authority) to a SpatialOS component, it can [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update):
+it can update [properties](#property), and trigger [events](#event).
+
+> Related: [Concepts: Workers and load balancing](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing)
+
+### Server-worker
+
+A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. This means that, when a
+[deployment](#deploying) is running, SpatialOS is in charge of starting and stopping server-workers, as part of
+[load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) - unlike [client-workers](#client), which are not managed by SpatialOS.
+
+Server-workers are usually tasked with implementing game logic and physics simulation.
+
+You can have one server-worker connected to your [deployment](#deploying), or dozens, depending on the size and complexity of the
+[world](#spatialos-world).
+
+### Client-worker
+
+A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. It is used to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
+
+Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by
+SpatialOS. In a running [deployment](#deploying), there will be one
+client-worker per player.
+
+Client-workers are mostly tasked with visualising what’s happening in the [SpatialOS world](#spatialos-world). They also dealing with player input. In general, you want to give client-workers
+[write access](#read-and-write-access-authority) to as few components as possible,
+to make cheating difficult.
+
+> Related: [External worker (server-worker) launch configuration]({{urlRoot}}/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
+
+### Game client
+
+A game client is a binary. A [client-worker](client-worker) is an object instantiated by said binary.
+
+### Node
+
+Node refers to a single machine used by a [cloud deployment](#deploying). Its name indicates the role it plays in your [deployment](#deploying). You can see these on the advanced tab of your deployment details in the [Console](#console).
+
 ### Schema
 
 The schema is where you define all the [SpatialOS components](#spatialos-component) in your [world](#spatialos-world).
 
-Schema is defined in `.schema` files, written in [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Schema files are stored in the
-`schema/` directory of your [SpatialOS project](spatialos-project).
+Schema is defined in `.schema` files and written in [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Schema files are stored in
+`UnityGDK\schema`.
 
-SpatialOS uses the schema to [generate code](#code-generation) in various languages (including C#, C++, and Java).
-You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the world.
+SpatialOS uses the schema to [generate code](#code-generation). You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the world.
 
 > Related:
-> * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
-> * [Schema reference]({{urlRoot}}/shared/schema/reference)
+> * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
+> * [Schema reference](https://docs.improbable.io/reference/latest/shared/schema/reference)
 
 ### Code generation
 
-Use the [command](#the-spatial-command-line-tool-cli)
-[`spatial worker codegen`]({{urlRoot}}/shared/spatial-cli/spatial-worker-codegen) to compile generated code from the
-[schema](#schema) (in C#, C++ and Java).
+> The [`spatial` command-line tool](the-spatial-command-line-tool-cli) command `spatial worker codegen` does not function in the SpatialOS GDK for Unity.
 
-This code is used by [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity): to read from their
-[SpatialOS components](#spatialos-component), and to [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to them.
+Generated code is compiled from the [schema](#schema) and used by [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity): to read from their [SpatialOS components](#spatialos-component), and to [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to them.
 
-> Related:
-> * [Generating code from the schema]({{urlRoot}}/shared/schema/introduction#generating-code-from-the-schema)
+Code generation automatically occurs when you open the [Unity Project](#unity-project) in the Unity editor. You can also manually trigger code generation from inside the Unity editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
+
+* Edited the schema
+* Created a new worker
+
+> Related: [Generating code from the schema](https://docs.improbable.io/reference/latest/shared/schema/introduction#generating-code-from-the-schema)
 
 ### Read and write access ("authority")
 
@@ -270,8 +263,7 @@ because of [load balancing](https://docs.improbable.io/reference/latest/shared/g
 ACLs also control which workers can have read access to an entity. Read access is at the entity level: if a worker
 can read from an entity, it is allowed to read from all components on that entity.
 
-> Related:
-> * [Understanding write access]({{urlRoot}}/shared/design/understanding-access)
+> Related: [Understanding write access]({{urlRoot}}/shared/design/understanding-access)
 
 ### Snapshot
 
@@ -282,8 +274,7 @@ stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and
 You'll use a snapshot as the starting point (an [initial snapshot](#initial-snapshot)) for your world when you
 [deploy](#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [in the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
-> Related:
-> * [Snapshots]({{urlRoot}}/shared/operate/snapshots)
+> Related: [Snapshots]({{urlRoot}}/shared/operate/snapshots)
 
 ### SpatialOS Assembly
 
