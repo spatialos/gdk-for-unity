@@ -293,20 +293,7 @@ When you wrote the schema for the `HealthPickup` component you included a bool p
 
 Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer. Make sure you drag the child GameObject's mesh renderer to this field in the Unity Inspector panel to set the reference.
 
-The client-side representation of the health pack entity is now complete!
-
-##### Creating a UnityGameLogic entity prefab
-
-In the FPS Template project the server-side worker is called `UnityGameLogic`.
-
-If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
-
-Just as with client-side representation, navigate to the `/Assets/Resources/Prefabs/UnityGameLogic/` folder and create a `HealthPickup` prefab. Once again this name must match the `Metadata` string for the health pack entity so that the GameObject Creation system knows to associate them.
-
-
-
-
-
+The client-side representation of the health pack entity is now complete! Next we will test the game so far and make sure we are visualising the health packs correctly.
 
 
 
@@ -348,4 +335,126 @@ If you are using the SpatialOS GDK's GameObject workflow then the `Metadata` str
 
 # Adding health pack logic
 
-// Where is the logic going to run?
+If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
+
+The server-side logic we want to capture for this game mechanic is:
+
+* Tracking player collisions with the health pack.
+* Checking the pre-conditions: player must be injured, health pack must be active.
+* Granting health to a player when the conditions are met.
+
+To do this we will need to create a server-side representation of the health pack, and add a script to the health pack which can both read its own component data (to check if the health pack is active) as well as that of the player entity (to check if it is injured). After that, if conditions are met, it then must also be able to _update_ its own component data (to set itself to "in-active"), and that of the player entity too (to grant it health).
+
+### Creating a UnityGameLogic entity prefab
+
+In the FPS Template project the server-side worker is called `UnityGameLogic`.
+
+Just as with client-side representation, navigate to the `/Assets/Resources/Prefabs/UnityGameLogic/` folder and create a `HealthPickup` prefab. Once again this name must match the `Metadata` string for the health pack entity so that the GameObject Creation system knows to associate them.
+
+Add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
+
+```
+using System.Collections;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Health;
+using Pickups;
+using UnityEngine;
+
+namespace Fps
+{
+    [WorkerType(WorkerUtils.UnityGameLogic)]
+    public class HealthPickupServerBehaviour : MonoBehaviour
+    {
+        [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
+        [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
+
+        private Coroutine respawnCoroutine;
+
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // OnTriggerEnter is fired regardless of whether the MonoBehaviour is enabled/disabled.
+            if (healthPickupWriter == null)
+            {
+                return;
+            }
+
+            if (!other.CompareTag("Player"))
+            {
+                return;
+            }
+
+            HandleCollisionWithPlayer(other.gameObject);
+        }
+
+        private void SetIsActive(bool isActive)
+        {
+            // Not yet implemented: you need to replace this comment with code for updating the health pack component's "active" property
+        }
+
+        private void HandleCollisionWithPlayer(GameObject player)
+        {
+            var spatialOsComponent = player.GetComponent<SpatialOSComponent>();
+
+            if (spatialOsComponent == null)
+            {
+                return;
+            }
+
+            // Not yet implemented: you need to replace this comment with code for notifying the Player entity that it will receive health.
+
+            // Toggle health pack to its 'consumed' state
+            SetIsActive(false);
+        }
+
+    }
+}
+```
+
+This code snippet contains two comments that are placeholders for code which we will now write.
+
+The first "not yet implemented" statement is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
+
+<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>[!!!!!!!!](TODO: Write a thing.)<%(/Expandable)%>
+
+To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
+
+```
+[Require] private HealthPickup.Requirable.Writer healthPickupWriter;
+```
+
+A `Writer` can also be used to _read_ component data from its respective component (in this case, `HealthPickup`), but also provides an API for updating the values of properties too.
+
+Unity Engine's `OnTriggerEnter` function is a special-case when a script is disabled. Other functions will only be called if the script component's `enabled` property is true, but `OnTriggerEnter` will be called even if it is false. This means it is an exception to the normal behaviour of the `[Require]` syntax. Because of this, scripts which use `OnTriggerEnter` **must** check whether the `Writer` is null (indicating a lack of authority) before using functions on the writer.
+
+To update the `HealthPickup` component we must construct a `HealthPickup.Update` object, and **send** it to SpatialOS. You can replace the comment in the `SetIsActive` with the following snippet to handle creating and sending this update:
+
+```
+healthPickupWriter?.Send(new HealthPickup.Update
+{
+    IsActive = new Option<BlittableBool>(isActive)
+});
+```
+
+<%(#Expandable title="What is the "Option" type?")%>[!!!](TODO: Write a thing)<%(/Expandable)%>
+
+There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function.
+
+!!!!!! Continue from here
+
+// WRITER ALSO TRIGGER EVENTS AND SENDS COMMANDS
+
+```
+healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
+{
+    Amount = healthPickupWriter.Data.HealthValue
+});
+```
