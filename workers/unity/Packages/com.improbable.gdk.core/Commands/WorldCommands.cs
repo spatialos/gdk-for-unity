@@ -700,11 +700,6 @@ namespace Improbable.Gdk.Core.Commands
 
             public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
             {
-                if (entityQuery.ResultType is SnapshotResultType)
-                {
-                    Debug.LogWarning("Cannot safely access component data from entity query - this is a known issue. To protect its integrity, the worker will drop the request before sending.");
-                }
-
                 return new Request
                 {
                     EntityQuery = entityQuery,
@@ -718,7 +713,7 @@ namespace Improbable.Gdk.Core.Commands
             {
                 public StatusCode StatusCode { get; }
                 public string Message { get; }
-                public Dictionary<EntityId, Entity> Result { get; }
+                public EntityId[] EntityIds { get; }
                 public int ResultCount { get; }
                 public Request RequestPayload { get; }
                 public object Context { get; }
@@ -728,7 +723,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    Result = op.Result;
+                    EntityIds = op.Result?.Keys.ToArray();
                     ResultCount = op.ResultCount;
                     RequestPayload = req;
                     Context = context;
