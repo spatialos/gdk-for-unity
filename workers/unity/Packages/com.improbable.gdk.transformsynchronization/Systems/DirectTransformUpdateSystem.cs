@@ -17,7 +17,7 @@ namespace Improbable.Gdk.TransformSynchronization
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     [UpdateBefore(typeof(DefaultUpdateLatestTransformSystem))]
-    public class TakeRawTransformUpdateSystem : ComponentSystem
+    public class DirectTransformUpdateSystem : ComponentSystem
     {
         private struct Data
         {
@@ -26,6 +26,8 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
 
             [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> DenotesReceivedUpdate;
+            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
+            [ReadOnly] public ComponentDataArray<DirectReceiveTag> DenotesShouldUseDirectReceive;
         }
 
         [Inject] private Data data;
