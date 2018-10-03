@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
@@ -16,10 +19,30 @@ namespace Improbable.Gdk.Core
         public override void Validate()
         {
             ValidateConfig(LocatorHost, RuntimeConfigNames.LocatorHost);
-            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
+            switch (LocatorParameters.CredentialsType)
             {
-                ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
-                ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+                case LocatorCredentialsType.LoginToken:
+                    ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
+                    ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+                    break;
+                case LocatorCredentialsType.Steam:
+                    ValidateConfig(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamToken);
+                    ValidateConfig(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.SteamDeploymentTag);
+                    ValidateSteamDeploymentTag(LocatorParameters.Steam.DeploymentTag);
+                    break;
+            }
+        }
+
+        private void ValidateSteamDeploymentTag(string deploymentTag)
+        {
+            const string regex = @"^[A-Za-z0-9][A-Za-z0-9_]*$";
+            var match = Regex.Match(deploymentTag, regex);
+
+            if (!match.Success)
+            {
+                throw new ConnectionFailedException(
+                    $"Config validation failed with: No valid {RuntimeConfigNames.SteamDeploymentTag} - must match the following regex: {regex} ",
+                    ConnectionErrorReason.InvalidConfig);
             }
         }
 
@@ -30,10 +53,31 @@ namespace Improbable.Gdk.Core
 
         public void SetLoginToken(string loginToken)
         {
+            // Steam token already provided, no need to initialise default values
+            if (loginToken.Equals(string.Empty) && LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
+            {
+                return;
+            }
+
             LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
             LocatorParameters.LoginToken = new LoginTokenCredentials
             {
                 Token = loginToken
+            };
+        }
+
+        public void SetSteamCredentials(string steamToken, string deploymentTag)
+        {
+            if (steamToken.Equals(string.Empty))
+            {
+                return;
+            }
+
+            LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            LocatorParameters.Steam = new SteamCredentials
+            {
+                Ticket = steamToken,
+                DeploymentTag = deploymentTag
             };
         }
 
@@ -44,6 +88,11 @@ namespace Improbable.Gdk.Core
                 parsedArgs, RuntimeConfigNames.LoginToken, string.Empty);
             var projectName = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.ProjectName, string.Empty);
+            var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
+            var steamToken = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamToken, string.Empty);
+            config.SetSteamCredentials(steamToken, steamDeploymentTag);
             config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(

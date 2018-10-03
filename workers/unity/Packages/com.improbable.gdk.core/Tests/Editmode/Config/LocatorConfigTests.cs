@@ -64,6 +64,30 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
+        public void Validate_should_return_false_when_SteamToken_is_empty()
+        {
+            var config = GetDefaultWorkingConfig();
+            config.LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            config.LocatorParameters.Steam.Ticket = "";
+            config.LocatorParameters.Steam.DeploymentTag = "Hal9000";
+
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
+            Assert.IsTrue(exception.Message.Contains("steamToken"));
+        }
+
+        [Test]
+        public void Validate_should_return_false_when_SteamDeploymentTag_is_invalid()
+        {
+            var config = GetDefaultWorkingConfig();
+            config.LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            config.LocatorParameters.Steam.Ticket = "RandomTicket";
+            config.LocatorParameters.Steam.DeploymentTag = "_invalid deployment tag";
+
+            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
+            Assert.IsTrue(exception.Message.Contains("regex"));
+        }
+
+        [Test]
         public void SetProjectName_should_update_ProjectName_property()
         {
             var config = GetDefaultWorkingConfig();
@@ -82,6 +106,19 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             Assert.AreEqual(loginToken, config.LocatorParameters.LoginToken.Token);
             Assert.AreEqual(LocatorCredentialsType.LoginToken, config.LocatorParameters.CredentialsType);
+        }
+
+        [Test]
+        public void SetSteamCredentials_should_update_Ticket_and_DeploymentTag_properties()
+        {
+            var config = GetDefaultWorkingConfig();
+            const string steamToken = "mylogintoken";
+            const string deploymentTag = "mydeploymenttag";
+            config.SetSteamCredentials(steamToken, deploymentTag);
+
+            Assert.AreEqual(steamToken, config.LocatorParameters.Steam.Ticket);
+            Assert.AreEqual(deploymentTag, config.LocatorParameters.Steam.DeploymentTag);
+            Assert.AreEqual(LocatorCredentialsType.Steam, config.LocatorParameters.CredentialsType);
         }
 
         [Test]
