@@ -81,8 +81,8 @@ The Inspector is a web-based tool that you use to explore the internal state of 
 It gives you realtime view of what’s happening in a [deployment](#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment)
 or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). Among other things, it displays:
 
-* which [entities](#entity) are in the world
-* what their [components](#component)' [properties](#property) are
+* which [SpatialOS entities](#spatialos-entity) are in the world
+* what their [SpatialOS components](#spatialos-component)' [properties](#property) are
 * which [workers](#worker) are connected to the [deployment](#deploying)
 * how much [load](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) the workers are under
 
@@ -113,7 +113,7 @@ The Console ([console.improbable.io](https://console.improbable.io/)) is the mai
 
 ### Worker
 
-SpatialOS manages the [world](#spatialos-world) itself: it keeps track of all the [entities](#entity) and their
+SpatialOS manages the [SpatialOS world](#spatialos-world) itself: it keeps track of all the [SpatailOS entities](#spatialos-entity) and their
 [properties](#property). But on its own, it doesn’t make any changes to the world.
 
 Workers are programs that connect to a SpatialOS world. They perform the computation associated with a world:
@@ -123,8 +123,7 @@ There are two types of workers, [server-workers](#server-worker) and [client-wor
 
 In order to achieve huge scale, SpatialOS divides up the entities in the world between workers, balancing the work
 so none of them are overloaded. For each entity in the world, it decides which worker should have
-[write access](#read-and-write-access-authority) to each [component](#component) on the entity. (To prevent multiple workers clashing, ony one worker at a time can have
-write access to a component.)
+[write access](#read-and-write-access-authority) to each [SpatialOS component](#spatialos-component) on the entity. (To prevent multiple workers clashing, ony one worker at a time can have write access to a SpatialOS component.)
 
 As the world changes over time, where entities are and the amount of work associated with them changes.
 [server-workers](#server-worker) report back to SpatialOS how much load they're under, and
@@ -173,9 +172,7 @@ A game client is a binary. A [client-worker](client-worker) is an object instant
 
 ### SpatialOS world
 
-Also known as "the world" and "the game world".
-
-The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [entities](#entity) - specifically, within their [components](#component).
+The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
 
 SpatialOS manages the world, keeping track of all the entities and what state they’re in.
 
@@ -191,29 +188,25 @@ use SpatialOS APIs to change it.
 
 Node refers to a single machine used by a [cloud deployment](#deploying). Its name indicates the role it plays in your [deployment](#deploying). You can see these on the advanced tab of your deployment details in the [Console](#console).
 
-### Entity
+### SpatialOS Entity
 
-All of the objects inside a [SpatialOS world](#spatialos-world) are entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
+All of the objects inside a [SpatialOS world](#spatialos-world) are SpatialOS entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
 
-Entities are made up of [components](#component), which store the data associated with that entity.
+SpatialOS entities are made up of [SpatialOS components](#spatialos-component), which store the data associated with that entity.
 
-[Workers](#worker) can only see the entities they're [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest). Client-workers can represent these entities in any way you like.
+[Workers](#worker) can only see the entities they're [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest). Client-workers can represent these entities in any way they like.
 
 For example, for client-workers built using Unity, you might want to have a prefab associated with each entity type, and spawn a GameObject for each entity the worker has [checked out](#https://docs.improbable.io/reference/latest/shared/glossary#checking-out).
 
 You can have other objects that are *not* entities locally on workers - like UI for a player - but no other worker will be able to see them, because they're not part of the [SpatialOS world](#spatialos-world).
 
 > Related:
-> * [Concepts: Entities]({{urlRoot}}/shared/concepts/world-entities-components)
-> * [Designing entities]({{urlRoot}}/shared/design/design-entities)
-> * Creating and deleting entities in:
->   * [C#]({{urlRoot}}/csharpsdk/using/creating-and-deleting-entities)
->   * [C++]({{urlRoot}}/cppsdk/using/creating-and-deleting-entities)
->   * [Java]({{urlRoot}}/javasdk/using/creating-and-deleting-entities)
+> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/13.3/shared/concepts/world-entities-components#entities)
+> * [Designing SpatialOS entities](https://docs.improbable.io/reference/13.3/shared/design/design-entities)
 
-### Component
+### SpatialOS Component
 
-An [entity](#entity) is defined by a set of components. Common components in a game might be things like `Health`,
+A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Common components in a game might be things like `Health`,
 `Position`, or `PlayerControls`. They're the storage mechanism for data about the [world](#spatialos-world) that you
 want to be shared between [workers](#worker).
 
@@ -239,13 +232,13 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 
 ### Schema
 
-The schema is where you define all the [components](#component) in your [world](#spatialos-world).
+The schema is where you define all the [SpatialOS components](#spatialos-component) in your [world](#spatialos-world).
 
 Schema is defined in `.schema` files, written in [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Schema files are stored in the
 `schema/` directory of your [SpatialOS project](spatialos-project).
 
 SpatialOS uses the schema to [generate code](#code-generation) in various languages (including C#, C++, and Java).
-You can use this generated code in your [workers](#worker) to interact with [entities](#entity) in the world.
+You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the world.
 
 > Related:
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
@@ -257,8 +250,8 @@ Use the [command](#the-spatial-command-line-tool-cli)
 [`spatial worker codegen`]({{urlRoot}}/shared/spatial-cli/spatial-worker-codegen) to compile generated code from the
 [schema](#schema) (in C#, C++ and Java).
 
-This code is used by [workers](#worker) to interact with [entities](#entity): to read from their
-[components](#component), and to [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to them.
+This code is used by [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity): to read from their
+[SpatialOS components](#spatialos-component), and to [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to them.
 
 > Related:
 > * [Generating code from the schema]({{urlRoot}}/shared/schema/introduction#generating-code-from-the-schema)
@@ -266,7 +259,7 @@ This code is used by [workers](#worker) to interact with [entities](#entity): to
 ### Read and write access ("authority")
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, only one
-worker instance at a time is allowed to write to each [component](#component) on each [entity](#entity): ie,
+worker instance at a time is allowed to write to each [SpatialOS component](#spatialos-component) on each [SpatialOS entity](#spatialos-entity): ie,
 given write access. Write access is sometimes also referred to as authority.
 
 Which types of workers *can have* write access is governed by each entity's [access control list (ACL)](#acl).
@@ -283,7 +276,7 @@ can read from an entity, it is allowed to read from all components on that entit
 ### Snapshot
 
 A snapshot is a representation of the state of a [world](#spatialos-world) at some point in time. It
-stores each [persistent](#persistence) [entity](#entity) and the values of their [components](#component)'
+stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)'
 [properties](#property).
 
 You'll use a snapshot as the starting point (an [initial snapshot](#initial-snapshot)) for your world when you
@@ -307,15 +300,15 @@ The SpatialOS assembly is stored locally at `UnityGDK\build\assembly`. When you 
 We use [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) to structure the SpatialOS GDK for Unity. Unity Assembly Definition (.`asmdef`) files define a set of scripts as a .NET assembly. They also define how, and under what circumstances, these .NET assemblies should be generated. 
 
 The benefits of our using Unity assembly definition files are:
-* A structured [Unity project](#unity-project)
-* A guaruntee that scripts will only run in the environment they are intended for (a script that should only run in the Unity Editor, for example, won't run outside of it)
-* A guaruntee that scripts will only be run by Unity when they are required. This minimises build times.
+* A comprehensible [Unity project](#unity-project) structure.
+* A guaruntee that scripts will only run on the [platforms](https://docs.unity3d.com/Manual/UnityCloudBuildSupportedPlatforms.html) that they are intended for.
+* A guaruntee that scripts will only run when they are required. This minimises build times.
 
 > Related:
 > * [Unity documentation: Script compilation and assembly definition files](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)
 > * [Microsoft documentation: Assemblies in the Common Language Runtime](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime)
 
-### SDK for Unity
+### SpatialOS SDK for Unity
 
 The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is not recommened for development.
 
