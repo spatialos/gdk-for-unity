@@ -27,9 +27,10 @@ namespace Improbable.Gdk.Tools
 
         private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
         {
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, editorCompatible: true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, editorCompatible: true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86_64", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, editorCompatible: true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86", new List<BuildTarget> { BuildTarget.StandaloneWindows }, false),
             PluginDirectoryCompatibility.CreateAllCompatible("Assets/Plugins/Improbable/Sdk/Common"),
         };
 
@@ -140,9 +141,14 @@ namespace Improbable.Gdk.Tools
                 EditorApplication.UnlockReloadAssemblies();
             }
 
+            if (exitCode != 0)
+            {
+                return DownloadResult.Error;
+            }
+
             AssetDatabase.Refresh();
             SetPluginsCompatibility();
-            return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
+            return DownloadResult.Success;
         }
 
         /// <summary>
@@ -201,8 +207,9 @@ namespace Improbable.Gdk.Tools
 
             public static PluginDirectoryCompatibility CreateAllCompatible(string path)
             {
-                return new PluginDirectoryCompatibility(path, true, null, incompatiblePlatforms, editorCompatible);
+                return new PluginDirectoryCompatibility(path, true, null, null, true);
             }
+
             private PluginDirectoryCompatibility(string path,
                 bool anyPlatformCompatible,
                 List<BuildTarget> compatiblePlatforms,
