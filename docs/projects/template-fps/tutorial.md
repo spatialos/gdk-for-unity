@@ -184,19 +184,125 @@ The FPS Template project uses the SpatialOS GDK's GameObject workflow, which is 
 
 In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `/Assets/Resources/Prefabs/UnityClient` and `/Assets/Resources/Prefabs/UnityGameLogic` respectively.
 
+The FPS Template project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 
+<%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
-<%(#Expandable title="What are the Authoritative and NonAuthoritative sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
+The FPS Template project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Resources/Prefabs/UnityClient/`.
+
+If you are interested in why the FPS Template project named those sub-directories `Authoritative` and `NonAuthoritative`, it relates to write-access for components on the entity.
 
 At any point in time a single entity may be known about by multiple workers, even of the same type. In a large game you might have multiple `UnityGameLogic` workers. These often overlap, which means that they both 'know about' some of the same entities. However, only **one** of those workers can have write-access permissions to components on an entity at any given time.
 
 That means even two workers of the same type (e.g. `UnityGameLogic`) may not have the same responsibilities for a particular entity. The **authoritative** worker (i.e. the one that has write-access) may be responsible for executing some logic and updating the entity's component data. The **non-authoritative** worker only has read-access, which it may use to drive its own local representation of that entity, but it shouldn't try to update the entity's component values (and wouldn't be able to if it tried!). These two workers have _different representations_ of the same entity, even though they are the same type of worker.
 
-This is why the `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders. They are for keeping separate the differing local representations that worker will use, depending on whether it is trying to represent an entity over which it has authority or not.
-
-Separating your prefabs like this is **not** mandatory. If you would rather use the same single prefab in multiple circumstances, but write your logic so that it will execute differently based on having or not having authority then that is legitimate too.
+The `Player` entity has a special relationship with the `UnityClient` instance that is authoritative over it. That `UnityClient` is running on the gamer's machine, and that gamer 'owns' that `Player` entity. It's their representation in the world. As such, there are big differences between how `Player` entity should be represented on the authoritative client (it should have a camera, collect player input etc.) compared to if the `Player` entity represents someone else in the game. The FPS Template project has some additional logic to manage these representations as a way of keeping the code more organised.
 
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority](fix).<%(/Expandable)%>
+
+
+
+##### Creating a UnityClient entity prefab
+
+The FPS Template project contains a health pack prefab, `HealthPack.prefab`, in the folder: `/Assets/Resources/Prefabs/`.
+
+In the `/Assets/Resources/Prefabs/UnityClient/` folder create a new prefab named **"HealthPickup"**. Give this two children, the health pack and the base plate (`/Assets/Resources/Prefabs/HealthPackCube.prefab` and `/Assets/Resources/Prefabs/HealthPackBase.prefab`).
+
+<%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
+
+This is because the FPS Template project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow](fix).<%(/Expandable)%>
+
+
+
+<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies.
+
+If you right-click in your project file hierarchy, you'll find an option `Create > Prefab`, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
+
+If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a scene to edit them - just remember to drag them to apply your change (in the Unity Inspector panel) and delete them from the scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+
+When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
+
+Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace it's contents with the following code snippet:
+
+```
+using Improbable.Gdk.GameObjectRepresentation;
+using Pickups;
+using UnityEngine;
+
+namespace Fps
+{
+    [WorkerType(WorkerUtils.UnityClient)]
+    public class HealthPickupClientVisibility : MonoBehaviour
+    {
+        [Require] private HealthPickup.Requirable.Reader healthPickupReader;
+
+        [SerializeField] private MeshRenderer cubeMeshRenderer;
+
+        private void OnEnable()
+        {
+            healthPickupReader.ComponentUpdated += OnHealthPickupComponentUpdated;
+            UpdateVisibility();
+        }
+
+        private void UpdateVisibility()
+        {
+            cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
+        }
+
+        private void OnHealthPickupComponentUpdated(HealthPickup.Update update)
+        {
+            UpdateVisibility();
+        }
+    }
+}
+```
+
+This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK, which we can look at more closely.
+
+```
+[WorkerType(WorkerUtils.UnityClient)]
+```
+
+This annotation decorating the class indicates the `WorkerType` of the script (in this case, `UnityClient`). This provides information for SpatialOS when it is building out your separate workers: a script with the client annotation should never appear in `UnityGameLogic` worker. You can use these `WorkerType` annotations to control where your code runs. If a script should exist and run on both client-side and server-side workers then this annotation can be omitted.
+
+This script relates is going to rely on the `active` property of your new `HealthPickup` component, so the package declared in the `HealthPickup.schema` file appears in this script in an include statement:
+
+```
+using Pickups;
+```
+
+This namespace is part of the helper classes that the code generation phase created from your schema.
+
+To make use of component data, either to read from it or write to it, we can use SpatialOS GDK syntax to inject the component into the script.
+
+```
+[Require] private HealthPickup.Requirable.Reader healthPickupReader;
+```
+
+The worker on which the code is running interprets this statement as an instruction to only enable this script component on a particular entity's associated GameObject if that entity has a `HealthPickup` component, and the worker has read-access to that component. Read-access is rarely limited, but the same syntax can be use with `Writer` instead of `Reader`, which would make the requirement even more strict: The script would only be enabled on the single worker that has write-access to the `HealthPickup` component on that entity.
+
+These `[Require]` statements are another powerful way to control where your code is executed. For the purpose of this script we only need to _read_ the health pack's data when deciding how to visualise it, so only a `Reader` is necessary.
+
+You can see a use of the `HealthPickup` component's data in the line:
+
+```
+cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
+```
+
+When you wrote the schema for the `HealthPickup` component you included a bool property called `is_active`, and code generation has created the `IsActive` member within the reader's `Data` object. We'll cover updating component property values later in this tutorial.
+
+Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer. Make sure you drag the child GameObject's mesh renderer to this field in the Unity Inspector panel to set the reference.
+
+The client-side representation of the health pack entity is now complete!
+
+##### Creating a UnityGameLogic entity prefab
+
+In the FPS Template project the server-side worker is called `UnityGameLogic`.
+
+If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
+
+Just as with client-side representation, navigate to the `/Assets/Resources/Prefabs/UnityGameLogic/` folder and create a `HealthPickup` prefab. Once again this name must match the `Metadata` string for the health pack entity so that the GameObject Creation system knows to associate them.
+
 
 
 
@@ -236,7 +342,9 @@ You'll know it's worked if you can see a `HealthPickup` entity in the inspector,
 
 Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
 
-<%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.<%(/Expandable)%>
+<%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.
+
+If you are using the SpatialOS GDK's GameObject workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
 
 # Adding health pack logic
 
