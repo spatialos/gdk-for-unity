@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    public delegate Worker.Core.Entity GetPlayerEntityTemplateDelegate(
+    public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
         string clientWorkerId,
         List<string> clientAttributeSet,
         Vector3f position);

@@ -8,7 +8,7 @@ namespace Playground
 {
     public static class CubeTemplate
     {
-        public static Entity CreateCubeEntityTemplate(Coordinates coords)
+        public static EntityTemplate CreateCubeEntityTemplate(Coordinates coords)
         {
             var cubeColor = CubeColor.Component.CreateSchemaComponentData();
             var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });

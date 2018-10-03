@@ -11,9 +11,9 @@ namespace Improbable.Gdk.Core
 
         public int Count => entities.Count;
 
-        public void AddEntity(Entity entity)
+        public void AddEntity(EntityTemplate entityTemplate)
         {
-            entities[new EntityId(entities.Count + 1)] = entity;
+            entities[new EntityId(entities.Count + 1)] = entityTemplate.GetEntity();
         }
 
         public void WriteToFile(string path)

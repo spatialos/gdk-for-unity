@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     public class EntityBuilder
     {
         private readonly Entity entity;
-        private Acl acl = new Acl();
+        private readonly Acl acl = new Acl();
         private bool hasBuiltOnce;
 
         private readonly HashSet<uint> componentsAdded = new HashSet<uint>();
@@ -115,18 +115,19 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
-        public Entity Build()
+        public EntityTemplate Build()
         {
             if (hasBuiltOnce)
             {
                 throw new InvalidOperationException("Cannot call Build() multiple times on the same EntityBuilder instance.");
             }
 
+            CheckRequiredComponents();
+
             entity.Add(acl.Build());
             componentsAdded.Add(EntityAclComponentId);
-            CheckRequiredComponents();
             hasBuiltOnce = true;
-            return entity;
+            return new EntityTemplate(entity);
         }
 
         private void CheckRequiredComponents()
@@ -140,8 +141,8 @@ namespace Improbable.Gdk.Core
 
         private class Acl
         {
-            private Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
-            private List<string> readPermissions = new List<string>();
+            private readonly Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
+            private readonly List<string> readPermissions = new List<string>();
 
             public void SetComponentWriteAccess(uint componentId, string attribute)
             {
