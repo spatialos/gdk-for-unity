@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         ///     The host for connecting to the SpatialOS runtime via the Locator flow.
         /// </summary>
         /// <remarks>
-        ///    Default is "locator.improbable.io"
+        ///    Default is "locator.improbable.io".
         /// </remarks>
         public string LocatorHost = RuntimeConfigDefaults.LocatorHost;
 
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Validates that the LocatorConfig instance is valid. This does not guarantee successful connection.
+        ///     Validates that the LocatorConfig instance is valid. This does not guarantee a successful connection.
         /// </summary>
         public override void Validate()
         {
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Sets the logic token for the Locator to use.
+        ///     Sets the login token for the Locator to use.
         /// </summary>
         /// <param name="loginToken">The login token.</param>
         public void SetLoginToken(string loginToken)

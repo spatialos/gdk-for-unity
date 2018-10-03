@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Core.Commands
                 }
 
                 /// <summary>
-                ///     An event which triggers when a EntityQuery command response is received.
+                ///     An event which triggers when an EntityQuery command response is received.
                 /// </summary>
                 public event Action<EntityQuery.ReceivedResponse> OnEntityQueryResponse
                 {

@@ -27,10 +27,13 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     The worker ID.
         /// </summary>
+        /// <remarks>
+        ///    Unique for a given SpatialOS deployment.
+        /// </remarks>
         public readonly string WorkerId;
 
         /// <summary>
-        ///     THe logger for this worker.
+        ///     The logger for this worker.
         /// </summary>
         public ILogDispatcher LogDispatcher;
 

@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core.Commands
             ///     This should only be provided if received as the result of a ReserveEntityIds command.
             /// </param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -358,7 +358,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="entityId"> The entity ID that is to be deleted.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -615,7 +615,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="numberOfEntityIds">The number of entity IDs to reserve.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -879,7 +879,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="entityQuery">The EntityQuery object defining the constraints and query type.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.

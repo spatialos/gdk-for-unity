@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core
         public bool EnableProtocolLoggingAtStartup = false;
 
         /// <summary>
-        ///     Denotes whether the worker will use the local IP to connect to the SpatiaLOS runtime.
+        ///     Denotes whether the worker uses the local IP to connect to the SpatiaLOS runtime.
         /// </summary>
         /// <remarks>
         ///    Default is false.

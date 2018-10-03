@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     A base class to use to connect workers via Monobehaviours.
+    ///     A base class to connect workers via Monobehaviours.
     /// </summary>
     public class WorkerConnector : MonoBehaviour, IDisposable
     {
@@ -145,7 +145,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Determines whether to connect via the locator.
         /// </summary>
-        /// <returns>True if should connect via the Locator, false otherwise.</returns>
+        /// <returns>True, if should connect via the Locator, false otherwise.</returns>
         protected virtual bool ShouldUseLocator()
         {
             if (Application.isEditor)
@@ -172,8 +172,7 @@ namespace Improbable.Gdk.Core
         ///     Gets the Receptionist configuration.
         /// </summary>
         /// <remarks>
-        ///    If in the Unity Editor, an auto-generated worker id is used. If via the command line, will only
-        ///    auto-generate if no worker id is provided.
+        ///    A worker ID is auto-generated if in the Unity Editor or if one is not provided over the command line.
         /// </remarks>
         /// <param name="workerType">The type of the worker to create.</param>
         /// <returns>The Receptionist connection configuration</returns>

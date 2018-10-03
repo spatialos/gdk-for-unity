@@ -50,7 +50,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     When this method returns, this will be a reference to the linked GameObject if it is found or null
         ///     otherwise.
         /// </param>
-        /// <returns>True if a linked GameObject was found, false otherwise.</returns>
+        /// <returns>True, if a linked GameObject was found, false otherwise.</returns>
         public bool TryGetGameObjectForSpatialOSEntityId(EntityId entityId, out GameObject linkedGameObject)
         {
             linkedGameObject = default(GameObject);
@@ -81,10 +81,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// </summary>
         /// <param name="linkedGameObject">The GameObject to get an entity ID from.</param>
         /// <param name="entityId">
-        ///     When this method returns, this will be a valid entity ID for the GameObject if it is linked and is
+        ///     When this method returns, contains a valid entity ID for the GameObject if it is linked and is
         ///     valid or default constructed otherwise.
         /// </param>
-        /// <returns>True if the GameObject is linked to a SpatialOS entity and is valid, false otherwise</returns>
+        /// <returns>True, if the GameObject is linked to a SpatialOS entity and is valid, false otherwise.</returns>
         public bool TryGetSpatialOSEntityIdForGameObject(GameObject linkedGameObject, out EntityId entityId)
         {
             entityId = default(EntityId);

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Logs to Unity console.
+    ///     Logs to the Unity Console.
     /// </summary>
     /// <remarks>
     ///    Forwards logs to UnityEngine.Debug.unityLogger.

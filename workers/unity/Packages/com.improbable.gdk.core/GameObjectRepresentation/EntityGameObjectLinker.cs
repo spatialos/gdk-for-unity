@@ -34,7 +34,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     A <see cref="SpatialOSComponent"/> will be added to the GameObject.
         /// </remarks>
         /// <remarks>
-        ///     If a Monobehaviour exists multiple times on the GameObject, only the first occurence will be inserted
+        ///     If a Monobehaviour exists multiple times on the GameObject, only the first occurence is inserted
         ///     onto the ECS entity.
         /// </remarks>
         /// <param name="gameObject">The GameObject to link.</param>
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         }
 
         /// <summary>
-        ///     Un-links a GameObject and ECS Entity
+        ///     Un-links a GameObject and ECS Entity.
         /// </summary>
         /// <remarks>
         ///    The GameObject and ECS Entity should already be linked before this method call.
@@ -104,7 +104,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// <param name="gameObject">The GameObject to unlink.</param>
         /// <param name="entity">The ECS Entity to unlink.</param>
         /// <param name="viewCommandBuffer">
-        ///     An instance of the ViewCommandBuffer. Should be flushed after this method returns.
+        ///     An instance of the ViewCommandBuffer. Must be flushed after this method returns.
         /// </param>
         public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {

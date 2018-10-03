@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Core
 
 
         /// <summary>
-        ///     Create a new instance of the EntityBuilder and start building a new entity template.
+        ///     Creates a new instance of the EntityBuilder and start building a new entity template.
         /// </summary>
         /// <returns>The EntityBuilder instance.</returns>
         public static EntityBuilder Begin()
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Adds an arbitrary SpatialOS component with data to the entity template.
         /// </summary>
-        /// <param name="componentData">The SpatialOS component data</param>
+        /// <param name="componentData">The SpatialOS component data.</param>
         /// <param name="writeAccess">The worker attribute which has write access over this component.</param>
         /// <returns>Itself</returns>
         /// <exception cref="InvalidOperationException">
@@ -89,10 +89,10 @@ namespace Improbable.Gdk.Core
         ///     Sets the Persistence component to the entity template.
         /// </summary>
         /// <remarks>
-        ///    Persistence denotes whether the entity will be included in snapshots.
+        ///     The Persistence component denotes whether a snapshot can contain the entity.
         /// </remarks>
         /// <remarks>
-        ///    If an entity without Persistence is attempted to be put into a snapshot, an exception will be thrown.
+        ///     The Snapshot API will throw an exception if an entity is added without a Persistence component.
         /// </remarks>
         /// <param name="persistence">The value of persistence.</param>
         /// <returns>Itself</returns>
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Add the Metadata component to the entity template.
+        ///     Adds the Metadata component to the entity template.
         /// </summary>
         /// <param name="metadata">The metadata string.</param>
         /// <param name="writeAccess">The worker attribute which has write access over this component.</param>
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.Core
         ///     Sets the Read ACL for an entity.
         /// </summary>
         /// <param name="attributes">The worker attributes which have read access over this entity.</param>
-        /// <returns></returns>
+        /// <returns>Itself</returns>
         public EntityBuilder SetReadAcl(List<string> attributes)
         {
             foreach (var attribute in attributes)
@@ -175,11 +175,11 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Builds the entity template
+        ///     Builds the entity template.
         /// </summary>
         /// <returns>An EntityTemplate object.</returns>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if Build is called twice
+        ///     Thrown if Build is called twice.
         /// </exception>
         /// <exception cref="InvalidEntityException">
         ///    Thrown if the entity does not have the Position component.

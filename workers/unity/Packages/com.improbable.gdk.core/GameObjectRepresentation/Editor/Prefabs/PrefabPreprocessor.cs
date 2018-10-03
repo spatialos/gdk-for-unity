@@ -15,7 +15,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
     /// </summary>
     /// <remarks>
     ///
-    ///     This will process the prefabs when you build or when you press play in the Unity Editor.
+    ///     This processes the prefabs when you build or when you press play in the Unity Editor.
     /// </remarks>
     [InitializeOnLoad]
     public class PrefabPreprocessor : IPreprocessBuildWithReport
