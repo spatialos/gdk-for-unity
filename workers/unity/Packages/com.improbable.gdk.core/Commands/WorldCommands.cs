@@ -86,11 +86,11 @@ namespace Improbable.Gdk.Core.Commands
                 public long RequestId;
             }
 
-            public static Request CreateRequest(Entity entity, EntityId? entityId = null, uint? timeoutMillis = null, Object context = null)
+            public static Request CreateRequest(EntityTemplate template, EntityId? entityId = null, uint? timeoutMillis = null, Object context = null)
             {
                 return new Request
                 {
-                    Entity = entity,
+                    Entity = template.GetEntity(),
                     EntityId = entityId,
                     TimeoutMillis = timeoutMillis,
                     Context = context,

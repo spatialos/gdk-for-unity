@@ -77,9 +77,8 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
-                    var entity = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
-
-                    snapshot.AddEntity(entity);
+                    var entityTemplate = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
+                    snapshot.AddEntity(entityTemplate);
                 }
             }
         }
@@ -100,7 +99,7 @@ namespace Playground.Editor.SnapshotGenerator
             var color = SpinnerColor.Component.CreateSchemaComponentData(Color.BLUE);
             var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
 
-            var entity = EntityBuilder.Begin()
+            var entityTemplate = EntityBuilder.Begin()
                 .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
                 .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
                 .SetPersistence(true)
@@ -111,7 +110,7 @@ namespace Playground.Editor.SnapshotGenerator
                 .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
                 .Build();
 
-            snapshot.AddEntity(entity);
+            snapshot.AddEntity(entityTemplate);
         }
     }
 }
