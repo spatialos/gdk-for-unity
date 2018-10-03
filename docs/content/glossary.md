@@ -169,18 +169,12 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
 
 ### Unity ECS world
-In Unity's ECS Worlds are the equivalent of [Scenes](scenes). They consist of a set of ECS entities, components and systems.
-
-In the SpatialOS GDK for Unity, ECS worlds are an abstraction used to represet the [SpatialOS world](spatialos-world), which is the canonical source of truth about what is happening in your SpatialOS game.
+In Unity's ECS Worlds are the equivalent of [Scenes](scenes). They are a set of ECS entities, components and systems. In the SpatialOS GDK for Unity, ECS worlds (and everything in them) are an abstraction used to represet all or part of the [SpatialOS world](spatialos-world), which is the canonical source of truth.
 
 > Related: [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)
 
 ### Unity ECS entity
-In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](spatialos-entity) as a `GameObject` or a [Unity ECS `Entity`](#unity-ecs-entity).
-
-Unity ECS entities are the equivalent of [GameObjects](gameobject).
-
-
+In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](spatialos-entity) as a [`GameObject`](gameobject) or a [Unity ECS `Entity`](#unity-ecs-entity). A [Unity ECS `Entity`] is an abstraction used to represet a [SpatialOS entity].
 
 > Related:
 > * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#entity)
@@ -199,6 +193,8 @@ Generated ECS components can be injected into systems, read, and modified just a
 > * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata)
 
 ### Unity ECS reactive component
+
+### Unity ECS system
 
 ### Scene
 
