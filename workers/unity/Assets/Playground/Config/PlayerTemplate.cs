@@ -11,7 +11,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static Entity CreatePlayerEntityTemplate(string workerId, List<string> clientAttributeSet,
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, List<string> clientAttributeSet,
             Improbable.Vector3f position)
         {
             var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);

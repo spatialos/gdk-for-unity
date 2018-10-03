@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core.Commands
                     return request.RequestId;
                 }
 
-                public long CreateEntity(Improbable.Worker.Core.Entity entityTemplate, EntityId? entityId = null,
+                public long CreateEntity(EntityTemplate entityTemplate, EntityId? entityId = null,
                     uint? timeoutMillis = null, object context = null)
                 {
                     if (!VerifyNotDisposed())
