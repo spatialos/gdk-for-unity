@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectRepresentation
 {
     /// <summary>
-    ///     Denotes that a GameObject has been linked to an SpatialOS entity.
+    ///     Denotes that a GameObject has been linked to an SpatialOS entity and exposes SpatialOS functionality.
     /// </summary>
     public class SpatialOSComponent : MonoBehaviour
     {

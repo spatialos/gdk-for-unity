@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core.Commands
             ///     This should only be provided if received as the result of a ReserveEntityIds command.
             /// </param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to the WorkerSDK default.
+            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.Core.Commands
                 public object Context { get; }
 
                 /// <summary>
-                ///     The unique request ID of this command.
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
                 public long RequestId { get; }
 
@@ -358,7 +358,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="entityId"> The entity ID that is to be deleted.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to the WorkerSDK default.
+            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -407,7 +407,7 @@ namespace Improbable.Gdk.Core.Commands
                 public object Context { get; }
 
                 /// <summary>
-                ///     The unique request ID of this command.
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
                 public long RequestId { get; }
 
@@ -615,7 +615,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="numberOfEntityIds">The number of entity IDs to reserve.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to the WorkerSDK default.
+            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -670,7 +670,7 @@ namespace Improbable.Gdk.Core.Commands
                 public object Context { get; }
 
                 /// <summary>
-                ///     The unique request ID of this command.
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
                 public long RequestId { get; }
 
@@ -879,7 +879,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             /// <param name="entityQuery">The EntityQuery object defining the constraints and query type.</param>
             /// <param name="timeoutMillis">
-            ///     (Optional) The command timeout in milliseconds. Will default to the WorkerSDK default.
+            ///     (Optional) The command timeout in milliseconds. Will default to 5 seconds.
             /// </param>
             /// <param name="context">
             ///    (Optional) A context object that will be returned with the command response.
@@ -942,7 +942,7 @@ namespace Improbable.Gdk.Core.Commands
                 public object Context { get; }
 
                 /// <summary>
-                ///     The unique request ID of this command.
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
                 public long RequestId { get; }
 

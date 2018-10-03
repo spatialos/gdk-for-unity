@@ -91,8 +91,11 @@ namespace Improbable.Gdk.Core
         /// <remarks>
         ///    Persistence denotes whether the entity will be included in snapshots.
         /// </remarks>
+        /// <remarks>
+        ///    If an entity without Persistence is attempted to be put into a snapshot, an exception will be thrown.
+        /// </remarks>
         /// <param name="persistence">The value of persistence.</param>
-        /// <returns>Itself.</returns>
+        /// <returns>Itself</returns>
         public EntityBuilder SetPersistence(bool persistence)
         {
             if (persistence)

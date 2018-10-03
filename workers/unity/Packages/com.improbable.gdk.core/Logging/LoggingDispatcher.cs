@@ -5,8 +5,11 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Logs logEvents to console.
+    ///     Logs to Unity console.
     /// </summary>
+    /// <remarks>
+    ///    Forwards logs to UnityEngine.Debug.unityLogger.
+    /// </remarks>
     public class LoggingDispatcher : ILogDispatcher
     {
         public Connection Connection { get; set; }

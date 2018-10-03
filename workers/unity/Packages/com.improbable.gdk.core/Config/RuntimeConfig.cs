@@ -3,7 +3,7 @@ using Improbable.Worker;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Default values for various connection parameters.
+    ///     Default values for connection parameters.
     /// </summary>
     public static class RuntimeConfigDefaults
     {
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Default command line argument names.
+    ///     Default command line argument names for worker and connection configuration.
     /// </summary>
     public static class RuntimeConfigNames
     {

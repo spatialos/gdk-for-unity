@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="outValue">
         ///     When this method returns, contains the value contained within the Option if the Option is non-empty,
-        ///     otherwise the default constructor for the type of the outValue parameter.
+        ///     otherwise the default value for the type of the outValue parameter.
         /// </param>
         /// <returns>
         ///     A bool indicating success.

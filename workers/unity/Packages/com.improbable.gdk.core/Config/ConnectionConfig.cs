@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Basic validation function which checks that a string value is non-null or empty.
+        ///     Checks that a string value is non-null or empty.
         /// </summary>
         /// <param name="configValue">The value to validate.</param>
         /// <param name="configName">The name of the configuration.</param>

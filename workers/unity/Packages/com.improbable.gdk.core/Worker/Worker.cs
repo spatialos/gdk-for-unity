@@ -37,9 +37,6 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     The connection to the SpatialOS runtime.
         /// </summary>
-        /// <remarks>
-        ///    May be null.
-        /// </remarks>
         public Connection Connection { get; private set; }
 
         /// <summary>
