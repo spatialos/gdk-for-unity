@@ -27,10 +27,10 @@ namespace Improbable.Gdk.Tools
 
         private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
         {
-            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/OSX", false, new List<BuildTarget> { BuildTarget.StandaloneOSX }, null, true),
-            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Linux", false, new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, null, true),
-            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Core/Windows", false, new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, null, true),
-            new PluginDirectoryCompatibility("Assets/Plugins/Improbable/Sdk/Common", true, null, null, true),
+            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, true),
+            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, true),
+            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/Windows", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, true),
+            PluginDirectoryCompatibility.PluginDirectoryExcludePlatforms("Assets/Plugins/Improbable/Sdk/Common", null, true),
         };
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
@@ -147,6 +147,9 @@ namespace Improbable.Gdk.Tools
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
         }
 
+        /// <summary>
+        ///     Sets plugin platform compatibility based on directory structure
+        /// </summary>
         private static void SetPluginsCompatibility()
         {
             foreach (var pluginDirectoryCompatibility in PluginsCompatibilityList)
@@ -184,7 +187,21 @@ namespace Improbable.Gdk.Tools
 
         private class PluginDirectoryCompatibility
         {
-            public PluginDirectoryCompatibility(string path,
+            public static PluginDirectoryCompatibility PluginDirectoryIncludePlatforms(string path,
+                List<BuildTarget> compatiblePlatforms,
+                bool editorCompatible)
+            {
+                return new PluginDirectoryCompatibility(path, false, compatiblePlatforms, null, editorCompatible);
+            }
+
+            public static PluginDirectoryCompatibility PluginDirectoryExcludePlatforms(string path,
+                List<BuildTarget> incompatiblePlatforms,
+                bool editorCompatible)
+            {
+                return new PluginDirectoryCompatibility(path, true, null, incompatiblePlatforms, editorCompatible);
+            }
+
+            private PluginDirectoryCompatibility(string path,
                 bool anyPlatformCompatible,
                 List<BuildTarget> compatiblePlatforms,
                 List<BuildTarget> incompatiblePlatforms,
@@ -192,16 +209,6 @@ namespace Improbable.Gdk.Tools
             {
                 Path = path;
                 AnyPlatformCompatible = anyPlatformCompatible;
-                if (anyPlatformCompatible && compatiblePlatforms != null)
-                {
-                    Debug.LogError($"Bad plugin compatibility configuration for  {path}. Compatible with any shouldn't be used with a list of compatible platforms");
-                }
-
-                if (!anyPlatformCompatible && incompatiblePlatforms != null)
-                {
-                    Debug.LogError($"Bad plugin compatibility configuration for  {path}. Not compatible with any shouldn't be used with a list of incompatible platforms");
-                }
-
                 CompatiblePlatforms = compatiblePlatforms ?? new List<BuildTarget>();
                 IncompatiblePlatforms = incompatiblePlatforms ?? new List<BuildTarget>();
                 EditorCompatible = editorCompatible;
