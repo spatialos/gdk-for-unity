@@ -114,7 +114,7 @@ The Console ([console.improbable.io](https://console.improbable.io/)) is the mai
 
 ### SpatialOS world
 
-The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
+The SpatialOS world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
 
 SpatialOS manages the world, keeping track of all the entities and what state they’re in.
 
@@ -168,6 +168,44 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Component best practices]({{urlRoot}}/shared/design/component-best-practices)
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
 
+### Unity ECS world
+In Unity's ECS Worlds are the equivalent of [Scenes](scenes). They consist of a set of ECS entities, components and systems.
+
+In the SpatialOS GDK for Unity, ECS worlds are an abstraction used to represet the [SpatialOS world](spatialos-world), which is the canonical source of truth about what is happening in your SpatialOS game.
+
+> Related: [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)
+
+### Unity ECS entity
+In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](spatialos-entity) as a `GameObject` or a [Unity ECS `Entity`](#unity-ecs-entity).
+
+Unity ECS entities are the equivalent of [GameObjects](gameobject).
+
+
+
+> Related:
+> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#entity)
+
+### Unity ECS component
+
+Just as [Unity ECS entities](#unity-ecs-entity) represent [SpatialOS entities](spatialos-entity), Unity ECS components represent [SpatialOS components](spatialos-component) in the [Unity ECS World](unity-ecs-world).
+
+Unity ECS components are [`IComponentData`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata) structs. They are abstractions used to represent a stream of concrete, blittable data in Unity ECS. This stream of data parallels the data stored in SpatialOS components (remember, the [SpatialOS world](spatialos-world) is the canonical source of truth, the [Unity ECS world](unity-ecs-world) mirrors that truth).
+
+The SpatialOS GDK for Unity generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](spatialos-component) using familiar workflows in the Unity Editor.
+
+Generated ECS components can be injected into systems, read, and modified just as normal `IComponentData` structs can. The generated code handles updates from and to SpatialOS.
+
+> Related:
+> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata)
+
+### Unity ECS reactive component
+
+### Scene
+
+### GameObject
+
+### Monobehaviour
+
 ### Worker
 
 SpatialOS manages the [SpatialOS world](#spatialos-world) itself: it keeps track of all the [SpatailOS entities](#spatialos-entity) and their
@@ -203,11 +241,9 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Client-worker
 
-A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. It is used to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
+A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. You use it to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
 
-Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by
-SpatialOS. In a running [deployment](#deploying), there will be one
-client-worker per player.
+Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by SpatialOS. In a running [deployment](#deploying), there will be one client-worker per player.
 
 Client-workers are mostly tasked with visualising what’s happening in the [SpatialOS world](#spatialos-world). They also dealing with player input. In general, you want to give client-workers
 [write access](#read-and-write-access-authority) to as few components as possible,
@@ -315,16 +351,9 @@ The benefits of our using Unity assembly definition files are:
 
 ### SpatialOS SDK for Unity
 
-The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is not recommened for development.
-Attribute
-[Deets here -https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attribute
-Referenced in this doc here: https://docs.google.com/document/d/1qKi3ju6OMGMLlfHj9ufvo73kGBH9E3ZUOXB6i4Grsgk/edit - Ed]
+The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is **not recommened for development**.
 
-
-Checking out
-
-Code generation
-
+---
 
 Commands
 World commands
@@ -332,28 +361,14 @@ Entity commands
 Component
 ECS component
 ECS reactive component
-ECS non-reactive component
-SpatialOS component
 GameObject and MonoBehaviour component (AKA “a MonoBehaviour” in our docs)
 
-
 Core module
-
-Deploy
-
+Feature module
 
 ECS
 Entity Component System
-The Entity-Component System (ECS) is a data-oriented paradigm that Unity recently introduced as a preview package in their Engine.
-
-Entity
-SpatialOS entity
-ECS entity
-
-
-Events
-
-Feature module
+The Entity-Component System (ECS) is a data-oriented paradigm that Unity recently introduced as a preview package in their Engine
 
 Package
 Each package contains one or multiple assemblies and contains one specific functionality that can be added to your game to make the development of your SpatialOS game simpler.
@@ -365,31 +380,6 @@ Custom replication
 
 The Runtime
 A Runtime instance manages the [game world](link!) of each [deployment](link).
-
-Schema
-Schemalang
-
-
-See also the SpatialOS documentation on concepts: schema and working with schema.
-
-Snapshot
-
-
-Worker
-
-Server-worker
-Clent-worker
-
-World
-The SpatialOS world, also known as “the world” and “the game world”.
-The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world’s data is stored within SpatialOS [entities](link!!); specifically, within their [components](link!!! to ECS components).
-SpatialOS manages the world, keeping track of all the SpatialOS entities and what state they’re in.
-Changes to the world are made by [workers](link). Each worker has a view onto the world (the part of the world that they’re [interested](link) in), and SpatialOS sends them updates when anything changes in that view.
-It’s important to recognise this fundamental separation between the SpatialOS world and the view (or representation) of that world that a worker [checks out](https://docs.improbable.io/reference/13.3/shared/glossary#checking-out) locally. This is why workers must send updates to SpatialOS when they want to change the world: they don’t control the canonical state of the world, they must use SpatialOS APIs to change it.
-
-Write access
-
-
 ----
 
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
