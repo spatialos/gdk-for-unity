@@ -5,22 +5,22 @@ namespace Improbable.Gdk.Core
 {
     public class EntityTemplate
     {
-        internal readonly Entity template;
-        private bool hasBuild;
+        internal readonly Entity template; //Internal for tests
+        private bool hasBeenUsed;
 
         internal EntityTemplate(Entity entity)
         {
             template = entity;
         }
 
-        public Entity GetEntity()
+        internal Entity GetEntity()
         {
-            if (hasBuild)
+            if (hasBeenUsed)
             {
                 throw new InvalidOperationException("Cannot create an entity using the same EntityTemplate twice.");
             }
 
-            hasBuild = true;
+            hasBeenUsed = true;
             return template;
         }
     }
