@@ -3,7 +3,9 @@
 ----
 ## Glossary
 
->This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/13.2/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic terms related to SpatialOS.
+>**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/13.2/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic SpatialOS concepts.
+
+>**Note:** There are many concepts in this glossary that mean different things in different contexts. When semantically overloaded words or phrases are unavoidable, we explicity prefix them to avoid confusion. [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and [SpatialOS assemblies](#spatialos-assembly) are an example of this.
 
 ### SpatialOS Project
 
@@ -38,17 +40,7 @@ You must specify this name in the [spatialos.json](#spatialos-json) file in the 
 
 You can find your project name in the [Console](https://console.improbable.io/).
 
-### Assembly
-
-An assembly is what's created when you [build your workers](build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes executable files for [client-workers](#client-worker) and [server-workers](#server-worker), and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
-
-The assembly is stored locally at `UnityGDK\build\assembly`. When you run a [cloud deployment](#cloud-deployment), your assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
-
-> Related:
-> * [spatial cloud upload]({{urlRoot}}/shared/spatial-cli/spatial-cloud-upload)
-> * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
-
-## The `spatial` command-line tool (CLI)
+### The `spatial` command-line tool (CLI)
 
 Also known as the "`spatial` CLI".
 
@@ -61,7 +53,7 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 > * [An introducion to the `spatial` command-line tool](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
 > * [`spatial` reference documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial)
 
-## Building
+### Building
 
 When you make changes to the code of a [worker](#worker), you need to build those changes in order to try them out in a [local](#local-deployment) or [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
@@ -71,7 +63,7 @@ When you make changes to the code of a [worker](#worker), you need to build thos
 > * [Building the bridge and launch configurations of your workers](build.md#building-the-bridge-and-launch-configurations-of-your-workers)
 > * [Preparing the build configuration of your workers](build.md#preparing-the-build-configuration-of-your-workers)
 
-## Deploying
+### Deploying
 
 When you want to try out your game, you need to deploy it. This means
 launching SpatialOS itself. SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot),
@@ -101,25 +93,25 @@ or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cl
 
 The Launcher is a tool that can download and launch [clients](#client-worker) that connect to [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It's available as an application for Windows and macOS. From the [Console](#console), you can use the Launcher to connect a local client to your own [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment), or generate a share link so anyone with the link can join your game.
 
-The Launcher downloads the client executable from the [assembly](#assembly) you uploaded.
+The Launcher downloads the client executable from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
 > Related:
 > * [The Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
 
-## Console
+### Console
 
 The Console ([console.improbable.io](https://console.improbable.io/)) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It shows you:
 
 * Your [project name](#project-name)
 * You past and present [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment)
-* All of the [assemblies](#assembly) you’ve uploaded
+* All of the [SpatialOS assemblies](#spatialos-assembly) you’ve uploaded
 * Links to the [inspect](#inspector), [launch](#launcher), and view logs and metrics for your deployments.
 
 > Related:
 > * [Logs](https://docs.improbable.io/reference/latest/shared/operate/logs#cloud-deployments)
 > * [Metrics](https://docs.improbable.io/reference/13.3/shared/operate/metrics)
 
-## Worker
+### Worker
 
 SpatialOS manages the [world](#spatialos-world) itself: it keeps track of all the [entities](#entity) and their
 [properties](#property). But on its own, it doesn’t make any changes to the world.
@@ -199,7 +191,7 @@ use SpatialOS APIs to change it.
 
 Node refers to a single machine used by a [cloud deployment](#deploying). Its name indicates the role it plays in your [deployment](#deploying). You can see these on the advanced tab of your deployment details in the [Console](#console).
 
-## Entity
+### Entity
 
 All of the objects inside a [SpatialOS world](#spatialos-world) are entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
 
@@ -245,7 +237,7 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Component best practices]({{urlRoot}}/shared/design/component-best-practices)
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
 
-## Schema
+### Schema
 
 The schema is where you define all the [components](#component) in your [world](#spatialos-world).
 
@@ -271,7 +263,7 @@ This code is used by [workers](#worker) to interact with [entities](#entity): to
 > Related:
 > * [Generating code from the schema]({{urlRoot}}/shared/schema/introduction#generating-code-from-the-schema)
 
-## Read and write access ("authority")
+### Read and write access ("authority")
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, only one
 worker instance at a time is allowed to write to each [component](#component) on each [entity](#entity): ie,
@@ -288,7 +280,7 @@ can read from an entity, it is allowed to read from all components on that entit
 > Related:
 > * [Understanding write access]({{urlRoot}}/shared/design/understanding-access)
 
-## Snapshot
+### Snapshot
 
 A snapshot is a representation of the state of a [world](#spatialos-world) at some point in time. It
 stores each [persistent](#persistence) [entity](#entity) and the values of their [components](#component)'
@@ -300,6 +292,29 @@ You'll use a snapshot as the starting point (an [initial snapshot](#initial-snap
 > Related:
 > * [Snapshots]({{urlRoot}}/shared/operate/snapshots)
 
+### SpatialOS Assembly
+
+A SpatialOS assembly is what's created when you [build your workers](build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes executable files for [client-workers](#client-worker) and [server-workers](#server-worker), and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
+
+The SpatialOS assembly is stored locally at `UnityGDK\build\assembly`. When you run a [cloud deployment](#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
+
+> Related:
+> * [spatial cloud upload]({{urlRoot}}/shared/spatial-cli/spatial-cloud-upload)
+> * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
+
+### Unity Assembly Definition files
+
+We use [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) to structure the SpatialOS GDK for Unity. Unity Assembly Definition (.`asmdef`) files define a set of scripts as a .NET assembly. They also define how, and under what circumstances, these .NET assemblies should be generated. 
+
+The benefits of our using Unity assembly definition files are:
+* A structured [Unity project](#unity-project)
+* A guaruntee that scripts will only run in the environment they are intended for (a script that should only run in the Unity Editor, for example, won't run outside of it)
+* A guaruntee that scripts will only be run by Unity when they are required. This minimises build times.
+
+> Related:
+> * [Unity documentation: Script compilation and assembly definition files](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)
+> * [Microsoft documentation: Assemblies in the Common Language Runtime](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime)
+
 ### SDK for Unity
 
 The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is not recommened for development.
@@ -307,9 +322,6 @@ The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Developmen
 ### Read and write access (“authority”)
 
 https://docs.improbable.io/reference/13.2/shared/glossary#read-and-write-access-authority
-
-Assembly
-We use assemblies to structure the GDK. By using [assembly definition files](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html), we are able to define how these assemblies should be generated. Each assembly may contain a module or part of a depending on how we have structured it. To ensure that scripts that should only run in the Editor or certain platforms won’t be added to the resulting [build](#building) of your workers by default, we define in the corresponding assembly definition file for which platforms the assembly should be included.
 
 Attribute
 [Deets here -https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attribute
