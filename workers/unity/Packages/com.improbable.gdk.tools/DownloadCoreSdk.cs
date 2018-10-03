@@ -27,10 +27,10 @@ namespace Improbable.Gdk.Tools
 
         private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
         {
-            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, true),
-            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, true),
-            PluginDirectoryCompatibility.PluginDirectoryIncludePlatforms("Assets/Plugins/Improbable/Core/Windows", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, true),
-            PluginDirectoryCompatibility.PluginDirectoryExcludePlatforms("Assets/Plugins/Improbable/Sdk/Common", null, true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinuxUniversal }, true),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, true),
+            PluginDirectoryCompatibility.CreateAllCompatible("Assets/Plugins/Improbable/Sdk/Common"),
         };
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
@@ -45,8 +45,6 @@ namespace Improbable.Gdk.Tools
             }
 
             Download();
-            AssetDatabase.Refresh();
-            SetPluginsCompatibility();
         }
 
         private static void RemoveMarkerFile()
@@ -109,9 +107,7 @@ namespace Improbable.Gdk.Tools
                 return DownloadResult.AlreadyInstalled;
             }
 
-            DownloadResult result = Download();
-            SetPluginsCompatibility();
-            return result;
+            return Download();
         }
 
         /// <summary>
@@ -144,6 +140,8 @@ namespace Improbable.Gdk.Tools
                 EditorApplication.UnlockReloadAssemblies();
             }
 
+            AssetDatabase.Refresh();
+            SetPluginsCompatibility();
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
         }
 
@@ -187,20 +185,24 @@ namespace Improbable.Gdk.Tools
 
         private class PluginDirectoryCompatibility
         {
-            public static PluginDirectoryCompatibility PluginDirectoryIncludePlatforms(string path,
+            public static PluginDirectoryCompatibility CreateWithCompatiblePlatforms(string path,
                 List<BuildTarget> compatiblePlatforms,
                 bool editorCompatible)
             {
                 return new PluginDirectoryCompatibility(path, false, compatiblePlatforms, null, editorCompatible);
             }
 
-            public static PluginDirectoryCompatibility PluginDirectoryExcludePlatforms(string path,
+            public static PluginDirectoryCompatibility CreateWithIncompatiblePlatforms(string path,
                 List<BuildTarget> incompatiblePlatforms,
                 bool editorCompatible)
             {
                 return new PluginDirectoryCompatibility(path, true, null, incompatiblePlatforms, editorCompatible);
             }
 
+            public static PluginDirectoryCompatibility CreateAllCompatible(string path)
+            {
+                return new PluginDirectoryCompatibility(path, true, null, incompatiblePlatforms, editorCompatible);
+            }
             private PluginDirectoryCompatibility(string path,
                 bool anyPlatformCompatible,
                 List<BuildTarget> compatiblePlatforms,
