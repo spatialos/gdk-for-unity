@@ -31,6 +31,8 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            hasBeenUsed = true;
+
             foreach (var id in template.GetComponentIds())
             {
                 var componentData = template.Get(id);
