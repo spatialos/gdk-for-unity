@@ -249,26 +249,40 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 > Related: [Generating code from the schema](https://docs.improbable.io/reference/latest/shared/schema/introduction#generating-code-from-the-schema)
 
-### Read and write access ("authority")
+#### Access Control List
 
-Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, only one
-worker instance at a time is allowed to write to each [SpatialOS component](#spatialos-component) on each [SpatialOS entity](#spatialos-entity): ie,
-given write access. Write access is sometimes also referred to as authority.
+In order to read from or make changes to a [SpatialOS component](#spatialos-component), [workers](#worker) need to have [read](#read-access) and [write](#write-access) respectively. Workers are granted this through an access control list (ACL).
 
-Which types of workers *can have* write access is governed by each entity's [access control list (ACL)](#acl).
+ACLs are a [SpatialOS component](#component) in the standard [schema](#schema) library: [`EntityAcl`](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#entityacl-required). Every
+[entity](#entity) needs to have one. The ACL determines:
 
-Which specific worker instance *actually has* write access is managed by SpatialOS, and can change regularly
-because of [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of *possible* workers is constrained by the ACL.
+* At an entity level, which workers have read access
+* At a component level, which workers have write access
 
-ACLs also control which workers can have read access to an entity. Read access is at the entity level: if a worker
-can read from an entity, it is allowed to read from all components on that entity.
+> Related pages:
+>
+> * [The standard schema library](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library)
+> * [Understanding read and write access](https://docs.improbable.io/reference/13.3/shared/design/understanding-access#understanding-read-and-write-access-authority)
 
-> Related: [Understanding write access]({{urlRoot}}/shared/design/understanding-access)
+### Read access
+
+[Access control lists](https://docs.improbable.io/reference/latest/shared/glossary#acl) control which workers can have read access to an entity. Read access is defined at the entity level: if a worker can read from an entity, it is allowed to read from all components on that entity.
+
+> Related: [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
+
+### Write access
+
+> Also referred to as "authority".
+
+Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, SpatialOS only allows one worker at a time to write to each [SpatialOS component](#spatialos-component). Write access is defined at the component level.
+
+Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the access control list.
+
+> Related: [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
 
 ### Snapshot
 
-A snapshot is a representation of the state of a [world](#spatialos-world) at some point in time. It
-stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)'
+A snapshot is a representation of the state of a [SpatialOS world](#spatialos-world) at some point in time. It stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)'
 [properties](#property).
 
 You'll use a snapshot as the starting point (an [initial snapshot](#initial-snapshot)) for your world when you
@@ -302,11 +316,6 @@ The benefits of our using Unity assembly definition files are:
 ### SpatialOS SDK for Unity
 
 The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is not recommened for development.
-
-### Read and write access (“authority”)
-
-https://docs.improbable.io/reference/13.2/shared/glossary#read-and-write-access-authority
-
 Attribute
 [Deets here -https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attribute
 Referenced in this doc here: https://docs.google.com/document/d/1qKi3ju6OMGMLlfHj9ufvo73kGBH9E3ZUOXB6i4Grsgk/edit - Ed]
