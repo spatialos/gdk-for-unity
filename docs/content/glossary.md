@@ -182,6 +182,15 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Component best practices](https://docs.improbable.io/reference/latest/shared/design/component-best-practices)
 > * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
 
+### Unity ECS
+
+Unity's Entity Component System is a way of writing code that focuses on the data and behavior that make up your game. It is distinct from Unity's exising [monobehaviour](monobehaviour) based workflow.
+
+> Related:
+> * [Ask the Unity expert: what is the ECS?](https://improbable.io/games/blog/unity-ecs-1)
+> * [Unity ECS documentation: Introduction to ECS](https://unity3d.com/learn/tutorials/topics/scripting/introduction-ecs)
+> * [Unity ECS Samples and Documentation](https://github.com/Unity-Technologies/EntityComponentSystemSamples)
+
 ### Unity ECS world
 
 > Not to be confused with [SpatialOS world](#spatialos-world)
