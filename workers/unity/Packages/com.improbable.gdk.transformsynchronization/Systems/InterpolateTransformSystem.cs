@@ -27,29 +27,24 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             public readonly int Length;
             public BufferArray<BufferedTransform> TransformBuffer;
-            public ComponentDataArray<DefferedUpdateTransform> LastTransformValue;
-            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
+            public ComponentDataArray<DeferredUpdateTransform> LastTransformValue;
+            [ReadOnly] public SharedComponentDataArray<InterpolationConfig> Config;
             [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
         }
 
         [Inject] private Data data;
-        // todo enable smear
-        // [Inject] private TickRateEstimationSystem tickRateSystem;
 
-        // todo this does everything eagerly, but with smearing it will probably make more sense to do things lazily
-        // the main difference would be how to detect the buffer is full and needs to be emptied
         protected override void OnUpdate()
         {
             for (int i = 0; i < data.Length; ++i)
             {
+                var config = data.Config[i];
                 var transformBuffer = data.TransformBuffer[i];
                 var lastTransformApplied = data.LastTransformValue[i].Transform;
 
-                // todo enable smear
-                // Need to take smear into account here when it's turned on
-                if (transformBuffer.Length >= TransformSynchronizationConfig.MaxLoadMatchedBufferSize)
+                if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                 {
                     transformBuffer.Clear();
                 }
@@ -62,20 +57,14 @@ namespace Improbable.Gdk.TransformSynchronization
                         continue;
                     }
 
-                    data.LastTransformValue[i] = new DefferedUpdateTransform
+                    data.LastTransformValue[i] = new DeferredUpdateTransform
                     {
                         Transform = currentTransformComponent
                     };
 
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
-                    float tickSmearFactor = 1.0f;
-                    // todo enable smear
-                    // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
-                    //     TransformSynchronizationConfig.MaxTickSmearFactor);
-
-                    uint ticksToFill = math.max(
-                        (uint) (TransformSynchronizationConfig.TargetLoadMatchedBufferSize * tickSmearFactor), 1);
+                    uint ticksToFill = math.max((uint) config.TargetBufferSize, 1);
 
                     if (ticksToFill > 1)
                     {
@@ -98,26 +87,15 @@ namespace Improbable.Gdk.TransformSynchronization
                 foreach (var update in data.Updates[i].Updates)
                 {
                     UpdateLastTransfrom(ref lastTransformApplied, update);
-                    data.LastTransformValue[i] = new DefferedUpdateTransform
+                    data.LastTransformValue[i] = new DeferredUpdateTransform
                     {
                         Transform = lastTransformApplied
                     };
 
-                    // todo: Need to deal with the case where the last tick is back in time. But currently can't happen
                     if (!update.PhysicsTick.HasValue)
                     {
                         continue;
                     }
-
-                    data.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate
-                    {
-                        NumberOfTicks = 0
-                    };
-
-                    float tickSmearFactor = 1.0f;
-                    // todo enable smear
-                    // math.min(lastTransformApplied.TicksPerSecond / tickRateSystem.PhysicsTicksPerRealSecond,
-                    //     TransformSynchronizationConfig.MaxTickSmearFactor);
 
                     var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 
@@ -131,7 +109,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
 
                     uint ticksToFill =
-                        math.max((uint) ((transformToInterpolateTo.PhysicsTick - lastTickId) * tickSmearFactor), 1);
+                        math.max((uint) (transformToInterpolateTo.PhysicsTick - lastTickId), 1);
                     for (uint j = 0; j < ticksToFill - 1; ++j)
                     {
                         transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
@@ -202,7 +180,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 Position = Vector3.Lerp(first.Position, second.Position, t),
                 Velocity = Vector3.Lerp(first.Velocity, second.Velocity, t),
                 Orientation = Quaternion.Slerp(first.Orientation, second.Orientation, t),
-                PhysicsTick = ticksAfterFirst
+                PhysicsTick = first.PhysicsTick + ticksAfterFirst
             };
         }
     }

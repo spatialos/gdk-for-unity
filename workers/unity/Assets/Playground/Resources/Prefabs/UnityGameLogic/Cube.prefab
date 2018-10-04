@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 65435046857257052}
   - component: {fileID: 54117405590287678}
   - component: {fileID: 114936733687921646}
+  - component: {fileID: 114079472425749956}
   m_Layer: 10
   m_Name: Cube
   m_TagString: Cube
@@ -113,6 +114,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114079472425749956
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1019506993461512}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78feab8868282945ad03dd56b17ce6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReceiveStrategies:
+  - {fileID: 11400000, guid: 3d4e3c9d4646410429b49892bdf0b52c, type: 2}
+  AutomaticallyApplyTransformToGameObject: 1
+  SendStrategies:
+  - {fileID: 11400000, guid: c214826e4a2dee44d961e287ec697350, type: 2}
+  AutomaticallyGetTransformFromGameObject: 1
+  SetKinematicWhenNotAuthoritative: 1
 --- !u!114 &114936733687921646
 MonoBehaviour:
   m_ObjectHideFlags: 1
