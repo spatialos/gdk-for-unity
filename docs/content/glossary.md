@@ -1,16 +1,17 @@
 **Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
 
 ----
+
 ## Glossary
 
->**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/13.2/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic SpatialOS concepts.
+>**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/latest/shared/glossary) sections of the SpatialOS documentation for a full glossary of generic SpatialOS concepts.
 
 >**Note:** There are many concepts in this glossary that mean different things in different contexts. When semantically overloaded words or phrases are unavoidable, we explicity prefix them to avoid confusion. [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and [SpatialOS assemblies](#spatialos-assembly) are an example of this.
 
 ### SpatialOS Project
 
 > Also referred to as "your game".
-> 
+>
 > Not to be confused with [Unity Project](unity-project) or [project name](project-name).
 
 A SpatialOS project is the source code of a game that runs on SpatialOS. We often use this to refer to the directory that contains the source code, the `UnityGDK` directory in this case.
@@ -20,8 +21,7 @@ A SpatialOS project includes (but isn't limited to):
 * The source code of all [workers](#worker) used by the project
 * The project’s [schema](#schema)
 * Optional [snapshots](#snapshot) of the project’s [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world)
-* Configuration files, mostly containing settings for [deployments](#deploying) (for example,
-[launch configuration files](#launch-configuration-file))
+* Configuration files, mostly containing settings for [deployments](#deploying) (for example, [launch configuration files](#launch-configuration-file))
 
 > Related: [Project directory structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure)
 
@@ -45,10 +45,7 @@ You can find your project name in the [Console](https://console.improbable.io/).
 
 >Also known as the "`spatial` CLI".
 
-The `spatial` command-line tool provides a set of commands that you use to interact with a
-[SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game
-(using [`spatial local launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) or
-[`spatial cloud launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-launch)).
+The `spatial` command-line tool provides a set of commands that you use to interact with a [SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game (using [`spatial local launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) or [`spatial cloud launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-launch)).
 
 > Related:
 > * [An introducion to the `spatial` command-line tool](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction)
@@ -75,8 +72,8 @@ then starts up the [server-workers](#worker) needed to run the game world.
 Once the deployment is running, you can connect [client-workers](#client-worker) to it. People can then use these clients to play the game.
 
 > Related:
-> * [Deploying locally]({{urlRoot}}/shared/deploy/deploy-local)
-> * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
+> * [Deploying locally](https://docs.improbable.io/reference/latest/shared/deploy/deploy-local)
+> * [Deploying to the cloud](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud)
 
 ### Inspector
 
@@ -89,7 +86,7 @@ or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cl
 * which [workers](#worker) are connected to the [deployment](#deploying)
 * how much [load](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) the workers are under
 
-> Related: [The Inspector]({{urlRoot}}/shared/operate/inspector)
+> Related: [The Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)
 
 ### Launcher
 
@@ -122,13 +119,9 @@ The SpatialOS world is a central concept in SpatialOS. It’s the canonical sour
 
 SpatialOS manages the world, keeping track of all the entities and what state they’re in.
 
-*Changes* to the world are made by [workers](#worker). Each worker has a view onto the world (the
-part of the world that they're [interested](https://docs.improbable.io/reference/latest/shared/glossary#interest) in), and SpatialOS sends them updates when anything changes
-in that view.
+*Changes* to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they're [interested](https://docs.improbable.io/reference/latest/shared/glossary#interest) in), and SpatialOS sends them updates when anything changes in that view.
 
-It's important to recognise this fundamental separation between the SpatialOS world and the subset view/representation of that world that an individual worker [checks out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update)
-to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must
-use SpatialOS APIs to change it.
+It's important to recognise this fundamental separation between the SpatialOS world and the subset view of that world that an individual worker [checks out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must use [Worker SDK](https://docs.improbable.io/reference/latest/shared/glossary#worker-sdk) APIs to change it.
 
 ### SpatialOS Runtime
 
@@ -166,8 +159,7 @@ Components can contain:
 
 * [properties](https://docs.improbable.io/reference/latest/shared/glossary#property), which describe persistent values that change over time (for example, [`Position`](https://docs.improbable.io/reference/latest/shared/glossary#position))
 * [events](https://docs.improbable.io/reference/latest/shared/glossary#event), which are things that can happen to an entity (for example, `StartedWalking`)
-* [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning
-a value (for example, `Teleport`)
+* [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
 
 An entity can have as many components as you like, but it must have at least [`Position`](https://docs.improbable.io/reference/latest/shared/glossary#position) and
 [`EntityAcl`](#access-control-list). Most entities will have the [`Persistence`](https://docs.improbable.io/reference/latest/shared/glossary#persistence) and [`Metadata`](https://docs.improbable.io/reference/latest/shared/glossary#metadata) components.
@@ -236,7 +228,6 @@ A reactive component contains all updates and messages received during the last 
 
 > Related: [Receiving entity updates from SpatialOS: reactive components](docs/content/ecs/reactive-components.md)
 
-
 ### Unity ECS system
 
 > Not to be confused with [Worker](#worker)
@@ -252,6 +243,7 @@ Scenes (and almost everything in them), are an abstraction used to represet all 
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
 
 ### GameObject
+
 In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](#spatialos-entity) as a GameObject or a [Unity ECS Entity](unity-ecs-entity).
 
 GameObjects are the fundamental objects in Unity's hybrid-ECS workflow. They represent characters, props and scenery. They do not accomplish much in themselves but they act as containers for hybrid-ECS components such as Monobehaviours, which store data.
@@ -313,7 +305,7 @@ Client-workers are mostly tasked with visualising what’s happening in the [Spa
 [write access](#read-and-write-access-authority) to as few components as possible,
 to make cheating difficult.
 
-> Related: [External worker (server-worker) launch configuration]({{urlRoot}}/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
+> Related: [External worker (server-worker) launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
 
 ### Game client
 
@@ -392,7 +384,7 @@ A snapshot is a representation of the state of a [SpatialOS world](#spatialos-wo
 You'll use a snapshot as the starting point (an [initial snapshot](#initial-snapshot)) for your world when you
 [deploy](#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [in the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
-> Related: [Snapshots]({{urlRoot}}/shared/operate/snapshots)
+> Related: [Snapshots](https://docs.improbable.io/reference/latest/shared/operate/snapshots)
 
 ### SpatialOS Assembly
 
@@ -403,14 +395,15 @@ A SpatialOS assembly is what's created when you [build your workers](build.md#bu
 The SpatialOS assembly is stored locally at `UnityGDK\build\assembly`. When you run a [cloud deployment](#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
 
 > Related:
-> * [spatial cloud upload]({{urlRoot}}/shared/spatial-cli/spatial-cloud-upload)
-> * [Deploying to the cloud]({{urlRoot}}/shared/deploy/deploy-cloud)
+> * [spatial cloud upload](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-upload)
+> * [Deploying to the cloud](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud)
 
 ### Unity Assembly Definition files
 
 We use [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) to structure the SpatialOS GDK for Unity. Unity Assembly Definition (.`asmdef`) files define a set of scripts as a .NET assembly. They also define how, and under what circumstances, these .NET assemblies should be generated. 
 
 The benefits of our using Unity assembly definition files are:
+
 * A comprehensible [Unity project](#unity-project) structure.
 * A guaruntee that scripts will only run on the [platforms](https://docs.unity3d.com/Manual/UnityCloudBuildSupportedPlatforms.html) that they are intended for.
 * A guaruntee that scripts will only run when they are required. This minimises build times.
@@ -466,13 +459,6 @@ When writing game logic you don't need to worry about synchronisation code. Stan
 [Standard replication](#standard-replication) is a powerful solution that keeps your [SpatialOS world](#spatialos-world) and your [Unity ECS World](#unity-ecs-world) sychronised. However, we recognise that it's not the perfect solution for everyone. Firstly, as a generic solution, it's not optimised for your specific game. You may wish to apply custom predicates and filters to minimise network traffic. Secondly, you may wish to update a non-spatial endpoint (such as a database).
 
 Both of these use cases are made possible by custom replication, a system that gives you full control over how a [SpatialOS component](spatialos-component) is replicated. Take a look at `Improbable.Gdk.Core.CustomSpatialOSSendSystem` to see the implementation.
-
-### Commands
-
-### World commands
-
-### Entity commands
-
 
 ### SpatialOS SDK for Unity
 
