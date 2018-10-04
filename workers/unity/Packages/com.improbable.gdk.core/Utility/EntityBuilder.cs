@@ -6,7 +6,7 @@ using Improbable.Worker.Core;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Enables the creation of entity templates with a fluent interface.
+    ///     Enables the creation of entity templates.
     /// </summary>
     public class EntityBuilder
     {
@@ -42,10 +42,10 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Adds an arbitrary SpatialOS component with data to the entity template.
+        ///     Adds the provided SpatialOS component with data to the entity template.
         /// </summary>
         /// <param name="componentData">The SpatialOS component data.</param>
-        /// <param name="writeAccess">The worker attribute which has write access over this component.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
         /// <returns>Itself</returns>
         /// <exception cref="InvalidOperationException">
         ///     Thrown if the SpatialOS component has already been added to the entity template.
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Core
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
         /// <param name="z">The Z coordinate.</param>
-        /// <param name="writeAccess">The worker attribute which has write access over this component.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
         /// <returns>Itself</returns>
         public EntityBuilder AddPosition(double x, double y, double z, string writeAccess)
         {
@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Core
         ///     Adds the Metadata component to the entity template.
         /// </summary>
         /// <param name="metadata">The metadata string.</param>
-        /// <param name="writeAccess">The worker attribute which has write access over this component.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
         /// <returns>Itself</returns>
         public EntityBuilder AddMetadata(string metadata, string writeAccess)
         {
@@ -132,8 +132,10 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Sets the Read ACL for an entity.
         /// </summary>
-        /// <param name="attribute">The worker attribute which has read access over this entity.</param>
-        /// <param name="attributes">Any other worker attributes which has read access over this entity.</param>
+        /// <param name="attribute">The worker attribute which is granted write access over this component.</param>
+        /// <param name="attributes">
+        ///     Any other worker attributes which are granted write access over this component.
+        /// </param>
         /// <returns>Itself</returns>
         public EntityBuilder SetReadAcl(string attribute, params string[] attributes)
         {
@@ -149,7 +151,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Sets the Read ACL for an entity.
         /// </summary>
-        /// <param name="attributes">The worker attributes which have read access over this entity.</param>
+        /// <param name="attributes">The worker attributes which are granted write access over this component.</param>
         /// <returns>Itself</returns>
         public EntityBuilder SetReadAcl(List<string> attributes)
         {

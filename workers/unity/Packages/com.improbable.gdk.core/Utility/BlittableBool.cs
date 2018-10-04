@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     ///     A blittable bool implementation to use in Unity's ECS.
     /// </summary>
     /// <remarks>
-    ///     This is required because bool is not blittable by default.
+    ///     Can be used in place of bool where a blittable type is needed.
     /// </remarks>
     public struct BlittableBool : IEquatable<BlittableBool>
     {

@@ -5,7 +5,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     This ECS Component stores an ordered list of authority changes.
+    ///     ECS Component stores an ordered list of authority changes.
     /// </summary>
     /// <remarks>
     ///     This component is created during the <see cref="SpatialOSReceiveSystem"/> and populated with all the

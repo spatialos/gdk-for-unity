@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component is for sending CreateEntity command requests to the SpatialOS runtime.
+            ///     ECS component is for sending CreateEntity command requests to the SpatialOS runtime.
             /// </summary>
             public struct CommandSender : IComponentData
             {
@@ -184,7 +184,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component contains a list of CreateEntity command responses received this frame.
+            ///     ECS component contains a list of CreateEntity command responses received this frame.
             /// </summary>
             public struct CommandResponses : IComponentData
             {
@@ -423,7 +423,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component is for sending DeleteEntity command requests to the SpatialOS runtime.
+            ///     ECS component is for sending DeleteEntity command requests to the SpatialOS runtime.
             /// </summary>
             public struct CommandSender : IComponentData
             {
@@ -441,7 +441,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component contains a list of DeleteEntity command responses received this frame.
+            ///     ECS component contains a list of DeleteEntity command responses received this frame.
             /// </summary>
             public struct CommandResponses : IComponentData
             {
@@ -687,7 +687,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component is for sending ReserveEntityIds command requests to the SpatialOS runtime.
+            ///     ECS component is for sending ReserveEntityIds command requests to the SpatialOS runtime.
             /// </summary>
             public struct CommandSender : IComponentData
             {
@@ -705,7 +705,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component contains a list of ReserveEntityIds command responses received this frame.
+            ///     ECS component contains a list of ReserveEntityIds command responses received this frame.
             /// </summary>
             public struct CommandResponses : IComponentData
             {
@@ -959,7 +959,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component is for sending EntityQuery command requests to the SpatialOS runtime.
+            ///     ECS component is for sending EntityQuery command requests to the SpatialOS runtime.
             /// </summary>
             public struct CommandSender : IComponentData
             {
@@ -977,7 +977,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             /// <summary>
-            ///     This ECS component contains a list of CreateEntity command responses received this frame.
+            ///     ECS component contains a list of CreateEntity command responses received this frame.
             /// </summary>
             public struct CommandResponses : IComponentData
             {

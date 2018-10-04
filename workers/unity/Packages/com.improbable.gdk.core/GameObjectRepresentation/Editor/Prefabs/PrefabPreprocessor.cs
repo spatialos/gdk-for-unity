@@ -14,7 +14,6 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
     ///     which have fields with the <see cref="RequireAttribute"/> on them.
     /// </summary>
     /// <remarks>
-    ///
     ///     This processes the prefabs when you build or when you press play in the Unity Editor.
     /// </remarks>
     [InitializeOnLoad]

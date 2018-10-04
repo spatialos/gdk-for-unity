@@ -52,7 +52,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         }
 
         /// <summary>
-        ///     Send a component update.
+        ///     Sends a component update.
         /// </summary>
         /// <param name="update">The component update object.</param>
         /// <exception cref="WriterDataUpdateFailedException">

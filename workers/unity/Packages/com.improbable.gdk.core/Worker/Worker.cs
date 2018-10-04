@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core
     public class Worker : IDisposable
     {
         /// <summary>
-        ///     The origin of the worker in local Unity space.
+        ///     The origin of the worker in global Unity space.
         /// </summary>
         public readonly Vector3 Origin;
 

@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Default command line argument names for worker and connection configuration.
+    ///     Command line argument names for worker and connection configuration.
     /// </summary>
     public static class RuntimeConfigNames
     {

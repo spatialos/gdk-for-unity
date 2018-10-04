@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     public abstract class ConnectionConfig
     {
         /// <summary>
-        ///     The type of networking that should be used.
+        ///     The type of networking that should be used. Either RakNet or TCP.
         /// </summary>
         /// <remarks>
         ///    Default is RakNet.
@@ -25,9 +25,11 @@ namespace Improbable.Gdk.Core
         ///     Denotes whether the worker uses the local IP to connect to the SpatiaLOS runtime.
         /// </summary>
         /// <remarks>
-        ///    Default is false.
-        ///    This should be true if connecting client-workers to cloud deployments or if connecting via the
-        ///    locator flow.
+        ///     Default is false.
+        /// </remarks>
+        /// <remarks>
+        ///     This should be true if connecting workers to a cloud deployment via "spatial cloud connect external"
+        ///     or if connecting via the locator.
         /// </remarks>
         public bool UseExternalIp = false;
 

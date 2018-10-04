@@ -8,12 +8,14 @@ namespace Improbable.Gdk.Core
     ///     through the locator.
     /// </summary>
     /// <remarks>
-    ///    This is most often used when <a href="https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher">connecting via the Launcher</a>.
+    ///     This is most often used when
+    ///     <a href="https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher">connecting via
+    ///     the Launcher</a>.
     /// </remarks>
     public class LocatorConfig : ConnectionConfig
     {
         /// <summary>
-        ///     The host for connecting to the SpatialOS runtime via the Locator flow.
+        ///     The host for connecting to the SpatialOS runtime via the Locator.
         /// </summary>
         /// <remarks>
         ///    Default is "locator.improbable.io".
@@ -21,7 +23,7 @@ namespace Improbable.Gdk.Core
         public string LocatorHost = RuntimeConfigDefaults.LocatorHost;
 
         /// <summary>
-        ///     Locator specific parameters used in the connection flow.
+        ///     Parameters used to connect to SpatialOS through the Locator.
         /// </summary>
         public readonly LocatorParameters LocatorParameters = new LocatorParameters();
 
@@ -31,7 +33,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Validates that the LocatorConfig instance is valid. This does not guarantee a successful connection.
+        ///     Checks that the LocatorConfig instance is valid. This does not guarantee a successful connection.
         /// </summary>
         public override void Validate()
         {

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     A base class to connect workers via Monobehaviours.
+    ///     Connect workers via Monobehaviours.
     /// </summary>
     public class WorkerConnector : MonoBehaviour, IDisposable
     {
@@ -28,14 +28,17 @@ namespace Improbable.Gdk.Core
         public bool UseExternalIp;
 
         /// <summary>
-        ///     The Worker representation.
+        ///     Represents a SpatialOS worker.
         /// </summary>
+        /// <remarks>
+        ///    Only safe to access after the connection has succeeded.
+        /// </remarks>
         public Worker Worker;
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
-        ///     An event that triggers when the worker has been created.
+        ///     An event that triggers when the worker has been fully created.
         /// </summary>
         public event Action<Worker> OnWorkerCreationFinished
         {
@@ -64,10 +67,10 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Connects a worker to the SpatialOS runtime.
+        ///     Asynchronously connects a worker to the SpatialOS runtime.
         /// </summary>
         /// <remarks>
-        ///     Uses the location of this GameObject as the worker origin.
+        ///     Uses the global position of this GameObject as the worker origin.
         ///     Uses <see cref="ShouldUseLocator"/> to determine whether to connect via the Locator.
         /// </remarks>
         /// <param name="workerType">The type of the worker to connect as</param>
@@ -169,8 +172,11 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Gets the Receptionist configuration.
+        ///     Creates a Receptionist configuration.
         /// </summary>
+        /// <remarks>
+        ///     If in a standalone build, will use the command line arguments.
+        /// </remarks>
         /// <remarks>
         ///    A worker ID is auto-generated if in the Unity Editor or if one is not provided over the command line.
         /// </remarks>
@@ -206,8 +212,11 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Gets the Locator configuration.
+        ///     Creates the Locator configuration.
         /// </summary>
+        /// <remarks>
+        ///     If in a standalone build, will use the command line arguments.
+        /// </remarks>
         /// <param name="workerType">The type of the worker to create.</param>
         /// <returns>The Locator connection configuration</returns>
         protected virtual LocatorConfig GetLocatorConfig(string workerType)

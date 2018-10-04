@@ -7,16 +7,16 @@ namespace Improbable.Gdk.Core
     ///     through the Receptionist.
     /// </summary>
     /// <remarks>
-    ///    This is most often used when connecting workers to a local deployment or connecting server-workers to a cloud
+    ///     This is most often used when connecting workers to a local deployment or connecting server-workers to a cloud
     ///     deployment.
     /// </remarks>
     public class ReceptionistConfig : ConnectionConfig
     {
         /// <summary>
-        ///     The host for connecting to the Receptionist.
+        ///     The IP address for connecting to the Receptionist.
         /// </summary>
         /// <remarks>
-        ///    Default is "127.0.0.1".
+        ///     Default is "127.0.0.1".
         /// </remarks>
         public string ReceptionistHost = RuntimeConfigDefaults.ReceptionistHost;
 
@@ -24,12 +24,12 @@ namespace Improbable.Gdk.Core
         ///     The port for connecting to the Receptionist.
         /// </summary>
         /// <remarks>
-        ///    Default is 7777.
+        ///     Default is 7777.
         /// </remarks>
         public ushort ReceptionistPort = RuntimeConfigDefaults.ReceptionistPort;
 
         /// <summary>
-        ///     Validates that the ReceptionistConfig instance is valid. This does not guarantee a successful connection.
+        ///     Checks that the ReceptionistConfig instance is valid. This does not guarantee a successful connection.
         /// </summary>
         public override void Validate()
         {

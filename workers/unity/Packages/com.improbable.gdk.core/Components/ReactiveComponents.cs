@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     /// <remarks>
     ///    This is a reactive component and will be removed in the
-    ///    <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/> at the end of the frame.
+    ///    <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/>.
     /// </remarks>
     /// <typeparam name="T">
     ///     The SpatialOS component that has just been added.
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     /// <remarks>
     ///    This is a reactive component and will be removed in the
-    ///    <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/> at the end of the frame.
+    ///    <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/>.
     /// </remarks>
     /// <typeparam name="T">
     ///     The SpatialOS component that has just been removed.
