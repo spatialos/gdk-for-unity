@@ -101,6 +101,8 @@ The Launcher downloads the client executable from the [SpatialOS assembly](#spat
 
 ### Console
 
+> Not to be confused with [Unity Console Window](https://docs.unity3d.com/Manual/Console.html)
+
 The Console ([console.improbable.io](https://console.improbable.io/)) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It shows you:
 
 * Your [project name](#project-name)
@@ -110,9 +112,11 @@ The Console ([console.improbable.io](https://console.improbable.io/)) is the mai
 
 > Related:
 > * [Logs](https://docs.improbable.io/reference/latest/shared/operate/logs#cloud-deployments)
-> * [Metrics](https://docs.improbable.io/reference/13.3/shared/operate/metrics)
+> * [Metrics](https://docs.improbable.io/reference/latest/shared/operate/metrics)
 
 ### SpatialOS world
+
+> Not to be confused with [Unity ECS World](#unity-ecs-world)
 
 The SpatialOS world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
 
@@ -128,9 +132,13 @@ use SpatialOS APIs to change it.
 
 ### SpatialOS Runtime
 
-A SpatialOS Runtime instance manages the [SpatialOS world](spatialos-world) of each [deployment](deploying).
+> Not to be confused with [SpatialOS world](#spatialos-world)
+
+A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of each [deployment](deploying).
 
 ### SpatialOS Entity
+
+> Not to be confused with [Unity ECS entity](#unity-ecs-entity)
 
 All of the objects inside a [SpatialOS world](#spatialos-world) are SpatialOS entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
 
@@ -143,10 +151,12 @@ For example, for client-workers built using Unity, you might want to have a pref
 You can have other objects that are *not* entities locally on workers - like UI for a player - but no other worker will be able to see them, because they're not part of the [SpatialOS world](#spatialos-world).
 
 > Related:
-> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/13.3/shared/concepts/world-entities-components#entities)
-> * [Designing SpatialOS entities](https://docs.improbable.io/reference/13.3/shared/design/design-entities)
+> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/latest/shared/concepts/world-entities-components#entities)
+> * [Designing SpatialOS entities](https://docs.improbable.io/reference/latest/shared/design/design-entities)
 
 ### SpatialOS Component
+
+> Not to be confused with [Unity ECS component](#unity-ecs-component)
 
 A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Common components in a game might be things like `Health`,
 `Position`, or `PlayerControls`. They're the storage mechanism for data about the [world](#spatialos-world) that you
@@ -154,25 +164,27 @@ want to be shared between [workers](#worker).
 
 Components can contain:
 
-* [properties](#property), which describe persistent values that change over time (for example, [`Position`](#position))
-* [events](#event), which are things that can happen to an entity (for example, `StartedWalking`)
-* [commands](#command) that another worker can call to ask the component to do something, optionally returning
+* [properties](https://docs.improbable.io/reference/latest/shared/glossary#property), which describe persistent values that change over time (for example, [`Position`](https://docs.improbable.io/reference/latest/shared/glossary#position))
+* [events](https://docs.improbable.io/reference/latest/shared/glossary#event), which are things that can happen to an entity (for example, `StartedWalking`)
+* [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning
 a value (for example, `Teleport`)
 
-An entity can have as many components as you like, but it must have at least [`Position`](#position) and
-[`EntityAcl`](#acl). Most entities will have the [`Persistence`](#persistence) and [`Metadata`](#metadata) components.
+An entity can have as many components as you like, but it must have at least [`Position`](https://docs.improbable.io/reference/latest/shared/glossary#position) and
+[`EntityAcl`](#access-control-list). Most entities will have the [`Persistence`](https://docs.improbable.io/reference/latest/shared/glossary#persistence) and [`Metadata`](https://docs.improbable.io/reference/latest/shared/glossary#metadata) components.
 
 Components are defined as files in your [schema](#schema).
 
 Which types of workers can [read from or write to](#read-and-write-access-authority) which components is governed by
-[access control lists](#acl).
+[access control lists](#access-control-list).
 
 > Related:
-> * [Designing components]({{urlRoot}}/shared/design/design-components)
-> * [Component best practices]({{urlRoot}}/shared/design/component-best-practices)
-> * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
+> * [Designing components](https://docs.improbable.io/reference/latest/shared/design/design-components)
+> * [Component best practices](https://docs.improbable.io/reference/latest/shared/design/component-best-practices)
+> * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
 
 ### Unity ECS world
+
+> Not to be confused with [SpatialOS world](#spatialos-world)
 
 In the SpatialOS GDK for Unity you can represent a [SpatialOS world](#spatialos-world) using [Unity Sceces](scene) or Unity ECS worlds.
 
@@ -181,6 +193,9 @@ In Unity's ECS, Worlds are the equivalent of [Scenes](scenes). They are a set of
 > Related: [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)
 
 ### Unity ECS entity
+
+> Not to be confused with [SpatialOS entity](#spatialos-entity)
+
 In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](#spatialos-entity) as a [`GameObject`](gameobject) or a Unity ECS Entity.
 
 A Unity ECS Entity is an abstraction used to represet a SpatialOS entity. It contains [Unity ECS components](unity-ecs-component), which represent [SpatialOS components](spatialos-component).
@@ -189,6 +204,8 @@ A Unity ECS Entity is an abstraction used to represet a SpatialOS entity. It con
 > * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#entity)
 
 ### Unity ECS component
+
+> Not to be confused with [SpatialOS component](#spatialos-component)
 
 Just as [Unity ECS entities](#unity-ecs-entity) represent [SpatialOS entities](spatialos-entity), Unity ECS components represent [SpatialOS components](spatialos-component) in the [Unity ECS World](unity-ecs-world).
 
@@ -212,6 +229,8 @@ A reactive component contains all updates and messages received during the last 
 
 
 ### Unity ECS system
+
+> Not to be confused with [Worker](#worker)
 
 The code you use to perform operations on [Unity ECS entities](unity-ecs-entity) and their [components](unity-ecs-component) exist in the form of Unity ECS Systems. Systems are scripts. They act, in bulk, on all of the entities in the [Unity ECS world](unity-ecs-world) that contain the components you tell them to act on. For example, a health system might iterate over all entities that have health and damage components, and decrement health components by the value of the damage components.
 
@@ -275,6 +294,8 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Client-worker
 
+> Not to be confused with [Game client](#game-client)
+
 A client-worker is a [worker](#worker) whose lifecycle is managed by the game client. You use it to connect to, interact with and disconnect from the [SpatialOS world](#spatialos-world).
 
 Unlike a [server-worker](#server-worker), a client-worker’s lifecycle is not managed by SpatialOS. In a running [deployment](#deploying), there will be one client-worker per player.
@@ -287,9 +308,13 @@ to make cheating difficult.
 
 ### Game client
 
+> Not to be confused with [client-worker](#client-worker)
+
 A game client is a binary. A [client-worker](client-worker) is an object instantiated by said binary.
 
 ### Node
+
+> Not to be confused with [Worker](#worker)
 
 Node refers to a single machine used by a [cloud deployment](#deploying). Its name indicates the role it plays in your [deployment](#deploying). You can see these on the advanced tab of your deployment details in the [Console](#console).
 
@@ -332,11 +357,11 @@ ACLs are a [SpatialOS component](#component) in the standard [schema](#schema) l
 > Related pages:
 >
 > * [The standard schema library](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library)
-> * [Understanding read and write access](https://docs.improbable.io/reference/13.3/shared/design/understanding-access#understanding-read-and-write-access-authority)
+> * [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority)
 
 ### Read access
 
-[Access control lists](https://docs.improbable.io/reference/latest/shared/glossary#acl) control which workers can have read access to an entity. Read access is defined at the entity level: if a worker can read from an entity, it is allowed to read from all components on that entity.
+[Access control lists](#access-control-list) control which workers can have read access to an entity. Read access is defined at the entity level: if a worker can read from an entity, it is allowed to read from all components on that entity.
 
 > Related: [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
 
@@ -346,7 +371,7 @@ ACLs are a [SpatialOS component](#component) in the standard [schema](#schema) l
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, SpatialOS only allows one worker at a time to write to each [SpatialOS component](#spatialos-component). Write access is defined at the component level.
 
-Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the access control list.
+Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the [access control lists](#access-control-list).
 
 > Related: [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
 
@@ -361,6 +386,8 @@ You'll use a snapshot as the starting point (an [initial snapshot](#initial-snap
 > Related: [Snapshots]({{urlRoot}}/shared/operate/snapshots)
 
 ### SpatialOS Assembly
+
+> Not to be confused with [.NET assembly](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime).
 
 A SpatialOS assembly is what's created when you [build your workers](build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes executable files for [client-workers](#client-worker) and [server-workers](#server-worker), and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
 
@@ -401,26 +428,47 @@ Feature modules are [Unity packages](#unity-package). They are located at `Unity
 
 The [Unity project](#unity-project) inside the SpatialOS GDK for Unity consists of the [Core module](#core-module) and a number of feature modules. Feature modules are optional features that you can choose to include or exclude from your game (player lifecycle, for example). They are intended both to give you a head-start in the development of your game, and act as reference material for best practices to use when writing your own features.
 
+### Inject
+
+The term inject refers to when a field is populated automatically, either by Unity or the GDK.
+
+In the [monobehaviour workflow] the GDK performs injection via [reflection]. It injects generated readers and writers using the `Improbable.Gdk.GameObjectRepresentation.RequireAttribute` method, and only enables the MonoBehaviour when all of its dependencies are populated.
+
+In the [pure ECS workflow] Unity performs injection via [reflection]. It uses the `Unity.Entities.InjectAttribute` method to iterate over all the [Unity ECS entities] matching a required [component] type.
+
+### Replication
+
+> Also referred to as "synchronisation".
+
+Replication is the process by which all workers in the [SpatialOS world](#spatialos-world) maintain a consistent model of that world. It can be achieved by eitehr [standard](#standard-replication) or [custom](#custom-replication) replication.
+
+### Standard replication
+
+> Also referred to as "automatic synchronisation".
+
+The SpatialOS GDK for Unity performs replication in the [Unity ECS world](unity-ecs-world) via the `Improbable.Gdk.Core.SpatialOSSendSystem` system, which generates replication handlers for all [SpatialOS components](#spatialos-components) defined in the [schema](#schema).
+
+When writing game logic you don't need to worry about synchronisation code. Standard replication handles this automatically.
+
+### Custom replication
+
+> Also referred to as "custom synchronisation".
+
+[Standard replication](#standard-replication) is a powerful solution that keeps your [SpatialOS world](#spatialos-world) and your [Unity ECS World](#unity-ecs-world) sychronised. However, we recognise that it's not the perfect solution for everyone. Firstly, as a generic solution, it's not optimised for your specific game. You may wish to apply custom predicates and filters to minimise network traffic. Secondly, you may wish to update a non-spatial endpoint (such as a database).
+
+Both of these use cases are made possible by custom replication, a system that gives you full control over how a [SpatialOS component](spatialos-component) is replicated. Take a look at `Improbable.Gdk.Core.CustomSpatialOSSendSystem` to see the implementation.
+
+### Commands
+
+### World commands
+
+### Entity commands
+
+
 ### SpatialOS SDK for Unity
 
 The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is **not recommened for development**.
 
----
-
-Commands
-World commands
-Entity commands
-
-ECS
-Entity Component System
-The Entity-Component System (ECS) is a data-oriented paradigm that Unity recently introduced as a preview package in their Engine
-
-Replication
-Standard replication
-Custom replication
-
-The Runtime
-A Runtime instance manages the [game world](link!) of each [deployment](link).
 ----
 
 **Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
