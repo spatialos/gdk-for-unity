@@ -60,7 +60,7 @@ You can find this file in your Unity project: `/Assets/Fps/Scripts/Config/FpsEnt
 
 To define an entirely new entity type we will need to add a new function within the `FpsEntityTemplates` class:
 
-```
+```csharp
 public static Entity HealthPickup(Vector3f position, float healthValue)
 {
     var gameLogic = WorkerUtils.UnityGameLogic;
@@ -126,7 +126,7 @@ We will modify the snapshot generating logic in two steps:
 
 Within the `SnapshotMenu` class, add a new function that will contain logic for adding health pack entities to the snapshot object:
 
-```
+```csharp
 private static void AddHealthPacks(Snapshot snapshot)
 {
     var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f { X = 5, Y = 0, Z = 0 }, 100);
@@ -224,7 +224,7 @@ When creating entity prefabs it is usually a great idea to create a root GameObj
 
 Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace it's contents with the following code snippet:
 
-```
+```csharp
 using Improbable.Gdk.GameObjectRepresentation;
 using Pickups;
 using UnityEngine;
@@ -236,10 +236,11 @@ namespace Fps
     {
         [Require] private HealthPickup.Requirable.Reader healthPickupReader;
 
-        [SerializeField] private MeshRenderer cubeMeshRenderer;
+        private MeshRenderer cubeMeshRenderer;
 
         private void OnEnable()
         {
+            cubeMeshRenderer = GetComponentInChildren<MeshRenderer>();
             healthPickupReader.ComponentUpdated += OnHealthPickupComponentUpdated;
             UpdateVisibility();
         }
@@ -259,7 +260,7 @@ namespace Fps
 
 This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK, which we can look at more closely.
 
-```
+```csharp
 [WorkerType(WorkerUtils.UnityClient)]
 ```
 
@@ -267,7 +268,7 @@ This annotation decorating the class indicates the `WorkerType` of the script (i
 
 This script relates is going to rely on the `active` property of your new `HealthPickup` component, so the package declared in the `HealthPickup.schema` file appears in this script in an include statement:
 
-```
+```csharp
 using Pickups;
 ```
 
@@ -275,7 +276,7 @@ This namespace is part of the helper classes that the code generation phase crea
 
 To make use of component data, either to read from it or write to it, we can use SpatialOS GDK syntax to inject the component into the script.
 
-```
+```csharp
 [Require] private HealthPickup.Requirable.Reader healthPickupReader;
 ```
 
@@ -285,7 +286,7 @@ These `[Require]` statements are another powerful way to control where your code
 
 You can see a use of the `HealthPickup` component's data in the line:
 
-```
+```csharp
 cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
 ```
 
@@ -353,7 +354,7 @@ Just as with client-side representation, navigate to the `/Assets/Resources/Pref
 
 Add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
 
-```
+```csharp
 using System.Collections;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
@@ -368,8 +369,6 @@ namespace Fps
     {
         [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
         [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
-
-        private Coroutine respawnCoroutine;
 
         private void OnEnable()
         {
@@ -402,9 +401,9 @@ namespace Fps
 
         private void HandleCollisionWithPlayer(GameObject player)
         {
-            var spatialOsComponent = player.GetComponent<SpatialOSComponent>();
+            var playerSpatialOsComponent = player.GetComponent<SpatialOSComponent>();
 
-            if (spatialOsComponent == null)
+            if (playerSpatialOsComponent == null)
             {
                 return;
             }
@@ -414,7 +413,6 @@ namespace Fps
             // Toggle health pack to its 'consumed' state
             SetIsActive(false);
         }
-
     }
 }
 ```
@@ -423,11 +421,13 @@ This code snippet contains two comments that are placeholders for code which we 
 
 The first "not yet implemented" statement is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
 
-<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>[!!!!!!!!](TODO: Write a thing.)<%(/Expandable)%>
+<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>blah<%(/Expandable)%>
+
+[!!!!!!!!](TODO: Write a thing for that expandable ^)
 
 To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
 
-```
+```csharp
 [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
 ```
 
@@ -437,24 +437,221 @@ Unity Engine's `OnTriggerEnter` function is a special-case when a script is disa
 
 To update the `HealthPickup` component we must construct a `HealthPickup.Update` object, and **send** it to SpatialOS. You can replace the comment in the `SetIsActive` with the following snippet to handle creating and sending this update:
 
-```
+```csharp
 healthPickupWriter?.Send(new HealthPickup.Update
 {
     IsActive = new Option<BlittableBool>(isActive)
 });
 ```
 
-<%(#Expandable title="What is the "Option" type?")%>[!!!](TODO: Write a thing)<%(/Expandable)%>
+<%(#Expandable title="What is the 'Option' type?")%>blah<%(/Expandable)%>
 
-There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function.
+[!!!](TODO: Write a thing for that expandable ^)
 
-!!!!!! Continue from here
+There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function. The `Player` entity prefab has already been given a "Player" tag, so this function will be called any time a player walks through a health pack.
 
-// WRITER ALSO TRIGGER EVENTS AND SENDS COMMANDS
+#### Cross-worker interaction using commands
+
+Our `HandleCollisionWithPlayer` function will run on a `UnityGameLogic` worker (because of the `[WorkerType(WorkerUtils.UnityGameLogic)]` annotation). That worker executes the code on behalf of each `HealthPack` entity for which is has `HealthPickup` component write-access (because of the `Writer` requirement). If your game has multiple `UnityGameLogic` workers then the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access for the `Player` entity who has tried to pick up the health pack.
+
+If we want a `HealthPack` entity's script to update the `Player` entity's current health we must notify the responsible worker and _request_ the update. SpatialOS allows you to do this with [commands](fix), which are defined in **schema**.
+
+The `Player` entity already has a `Health` component which defines both a property representing current health and a **command** called `modify_health`. The definition of that command in `health.schema` is:
 
 ```
-healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
+command improbable.common.Empty modify_health(HealthModifier);
+```
+
+This command definition states that a `HealthModifier` object must be passed as an argument with the command request. `HealthModifier` is a type that is also defined in `health.schema`, which simply bundles a few properties together.
+
+When you send a command it acts as a request which SpatialOS will deliver to the single worker that has write-access for the component in which the command is defined. If that worker has handling logic for that type of command then it will be triggered, and many commands also return a response. A command response can provide information generated as a result of the request, or can be used to indicate whether the request was accepted or not.
+
+For this command the return type is specified as `improbable.common.Empty`, as we don't want to return any information to the sender.
+
+In your `HandleCollisionWithPlayer` function, you can replace the placeholder comment with the following code snippet:
+
+```csharp
+healthCommandRequestSender.SendModifyHealthRequest(playerSpatialOsComponent.SpatialEntityId, new HealthModifier
 {
     Amount = healthPickupWriter.Data.HealthValue
 });
 ```
+
+The top of the `HealthPickupServerBehaviour` class has a `[Require]` statement for `HealthComponent.Requireable.CommandRequestSender` which, appropriately enough, is necessary for sending commands that are defined in the `Health` component. Even though the `Health` component belongs to the `Player` entity, and this script is on the `HealthPickup` entity, this statement is still required.
+
+Command request sender objects are automatically generated for you during code generation, based on your schema, and it provides a 'send' function for each of the component's commands. Just by defining your commands in schema and running code generation all of these helper classes are generated ready for you to use.
+
+The code snippet calls `SendModifyHealthRequest`, specifies the entity id of the recipient entity (in this case the player entity), and constructs a `HealthModifier` object with the appropriate data. In our case the amount of health we wish to grant is based on the `HealthPickup` entity's `HealthValue` property, so we retrieve the value from `healthPickupWriter.Data.HealthValue`.
+
+The `ModifyHealth` command is already used by the FPS Template project for applying damage as part of the shooting game mechanics. As this is the case we don't need to write any _additional_ logic for applying the health increase.
+
+<%(#Expandable title="How are clients prevented from sending health-giving commands?")%>blah<%(/Expandable)%>
+
+[!!!](TODO: Write a thing for that expandable ^)
+
+<%(#Expandable title="Could you put the collision logic on the 'Player' instead?")%>blah<%(/Expandable)%>
+
+[!!!](TODO: Write a thing for that expandable ^)
+
+#### Respawning health packs
+
+Our health packs use the `IsActive` property to indicate whether they can be visualised (and whether they will grant health on collision). One final feature we will add is a co-routine to re-activate consumed health packs after a cool-down period.
+
+In your `HealthPickupServerBehaviour` class, define a coroutine function that looks something like this:
+
+```csharp
+private IEnumerator RespawnCubeRoutine()
+{
+    yield return new WaitForSeconds(15f);
+    SetIsActive(true);
+}
+```
+
+Your coroutine should be started at the end of the `HandleCollisionWithPlayer` function. You should also start the coroutine in `OnEnable` for any health pack entities which are inactive (`IsActive` equal to `false`) to begin with. Running coroutines should also be stopped in `OnDisable`.
+
+<%(#Expandable title="Expand for completed `HealthPickupServerBehaviour` snippet.")%>
+```csharp
+using System.Collections;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Health;
+using Pickups;
+using UnityEngine;
+
+namespace Fps
+{
+    [WorkerType(WorkerUtils.UnityGameLogic)]
+    public class HealthPickupServerBehaviour : MonoBehaviour
+    {
+        [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
+        [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
+
+        private Coroutine respawnCoroutine;
+
+        private void OnEnable()
+        {
+            // If the pickup is inactive on initial checkout - turn off collisions and start the respawning process.
+            if (!healthPickupWriter.Data.IsActive)
+            {
+                respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (respawnCoroutine != null)
+            {
+                StopCoroutine(respawnCoroutine);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // OnTriggerEnter is fired regardless of whether the MonoBehaviour is enabled/disabled.
+            if (healthPickupWriter == null)
+            {
+                return;
+            }
+
+            if (!other.CompareTag("Player"))
+            {
+                return;
+            }
+
+            HandleCollisionWithPlayer(other.gameObject);
+        }
+
+        private void SetIsActive(bool isActive)
+        {
+            healthPickupWriter?.Send(new HealthPickup.Update
+                {
+                    IsActive = new Option<BlittableBool>(isActive)
+                });
+        }
+
+        private void HandleCollisionWithPlayer(GameObject player)
+        {
+            var playerSpatialOsComponent = player.GetComponent<SpatialOSComponent>();
+
+            if (playerSpatialOsComponent == null)
+            {
+                return;
+            }
+
+            healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
+            {
+                Amount = healthPickupWriter.Data.HealthValue
+            });
+
+            // Toggle health pack to its 'consumed' state
+            SetIsActive(false);
+
+            // Begin cool-down period before re-activating health pack
+            respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+        }
+
+        private IEnumerator RespawnCubeRoutine()
+        {
+            yield return new WaitForSeconds(HealthPickupSettings.HealthPickupRespawnTimeSecs);
+            SetIsActive(true);
+        }
+    }
+}
+```
+<%(/Expandable)%>
+
+<%(#Expandable title="Why would IsActive be false in OnEnable()?")%>In a large game, where there are multiple workers of each type (such as multiple `UnityGameLogic` workers), it is the SpatialOS load-balancer that decides how to divide write-access for components between the available workers. At run-time the load-balancer will dynamically adjust these authorities to provide the best performance.
+
+The coroutine is local only to the worker that started it. If the worker loses write-access to the component then the script will become disabled for that entity (and if you've added a `StopCoroutine` call to `OnDisable` then the coroutine will be appropriately cancelled). In theory this leaves the entity in a state where `InActive` is false, and no coroutine is running that will eventually change that.
+
+Just as one worker lost write-access, another will be granted it by the load-balancer. That newly authoritative worker now meets the criteria specified by the `[Require]` syntax in the `HealthPickupServerBehaviour` class, and so the script will become enabled.
+
+This is why you should specify in `OnEnable()` that if the `IsActive` property is false at that point then the coroutine should be initiated.
+
+The newly authoritative worker will not know how long the cool-down had already been running on the previous worker, so the cool-down timer is ultimately 'refreshed' at this point. If this was a problem for our mechanic then we could store the timer's progress in a new property, but in this case we will keep it simple.<%(/Expandable)%>
+
+#### Optional: Ignoring healthy players
+
+The `HandleCollisionWithPlayer` function in your `HealthPickupServerBehaviour.cs` script currently attempts to heal any colliding player. If the player is already on full health we might want to ignore them so that the health pack is not consumed and the health modifier command is never sent.
+
+At the beginning of the `HandleCollisionWithPlayer` function you could add an if-statement which reads the player's current health from `playerSpatialOsComponent` and returns early if their health is at maximum. In the code that handles incoming `ModifyHealthRequest` commands the player's health is clamped to the value of the `Health` component's `max_health` property, but it's preferable to avoid sending the request if we know it will be denied anyway.
+
+# Testing health pickups
+
+The distributed game logic is now in place, and we can test if it is working correctly. To test this feature, you can follow these steps:
+
+<%(#Expandable title="1. Build your workers.")%>From the **SpatialOS** menu, click **Build UnityClient for local**.
+
+This is necessary because you have modified the code for the workers. If you are running your workers from within the Unity editor a build is not necessary, however in a moment we will launch a built-out client worker. Building the workers is therefore essential.<%(/Expandable)%>
+
+<%(#Expandable title="2. Launch a local deployment.")%>From the **SpatialOS** menu, click **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
+
+It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
+
+<%(#Expandable title="3. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, click **Launch standalone client**.
+
+This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
+
+<%(#Expandable title="4. Launch a second client in-editor.")%>With the `FPS-Development` scene open in the Unity editor, click the Unity `Play` button.<%(/Expandable)%>
+
+<%(#Expandable title="5. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
+
+This may require some switching between the editor and your standalone client, but you should be able to steer one player entity to the other and shoot them a few times.
+
+You can use the SpatialOS inspector to help you find where the two players are, and navigate them to the same location. You can also select the icon for the damaged player and, in the right-side of the SpatialOS inspector, view the component data for the player's `Health` component to confirm that damage from the gunfire has been applied.<%(/Expandable)%>
+
+<%(#Expandable title="6. Use the inspector to check the damage has been applied.")%>When a local deployment is running you can open the SpatialOS local inspector in your browser: http://localhost:21000/inspector/
+
+By selecting the visual marker for an entity you can view its component values in the right-side panel, by expanding the `Components` section.
+
+Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
+
+<%(#Expandable title="7. Walk the damaged player over the health pack and check if it is consumed and applied.")%>Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
+
+**Don't forget to check how much health the player has before walking through the health pack so you can compare the before and after!**
+
+When the injured player collides with the health pack it should become invisible on the client. You can also check in the SpatialOS inspector to see whether the `HealthPack` component for the health pack entity now shows its `IsActive` property value as `false`.
+
+Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
+
+If you implemented the respawn coroutine then you should also see the health pack reappear after a short time.
