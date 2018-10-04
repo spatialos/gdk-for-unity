@@ -126,6 +126,10 @@ It's important to recognise this fundamental separation between the SpatialOS wo
 to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must
 use SpatialOS APIs to change it.
 
+### SpatialOS Runtime
+
+A SpatialOS Runtime instance manages the [SpatialOS world](spatialos-world) of each [deployment](deploying).
+
 ### SpatialOS Entity
 
 All of the objects inside a [SpatialOS world](#spatialos-world) are SpatialOS entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
@@ -169,12 +173,17 @@ Which types of workers can [read from or write to](#read-and-write-access-author
 > * [Introduction to schema]({{urlRoot}}/shared/schema/introduction)
 
 ### Unity ECS world
-In Unity's ECS Worlds are the equivalent of [Scenes](scenes). They are a set of ECS entities, components and systems. In the SpatialOS GDK for Unity, ECS worlds (and everything in them) are an abstraction used to represet all or part of the [SpatialOS world](spatialos-world), which is the canonical source of truth.
+
+In the SpatialOS GDK for Unity you can represent a [SpatialOS world](#spatialos-world) using [Unity Sceces](scene) or Unity ECS worlds.
+
+In Unity's ECS, Worlds are the equivalent of [Scenes](scenes). They are a set of ECS entities, components and systems. In the SpatialOS GDK for Unity, ECS worlds (and everything in them) are an abstraction used to represet all or part of the [SpatialOS world](spatialos-world), which is the canonical source of truth for the state of your game.
 
 > Related: [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)
 
 ### Unity ECS entity
-In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](spatialos-entity) as a [`GameObject`](gameobject) or a [Unity ECS `Entity`](#unity-ecs-entity). A [Unity ECS `Entity`] is an abstraction used to represet a [SpatialOS entity].
+In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](#spatialos-entity) as a [`GameObject`](gameobject) or a Unity ECS Entity.
+
+A Unity ECS Entity is an abstraction used to represet a SpatialOS entity. It contains [Unity ECS components](unity-ecs-component), which represent [SpatialOS components](spatialos-component).
 
 > Related:
 > * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#entity)
@@ -183,24 +192,53 @@ In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](spatialos-
 
 Just as [Unity ECS entities](#unity-ecs-entity) represent [SpatialOS entities](spatialos-entity), Unity ECS components represent [SpatialOS components](spatialos-component) in the [Unity ECS World](unity-ecs-world).
 
-Unity ECS components are [`IComponentData`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata) structs. They are abstractions used to represent a stream of concrete, blittable data in Unity ECS. This stream of data parallels the data stored in SpatialOS components (remember, the [SpatialOS world](spatialos-world) is the canonical source of truth, the [Unity ECS world](unity-ecs-world) mirrors that truth).
+Unity ECS components are [`IComponentData`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata) structs. They are abstractions used to represent a stream of concrete, [blittable](blittable-type) data in Unity ECS. This stream of data parallels the data stored in SpatialOS components (remember, the [SpatialOS world](spatialos-world) is the canonical source of truth, the [Unity ECS world](unity-ecs-world) mirrors that truth).
 
 The SpatialOS GDK for Unity generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](spatialos-component) using familiar workflows in the Unity Editor.
 
-Generated ECS components can be injected into systems, read, and modified just as normal `IComponentData` structs can. The generated code handles updates from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal `IComponentData` structs can. The generated code handles updates from and to SpatialOS.
 
-> Related:
-> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata)
+> Related: [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata)
 
 ### Unity ECS reactive component
 
+A reactive component is a type of [Unity ECS component](unity-ecs-component). The [SpatialOS Runtime](spatialos-runtime) attaches it to a [Unity ECS entity](unity-ecs-entity) for the duration of one [update loop](update-loop). It is added to a Unity ECS Entity when `SpatialOSReceiveSystem` runs and is removed when `CleanReactiveComponentsSystem` runs.
+
+You can think of the contents of a reactive component as the diff between the state of a SpatialOS Entity at the end of the last update loop, and its corresponding Unity ECS entity at the beginning of the next. As the canonical source of truth, the SpatialOS entity is always one update loop ahead of the Unity ECS entity that represents it, and reactive components are how the SpatialOS runtime delivers the state changes and messages that must be applied for the Unity ECS entity to maintain parity.
+
+A reactive component contains all updates and messages received during the last [update loop](update-loop). In every update loop, the contents of a reactive component are processed by whichever [Unity ECS System](unity-ecs-system) that you want to react to those state changes or messages.
+
+> Related: [Receiving entity updates from SpatialOS: reactive components](docs/content/ecs/reactive-components.md)
+
+
 ### Unity ECS system
+
+The code you use to perform operations on [Unity ECS entities](unity-ecs-entity) and their [components](unity-ecs-component) exist in the form of Unity ECS Systems. Systems are scripts. They act, in bulk, on all of the entities in the [Unity ECS world](unity-ecs-world) that contain the components you tell them to act on. For example, a health system might iterate over all entities that have health and damage components, and decrement health components by the value of the damage components.
 
 ### Scene
 
+In the SpatialOS GDK for Unity you can represent a [SpatialOS world](#spatialos-world) using Sceces or Unity ECS worlds.
+
+Scenes (and almost everything in them), are an abstraction used to represet all or part of the [SpatialOS world](spatialos-world), which is the canonical source of truth for the state of your game.
+
+> Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
+
 ### GameObject
+In the SpatialOS GDK for Unity you can represent a [SpatialOS entity](#spatialos-entity) as a GameObject or a [Unity ECS Entity](unity-ecs-entity).
+
+GameObjects are the fundamental objects in Unity's hybrid-ECS workflow. They represent characters, props and scenery. They do not accomplish much in themselves but they act as containers for hybrid-ECS components such as Monobehaviours, which store data.
+
+> Related:
+> * [Unity Manual: GameObject](https://docs.unity3d.com/Manual/class-GameObject.html)
+> * [Unity Scripting API Reference: GameObject](https://docs.unity3d.com/ScriptReference/GameObject.html)
 
 ### Monobehaviour
+
+In the SpatialOS GDK for Unity you can represent a [SpatialOS component](#spatialos-entity) as a Monobehaviour or a [Unity ECS Component](#unity-ecs-component).
+
+MonoBehaviour is the base class for storing data in Unity's hybrid-ECS workflow.
+
+> Related: [Unity Scripting API Reference: MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)
 
 ### Worker
 
@@ -345,6 +383,24 @@ The benefits of our using Unity assembly definition files are:
 > * [Unity documentation: Script compilation and assembly definition files](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)
 > * [Microsoft documentation: Assemblies in the Common Language Runtime](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime)
 
+### Unity packages
+
+A Unity package is a container that holds any combination of Assets, Shaders, Textures, plug-ins, icons, and scripts. Each package in the SpatialOS GDK for Unity contains one or more [.NET assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and contains one specific functionality that can be added to your game.
+
+Unity packages are managed by the [Unity Package Manager](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@1.8/manual/index.html).
+
+### Core module
+
+The core module is a [Unity package](#unity-package). It is located at `UnityGDK/workers/unity/Packages/com.improbable.gdk.core`.
+
+The [Unity project](#unity-project) inside the SpatialOS GDK for Unity consists of the core module and a number of [feature modules](#feature-module). The core module is compulsory. It provides core functionality to enable your game to run on SpatialOS. It consists of [unity packages](#unity-package), tools (such as the code generator), dependency management, and tests.
+
+### Feature modules
+
+Feature modules are [Unity packages](#unity-package). They are located at `UnityGDK/workers/unity/Packages/`.
+
+The [Unity project](#unity-project) inside the SpatialOS GDK for Unity consists of the [Core module](#core-module) and a number of feature modules. Feature modules are optional features that you can choose to include or exclude from your game (player lifecycle, for example). They are intended both to give you a head-start in the development of your game, and act as reference material for best practices to use when writing your own features.
+
 ### SpatialOS SDK for Unity
 
 The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Development Kit for Unity. It is **not recommened for development**.
@@ -354,21 +410,10 @@ The SpatialOS SDK for Unity was the predecessor to the SpatialOS Game Developmen
 Commands
 World commands
 Entity commands
-Component
-ECS component
-ECS reactive component
-GameObject and MonoBehaviour component (AKA “a MonoBehaviour” in our docs)
-
-Core module
-Feature module
 
 ECS
 Entity Component System
 The Entity-Component System (ECS) is a data-oriented paradigm that Unity recently introduced as a preview package in their Engine
-
-Package
-Each package contains one or multiple assemblies and contains one specific functionality that can be added to your game to make the development of your SpatialOS game simpler.
-Read access
 
 Replication
 Standard replication
