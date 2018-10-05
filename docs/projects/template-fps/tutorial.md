@@ -192,7 +192,7 @@ In the GameObject workflow you can associate a Unity prefab with your entity typ
 
 The FPS starter project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 
-<%(#Expandable title="What are the "Authoritative" and "NonAuthoritative" sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
+<%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
 The FPS starter project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Resources/Prefabs/UnityClient/`.
 
@@ -450,7 +450,7 @@ healthPickupWriter?.Send(new HealthPickup.Update
 });
 ```
 
-<%(#Expandable title="What is the "Option" type?")%>blah<%(/Expandable)%>
+<%(#Expandable title="What is the 'Option' type?")%>blah<%(/Expandable)%>
 
 [!!!](TODO: Write a thing for that expandable ^)
 
