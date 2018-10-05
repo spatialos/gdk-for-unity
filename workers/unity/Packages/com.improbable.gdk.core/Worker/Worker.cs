@@ -9,19 +9,49 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Represents a SpatialOS worker.
+    /// </summary>
     public class Worker : IDisposable
     {
+        /// <summary>
+        ///     The origin of the worker in global Unity space.
+        /// </summary>
         public readonly Vector3 Origin;
+
+        /// <summary>
+        ///     The type of the worker.
+        /// </summary>
         public readonly string WorkerType;
+
+        /// <summary>
+        ///     The worker ID.
+        /// </summary>
+        /// <remarks>
+        ///    Unique for a given SpatialOS deployment.
+        /// </remarks>
         public readonly string WorkerId;
 
+        /// <summary>
+        ///     The logger for this worker.
+        /// </summary>
         public ILogDispatcher LogDispatcher;
 
+        /// <summary>
+        ///     The connection to the SpatialOS runtime.
+        /// </summary>
         public Connection Connection { get; private set; }
+
+        /// <summary>
+        ///     The ECS world associated with this worker.
+        /// </summary>
         public World World { get; private set; }
 
         private readonly WorkerDisconnectCallbackSystem disconnectCallbackSystem;
 
+        /// <summary>
+        ///     An event that triggers when the worker is disconnected.
+        /// </summary>
         public event Action<string> OnDisconnect
         {
             add => disconnectCallbackSystem.OnDisconnected += value;
@@ -46,6 +76,16 @@ namespace Improbable.Gdk.Core
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
         }
 
+        /// <summary>
+        ///     Asynchronously connects and creates a worker via the Receptionist.
+        /// </summary>
+        /// <param name="config">The Receptionist connection configuration.</param>
+        /// <param name="logger">The logger for this worker.</param>
+        /// <param name="origin">The origin of this worker in local Unity space.</param>
+        /// <returns>A task that returns a Worker when finished.</returns>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if the worker fails to connect.
+        /// </exception>
         public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger,
             Vector3 origin)
         {
@@ -75,6 +115,16 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        /// <summary>
+        ///     Asynchronously connects and creates a worker via the Locator.
+        /// </summary>
+        /// <param name="config">The Locator connection configuration.</param>
+        /// <param name="logger">The logger for this worker.</param>
+        /// <param name="origin">The origin of this worker in local Unity space.</param>
+        /// <returns>A task that returns a Worker when finished.</returns>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if the worker fails to connect.
+        /// </exception>
         public static async Task<Worker> CreateWorkerAsync(LocatorConfig config,
             Func<DeploymentList, string> deploymentListCallback, ILogDispatcher logger, Vector3 origin)
         {

@@ -1,4 +1,8 @@
-namespace Improbable.Gdk.BuildSystem.Util
+using System.IO;
+using System.Linq;
+using UnityEngine;
+
+namespace Improbable.Gdk.BuildSystem
 {
     /// <summary>
     ///     Contains common directories related to building assets and players.
@@ -8,11 +12,10 @@ namespace Improbable.Gdk.BuildSystem.Util
     /// </remarks>
     public static class EditorPaths
     {
-        public static readonly string PluginDirectory = PathUtil.Combine("Assets", "Plugins").ToUnityPath();
-
-        public static readonly string DataDirectory = PathUtil.Combine("..", "..", "build").ToUnityPath();
+        public static readonly string BuildScratchDirectory =
+            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker"));
 
         public static readonly string AssetDatabaseDirectory =
-            PathUtil.Combine(DataDirectory, "assembly").ToUnityPath();
+            Path.Combine(Application.dataPath, "..", "..", "..", "build", "assembly");
     }
 }

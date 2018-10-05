@@ -29,21 +29,21 @@ namespace Improbable.Gdk.Tools
         // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
 
-        [MenuItem("SpatialOS/Build worker configs")]
+        [MenuItem("SpatialOS/Build worker configs", false, MenuPriorities.BuildWorkerConfigs)]
         private static void BuildConfigMenu()
         {
             Debug.Log("Building worker configs...");
             EditorApplication.delayCall += BuildConfig;
         }
 
-        [MenuItem("SpatialOS/Local launch %l", priority = 70)]
+        [MenuItem("SpatialOS/Local launch %l", false, MenuPriorities.LocalLaunch)]
         private static void LaunchMenu()
         {
             Debug.Log("Launching SpatialOS locally...");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
-        [MenuItem("SpatialOS/Launch standalone client", priority = 70)]
+        [MenuItem("SpatialOS/Launch standalone client", false, MenuPriorities.LaunchStandaloneClient)]
         private static void LaunchStandaloneClient()
         {
             Debug.Log("Launching a standalone client");

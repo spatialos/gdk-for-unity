@@ -5,10 +5,13 @@ using Improbable.Worker.Core;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Enables the creation of entity templates.
+    /// </summary>
     public class EntityBuilder
     {
         private readonly Entity entity;
-        private Acl acl = new Acl();
+        private readonly Acl acl = new Acl();
         private bool hasBuiltOnce;
 
         private readonly HashSet<uint> componentsAdded = new HashSet<uint>();
@@ -24,6 +27,10 @@ namespace Improbable.Gdk.Core
             new HashSet<uint> { PositionComponentId };
 
 
+        /// <summary>
+        ///     Creates a new instance of the EntityBuilder and start building a new entity template.
+        /// </summary>
+        /// <returns>The EntityBuilder instance.</returns>
         public static EntityBuilder Begin()
         {
             return new EntityBuilder();
@@ -34,6 +41,15 @@ namespace Improbable.Gdk.Core
             entity = new Entity();
         }
 
+        /// <summary>
+        ///     Adds the provided SpatialOS component with data to the entity template.
+        /// </summary>
+        /// <param name="componentData">The SpatialOS component data.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
+        /// <returns>Itself</returns>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the SpatialOS component has already been added to the entity template.
+        /// </exception>
         public EntityBuilder AddComponent(ComponentData componentData, string writeAccess)
         {
             if (componentsAdded.Contains(componentData.ComponentId))
@@ -49,6 +65,14 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
+        /// <summary>
+        ///     Adds a Position component to the entity template.
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
+        /// <param name="z">The Z coordinate.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
+        /// <returns>Itself</returns>
         public EntityBuilder AddPosition(double x, double y, double z, string writeAccess)
         {
             var schemaData = new SchemaComponentData(PositionComponentId);
@@ -61,6 +85,17 @@ namespace Improbable.Gdk.Core
             return AddComponent(new ComponentData(schemaData), writeAccess);
         }
 
+        /// <summary>
+        ///     Sets the Persistence component to the entity template.
+        /// </summary>
+        /// <remarks>
+        ///     The Persistence component denotes whether a snapshot can contain the entity.
+        /// </remarks>
+        /// <remarks>
+        ///     The Snapshot API will throw an exception if an entity is added without a Persistence component.
+        /// </remarks>
+        /// <param name="persistence">The value of persistence.</param>
+        /// <returns>Itself</returns>
         public EntityBuilder SetPersistence(bool persistence)
         {
             if (persistence)
@@ -79,6 +114,12 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
+        /// <summary>
+        ///     Adds the Metadata component to the entity template.
+        /// </summary>
+        /// <param name="metadata">The metadata string.</param>
+        /// <param name="writeAccess">The worker attribute which is granted write access over this component.</param>
+        /// <returns>Itself</returns>
         public EntityBuilder AddMetadata(string metadata, string writeAccess)
         {
             var schemaData = new SchemaComponentData(MetadataComponentId);
@@ -88,6 +129,14 @@ namespace Improbable.Gdk.Core
             return AddComponent(new ComponentData(schemaData), writeAccess);
         }
 
+        /// <summary>
+        ///     Sets the Read ACL for an entity.
+        /// </summary>
+        /// <param name="attribute">The worker attribute which is granted write access over this component.</param>
+        /// <param name="attributes">
+        ///     Any other worker attributes which are granted write access over this component.
+        /// </param>
+        /// <returns>Itself</returns>
         public EntityBuilder SetReadAcl(string attribute, params string[] attributes)
         {
             acl.AddReadAccess(attribute);
@@ -99,6 +148,11 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
+        /// <summary>
+        ///     Sets the Read ACL for an entity.
+        /// </summary>
+        /// <param name="attributes">The worker attributes which are granted write access over this component.</param>
+        /// <returns>Itself</returns>
         public EntityBuilder SetReadAcl(List<string> attributes)
         {
             foreach (var attribute in attributes)
@@ -109,24 +163,42 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
+        /// <summary>
+        ///     Sets the write access for the EntityACL component.
+        /// </summary>
+        /// <param name="attribute">
+        ///     The worker attribute which should have write access over the EntityACL component.
+        /// </param>
+        /// <returns>Itself</returns>
         public EntityBuilder SetEntityAclComponentWriteAccess(string attribute)
         {
             acl.SetComponentWriteAccess(EntityAclComponentId, attribute);
             return this;
         }
 
-        public Entity Build()
+        /// <summary>
+        ///     Builds the entity template.
+        /// </summary>
+        /// <returns>An EntityTemplate object.</returns>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if Build is called twice.
+        /// </exception>
+        /// <exception cref="InvalidEntityException">
+        ///    Thrown if the entity does not have the Position component.
+        /// </exception>
+        public EntityTemplate Build()
         {
             if (hasBuiltOnce)
             {
                 throw new InvalidOperationException("Cannot call Build() multiple times on the same EntityBuilder instance.");
             }
 
+            CheckRequiredComponents();
+
             entity.Add(acl.Build());
             componentsAdded.Add(EntityAclComponentId);
-            CheckRequiredComponents();
             hasBuiltOnce = true;
-            return entity;
+            return new EntityTemplate(entity);
         }
 
         private void CheckRequiredComponents()
@@ -140,8 +212,8 @@ namespace Improbable.Gdk.Core
 
         private class Acl
         {
-            private Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
-            private List<string> readPermissions = new List<string>();
+            private readonly Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
+            private readonly List<string> readPermissions = new List<string>();
 
             public void SetComponentWriteAccess(uint componentId, string attribute)
             {

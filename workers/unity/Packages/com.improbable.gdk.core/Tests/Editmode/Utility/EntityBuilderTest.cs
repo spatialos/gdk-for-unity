@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             builder.AddPosition(0, 0, 0, "write-access");
             Assert.Throws<InvalidOperationException>(() => builder.AddPosition(0, 0, 0, "write-access"));
 
-            DisposeEntity(builder.Build());
+            builder.Build().Dispose();
         }
 
         [Test]
@@ -32,10 +32,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var builder = EntityBuilder.Begin();
             builder.AddPosition(0, 0, 0, "write-access");
-            var entity = builder.Build();
+            var template = builder.Build();
             Assert.Throws<InvalidOperationException>(() => builder.Build());
 
-            DisposeEntity(entity);
+            template.Dispose();
         }
 
         [Test]
@@ -44,16 +44,16 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var builder = EntityBuilder.Begin();
             builder.AddPosition(0, 0, 0, "write-access");
 
-            Entity entity = new Entity(); // Stops IDE complaining about null check below.
+            var template = new EntityTemplate(new Entity()); // Stops IDE complaining about null check below.
 
             // Wrap in try - finally to ensure dispose gets called even if the assert fails.
             try
             {
-                Assert.DoesNotThrow(() => entity = builder.Build());
+                Assert.DoesNotThrow(() => template = builder.Build());
             }
             finally
             {
-                DisposeEntity(entity);
+                template.Dispose();
             }
         }
 
@@ -64,16 +64,36 @@ namespace Improbable.Gdk.Core.EditmodeTests
             builder.AddPosition(0, 0, 0, "write-access");
             builder.AddComponent(GetComponentDataWithId(1000), "write-access");
             builder.AddComponent(GetComponentDataWithId(1001), "write-access");
-            var entity = new Entity(); // Stops IDE complaining about null check below.
+            var template = new EntityTemplate(new Entity()); // Stops IDE complaining about null check below.
 
             // Wrap in try - finally to ensure dispose gets called even if the assert fails.
             try
             {
-                Assert.DoesNotThrow(() => entity = builder.Build());
+                Assert.DoesNotThrow(() => template = builder.Build());
             }
-            finally 
+            finally
             {
-                DisposeEntity(entity);
+                template.Dispose();
+            }
+        }
+
+        [Test]
+        public void EntityTemplate_should_throw_if_used_twice()
+        {
+            var builder = EntityBuilder.Begin();
+            builder.AddPosition(0, 0, 0, "write-access");
+
+            var template = builder.Build();
+            template.GetEntity();
+
+            // Wrap in try - finally to ensure dispose gets called even if the assert fails.
+            try
+            {
+                Assert.Throws<InvalidOperationException>(() => template.GetEntity());
+            }
+            finally
+            {
+                template.Dispose();
             }
         }
 
@@ -81,21 +101,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var schemaComponentData = new SchemaComponentData(componentId);
             return new ComponentData(schemaComponentData);
-        }
-
-        /// <summary>
-        ///     Disposes the underlying SchemaComponentData in native memory for a given Entity.
-        ///     If the memory is not manually disposed, it will cause a leak!
-        /// </summary>
-        private void DisposeEntity(Entity entity)
-        {
-            var componentIds = entity.GetComponentIds();
-
-            foreach (var id in componentIds)
-            {
-                var componentData = entity.Get(id);
-                componentData.Value.SchemaData.Value.Dispose();
-            }
         }
     }
 }

@@ -41,6 +41,8 @@
     <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
     <T4Files Include="Templates\UnityCommandComponentsGenerator.tt" />
     <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
+    <T4Files Include="Templates\UnityWorkerMenuGenerator.tt" />
+    <T4Files Include="Templates\BuildSystemAssemblyGenerator.tt" />
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">

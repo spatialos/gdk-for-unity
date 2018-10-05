@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Represents an <see cref="EntityGameObjectLinker"/> in the ECS context.
+    /// </summary>
+    /// <remarks>
+    ///    This system will not tick.
+    /// </remarks>
     [DisableAutoCreation]
     public class EntityGameObjectLinkerSystem : ComponentSystem
     {

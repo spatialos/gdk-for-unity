@@ -2,6 +2,9 @@
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Represents an error that occurs when a reader cannot read the underlying data for a SpatialOS component.
+    /// </summary>
     public class ReaderDataGetFailedException : Exception
     {
         // entity index to be added at the end

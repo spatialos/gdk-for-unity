@@ -16,6 +16,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Listens for World Command responses and invokes callbacks on GameObjects.
+    /// </summary>
     [DisableAutoCreation]
     public class GameObjectWorldCommandSystem : ComponentSystem
     {

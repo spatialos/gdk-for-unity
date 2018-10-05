@@ -1,0 +1,12 @@
+{
+    "name": "Improbable.Gdk.Generated.BuildSystem",
+    "references": [ 
+        "Improbable.Gdk.BuildSystem",
+        "Improbable.Gdk.Tools"        
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

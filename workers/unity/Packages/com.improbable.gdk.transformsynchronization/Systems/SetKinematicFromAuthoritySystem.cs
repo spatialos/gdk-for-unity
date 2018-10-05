@@ -27,16 +27,20 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
 
-            // If authority is gained on the first tick there will be an auth changed component
+            // If authority is not gained on the first tick there will be no auth changed component
             public SubtractiveComponent<Authoritative<TransformInternal.Component>> DenotesNotAuthoritative;
+            public ComponentDataArray<KinematicStateWhenAuth> KinematicStateWhenAuth;
             [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewEntity;
+            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
         }
 
         private struct AuthChangeData
         {
             public readonly int Length;
             public ComponentArray<Rigidbody> Rigidbody;
+            public ComponentDataArray<KinematicStateWhenAuth> KinematicStateWhenAuth;
             [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>> TransformAuthority;
+            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
         }
 
         [Inject] private AuthChangeData authChangeData;
@@ -46,7 +50,12 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             for (int i = 0; i < newEntityData.Length; ++i)
             {
-                newEntityData.Rigidbody[i].isKinematic = true;
+                var rigidbody = authChangeData.Rigidbody[i];
+                newEntityData.KinematicStateWhenAuth[i] = new KinematicStateWhenAuth
+                {
+                    KinematicWhenAuthoritative = rigidbody.isKinematic
+                };
+                rigidbody.isKinematic = true;
             }
 
             for (int i = 0; i < authChangeData.Length; ++i)
@@ -57,11 +66,15 @@ namespace Improbable.Gdk.TransformSynchronization
                 switch (auth)
                 {
                     case Authority.NotAuthoritative:
+                        authChangeData.KinematicStateWhenAuth[i] = new KinematicStateWhenAuth
+                        {
+                            KinematicWhenAuthoritative = rigidbody.isKinematic
+                        };
                         rigidbody.isKinematic = true;
                         break;
                     case Authority.Authoritative:
                     case Authority.AuthorityLossImminent:
-                        rigidbody.isKinematic = false;
+                        rigidbody.isKinematic = authChangeData.KinematicStateWhenAuth[i].KinematicWhenAuthoritative;
                         break;
                 }
             }

@@ -9,6 +9,9 @@ using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Executes the default replication logic for each SpatialOS component.
+    /// </summary>
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]

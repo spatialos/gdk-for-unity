@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Improbable.CodeGeneration.FileHandling;
 using Improbable.CodeGeneration.Jobs;
 
@@ -61,11 +62,14 @@ namespace Improbable.Gdk.CodeGenerator
             var schemaFilesRaw = SchemaFiles.GetSchemaFilesRaw(options.JsonDirectory, fileSystem).ToList();
             var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
             var globalEnumSet = ExtractEnums(schemaProcessor.ProcessedSchemaFiles);
-
+            
+            var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
+            
             var runner = new JobRunner(fileSystem);
-            runner.Run(new List<ICodegenJob> { aggegrateJob }, new[] { options.NativeOutputDirectory });
-
+            
+            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob }, 
+                new[] { options.NativeOutputDirectory });
             return 0;
         }
 

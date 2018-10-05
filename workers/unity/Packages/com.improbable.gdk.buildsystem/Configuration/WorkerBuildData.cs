@@ -1,13 +1,22 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Gdk.BuildSystem.Util;
+using System.IO;
 using UnityEditor;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public class WorkerBuildData
     {
-        private readonly WorkerPlatform workerPlatform;
+        public readonly string WorkerType;
+
+        public string PackageName => $"{WorkerType}@{BuildTargetName}";
+        
+        public string BuildScratchDirectory =>
+            Path.Combine(EditorPaths.BuildScratchDirectory, PackageName, ExecutableName);
+        
+        private string BuildTargetName => BuildTargetNames[buildTarget];
+        private string ExecutableName => PackageName + BuildPlatformExtensions[buildTarget];
+        
         private readonly BuildTarget buildTarget;
 
         private static readonly Dictionary<BuildTarget, string> BuildTargetNames =
@@ -28,26 +37,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneOSX, "" }
             };
 
-        public WorkerBuildData(WorkerPlatform workerPlatform, BuildTarget buildTarget)
+        public WorkerBuildData(string workerType, BuildTarget buildTarget)
         {
             if (!BuildTargetNames.ContainsKey(buildTarget))
             {
                 throw new ArgumentException("Unsupported BuildPlatform " + buildTarget);
             }
 
-            this.workerPlatform = workerPlatform;
+            WorkerType = workerType;
             this.buildTarget = buildTarget;
         }
-
-        private string BuildTargetName => BuildTargetNames[buildTarget];
-
-        public string BuildScratchDirectory =>
-            PathUtil.Combine(BuildPaths.BuildScratchDirectory, PackageName, ExecutableName).ToUnityPath();
-
-        public string WorkerPlatformName => workerPlatform.ToString();
-
-        private string ExecutableName => PackageName + BuildPlatformExtensions[buildTarget];
-
-        public string PackageName => string.Format("{0}@{1}", workerPlatform, BuildTargetName);
     }
 }
