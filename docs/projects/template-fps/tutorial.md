@@ -10,28 +10,27 @@ This tutorial will implement a simple health pack pickup that will grant health 
 To implement this feature we will:
 
 * Define a new health pack entity and its data
-* Add health pack entities to snapshot so they appear in the world
+* Add health pack entities to the snapshot so they appear in the world
 * Write pick-up logic so packs grant health to players
 
 # Defining a new entity type
 
 Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema](fix).
 
-In the FPS Template project the existing entities, such as the `Player` entity type, have components for movement, health, shooting and other mechanics. The project is constructed from GDK packages, such as the `SpatialOS GDK Health` package, which you can open from within the Unity project. In many of these packages you will find a `Schema` folder, with files like `health.schema`.
+In the FPS starter project the existing entities, such as the `Player` entity type, have components for movement, health, shooting and other mechanics. The project is constructed from GDK packages, such as the `SpatialOS GDK Health` package, which you can open from within the Unity project. In many of these packages you will find a `schema` folder, with files like `health.schema`.
 
 ### Entity components
 
 We will give your health pack entities two pieces of data by defining it in a new component:
 
-* The amount of health the pack will granted.
+* The amount of health the pack will grant.
 * A flag indicating whether the health pack is active, or has been consumed.
-
 
 Create a `schema` directory in your project root, if it doesn't already exist. Then create a `pickups` directory within that.
 
-<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the directory top-level directory which also contains your `spatialos.json` configuration file, and likely a directory called `workers` that contains your Unity project. You will not be able to see this directory from within your Unity editor, and should use File Explorer (on Windows) or Finder (on Mac) to create your new directory.<%(/Expandable)%>
+<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file, and likely a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity editor, and should use File Explorer (on Windows) or Finder (on Mac) to create your new directory.<%(/Expandable)%>
 
-Within your `/schema/pickups/` directory create a new file called `HealthPickup.schema` and paste in the following definition:
+Within your `schema/pickups/` directory create a new file called `health_pickup.schema` and paste in the following definition:
 
 ```
 package pickups;
@@ -42,19 +41,26 @@ component HealthPickup {
 }
 ```
 
-[!!!](TODO: Explain namespaces and packages? Maybe not.)
+This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The component id must be chosen by you, and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is a number that identifies the order in which these properties will appear within the component.
 
-This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The is must be chosen by you and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is an id number which identifies the order in which these properties will appear within the component.
+Any time you you modify your `schema` files you **must** then run code generation. You do this from the SpatialOS menu by clicking **Generate code**.
 
-[!!!](TODO: How do you run codegen?)
+Code generation creates C# helper classes to allow you to make use of your `schema` within your game's code. It therefore must be run in order to make used of your newly defined `HealthPickup` component within your game logic. It's worth noting that when writing schemalang your properties must use snake case (e.g. "health_value"), and the code generation process will create the helper classes with PascalCase (i.e. "HealthValue").
 
-To write C# code that makes use of your newly defined `HealthPickup` component a range of helper classes are generated. It's worth noting that when writing schemalang your properties must use snake case (e.g. "health_value"), and the code generation process will create the helper classes with capitalised camel-case (i.e. "HealthValue").
+<%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
+
+If you are worried your generated code is in a bad state (such as having helper classes for since-deleted components and properties) you can run **Generate code (force)** from the SpatialOS menu to ensure existing generated code is cleaned and regenerated.
+<%(/Expandable)%>
+
+<%(#Expandable title="Where is the generated code?")%>The generated classes for your component are in [!!!](fix) Feel free to have a look if you want to see what happens behind the scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
+<%(/Expandable)%>
+
 
 ### Entity templates
 
-SpatialOS components must be grouped together to create the definition of your health pack entity type.
+Health pickups are a new entity, and we must next define which components should be instantiated each time a new 'health pickup' is created.
 
-Typical for SpatialOS GDK projects, the FPS Template contains a C# file that declares a function for each type of entity. Calling the function returns an `Entity` object, with the contents of the function defining which components form that entity type. Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
+Typical for SpatialOS GDK projects, the FPS starter project contains a C# file that declares a function for each type of entity. Calling the function returns an `Entity` object, with the contents of the function defining which components form that entity type. Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
 
 You can find this file in your Unity project: `/Assets/Fps/Scripts/Config/FpsEntityTemplates.cs`.
 
@@ -85,7 +91,7 @@ The [EntityBuilder](fix) syntax provides a compact way to declare the relevant c
 
 #### Adding components
 
-Your `HealthComponent` has generated a the `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers (i.e. `= 1` and `= 2`) determine the order of properties the function expects as parameters.
+Your `HealthComponent` has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers (i.e. `= 1` and `= 2`) determine the order of properties the function expects as parameters.
 
 This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the final statement must be `.Build();`.
 
@@ -101,11 +107,11 @@ For this project, `UnityGameLogic` indicates that that worker is one for handlin
 
 [!!!](TODO: Check whether this is correct about single string ACLs)
 
-<%(#Expandable title="How would you give only a specific client write-access for a component?")%>Some component data should be editable/updateable by the player's client, but not by the clients of any other players. In the FPS Template project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write-access over a number of components: clientMovement, clientRotation, clientHeartbeat etc.
+<%(#Expandable title="How would you give only a specific client write-access for a component?")%>Some component data should be editable/updateable by the player's client, but not by the clients of any other players. In the FPS starter project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write-access over a number of components: clientMovement, clientRotation, clientHeartbeat etc.
 
 The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [entity lifecycle](fix).<%(/Expandable)%>
 
-<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable. As is typical for GDK projects, the FPS Template uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration](fix)<%(/Expandable)%>
+<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable. As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration](fix)<%(/Expandable)%>
 
 ### Adding entities to the world
 
@@ -140,15 +146,15 @@ The `Improbable.FPS.Editor Import Settings` contains a section called `Reference
 
 Once you've added and applied this new package reference your use of `Vector3f` in `SnapshotGenerator.cs` will now be valid.
 
-<%(#Expandable title="Why does the FPS Template use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules](fix) which make good use of packages.<%(/Expandable)%>
+<%(#Expandable title="Why does the FPS starter project use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules](fix) which make good use of packages.<%(/Expandable)%>
 
 This script now creates a health pack entity at the origin, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it wont be run during snapshot generation!
 
-It's a great idea to separate default values (such as health pack positions, and health values) into a settings file. In the FPS Template project you can find lots of examples of using Unity `ScriptableObject` components for exactly that. But for now, we will keep this example simple.
+It's a great idea to separate default values (such as health pack positions, and health values) into a settings file. In the FPS starter project you can find lots of examples of using Unity `ScriptableObject` components for exactly that. But for now, we will keep this example simple.
 
 #### Updating the snapshot
 
-Snapshot files are found in your project root directory, in a directory named `snapshots`. The FPS Template project includes a snapshot called `default.snapshot`.
+Snapshot files are found in your project root directory, in a directory named `snapshots`. The FPS starter project includes a snapshot called `default.snapshot`.
 
 If you have updated the snapshot generation function (as you just did in the step above), or if you've altered which components are specified in one of your entity templates, then your snapshot will be out of date. The snapshot is a big list of entities, and all their individual component values, so any change to these and the snapshot file must be regenerated.
 
@@ -169,34 +175,34 @@ SpatialOS will manage which subset of the world's entities each worker knows abo
 First we must think about how each of the workers will want to represent the entity, so let's return to how we want our game mechanic to play out:
 
 * Players should see a hovering health pack.
-* When a player runs through the health pack it is consumed and 'disappears', leaving just a marker on the ground.
+* When a player runs through the health pack it is consumed and "disappears", leaving just a marker on the ground.
 * Consuming a health pack should only occur if the player has taken damage.
 * Consumed health packs re-appear after a cool-down, and are ready for use again.
 
 We can neatly separate this logic between the client-side and server-side representations:
 
-* The `UnityClient` worker should display a visual representation for each health pack, based on whether the health pack is currently 'active'.
+* The `UnityClient` worker should display a visual representation for each health pack, based on whether the health pack is currently "active".
 * The `UnityGameLogic` worker should react to collisions with players, check whether they are injured, and consume the health pack if they are.
 
 #### Creating GameObject representations
 
-The FPS Template project uses the SpatialOS GDK's GameObject workflow, which is the familiar way of working with Unity Engine.
+The FPS starter project uses the SpatialOS GDK's GameObject workflow, which is the familiar way of working with Unity Engine.
 
 In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `/Assets/Resources/Prefabs/UnityClient` and `/Assets/Resources/Prefabs/UnityGameLogic` respectively.
 
-The FPS Template project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
+The FPS starter project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 
-<%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
+<%(#Expandable title="What are the "Authoritative" and "NonAuthoritative" sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
-The FPS Template project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Resources/Prefabs/UnityClient/`.
+The FPS starter project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Resources/Prefabs/UnityClient/`.
 
-If you are interested in why the FPS Template project named those sub-directories `Authoritative` and `NonAuthoritative`, it relates to write-access for components on the entity.
+If you are interested in why the FPS starter project named those sub-directories `Authoritative` and `NonAuthoritative`, it relates to write-access for components on the entity.
 
-At any point in time a single entity may be known about by multiple workers, even of the same type. In a large game you might have multiple `UnityGameLogic` workers. These often overlap, which means that they both 'know about' some of the same entities. However, only **one** of those workers can have write-access permissions to components on an entity at any given time.
+At any point in time a single entity may be known about by multiple workers, even of the same type. In a large game you might have multiple `UnityGameLogic` workers. These often overlap, which means that they both "know about" some of the same entities. However, only **one** of those workers can have write-access permissions to components on an entity at any given time.
 
 That means even two workers of the same type (e.g. `UnityGameLogic`) may not have the same responsibilities for a particular entity. The **authoritative** worker (i.e. the one that has write-access) may be responsible for executing some logic and updating the entity's component data. The **non-authoritative** worker only has read-access, which it may use to drive its own local representation of that entity, but it shouldn't try to update the entity's component values (and wouldn't be able to if it tried!). These two workers have _different representations_ of the same entity, even though they are the same type of worker.
 
-The `Player` entity has a special relationship with the `UnityClient` instance that is authoritative over it. That `UnityClient` is running on the gamer's machine, and that gamer 'owns' that `Player` entity. It's their representation in the world. As such, there are big differences between how `Player` entity should be represented on the authoritative client (it should have a camera, collect player input etc.) compared to if the `Player` entity represents someone else in the game. The FPS Template project has some additional logic to manage these representations as a way of keeping the code more organised.
+The `Player` entity has a special relationship with the `UnityClient` instance that is authoritative over it. That `UnityClient` is running on the gamer's machine, and that gamer "owns" that `Player` entity. It's their representation in the world. As such, there are big differences between how `Player` entity should be represented on the authoritative client (it should have a camera, collect player input etc.) compared to if the `Player` entity represents someone else in the game. The FPS starter project has some additional logic to manage these representations as a way of keeping the code more organised.
 
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority](fix).<%(/Expandable)%>
 
@@ -204,13 +210,13 @@ Authority is a tricky topic with SpatialOS, particularly as write-access is actu
 
 ##### Creating a UnityClient entity prefab
 
-The FPS Template project contains a health pack prefab, `HealthPack.prefab`, in the folder: `/Assets/Resources/Prefabs/`.
+The FPS starter project contains a health pack prefab, `HealthPack.prefab`, in the folder: `/Assets/Resources/Prefabs/`.
 
 In the `/Assets/Resources/Prefabs/UnityClient/` folder create a new prefab named **"HealthPickup"**. Give this two children, the health pack and the base plate (`/Assets/Resources/Prefabs/HealthPackCube.prefab` and `/Assets/Resources/Prefabs/HealthPackBase.prefab`).
 
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
-This is because the FPS Template project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow](fix).<%(/Expandable)%>
+This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow](fix).<%(/Expandable)%>
 
 
 
@@ -266,7 +272,7 @@ This script is mostly standard C# code that you could find in any game built wit
 
 This annotation decorating the class indicates the `WorkerType` of the script (in this case, `UnityClient`). This provides information for SpatialOS when it is building out your separate workers: a script with the client annotation should never appear in `UnityGameLogic` worker. You can use these `WorkerType` annotations to control where your code runs. If a script should exist and run on both client-side and server-side workers then this annotation can be omitted.
 
-This script relates is going to rely on the `active` property of your new `HealthPickup` component, so the package declared in the `HealthPickup.schema` file appears in this script in an include statement:
+This script relates is going to rely on the `active` property of your new `HealthPickup` component, so the package declared in the `health_pickup.schema` file appears in this script in an include statement:
 
 ```csharp
 using Pickups;
@@ -348,7 +354,7 @@ To do this we will need to create a server-side representation of the health pac
 
 ### Creating a UnityGameLogic entity prefab
 
-In the FPS Template project the server-side worker is called `UnityGameLogic`.
+In the FPS starter project the server-side worker is called `UnityGameLogic`.
 
 Just as with client-side representation, navigate to the `/Assets/Resources/Prefabs/UnityGameLogic/` folder and create a `HealthPickup` prefab. Once again this name must match the `Metadata` string for the health pack entity so that the GameObject Creation system knows to associate them.
 
@@ -410,7 +416,7 @@ namespace Fps
 
             // Not yet implemented: you need to replace this comment with code for notifying the Player entity that it will receive health.
 
-            // Toggle health pack to its 'consumed' state
+            // Toggle health pack to its "consumed" state
             SetIsActive(false);
         }
     }
@@ -444,7 +450,7 @@ healthPickupWriter?.Send(new HealthPickup.Update
 });
 ```
 
-<%(#Expandable title="What is the 'Option' type?")%>blah<%(/Expandable)%>
+<%(#Expandable title="What is the "Option" type?")%>blah<%(/Expandable)%>
 
 [!!!](TODO: Write a thing for that expandable ^)
 
@@ -479,11 +485,11 @@ healthCommandRequestSender.SendModifyHealthRequest(playerSpatialOsComponent.Spat
 
 The top of the `HealthPickupServerBehaviour` class has a `[Require]` statement for `HealthComponent.Requireable.CommandRequestSender` which, appropriately enough, is necessary for sending commands that are defined in the `Health` component. Even though the `Health` component belongs to the `Player` entity, and this script is on the `HealthPickup` entity, this statement is still required.
 
-Command request sender objects are automatically generated for you during code generation, based on your schema, and it provides a 'send' function for each of the component's commands. Just by defining your commands in schema and running code generation all of these helper classes are generated ready for you to use.
+Command request sender objects are automatically generated for you during code generation, based on your schema, and it provides a "send" function for each of the component's commands. Just by defining your commands in schema and running code generation all of these helper classes are generated ready for you to use.
 
 The code snippet calls `SendModifyHealthRequest`, specifies the entity id of the recipient entity (in this case the player entity), and constructs a `HealthModifier` object with the appropriate data. In our case the amount of health we wish to grant is based on the `HealthPickup` entity's `HealthValue` property, so we retrieve the value from `healthPickupWriter.Data.HealthValue`.
 
-The `ModifyHealth` command is already used by the FPS Template project for applying damage as part of the shooting game mechanics. As this is the case we don't need to write any _additional_ logic for applying the health increase.
+The `ModifyHealth` command is already used by the FPS starter project for applying damage as part of the shooting game mechanics. As this is the case we don't need to write any _additional_ logic for applying the health increase.
 
 <%(#Expandable title="How are clients prevented from sending health-giving commands?")%>blah<%(/Expandable)%>
 
@@ -583,7 +589,7 @@ namespace Fps
                 Amount = healthPickupWriter.Data.HealthValue
             });
 
-            // Toggle health pack to its 'consumed' state
+            // Toggle health pack to its "consumed" state
             SetIsActive(false);
 
             // Begin cool-down period before re-activating health pack
@@ -608,7 +614,7 @@ Just as one worker lost write-access, another will be granted it by the load-bal
 
 This is why you should specify in `OnEnable()` that if the `IsActive` property is false at that point then the coroutine should be initiated.
 
-The newly authoritative worker will not know how long the cool-down had already been running on the previous worker, so the cool-down timer is ultimately 'refreshed' at this point. If this was a problem for our mechanic then we could store the timer's progress in a new property, but in this case we will keep it simple.<%(/Expandable)%>
+The newly authoritative worker will not know how long the cool-down had already been running on the previous worker, so the cool-down timer is ultimately "refreshed" at this point. If this was a problem for our mechanic then we could store the timer's progress in a new property, but in this case we will keep it simple.<%(/Expandable)%>
 
 #### Optional: Ignoring healthy players
 
@@ -616,7 +622,7 @@ The `HandleCollisionWithPlayer` function in your `HealthPickupServerBehaviour.cs
 
 At the beginning of the `HandleCollisionWithPlayer` function you could add an if-statement which reads the player's current health from `playerSpatialOsComponent` and returns early if their health is at maximum. In the code that handles incoming `ModifyHealthRequest` commands the player's health is clamped to the value of the `Health` component's `max_health` property, but it's preferable to avoid sending the request if we know it will be denied anyway.
 
-# Testing health pickups
+# Testing health pickups locally
 
 The distributed game logic is now in place, and we can test if it is working correctly. To test this feature, you can follow these steps:
 
