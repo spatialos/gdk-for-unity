@@ -13,6 +13,26 @@ namespace Improbable.Gdk.Tools
         Error
     }
 
+    internal class PluginPostprocessor : AssetPostprocessor
+    {
+        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        {
+            var processPlugins = false;
+            foreach (var asset in importedAssets)
+            {
+                if (DownloadCoreSdk.IsImprobablePlugin(asset))
+                {
+                    processPlugins = true;
+                }
+            }
+
+            if (processPlugins)
+            {
+                DownloadCoreSdk.SetPluginsCompatibility();
+            }
+        }
+    }
+
     internal static class DownloadCoreSdk
     {
         private const int DownloadForcePriority = 50;
@@ -30,7 +50,7 @@ namespace Improbable.Gdk.Tools
             PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, editorCompatible: true),
             PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinux64 }, editorCompatible: true),
             PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86_64", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, editorCompatible: true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86", new List<BuildTarget> { BuildTarget.StandaloneWindows }, false),
+            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86", new List<BuildTarget> { BuildTarget.StandaloneWindows }, editorCompatible: true),
             PluginDirectoryCompatibility.CreateAllCompatible("Assets/Plugins/Improbable/Sdk/Common"),
         };
 
@@ -46,6 +66,8 @@ namespace Improbable.Gdk.Tools
             }
 
             Download();
+            SetPluginsCompatibility();
+			AssetDatabase.Refresh();
         }
 
         private static void RemoveMarkerFile()
@@ -88,9 +110,14 @@ namespace Improbable.Gdk.Tools
             return !failedPlugins.Any();
         }
 
+        internal static bool IsImprobablePlugin(string assetPath)
+        {
+            return assetPath.StartsWith("Assets/Plugins/Improbable");
+        }
+
         private static bool ShouldCheckPluginForLock(PluginImporter p)
         {
-            if (!p.assetPath.StartsWith("Assets/Plugins/Improbable"))
+            if (!IsImprobablePlugin(p.assetPath))
             {
                 return false;
             }
@@ -146,18 +173,21 @@ namespace Improbable.Gdk.Tools
                 return DownloadResult.Error;
             }
 
-            AssetDatabase.Refresh();
-            SetPluginsCompatibility();
             return DownloadResult.Success;
         }
 
         /// <summary>
         ///     Sets plugin platform compatibility based on directory structure
         /// </summary>
-        private static void SetPluginsCompatibility()
+        internal static void SetPluginsCompatibility()
         {
+	        AssetDatabase.StartAssetEditing();
             foreach (var pluginDirectoryCompatibility in PluginsCompatibilityList)
             {
+                if (!Directory.Exists(pluginDirectoryCompatibility.Path))
+                {
+                    continue;
+                }
                 var pluginPaths = AssetDatabase.FindAssets("", new[] { pluginDirectoryCompatibility.Path });
                 foreach (var pluginPath in pluginPaths)
                 {
@@ -167,26 +197,50 @@ namespace Improbable.Gdk.Tools
                         continue;
                     }
 
-                    plugin.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.AnyPlatformCompatible);
-                    plugin.SetCompatibleWithEditor(pluginDirectoryCompatibility.EditorCompatible);
+                    // We only update options that needs to be updated to avoid reloading plugins that have correct settings
+                    bool pluginCompatibilityUpdated = false;
+                    if (plugin.GetCompatibleWithAnyPlatform() != pluginDirectoryCompatibility.AnyPlatformCompatible)
+                    {
+                        plugin.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.AnyPlatformCompatible);
+                        pluginCompatibilityUpdated = true;
+                    }
+
+                    if (plugin.GetCompatibleWithEditor() != pluginDirectoryCompatibility.EditorCompatible)
+                    {
+                        plugin.SetCompatibleWithEditor(pluginDirectoryCompatibility.EditorCompatible);
+                        pluginCompatibilityUpdated = true;
+                    }
+
                     if (pluginDirectoryCompatibility.AnyPlatformCompatible)
                     {
                         foreach (var buildTarget in pluginDirectoryCompatibility.IncompatiblePlatforms)
                         {
-                            plugin.SetExcludeFromAnyPlatform(buildTarget, true);
+                            if (!plugin.GetExcludeFromAnyPlatform(buildTarget))
+                            {
+                                plugin.SetExcludeFromAnyPlatform(buildTarget, true);
+                                pluginCompatibilityUpdated = true;
+                            }
                         }
                     }
                     else
                     {
                         foreach (var buildTarget in pluginDirectoryCompatibility.CompatiblePlatforms)
                         {
-                            plugin.SetCompatibleWithPlatform(buildTarget, true);
+                            if (!plugin.GetCompatibleWithPlatform(buildTarget))
+                            {
+                                plugin.SetCompatibleWithPlatform(buildTarget, true);
+                                pluginCompatibilityUpdated = true;
+                            }
                         }
                     }
 
-                    plugin.SaveAndReimport();
+                    if (pluginCompatibilityUpdated)
+                    {
+                        plugin.SaveAndReimport();
+                    }
                 }
             }
+            AssetDatabase.StopAssetEditing();
         }
 
         private class PluginDirectoryCompatibility
