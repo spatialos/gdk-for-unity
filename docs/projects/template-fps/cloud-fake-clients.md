@@ -43,21 +43,37 @@ This will let the SpatialOS platform know which project you intend to upload to.
 
 An assembly is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
-// Tell them about terminals...
-// spatial upload
+To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. This can only be done through the spatial CLI. You must also give the worker assemblies a name so that you can reference them when launching a deployment.
+
+Using a terminal of your choice, navigate to the root directory of your SpatialOS project and execute `spatial cloud upload <assembly_name>` where `assembly_name` is your chosen name.
+
+> **It’s finished uploading when:** You see `spatial upload <assembly_name> succeeded` printed in your terminal output.
 
 #### Launch a cloud deployment
 
-// Again, remind them they'll need to do it in a terminal...
-// spatial cloud launch (get exact command and parameters from Matt. use large config?)
-// Tell them how to use the console to check the deployment's status?
+The next step is to launch a cloud deployment using the worker assembly that you just upload. This can only be done through the spatial CLI.
+
+When launching a cloud deployment you must provide three things:
+
+* the assembly name, which identifies the worker assemblies to use
+* a launch configuration, which declares the world and load balancing configuration
+* a name for your deployment, which is used to label the deployment in the SpatialOS console
+
+Using a terminal of your choice, navigate to the root directory of your SpatialOS project and execute `spatial cloud launch <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice.
+
+> **It's finished when:** TODO - see what this says.
 
 #### Get yourself in-game
 
-// Steer them to the console https://console.improbable.io/
-// Tell them about the launcher
-// Get them to launch into the game
-// Encourage to run up to a good vantage point (so they can't be easily shot, and can see the fake players)
+Once your cloud deployment has started, you can launch a client from the [SpatialOS console](https://console.improbable.io/projects).
+
+Using a web browser, navigate to [https://console.improbable.io/projects](https://console.improbable.io/projects) and find your deployment under your project. Click on the name of your deployment to be taken to the deployment overview page.
+
+From this page, you can manage your deployment and launch clients via the [SpatialOS Launcher](fix). On the left hand side of the web page, press Launch and then press Launch again on the popup. This will start the SpatialOS Launcher which will download the game client assembly and start it.
+
+Once the launcher has started the game client, you will be prompted to select the resolution and quality of the game. When you are happy with the settings, press Play! to start the game.
+
+To control your character, use WASD to move and mouse to look around. Find a good vantage point and look around, you should see the fake clients running around and shooting each other.
 
 #### Starting up fake clients
 
@@ -69,10 +85,23 @@ An assembly is a bundle of code, art assets and other files necessary to run you
 
 #### Observe your deployment
 
-// Get hyped about the tooling
-// Open the metrics panel from the console to see graphs of entities joining the world. Point out you can see the interval staggering of client connections.
-// Open the inspector and see markers for fake clients moving around. Encourage them to select tick boxes for some logic workers for the fake clients to see the parts of the world those workers have in view.
-// Point out load metrics in the
+// TODO: Split up this section?
+
+Now lets explore the deployment overivew page and see what the SpatialOS console allows you to do.
+
+Using a web browser, navigate to [https://console.improbable.io/projects](https://console.improbable.io/projects) and find your deployment under your project. Click on the name of your deployment to be taken to the deployment overview page.
+
+On the main deployment overview page, on the right hand side you have a details pane. This contains a variety of information about your deployment. You should also see links to Logs and Metrics, the SpatialOS console provides a logging and metrics infrastructure out of the box.
+
+Click on the Metrics link and then Public Default option to be taken to the Metrics page. This allows you to check the health and state of your deployment and can aid in diagnosing and debugging problems. On the top-right hand side, press Dashboards and then "Debug entities and command".
+
+This dashboard shows you a graph of entity count as well as when entities were created. You can also see these entities visualised spatially in the Inspector, at the top of the page, click on World to be taken to the Inspector.
+
+The Inspector gives you a real-time visualisation of your world, each small marker in the inspector view represents an entity, you can customise the colour and icon of these markers to make the world state easy to understand from a glance.
+
+The Inspector also allows you to visualise what your worker's view is. On the top right hand side, select one or more of the tick boxes under the Workers tab. This will highlight areas in the Inspector corresponding to the write authority region for that work. 
+
+Find the small box labeled "Show where workers can" in the upper right hand side of the Inspector and select the Read tickbox, this will show the Read access of each worker shown with a ticked border.
 
 #### Dynamically tweak fake client numbers
 
