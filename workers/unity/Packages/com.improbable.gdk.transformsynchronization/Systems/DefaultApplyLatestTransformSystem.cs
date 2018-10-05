@@ -27,6 +27,7 @@ namespace Improbable.Gdk.TransformSynchronization
             public readonly int Length;
             [ReadOnly] public ComponentDataArray<TransformToSet> CurrentTransform;
             public ComponentArray<Rigidbody> Rigidbody;
+            [ReadOnly] public ComponentDataArray<SetTransformToGameObjectTag> DenotesShouldUpdateAutomatically;
 
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>>
                 DenotesNotAuthoritative;
@@ -38,6 +39,7 @@ namespace Improbable.Gdk.TransformSynchronization
             [ReadOnly] public ComponentDataArray<TransformToSet> CurrentTransform;
             [ReadOnly] public ComponentArray<UnityEngine.Transform> Transform;
             public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
+            [ReadOnly] public ComponentDataArray<SetTransformToGameObjectTag> DenotesShouldUpdateAutomatically;
 
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>>
                 DenotesNotAuthoritative;
