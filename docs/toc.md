@@ -2,9 +2,9 @@
 
  ***
 - <h3>+ Get started</h3>
+    - [Welcome]({{urlRoot}}/content/where-to-start)
     - [Feature list]({{urlRoot}}/content/faqs/key-features)
     - [Installation and setup]({{urlRoot}}/setup-and-installing)
-    - [Where to start?]({{urlRoot}}/content/where-to-start)
 
  ***
 - <h3>+ How to...</h3>
@@ -17,7 +17,7 @@
 - <h3>+ Projects</h3>
     - [Projects overview]({{urlRoot}}/projects/overview)
     - [Blank Project]({{urlRoot}}/projects/template-blank/overview)
-    - [FPS Template]({{urlRoot}}/projects/template-fps/overview)
+    - [FPS starter project]({{urlRoot}}/projects/template-fps/overview)
 
  ***
 - <h3>+ Reference</h3>
