@@ -17,6 +17,9 @@ namespace Improbable.Gdk.Core.Commands
     {
         public static partial class Requirable
         {
+            /// <summary>
+            ///     A requirable object which enables registering callbacks to receiving World Command responses.
+            /// </summary>
             [InjectableId(InjectableType.WorldCommandResponseHandler, InjectableId.NullComponentId)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class WorldCommandResponseHandler : RequirableBase
@@ -39,6 +42,9 @@ namespace Improbable.Gdk.Core.Commands
                     entityQueryDelegates = new List<Action<EntityQuery.ReceivedResponse>>();
                 }
 
+                /// <summary>
+                ///     An event which triggers when a ReserveEntityIds command response is received.
+                /// </summary>
                 public event Action<ReserveEntityIds.ReceivedResponse> OnReserveEntityIdsResponse
                 {
                     add
@@ -61,6 +67,9 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
+                /// <summary>
+                ///     An event which triggers when a CreateEntity command response is received.
+                /// </summary>
                 public event Action<CreateEntity.ReceivedResponse> OnCreateEntityResponse
                 {
                     add
@@ -83,6 +92,9 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
+                /// <summary>
+                ///     An event which triggers when a DeleteEntity command response is received.
+                /// </summary>
                 public event Action<DeleteEntity.ReceivedResponse> OnDeleteEntityResponse
                 {
                     add
@@ -105,6 +117,9 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
+                /// <summary>
+                ///     An event which triggers when an EntityQuery command response is received.
+                /// </summary>
                 public event Action<EntityQuery.ReceivedResponse> OnEntityQueryResponse
                 {
                     add

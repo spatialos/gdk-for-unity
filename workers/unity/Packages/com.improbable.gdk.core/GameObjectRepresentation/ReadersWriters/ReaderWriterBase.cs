@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -18,13 +17,20 @@ namespace Improbable.Gdk.GameObjectRepresentation
         protected readonly EntityManager EntityManager;
         protected readonly ILogDispatcher logDispatcher;
 
-        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(logDispatcher)
+        protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(
+            logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
             this.logDispatcher = logDispatcher;
         }
 
+        /// <summary>
+        ///     Returns the SpatialOS component data
+        /// </summary>
+        /// <exception cref="ReaderDataGetFailedException">
+        ///     Thrown when the Reader cannot find the underlying data.
+        /// </exception>
         public TSpatialComponentData Data
         {
             get
@@ -45,6 +51,13 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
         }
 
+        /// <summary>
+        ///     Sends a component update.
+        /// </summary>
+        /// <param name="update">The component update object.</param>
+        /// <exception cref="WriterDataUpdateFailedException">
+        ///     Thrown if the writer cannot send the update.
+        /// </exception>
         public void Send(TComponentUpdate update)
         {
             if (!VerifyNotDisposed())
@@ -66,6 +79,12 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         protected abstract void ApplyUpdate(TComponentUpdate update, ref TSpatialComponentData data);
 
+        /// <summary>
+        ///     Returns the current authority state of the SpatialOS component.
+        /// </summary>
+        /// <exception cref="AuthorityComponentNotFoundException">
+        ///     Thrown if the underlying authority data cannot be found.
+        /// </exception>
         public Authority Authority
         {
             get
@@ -98,6 +117,9 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private readonly List<GameObjectDelegates.AuthorityChanged> authorityChangedDelegates
             = new List<GameObjectDelegates.AuthorityChanged>();
 
+        /// <summary>
+        ///     An event that triggers when the authority state of the SpatialOS component changes.
+        /// </summary>
         public event GameObjectDelegates.AuthorityChanged AuthorityChanged
         {
             add
@@ -121,7 +143,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         }
 
         /// <summary>
-        /// Helper method to dispatch property updates to callbacks while forwarding exceptions to the log dispatcher.
+        ///     Helper method to dispatch property updates to callbacks while forwarding exceptions to the log dispatcher.
         /// </summary>
         /// <param name="payload">The value for the property update.</param>
         /// <param name="callbacks">The property update handlers.</param>
@@ -155,6 +177,9 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private readonly List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>> componentUpdateDelegates
             = new List<GameObjectDelegates.ComponentUpdated<TComponentUpdate>>();
 
+        /// <summary>
+        ///     An event that is triggered when the SpatialOS component is updated.
+        /// </summary>
         public event GameObjectDelegates.ComponentUpdated<TComponentUpdate> ComponentUpdated
         {
             add

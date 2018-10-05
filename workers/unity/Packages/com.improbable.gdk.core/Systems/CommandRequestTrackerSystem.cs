@@ -6,6 +6,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Tracks command requests sent from this worker that have not received a response yet.
+    /// </summary>
     [DisableAutoCreation]
     public class CommandRequestTrackerSystem : ComponentSystem
     {

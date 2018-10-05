@@ -2,6 +2,9 @@ using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Default values for connection parameters.
+    /// </summary>
     public static class RuntimeConfigDefaults
     {
         public const NetworkConnectionType LinkProtocol = NetworkConnectionType.RakNet;
@@ -10,6 +13,9 @@ namespace Improbable.Gdk.Core
         public const ushort ReceptionistPort = 7777;
     }
 
+    /// <summary>
+    ///     Command line argument names for worker and connection configuration.
+    /// </summary>
     public static class RuntimeConfigNames
     {
         public const string LinkProtocol = "linkProtocol";

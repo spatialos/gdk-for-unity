@@ -74,9 +74,12 @@ namespace Improbable.Gdk.Core.Commands
         public static class CreateEntity
         {
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
+            ///     An object that is a CreateEntity command request.
             /// </summary>
+            /// <remarks>
+            ///     Do not use the default constructor. Use <see cref="CreateEntity.CreateRequest"/> instead.
+            ///     Using <see cref="CreateEntity.CreateRequest"/> will ensure a correctly formed structure.
+            /// </remarks>
             public struct Request
             {
                 public Entity Entity;
@@ -86,6 +89,23 @@ namespace Improbable.Gdk.Core.Commands
                 public long RequestId;
             }
 
+            /// <summary>
+            ///     Method to create a CreateEntity command request payload.
+            /// </summary>
+            /// <param name="template">
+            ///     The EntityTemplate object that defines the SpatialOS components on the to-be-created entity.
+            /// </param>
+            /// <param name="entityId">
+            ///     (Optional) The EntityId that the to-be-created entity should take.
+            ///     This should only be provided if received as the result of a ReserveEntityIds command.
+            /// </param>
+            /// <param name="timeoutMillis">
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+            /// </param>
+            /// <param name="context">
+            ///    (Optional) A context object that will be returned with the command response.
+            /// </param>
+            /// <returns>The CreateEntity command request payload.</returns>
             public static Request CreateRequest(EntityTemplate template, EntityId? entityId = null, uint? timeoutMillis = null, Object context = null)
             {
                 return new Request
@@ -98,13 +118,40 @@ namespace Improbable.Gdk.Core.Commands
                 };
             }
 
+            /// <summary>
+            ///     An object that is the response of a CreateEntity command from the SpatialOS runtime.
+            /// </summary>
             public struct ReceivedResponse
             {
+                /// <summary>
+                ///     The status code of the command response. If equal to <see cref="StatusCode"/>.Success then
+                ///     the command succeeded.
+                /// </summary>
                 public StatusCode StatusCode { get; }
+
+                /// <summary>
+                ///     The failure message of the command. Will only be non-null if the command failed.
+                /// </summary>
                 public string Message { get; }
+
+                /// <summary>
+                ///     The Entity ID of the created entity. Will only be non-null if the command succeeded.
+                /// </summary>
                 public EntityId? EntityId { get; }
+
+                /// <summary>
+                ///     The request payload that was originally sent with this command.
+                /// </summary>
                 public Request RequestPayload { get; }
+
+                /// <summary>
+                ///     The context object that was provided when sending the command.
+                /// </summary>
                 public object Context { get; }
+
+                /// <summary>
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
+                /// </summary>
                 public long RequestId { get; }
 
                 internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, long requestId)
@@ -118,10 +165,17 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component is for sending CreateEntity command requests to the SpatialOS runtime.
+            /// </summary>
             public struct CommandSender : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of pending CreateEntity command requests.
+                ///     To send a command request, add an element to this list.
+                /// </summary>
                 public List<Request> RequestsToSend
                 {
                     get => RequestsProvider.Get(Handle);
@@ -129,10 +183,16 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component contains a list of CreateEntity command responses received this frame.
+            /// </summary>
             public struct CommandResponses : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of CreateEntity command responses.
+                /// </summary>
                 public List<ReceivedResponse> Responses
                 {
                     get => ResponsesProvider.Get(Handle);
@@ -279,9 +339,12 @@ namespace Improbable.Gdk.Core.Commands
         public static class DeleteEntity
         {
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
+            ///     An object that is a DeleteEntity command request.
             /// </summary>
+            /// <remarks>
+            ///     Do not use the default constructor. Use <see cref="DeleteEntity.CreateRequest"/> instead.
+            ///     Using <see cref="DeleteEntity.CreateRequest"/> will ensure a correctly formed structure.
+            /// </remarks>
             public struct Request
             {
                 public EntityId EntityId;
@@ -290,6 +353,17 @@ namespace Improbable.Gdk.Core.Commands
                 public long RequestId;
             }
 
+            /// <summary>
+            ///     Method to create a DeleteEntity command request payload.
+            /// </summary>
+            /// <param name="entityId"> The entity ID that is to be deleted.</param>
+            /// <param name="timeoutMillis">
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+            /// </param>
+            /// <param name="context">
+            ///    (Optional) A context object that will be returned with the command response.
+            /// </param>
+            /// <returns>The DeleteEntity command request payload.</returns>
             public static Request CreateRequest(EntityId entityId, uint? timeoutMillis = null, Object context = null)
             {
                 return new Request
@@ -301,13 +375,40 @@ namespace Improbable.Gdk.Core.Commands
                 };
             }
 
+            /// <summary>
+            ///     An object that is the response of a DeleteEntity command from the SpatialOS runtime.
+            /// </summary>
             public struct ReceivedResponse
             {
+                /// <summary>
+                ///     The status code of the command response. If equal to <see cref="StatusCode"/>.Success then
+                ///     the command succeeded.
+                /// </summary>
                 public StatusCode StatusCode { get; }
+
+                /// <summary>
+                ///     The failure message of the command. Will only be non-null if the command failed.
+                /// </summary>
                 public string Message { get; }
+
+                /// <summary>
+                ///     The Entity ID that was the target of the DeleteEntity command.
+                /// </summary>
                 public EntityId EntityId { get; }
+
+                /// <summary>
+                ///     The request payload that was originally sent with this command.
+                /// </summary>
                 public Request RequestPayload { get; }
+
+                /// <summary>
+                ///     The context object that was provided when sending the command.
+                /// </summary>
                 public object Context { get; }
+
+                /// <summary>
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
+                /// </summary>
                 public long RequestId { get; }
 
                 internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, long requestId)
@@ -321,10 +422,17 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component is for sending DeleteEntity command requests to the SpatialOS runtime.
+            /// </summary>
             public struct CommandSender : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of pending DeleteEntity command requests.
+                ///     To send a command request, add an element to this list.
+                /// </summary>
                 public List<Request> RequestsToSend
                 {
                     get => RequestsProvider.Get(Handle);
@@ -332,10 +440,16 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component contains a list of DeleteEntity command responses received this frame.
+            /// </summary>
             public struct CommandResponses : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of DeleteEntity command responses.
+                /// </summary>
                 public List<ReceivedResponse> Responses
                 {
                     get => ResponsesProvider.Get(Handle);
@@ -482,9 +596,12 @@ namespace Improbable.Gdk.Core.Commands
         public static class ReserveEntityIds
         {
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
+            ///     An object that is a ReserveEntityIds command request.
             /// </summary>
+            /// <remarks>
+            ///     Do not use the default constructor. Use <see cref="ReserveEntityIds.CreateRequest"/> instead.
+            ///     Using <see cref="ReserveEntityIds.CreateRequest"/> will ensure a correctly formed structure.
+            /// </remarks>
             public struct Request
             {
                 public uint NumberOfEntityIds;
@@ -493,6 +610,17 @@ namespace Improbable.Gdk.Core.Commands
                 public long RequestId;
             }
 
+            /// <summary>
+            ///     Method used to create a ReserveEntityIds command request payload.
+            /// </summary>
+            /// <param name="numberOfEntityIds">The number of entity IDs to reserve.</param>
+            /// <param name="timeoutMillis">
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+            /// </param>
+            /// <param name="context">
+            ///    (Optional) A context object that will be returned with the command response.
+            /// </param>
+            /// <returns>The ReserveEntityIds command request payload.</returns>
             public static Request CreateRequest(uint numberOfEntityIds, uint? timeoutMillis = null, Object context = null)
             {
                 return new Request
@@ -504,14 +632,46 @@ namespace Improbable.Gdk.Core.Commands
                 };
             }
 
+            /// <summary>
+            ///     An object that is the response of a ReserveEntityIds command from the SpatialOS runtime.
+            /// </summary>
             public struct ReceivedResponse
             {
+                /// <summary>
+                ///     The status code of the command response. If equal to <see cref="StatusCode"/>.Success then
+                ///     the command succeeded.
+                /// </summary>
                 public StatusCode StatusCode { get; }
+
+                /// <summary>
+                ///     The failure message of the command. Will only be non-null if the command failed.
+                /// </summary>
                 public string Message { get; }
+
+                /// <summary>
+                ///     The first entity ID in the range that was reserved. Will only be non-null if the command
+                ///     succeeded.
+                /// </summary>
                 public EntityId? FirstEntityId { get; }
+
+                /// <summary>
+                ///     The number of entity IDs that were reserved.
+                /// </summary>
                 public int NumberOfEntityIds { get; }
+
+                /// <summary>
+                ///     The request payload that was originally sent with this command.
+                /// </summary>
                 public Request RequestPayload { get; }
+
+                /// <summary>
+                ///     The context object that was provided when sending the command.
+                /// </summary>
                 public object Context { get; }
+
+                /// <summary>
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
+                /// </summary>
                 public long RequestId { get; }
 
                 internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, long requestId)
@@ -526,10 +686,17 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component is for sending ReserveEntityIds command requests to the SpatialOS runtime.
+            /// </summary>
             public struct CommandSender : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of pending ReserveEntityIds command requests.
+                ///     To send a command request, add an element to this list.
+                /// </summary>
                 public List<Request> RequestsToSend
                 {
                     get => RequestsProvider.Get(Handle);
@@ -537,10 +704,16 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component contains a list of ReserveEntityIds command responses received this frame.
+            /// </summary>
             public struct CommandResponses : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of ReserveEntityIds command responses.
+                /// </summary>
                 public List<ReceivedResponse> Responses
                 {
                     get => ResponsesProvider.Get(Handle);
@@ -687,9 +860,12 @@ namespace Improbable.Gdk.Core.Commands
         public static class EntityQuery
         {
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
+            ///     An object that is a EntityQuery command request.
             /// </summary>
+            /// <remarks>
+            ///     Do not use the default constructor. Use <see cref="EntityQuery.CreateRequest"/> instead.
+            ///     Using <see cref="EntityQuery.CreateRequest"/> will ensure a correctly formed structure.
+            /// </remarks>
             public struct Request
             {
                 public Improbable.Worker.Query.EntityQuery EntityQuery;
@@ -698,6 +874,17 @@ namespace Improbable.Gdk.Core.Commands
                 public long RequestId;
             }
 
+            /// <summary>
+            ///     Method to create an EntityQuery command request payload.
+            /// </summary>
+            /// <param name="entityQuery">The EntityQuery object defining the constraints and query type.</param>
+            /// <param name="timeoutMillis">
+            ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+            /// </param>
+            /// <param name="context">
+            ///    (Optional) A context object that will be returned with the command response.
+            /// </param>
+            /// <returns></returns>
             public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
             {
                 if (entityQuery.ResultType is SnapshotResultType)
@@ -714,14 +901,49 @@ namespace Improbable.Gdk.Core.Commands
                 };
             }
 
+            /// <summary>
+            ///     An object that is the response of an EntityQuery command from the SpatialOS runtime.
+            /// </summary>
             public struct ReceivedResponse
             {
+                /// <summary>
+                ///     The status code of the command response. If equal to <see cref="StatusCode"/>.Success then
+                ///     the command succeeded.
+                /// </summary>
                 public StatusCode StatusCode { get; }
+
+                /// <summary>
+                ///     The failure message of the command. Will only be non-null if the command failed.
+                /// </summary>
                 public string Message { get; }
+
+                /// <summary>
+                ///     A dictionary that represents the results of the entity query.
+                /// </summary>
+                /// <remarks>
+                ///     Warning: Accessing underlying component data on the Entity object will cause crashes.
+                ///     This dictionary should not be populated until this bug is fixed.
+                /// </remarks>
                 public Dictionary<EntityId, Entity> Result { get; }
+
+                /// <summary>
+                ///     The number of entities that matched the entity query constraints.
+                /// </summary>
                 public int ResultCount { get; }
+
+                /// <summary>
+                ///     The request payload that was originally sent with this command.
+                /// </summary>
                 public Request RequestPayload { get; }
+
+                /// <summary>
+                ///     The context object that was provided when sending the command.
+                /// </summary>
                 public object Context { get; }
+
+                /// <summary>
+                ///     The unique request ID of this command. Will match the request ID in the corresponding request.
+                /// </summary>
                 public long RequestId { get; }
 
                 internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId)
@@ -736,10 +958,17 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component is for sending EntityQuery command requests to the SpatialOS runtime.
+            /// </summary>
             public struct CommandSender : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of pending EntityQuery command requests.
+                ///     To send a command request, add an element to this list.
+                /// </summary>
                 public List<Request> RequestsToSend
                 {
                     get => RequestsProvider.Get(Handle);
@@ -747,10 +976,16 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+            /// <summary>
+            ///     ECS component contains a list of CreateEntity command responses received this frame.
+            /// </summary>
             public struct CommandResponses : IComponentData
             {
                 internal uint Handle;
 
+                /// <summary>
+                ///     The list of EntityQuery command responses.
+                /// </summary>
                 public List<ReceivedResponse> Responses
                 {
                     get => ResponsesProvider.Get(Handle);

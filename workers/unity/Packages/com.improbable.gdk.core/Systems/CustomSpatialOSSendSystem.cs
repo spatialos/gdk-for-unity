@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Base class for custom replication.
+    /// </summary>
+    /// <remarks>
+    ///    Adding a system that inherits from this class will disable automatic replication for component type T.
+    /// </remarks>
+    /// <typeparam name="T">The SpatialOS component to define custom replication logic for.</typeparam>
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.CustomSpatialOSSendGroup))]
     public abstract class CustomSpatialOSSendSystem<T> : ComponentSystem where T : ISpatialComponentData, new()
