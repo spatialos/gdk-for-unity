@@ -11,8 +11,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     {
         private static readonly List<TSelf> Instances =
             new List<TSelf>();
-        
-        private static readonly HashSet<Type> LoadingInstances = new HashSet<Type>();
 
         public virtual void OnEnable()
         {
@@ -71,12 +69,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 return Instances[0];
             }
 
-            if (LoadingInstances.Contains(SelfType))
+            if (SingletonScriptableObjectLoader.LoadingInstances.Contains(SelfType))
             {
                 return null;
             }
 
-            LoadingInstances.Add(SelfType);
+            SingletonScriptableObjectLoader.LoadingInstances.Add(SelfType);
 
             try
             {
@@ -110,7 +108,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
             finally
             {
-                LoadingInstances.Remove(SelfType);
+                SingletonScriptableObjectLoader.LoadingInstances.Remove(SelfType);
             }
 
             return Instances.FirstOrDefault();

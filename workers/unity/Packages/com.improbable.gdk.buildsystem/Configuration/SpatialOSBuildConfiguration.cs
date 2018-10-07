@@ -45,6 +45,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         public override void OnEnable()
         {
+            base.OnEnable();
             if (!isInitialised)
             {
                 ResetToDefault();
