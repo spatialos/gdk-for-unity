@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
-    public class SpatialOSBuildConfiguration : ScriptableSingleton<SpatialOSBuildConfiguration>
+    public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>
     {        
         [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations = 
             new List<WorkerBuildConfiguration>();
@@ -43,8 +43,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     .ToArray();
         }
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
             if (!isInitialised)
             {
                 ResetToDefault();
