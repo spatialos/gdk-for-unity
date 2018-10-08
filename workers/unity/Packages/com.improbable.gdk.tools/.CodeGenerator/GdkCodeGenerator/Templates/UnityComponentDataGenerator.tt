@@ -137,7 +137,7 @@ namespace <#= qualifiedNamespace #>
 
         public struct Update : ISpatialComponentUpdate
         {
-            internal static Queue<List<Update>> Pool = new Queue<List<Update>>();
+            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
 <# foreach(var fieldDetails in fieldDetailsList) { #>
             public Option<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>;

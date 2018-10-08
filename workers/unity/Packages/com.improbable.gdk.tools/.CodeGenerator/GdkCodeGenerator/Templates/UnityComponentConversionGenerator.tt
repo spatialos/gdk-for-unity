@@ -179,7 +179,7 @@ namespace <#= qualifiedNamespace #>
                 }
                 else
                 {
-                    updates = <#= componentNamespace #>.Update.Pool.Count > 0 ? <#= componentNamespace #>.Update.Pool.Dequeue() : new List<<#= componentNamespace #>.Update>();
+                    updates = <#= componentNamespace #>.Update.Pool.Count > 0 ? <#= componentNamespace #>.Update.Pool.Pop() : new List<<#= componentNamespace #>.Update>();
                     var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
@@ -686,7 +686,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                     // Pool update lists to avoid excessive allocation
                     updateList.Clear();
-                    <#= componentNamespace #>.Update.Pool.Enqueue(updateList);
+                    <#= componentNamespace #>.Update.Pool.Push(updateList);
 
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
