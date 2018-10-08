@@ -112,9 +112,18 @@ Find the small box labeled "Show where workers can" in the upper right hand side
 
 #### Share with friends
 
+You can get your friends in your cloud deployment by sharing a link.
+
+To get this share link, navigate to the deployment overview page, and press the Share button on the left hand side. On the popup, read the terms and select the checkbox to indicate that you've agreed to the terms. Press "Get Share URL" to view the link. Send this link to your friends and they will connect through the SpatialOS launcher.
+
 // Briefly explain where in the console they can get shareable links so that their friends can jump into the same deployment.
 // Encourage them to play and explore. Mention that if they want to make changes to the art, logic etc they will need to re-upload a new assembly.
+// Jamie comment. Not sure if the second of these bullet points apply here ^
 
-#### Killing the world
+#### Stopping the deployment
+
+Once you are done playing, you can stop the deployment running. Navigate to the deployment overview page and press the red Stop button next to the deployment status.
+
+If you want to restart the deployment, you can easily do this by pressing the Restart Deployment button in the details panel. This will use the exact same assemblies, launch configuration, and snapshot as the original deployment. If you want to make changes to any of these, you will need to upload new assemblies and launch a cloud deployment like [above](#launch-a-cloud-deployment).
 
 // Teach them how to stop a running deployment. And mention how they'd go about starting it back up.
