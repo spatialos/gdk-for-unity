@@ -28,7 +28,7 @@ in the Unity Editor.
 
 **The following error is thrown: Could not discover location for dotnet.exe.**
 <br/>
-Ensure that you have the [.NET Core SDK (x64)](https://www.microsoft.com/net/download/dotnet-core/2.1) installed and that the directory containing
+Ensure that you have the [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/2.1) installed and that the directory containing
 the dotnet executable is added to your PATH environment variable. Restart your computer
 and Unity after installing the .NET Core SDK.
 
