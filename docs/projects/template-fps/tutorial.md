@@ -34,6 +34,7 @@ Within your `schema/pickups/` directory create a new file called `health_pickup.
 
 ```
 package pickups;
+
 component HealthPickup {
     id = 21001;
     bool is_active = 1;
@@ -91,17 +92,15 @@ The [EntityBuilder](fix) syntax provides a compact way to declare the relevant c
 
 **Metadata** is an identifier of the type of entity. The SpatialOS GDK for Unity uses `Metadata` for matching to a Unity prefab name within your project.
 
-**Persistence** indicates whether the entity should appear in snapshots that are saved out at run-time.
+**Persistence** indicates whether the entity can be saved out to snapshots.
 
-To find out more you can read up on [well-known components](fix)<%(/Expandable)%>
-
-[!!!](TODO: Talk about position being default/required)
+To find out more you can read up on [well-known components](fix).<%(/Expandable)%>
 
 [!!!](TODO: Troubleshooting for HealthComponent not recognised?)
 
 #### Adding components
 
-Your `HealthComponent` has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers (i.e. `= 1` and `= 2`) determine the order of properties the function expects as parameters.
+From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers in your schema file (i.e. `= 1` and `= 2`) determine the order of properties expected as the function's parameters.
 
 This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the final call must be to `.Build();`.
 
@@ -113,7 +112,7 @@ In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` function cal
 
 For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which worker type should be granted the relevant permission.
 
-For this project, `UnityGameLogic` indicates that that worker is one for handling server-side game logic. The identifier `WorkerUtils.UnityClient` would indicate that all clients are granted the relevant permission, but in this case we don't want clients to be able to alter how much health a health pack grants players, so we pass `WorkerUtils.UnityGameLogic` as the second parameter when adding the `healthPickupComponent`.
+For this project, `UnityGameLogic` indicates that the `UnityGameLogic` worker is the one that handles server-side game logic. The identifier `WorkerUtils.UnityClient` would indicate that all clients are granted the relevant permission, but in this case we don't want clients to be able to alter how much health granted to players by a health pack, so we pass `WorkerUtils.UnityGameLogic` as the second parameter when adding the `healthPickupComponent`.
 
 [!!!](TODO: Check whether this is correct about single string ACLs)
 
