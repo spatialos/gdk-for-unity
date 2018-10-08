@@ -229,9 +229,7 @@ Authority is a tricky topic with SpatialOS, particularly as write-access is actu
 
 ##### Creating a UnityClient entity prefab
 
-The FPS starter project contains a health pack prefab, `HealthPack.prefab`, in the folder: `/Assets/Resources/Prefabs/`.
-
-In the `/Assets/Resources/Prefabs/UnityClient/` folder create a new prefab named **"HealthPickup"**. Give this two children, the health pack and the base plate (`/Assets/Resources/Prefabs/HealthPackCube.prefab` and `/Assets/Resources/Prefabs/HealthPackBase.prefab`).
+The FPS starter project contains a health pack prefab named `HealthPickup.prefab` in the folder: `/Assets/Fps/Prefabs/`. Have a look at it and create a copy in the `/Assets/Fps/Resources/Prefabs/UnityClient/` folder.
 
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
@@ -375,7 +373,7 @@ To do this we will need to create a server-side representation of the health pac
 
 In the FPS starter project the server-side worker is called `UnityGameLogic`.
 
-Just as with client-side representation, navigate to the `/Assets/Resources/Prefabs/UnityGameLogic/` folder and create a `HealthPickup` prefab. Once again this name must match the `Metadata` string for the health pack entity so that the GameObject Creation system knows to associate them.
+Create a copy of `/Assets/Fps/Prefabs/HealthPickup.prefab` in the `/Assets/Resources/Prefabs/UnityGameLogic/` folder. Because this prefab will only be used for instantiating server-side game objects, the visual components are not needed, so feel free to remove the child renderers. Respectively, the `Box Collider` is not needed for client-side workers, so you can remove that from `/Assets/Resources/Prefabs/UnityClient/HealthPickup.prefab` if you wish. Make sure you keep it in the `UnityGameLogic` copy of the prefab as we are about to use it to track player collisions with the health pack.
 
 Add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
 
