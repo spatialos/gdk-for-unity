@@ -83,7 +83,17 @@ public static Entity HealthPickup(Vector3f position, float healthValue)
 }
 ```
 
-The [EntityBuilder](fix) syntax provides a compact way to declare the relevant components. You may notice that `.AddPosition`, `.AddMetadata`, and `.SetPersistence` appear in the entity template function of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS GDK for Unity expects.
+The [EntityBuilder](fix) syntax provides a compact way to declare the relevant components. You may notice that `.AddPosition`, `.AddMetadata`, and `.SetPersistence` appear in the entity template function of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects.
+
+<%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
+
+**Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS load-balancer when dividing work between workers on a proximity basis.
+
+**Metadata** is an identifier of the type of entity. The SpatialOS GDK for Unity uses `Metadata` for matching to a Unity prefab name within your project.
+
+**Persistence** indicates whether the entity should appear in snapshots that are saved out at run-time.
+
+To find out more you can read up on [well-known components](fix)<%(/Expandable)%>
 
 [!!!](TODO: Talk about position being default/required)
 
@@ -93,15 +103,15 @@ The [EntityBuilder](fix) syntax provides a compact way to declare the relevant c
 
 Your `HealthComponent` has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers (i.e. `= 1` and `= 2`) determine the order of properties the function expects as parameters.
 
-This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the final statement must be `.Build();`.
+This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the final call must be to `.Build();`.
 
 #### Setting permissions (ACLs)
 
 [Access Control Lists](fix) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
 
-In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` statement stated that all worker types should be able to read the data for this entity.
+In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` function call stated that all worker types should be able to read the data for this entity.
 
-For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which type of `WorkerPlatform` should be granted the relevant permission.
+For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which worker type should be granted the relevant permission.
 
 For this project, `UnityGameLogic` indicates that that worker is one for handling server-side game logic. The identifier `WorkerUtils.UnityClient` would indicate that all clients are granted the relevant permission, but in this case we don't want clients to be able to alter how much health a health pack grants players, so we pass `WorkerUtils.UnityGameLogic` as the second parameter when adding the `healthPickupComponent`.
 
@@ -111,7 +121,16 @@ For this project, `UnityGameLogic` indicates that that worker is one for handlin
 
 The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [entity lifecycle](fix).<%(/Expandable)%>
 
-<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable. As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration](fix)<%(/Expandable)%>
+<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable, but we don't recommend it.
+
+As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration](fix)<%(/Expandable)%>
+
+<%(#Expandable title="Can I specify more than one worker type to have write-access to a single component?")%>Yes, you are not restricted to just one worker type being granted write-access, but it's something to be careful of.
+
+
+
+To find out about how to do this, read up about [worker attribute sets](fix)
+<%(/Expandable)%>
 
 ### Adding entities to the world
 
