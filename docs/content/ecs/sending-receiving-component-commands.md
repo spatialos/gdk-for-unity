@@ -1,8 +1,8 @@
 **Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
 
 -----
-
-## ECS: Sending and receiving commands
+[//]: # (Doc of docs reference 34)
+## ECS: Sending and receiving component commands
 
 Commands are SpatialOS's equivalent of remote procedure calls.
 

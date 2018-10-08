@@ -1,6 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 -----
+
+[//]: # (Document the options UTY-1168)
+[//]: # (Document the options UTY-1170)
+
 ## How to deploy your game
 
 When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
@@ -119,8 +123,4 @@ Before following this guide - make sure you have followed the [setup guide](../s
     1. To get links to share the game with others, select **Share**.
     1. Once you’ve finished playing, select **Stop** in the Console.
 
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
 
-[//]: # (Document the options UTY-1168)
-[//]: # (Document the options UTY-1170)

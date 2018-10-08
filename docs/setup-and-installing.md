@@ -76,5 +76,4 @@ The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
 
 To learn how to build and run the included `Playground` project - follow the [quickstart](./content/deploy.md#quickstart-how-to-deploy-the-playground-project).
 
------
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../README.md#give-us-feedback).
+
