@@ -30,11 +30,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     Links a GameObject to an ECS Entity.
         /// </summary>
         /// <remarks>
-        ///     All <see cref="UnityEngine.Component"/>s on the GameObject will be inserted onto the ECS Entity. Note
+        ///     All <see cref="UnityEngine.Component" />s on the GameObject will be inserted onto the ECS Entity. Note
         ///     that children and parent components are not added.
         /// </remarks>
         /// <remarks>
-        ///     A <see cref="SpatialOSComponent"/> will be added to the GameObject.
+        ///     A <see cref="SpatialOSComponent" /> will be added to the GameObject.
         /// </remarks>
         /// <remarks>
         ///     If a Monobehaviour exists multiple times on the GameObject, only the first occurence is added
@@ -47,8 +47,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// </param>
         public void LinkGameObjectToEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
         {
-            bool hasSpatialEntityId = entityManager.HasComponent<SpatialEntityId>(entity);
-            bool isWorkerEntity = entityManager.HasComponent<WorkerEntityTag>(entity);
+            var hasSpatialEntityId = entityManager.HasComponent<SpatialEntityId>(entity);
+            var isWorkerEntity = entityManager.HasComponent<WorkerEntityTag>(entity);
             if (!hasSpatialEntityId && !isWorkerEntity)
             {
                 worker.LogDispatcher.HandleLog(LogType.Warning, new LogEvent(
@@ -102,16 +102,22 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     Unlinks a GameObject and ECS Entity.
         /// </summary>
         /// <remarks>
-        ///    The GameObject and ECS Entity should be linked before this method call.
+        ///     The GameObject and ECS Entity should be linked before this method call.
         /// </remarks>
         /// <param name="gameObject">The GameObject to unlink.</param>
         /// <param name="entity">The ECS Entity to unlink.</param>
         /// <param name="viewCommandBuffer">
         ///     An instance of the ViewCommandBuffer. Must be flushed to apply the changes to the ECS Entity.
         /// </param>
-        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity, ViewCommandBuffer viewCommandBuffer)
+        public void UnlinkGameObjectFromEntity(GameObject gameObject, Entity entity,
+            ViewCommandBuffer viewCommandBuffer)
         {
-            if (entityManager.Exists(entity))
+            if (!entityManager.Exists(entity))
+            {
+                return;
+            }
+
+            if (gameObject != null)
             {
                 foreach (var component in gameObject.GetComponents<Component>())
                 {
@@ -127,16 +133,16 @@ namespace Improbable.Gdk.GameObjectRepresentation
                     }
                 }
 
-                if (entityManager.HasComponent<GameObjectReference>(entity))
+                var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
+                if (spatialOSComponent != null)
                 {
-                    viewCommandBuffer.RemoveComponent(entity, typeof(GameObjectReference));
+                    UnityObjectDestroyer.Destroy(spatialOSComponent);
                 }
             }
 
-            var spatialOSComponent = gameObject.GetComponent<SpatialOSComponent>();
-            if (spatialOSComponent != null)
+            if (entityManager.HasComponent<GameObjectReference>(entity))
             {
-                UnityObjectDestroyer.Destroy(spatialOSComponent);
+                viewCommandBuffer.RemoveComponent(entity, typeof(GameObjectReference));
             }
         }
     }
