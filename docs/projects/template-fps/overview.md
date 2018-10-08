@@ -1,6 +1,6 @@
 # FPS Starter Project
 
-[TODO: Image](fix)
+<img src="{{assetRoot}}assets/fps/unity-fps-starterproject.jpg" style="margin: 0 auto; width: 100%; display: block;" />
 
 The FPS starter project is a great starting point for working on the SpatialOS GDK for Unity. Many projects, whatever their genre, share some core elements and this starter project can get you off to a easy start.
 
