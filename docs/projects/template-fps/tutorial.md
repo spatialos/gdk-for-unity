@@ -67,7 +67,7 @@ You can find this file in your Unity project: `/Assets/Fps/Scripts/Config/FpsEnt
 To define an entirely new entity type we will need to add a new function within the `FpsEntityTemplates` class:
 
 ```csharp
-public static Entity HealthPickup(Vector3f position, float healthValue)
+public static Entity HealthPickup(Vector3f position, int healthValue)
 {
     var gameLogic = WorkerUtils.UnityGameLogic;
 
@@ -119,7 +119,7 @@ For this project, `UnityGameLogic` indicates that that worker is one for handlin
 
 <%(#Expandable title="How would you give only a specific client write-access for a component?")%>Some component data should be editable/updateable by the player's client, but not by the clients of any other players. In the FPS starter project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write-access over a number of components: clientMovement, clientRotation, clientHeartbeat etc.
 
-The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [entity lifecycle](fix).<%(/Expandable)%>
+The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [TODO FIX LINK: entity lifecycle](fix).<%(/Expandable)%>
 
 <%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable, but we don't recommend it.
 
@@ -149,25 +149,40 @@ We will modify the snapshot generating logic in two steps:
 1. Adding a function to create and add a `HealthPack` entity.
 2. Fix the package import settings so use of `Vector3f` is valid.
 
-Within the `SnapshotMenu` class, add a new function that will contain logic for adding health pack entities to the snapshot object:
+Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
 ```csharp
 private static void AddHealthPacks(Snapshot snapshot)
 {
-    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f { X = 5, Y = 0, Z = 0 }, 100);
+    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(5, 0, 0), 100);
     snapshot.AddEntity(healthPack);
 }
 ```
 
-The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. Adding `using Improbable;` to the top of `SnapshotMenu.cs` is necessary, but an additional change is necessary. In your Unity editor Project hierarchy, navigate to `/Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
+The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. You must add `using Improbable;` to the top of `SnapshotMenu.cs`. Then in your Unity editor Project window, navigate to `/Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
 
-The `Improbable.FPS.Editor Import Settings` contains a section called `References`. You must click the `+` button to add a new reference, double-click the new field and in the asset-finder pop-up that appears you must double-click `Improbable.Gdk.Generated`. This is because the `Vector3f` struct is defined within that particular package, and we must declare our intent.
+The `Improbable.FPS.Editor` *Import Settings* window contains a section called **References**. You must click the `+` button to add a new reference, double-click the new field and in the asset-finder pop-up that appears, you must select `Improbable.Gdk.Generated`. This is because the `Vector3f` struct is defined within that particular assembly, and we must declare our intent to use this package.
 
 Once you've added and applied this new package reference your use of `Vector3f` in `SnapshotGenerator.cs` will now be valid.
 
 <%(#Expandable title="Why does the FPS starter project use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules](fix) which make good use of packages.<%(/Expandable)%>
 
-This script now creates a health pack entity at the origin, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it wont be run during snapshot generation!
+This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
+
+```csharp
+[MenuItem("SpatialOS/Generate FPS Snapshot")]
+private static void GenerateDefaultSnapshot()
+{
+    var snapshot = new Snapshot();
+   
+    var spawner = FpsEntityTemplates.Spawner();
+    snapshot.AddEntity(spawner);
+
+    AddHealthPacks(snapshot);
+
+    SaveSnapshot(snapshot);
+}
+```
 
 It's a great idea to separate default values (such as health pack positions, and health values) into a settings file. In the FPS starter project you can find lots of examples of using Unity `ScriptableObject` components for exactly that. But for now, we will keep this example simple.
 
@@ -185,7 +200,7 @@ While they are human-readable you are able to manually edit the values of the pr
 
 ### Representing the entity on your workers
 
-If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because every worker needs to know how to represent the entity.
+If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity.
 
 SpatialOS will manage which subset of the world's entities each worker knows about, and provide them with the corresponding component data. You must define what the worker will do when it finds out about an entity it isn't currently tracking. Fortunately the SpatialOS GDK for Unity provides some great tools for exactly that!
 
@@ -207,13 +222,13 @@ We can neatly separate this logic between the client-side and server-side repres
 
 The FPS starter project uses the SpatialOS GDK's GameObject workflow, which is the familiar way of working with Unity Engine.
 
-In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `/Assets/Resources/Prefabs/UnityClient` and `/Assets/Resources/Prefabs/UnityGameLogic` respectively.
+In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `/Assets/Fps/Resources/Prefabs/UnityClient` and `/Assets/Fps/Resources/Prefabs/UnityGameLogic` respectively.
 
-The FPS starter project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
+The FPS starter project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `/Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 
-<%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `/Assets/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
+<%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `/Assets/Fps/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
-The FPS starter project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Resources/Prefabs/UnityClient/`.
+The FPS starter project has some custom logic specific to its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `/Assets/Fps/Resources/Prefabs/UnityClient/`.
 
 If you are interested in why the FPS starter project named those sub-directories `Authoritative` and `NonAuthoritative`, it relates to write-access for components on the entity.
 
@@ -245,7 +260,7 @@ If you are using Unity 2018 and earlier then it can often be easiest to drag pre
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
-Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace it's contents with the following code snippet:
+Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
 
 ```csharp
 using Improbable.Gdk.GameObjectRepresentation;
@@ -287,9 +302,9 @@ This script is mostly standard C# code that you could find in any game built wit
 [WorkerType(WorkerUtils.UnityClient)]
 ```
 
-This annotation decorating the class indicates the `WorkerType` of the script (in this case, `UnityClient`). This provides information for SpatialOS when it is building out your separate workers: a script with the client annotation should never appear in `UnityGameLogic` worker. You can use these `WorkerType` annotations to control where your code runs. If a script should exist and run on both client-side and server-side workers then this annotation can be omitted.
+This annotation decorating the class indicates the `WorkerType` of the script (in this case, `UnityClient`). This provides information for SpatialOS when it is building out your separate workers: a script with the client annotation should never be enabled on a `UnityGameLogic` worker. You can use these `WorkerType` annotations to control where your code runs. If a script should exist and be able to run on both client-side and server-side workers then this annotation can be omitted.
 
-This script relates is going to rely on the `active` property of your new `HealthPickup` component, so the package declared in the `health_pickup.schema` file appears in this script in an include statement:
+This `HealthPickupClientVisibility` script is going to rely on the `is_active` property of your new `HealthPickup` component, so the package declared in the `health_pickup.schema` file appears in a `using` statement at the top of the script:
 
 ```csharp
 using Pickups;
@@ -303,9 +318,9 @@ To make use of component data, either to read from it or write to it, we can use
 [Require] private HealthPickup.Requirable.Reader healthPickupReader;
 ```
 
-The worker on which the code is running interprets this statement as an instruction to only enable this script component on a particular entity's associated GameObject if that entity has a `HealthPickup` component, and the worker has read-access to that component. Read-access is rarely limited, but the same syntax can be use with `Writer` instead of `Reader`, which would make the requirement even more strict: The script would only be enabled on the single worker that has write-access to the `HealthPickup` component on that entity.
+The worker on which the code is running interprets this statement as an instruction to only enable this script component on a particular entity's associated GameObject if that entity has a `HealthPickup` component, and the worker has read-access to that component. Read-access is rarely limited, but the same syntax can be used with `Writer` instead of `Reader`, which would make the requirement even stricter. With a `Writer`, the script would only be enabled on the single worker that has write-access to the `HealthPickup` component on that entity.
 
-These `[Require]` statements are another powerful way to control where your code is executed. For the purpose of this script we only need to _read_ the health pack's data when deciding how to visualise it, so only a `Reader` is necessary.
+These `[Require]` attributes are another powerful way to control where your code is executed. For the purpose of this script we only need to _read_ the health pack's data when deciding how to visualise it, so only a `Reader` is necessary.
 
 You can see a use of the `HealthPickup` component's data in the line:
 
@@ -349,7 +364,7 @@ Once the world is ready you can:
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
 * Click Play in your Unity editor (if you have the `FPS-Development` scene open) to play the game.
 
-You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently they just sit there, inert. If you walk into them then nothing happens. Let's fix that!
+You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently they just sit there, inert. If you walk into them, nothing happens. Let's fix that!
 
 Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
 
@@ -375,7 +390,7 @@ In the FPS starter project the server-side worker is called `UnityGameLogic`.
 
 Create a copy of `/Assets/Fps/Prefabs/HealthPickup.prefab` in the `/Assets/Resources/Prefabs/UnityGameLogic/` folder. Because this prefab will only be used for instantiating server-side game objects, the visual components are not needed, so feel free to remove the child renderers. Respectively, the `Box Collider` is not needed for client-side workers, so you can remove that from `/Assets/Resources/Prefabs/UnityClient/HealthPickup.prefab` if you wish. Make sure you keep it in the `UnityGameLogic` copy of the prefab as we are about to use it to track player collisions with the health pack.
 
-Add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
+Then, add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
 
 ```csharp
 using System.Collections;
@@ -408,10 +423,10 @@ namespace Fps
             {
                 return;
             }
-
+            
             if (!other.CompareTag("Player"))
             {
-                return;
+            	return;
             }
 
             HandleCollisionWithPlayer(other.gameObject);
@@ -454,7 +469,7 @@ To make sure this script is only enabled on the worker with write-access it alre
 [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
 ```
 
-A `Writer` can also be used to _read_ component data from its respective component (in this case, `HealthPickup`), but also provides an API for updating the values of properties too.
+A `Writer` can also be used to _read_ component data from its respective component (in this case, `HealthPickup`), but it provides an API for updating the values of properties too.
 
 Unity Engine's `OnTriggerEnter` function is a special-case when a script is disabled. Other functions will only be called if the script component's `enabled` property is true, but `OnTriggerEnter` will be called even if it is false. This means it is an exception to the normal behaviour of the `[Require]` syntax. Because of this, scripts which use `OnTriggerEnter` **must** check whether the `Writer` is null (indicating a lack of authority) before using functions on the writer.
 
