@@ -1,6 +1,4 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
-## Setting up a new project
+# Setting up a new project
 
 Follow the [Setup and installation guide]({{urlRoot}}/setup-and-installing) to make sure you have everything installed.
 
@@ -12,10 +10,10 @@ For a basic set up of two workers, one `UnityGameLogic` and one `UnityClient`, w
 - [spatialos.UnityGameLogic.worker.json](../../workers/unity/spatialos.UnityGameLogic.worker.json)
 - [spatialos.UnityClient.worker.json](../../workers/unity/spatialos.UnityClient.worker.json)
 
-### Set up base assets and directories
+## Set up base assets and directories
 - Copy [this file](../../workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef) into `workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
 
-### Set up your project manifest
+## Set up your project manifest
 Add the following dependencies to the `packages` manifest located inside `workers/unity/Packages/manifest.json`:
 ```
 {
@@ -32,17 +30,17 @@ Add the following dependencies to the `packages` manifest located inside `worker
 }
 ```
 
-### Set up world initialization
+## Set up world initialization
 
 By default, Unity creates a `DefaultWorld` and then searches the whole project for systems it can add to this world. You can use the `DefaultWorld` to run logic that is completely independent of SpatialOS. However, you can’t use it to run systems that interact with SpatialOS, because each worker creates its own world and stores additional information about its connection.
 
 You need to choose whether to use the `DefaultWorld` or whether to disable it, depending on the logic your project contains.
 
-#### Projects containing SpatialOS and non-SpatialOS logic
+### Projects containing SpatialOS and non-SpatialOS logic
 
 If your project contains both SpatialOS logic and logic that is completely independent of SpatialOS, you can use the `DefaultWorld`. However, you need to add the `DisableAutoCreation` attribute to each system that interacts with SpatialOS. This prevents Unity from adding these systems to the `DefaultWorld`.
 
-#### Projects containing only SpatialOS logic
+### Projects containing only SpatialOS logic
 
 If your project contains only SpatialOS logic, you can disable the `DefaultWorld`.
 
@@ -80,6 +78,3 @@ namespace YourProject
 
 ```
 This sets up the injection hooks needed to run Unity's hybrid ECS and ensures that all worlds are properly cleaned up. You need to set the `initialized` field to `true` to ensure it is only run once, otherwise `Init` is run whenever a scene gets loaded due to the `RuntimeInitializeOnLoadMethod` attribute.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README#give-us-feedback).

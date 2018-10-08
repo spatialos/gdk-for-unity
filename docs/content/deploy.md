@@ -1,6 +1,7 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
+[//]: # (Document the options UTY-1168)
+[//]: # (Document the options UTY-1170)
 
-## How to deploy your game
+# How to deploy your game
 
 When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
 
@@ -9,11 +10,11 @@ This page contains:
 * [How to deploy your game]({{urlRoot}}/content/deploy#how-to-deploy-your-game) - Use this if you want to deploy your own game.
 * [Quickstart: How to deploy the `Playground` project]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
 
-#### Configuring your deployment
+## Configuring your deployment
 
 To ensure the SpatialOS Runtime starts [server-workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing#server-workers) correctly, you need to ensure the launch configuration file has the worker set up correctly. See the [Worker launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) in the SpatialOS documentation for guidance on how to define the worker launch configurations for both server-workers and client-workers.
 
-#### Local deployment
+## Local deployment
 
 To start a local deployment, either:
 
@@ -28,7 +29,7 @@ This starts a local version of the SpatialOS Runtime on your development machine
 
 To start your client-workers, from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`, replacing the `<example-content>` with names relevant to your game. Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector) to look at the current state of your game world.
 
-#### Cloud deployment
+## Cloud deployment
 
 You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy your game, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy your game to.
 
@@ -66,16 +67,16 @@ To start a cloud deployment:
     1. Once you’ve finished playing, select **Stop** in the Console.
 
 
-## Quickstart: How to deploy the `Playground ` project
+# Quickstart: How to deploy the `Playground ` project
 
 This guide walks you through starting a SpatialOS game from the Unity Editor, either using SpatialOS running locally on your computer, or using SpatialOS in the cloud.
 It uses the `Playground` as an example; the `Playground` comes with the GDK. It is a basic Unity project which uses SpatialOS.
 
-### Prerequisites
+## Prerequisites
 
 Before following this guide - make sure you have followed the [setup guide]({{urlRoot}}/setup-and-installing).
 
-#### Run the `Playground` locally using SpatialOS
+### Run the `Playground` locally using SpatialOS
 
 1. Open the Unity Editor, and open the project at `UnityGDK/workers/unity`
     - Unity downloads several required SpatialOS libraries.
@@ -91,7 +92,7 @@ Before following this guide - make sure you have followed the [setup guide]({{ur
     1. In the Editor, select the play icon to stop your client.
     1. Stop the SpatialOS deployment by closing the Unity Editor console window.
 
-#### Run the `Playground` in the cloud using SpatialOS
+### Run the `Playground` in the cloud using SpatialOS
 1. Tie the `Playground` project with a SpatialOS project in the cloud.
 <br/>You are allocated an empty SpatialOS project in the cloud when you sign up to SpatialOS; you use this to deploy the `Playground` project, but to do this you need to tell the GDK the name of your allocated SpatialOS project so it knows where to deploy `Playground` to.
 <br/> To do this:
@@ -117,9 +118,3 @@ Before following this guide - make sure you have followed the [setup guide]({{ur
         > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
     1. To get links to share the game with others, select **Share**.
     1. Once you’ve finished playing, select **Stop** in the Console.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
-
-[//]: # (Document the options UTY-1168)
-[//]: # (Document the options UTY-1170)

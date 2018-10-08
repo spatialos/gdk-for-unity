@@ -1,7 +1,6 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
+# (ECS) Sending and receiving events
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
-
-## ECS: Sending and receiving events
 
 Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
@@ -9,7 +8,7 @@ Events are for broadcasting information between worker instances about a transie
 
 > For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) in the SpatialOS documentation.
 
-### Sending events
+## Sending events
 
 A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
 
@@ -77,7 +76,7 @@ public class SendChangeColorEvent : ComponentSystem
 }
 ```
 
-### Receiving events
+## Receiving events
 
 <!-- TODO explain that events are propagated? -->
 
@@ -114,6 +113,3 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
     }
 }
 ```
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

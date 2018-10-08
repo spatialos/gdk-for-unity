@@ -80,6 +80,3 @@ The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
 ## Next steps
 
 To learn how to build and run the included `Playground` project - follow the [quickstart]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project).
-
------
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

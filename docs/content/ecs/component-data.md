@@ -1,11 +1,11 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
+# ECS: Components and component updates
+_This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
-## ECS: Components and component updates
 The [code generator]({{urlRoot}}/content/ecs/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
 > Note that code generation runs when you open the Unity Editor or when you select Improbable > Generate Code from the Editor menu.
 
-### Overview
+## Overview
 
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each SpatialOS component.
@@ -32,7 +32,7 @@ public partial class Example
 }
 ```
 
-### Reading and writing
+## Reading and writing
 
 When a SpatialOS entity is [checked out]({{urlRoot}}/content/ecs/entity-checkout-process), its components are automatically added to the corresponding ECS entity as part of the entity check out process.
 
@@ -64,13 +64,13 @@ public class ChangeComponentFieldSystem : ComponentSystem
 }
 ```
 
-### Updates
+## Updates
 When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/ecs/reactive-components).
 
 
-### Generation details
+## Generation details
 
-#### Primitive types
+### Primitive types
 Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
 | Schemalang type                | SpatialOS GDK type      |
@@ -87,7 +87,7 @@ Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for
 
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable.
 
-#### Collections
+### Collections
 Schemalang has 3 collection types:
 
 | Schemalang collection | SpatialOS GDK collection                          |
@@ -98,7 +98,7 @@ Schemalang has 3 collection types:
 
 Note that the GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
-#### Custom types
+### Custom types
 For every custom data type in schema a `struct` will be generated.
 
 Schemalang
@@ -115,7 +115,7 @@ public struct SomeData
 }
 ```
 
-#### Enums
+### Enums
 For every schemalang enum, a C# enum will be generated.
 
 Schemalang
@@ -139,6 +139,3 @@ public enum Color : uint
 }
 ```
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

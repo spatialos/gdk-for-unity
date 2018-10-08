@@ -1,8 +1,10 @@
 <%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
 
-## ECS: Custom replication systems
+## (ECS) Custom replication systems
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 ### What the SpatialOS GDK's replication system does
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 

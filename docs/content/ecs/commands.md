@@ -1,12 +1,10 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
-## ECS: Sending and receiving commands
+# ECS: Sending and receiving commands
 
 Commands are SpatialOS's equivalent of remote procedure calls.
 
 > For more information about what commands are and what their purpose is, see [this section on commands](https://docs.improbable.io/reference/latest/shared/design/commands#component-commands) in the SpatialOS documentation.
 
-### Sending command requests
+## Sending command requests
 
 A worker instance can send a command using a `ComponentName.CommandSenders.CommandName` ECS component, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
@@ -93,7 +91,7 @@ This system is an example of sending command requests. Unity injects all ECS ent
 
 To send a `build_wall` command in a system, you need to inject `Builder.CommandSenders.BuildWall` into the system like any other ECS component.
 
-### Responding to command requests
+## Responding to command requests
 
 When a worker instance receives a command request, the command request is represented with reactive ECS components.
 
@@ -142,7 +140,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 `build_wall` command requests are on a `Builder.CommandRequest.BuildWall` ECS component. The worker instance should respond to the request using the `Builder.CommandResponders.BuildWall` ECS component.
 
-### Receiving command responses
+## Receiving command responses
 
 Like requests, when an ECS entity receives a command response, the GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
@@ -188,6 +186,3 @@ public class BuildWallResponseHandler : ComponentSystem
 ```
 
 `build_wall` command responses are on a `Builder.CommandResponses.BuildWall` ECS component.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

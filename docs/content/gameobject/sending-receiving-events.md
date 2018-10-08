@@ -1,1 +1,90 @@
-The document "Sending and receiving events" is currently in progress, but you can view the [draft version](https://docs.google.com/document/d/e/2PACX-1vQLX1rgt-9P8ARHM_bVJ1cRhaBihGOWqugQKTxVsU2QfQ3U-GRAjH6Tdpr-nzKqJnaBJdg3UW3wbA_q/pub) as a Google Doc.
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
+
+-----
+[//]: # (Doc of docs reference 7)
+[//]: # (TODO - Tech writer pass)
+
+# (GameObject-MonoBehaviour) How to send and receive events
+_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
+
+
+Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
+
+> For more information, see the documentation on [events](../glossary.md#events).
+
+We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
+* [Linking SpatialOS entities with GameObjects](./linking-spos-entities-gameobjects.md)
+* [Reader and Writer](./readers-writers.md)
+* [Read and write access](./reading-and-writing-component-data.md)
+* [Workers in the GDK](../workers/workers-in-the-gdk.md)
+  
+
+We use the following [schema](../glossary.md#schema) for all examples described in this documentation.
+```
+package playground;
+
+type Location
+{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+component Bomb
+{
+	id = 12002;
+	event Location explode;
+}
+```
+
+This will generate the following classes in the `Playground` namespace:
+  * `Bomb.Requirable.Reader`
+  * `Bomb.Requirable.Writer`
+
+
+### How to send events
+The following code snippet provides an example on how to send events. To send an event,  ensure that your worker has write authority over the corresponding SpatialOS component.
+
+```csharp
+using Playground;
+
+public class TriggerExplosion : MonoBehaviour
+{
+	[Require] private Bomb.Requirable.Writer bombWriter;
+
+	private void Update()
+	{
+    	if (Input.GetKeyDown(KeyCode.Space))
+    	{
+        	bombWriter.SendExplode(new Location(1, 1, 1));
+    	}
+	}
+}
+```
+### How to receive events
+The following code snippet provides an example on how to receive events. Any worker that has your entity checked out and has read access over the corresponding SpatialOS component can receive events.
+
+```csharp
+using Playground;
+
+public class HandleExplosion : MonoBehaviour
+{
+	[Require] private Bomb.Requirable.Reader bombReader;
+
+	private void OnEnable()
+	{
+    	bombReader.OnExplode += OnExplode;
+	}
+
+	private void OnDisable()
+	{
+    	// all registered callbacks are automatically deregistered when this script is disabled.
+    	// Do not deregister your callback as it is an invalid operation.
+	}
+
+	private void OnExplode(Location location)
+	{
+    	// show the explosion
+	}
+}
+```

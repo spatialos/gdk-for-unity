@@ -1,24 +1,53 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
+[//]: # (Doc of docs reference 32)
+[//]: # (TODO - Tech writer review)
+[//]: # (Editorial review status: Engineer review only)
+[//]: # (Questions to deal with: need to describe what a tick is. Needs to link to a doc on system execution order. Needs to link to docs describing the existing components which use this)
+[//]: # (1. Editorial review - JIRA TICKET: UTY-628)
 
-## ECS: Temporary components
+# (ECS) Temporary components
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
-The attribute `Improbable.Gdk.Core.RemoveAtEndOfTick`, can be applied to any ECS component, extending either `IComponentData` or `ISharedComponentData`.
-All components with this attribute will be removed from all entities during the `InternalSpatialOSCleanGroup` at the end of `SpatialOSSendGroup`. See [System update order]({{urlRoot}}/content/ecs/system-update-order) for more details.
+When working with entities, you might need components that only exist for one frame to execute certain logic depending on those components. For this purpose, we introduce the concept of temporary components. If a temporary component is added to an entity, the component will be removed at the end of the update loop, i.e. when the systems inside the `InternalSpatialOSCleanGroup` have been run. See [System update order](./ecs-system-update-order.md) for more details on the different update groups.
 
-### Example
+To create a temporary component, we provide you with the  `Improbable.Gdk.Core.RemoveAtEndOfTick` attribute, which can be applied to any ECS component, extending either `IComponentData` or `ISharedComponentData`.
+
+The following code snippet shows an example of how to annotate your ECS component with the `RemoveAtEndOfTick` attribute.
 ```csharp
 [RemoveAtEndOfTick]
 struct SomeTemporaryComponent : IComponentData
 {
 }
 ```
+When using temporary components, you must consider the ordering of your systems carefully. Any system which runs logic predicated on the temporary component should be ran after the temporary component may be added and before it will be removed (in `InternalSpatialOSCleanGroup`).
 
-If a system, `AddComponentSystem`, adds `SomeTemporaryComponent` to some entities, then `ReadComponentSystem.OnUpdate()` (see the sample below) will run during the same update loop.
+The following code snippet shows an example how you can annotate your system to ensure it is run in the correct order.
+`AddComponentSystem` is the system that adds `SomeTemporaryComponent ` to your entities, while `ReadComponentSystem` filters for all entities containing `SomeTemporaryComponent `.
 
 ```csharp
-[UpdateAfter(typeof(AddComponentSystem))]
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
-class ReadComponentSystem : ComponentSystem
+public class AddComponentSystem : ComponentSystem
+{
+    private struct Data
+    {
+        public readonly int Length;
+        public EntityArray Entities;
+    }
+
+    [Inject] private Data data;
+
+    protected override void OnUpdate()
+    {
+        PostUpdateCommands.AddComponent(data.Entities[i], new SomeTemporaryComponent());
+    }
+}
+
+// ensure that the temporary component has already been
+// added by running this system after AddComponentSystem
+[UpdateAfter(typeof(AddComponentSystem))]
+// By running this system during the SpatialOSUpdateGroup, it will
+// definitely run before the InternalSpatialOSCleanGroup group.
+[UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+public class ReadComponentSystem : ComponentSystem
 {
     private struct Data
     {
@@ -34,12 +63,3 @@ class ReadComponentSystem : ComponentSystem
     }
 }
 ```
-
-At the end of the update loop, `SomeTemporaryComponent` will automatically be removed from all entities.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).
-
-[//]: # (Editorial review status: Engineer review only)
-[//]: # (Questions to deal with: need to describe what a tick is. Needs to link to a doc on system execution order. Needs to link to docs describing the existing components which use this)
-[//]: # (1. Editorial review - JIRA TICKET: UTY-628)

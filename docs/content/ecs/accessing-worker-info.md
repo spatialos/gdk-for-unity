@@ -1,8 +1,6 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
+# ECS: Accessing information about the worker during runtime
 
-## ECS: Accessing information about the worker during runtime
-
-### Worker System
+## Worker System
 
 The WorkerSystem can be injected in any `ComponentSystem` that is in the same ECS world as the worker to access the data relevant to the worker. See the code example below on how to inject it:
 
@@ -38,7 +36,7 @@ The `WorkerSystem` stores the following data:
 
 * `Origin`: The vector by which we translate all entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a worker origin to be large enough so that entities that are visible to or checked out by different workers don’t bump into each other.
 
-### Worker Entity
+## Worker Entity
 
 The Worker Entity provides the API to send and receive [commands]({{urlRoot}}/content/ecs/commands).
 
@@ -75,7 +73,3 @@ namespace YourProject
     }
 }
 ```
-
-----
-
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

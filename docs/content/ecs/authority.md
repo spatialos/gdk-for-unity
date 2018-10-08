@@ -1,6 +1,5 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
-## ECS: Authority
+## (ECS) Authority
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component).
 
@@ -103,6 +102,3 @@ public class OnPlayerSpawnSystem : ComponentSystem
 ```
 
 The GDK automatically adds and removes authority tags: see [Reactive components]({{urlRoot}}/content/ecs/reactive-components) for more information.
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

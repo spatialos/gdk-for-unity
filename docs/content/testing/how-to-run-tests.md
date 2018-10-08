@@ -1,7 +1,3 @@
-[google-docs-link]: https://docs.google.com/document/d/1cNB-1CS-m3-28tZfVyi9ljWPiVwjihkphNN4Q9x_3EI/edit (Please place reviews as comments into this document here)
-
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
 # How to run tests
 
 This document describes how to run tests for the two parts of the SpatialOS GDK for Unity (GDK):
