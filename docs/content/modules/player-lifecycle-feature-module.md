@@ -1,0 +1,100 @@
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
+
+-----
+[//]: # (Doc of docs reference 36)
+[//]: # (TODO - technical writer review)
+
+# Player Lifecycle Feature Module
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflow](../intro-workflows-spos-entities.md)._
+
+Before reading this document, make sure you are familiar with:
+  * [Core Module and Feature Module overview](./core-and-feature-module-overview.md)
+  * [Creating entity templates](../entity-templates.md)
+  * [Workers in the GDK](../workers/workers-in-the-gdk.md)
+  * [Creating workers with WorkerConnector](../gameobject/api-workerconnector.md)
+
+The Player lifecycle module is a feature module providing you with a simple player spawning and player lifecycle management implementation.
+
+### How to enable this module
+
+To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`](../gamobject/gomb-creating-workers-with-workerconnector.md).
+After your worker has been created, you need to use the following code snippet:
+1. On a [client-worker](../glossary.md#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
+1. On a [server-worker](glossary.md#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
+
+### How to spawn a player entity
+
+To spawn a [SpatialOS entity](../glossary.md#spatialos-entity) representing
+a player, you need to
+1. [Define the entity template for your player entity](#1.-define-the-player-entity-template)
+1. [Specify an entity template for player creation](#2.-specify-an-entity-template-for-player-creation)
+
+The client-worker initiates the player entity creation once it has been successfully created.
+
+#### 1. Define the player entity template
+
+The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template](../entity-template.md) to use when sending the entity creation request to the [SpatialOS Runtime](../glossary.md#spatialos-runtime).
+Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template](../entity-template.md):
+* `string workerId`: The ID of the worker that wants to spawn this player entity
+*  `Improbable.Vector3f position`: the position where  the client-worker requested to spawn the player entity
+
+When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method.
+This methods adds the SpatialOS components to the player entity template necessary to manage the player lifecycle for this entity.
+
+The following code snippet shows an example on how to implement such a method:
+```csharp
+public static class PlayerTemplate
+{
+    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+    {
+        // Obtain unique client attribute of the client-worker that requested the player entity
+        var clientAttribute = $"workerId:{workerId}";
+        // Obtain the attribute of your server-worker
+        var serverAttribute = "UnityGameLogic";
+
+        var entityBuilder = EntityBuilder.Begin()
+            .AddPosition(position.X, position.Y, position.Z, serverAttribute)
+            // add all components that you want the player entity to have
+            // ...
+            // add player lifecycle components:
+            .AddPlayerLifecycleComponents(workerId, clientAttribute, serverAttribute);
+
+        return entityBuilder.Build();
+    }
+}
+```
+
+#### 2. Specify an entity template for player creation
+
+The Player lifecycle module provides a configuration class, called `PlayerLifecycleConfig`, that needs to be configured to use the player entity template.
+This can be done by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
+
+The following example is a code snippet using a script that runs once when starting the game to initialize the configuration for the player lifecycle module:
+```csharp
+public static class OneTimeInitialization
+{
+    private static bool initialized;
+
+    // Using this attribute will trigger the Init() method whenever a scene gets loaded.
+    [RuntimeInitializeOnLoadMethod]
+    private static void Init()
+    {
+        if (initialized)
+        {
+            // ensures to only run it the first time a scene gets loaded.
+            return;
+        }
+
+        initialized = true;
+        // initialize your game...
+        // ...
+        // Setup template to use for player on connecting client
+        PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
+    }
+}
+```
+
+### When is a player entity deleted?
+
+To ensure that player entities of disconnected client-workers get deleted correctly,
+the server-workers responsible to manage the player lifecycle sends a `PlayerHeartBeat` [command](../world-component-commands-requests-responses.md)) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker sends a request to the SpatialOS Runtime to delete this entity.

@@ -3,7 +3,7 @@
 -----
 [//]: # (Doc of docs reference 34)
 [//]: # (Tech writer review)
-## (ECS) Sending and receiving component commands
+# (ECS) Sending and receiving component commands
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 Before reading this document, make sure you are familiar with:
@@ -11,7 +11,7 @@ Before reading this document, make sure you are familiar with:
   * [Readers and Writers](./readers-writers.md)
   * [Read and write access](./glossary.md#authority)
 
-### About commands
+## About commands
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](../workers/workers-in-the-gdk.md). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflow-spos-entities.md).<br/>
 
 There are two types of commands in SpatialOS:
@@ -26,7 +26,7 @@ This document is about GameObject-MonoBehaviour component commands. The commands
 * Both workflows - [world and component command requests and responses](../world-component-commands-requests-responses.md)
 
 
-### How to send and receive component commands
+## How to send and receive component commands
 The GDK generates the following ECS components to allow you to send and receive commands using the ECS flow:
   * `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
   * `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
@@ -53,7 +53,7 @@ The GDK generates the following types in the `Playground` namespace:
   * `CubeSpawner.CommandSenders.SpawnCube`
   * `CubeSpawner.CommandResponders.SpawnCube`
 
-### How to send command requests
+## How to send command requests
 
 The following code snippet provides an example on how to send a command request.
 This example ECS system would run on any worker that has this system added to its ECS world.
@@ -95,7 +95,7 @@ public class SendSpawnCubeRequestSystem : ComponentSystem
 }
 ```
 
-### How to handle received command requests
+## How to handle received command requests
 
 The following code snippet provides an example on how to process and respond to a received command request.
 This example ECS system would run only on workers that have this system added to their ECS world and have write access over the corresponding component.
@@ -142,7 +142,7 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
 }
 ```
 
-### How to handle received command responses
+## How to handle received command responses
 
 The following code snippet provides an example on how to handle a command response.
 This example ECS system would run on any worker that has this system added to its ECS world.

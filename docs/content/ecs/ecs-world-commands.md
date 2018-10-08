@@ -3,14 +3,14 @@
 -----
 
 
-## (ECS) World commands
+# (ECS) World commands
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.) 
 
 Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response. 
 
-### 1. Reserve an entity ID
+## 1. Reserve an entity ID
 
 You can use the `ReserveEntityIds` world command to reserve groups of entity IDs that you can use in entity creation.
 
@@ -20,7 +20,7 @@ To send a request use a `WorldCommands.ReserveEntityIds.CommandSender` component
 
 To receive a response use `WorldCommands.ReserveEntityIds.CommandResponses`. This contains a list of `WorldCommands.ReserveEntityIds.ReceivedResponse` structs.
 
-### 2. Create an entity
+## 2. Create an entity
 
 You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template](../entity-templates.md).
 
@@ -65,7 +65,7 @@ public class CreateCreatureSystem : ComponentSystem
 
 This system iterates through every entity with a `Foo` component and sends a create entity request.
 
-### 3. Delete an entity
+## 3. Delete an entity
 
 You can delete entities via the `DeleteEntity` world command. You need to know the SpatialOS entity ID of the entity you want to delete.
 
@@ -107,7 +107,7 @@ public class DeleteCreatureSystem : ComponentSystem
 
 This system iterates through every entity with a `Bar` and a SpatialEntityId component and sends a delete entity request.
 
-### 4. Entity query
+## 4. Entity query
 
 You can use entity queries to get information about entities in the world. 
 

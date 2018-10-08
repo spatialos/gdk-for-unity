@@ -3,7 +3,7 @@
 -----
 
 
-## (ECS) Sending and receiving events
+# (ECS) Sending and receiving events
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 
@@ -13,7 +13,7 @@ Events are for broadcasting information between worker instances about a transie
 
 > For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) in the SpatialOS documentation.
 
-### Sending events
+## Sending events
 
 A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
 
@@ -81,7 +81,7 @@ public class SendChangeColorEvent : ComponentSystem
 }
 ```
 
-### Receiving events
+## Receiving events
 
 <!-- TODO explain that events are propagated? -->
 
