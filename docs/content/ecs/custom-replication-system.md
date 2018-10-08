@@ -2,9 +2,11 @@
 
 -----
 
-## ECS: Custom replication systems
+## (ECS) Custom replication systems
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 ### What the SpatialOS GDK's replication system does
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 

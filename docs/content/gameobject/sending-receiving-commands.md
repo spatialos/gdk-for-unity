@@ -8,6 +8,7 @@
 [//]: # (TODO - add how to do spawn logic in code example below)
 
 # (GameObject-MonoBehaviour) Commands: Sending and receiving component commands
+_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 * [World and component command requests and responses](../world-component-commands-requests-responses.md)

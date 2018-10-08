@@ -1,9 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 -----
 
 
-## ECS: World commands
+## (ECS) World commands
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.) 
 
@@ -119,6 +120,3 @@ To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This con
 
 **Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information safely in the responses. It is not recommended to use them at this time.
 
-------
-
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).

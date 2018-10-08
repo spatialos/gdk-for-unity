@@ -3,6 +3,8 @@
 -----
 
 ## Snapshots
+ _This document relates to both [GameObject-MonoBehaviour and ECS workflows](./intro-workflows-spos-entities.md)._
+ 
 A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/latest/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/latest/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
 
 You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/latest/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).

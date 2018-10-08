@@ -1,9 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 -----
 
 
 ## ECS: Receiving entity updates from SpatialOS: reactive components
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
