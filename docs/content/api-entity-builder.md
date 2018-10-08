@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
-------
 [//]: # (Doc of docs reference 28)
 
 # SpatialOS entities: API - EntityBuilder
@@ -8,7 +5,7 @@ _This document relates to both *[GameObject-MonoBehaviour and  ECS workflows](..
 
 Before reading this document, make sure you are familiar with the documentation on [entity templates](./entity-templates.md).
 
-Use the `EntityBuilder` class to create entity templates. You use the `EntityTemplate` class to specify all the [components](./glossary.md#spatialos-components) that a SpatialOS entity has, the initial values of those components, and which workers have [write access](./glossary.md#authority) to each component. 
+Use the `EntityBuilder` class to create entity templates. You use the `EntityTemplate` class to specify all the [components](./glossary.md#spatialos-components) that a SpatialOS entity has, the initial values of those components, and which workers have [write access](./glossary.md#authority) to each component.
 
 The `EntityBuilder` class is part of the `Improbable.Gdk.Core` assembly.
 
@@ -33,7 +30,7 @@ Add a [Position](./glossary.md#position) component to your entity and specify wh
 Specify whether your entity should be saved in [snapshots](./snapshots.md). For more information, see the SpatialOS documentation on [persistence](./glossary.md#persistence).
 
 ```csharp
-.SetReadAcl(string attribute, param string[] attribute) 
+.SetReadAcl(string attribute, param string[] attribute)
 ```
 ```csharp
 .SetReadAcl(List<string> attribute)
@@ -54,4 +51,3 @@ Add a user-defined component to your entity and specify which [worker type(s)] (
 .Build()
 ```
 Create a finished `EntityTemplate`.
-

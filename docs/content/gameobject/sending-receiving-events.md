@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 7)
 [//]: # (TODO - Tech writer pass)
 
@@ -17,7 +14,7 @@ We provide code-generated Readers and Writers for sending and receiving SpatialO
 * [Reader and Writer](./readers-writers.md)
 * [Read and write access](./reading-and-writing-component-data.md)
 * [Workers in the GDK](../workers/workers-in-the-gdk.md)
-  
+
 
 We use the following [schema](../glossary.md#schema) for all examples described in this documentation.
 ```

@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 15)
 # Workers: Workers in the GDK
 _This document relates to both GameObject-MonoBehaviour and ECS workflows._
@@ -41,7 +38,7 @@ To learn more about how to create and use workers in the GDK, please see the fol
 
   * GameObject-MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector](../gameobject/gomb-creating-workers-with-workerconnector.md)
 
-  * ECS workflow - [API - workers system](./api-workers-system.md) 
+  * ECS workflow - [API - workers system](./api-workers-system.md)
   <br/>(Workers: Accessing information about the worker at Runtime)
 
 ## Example implementation
@@ -51,9 +48,8 @@ In the GDK's [`Playground` project](../../../workers/unity/Assets/Playground) we
 
 * `SampleScene`: This Scenes contains both the `UnityClient` and the `UnityGameLogic` prefabs and will start both workers as soon as you load the scene.
 
-* `ClientScene`: This Scene contains only the `UnityClient` prefab and can be used to build your client worker for cloud deployments. 
+* `ClientScene`: This Scene contains only the `UnityClient` prefab and can be used to build your client worker for cloud deployments.
 
-* `GameLogicScene`: This Scene contains only the `UnityGameLogic` prefab and can be used to build your server worker for cloud deployments. 
+* `GameLogicScene`: This Scene contains only the `UnityGameLogic` prefab and can be used to build your server worker for cloud deployments.
 
 The position of these prefabs in the Scene define the `Origin` of the worker, which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.
-

@@ -1,5 +1,3 @@
-<%(Callout type="warn" message="**Contributions**: We are not currently taking public contributions - see our [contributions](https://github.com/spatialos/UnityGDK/blob/master/README.md#contributions) policy. However, we are accepting issues and we do want your [feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).")%>
-
 # SpatialOS GDK for Unity C# coding standards
 
 ![Header Image]({{assetRoot}}assets/unity-gdk-header-cartoon.png)

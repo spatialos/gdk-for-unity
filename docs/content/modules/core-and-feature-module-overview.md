@@ -1,7 +1,3 @@
-
-**Warning**: The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 11)
 [//]: # (TODO - which module is ECS or GO-MB specific and which is generic?)
 
@@ -33,7 +29,7 @@ The `Improbable.Gdk.BuildSystem` module provides an example implementation of ho
 
 ### Player lifecycle module
 
-To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It contains members which you use to implement player spawning and player heartbeats. 
+To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It contains members which you use to implement player spawning and player heartbeats.
 
 `Improbable.Gdk.PlayerLifecycle` is in the repository [here](../../../tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle).
 
@@ -41,7 +37,7 @@ The module consists of:
 
 * `PlayerLifecycleHelper.AddClientSystems(world)` -  in the repository [here](../../../blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker.<br/>
-Call this when you create your [worker](./workers/workers-in-the-gdk.md)**.
+Call this when you create your [worker](./workers/workers-in-the-gdk.md).
 
 * `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](../../../blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
@@ -64,9 +60,9 @@ Call this to implement the transform synchronization module, adding all the nece
 
 * `EntityBuilder.AddTransformSynchronizationComponents(writeAccess, location = default(Vector3), velocity = default(Vector3))` - in the repository [here](../../../blob/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs).<br/>
 Call this to add the SpatialOS components used by the transform synchronization module to your SpatialOS entity template. <br/>
-You can optionally pass in a `rotation`, `location` or `velocity`. 
+You can optionally pass in a `rotation`, `location` or `velocity`.
 
-Call this during [entity templates creation](../entity-templates.md). 
+Call this during [entity templates creation](../entity-templates.md).
 * See an [example use](../entity-template-creation.md#transform-synchronization-module) in the *Entity template creation* documentation.
 * Find out more in the [Transform Synchronization Feature Module](transform-feature-module.md) documentation.
 
@@ -75,7 +71,7 @@ Call this during [entity templates creation](../entity-templates.md).
 
 To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It offers a default implementation of spawning GameObjects for your SpatialOS entities.
 
-`Improbable.Gdk.GameObjectCreation`  is in the repository [here](../../../tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation). 
+`Improbable.Gdk.GameObjectCreation`  is in the repository [here](../../../tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation).
 
 This module consists of:
 
@@ -90,4 +86,4 @@ Use this to enable the default implementation or with the parameters below to ch
 Use this enable custom spawning by passing in parameters to change the default.
 
 
-Call these during [entity templates creation](../entity-templates.md). 
+Call these during [entity templates creation](../entity-templates.md).

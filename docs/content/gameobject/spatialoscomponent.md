@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 10)
 [//]: # (TODO: technical writer review)
 

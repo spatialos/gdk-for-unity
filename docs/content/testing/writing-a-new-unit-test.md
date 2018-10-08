@@ -1,7 +1,5 @@
 [google-docs-link]: https://docs.google.com/document/d/14_FY-Chu_illhaCCym-pv6P8NHtyN9PLzVBGSuK0ou4/edit (Please place reviews as comments into this document here)
 
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
 # Writing a new unit test
 
 This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS GDK for Unity). It walks through creating tests for a made-up class to explain how you can test parts of the GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.

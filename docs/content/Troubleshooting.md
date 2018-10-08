@@ -1,12 +1,7 @@
-
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
-
 [//]: # (Doc of docs reference 23)
 [//]: # (TODO - tech writer pass)
 
-# Troubleshooting 
+# Troubleshooting
 
 We also maintain a [known issues page](../known-issues.md) for any open bugs in the SpatialOS GDK for Unity.
 

@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 8.2)
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - Callback on what note below)
@@ -20,7 +17,7 @@ Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](http
 
 There are two types of commands in SpatialOS:
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](../glossary.md#spatialos-entities).
-* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components. 
+* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
 
 This document is about GameObject-MonoBehaviour component commands. The commands documentation is:
 * [GameObject-MonoBehaviour world commands](./gomb-world-commands)

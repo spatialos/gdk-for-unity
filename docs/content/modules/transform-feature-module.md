@@ -1,5 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
------
 [//]: # (Doc of docs reference 35)
 [//]: # (TODO - tech writer review - doc 35)
 [//]: # (TODO - Add links as noted - doc 35)
@@ -54,7 +52,7 @@ Add the appropriate [transform strategies](link to header) to the `TransformSync
 
 ![](../../assets/image-transform-feature-module-md-0.png)
 
-After this the entity’s location will be sent to all interested workers whenever the `Transform` or the `Rigidbody`, if one exists, moves. 
+After this the entity’s location will be sent to all interested workers whenever the `Transform` or the `Rigidbody`, if one exists, moves.
 
 **N.B.** Writing to the feature module SpatialOS components directly may cause unexpected behaviour.
 
@@ -74,7 +72,7 @@ An arbitrary number of strategies can be specified, but only one per worker type
 
 #### Set kinematic when not authoritative
 
-If this option is selected and there is a `Rigidbody` on the `GameObject`, the `Rigidbody` will become [kinematic] (TODO link to unity docs) when the given worker has no write accessnot authoritative. When write accessauthority is gained the Rigidbody will return to the state it was in before. 
+If this option is selected and there is a `Rigidbody` on the `GameObject`, the `Rigidbody` will become [kinematic] (TODO link to unity docs) when the given worker has no write accessnot authoritative. When write accessauthority is gained the Rigidbody will return to the state it was in before.
 
 ## What strategies are available?
 
@@ -132,7 +130,7 @@ This is the frequency at which position updates will be sent, provided the entit
 
 #### `TargetBufferSize`
 
-Reducing this will decrease latency between the authoritative worker and the client, but potentially cause movement to hitch. 
+Reducing this will decrease latency between the authoritative worker and the client, but potentially cause movement to hitch.
 
 This should be increased when reducing the number of updates sent per second.
 
@@ -143,4 +141,3 @@ Increasing this will increase how large the latency can be between the authorita
 This should always be larger than the target buffer size. Reducing this will limit how large the latency between the authoritative client can be, but potentially cause movement to stutter more frequently.
 
 The buffer size tends to increase when the authoritative worker is overloaded, so the maximum should be increased if the server tick rate is unstable.
-

@@ -1,13 +1,8 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
-------
-
 [//]: # (Doc of docs reference 6.1)
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - See if `option` struct needs defining)
 
-
-## (GameObject-MonoBehaviour) Readers and Writers
+# (GameObject-MonoBehaviour) Readers and Writers
 _This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
@@ -44,10 +39,10 @@ You can find out more about how to work with Readers and Writers in:
   * [How to read, update and react to changes](reading-and-writing-component-data.md)
   * [How to send and receive events](sending-receiving-events.md)
 
-#### Reader API
+## Reader API
 The `IReader` interface is bound to the following generic:
   * `TSpatialComponentData : ISpatialComponentData`
- 
+
 The exact type depends on the component that the reader is generated for.
 
 **Fields:**
@@ -75,7 +70,7 @@ component is updated.
 
 Callback parameter:
   * `TField`: The type of this field is code-generated and depends on the schema definition of the field. It will contain the updated value of the specified field.
- 
+
 > General `ComponentUpdated` callbacks are invoked before specific property update callbacks.
 
 ```csharp
@@ -87,11 +82,11 @@ status of your worker over the corresponding component is changed.
 Callback Parameters
   * `Authority`: Contains the new authority status of the worker.
 
-#### Writer API
+## Writer API
 The `IWriter` interface is bound to the following generics:
   * `TSpatialComponentData : ISpatialComponentData`
   * `TSpatialComponentUpdate : ISpatialComponentUpdate`
- 
+
 The exact type of these generics depends on the component that the writer is generated for.
 
 **Fields:**
@@ -120,7 +115,7 @@ component is updated.
 
 Callback parameter:
   * `TField`: The type of this field is code generated and depends on the schema definition of the field. It will contain the updated value of the specified field.
- 
+
 > General `ComponentUpdated` callbacks are invoked before specific field update callbacks.
 
 ```csharp

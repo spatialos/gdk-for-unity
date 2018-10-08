@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
----
 [//]: # (Doc of docs reference 21)
 [//]: # (TODO - technical author pass)
 # SpatialOS entities: update entity lifecycle
@@ -16,7 +13,7 @@ When an entity moves into your worker's [view](./glossary.md#workers-view), the 
 
  - A message stating which entity has entered your view
  - A message stating the current state of each [SpatialOS component](./glossary.md#spatialos-component) on that entity that your worker has interest in
- - (Optionally) A message stating that your worker has been delegated [authority](./glossary.md#authority) over a SpatialOS component. 
+ - (Optionally) A message stating that your worker has been delegated [authority](./glossary.md#authority) over a SpatialOS component.
 
 The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a process described in the [Entity Contracts documentation](./ecs/entity-contracts.md). You can also optionally associate a GameObject with this entity as described [in this doc](./gameobject/linking-spos-entities-gameobjects.md).
 
@@ -29,5 +26,3 @@ When an entity moves out of your worker's [checkout region](https://docs.improba
 - A message stating which entity has been removed from your view.
 
 The SpatialOS GDK for Unity uses these messages to remove the ECS Entity and clean up any data associated with it. If you choose to associate a GameObject with this entity, you will receive a callback to clean up the GameObject.
-
-

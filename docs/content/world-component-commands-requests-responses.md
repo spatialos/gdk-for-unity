@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
----
 [//]: # (Doc of docs reference 24)
 [//]: # (TODO - technical author pass)
 [//]: # (TODO - split into Commands intro doc + API doc)
@@ -15,7 +12,7 @@ Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](http
 
 There are two types of commands in SpatialOS:
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](./glossary.md#spatialos-entities).
-* **Component commands** you set up in your [schema](./glossary.md#schema) for workers to invoke on any SpatialOS entity’s components. 
+* **Component commands** you set up in your [schema](./glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
 
 The commands documentation is:
 * [GameObject-MonoBehaviour world commands](./gameobject/gomb-world-commands)
@@ -25,7 +22,7 @@ The commands documentation is:
 * Both workflows - world and component command requests and responses - this document
 
 
-### API - Component commands 
+### API - Component commands
 For every component command that you specify in your schema, the GDK generates command request and response structs using the [code-generator](./code-generator.md). These types are available in the `{namespace defined in schema}.{name of component}.{name of command}` class.  
 
 For each component command, the GDK generates:
@@ -36,7 +33,7 @@ For each component command, the GDK generates:
 
 
 ### Request
-It stores the information of a request you want to send. 
+It stores the information of a request you want to send.
 
 **Fields**
 
@@ -59,13 +56,13 @@ Parameters:
   * `EntityId entityId` - The ID of the SpatialOS entity that you want to send the command to.
   * `TRequest payload` - This is the data  which is sent to the worker with [write access](./glossary/authority.md) with your command. The type `TRequest` of this payload depends on what you defined in your schema as the payload.
   * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is “null” by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction) (SpatialOS documentation).
-  * `bool allowShortCircuiting` - Optional. 
+  * `bool allowShortCircuiting` - Optional.
 A boolean specifying whether or not a command which is sent to the same worker can be handled without going through the SpatialOS Runtime. The default is `false`.   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response. The default is `null`.
 
-Returns: a `Request` object containing the data specified in the parameters. 
+Returns: a `Request` object containing the data specified in the parameters.
 
 ### ReceivedRequest
-Stores the received command request. 
+Stores the received command request.
 
 **Fields**
 
@@ -77,7 +74,7 @@ Stores the received command request.
 | CallerAttributeSet | List<string> | The set of attributes configured for the worker that sent the request. |
 
 ### Response
-It stores the information of a response you wish to send. 
+It stores the information of a response you wish to send.
 
 **Fields**
 
@@ -96,7 +93,7 @@ Parameters:
   * `ReceivedRequest req` - The request that you want to send a response for.
   * `{name of command}CommandResponse payload` - This is the data of your command response. The type `T` of this payload depends on what you defined in your schema as the payload.
 
-Returns: a `Response` object containing the data specified in the parameters. 
+Returns: a `Response` object containing the data specified in the parameters.
 
 ```csharp
 MyComponent.MyCommand.Response.CreateResponseFailure(ReceivedRequest req, string failureMessage);
@@ -105,7 +102,7 @@ Parameters:
   * `ReceivedRequest req` - The request that you want to send a response for.
   * `string failureMessage` - A string containing the reason for failing the command.
 
-Returns: a `Response` object containing the data specified in the parameters. 
+Returns: a `Response` object containing the data specified in the parameters.
 
 ### ReceivedResponse
 
@@ -122,4 +119,3 @@ Stores the received command response to enable you to handle it appropriately.
 | ResponsePayload | TResponse | If the command succeeded, this stores the data of the command response. Otherwise it is null. The type `TResponse` is the return type of the command as defined in schema. |
 | Message | string |The associated error message, if the command failed. Otherwise null. |
 | Context | System.Object | The arbitrary context object given in the `Request` this response is reacting to. |
-

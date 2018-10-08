@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 15.1a)
 # (GameObject-Monobehaviour) API - WorkerConnector
 _This document relates to the [GameObject-MonoBehaviour workflow](./intro-workflows-spos-entities.md)._
@@ -82,4 +79,3 @@ This method provides a way to add additional logic after the `WorkerConnector` f
 public virtual void Dispose()
 ```
 Disposes of the `WorkerConnector` object.
-

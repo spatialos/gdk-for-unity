@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 30)
 [//]: # (TODO: Add examples of additional data you might add)
 
@@ -31,9 +28,9 @@ In all cases, your worker contains a reference to a `Connection` object after su
 Use the Receptionist service connection flow in the following cases:
   * Connecting a server-worker or a client-worker to a local deployment.
   * Connecting server-workers to a cloud deployment.
-  * The special case of connecting a client-worker to a cloud deployment from the Unity Editor for debugging. 
+  * The special case of connecting a client-worker to a cloud deployment from the Unity Editor for debugging.
 
-**Note:** You usually connect client-workers to a cloud deployment via the Locator connection flow (outlined below) but you may want to use the Receptionist connection flow for debugging from your Unity Editor. In this case you use the Receptionist service connection flow via `spatial cloud connect external <deploymentname>`. See the SpatialOS documentation to find out more about [`spatial cloud connect external <deploymentname> ](https://docs.improbable.io/reference/13.3/shared/spatial-cli/spatial-cloud-connect-external#spatial-cloud-connect-externall). 
+**Note:** You usually connect client-workers to a cloud deployment via the Locator connection flow (outlined below) but you may want to use the Receptionist connection flow for debugging from your Unity Editor. In this case you use the Receptionist service connection flow via `spatial cloud connect external <deploymentname>`. See the SpatialOS documentation to find out more about [`spatial cloud connect external <deploymentname> ](https://docs.improbable.io/reference/13.3/shared/spatial-cli/spatial-cloud-connect-external#spatial-cloud-connect-externall).
 
 ### Locator connection flow
 Use the Locator service connection flow
@@ -79,12 +76,7 @@ Use this object for:
   * accessing the used [worker attribute](./glossary.md#worker-attribute)
 
 ## What is protocol logging?
-You can use protocol logging to log additional data to the data your worker sends and receives while being connected to the SpatialOS Runtime. 
+You can use protocol logging to log additional data to the data your worker sends and receives while being connected to the SpatialOS Runtime.
 [//]: # (TODO: Add examples of additional data you might add)
 [//]: # (EG: The additional data can be <X or Y> which you could use for <A or B>. It logs data to <WHERE?>)
 This is disabled by default as the logs can get very big in size, very fast.
-
-
-
-
-

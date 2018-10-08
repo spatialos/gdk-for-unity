@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
-------
 [//]: # (Doc of docs reference 5.2)
 [//]: # (TODO - tech writer review)
 # (GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours
@@ -48,7 +45,7 @@ The GDK only enables them, if all requirements for injecting these types are ful
 
 > Do not manually enable / disable these MonoBehaviours as it will lead to undefined behaviour.
 
-If an object was injected, the GDK disposes of it upon disabling the MonoBehaviour. Any reference stored of it, will be invalid at that point. 
+If an object was injected, the GDK disposes of it upon disabling the MonoBehaviour. Any reference stored of it, will be invalid at that point.
 Here is an example on how to inject a reader and how to use it in different scenarios:
 
 ```csharp

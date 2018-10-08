@@ -1,9 +1,6 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
-------
 [//]: # (Doc of docs reference 5.1)
 
-# (GameObject-MonoBehaviour) SpatialOS entities: How to link SpatialOS entities with GameObjects 
+# (GameObject-MonoBehaviour) SpatialOS entities: How to link SpatialOS entities with GameObjects
 _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with:
@@ -12,11 +9,11 @@ Before reading this document, make sure you are familiar with:
 
 As described in the [SpatialOS entity background documentation](../intro-workflows-spos-entities.md), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
 
-This document is a guide on how to link a SpatialOS entity with a GameObject using the GameObject Creation Feature Module. 
+This document is a guide on how to link a SpatialOS entity with a GameObject using the GameObject Creation Feature Module.
 
-You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates](../entity-templates.md) documentation. 
+You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates](../entity-templates.md) documentation.
 
-When you are using the GameObject and MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime](../glossary.md#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema](../glossary.md#schema).  Find out how to use interact with SpatialOS entities in the [Reader and Writers](./readers-writers.md). 
+When you are using the GameObject and MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime](../glossary.md#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema](../glossary.md#schema).  Find out how to use interact with SpatialOS entities in the [Reader and Writers](./readers-writers.md).
 
 ## The Creation Feature Module
 
@@ -32,13 +29,13 @@ To enable the Creation Feature Module in your project:
 To do this, when you use the Worker Connector,   
 call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
 
- In your project, create a prefab for any SpatialOS entity you want to represent as a GameObject. Where you store the prefab depends on which worker is going to create the GameObject. 
+ In your project, create a prefab for any SpatialOS entity you want to represent as a GameObject. Where you store the prefab depends on which worker is going to create the GameObject.
 *   For any worker, use the `Resources/Prefabs/Common/` directory.  
 * For specific worker types, use the `Resources/Prefabs/<WorkerType>` directory where `<WorkerType>` is the type of worker which is going to make this prefab. (Using this directory makes the prefab available for only for a specific worker type.)
 
 1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template](TODO: link to doc 22 - entity templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
 
-Note: Do not proactively destroy GameObjects representing SpatialOS entities. The GDK manages the lifecycle of these GameObjects so by not destroying these GameObjects, you ensure that your worker’s internal state is not corrupted. 
+Note: Do not proactively destroy GameObjects representing SpatialOS entities. The GDK manages the lifecycle of these GameObjects so by not destroying these GameObjects, you ensure that your worker’s internal state is not corrupted.
 
 ### How to customize the GameObject Creation Feature Module
 To customize the creation of GameObjects, implement the `IEntityGameObjectCreator` interface. This interface provides the following methods that the GDK calls:
@@ -51,7 +48,7 @@ GameObject OnEntityCreated(SpatialOSEntity entity);
 
 Fields:
   * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view](TODO: link to glossary - worker’s view).
-Returns: 
+Returns:
   * The `GameObject` that should represent the entity. Return null to _not_ link a GameObject to the SpatialOS entity.
 
 ```csharp
@@ -114,4 +111,3 @@ This is an example of a simple implementation of a GameObject creator.
 ```
 
 To use your own `IEntityGameObjectCreator` implementation in the GameObject Creation Feature Module, you must call `EnableStandardGameObjectCreation(Worker.World, new YourEntityGameObjectCreator())` when initializing your worker.
-

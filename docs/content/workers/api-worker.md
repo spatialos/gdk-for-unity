@@ -1,5 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
------
 [//]: # (Doc of docs reference 15.a)
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
 # Workers: API - Worker
@@ -8,7 +6,7 @@ _This document relates to both *[GameObject-MonoBehaviour and  ECS workflows](..
 
 Before reading this document, see the documentation on [workers in the GDK](workers-in-the-gdk.md)) and [Connecting to the SpatialOS Runtime](connecting-to-spos.md).
 
-We provide the `Worker` class to bootstrap the creation of your workers. 
+We provide the `Worker` class to bootstrap the creation of your workers.
 
 Note that the connection between your game and the SpatialOS [Runtime](../glossary.md#spatialos-runtime), depends on the successful creation of your workers.  During their creation, workers attempt to connect to the SpatialOS Runtime. Only a successful connection leads to the creation of a worker.
 
@@ -70,7 +68,7 @@ You can use the following fields, event callbacks, and methods, with `worker.Wor
 
 | LogDispatcher | ILogDispatcher     	| A reference to the [logger](../ecs/logging.md) that you can use to send logs to the Unity Console and the SpatialOS Runtime. |
 
-** Events **</br>
+** Events ** </br>
 
 ```csharp
 
@@ -84,7 +82,7 @@ Callback parameters:
 
   * `string`: Contains the reason for the disconnect.
 
-** Methods **</br>
+** Methods ** </br>
 
 ```csharp
 
@@ -123,4 +121,3 @@ Parameters:
 Returns: a `Task` (see the Microsoft documentation on [`Task`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.7.2) that will upon completion return a `Worker` object
 
 Throws: a `ConnectionFailedException`, if it fails in creating a connection and therefore fails to instantiate a `Worker` object.
-

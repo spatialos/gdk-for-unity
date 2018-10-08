@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 33)
 [//]: # (TODO - Tech writer review)
 
@@ -64,7 +61,7 @@ public class ProcessChangedHealthSystem : ComponentSystem
         public readonly int Length;
         // the component has already been updated to the latest values
         [ReadOnly] public ComponentDataArray<Health.Component> HealthComponents;
-        // inject the ReceivedUpdates component to ensure this system only runs when the 
+        // inject the ReceivedUpdates component to ensure this system only runs when the
         // component has changed
         [ReadOnly] public ComponentDataArray<Health.ReceivedUpdates> Updates;
     }
@@ -84,4 +81,3 @@ public class ProcessChangedHealthSystem : ComponentSystem
     }
 }
 ```
-

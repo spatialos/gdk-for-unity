@@ -1,22 +1,20 @@
-<%(Callout type="warn" message="This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release of the SpatialOS GDK for Unity is for evaluation and feedback purposes only, with limited documentation - see the guidance on [Recommended use](https://github.com/spatialos/UnityGDK/blob/master/README.md#recommended-use)")%>
-
-## (ECS) Custom replication systems
+# (ECS) Custom replication systems
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
-### What the SpatialOS GDK's replication system does
+## What the SpatialOS GDK's replication system does
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
-#### For properties
+### For properties
 
 Each ECS component has an internal bool named `DirtyBit`. When a worker sets any property of a SpatialOS component, in the corresponding ECS component, the GDK sets the `DirtyBit` to `true`. The `SpatialOSSendSystem`, which runs at the end of every frame, then checks the `DirtyBit` of each ECS component. If `DirtyBit` is `true`, the GDK pushes a SpatialOS component update and sets `DirtyBit` back to `false`.
 
-#### For events
+### For events
 
 When a worker sends a SpatialOS event, the GDK puts the event object into an internal buffer. When it's time to replicate a component, the GDK sends all buffered events and clears the buffer.
 
-### Writing your own replication system
+## Writing your own replication system
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
@@ -39,7 +37,7 @@ If some ECS components need more complex replication logic, you can create custo
     World.GetOrCreateManager<TransformSendSystem>();
     ```
 
-### Examples
+## Examples
 
 Here's an example of a custom replication system for a `Transform` component:
 
@@ -140,6 +138,3 @@ public class CubeColorSendSystem : CustomSpatialOSSendSystem<CubeColor.Component
     }
 }
 ```
-
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](https://github.com/spatialos/UnityGDK/blob/master/README.md#give-us-feedback).

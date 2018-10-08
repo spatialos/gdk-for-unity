@@ -1,11 +1,9 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-------
 [//]: # (Doc of docs reference 9)
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - explain what “handling the response based on the information contained in this object” means - see note below.)
 [//]: # (TODO - link to status codes for error messages - see note below.)
 
-## (GameObject-MonoBehaviour) World commands
+# (GameObject-MonoBehaviour) World commands
 _This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
@@ -14,12 +12,12 @@ Before reading this document, make sure you are familiar with
 ](..world-component-commands-requests-responses.md)
    * [SpatialOS entities: Creating entity templates](../entity-templates.md)
 
-### About commands
+## About commands
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](../workers/workers-in-the-gdk.md). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflow-spos-entities.md).<br/>
 
 There are two types of commands in SpatialOS:
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](../glossary.md#spatialos-entities).
-* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components. 
+* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
 
 The commands documentation is:
 * [GameObject-MonoBehaviour world commands](./gomb-world-commands)
@@ -29,7 +27,7 @@ The commands documentation is:
 * Both workflows - [World and component command requests and responses](../world-component-commands-requests-responses.md)
 
 
-### How to send and receive world commands
+## How to send and receive world commands
 We provide the following types for sending and receiving world commands:
   * `WorldCommands.Requirable.WorldCommandRequestSender`
   * `WorldCommands.Requirable.WorldCommandResponseHandler`
@@ -40,7 +38,7 @@ Both of these objects can be injected without any condition. A MonoBehaviour tha
 
 If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities](./create-delete-spos-entities.md) document.
 
-#### CreateEntity
+### CreateEntity
 You can use the `WorldCommandRequestSender.CreateEntity` method to request the creation of a new SpatialOS entity. It has the following signature:
 
 ```csharp
@@ -61,6 +59,7 @@ The corresponding response callback is `WorldCommandResponseHandler.OnCreateEnti
 ```csharp
 event Action<CreateEntity.ReceivedResponse> OnCreateEntityResponse
 ```
+
 Callback parameters:
   * `ReceivedResponse`: The data associated with the incoming response stored inside a [`ReceivedResponse`](../world-component-commands-requests-responses.md#receivedresponse) struct.
 
@@ -70,11 +69,11 @@ ReserveEntityIds
 	Like other commands, a `CreateEntity` command response can time out, but the entity might still be created. As we do not know which ID was used by the SpatialOS Runtime to create this entity, the worker needs to retry the `CreateEntity` command request. This might lead to creating multiple entities as a new entity ID will be used by the SpatialOS Runtime, if the previous `CreateEntity` command did succeed.
 To avoid this, the worker can reserve an entity ID before sending the `CreateEntity` command request. Depending on the command response, you should do the following:
 The command succeeded: The entity got successfully created
-The command failed with the status code `ApplicationError` and the following message: “'Entity reservation failed. The entity with Id <{id}> could not be found.The reservation might have expired or never existed”. If you have used the entity ID that you received from the `ReserveEntityIds` command response for sending the `CreateEntity` commands, then your entity has already been created and you don’t need to retry it anymore.
+The command failed with the status code `ApplicationError` and the following message: “'Entity reservation failed. The entity with Id <{id}> could not be found. The reservation might have expired or never existed”. If you have used the entity ID that you received from the `ReserveEntityIds` command response for sending the `CreateEntity` commands, then your entity has already been created and you don’t need to retry it anymore.
 The command timed out or another error appeared: retry the command.
 [//]: # (TODO - link to status codes for error messages.)
 
-	
+
 You can use the `WorldCommandRequestSender.ReserveEntityIds` method to send a command request to reserve entity ids. It has the following signature:
 
 ```csharp
@@ -159,4 +158,3 @@ The `EntityQuery.ReceivedResponse` struct contains the same fields as any `Recei
 |-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ResultCount 	| `int` | "The number of entities that matched the query. <br/><br/> Note that a best-effort attempt is made to count the entities when the status code is ApplicationError. In this case, the count can still be non-zero, but should be considered a lower bound (i.e. there might be entities matching the query that were not counted)." |
 | Result | `Dictionary<EntityId, Entity>`  	| "The result of the query. Not used for CountResultType queries. <br/> </br> Note that a best-effort attempt is made to get results when the status code is ApplicationError. In this case, the result can still be non-empty, but should be considered incomplete (i.e. there might be entities matching the query that were not returned).<br/><br/> > Note: since the GDK currently offers a prototype of Entity Queries, the `Result` will always be null."                                                                                        	|
-

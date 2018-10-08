@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 31.1)
 [//]: # (TODO - Tech writer review)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
@@ -21,7 +18,7 @@ public class ProcessColorChangeSystem : ComponentSystem
 }
 ```
 
-The SpatialOS GDK for Unity (GDK) defines several update groups which run relative to [`PlayerLoop.Update`](https://docs.unity3d.com/ScriptReference/Experimental.LowLevel.PlayerLoop.html). Most of your systems should belong to one of these . Using one of these groups will ensure that the system can access reactive components and state changes get synchronised with minimum latency.. 
+The SpatialOS GDK for Unity (GDK) defines several update groups which run relative to [`PlayerLoop.Update`](https://docs.unity3d.com/ScriptReference/Experimental.LowLevel.PlayerLoop.html). Most of your systems should belong to one of these . Using one of these groups will ensure that the system can access reactive components and state changes get synchronised with minimum latency..
 
 > Don’t use groups which have “Internal” in the name - these are for internal use only.
 

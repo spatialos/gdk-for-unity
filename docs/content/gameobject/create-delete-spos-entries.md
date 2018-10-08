@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
-------
 [//]: # (Doc of docs reference 26)
 [//]: # (TODO - technical author pass)
 
@@ -198,7 +195,7 @@ public class EntityDeletionBehaviour : MonoBehaviour
 
     private void DeleteEntity(EntityId entityId)
     {
-        if (commandSender != null) 
+        if (commandSender != null)
         {
             commandSender.DeleteEntity(entityId);
         }
@@ -225,4 +222,3 @@ You can get the `EntityId` for an entity using these methods:
 * To get the `EntityId` for a different GameObject, use `SpatialOSComponent.TryGetSpatialOSEntityIdForGameObject(GameObject linkedGameObject, out EntityId entityId)`
 
 > Using `SpatialOSComponent.TryGetSpatialOSEntityIdForGameObject` to access the SpatialOS entity id of another linked GameObject ensures that you receive the correct SpatialOS entity ID.
-
