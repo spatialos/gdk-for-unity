@@ -29,7 +29,7 @@ namespace Playground
             var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
 
             var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
+                .AddPosition(0, 0, 0, clientAttribute)
                 .AddMetadata("Character", WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
