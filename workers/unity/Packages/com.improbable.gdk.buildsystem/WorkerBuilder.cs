@@ -73,7 +73,7 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
         {
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.instance;
+            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             var buildPlatforms = environmentConfig.BuildPlatforms;
             var buildOptions = environmentConfig.BuildOptions;
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.BuildSystem
             Debug.LogFormat("Building \"{0}\" for worker platform: \"{1}\", environment: \"{2}\"", buildTarget,
                 workerType, targetEnvironment);
 
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.instance;
+            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
             var scenes = spatialOSBuildConfiguration.GetScenePathsForWorker(workerType);
 
