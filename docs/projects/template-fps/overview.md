@@ -10,7 +10,7 @@ The SpatialOS GDK can help you run your games at scale, making it easy for even 
 
 ### Where to start?
 
-Get started with FPS starter project right now!
+Get started with the FPS starter project right now!
 
 We thoroughly recommend getting the FPS starter project set up on your computer and deploying it to the cloud so you can see how simple it is to launch a massive large-scale multiplayer game.
 
