@@ -25,15 +25,6 @@ namespace Improbable.Gdk.Tools
 
         private const string DownloadForceMenuItem = "SpatialOS/Download CoreSdk (force)";
 
-        private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
-        {
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/OSX", new List<BuildTarget> { BuildTarget.StandaloneOSX }, editorCompatible: true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Linux", new List<BuildTarget> { BuildTarget.StandaloneLinux64 }, editorCompatible: true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86_64", new List<BuildTarget> { BuildTarget.StandaloneWindows64 }, editorCompatible: true),
-            PluginDirectoryCompatibility.CreateWithCompatiblePlatforms("Assets/Plugins/Improbable/Core/Windows/x86", new List<BuildTarget> { BuildTarget.StandaloneWindows }, false),
-            PluginDirectoryCompatibility.CreateAllCompatible("Assets/Plugins/Improbable/Sdk/Common"),
-        };
-
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()
         {
@@ -46,6 +37,7 @@ namespace Improbable.Gdk.Tools
             }
 
             Download();
+            AssetDatabase.Refresh();
         }
 
         private static void RemoveMarkerFile()
@@ -141,93 +133,7 @@ namespace Improbable.Gdk.Tools
                 EditorApplication.UnlockReloadAssemblies();
             }
 
-            if (exitCode != 0)
-            {
-                return DownloadResult.Error;
-            }
-
-            AssetDatabase.Refresh();
-            SetPluginsCompatibility();
-            return DownloadResult.Success;
-        }
-
-        /// <summary>
-        ///     Sets plugin platform compatibility based on directory structure
-        /// </summary>
-        private static void SetPluginsCompatibility()
-        {
-            foreach (var pluginDirectoryCompatibility in PluginsCompatibilityList)
-            {
-                var pluginPaths = AssetDatabase.FindAssets("", new[] { pluginDirectoryCompatibility.Path });
-                foreach (var pluginPath in pluginPaths)
-                {
-                    var plugin = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(pluginPath)) as PluginImporter;
-                    if (plugin == null)
-                    {
-                        continue;
-                    }
-
-                    plugin.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.AnyPlatformCompatible);
-                    plugin.SetCompatibleWithEditor(pluginDirectoryCompatibility.EditorCompatible);
-                    if (pluginDirectoryCompatibility.AnyPlatformCompatible)
-                    {
-                        foreach (var buildTarget in pluginDirectoryCompatibility.IncompatiblePlatforms)
-                        {
-                            plugin.SetExcludeFromAnyPlatform(buildTarget, true);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var buildTarget in pluginDirectoryCompatibility.CompatiblePlatforms)
-                        {
-                            plugin.SetCompatibleWithPlatform(buildTarget, true);
-                        }
-                    }
-
-                    plugin.SaveAndReimport();
-                }
-            }
-        }
-
-        private class PluginDirectoryCompatibility
-        {
-            public static PluginDirectoryCompatibility CreateWithCompatiblePlatforms(string path,
-                List<BuildTarget> compatiblePlatforms,
-                bool editorCompatible)
-            {
-                return new PluginDirectoryCompatibility(path, false, compatiblePlatforms, null, editorCompatible);
-            }
-
-            public static PluginDirectoryCompatibility CreateWithIncompatiblePlatforms(string path,
-                List<BuildTarget> incompatiblePlatforms,
-                bool editorCompatible)
-            {
-                return new PluginDirectoryCompatibility(path, true, null, incompatiblePlatforms, editorCompatible);
-            }
-
-            public static PluginDirectoryCompatibility CreateAllCompatible(string path)
-            {
-                return new PluginDirectoryCompatibility(path, true, null, null, true);
-            }
-
-            private PluginDirectoryCompatibility(string path,
-                bool anyPlatformCompatible,
-                List<BuildTarget> compatiblePlatforms,
-                List<BuildTarget> incompatiblePlatforms,
-                bool editorCompatible)
-            {
-                Path = path;
-                AnyPlatformCompatible = anyPlatformCompatible;
-                CompatiblePlatforms = compatiblePlatforms ?? new List<BuildTarget>();
-                IncompatiblePlatforms = incompatiblePlatforms ?? new List<BuildTarget>();
-                EditorCompatible = editorCompatible;
-            }
-
-            public string Path { get; }
-            public bool AnyPlatformCompatible { get; }
-            public List<BuildTarget> CompatiblePlatforms { get; }
-            public List<BuildTarget> IncompatiblePlatforms { get; }
-            public bool EditorCompatible { get; }
+            return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
         }
 
         private static string[] ConstructArguments()
