@@ -10,6 +10,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using System.Collections.Generic;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -136,6 +137,8 @@ namespace <#= qualifiedNamespace #>
 
         public struct Update : ISpatialComponentUpdate
         {
+            internal static Queue<List<Update>> Pool = new Queue<List<Update>>();
+
 <# foreach(var fieldDetails in fieldDetailsList) { #>
             public Option<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>;
 <# } #>

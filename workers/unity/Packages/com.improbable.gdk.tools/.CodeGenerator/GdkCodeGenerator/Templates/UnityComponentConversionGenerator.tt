@@ -179,12 +179,12 @@ namespace <#= qualifiedNamespace #>
                 }
                 else
                 {
+                    updates = <#= componentNamespace #>.Update.Pool.Count > 0 ? <#= componentNamespace #>.Update.Pool.Dequeue() : new List<<#= componentNamespace #>.Update>();
                     var updatesComponent = new <#= componentNamespace #>.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<<#= componentNamespace #>.Update>());
-                    updates = updatesComponent.Updates;
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                     entityManager.AddComponentData(entity, updatesComponent);
                 }
 
@@ -682,6 +682,12 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 for (var i = 0; i < entities.Length; i++)
                 {
                     buffer.RemoveComponent<<#= componentNamespace #>.ReceivedUpdates>(entities[i]);
+                    var updateList = data[i].Updates;
+
+                    // Pool update lists to avoid excessive allocation
+                    updateList.Clear();
+                    <#= componentNamespace #>.Update.Pool.Enqueue(updateList);
+
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }
