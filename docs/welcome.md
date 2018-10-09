@@ -106,11 +106,11 @@ It’s a bit lonely in there isn’t it? Keep your client running while we get t
 
 To invite other players to this game, head back to the Deployment Overview page in your console, and select the Share button:
 
-<!-- TODO: Share button pic -->
+<img src="{{assetRoot}}assets/overview-page-share.png" style="margin: 0 auto; display: block;" />
 
 This generates a short link to share with anyone who wants to join in for the duration of the deployment, providing them with Launcher download instructions and a button to join the deployment.
 
-<!-- TODO: Share link pic -->
+<img src="{{assetRoot}}assets/share-modal.png" style="margin: 0 auto; display: block;" />
 
 ## Inviting enemies...
 
