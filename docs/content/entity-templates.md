@@ -33,7 +33,7 @@ The code generator creates a static method `Health.Component.CreateSchemaCompone
 The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spos-entities).
 
 
-**Note**: You need to create a new EntityTemplate for each call to `CreateEntity`.
+> You need to create a new EntityTemplate for each call to `CreateEntity`.
 
 **Example**<br/>
 Example defining a template for a SpatialOS entity `creature`.
@@ -61,62 +61,6 @@ public static class CreatureTemplate
             .Build();
 
         return entityTemplate;
-    }
-}
-```
-
-## Feature Module components
-
-To take advantage of some Feature Modules, you need to add their SpatialOS components to your SpatialOS entity. You do this by calling the appropriate extension methods on the `EntityBuilder` for each Feature Module that requires additional components. This document lists the helper methods and how to use them.
-
-### Transform synchronization module
-
-To add the SpatialOS components required for the transform synchronization Feature Module to work on a SpatialOS entity, use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [worker attribute]({{urlRoot}}/content/glossary#worker-attribute) of the [worker]({{urlRoot}}/content/glossary#worker) you are giving [write-access]({{urlRoot}}/content/glossary#authority) over SpatialOS transforms to.
-
-You have the option to set a starting `location` of type `Vector3`, `velocity` of type `Vector3`, and `rotation` of type `Quaternion`. If you do not provide these, location and velocity default to `Vector3.zero`, and rotation defaults to `Quaternion.identity`.
-
-The following code snippet shows how to use the `AddTransformSynchronizationComponents` extension method with an optional `location` parameter.
-
-**Example**<br/>
-```csharp
-public static class CubeTemplate
-{
-    public static EntityTemplate CreateCubeEntityTemplate(Coordinates coords)
-    {
-        var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(coords.X, coords.Y, coords.Z, "UnityGameLogic")
-            ...
-            ...
-            .AddTransformSynchronizationComponents("UnityGameLogic",
-				location: coords.NarrowToUnityVector());
-
-        return entityBuilder.Build();
-    }
-}
-```
-
-### Player lifecycle module
-
-The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires the [worker attributes]({{urlRoot}}/content/glossary#worker-attribute) of the client, `clientAttribute`, and the server, `serverAttribute`.
-
-The following code snippet shows how to pass  [worker attributes]({{urlRoot}}/content/glossary#worker-attribute) into the `AddPlayerLifecycleComponents` extension method. The `workerId` is the ID of the worker that sent a player creation request, and `clientAttributeSet` is the full list of attributes of this worker. Both fields are populated by the `HandleCreatePlayerRequestSystem.cs` system within the player lifecycle module.
-
-**Example**<br/>
-```csharp
-public static class PlayerTemplate
-{
-    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, List<string> clientAttributeSet, Improbable.Vector3f position)
-    {
-        // Obtain unique client attribute
-        var clientAttribute = clientAttributeSet.First(attribute => attribute != "UnityClient");
-
-        var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(position.X, position.Y, position.Z, "UnityGameLogic")
-            ...
-            ...
-            .AddPlayerLifecycleComponents(clientAttribute, "UnityGameLogic");
-
-        return entityBuilder.Build();
     }
 }
 ```
