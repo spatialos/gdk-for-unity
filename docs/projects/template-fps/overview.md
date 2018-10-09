@@ -29,13 +29,13 @@ This tutorial will introduce you to the GDK workflow, give you a sense of what y
 
 Check out the [health pickups tutorial]({{urlRoot}}/projects/template-fps/tutorial) to get started!
 
-### What's in the box?
+<!-- ### What's in the box?
 
 Get yourself oriented with what's inside the FPS starter project.
 
 With any existing project it can be hard to find your way around. To help you get your bearings, so you can start building your own features on top of the project, you can read up on the [anatomy of the FPS](fix).
 
-It will walk you through some of the projects current mechanics, how the SpatialOS GDK was used, explain some of the design choices and give you tips for how to make great choices when working on your own project.
+It will walk you through some of the projects current mechanics, how the SpatialOS GDK was used, explain some of the design choices and give you tips for how to make great choices when working on your own project. -->
 
 ### Licensing
 
