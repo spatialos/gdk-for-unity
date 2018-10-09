@@ -7,6 +7,7 @@ When you want to try out your game, you need to run a deployment of the game. Th
 
 Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/content/build.md).
 This page contains:
+
 * [How to deploy your game]({{urlRoot}}/content/deploy#how-to-deploy-your-game) - Use this if you want to deploy your own game.
 * [Quickstart: How to deploy the `Playground` project]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
 
