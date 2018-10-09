@@ -91,13 +91,13 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 <%(#Expandable title="Having problems?")%>
 If you need help using the GDK, please come and talk to us about the software and the documentation via:
 
-**Discord**
-
-Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
-
 **The SpatialOS forums**
 
 Visit the [support section](https://forums.improbable.io/c/sup) in our forums and use the unity-gdk tag.
+
+**Discord**
+
+Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
 
 **Github issues**
 
