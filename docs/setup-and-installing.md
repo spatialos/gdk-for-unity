@@ -77,12 +77,12 @@ The SpatialOS installer should have added the SpatialOS CLI to your `path`, allo
 
 |     |     |
 | --- | --- |
-| SSH | `git clone git@github.com:spatialos/UnityGDK.git` |
-| HTTPS | `git clone https://github.com/spatialos/UnityGDK.git` |
+| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
+| HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
 
-The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
+The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
-- a Unity project at `UnityGDK/workers/unity`, which you need to open to use the GDK
+- a Unity project at `gdk-for-unity/workers/unity`, which you need to open to use the GDK
 - SpatialOS features, such as the schema and snapshot files
 - development code
 
