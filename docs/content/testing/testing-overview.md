@@ -18,7 +18,7 @@ The tests in both of these categories use the NUnit testing framework. NUnit is 
 * For the Unity tests, each GDK Module has its own `Tests` directory.
   * For example: `workers\unity\Packages\com.improbable.gdk.core\Tests`
 
-Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines.md#test-directory-structure-and-file-names).
+Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines#test-directory-structure-and-file-names).
 
 ## Further information
 

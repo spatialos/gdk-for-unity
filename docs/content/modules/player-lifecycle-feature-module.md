@@ -18,12 +18,12 @@ The Player lifecycle module is a feature module providing you with a simple play
 To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector).
 After your worker has been created, you need to use the following code snippet:
 
-1. On a [client-worker]({{urlRoot}}/content/glossary.md#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
-1. On a [server-worker]({{urlRoot}}/content/glossary.md#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
+1. On a [client-worker]({{urlRoot}}/content/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
+1. On a [server-worker]({{urlRoot}}/content/glossary#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
 
 ### How to spawn a player entity
 
-To spawn a [SpatialOS entity]({{urlRoot}}/content/glossary.md#spatialos-entity) representing
+To spawn a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) representing
 a player, you need to:
 
 1. Define the entity template for your player entity
@@ -33,7 +33,7 @@ The client-worker initiates the player entity creation once it has been successf
 
 #### 1. Define the player entity template
 
-The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/content/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime).
+The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/content/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
 
 Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template]({{urlRoot}}/content/entity-templates):
 

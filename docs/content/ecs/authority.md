@@ -1,5 +1,5 @@
 # (ECS) Authority
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).
 
@@ -58,7 +58,7 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 > This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
-When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/content/glossary.md#worker-s-view), the GDK:
+When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/content/glossary#worker-s-view), the GDK:
 
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:
