@@ -1,9 +1,3 @@
-[//]: # (
-Suggestion: 
-This page orients the user on what  SpatialOS is, what the GDK is and what these docs are in relation to the SpatialOS docs. 
-It also references that the GDK is availble to download from GitHub.
-It also suggests where to start - welcome setting up, tutorial.)
-
 # SpatialOS GDK for Unity (alpha)
 
 The SpatialOS Game Development Kit (GDK) for Unity enables game developers to build multiplayer [Unity](http://unity3d.com) games with [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). It will be made up of three parts:
