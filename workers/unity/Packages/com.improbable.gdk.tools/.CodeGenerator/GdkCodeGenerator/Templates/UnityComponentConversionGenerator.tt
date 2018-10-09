@@ -677,6 +677,11 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
+                if (updateGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = updateGroup.GetEntityArray();
                 var data = updateGroup.GetComponentDataArray<<#= componentNamespace #>.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
@@ -694,6 +699,11 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
+                if (authorityChangeGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = authorityChangeGroup.GetEntityArray();
                 var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
                 for (var i = 0; i < entities.Length; i++)

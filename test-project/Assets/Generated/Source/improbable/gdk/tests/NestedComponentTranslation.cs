@@ -324,6 +324,11 @@ namespace Improbable.Gdk.Tests
 
             public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
             {
+                if (updateGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = updateGroup.GetEntityArray();
                 var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.NestedComponent.ReceivedUpdates>();
                 for (var i = 0; i < entities.Length; i++)
@@ -341,6 +346,11 @@ namespace Improbable.Gdk.Tests
 
             public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
             {
+                if (authorityChangeGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
                 var entities = authorityChangeGroup.GetEntityArray();
                 var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NestedComponent.Component>>();
                 for (var i = 0; i < entities.Length; i++)
