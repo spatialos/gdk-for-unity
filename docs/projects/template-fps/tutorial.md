@@ -463,9 +463,7 @@ This code snippet contains two comments that are placeholders for code which we 
 
 The first placeholder is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
 
-<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>blah<%(/Expandable)%>
-
-[!!!!!!!!](TODO: Write a thing for that expandable ^)
+<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access]({{urlRoot}}/shared/design/understanding-access)<%(/Expandable)%>
 
 To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
 
