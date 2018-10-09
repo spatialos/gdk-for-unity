@@ -69,7 +69,7 @@ This means entities _may_ initially have `NotAuthoritative<T>` attached for a ti
 
 ### What happens when a worker instance gains or loses authority over a SpatialOS entity
 
-When authority changes over a SpatialOS component the Unity GDK automatically adds an `AuthorityChanges<T>` reactive ECS component to the corresponding ECS entity (where `T` is the component that changed authority).
+When authority changes over a SpatialOS component the GDK automatically adds an `AuthorityChanges<T>` reactive ECS component to the corresponding ECS entity (where `T` is the component that changed authority).
 
 `AuthorityChanges<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
 

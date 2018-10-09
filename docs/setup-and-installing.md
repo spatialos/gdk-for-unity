@@ -27,7 +27,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
 
-- This installs the `spatial CLI`, the `SpatialOS Launcher`, and 32-bit and 64-bit Visual C++ Redistributables
+- This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
 
 **Step 4.** Install a **code editor** if you don't have one already
 
@@ -35,19 +35,24 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 **Using Visual Studio?**
 
-If you are using Visual Studio, within the Visual Studio Installer, on the **Workloads** tab:
+As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
 
-- Select **Game development with Unity**
-- Select **.NET Core cross-platform development**
-- In the **Summary** on the right:
-  - Deselect **Unity 2017.2 64-bit Editor** (the SpatialOS GDK for Unity requires Unity 2018.2.8)
-  - Make sure **Visual Studio Tools for Unity** is selected
+![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
+
+Once you have navigated to the **Workloads** tab:
+
+* Select **.NET Core cross-platform development**
+
+* After selecting **Game development with Unity**:
+	- Deselect any options in the **Summary** on the right that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor)
+    - The SpatialOS GDK for Unity requires **Unity 2018.2.8**, which should already be installed if you have followed the setup guide correctly.
+	- Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it)
 
 > **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
 **Using Rider?**
 
-If you are using Rider, install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
+Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 <%(/Expandable)%>
 
@@ -67,7 +72,7 @@ If you are using Rider, install the [**Unity Support** plugin](https://github.co
 
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Mac|label=Mac" target="_blank">SpatialOS installer</a>**
 
-- This installs the `spatial CLI`, the `SpatialOS Launcher`, and 32-bit and 64-bit Visual C++ Redistributables
+- This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
 
 **Step 4.** Install a **code editor** if you don't have one already
 
@@ -75,11 +80,11 @@ If you are using Rider, install the [**Unity Support** plugin](https://github.co
 
 **Using Visual Studio?**
 
-If you are using Visual Studio, within the Visual Studio Installer, select **.NET Core + ASP .NET Core**
+Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/), within the Visual Studio Installer, select **.NET Core + ASP .NET Core**.
 
 **Using Rider?**
 
-If you are using Rider, install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
+Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 <%(/Expandable)%>
 
