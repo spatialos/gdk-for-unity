@@ -672,7 +672,9 @@ You can use the SpatialOS inspector to help you find where the two players are, 
 
 By selecting the visual marker for an entity you can view its component values in the right-side panel, by expanding the `Components` section.
 
-Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
+Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.
+
+![A picture showing how the above looks]({{assetRoot}}assets/health-pickups-tutorial/inspect-health.jpg)<%(/Expandable)%>
 
 <%(#Expandable title="8. Walk the damaged player over the health pack and check if it is consumed and applied.")%>Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
 
@@ -682,4 +684,6 @@ When the injured player collides with the health pack it should become invisible
 
 Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
 
-If you implemented the respawn coroutine then you should also see the health pack reappear after a short time.
+If you implemented the respawn coroutine then you should also see the health pack reappear after a short time. Here's how it should look:
+
+![Two clients running locally demonstrate the health pickup behaviour]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-demo.gif)
