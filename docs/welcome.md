@@ -22,11 +22,7 @@ You’ll then be ready to learn how to build your own features. Our tutorial for
 
 <%(Callout type="info" message="Setting up SpatialOS, the GDK, the FPS Starter Project, and their dependencies should take you about 10 mins.")%>
 
-Follow our [setup guide]({{urlRoot}}/setup-and-installing) to download and install the GDK and its dependencies.
-
-Next, please clone the FPS starter project as follows:
-
-1. Follow the [machine setup guide]({{urlRoot}}/setup-and-installing#set-up-your-machine).
+1. Follow the [setup guide]({{urlRoot}}/setup-and-installing#set-up-your-machine) to download and install the GDK and its dependencies.
 2. Clone the [GDK for Unity FPS Starter Project](https://github.com/spatialos/gdk-for-unity-fps-starter-project) repository:
 
     |     |     |
@@ -77,13 +73,26 @@ There is a quick fix however:
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
 
-<!-- !!!! TODO: <Explain to people how to open the project in Unity - eg that you have to go to /workers to find the Unity project - just in case>
- !!!! -->
+Open the Unity project, by starting the Unity Editor and navigating to `gdk-for-unity-fps-starter-project/workers/unity`.
 
 In the Unity Editor, you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
 
 <!-- TODO: Image of Unity editor SpatialOS menu  -->
 
+> **It finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
+
+After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` should contain the following files:
+```text
+    worker
+        ├── SimulatedPlayerCoordinator@Linux.zip
+        ├── UnityClient@Mac.zip
+        ├── UnityClient@Windows.zip
+        ├── UnityGameLogic@Linux.zip
+    schema
+        ├── schema.descriptor
+```
+
+<<<<<<< HEAD
 <%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor.")%>
 
 ## Uploading
@@ -96,7 +105,18 @@ You’ll need your generated project name to deploy the FPS game to the cloud. T
 
 <img src="{{assetRoot}}assets/project-page.png" style="margin: 0 auto; display: block;" />
 
-Using a text editor of your choice, open the `gdk-for-unity-fps-starter-project/spatialos.json` file and replace the `unity_gdk` project name with the project name you were assigned in the Web Console. This will let the SpatialOS platform know which project you intend to upload to.
+Using a text editor of your choice, open the `gdk-for-unity-fps-starter-project/spatialos.json` file and replace the `unity_gdk` project name with the project name you were assigned in the Web Console. This will let the SpatialOS platform know which project you intend to upload to. Your `spatialos.json` should look like this:
+
+```json
+{
+    "name": "beta_yankee_hawaii_621",
+    "project_version": "0.0.1",
+    "sdk_version": "14.0-b6143-48ac8-WORKER-SNAPSHOT",
+    "dependencies": [
+        {"name": "standard_library", "version": "14.0-b6143-48ac8-WORKER-SNAPSHOT"}
+    ]
+}
+```
 
 ### Upload worker assemblies
 
@@ -110,7 +130,7 @@ Using a terminal of your choice - for example, the Command Prompt for Windows - 
 
 ```
 Upload report:
-6 artifacts uploaded (3 successful, 3 skipped, 0 failed)
+  - 5 artifacts uploaded (4 successful, 1 skipped, 0 failed)
 ```
 
 Based on your network speed, this may take a little while (1-10 mins) to complete.
@@ -121,11 +141,14 @@ The next step is to [launch a cloud deployment](https://docs.improbable.io/refer
 
 When launching a cloud deployment you must provide three parameters:
 
-* **the assembly name**, which identifies the worker assemblies to use
+* **the assembly name**, which identifies the worker assemblies to use. The name needs to confirm to the following regex: `[a-zA-Z0-9_.-]{5,64}`
 * **a launch configuration**, which declares the world and load balancing configuration
-* **a name for your deployment**, which is used to label the deployment in the SpatialOS console.
+* **a name for your deployment**, which is used to label the deployment in the SpatialOS console. The name needs to be in lowercase and can't contain dashes.
 
-Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (e.g shootyshooty).
+Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (e.g shootyshooty). A valid launch command would look like this:
+```
+spatial cloud launch --snapshot=snapshots/default.snapshot myassembly cloud_launch_large.json shootyshooty 
+```
 
 This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
