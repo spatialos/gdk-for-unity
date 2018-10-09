@@ -2,9 +2,9 @@
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
 # Workers: API - Worker
 
-_This document relates to both *[GameObject-MonoBehaviour and  ECS workflows](../intro-workflows-spos-entities.md)_
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflows](../intro-workflows-spos-entities.md)_
 
-Before reading this document, see the documentation on [workers in the GDK](workers-in-the-gdk.md)) and [Connecting to the SpatialOS Runtime](connecting-to-spos.md).
+Before reading this document, see the documentation on [workers in the GDK](workers-in-the-gdk.md) and [Connecting to the SpatialOS Runtime](connecting-to-spos.md).
 
 We provide the `Worker` class to bootstrap the creation of your workers.
 
@@ -37,15 +37,11 @@ To add more systems directly to the worker after it is already instantiated, you
 **Example: adding definitions to your worker**
 
 ```csharp
-
 worker.World.GetOrCreateManager<YourSystem>();
 
 // after adding all additional systems, ensure you add the following line
-
 // to make sure all existing ECS worlds are correctly updated
-
 ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
-
 ```
 
 You can use the following fields, event callbacks, and methods, with `worker.World.GetOrCreateManager<YourSystem>()`
