@@ -1,6 +1,6 @@
 # Setup
 
-Before starting this tutorial, make sure you have followed the instructions in our [setup and installation guide](TODO).
+Before starting this tutorial, make sure you have followed the instructions in our [setup and installation guide]({{urlRoot}}/setup-and-installing).
 
 # What will be covered?
 
@@ -105,7 +105,7 @@ This component can then be added to the `HealthPickup` entity using the line: `.
 
 #### Setting permissions (ACLs)
 
-[Access Control Lists](fix) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
+[Access Control Lists]({{urlRoot}}/content/glossary#access-control-list) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
 
 In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` function call stated that all worker types should be able to read the data for this entity.
 
@@ -190,7 +190,7 @@ If you have updated the snapshot generation function (as you just did in the ste
 
 You can regenerate the `default.snapshot` file from the SpatialOS menu option in the Unity editor, by running **"Generate FPS Snapshot"**.
 
-<%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](fix).
+<%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
 While they are human-readable you are able to manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
@@ -463,7 +463,7 @@ This code snippet contains two comments that are placeholders for code which we 
 
 The first placeholder is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
 
-<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access]({{urlRoot}}/shared/design/understanding-access)<%(/Expandable)%>
+<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)<%(/Expandable)%>
 
 To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
 
