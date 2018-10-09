@@ -2,17 +2,16 @@
 
 We can test systems functionality like this:
 
-- Construct a world
-- Add a system
-- (If necessary) Assert that the system is set up correctly
-- Execute the system
-- Assert the system behaves correctly
-- Dispose
+* Construct a world
+* Add a system
+* (If necessary) Assert that the system is set up correctly
+* Execute the system
+* Assert the system behaves correctly
+* Dispose
 
 See Unite Berlin talk: https://youtu.be/BW9qSy6ZB0A?t=9048 - 2:30:48 to 2:31:10.
 
 See this example test:
-
 
 ```cs
 [TestFixture]
@@ -43,11 +42,9 @@ public class TickSystemTests
 ```
 
 ## Systems which depend on workers
+
 Some systems assume the world they are in belongs to a worker.
-For example, in their `OnCreateManager` method, they get a reference of the
- worker using `WorkerRegistry.GetWorkerForWorld`. For these systems, you can
- create an instance of `UnityTestWorker` in your `[SetUp]` and dispose of it in
- `[TearDown]`.
+For example, in their `OnCreateManager` method, they get a reference of the worker using `WorkerRegistry.GetWorkerForWorld`. For these systems, you can create an instance of `UnityTestWorker` in your `[SetUp]` and dispose of it in `[TearDown]`.
 
 You can access the `UnityTestWorker` by adding a reference to
  `Improbable.Gdk.TestUtils` assembly in your test assembly definition file.
@@ -98,11 +95,12 @@ public class CleanReactiveComponentsSystemTests
 ```
 
 ## Hybrid Systems
-Your system is not pure and is hybrid if it `[Inject]`s a struct that has any
- one of these types as fields:
-- `ComponentArray<>`,
-- `GameObjectArray`,
-- `TransformAccessArray`.
+
+Your system is not pure and is hybrid if it `[Inject]`s a struct that has any one of these types as fields:
+
+* `ComponentArray<>`
+* `GameObjectArray`
+* `TransformAccessArray`
 
 In order to be able to test Hybrid Systems, you will need to ensure that your
  fixture extends `HybridGdkSystemTestBase`. The `HybridGdkSystemTestBase` class
@@ -110,13 +108,12 @@ In order to be able to test Hybrid Systems, you will need to ensure that your
 
 Otherwise, you will see an exception like this:
 
-```
-System.ArgumentException : ExampleHybridSystem:testDataToPrepare [Inject] may
- only be used on ComponentDataArray<>, ComponentArray<>, TransformAccessArray,
- EntityArray, and int Length.
+```text
+System.ArgumentException : ExampleHybridSystem:testDataToPrepare [Inject] may only be used on ComponentDataArray<>, ComponentArray<>, TransformAccessArray, EntityArray, and int Length.
 ```
 
 For example:
+
 ```cs
 [TestFixture]
 private class FixtureImplementingHybridTestBase : HybridGdkSystemTestBase

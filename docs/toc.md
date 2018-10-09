@@ -2,7 +2,7 @@
 
  ***
 - <h3>+ Get started</h3>
-    - [Welcome]({{urlRoot}}/content/welcome)
+    - [Welcome]({{urlRoot}}/welcome)
     - [Feature list]({{urlRoot}}/content/faqs/key-features)
     - [Installation and setup]({{urlRoot}}/setup-and-installing)
 

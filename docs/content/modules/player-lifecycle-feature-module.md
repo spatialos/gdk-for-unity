@@ -1,40 +1,42 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 36)
 [//]: # (TODO - technical writer review)
 
 # Player Lifecycle Feature Module
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflow](../intro-workflows-spos-entities.md)._
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
 Before reading this document, make sure you are familiar with:
-  * [Core Module and Feature Module overview](./core-and-feature-module-overview.md)
-  * [Creating entity templates](../entity-templates.md)
-  * [Workers in the GDK](../workers/workers-in-the-gdk.md)
-  * [Creating workers with WorkerConnector](../gameobject/api-workerconnector.md)
+
+  * [Core Module and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview.md)
+  * [Creating entity templates]({{urlRoot}}/content/entity-templates.md)
+  * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk.md)
+  * [Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector.md)
 
 The Player lifecycle module is a feature module providing you with a simple player spawning and player lifecycle management implementation.
 
 ### How to enable this module
 
-To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`](../gamobject/gomb-creating-workers-with-workerconnector.md).
+To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector.md).
 After your worker has been created, you need to use the following code snippet:
-1. On a [client-worker](../glossary.md#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
-1. On a [server-worker](glossary.md#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
+
+1. On a [client-worker]({{urlRoot}}/content/glossary.md#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
+1. On a [server-worker]({{urlRoot}}/content/glossary.md#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
 
 ### How to spawn a player entity
 
-To spawn a [SpatialOS entity](../glossary.md#spatialos-entity) representing
-a player, you need to
-1. [Define the entity template for your player entity](#1.-define-the-player-entity-template)
-1. [Specify an entity template for player creation](#2.-specify-an-entity-template-for-player-creation)
+To spawn a [SpatialOS entity]({{urlRoot}}/content/glossary.md#spatialos-entity) representing
+a player, you need to:
+
+1. Define the entity template for your player entity
+1. Specify an entity template for player creation
 
 The client-worker initiates the player entity creation once it has been successfully created.
 
 #### 1. Define the player entity template
 
-The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template](../entity-template.md) to use when sending the entity creation request to the [SpatialOS Runtime](../glossary.md#spatialos-runtime).
-Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template](../entity-template.md):
+The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/content/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime).
+
+Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template]({{urlRoot}}/content/entity-templates):
+
 * `string workerId`: The ID of the worker that wants to spawn this player entity
 *  `Improbable.Vector3f position`: the position where  the client-worker requested to spawn the player entity
 
@@ -97,4 +99,4 @@ public static class OneTimeInitialization
 ### When is a player entity deleted?
 
 To ensure that player entities of disconnected client-workers get deleted correctly,
-the server-workers responsible to manage the player lifecycle sends a `PlayerHeartBeat` [command](../world-component-commands-requests-responses.md)) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker sends a request to the SpatialOS Runtime to delete this entity.
+the server-workers responsible to manage the player lifecycle sends a `PlayerHeartBeat` [command]({{urlRoot}}/content/world-component-commands-requests-responses.md) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker sends a request to the SpatialOS Runtime to delete this entity.
