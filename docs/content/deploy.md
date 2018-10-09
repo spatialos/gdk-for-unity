@@ -108,10 +108,12 @@ Before following this guide - make sure you have followed the [setup guide]({{ur
 
     2. To upload an assembly; open a terminal and navigate to the `UnityGDK` directory (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
     - The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
+    
     > **It’s finished uploading when:** You see `spatial upload <assembly name> succeeded` printed in your terminal output.
 1. Launch a cloud deployment
     - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
     - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
+
     > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
 
 1. Launch a game client:
