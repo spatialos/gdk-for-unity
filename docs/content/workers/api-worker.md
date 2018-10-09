@@ -16,19 +16,19 @@ Upon successfully connecting to the SpatialOS Runtime and creating your worker a
 
   * [WorkerSystem]({{urlRoot}}/content/workers/api-worker-system.md) - A system storing the worker information for easy access from any system in the same ECS world.
 
-  * SpatialOSSendSystem - A system that sends all pending ECS component updates, events and commands to the SpatialOS Runtime on every update.
+  * `SpatialOSSendSystem` - A system that sends all pending ECS component updates, events and commands to the SpatialOS Runtime on every update.
 
-  * SpatialOSReceiveSystem - A system that receives all ECS component updates, events and commands from the SpatialOS Runtime on every update.
+  * `SpatialOSReceiveSystem` - A system that receives all ECS component updates, events and commands from the SpatialOS Runtime on every update.
 
-  * CleanReactiveComponentsSystem - A system that cleans up all [reactive components]({{urlRoot}}/content/ecs/reactive-components.md) and [temporary components]({{urlRoot}}/content/ecs/temporary-components.md) on every update.
+  * `CleanReactiveComponentsSystem` - A system that cleans up all [reactive components]({{urlRoot}}/content/ecs/reactive-components.md) and [temporary components]({{urlRoot}}/content/ecs/temporary-components.md) on every update.
 
-  * WorldCommandsCleanSystem - A system that cleans up all responses received by using [World commands]({{urlRoot}}/content/ecs/ecs-world-commands.md) on every update.
+  * `WorldCommandsCleanSystem` - A system that cleans up all responses received by using [World commands]({{urlRoot}}/content/ecs/ecs-world-commands.md) on every update.
 
-  * WorldCommandsSendSystem -  A system that sends all pending world commands on every update.
+  * `WorldCommandsSendSystem` -  A system that sends all pending world commands on every update.
 
-  * CommandRequestTrackerSystem - A system that keeps track of all command requests that have been sent but a response has not been received.
+  * `CommandRequestTrackerSystem` - A system that keeps track of all command requests that have been sent but a response has not been received.
 
-  * WorkerDisconnectCallbackSystem - A system that triggers an `OnDisconnect` callback when the worker is disconnected.
+  * `WorkerDisconnectCallbackSystem` - A system that triggers an `OnDisconnect` callback when the worker is disconnected.
 
 ##### Add definitions of your worker
 
@@ -37,43 +37,31 @@ To add more systems directly to the worker after it is already instantiated, you
 **Example: adding definitions to your worker**
 
 ```csharp
-
 worker.World.GetOrCreateManager<YourSystem>();
 
 // after adding all additional systems, ensure you add the following line
-
 // to make sure all existing ECS worlds are correctly updated
 
 ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
-
 ```
 
-You can use the following fields, event callbacks, and methods, with `worker.World.GetOrCreateManager<YourSystem>()`
+You can use the following fields, event callbacks, and methods, with `worker.World.GetOrCreateManager<YourSystem>()`.
 
-**Fields**</br>
+**Fields**
 
-| Field         	| Type               	| Description                	|
-
+| Field             | Type                   | Description                    |
 |-------------------|------------------------|--------------------------------|
+| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spos.md) | The connection to the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). You can use it to send data and messages. |
+| World         | `World`                  | The ECS world that this worker is associated with. |
+| WorkerId      | `string`                 | The ID of this worker. |
+| WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary.md#worker-types). |
+| Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary.md#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
+| LogDispatcher | `ILogDispatcher`         | A reference to the [logger]({{urlRoot}}/content/ecs/logging.md) that you can use to send logs to the Unity Console and the SpatialOS Runtime. |
 
-| Connection	| [Connection]({{urlRoot}}/content/connecting-to-spos.md) | The connection to the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). You can use it to send data and messages. |
-
-| World     	| World              	| The ECS world that this worker is associated with. |
-
-| WorkerId  	| string             	| The ID of this worker. |
-
-| WorkerType	| string             	| The [type of this worker]({{urlRoot}}/content/glossary.md#worker-types). |
-
-| Origin    	| Vector3            	| The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary.md#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
-
-| LogDispatcher | ILogDispatcher     	| A reference to the [logger]({{urlRoot}}/content/ecs/logging.md) that you can use to send logs to the Unity Console and the SpatialOS Runtime. |
-
-** Events ** </br>
+**Events**
 
 ```csharp
-
 event Action<string> OnDisconnect;
-
 ```
 
 Register to this callback to get notified when the worker gets disconnected from the SpatialOS Runtime.
@@ -82,12 +70,10 @@ Callback parameters:
 
   * `string`: Contains the reason for the disconnect.
 
-** Methods ** </br>
+**Methods**
 
 ```csharp
-
 static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger, Vector3 origin);
-
 ```
 
 Parameters:
@@ -98,14 +84,12 @@ Parameters:
 
   * `Vector3 origin`: The origin of this worker.
 
-Returns: a `Task` (see the Microsoft documentation on [`Task`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.7.2)  that returns a `Worker` object on completion.
+Returns: a `Task` (see [the Microsoft documentation on `Task`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.7.2))  that returns a `Worker` object on completion.
 
 Throws: a `ConnectionFailedException` if it fails in creating a connection and therefore fails to instantiate a `Worker` object.
 
 ```csharp
-
 static async Task<Worker> CreateWorkerAsync(LocatorConfig config, Func<DeploymentList, string> deploymentListCallback, ILogDispatcher logger, Vector3 origin);
-
 ```
 
 Parameters:
@@ -114,10 +98,10 @@ Parameters:
 
 * `Func<DeploymentList, string> deploymentListCallback`: The callback used to retrieve the correct [deployment]({{urlRoot}}/content/glossary.md#deploying) name given a list of deployments.
 
-* `ILogDispatcher logger`: A reference to the `ILogDispatcher` object that object that the worker uses for [logging]({{urlRoot}}/content/ecs/logging.md].
+* `ILogDispatcher logger`: A reference to the `ILogDispatcher` object that object that the worker uses for [logging]({{urlRoot}}/content/ecs/logging.md).
 
 * `Vector3 origin`: The origin of this worker.
 
-Returns: a `Task` (see the Microsoft documentation on [`Task`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.7.2) that will upon completion return a `Worker` object
+Returns: a `Task` (see [the Microsoft documentation on `Task`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.7.2)) that will upon completion return a `Worker` object
 
 Throws: a `ConnectionFailedException`, if it fails in creating a connection and therefore fails to instantiate a `Worker` object.

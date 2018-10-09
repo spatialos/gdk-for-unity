@@ -30,6 +30,7 @@ You add definitions of the systems inside your worker using the worker API `work
 
 ## Further information
 To learn about a workers’ connection to the SpatialOS Runtime, see:
+
   * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos.md)
 
 To learn more about how to create and use workers in the GDK, please see the following documentation:
@@ -39,10 +40,10 @@ To learn more about how to create and use workers in the GDK, please see the fol
   * GameObject-MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector.md)
 
   * ECS workflow - [API - workers system]({{urlRoot}}/content/workers/api-worker-system.md)
-  <br/>(Workers: Accessing information about the worker at Runtime)
+  
+  * ECS workflow - [ECS: Accessing information about the worker during runtime]({{urlRoot}}/content/ecs/accessing-worker-info.md)
 
 ## Example implementation
-
 
 In the GDK's [Playground project](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Assets/Playground) we provide an example implementation of the connection logic necessary for the workers to connect to the SpatialOS Runtime. These are stored as prefabs, so that you can use them directly in Scenes. We provide three sample Scenes:
 
@@ -52,4 +53,4 @@ In the GDK's [Playground project](https://github.com/spatialos/gdk-for-unity/tre
 
 * `GameLogicScene`: This Scene contains only the `UnityGameLogic` prefab and can be used to build your server worker for cloud deployments.
 
-The position of these prefabs in the Scene define the `Origin` of the worker, which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.
+The position of these prefabs in the Scene define the [`Origin` of the worker]({{urlRoot}}/content/glossary.md#worker-origin), which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.

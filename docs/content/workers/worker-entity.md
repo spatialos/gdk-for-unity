@@ -10,11 +10,10 @@ Each of the workers in your project must have exactly one [ECS entity]({{urlRoot
 
 The worker’s worker entity performs certain tasks:
 
-
   * send and receive [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
   * register changes to the state of the Runtime connection (that is whether the worker is connected to the [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) or not) by filtering for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components.md):
- 	* `OnConnected`: the worker just connected to the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime).
- 	* `OnDisconnected`: the worker just disconnected from the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
+     * `OnConnected`: the worker just connected to the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime).
+     * `OnDisconnected`: the worker just disconnected from the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
 
 
@@ -24,7 +23,8 @@ The worker’s worker entity performs certain tasks:
 You can use the worker to check in an ECS system to see whether the worker just
 connected. This allows you to handle any initialization logic necessary.
 
-**Example**<br/>
+**Example**
+
 ```csharp
 using Improbable.Gdk.Core;
 using Unity.Entities;
@@ -32,26 +32,27 @@ using UnityEngine;
 
 public class HandleConnectSystem : ComponentSystem
 {
-	private struct Data
-	{
-    	public readonly int Length;
-    	[ReadOnly] public ComponentDataArray<OnConnected> OnConnected;
-    	[ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-	}
+    private struct Data
+    {
+        public readonly int Length;
+        [ReadOnly] public ComponentDataArray<OnConnected> OnConnected;
+        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+    }
 
-	[Inject] private Data data;
+    [Inject] private Data data;
 
-	protected override void OnUpdate()
-	{
-    	Debug.Log("Worker just connected!");
-	}
+    protected override void OnUpdate()
+    {
+        Debug.Log("Worker just connected!");
+    }
 }
 ```
 
 ## How to run logic when the worker has just disconnected
 You can use the worker to check in an ECS system to see whether the worker just disconnected. This allows you to handle any clean-up logic necessary.
 
-**Example**<br/>
+**Example**
+
 ```csharp
 using Improbable.Gdk.Core;
 using Unity.Entities;
@@ -59,20 +60,20 @@ using UnityEngine;
 
 public class HandleDisconnectSystem : ComponentSystem
 {
-	private struct Data
-	{
-    	public readonly int Length;
-    	[ReadOnly] public SharedComponentDataArray<OnDisconnected> OnDisconnected;
-    	[ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-	}
+    private struct Data
+    {
+        public readonly int Length;
+        [ReadOnly] public SharedComponentDataArray<OnDisconnected> OnDisconnected;
+        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+    }
 
-	[Inject] private Data data;
+    [Inject] private Data data;
 
-	protected override void OnUpdate()
-	{
-    	var reasonForDisconnect = data.OnDisconnected[0].ReasonForDisconnect;
-    	Debug.Log($"Got disconnected: {reasonForDisconnect}");
-	}
+    protected override void OnUpdate()
+    {
+        var reasonForDisconnect = data.OnDisconnected[0].ReasonForDisconnect;
+        Debug.Log($"Got disconnected: {reasonForDisconnect}");
+    }
 }
 ```
 
@@ -83,24 +84,24 @@ By filtering for these components, you are able to send commands even if you don
 ```csharp
 public class CreateCreatureSystem : ComponentSystem
 {
-	private struct Data
-	{
-    	public readonly int Length;
-    	[ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-    	public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
-	}
+    private struct Data
+    {
+        public readonly int Length;
+        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
+        public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+    }
 
-	[Inject] private Data data;
+    [Inject] private Data data;
 
-	protected override void OnUpdate()
-	{
-    	var requestSender = data.CreateEntitySender[0];
-    	var entity = CreatureTemplate.CreateCreatureEntityTemplate(new Coordinates(0, 0, 0));
-    	requestSender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
-    	(
-        	entity
-    	));
-    	data.CreateEntitySender[0] = requestSender;
-	}
+    protected override void OnUpdate()
+    {
+        var requestSender = data.CreateEntitySender[0];
+        var entity = CreatureTemplate.CreateCreatureEntityTemplate(new Coordinates(0, 0, 0));
+        requestSender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
+        (
+            entity
+        ));
+        data.CreateEntitySender[0] = requestSender;
+    }
 }
 ```
