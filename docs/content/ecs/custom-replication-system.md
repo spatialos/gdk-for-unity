@@ -17,7 +17,7 @@ When a worker sends a SpatialOS event, the GDK puts the event object into an int
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/ecs-system-update-order).
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/system-update-order).
 
 * Handle replication of properties:
 

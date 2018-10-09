@@ -25,7 +25,7 @@ This document is about GameObject-MonoBehaviour component commands. The commands
 
 * Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 * [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
-* [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands)
+* [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
 * GameObject-Monobehaviour component commands - this document
 * ECS component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
 

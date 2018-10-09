@@ -7,7 +7,7 @@
 Before reading this document, make sure you are familiar with:
 
   * [SpatialOS entities: update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
-  * [System update order]({{urlRoot}}/content/ecs/ecs-system-update-order)
+  * [System update order]({{urlRoot}}/content/ecs/system-update-order)
   * [Temporary components]({{urlRoot}}/content/ecs/temporary-components)
   * [Reactive components]({{urlRoot}}/content/ecs/reactive-components)
   * [Workers: Worker entity]({{urlRoot}}/content/workers/worker-entity)
@@ -30,7 +30,7 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
   * The `NewlyAddedSpatialOSEntity` component is a temporary component and added upon creating these entities.
   * The `SpatialEntityId` component is always available on these entities.
   * The `{name of component}.Component` components are always available on these entities for all schema components that belong to these entities.
-  * The `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/content/ecs/ecs-world-commands).
+  * The `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/content/ecs/world-commands).
   * `{name of component}.CommandSenders.{name of command}` components are always available on these entities for every single command defined in your schema.
   * `{name of component}.CommandHandlers.{name of command}` components are available on these entities for all components ands that the worker is authoritative over.
   * `{name of component}.CommandResponders.{name of command}` components are always available on these entities for every single command defined in your schema.
@@ -63,7 +63,7 @@ We guarantee the following:
 
   * The worker entity will exist for as long as the ECS World exists.
   * The `WorkerEntityTag` component is always available on the worker entity.
-  * The `WorldCommands.{name of world command}.CommandSender` components are always available on the worker entity and contain the API to send [world commands]({{urlRoot}}/content/ecs/ecs-world-commands).
+  * The `WorldCommands.{name of world command}.CommandSender` components are always available on the worker entity and contain the API to send [world commands]({{urlRoot}}/content/ecs/world-commands).
   * `{name of component}.CommandSenders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
   * `{name of component}.CommandResponders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
   * The `OnConnected` component is a temporary component added upon creating the worker entity.

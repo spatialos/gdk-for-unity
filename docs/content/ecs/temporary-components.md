@@ -7,7 +7,7 @@
 # (ECS) Temporary components
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-When working with entities, you might need components that only exist for one frame to execute certain logic depending on those components. For this purpose, we introduce the concept of temporary components. If a temporary component is added to an entity, the component will be removed at the end of the update loop, i.e. when the systems inside the `InternalSpatialOSCleanGroup` have been run. See [System update order]({{urlRoot}}/content/ecs/ecs-system-update-order) for more details on the different update groups.
+When working with entities, you might need components that only exist for one frame to execute certain logic depending on those components. For this purpose, we introduce the concept of temporary components. If a temporary component is added to an entity, the component will be removed at the end of the update loop, i.e. when the systems inside the `InternalSpatialOSCleanGroup` have been run. See [System update order]({{urlRoot}}/content/ecs/system-update-order) for more details on the different update groups.
 
 To create a temporary component, we provide you with the  `Improbable.Gdk.Core.RemoveAtEndOfTick` attribute, which can be applied to any ECS component, extending either `IComponentData` or `ISharedComponentData`.
 

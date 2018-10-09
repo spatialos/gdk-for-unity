@@ -6,8 +6,8 @@
 
 Before reading this document, make sure you are familiar with
 
-  * [ECS component generation]({{urlRoot}}/content/ecs/ecs-component-generation)
-  * [ECS system update order]({{urlRoot}}/content/ecs/ecs-system-update-order)
+  * [ECS component generation]({{urlRoot}}/content/ecs/component-generation)
+  * [ECS system update order]({{urlRoot}}/content/ecs/system-update-order)
 
 The following schema file is used for the examples described below.
 

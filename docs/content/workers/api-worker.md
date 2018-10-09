@@ -22,7 +22,7 @@ Upon successfully connecting to the SpatialOS Runtime and creating your worker a
 
   * `CleanReactiveComponentsSystem` - A system that cleans up all [reactive components]({{urlRoot}}/content/ecs/reactive-components) and [temporary components]({{urlRoot}}/content/ecs/temporary-components) on every update.
 
-  * `WorldCommandsCleanSystem` - A system that cleans up all responses received by using [World commands]({{urlRoot}}/content/ecs/ecs-world-commands) on every update.
+  * `WorldCommandsCleanSystem` - A system that cleans up all responses received by using [World commands]({{urlRoot}}/content/ecs/world-commands) on every update.
 
   * `WorldCommandsSendSystem` -  A system that sends all pending world commands on every update.
 

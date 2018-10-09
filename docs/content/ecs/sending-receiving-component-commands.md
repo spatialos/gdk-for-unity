@@ -20,7 +20,7 @@ There are two types of commands in SpatialOS:
 This document is about GameObject-MonoBehaviour component commands. The commands documentation is:
 
 * [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
-* [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands)
+* [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
 * GameObject-Monobehaviour component commands, see [(GameObject-MonoBehaviour) Sending and receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
 * ECS component commands - this document.
 * Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
