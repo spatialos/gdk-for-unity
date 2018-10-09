@@ -35,13 +35,10 @@ To learn about a workers’ connection to the SpatialOS Runtime, see:
 
 To learn more about how to create and use workers in the GDK, please see the following documentation:
 
-  * [API - worker]({{urlRoot}}/content/workers/api-worker)
-
   * GameObject-MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
-
-  * ECS workflow - [API - workers system]({{urlRoot}}/content/workers/api-worker-system)
-  
-  * ECS workflow - [ECS: Accessing information about the worker during runtime]({{urlRoot}}/content/ecs/accessing-worker-info)
+  * [API - worker]({{urlRoot}}/content/workers/api-worker)
+  * [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
+  * ECS workflow [worker entity]({{urlRoot}}/content/workers/worker-entity)
 
 ## Example implementation
 
