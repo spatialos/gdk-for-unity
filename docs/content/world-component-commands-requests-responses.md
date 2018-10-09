@@ -5,15 +5,15 @@
 # Commands: World and component command requests and responses
 _This document relates to both GameObject-MonoBehaviour and ECS workflows._
 
-Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS]({{urlRoot}}/content/intro-workflows-spos-entities)) and [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk). You should also be familiar with the terms; [schema]({{urlRoot}}/content/glossary.md#schema), [SpatialOS entity]({{urlRoot}}/content/glossary.md#spatialos-entity) and [SpatialOS components]({{urlRoot}}/content/glossary.md#spatialos-component).
+Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS]({{urlRoot}}/content/intro-workflows-spos-entities)) and [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk). You should also be familiar with the terms; [schema]({{urlRoot}}/content/glossary#schema), [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) and [SpatialOS components]({{urlRoot}}/content/glossary.md#spatialos-component).
 
 ## About commands
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).
 
 There are two types of commands in SpatialOS:
 
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary.md#spatialos-entity).
-* **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 You can find documentation for commands by following these links:
 
