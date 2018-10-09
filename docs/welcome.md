@@ -64,7 +64,7 @@ There is a bug in the current preview version of the [High Definition Render Pip
 There is a quick fix however:
 
 1. Open the FPS Starter Project in the Unity Editor.
-2. In the Project panel, navigate to Assets > Fps > Art > Materials.
+2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 
 <img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
