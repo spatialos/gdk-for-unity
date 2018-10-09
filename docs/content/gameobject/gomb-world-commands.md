@@ -7,19 +7,22 @@
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
-    * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
-   * [Commands: World and component command requests and responses
+
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+  * [Commands: World and component command requests and responses
 ]({{urlRoot}}/content/world-component-commands-requests-responses)
-   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
+  * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ## About commands
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
 
 There are two types of commands in SpatialOS:
+
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity).
 * **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 The commands documentation is:
+
 * [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands)
 * GameObject-Monobehaviour component command, see [(GameObject-MonoBehaviour)Sending and receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
@@ -29,6 +32,7 @@ The commands documentation is:
 
 ## How to send and receive world commands
 We provide the following types for sending and receiving world commands:
+
   * `WorldCommands.Requirable.WorldCommandRequestSender`
   * `WorldCommands.Requirable.WorldCommandResponseHandler`
 
@@ -46,6 +50,7 @@ long CreateEntity(Improbable.Worker.Core.Entity entityTemplate, EntityId? entity
 ```
 
 Parameters:
+
   * `Improbable.Worker.Core.Entity entityTemplate`: The [template]({{urlRoot}}/content/entity-templates) of the entity that you want to create.
   * `EntityId entityId`: Optional. The ID that the new entity should have, if you [reserved one](#reserveentityids).
   * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the lower-level [Worker SDK (SpatialOS documentation)](https://docs.improbable.io/reference/latest/cppsdk/introduction) is used.
@@ -61,6 +66,7 @@ event Action<CreateEntity.ReceivedResponse> OnCreateEntityResponse
 ```
 
 Callback parameters:
+
   * `ReceivedResponse`: The data associated with the incoming response stored inside a [`ReceivedResponse`]({{urlRoot}}/content/world-component-commands-requests-responses#receivedresponse) struct.
 
 The `CreateEntity.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. However, in this case, the `EntityId` field represents the entity ID of the newly-created entity. If the command failed, this field is null. You can additionally use the `ReserveEntityIds` world command before entity creation which makes it easier to create multiple entities in a group.
@@ -82,6 +88,7 @@ long ReserveEntityIds(uint numberOfEntityIds, uint? timeoutMillis = null, object
 ```
 
 Parameters:
+
   * `uint numberOfEntityIds`: The number of entity IDs that you want to reserve.
   * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the underlying Worker SDK is used.
   * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.
@@ -111,6 +118,7 @@ long DeleteEntity(EntityId entityId, uint? timeoutMillis = null, object context 
 ```
 
 Parameters:
+
   * `EntityId entityId`: The ID of the SpatialOS entity that you want to delete.
   * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the underlying Worker SDK is used.
   * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.
@@ -123,6 +131,7 @@ The corresponding response callback is `WorldCommandResponseHandler.OnDeleteEnti
 event Action<DeleteEntity.ReceivedResponse> OnDeleteEntityResponse
 ```
 Callback parameters:
+
   * `ReceivedResponse`: The data associated with the incoming response stored inside a [`ReceivedResponse`]({{urlRoot}}/content/world-component-commands-requests-responses#receivedresponse) struct.
 
 The `DeleteEntity.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. However, in this case, the `EntityId` field represents the entity ID of the deleted entity. If the command failed, this field is null.
@@ -139,6 +148,7 @@ long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutM
 ```
 
 Parameters:
+
 * `Improbable.Worker.Query.EntityQuery entityQuery`: The query that you want to send to the SpatialOS Runtime. See the documentation of the query object for more details.
 * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the underlying Worker SDK is used.
 * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.to pass more information about the situation to the code handling the response.
@@ -152,9 +162,11 @@ event Action<EntityQuery.ReceivedResponse> OnEntityQueryResponse
 ```
 
 Callback parameters:
+
   * `ReceivedResponse`: The data associated with the incoming response stored inside a [`ReceivedResponse`]({{urlRoot}}/content/world-component-commands-requests-responses#api-component-commands) struct.
 
 The `EntityQuery.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. Additionally, it exposes the following fields:
+
 | Name          	| Type 	| Description                                                                                                                                                            	|
 |-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ResultCount 	| `int` | "The number of entities that matched the query. <br/><br/> Note that a best-effort attempt is made to count the entities when the status code is ApplicationError. In this case, the count can still be non-zero, but should be considered a lower bound (i.e. there might be entities matching the query that were not counted)." |

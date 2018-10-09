@@ -6,6 +6,7 @@
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
+
 * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
 * [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
 * [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component)

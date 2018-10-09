@@ -4,6 +4,7 @@
 _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with:
+
 * the SpatialOS entities section of  [GameObject-MonoBehaviour workflow and ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 * [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
@@ -28,4 +29,4 @@ To represent a worker as a GameObject:
 * See the documentation to find out more about the [`SpatialOSComponent`]({{urlRoot}}/content/gameobject/spatialoscomponent).
 
 
-**Note:** The GameObject representing your worker is not automatically destroyed when you disconnect from SpatialOS.
+> The GameObject representing your worker is not automatically destroyed when you disconnect from SpatialOS.

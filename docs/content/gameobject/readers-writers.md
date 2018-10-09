@@ -6,6 +6,7 @@
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
+
   * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * (Optional) [SpatialOS schema]({{urlRoot}}/content/glossary#schema).
@@ -14,33 +15,36 @@ Before reading this document, make sure you are familiar with:
 Readers and Writers allow you to inspect and change the state of SpatialOS components using MonoBehaviours by letting you perform the following actions:
 
 **Reader**
-- Read the data of a SpatialOS component.
-- Read the authority state of your worker over a SpatialOS component.
-- Register callbacks for reacting to property value changed of a SpatialOS component.
-- Register callbacks for reacting to events corresponding to a SpatialOS component.
-- Register callbacks for reacting to changes to the authority state of your worker over a SpatialOS component.
+  * Read the data of a SpatialOS component.
+  * Read the authority state of your worker over a SpatialOS component.
+  * Register callbacks for reacting to property value changed of a SpatialOS component.
+  * Register callbacks for reacting to events corresponding to a SpatialOS component.
+  * Register callbacks for reacting to changes to the authority state of your worker over a SpatialOS component.
 
 **Writer**
-- Change the property values of a SpatialOS component.
-- Send events defined in a SpatialOS component.
-- All the functionality that a Reader provides (except for listening to authority state changes)
+  * Change the property values of a SpatialOS component.
+  * Send events defined in a SpatialOS component.
+  * All the functionality that a Reader provides (except for listening to authority state changes)
 
 For every SpatialOS component defined in schema, the GDK generates a Reader and Writer. After code generation has finished, the generated Readers and Writers are located in the following namespace:
 
-- `<namespace of schema component>.<component name>.Requirable.Reader`
-- `<namespace of schema component>.<component name>.Requirable.Writer`
+  * `<namespace of schema component>.<component name>.Requirable.Reader`
+  * `<namespace of schema component>.<component name>.Requirable.Writer`
 
 You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
+
   * A reader for a specific component can be injected as long as the worker has read access over this component.
   * A writer for a specific component can only be injected, if the worker has write access over this component.
 
 You can find out more about how to work with Readers and Writers in:
+
   * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
   * [How to read, update and react to changes]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
   * [How to send and receive events]({{urlRoot}}/content/gameobject/sending-receiving-events)
 
 ## Reader API
 The `IReader` interface is bound to the following generic:
+
   * `TSpatialComponentData : ISpatialComponentData`
 
 The exact type depends on the component that the reader is generated for.
@@ -60,6 +64,7 @@ Register to this event to receive a callback whenever any property of a
 component was changed.
 
 Callback parameter:
+
   * `TComponentUpdate`: This will contain fields wrapped inside the `Option` struct to identify which fields were changed.
 
 ```csharp
@@ -69,6 +74,7 @@ Register to this event to receive a callback whenever a specific field of the
 component is updated.
 
 Callback parameter:
+
   * `TField`: The type of this field is code-generated and depends on the schema definition of the field. It will contain the updated value of the specified field.
 
 > General `ComponentUpdated` callbacks are invoked before specific property update callbacks.
@@ -80,10 +86,12 @@ Register to this event to receive a callback whenever the authority
 status of your worker over the corresponding component is changed.
 
 Callback Parameters
+
   * `Authority`: Contains the new authority status of the worker.
 
 ## Writer API
 The `IWriter` interface is bound to the following generics:
+
   * `TSpatialComponentData : ISpatialComponentData`
   * `TSpatialComponentUpdate : ISpatialComponentUpdate`
 
@@ -105,6 +113,7 @@ Register to this event to receive a callback whenever any property of a
 component was changed.
 
 Callback parameter:
+
   * `TSpatialComponentData`: It will contain non-empty values for all fields that were changed.
 
 ```csharp
@@ -114,6 +123,7 @@ Register to this event to receive a callback whenever a specified field of the
 component is updated.
 
 Callback parameter:
+
   * `TField`: The type of this field is code generated and depends on the schema definition of the field. It will contain the updated value of the specified field.
 
 > General `ComponentUpdated` callbacks are invoked before specific field update callbacks.
@@ -127,6 +137,7 @@ status of your worker over the corresponding component is changed.
 > This callback, although available, will not be invoked on Writers. A MonoBehaviour requiring a Writer is automatically enabled and disabled upon gaining/losing authority.
 
 Callback Parameters
+
   * `Authority`: Contains the new authority status of the worker.
 
 **Methods**
@@ -136,6 +147,7 @@ void Send(TComponentUpdate update);
 Allows you to send a component update to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
 
 Parameters:
+
   * `TComponentUpdate update`:  An update object which contains the changed field data. Any field that should not change, should not be set.
 
 ```csharp
@@ -145,4 +157,5 @@ void Send{name of event}(TEventPayload payload);
 Allows you to send an event. These methods are code-generated for each event in your component.
 
 Parameters:
+
   * `TEventPayload payload`: The data that you want to send with your event. The exact type is specified by the schema definition of the event.

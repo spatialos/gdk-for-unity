@@ -4,12 +4,14 @@
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 Before reading this document, make sure you are familiar with
+
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
 
 You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
 By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
 This is enabled by [code-generating]({{urlRoot}}/content/code-generator) the following types:
+
  * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers) - For accessing the component data of the SpatialOS entity.
  * [Sending and Receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands) - For sending and receiving commands.
 
@@ -24,8 +26,10 @@ your linked GameObject and decorate these fields with the `[Require]` attribute.
 Parent or child GameObjects will be ignored.
 
 The requirements depend on which types are marked as required in the Monobehaviour. Please read their API documentation to learn more:
+
   * [Readers and Writers API]({{urlRoot}}/content/gameobject/readers-writers)
-  * [Command sender and handler API]({{urlRoot}}/content/gameobject/sending-receiving-commands)<br/>
+  * [Command sender and handler API]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+
 The SpatialOS GDK for Unity automatically injects the correct values into the these fields
 as soon as the worker that this GameObject belongs to fulfills all the requirements.
 
@@ -35,6 +39,7 @@ as soon as the worker that this GameObject belongs to fulfills all the requireme
 ## MonoBehaviour lifecycle
 The GDK manages the lifecycle of all MonoBehaviours that contain at least
 one field with a `[Require]` attribute. It ensures that these MonoBehaviours are disabled for
+
   * all Prefabs stored inside the `Resources` folder of your Unity project
   * all MonoBehaviours on instantiated GameObjects that have at least one requirement not fulfilled during runtime
 Whenever a MonoBehaviour is disabled, all fields decorated with the `[Require]` attribute are `null` and you can not use them anymore as soon as `OnDisable` is called on that MonoBehaviour.

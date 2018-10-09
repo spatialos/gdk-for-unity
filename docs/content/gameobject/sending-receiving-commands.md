@@ -8,6 +8,7 @@
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
+
   * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
   * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
   * [Read and write access]({{urlRoot}}/content/glossary#authority)
@@ -16,10 +17,12 @@ Before reading this document, make sure you are familiar with:
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
 
 There are two types of commands in SpatialOS:
+
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity).
 * **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 This document is about GameObject-MonoBehaviour component commands. The commands documentation is:
+
 * Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 * [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands)
@@ -29,11 +32,11 @@ This document is about GameObject-MonoBehaviour component commands. The commands
 
 ### How to send and receive component commands
 To send and handle commands the GDK automatically generates the following types
+
   * `CommandRequestSender` for sending command requests
   * `CommandRequestHandler` for handling received command requests
   * `RequestResponder` for handling received command requests and sending command responses
   * `CommandResponseHandler` for handling command responses
-.
 
 These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
 
@@ -51,6 +54,7 @@ component CubeSpawner
 }
 ```
 The GDK generates the following classes in the `Playground` namespace:
+
   * `CubeSpawner.SpawnCube.Request`
   * `CubeSpawner.SpawnCube.ReceivedRequest`
   * `CubeSpawner.SpawnCube.Response`
@@ -128,7 +132,7 @@ public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 ```
 [//]: # (TODO - add how to do spawn logic in code example above)
 
-**Note:** For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/content/gameobject/create-delete-spos-entries) document.
+> For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/content/gameobject/create-delete-spos-entries) document.
 
 #### How to receive command responses
 You can only listen to command responses on the entity that you sent the request from. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
@@ -170,6 +174,7 @@ The `CommandRequestSender` is used to send command requests and provides one met
 long Send{name of command}Request(EntityId entityId, TPayload payload, uint? timeoutMillis, bool allowShortCircuiting, object context)
 ```
 Parameters:
+
   * `EntityId entityId` - The id of the SpatialOS entity that you want to send the command to.
   * `TPayload payload` - This is the payload of your command. The type `TPayload` depends on what you defined in your schema as the payload.
   * `uint? timeoutMillis` - Optional. Specifies after how many milliseconds this command should time out. This is null by default implying that the default of 5 seconds of the underlying Worker SDK will be used.
@@ -207,16 +212,19 @@ The API is as follows
 void SendResponse(TPayload payload);
 ```
 Parameters:
+
   * `TPayload payload`: The payload of the command response that you want to send. The exact type will be code-generated according to the response type specified for the command type within the schema declaration for this component.
 
 ```csharp
 void SendResponseFailure(string message);
 ```
 Parameters:
+
   * `string message`: The message that you want to send to indicate the reason for failing the command.
 
 > You are only able to send either a success response or a failed response once.
 Calling `SendResponse` or `SendResponseFailure` multiple times will not result in sending multiple responses.
+
 #### CommandResponseHandler
 The `CommandResponseHandler`is used to handle command responses and provides one event for each command it is responsible for.
 You can register callbacks by subscribing to the events declared for this class.

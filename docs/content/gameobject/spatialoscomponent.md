@@ -5,6 +5,7 @@
  _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with
+
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Linking SpatialOS entites as GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
   * [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
@@ -27,23 +28,29 @@ The SpatialOS GDK automatically adds a `SpatialOSComponent` MonoBehaviour to eac
 bool IsEntityOnThisWorker(EntityId entityId)
 ```
 Parameters:
+
   * `EntityId entityId`: The SpatialOS entity id of the entity that we want to check.
+
 Returns: true, if the specified entity is checked out on the same worker as the GameObject that we call this from.
 
 ```csharp
 bool TryGetGameObjectForSpatialOSEntityId(EntityId entityId, out GameObject linkedGameObject);
 ```
 Parameters:
+
   * `EntityId entityId`: The SpatialOS entity id of the entity that we want to retrieve the linked GameObject from.
   * `GameObject linkedGameObject`: Will contain the linked GameObject after calling this method or null, if none is linked to the specified entity id.
+
 Returns: true, if the entity is checked out on the same worker as the component from which we call the method and it is linked to a GameObject, false otherwise.
 
 ```csharp
 bool TryGetSpatialOSEntityIdForGameObject(GameObject linkedGameObject, out EntityId entityId);
 ```
 Parameters:
+
   * `GameObject linkedGameObject`: The GameObject that we want to get the linked SpatialOS entity from.
   * `EntityId entityId`: Will contain the SpatialOS entity id of the linked GameObject.
+  
 Returns: true, if the GameObject is linked to a SpatialOs entity and that entity is checked out on the same worker as the component from which we call the method, false otherwise.
 
 ### How to use the `SpatialOSComponent`

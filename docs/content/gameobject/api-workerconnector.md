@@ -16,7 +16,7 @@ During the creation of your workers, they attempt to connect to the SpatialOS Ru
 | OnWorkerCreationFinished | Action<Worker> | A callback that is invoked when the worker was created successfully. |
 
 
-** Methods **
+**Methods**
 
 ```csharp
 public async Task Connect(string workerType, ILogDispatcher logger)

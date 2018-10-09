@@ -10,6 +10,7 @@ Events are SpatialOS's equivalent of broadcasted messages. They allow you to sen
 > For more information, see the documentation on [events](https://docs.improbable.io/reference/latest/shared/glossary#events).
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
+
 * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
 * [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
 * [Read and write access]({{urlRoot}}/content/glossary#authority)
@@ -35,6 +36,7 @@ component Bomb
 ```
 
 This will generate the following classes in the `Playground` namespace:
+
   * `Bomb.Requirable.Reader`
   * `Bomb.Requirable.Writer`
 
