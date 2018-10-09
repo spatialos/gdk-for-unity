@@ -4,6 +4,7 @@
 _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with:
+
 * The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities](../intro-workflows-spos-entities.md)
 * [Workers in the GDK](../workers/workers-in-the-gdk.md)
 
@@ -30,12 +31,13 @@ To do this, when you use the Worker Connector,
 call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
 
  In your project, create a prefab for any SpatialOS entity you want to represent as a GameObject. Where you store the prefab depends on which worker is going to create the GameObject.
+
 *   For any worker, use the `Resources/Prefabs/Common/` directory.  
 * For specific worker types, use the `Resources/Prefabs/<WorkerType>` directory where `<WorkerType>` is the type of worker which is going to make this prefab. (Using this directory makes the prefab available for only for a specific worker type.)
 
 1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template](TODO: link to doc 22 - entity templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
 
-Note: Do not proactively destroy GameObjects representing SpatialOS entities. The GDK manages the lifecycle of these GameObjects so by not destroying these GameObjects, you ensure that your worker’s internal state is not corrupted.
+> Do not proactively destroy GameObjects representing SpatialOS entities. The GDK manages the lifecycle of these GameObjects so by not destroying these GameObjects, you ensure that your worker’s internal state is not corrupted.
 
 ### How to customize the GameObject Creation Feature Module
 To customize the creation of GameObjects, implement the `IEntityGameObjectCreator` interface. This interface provides the following methods that the GDK calls:
@@ -47,8 +49,10 @@ GameObject OnEntityCreated(SpatialOSEntity entity);
 ```
 
 Fields:
+
   * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view](TODO: link to glossary - worker’s view).
 Returns:
+
   * The `GameObject` that should represent the entity. Return null to _not_ link a GameObject to the SpatialOS entity.
 
 ```csharp
@@ -56,6 +60,7 @@ void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject);
 ```
 
 Fields:
+
   * `EntityId entityId`: The entity ID of the SpatialOS entity that was just removed from your worker.
   * `GameObject linkedGameObject`: The GameObject that was linked to the SpatialOS entity or null if none was linked.
 
@@ -67,12 +72,14 @@ This is a wrapper around an ECS entity which you can use to easily access its da
 bool HasComponent<T>()
 ```
 Returns:
+
   * True, if the ECS entity contains the specified ECS component representing a SpatialOS component, denoted as `T`.
 
 ```csharp
 T GetComponent<T>()
 ```
 Returns:
+
   * If the ECS entity has it, returns the ECS  component, denoted as `T`. If it doesn’t have the ECS component, it returns a struct of type `T` with all its fields initialized with their default values.
 
 #### Example GameObject creator
