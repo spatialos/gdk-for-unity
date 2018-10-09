@@ -15,6 +15,7 @@ Before reading this document, make sure you are familiar with:
 Readers and Writers allow you to inspect and change the state of SpatialOS components using MonoBehaviours by letting you perform the following actions:
 
 **Reader**
+
   * Read the data of a SpatialOS component.
   * Read the authority state of your worker over a SpatialOS component.
   * Register callbacks for reacting to property value changed of a SpatialOS component.
@@ -22,6 +23,7 @@ Readers and Writers allow you to inspect and change the state of SpatialOS compo
   * Register callbacks for reacting to changes to the authority state of your worker over a SpatialOS component.
 
 **Writer**
+
   * Change the property values of a SpatialOS component.
   * Send events defined in a SpatialOS component.
   * All the functionality that a Reader provides (except for listening to authority state changes)

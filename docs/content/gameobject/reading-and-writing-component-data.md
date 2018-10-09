@@ -110,6 +110,7 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
 The following code example sets up a specific field update callback.
 This example MonoBehaviour would be enabled on any worker which has read access to the `Health` component.
+
 > Currently updating any field of the component will trigger the callback for all `{name of component property}Updated`.
 
 ```csharp
