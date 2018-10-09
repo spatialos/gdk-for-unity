@@ -81,7 +81,7 @@ In the Unity Editor, you can build your workers from the SpatialOS menu by click
 
 > **It finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
 
-After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` should contain the following files:
+After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain the following files:
 ```text
     worker
         ├── SimulatedPlayerCoordinator@Linux.zip
@@ -92,7 +92,6 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
         ├── schema.descriptor
 ```
 
-<<<<<<< HEAD
 <%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor.")%>
 
 ## Uploading
