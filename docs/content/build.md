@@ -6,7 +6,7 @@
 
 Before running a [deployment of your game]({{urlRoot}}/content/deploy) locally or in the cloud, you need to:
 
-1. Build the bridge configuration and launch configuration of your [workers]({{urlRoot}}/content/workers).
+1. Build the bridge configuration and launch configuration of your [workers]({{urlRoot}}/content/workers/workers-in-the-gdk).
 1. Prepare the build configuration of your workers.
 1. Build your workers.
 
