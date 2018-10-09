@@ -8,18 +8,18 @@ Before reading this document, make sure you are familiar with:
 
   * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Read and write access]({{urlRoot}}/content/glossary#authority)
-  * [(GameObject-MonoBehaviour) World commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
+  * [(GameObject-MonoBehaviour) World commands]({{urlRoot}}/content/gameobject/world-commands)
   * [(GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
   * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 
-To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API]({{urlRoot}}/content/gameobject/gomb-world-commands)
+To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API]({{urlRoot}}/content/gameobject/world-commands)
 ### How to create a SpatialOS entity
 To create an entity, you
 
   * [define the entity's template]({{urlRoot}}/content/entity-templates)
-  * [send the `CreateEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#createentity).
+  * [send the `CreateEntity` world command]({{urlRoot}}/content/gameobject/world-commands#createentity).
 
 > When you create an entity, the SpatialOS GDK for Unity by default does not associate a GameObject with it. For more information on how to enable this, see [representing entities with gameobjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects).
 
@@ -166,7 +166,7 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
 To delete an entity, you
 
   * identify the SpatialOS entity id of the entity that you want to delete
-  * [send the `DeleteEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#deleteentity).
+  * [send the `DeleteEntity` world command]({{urlRoot}}/content/gameobject/world-commands#deleteentity).
 
 > Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, if you used the [GameObject creation feature module]({urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
 

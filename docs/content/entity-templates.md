@@ -30,7 +30,7 @@ component Health {
 
 The code generator creates a static method `Health.Component.CreateSchemaComponentData(int currentHealth)` which instantiates and populates a `ComponentData` object.
 
-The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
+The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
 
 
 > You need to create a new EntityTemplate for each call to `CreateEntity`.

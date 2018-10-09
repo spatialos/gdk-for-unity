@@ -24,7 +24,7 @@ To enable the Creation Feature Module in your project:
 
 1. Set up your project to use the Creation Feature Module.
 	* In your Unity project’s `Packages` directory, locate the Unity Packages manifest `manifest.json`. Add the Creation Feature Module to the manifest by adding: `"com.improbable.gdk.gameobjectcreation": "file:<path-to-gdk>/workers/unity/Packages/com.improbable.gdk.gameobjectcreation"`
-1. Set up your workers to use the Creation Feature Module when the [WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector) initializes them. To do this, when you use the Worker Connector, call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
+1. Set up your workers to use the Creation Feature Module when the [WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector) initializes them. To do this, when you use the Worker Connector, call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
  In your project, create a prefab for any SpatialOS entity you want to represent as a GameObject. Where you store the prefab depends on which worker is going to create the GameObject.
   * For any worker, use the `Resources/Prefabs/Common/` directory.  
   * For specific worker types, use the `Resources/Prefabs/<WorkerType>` directory where `<WorkerType>` is the type of worker which is going to make this prefab. (Using this directory makes the prefab available for only for a specific worker type.)

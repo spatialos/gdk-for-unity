@@ -15,7 +15,7 @@ The Player lifecycle module is a feature module providing you with a simple play
 
 ### How to enable this module
 
-To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector).
+To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector).
 After your worker has been created, you need to use the following code snippet:
 
 1. On a [client-worker]({{urlRoot}}/content/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`

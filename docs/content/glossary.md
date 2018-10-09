@@ -96,7 +96,7 @@ Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-
 
 > Related:
 > 
-> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
+> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
 > * [Locator Connection Flow](#locator-connection-flow)
 > * [Receptionist Connection Flow](#receptionist-connection-flow)
 

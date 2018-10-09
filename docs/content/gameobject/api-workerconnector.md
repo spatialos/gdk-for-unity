@@ -2,7 +2,7 @@
 # (GameObject-Monobehaviour) API - WorkerConnector
 _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-Before reading this document, see the documentation on [(GameObject-MonoBehaviour) Creating workers with the WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector).
+Before reading this document, see the documentation on [(GameObject-MonoBehaviour) Creating workers with the WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector).
 
 During the creation of your workers, they attempt to connect to the SpatialOS Runtime. Only a successful connection leads to the creation of a worker. Many of the fields relate to this.
 
