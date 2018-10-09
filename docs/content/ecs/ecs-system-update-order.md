@@ -2,7 +2,7 @@
 [//]: # (TODO - Tech writer review)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
 
-## (ECS) System update order
+# (ECS) System update order
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 Unity provides attributes to define the [update order of systems (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
@@ -37,7 +37,7 @@ Here's a diagram of the update order:
 
 ![Update order](../../assets/update-order.png)
 
-### Update vs FixedUpdate
+## Update vs FixedUpdate
 
 All of these groups run relative to `PlayerLoop.Update`, but sometimes you might want to run a system on `PlayerLoop.FixedUpdate`. An example of this is moving a GameObject at a fixed speed. You should do this in `PlayerLoop.FixedUpdate` because that will tick at regular intervals. You can find more information on `Update` and `FixedUpdate` [here (Unity documentation)](https://unity3d.com/learn/tutorials/topics/scripting/update-and-fixedupdate).
 

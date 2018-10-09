@@ -1,20 +1,20 @@
 [//]: # (Doc of docs reference 31)
 [//]: # (TODO - Tech writer review)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1IGblyE-pvA4ZyJIjN8PcD1Ct6pE4FNhtlXRdp_Sy97o/edit)
-##  (ECS) ECS component generation
+#  (ECS) ECS component generation
  _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 The [code generator](../code-generator.md) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
 > Note that code generation runs when you open the Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
 
-### Overview
+## Overview
 
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`, is generated for each SpatialOS component. It has the same name as the corresponding schema component.
 The generation process creates a namespace for each struct according to the relevant schemalang component name: `{name of schema component}.Component`
 These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands](./sending-receiving-component-commands.md) or [events (SpatialOS documentation)](./events.md) defined on that component.
 
-### Generation details
+## Generation details
 Each struct contains the following fields:
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang
   * the public property `BlittableBool DirtyBit` used internally to identify whether a component update needs to be sent to the SpatialOS Runtime
@@ -30,7 +30,7 @@ public static Improbable.Worker.Core.ComponentData CreateSchemaComponentData({ar
 
 This method can be used to add his component to your [entity template](add link).
 
-#### Primitive types
+### Primitive types
 Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
 | Schemalang type                | SpatialOS GDK type      |
@@ -57,7 +57,7 @@ Schemalang has three collection types:
 | `option<T>`           | `Improbable.Gdk.Core.Option<T>`                              |
 
 
-#### Custom types
+### Custom types
 For every custom data type in schema, a `struct` is generated defining this type in C# and providing additional serialization methods that are used internally.
 
 **Schemalang**
@@ -85,7 +85,7 @@ public struct SomeData
 }
 ```
 
-#### Enums
+### Enums
 For every schemalang enum, a C# enum will be generated.
 > The `uint` values defined for the generated C# enum are not guaranteed to be the same as the defined schemalang field IDs.
 

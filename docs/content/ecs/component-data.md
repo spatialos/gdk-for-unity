@@ -3,6 +3,7 @@ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md
 
 The [code generator]({{urlRoot}}/content/ecs/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
+
 > Note that code generation runs when you open the Unity Editor or when you select Improbable > Generate Code from the Editor menu.
 
 ## Overview
@@ -66,7 +67,6 @@ public class ChangeComponentFieldSystem : ComponentSystem
 
 ## Updates
 When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/ecs/reactive-components).
-
 
 ## Generation details
 
