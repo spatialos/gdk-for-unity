@@ -215,7 +215,7 @@ The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate
 
 We can use it, for instance, to highlight where all the Simulated Players and Player Entities are in the world (note: not cool to identify where you friends are hiding)
 
-<img src="{{assetRoot}}assets/inspector-fake-players.jpg" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/inspector-simulated-player.png" style="margin: 0 auto; display: block;" />
 
 [The Logs app](https://docs.improbable.io/reference/latest/shared/operate/logs#logs), available one tab away, displays all your deployment’s logs (whether they come from the SpatialOS Runtime or the Worker code you have written) with useful filters.
 
