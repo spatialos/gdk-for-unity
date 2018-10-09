@@ -92,4 +92,4 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
 ### What's next?
 
-Once you've got the GDK set up on your computer, dive right in with the FPS starter project and [deploy a game to the cloud]({{urlRoot}}/projects/template-fps/cloud-fake-clients)!
+Once you've got the GDK set up on your computer, get back to [deploying a game to the cloud]({{urlRoot}}/welcome)!
