@@ -2,7 +2,7 @@
 
 ## Worker System
 
-The WorkerSystem can be injected in any `ComponentSystem` that is in the same ECS world as the worker to access the data relevant to the worker. See the code example below on how to inject it:
+The WorkerSystem can be injected into any `ComponentSystem` that is in the same ECS world as the worker to access the data relevant to the worker. See the code example below on how to inject it:
 
 ```csharp
 using Improbable.Gdk.Core;

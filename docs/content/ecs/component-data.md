@@ -1,29 +1,31 @@
 # ECS: Components and component updates
-_This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+_This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
-The [code generator]({{urlRoot}}/content/ecs/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the schemalang [docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang docs (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-
-> Note that code generation runs when you open the Unity Editor or when you select Improbable > Generate Code from the Editor menu.
+> Note that code generation runs when you open the Unity Editor or when you select **Improbable** > **Generate Code** from the Editor menu.
 
 ## Overview
 
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each SpatialOS component.
 
-The generation process names each of these structs according to the relevant schemalang component name, `[schemalang_name].Component`. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands]({{urlRoot}}/content/ecs/commands) or [events]({{urlRoot}}/content/ecs/events) defined on that component.
+The generation process names each of these structs according to the relevant schemalang component name, `[schemalang_name].Component`. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#commands) or [events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
 
 For example:
 
-Schemalang
+**Schemalang**:
+
 ```
 component Example {
   id = 1;
   int32 value = 1;
 }
 ```
-Generated component
-```	csharp
+
+**Generated component**:
+
+```csharp
 public partial class Example
 {
     public struct Component : IComponentData, ISpatialComponentData
@@ -35,7 +37,7 @@ public partial class Example
 
 ## Reading and writing
 
-When a SpatialOS entity is [checked out]({{urlRoot}}/content/ecs/entity-checkout-process), its components are automatically added to the corresponding ECS entity as part of the entity check out process.
+When a SpatialOS entity is [checked out]({{urlRoot}}/content/glossary#checking-out), its components are automatically added to the corresponding ECS entity as part of the entity check out process.
 
 A generated component's values can be read by injecting that component into a system, just like any other ECS component.
 
@@ -101,13 +103,16 @@ Note that the GDK does not use `Improbable.Collections` in Unity ECS component g
 ### Custom types
 For every custom data type in schema a `struct` will be generated.
 
-Schemalang
+**Schemalang**:
+
 ```
 type SomeData {
   int32 value = 1;
 }
 ```
-Generated C#
+
+**Generated C#**:
+
 ```	csharp
 public struct SomeData
 {
@@ -118,7 +123,8 @@ public struct SomeData
 ### Enums
 For every schemalang enum, a C# enum will be generated.
 
-Schemalang
+**Schemalang**:
+
 ```
 enum Color {
     YELLOW = 0;
@@ -126,9 +132,10 @@ enum Color {
     BLUE = 2;
     RED = 3;
 }
-
 ```
-Generated C#
+
+**Generated C#**:
+
 ```csharp
 public enum Color : uint
 {
@@ -138,4 +145,5 @@ public enum Color : uint
     RED = 3,
 }
 ```
+
 Note the `uint` values are coincidentally the same as the schemalang field IDs; there is no guarantee that they will be the same.

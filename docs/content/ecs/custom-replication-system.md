@@ -1,8 +1,7 @@
 # (ECS) Custom replication systems
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
 ## What the SpatialOS GDK's replication system does
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 By default, the SpatialOS GDK for Unity (GDK) automatically replicates ECS components to SpatialOS whenever you modify an ECS component (that corresponds to a SpatialOS component)'s properties.
 
@@ -18,7 +17,7 @@ When a worker sends a SpatialOS event, the GDK puts the event object into an int
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/system-update-order).
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/ecs-system-update-order).
 
 * Handle replication of properties:
 

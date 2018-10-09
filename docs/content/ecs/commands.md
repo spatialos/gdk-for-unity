@@ -144,7 +144,7 @@ public class BuildWallHandlerSystem : ComponentSystem
 
 Like requests, when an ECS entity receives a command response, the GDK attaches a `ComponentName.CommandResponses.CommandName` ECS component to the ECS entity, where `ComponentName` is the SpatialOS component the command is defined in and `CommandName` is the name of the command in schema.
 
-`ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that was originally sent with the command. **This payload is null** when the command fails.
+`ComponentName.CommandResponses.CommandName` contains a list of `ComponentName.CommandName.ReceivedResponse`. The `ComponentName.CommandName.ReceivedResponse` includes the payload of the response and the request payload that was originally sent with the command. **This payload is null** when the command fails. You can check whether a command has failed or not using the `StatusCode` and `Message` fields of the response.
 
 The ECS entity that sent the request receives the response.
 

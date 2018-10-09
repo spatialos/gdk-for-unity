@@ -1,17 +1,17 @@
 # (ECS) Authority
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
-**Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component).
+**Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).
 
-> If you don't know about authority, you should read [Understanding authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
+> If you don't know about authority, you should read [Understanding access (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
 >
 > Crucially: at runtime, your worker instance may or may not have authority over a given SpatialOS component.
 
 ## How authority is represented in Unity's ECS
 
-For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
+For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
-The authority tags in the GDK are (where `T` is a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component)):
+The authority tags in the GDK are (where `T` is a [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component)):
 
 * Whether or not the worker instance has authority:
     * `Authoritative<T>`: the worker instance has authority over the SpatialOS component
@@ -25,7 +25,7 @@ The authority tags in the GDK are (where `T` is a [SpatialOS component](https://
 
 > **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
 
-Here's an example of how to write a system that runs when a worker instance has authority over the SpatialOS component Position:
+Here's an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component:
 
 ```csharp
 public class AuthoritativePositionSystem : ComponentSystem
@@ -58,7 +58,7 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 > This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
-When a SpatialOS entity enters the worker instance's view, the GDK:
+When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/content/glossary.md#worker-s-view), the GDK:
 
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:
