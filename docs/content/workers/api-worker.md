@@ -2,15 +2,15 @@
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
 # Workers: API - Worker
 
-_This document relates to both *[GameObject-MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)_
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)_
 
-Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)) and [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spos).
+Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spos).
 
 We provide the `Worker` class to bootstrap the creation of your workers.
 
 Note that the connection between your game and the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime), depends on the successful creation of your workers.  During their creation, workers attempt to connect to the SpatialOS Runtime. Only a successful connection leads to the creation of a worker.
 
-Upon successfully connecting to the SpatialOS Runtime and creating your worker and its corresponding [ECS world]({{urlRoot}}/content/glossary.md#unity-ecs-world), the following systems are added by the `Worker` class your [worker’s world]({{urlRoot}}/content/glossary.md#worker-s-world). These systems  ensure that any changes in any SpatialOS entity is correctly synchronized between the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) and the [worker's view]({{urlRoot}}/content/glossary#worker-s-view).
+Upon successfully connecting to the SpatialOS Runtime and creating your worker and its corresponding [ECS world]({{urlRoot}}/content/glossary#unity-ecs-world), the following systems are added by the `Worker` class your [worker’s world]({{urlRoot}}/content/glossary#worker-s-world). These systems  ensure that any changes in any SpatialOS entity is correctly synchronized between the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) and the [worker's view]({{urlRoot}}/content/glossary#worker-s-view).
 
 ## Systems ensuring synchronization between the Runtime and workers
 
@@ -41,7 +41,6 @@ worker.World.GetOrCreateManager<YourSystem>();
 
 // after adding all additional systems, ensure you add the following line
 // to make sure all existing ECS worlds are correctly updated
-
 ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
 ```
 

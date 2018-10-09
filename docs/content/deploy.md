@@ -7,6 +7,7 @@ When you want to try out your game, you need to run a deployment of the game. Th
 
 Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/content/build).
 This page contains:
+
 * [How to deploy your game]({{urlRoot}}/content/deploy#how-to-deploy-your-game) - Use this if you want to deploy your own game.
 * [Quickstart: How to deploy the `Playground` project]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project)- Use this if you want to experiment using a deployment.
 
@@ -54,10 +55,12 @@ To start a cloud deployment:
    `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
     `spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>`
     where:
-    - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).
-    - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
-    - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
-    - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots) for further information.
+
+   - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).    
+   - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
+   - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
+   - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots) for further information.
+
 1. Launch a game client:
     1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
     1. In the SpatialOS Console, select the deployment’s name to open the overview page.
@@ -105,10 +108,12 @@ Before following this guide - make sure you have followed the [setup guide]({{ur
 
     2. To upload an assembly; open a terminal and navigate to the `UnityGDK` directory (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`.
     - The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
+    
     > **It’s finished uploading when:** You see `spatial upload <assembly name> succeeded` printed in your terminal output.
 1. Launch a cloud deployment
     - In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
     - This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
+
     > **It’s done when:** You see `Successfully created deployment` printed in your Unity Editor console output.
 
 1. Launch a game client:
