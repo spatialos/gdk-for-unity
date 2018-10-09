@@ -60,7 +60,7 @@ If you are worried your generated code is in a bad state (such as having helper 
 
 Health pickups are a new entity, and we must next define which components should be instantiated each time a new 'health pickup' entity is created.
 
-Typical for SpatialOS GDK projects, the FPS starter project contains a C# file that declares a function for each type of entity. Calling the function returns an `EntityTemplate` object, with the contents of the function defining which components form that entity type. Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
+Typical for SpatialOS GDK projects, the FPS starter project contains a C# file that declares a function for each type of entity. This function defines what components are used to construct an entity. The object it returns is an [Entity Template]({{urlRoot}}/content/entity-templates). Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
 
 You can find this file in your Unity project: `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs`.
 
@@ -97,7 +97,7 @@ The `EntityBuilder` syntax provides a compact way to declare the relevant compon
 
 From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers in your schema file (i.e. `= 1` and `= 2`) determine the order of properties expected as the function's parameters.
 
-This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the final call must be to `.Build();`.
+This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the **final call** must be to `.Build();`.
 
 #### Setting permissions (ACLs)
 
@@ -138,6 +138,7 @@ For health packs we will do the latter, so that when the game begins there will 
 The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor.
 
 We will modify the snapshot generating logic in two steps:
+
 1. Adding a function to create and add a `HealthPack` entity.
 2. Fix the package import settings so use of `Vector3f` is valid.
 
@@ -151,7 +152,7 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. You must add `using Improbable;` to the top of `SnapshotMenu.cs`. Then in your Unity editor Project window, navigate to `/Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
+The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. You must add `using Improbable;` to the top of `SnapshotMenu.cs`. Then in your Unity editor Project window, navigate to `Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
 
 The `Improbable.FPS.Editor` *Import Settings* window contains a section called **References**. You must click the `+` button to add a new reference, double-click the new field and in the asset-finder pop-up that appears, you must select `Improbable.Gdk.Generated`. This is because the `Vector3f` struct is defined within that particular assembly, and we must declare our intent to use this package.
 
