@@ -45,7 +45,7 @@ Which specific worker actually has write access is managed by SpatialOS, and can
 
 If you want to start a [cloud deployment](#deploying), you must first build your game in order to be able to upload the resulting binaries to your cloud deployment. 
 
-The guide on [how to build your game]({{urlRoot}}/content/build.md) explains this process step by step.
+The guide on [how to build your game]({{urlRoot}}/content/build) explains this process step by step.
 
 ### Checking out
 
@@ -92,11 +92,11 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 ### Connection
 
-Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the [`Improbable.Gdk.Core.Worker` class]({{urlRoot}}/content/workers/api-worker.md) . See [Connecting to SpatialOS](https://docs.google.com/document/d/118OOKLgpoZhslQ9jETrnFsTWoDmIPA5Gxa_V8vHp1Bk) for more information.
+Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the [`Improbable.Gdk.Core.Worker` class]({{urlRoot}}/content/workers/api-worker). See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos) for more information.
 
 > Related:
 > 
-> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector.md)
+> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
 > * [Locator Connection Flow](#locator-connection-flow)
 > * [Receptionist Connection Flow](#receptionist-connection-flow)
 
@@ -128,7 +128,7 @@ These packages provide the the basic implementation to synchronize with the Spat
 
 > Related:
 >
-> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview.md)
+> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview)
 
 ### Custom replication
 
@@ -140,7 +140,7 @@ Both of these use cases are made possible by custom replication, a system that g
 
 > Related:
 >
-> * [Custom replication systems]({{urlRoot}}/content/ecs/custom-replication-system.md)
+> * [Custom replication systems]({{urlRoot}}/content/ecs/custom-replication-system)
 
 ### Deploying
 
@@ -153,7 +153,7 @@ As their name suggests, [cloud deployments (SpatialOS documentation)](https://do
 
 > Related:
 >
-> * [How to deploy your game]({{urlRoot}}/content/deploy.md)
+> * [How to deploy your game]({{urlRoot}}/content/deploy)
 
 ### Access Control List (ACL)
 
@@ -162,12 +162,12 @@ In order to read or modify a [SpatalOS component](#spatialos-component), a [work
 * At an entity level, which workers have read access
 * At a component level, which workers may have write access
 
-In the SpatialOS GDK, the [EntityBuilder implementation](https://docs.google.com/document/d/1fdFLsGqx45K-PADsQpGwJ7XUY_-D_xl49t1lUmIGEzs/edit) allows you to add ACL components to entities.
+In the SpatialOS GDK, the [EntityBuilder implementation]({{urlRoot}}/content/api-entity-builder) allows you to add ACL components to entities.
 
 > Related:
 >
-> * [Understanding read and write access (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
-> * [Creating entity templates]({{urlRoot}}/content/entity-templates.md)
+> * [Understanding read and write access (SpatialOS documentation)]({{urlRoot}}/content/api-entity-builder)
+> * [Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ### Feature modules
 
@@ -178,7 +178,7 @@ The core module and all feature modules are [Unity packages](#unity-packages) an
 
 > Related:
 >
-> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview.md)
+> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview)
 
 ### Game client
 
@@ -188,7 +188,7 @@ A game client is a binary. A [client-worker](#client-worker) is an object instan
 
 ### GameObject
 
-In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects.md)
+In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
 
 > Related:
 > 
@@ -199,7 +199,7 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 
 The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
 
-In the [MonoBehaviour workflow] the GDK performs injection via [reflection] using the [`[Require]`attribute]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours.md) to allow you to interact with SpatialOS. A MonoBehaviour will only be enabled when all of its dependencies are populated.
+In the [MonoBehaviour workflow] the GDK performs injection via [reflection] using the [`[Require]`attribute]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour will only be enabled when all of its dependencies are populated.
 
 In the ECS workflow, Unity performs injection via [reflection] using the `[Inject]` attribute inside systems to iterate over all the [Unity ECS entities] matching a required [component] type.
 
@@ -238,7 +238,7 @@ Note that there are [other ways (SpatialOS documentation)](https://docs.improbab
 
 > Related:
 > 
-> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos.md)
+> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos)
 > * [Connection](#connection)
 
 ### Message
@@ -250,14 +250,14 @@ A [worker](#worker) can send and receive updates and messages to and from the [S
 
 > Related:
 >
-> * [Command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses.md)
-> * [Sending and receiving events using MonoBehaviours]({{urlRoot}}/content/gameobject/sending-receiving-events.md)
-> * [Sending and receiving events using ECS]({{urlRoot}}/content/ecs/events.md)
+> * [Command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+> * [Sending and receiving events using MonoBehaviours]({{urlRoot}}/content/gameobject/sending-receiving-events)
+> * [Sending and receiving events using ECS]({{urlRoot}}/content/ecs/events)
 
 ### MonoBehaviour
 
 
-A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours.md). This allows you to use traditional GameObject workflows from the very beginning, without having to worry about the ECS. 
+A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours). This allows you to use traditional GameObject workflows from the very beginning, without having to worry about the ECS. 
 
 > Related:
 >
@@ -296,7 +296,7 @@ Reactive components contain all updates and messages received during the last [u
 
 > Related: 
 >
-> * [Reactive components]({{urlRoot}}/content/ecs/reactive-components.md)
+> * [Reactive components]({{urlRoot}}/content/ecs/reactive-components)
 
 ### Receptionist connection flow
 
@@ -307,7 +307,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Related:
 >
-> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos.md)
+> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos)
 > * [Connection](#connection)
 
 ### Read access
@@ -339,7 +339,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects.md). Each scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects). Each scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
@@ -371,14 +371,14 @@ You'll use a snapshot as the starting point (an [initial snapshot (SpatialOS doc
 
 > Not to be confused with [.NET assembly (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime).
 
-A SpatialOS assembly is created when you [build your workers]({{urlRoot}}/content/build.md#building-your-workers). It contains all the files that your game uses at runtime. This includes the compiled code and an executable and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
+A SpatialOS assembly is created when you [build your workers]({{urlRoot}}/content/build#building-your-workers). It contains all the files that your game uses at runtime. This includes the compiled code and an executable and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
 
-The SpatialOS assembly is stored locally at `build\assembly` in the root directory of your SpatialOS project. When you start a [cloud deployment]({{urlRoot}}/content/deploy.md#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
+The SpatialOS assembly is stored locally at `build\assembly` in the root directory of your SpatialOS project. When you start a [cloud deployment]({{urlRoot}}/content/deploy#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
 
 > Related:
 > 
 > * [spatial cloud upload (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-upload)
-> * [Deploying to the cloud]({{urlRoot}}/content/deploy.md#cloud-deployment)
+> * [Deploying to the cloud]({{urlRoot}}/content/deploy#cloud-deployment)
 
 ### `spatial` command-line tool (CLI)
 
@@ -527,11 +527,11 @@ Unity ECS components contain only data and are represented as structs rather tha
 
 The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in the Unity Editor.
 
-Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects.md). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 
 > Related:
 >
-> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#icomponentdata)
+> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail#icomponentdata)
 
 ### Unity ECS entity
 
@@ -542,7 +542,7 @@ In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS 
 
 > Related:
 >
-> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#entity)
+> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail#entity)
 
 ### Unity ECS system
 
@@ -560,7 +560,7 @@ In the GDK, ECS worlds (and everything in them) are an abstraction used to repre
 
 > Related: 
 > 
-> * [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#world)
+> * [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail#world)
 
 ### Unity packages
 
@@ -582,8 +582,8 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 
 > Related:
 > 
-> * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md)
-> [System update order in the GDK]({{urlRoot}}/content/ecs/system-update-order.md)
+> * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail)
+> [System update order in the GDK]({{urlRoot}}/content/ecs/ecs-system-update-order)
 
 ### Worker
 
@@ -606,7 +606,7 @@ If the worker has write access to a SpatialOS component, it can [send updates an
 it can update [properties (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#property), send and handle [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command) and trigger [events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event).
 
 
-See also the [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk.md) documentation.
+See also the [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) documentation.
 
 > Related: 
 > 

@@ -5,7 +5,7 @@
 
 When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
 
-Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/content/build.md).
+Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/content/build).
 This page contains:
 
 * [How to deploy your game]({{urlRoot}}/content/deploy#how-to-deploy-your-game) - Use this if you want to deploy your own game.
@@ -59,7 +59,7 @@ To start a cloud deployment:
    - `<assembly name>` is the name of the assembly the deployment will use (the one you named above).    
    - `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
    - `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
-   - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots.md) for further information.
+   - `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots) for further information.
 
 1. Launch a game client:
     1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
