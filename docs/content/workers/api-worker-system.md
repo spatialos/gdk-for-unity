@@ -6,7 +6,7 @@ _This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{ur
 
 See first the documentation on [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and the [Worker API]({{urlRoot}}/content/workers/api-worker)
 
-The `WorkerSystem` class stores information about a worker during [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). You can use `WorkerSystem` to access information about the worker during Runtime; any system running in the same [ECS world]({{urlRoot}}/content/glossary#unity-ecs-world) as a worker can access the `WorkerSystem` class.
+The `WorkerSystem` class stores information about a worker during [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime). You can use `WorkerSystem` to access information about the worker during Runtime; any system running in the same [ECS world]({{urlRoot}}/content/glossary#unity-ecs-world) as a worker can access the `WorkerSystem` class.
 
 **Fields**
 

@@ -10,7 +10,7 @@ We provide the `Worker` class to bootstrap the creation of your workers.
 
 Note that the connection between your game and the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime), depends on the successful creation of your workers.  During their creation, workers attempt to connect to the SpatialOS Runtime. Only a successful connection leads to the creation of a worker.
 
-Upon successfully connecting to the SpatialOS Runtime and creating your worker and its corresponding [ECS world]({{urlRoot}}/content/glossary.md#unity-ecs-world), the following systems are added by the `Worker` class your [worker’s world]({{urlRoot}}/content/glossary.md#worker-s-world). These systems  ensure that any changes in any SpatialOS entity is correctly synchronized between the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) and the [worker's view]({{urlRoot}}/content/glossary#worker-s-view).
+Upon successfully connecting to the SpatialOS Runtime and creating your worker and its corresponding [ECS world]({{urlRoot}}/content/glossary.md#unity-ecs-world), the following systems are added by the `Worker` class your [worker’s world]({{urlRoot}}/content/glossary.md#worker-s-world). These systems  ensure that any changes in any SpatialOS entity is correctly synchronized between the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) and the [worker's view]({{urlRoot}}/content/glossary#worker-s-view).
 
 ## Systems ensuring synchronization between the Runtime and workers
 
@@ -94,7 +94,7 @@ static async Task<Worker> CreateWorkerAsync(LocatorConfig config, Func<Deploymen
 
 Parameters:
 
-* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spos#locator-connection-flow) flow.
+* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spos#locator-connection-flow) flow.
 
 * `Func<DeploymentList, string> deploymentListCallback`: The callback used to retrieve the correct [deployment]({{urlRoot}}/content/glossary#deploying) name given a list of deployments.
 
