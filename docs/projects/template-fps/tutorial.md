@@ -253,7 +253,7 @@ This is because the FPS starter project uses the GDK GameObject Creation package
 
 If you right-click in your project file hierarchy, you'll find an option `Create > Prefab`, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
 
-If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a scene to edit them - just remember to drag them to apply your change (in the Unity Inspector panel) and delete them from the scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
@@ -454,7 +454,7 @@ This code snippet contains two comments that are placeholders for code which we 
 
 The first placeholder is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
 
-<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)<%(/Expandable)%>
+<%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access).<%(/Expandable)%>
 
 To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
 
