@@ -75,6 +75,12 @@ namespace Improbable.Gdk.BuildSystem
         {
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            if (environmentConfig == null)
+            {
+                Debug.LogWarning($"Skipping build for {workerType}.");
+                return;
+            }
+
             var buildPlatforms = environmentConfig.BuildPlatforms;
             var buildOptions = environmentConfig.BuildOptions;
 
