@@ -45,7 +45,7 @@ If you want to start a [cloud deployment](#deploying), you must first build your
 
 The guide on [how to build your game](build.md) explains this process step by step.
 
-Checking out
+### Checking out
 Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [(SpatialOS documentation) chunk](https://docs.improbable.io/reference/latest/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
 The worker has a local representation of every [SpatialOS entity](#spatialos-entity) in that chunk
 SpatialOS Runtime sends updates about those entities to the worker

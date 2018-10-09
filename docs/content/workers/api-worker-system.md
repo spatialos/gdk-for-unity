@@ -2,21 +2,21 @@
 
 #  Workers: API - Workers system
 
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflows-spos-entities.md)._
+_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
-See first the documentation on [Workers in the GDK](./workers-in-the-gdk.md) and the [Worker API](./api-worker.md)
+See first the documentation on [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk.md) and the [Worker API]({{urlRoot}}/content/workers/api-worker.md)
 
-The `WorkerSystem` class stores information about a worker during [Runtime](../glossary.md#spatialos-runtime). You can use `WorkerSystem` to access information about the worker during Runtime; any system running in the same [ECS world]( as a worker can access the `WorkerSystem` class.
+The `WorkerSystem` class stores information about a worker during [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). You can use `WorkerSystem` to access information about the worker during Runtime; any system running in the same [ECS world]( as a worker can access the `WorkerSystem` class.
 
 ** Fields **
 
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
-| Connection	| [Connection](../connecting-to-spos.md) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
-| WorkerType	| string             	| The [type of this worker](../glossary.md#type-of-worker). |
-| Origin    	| Vector3            	| The vector by which we [translate] (TODO: link to glossary - translation/translate) all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a worker origin to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
-| WorkerEntity  | Entity             	| The corresponding (Worker entity)[TODO: Add link to GDocs 15.2.a] which allows you to query the current state of the worker as well as send and receive commands. |
-| LogDispatcher | ILogDispatcher     	| A reference to the [logger](ecs/logging.md) that you can use to log to the Unity Editor’s console and the [SpatialOS Console](../glossary.md#console) |
+| Connection	| [Connection]({{urlRoot}}/content/connecting-to-spos.md) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
+| WorkerType	| string             	| The [type of this worker]({{urlRoot}}/content/glossary.md#worker-types). |
+| Origin    	| Vector3            	| The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary.md#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
+| WorkerEntity  | Entity             	| The corresponding [Worker entity]({{urlRoot}}/content/workers/worker-entity.md) which allows you to query the current state of the worker as well as send and receive commands. |
+| LogDispatcher | ILogDispatcher     	| A reference to the [logger]({{urlRoot}}/content/ecs/logging.md) that you can use to log to the Unity Editor’s console and the [SpatialOS Console]({{urlRoot}}/content/glossary.md#console) |
 
 ** Methods **
 
@@ -31,7 +31,7 @@ Returns: true, if the queried SpatialOS entity is checked out on this worker, fa
 
 ### ECS: How to access the WorkerSystem in the ECS workflow
 
-You can inject the worker system in any `ComponentSystem` that is in the same [ECS world](../glossary.md#unity-ecs-world) as the `WorkerSystem`.
+You can inject the worker system in any `ComponentSystem` that is in the same [ECS world]({{urlRoot}}/content/glossary.md#unity-ecs-world) as the `WorkerSystem`.
 See the code example below for a guide on how to inject it:
 
 **Example**</br>
