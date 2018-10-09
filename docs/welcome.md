@@ -2,7 +2,7 @@
 
 The SpatialOS Game Development Kit (GDK) for Unity allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
 
-<img src="{{assetRoot}}assets/GDK-Architecture-Diagram.jpg" style="float: right; width: 60%; margin: 0 0 0 0;" />
+<img src="{{assetRoot}}assets/gdk-architecture.jpg" style="float: right; width: 60%; margin: 0 0 0 0;" />
 
 The GDK is composed of three layers:
 
@@ -16,7 +16,7 @@ Get started with SpatialOS and Unity by launching a cloud deployment of our FPS 
 
 You’ll then be ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality will introduce you to this development experience.
 
-![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/GDK-FPS-Sights.png)
+![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/headline.png)
 
 ### Setup
 
@@ -69,7 +69,7 @@ There is a quick fix however:
 
 <%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
 
-### Building Workers
+## Building Workers
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
 
@@ -139,7 +139,7 @@ Hit the Play button on the left, and then Launch (you can skip Step 1 - the Spat
 
 Once the client has launched, enter the game and fire a few celebratory shots - you are now playing in your first SpatialOS cloud deployment!
 
-<img src="{{assetRoot}}assets/client-launched.png" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/fps/by-yourself.png" style="margin: 0 auto; display: block;" />
 
 It’s a bit lonely in there isn’t it? Keep your client running while we get this world populated.
 
@@ -173,7 +173,7 @@ What this will do is start up 10 simulated player clients per Fake Client Coordi
 
 Back in the game, you will soon see the new simulated player clients running. Try to find them before they find you…
 
-<img src="{{assetRoot}}assets/getting-shot.png" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; display: block;" />
 
 ## Observing your deployment
 
@@ -205,6 +205,6 @@ We’d love to know what you think, and invite you to join our community on [our
 
 To keep learning, here are a few suggestions!
 
-* Follow our [Health pickups tutorial]({{assetRoot}}/projects/template-fps/tutorial)
+* Follow our [Health pickups tutorial]({{urlRoot}}/projects/template-fps/tutorial)
 * Read more about SpatialOS workers in our [Concepts documentation](https://docs.improbable.io/reference/latest/shared/get-started/learn-spatialos)
 * Inspect the [FPS Starter Project]({{urlRoot}}/projects/template-fps/overview) code, and start making a mod!

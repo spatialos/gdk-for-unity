@@ -3,11 +3,11 @@
 [//]: # (TODO - See if `option` struct needs defining)
 
 # (GameObject-MonoBehaviour) Readers and Writers
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * (Optional) [SpatialOS schema]({{urlRoot}}/content/glossary#schema).
   * (Optional) [Read and write access]({{urlRoot}}/content/glossary#authority)
@@ -33,14 +33,14 @@ For every SpatialOS component defined in schema, the GDK generates a Reader and 
   * `<namespace of schema component>.<component name>.Requirable.Reader`
   * `<namespace of schema component>.<component name>.Requirable.Writer`
 
-You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
+You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
 
   * A reader for a specific component can be injected as long as the worker has read access over this component.
   * A writer for a specific component can only be injected, if the worker has write access over this component.
 
 You can find out more about how to work with Readers and Writers in:
 
-  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
   * [How to read, update and react to changes]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
   * [How to send and receive events]({{urlRoot}}/content/gameobject/sending-receiving-events)
 

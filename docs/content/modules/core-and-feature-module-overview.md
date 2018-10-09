@@ -2,7 +2,7 @@
 [//]: # (TODO - which module is ECS or GO-MB specific and which is generic?)
 
 # Core Module and Feature Modules overview
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 The SpatialOS GDK for Unity consists of several modules: the Core Module and multiple Feature Modules. The Core Module provides the functionality to enable your game for SpatialOS, while Feature Modules provide functionality that is not needed to connect to the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) but makes it easier to implement your game; such as player lifecycle or transform synchronization. Each module has helper functions which you can use to add the module’s functionality to a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/content/workers).
 
@@ -78,8 +78,8 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 This module consists of:
 
 *    `IEntityGameObjectCreator` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spos-entities-gameobjects).
+<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
+<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities).
 
 * `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
 Use this to enable the default implementation or with the parameters below to change the default.

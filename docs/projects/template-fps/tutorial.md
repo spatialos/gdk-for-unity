@@ -167,7 +167,7 @@ This script now creates a health pack entity at position `(5, 0, 0)`, and sets t
 private static void GenerateDefaultSnapshot()
 {
     var snapshot = new Snapshot();
-   
+
     var spawner = FpsEntityTemplates.Spawner();
     snapshot.AddEntity(spawner);
 
@@ -193,7 +193,7 @@ While they are human-readable you are able to manually edit the values of the pr
 
 If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](http://localhost:21000/inspector/). You won't see the pickup in-game yet - this is the next step.
 
-![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector.png)
+![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
 
 ### Representing the entity on your workers
 
@@ -245,7 +245,7 @@ The FPS starter project contains a health pack prefab named `HealthPickup.prefab
 
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
-This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow]({{urlRoot}}/content/intro-workflows-spos-entities).<%(/Expandable)%>
+This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
 
 
 
@@ -279,7 +279,7 @@ namespace Fps
             healthPickupReader.ComponentUpdated += OnHealthPickupComponentUpdated;
             UpdateVisibility();
         }
-       
+
         private void UpdateVisibility()
         {
             cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
@@ -337,7 +337,7 @@ The client-side representation of the health pack entity is now complete! Next w
 
 <%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow]({{urlRoot}}/content/intro-workflows-spos-entities) for you.
+The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
 
@@ -357,7 +357,7 @@ Once the world is ready you can:
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
 * Click Play in your Unity editor (if you have the `FPS-Development` scene open) to play the game.
 
-![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible.png)
+![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
 You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently it just sits there, inert. If you walk into it, nothing happens. Let's fix that!
 
@@ -418,7 +418,7 @@ namespace Fps
             {
                 return;
             }
-            
+
             if (!other.CompareTag("Player"))
             {
             	return;

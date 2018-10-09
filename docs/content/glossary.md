@@ -92,11 +92,11 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 ### Connection
 
-Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the [`Improbable.Gdk.Core.Worker` class]({{urlRoot}}/content/workers/api-worker). See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos) for more information.
+Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the [`Improbable.Gdk.Core.Worker` class]({{urlRoot}}/content/workers/api-worker). See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) for more information.
 
 > Related:
 > 
-> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
+> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
 > * [Locator Connection Flow](#locator-connection-flow)
 > * [Receptionist Connection Flow](#receptionist-connection-flow)
 
@@ -199,7 +199,7 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 
 The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
 
-In the [MonoBehaviour workflow] the GDK performs injection via [reflection] using the [`[Require]`attribute]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour will only be enabled when all of its dependencies are populated.
+In the [MonoBehaviour workflow] the GDK performs injection via [reflection] using the [`[Require]`attribute]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour will only be enabled when all of its dependencies are populated.
 
 In the ECS workflow, Unity performs injection via [reflection] using the `[Inject]` attribute inside systems to iterate over all the [Unity ECS entities] matching a required [component] type.
 
@@ -238,7 +238,7 @@ Note that there are [other ways (SpatialOS documentation)](https://docs.improbab
 
 > Related:
 > 
-> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos)
+> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos)
 > * [Connection](#connection)
 
 ### Message
@@ -257,7 +257,7 @@ A [worker](#worker) can send and receive updates and messages to and from the [S
 ### MonoBehaviour
 
 
-A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours). This allows you to use traditional GameObject workflows from the very beginning, without having to worry about the ECS. 
+A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours). This allows you to use traditional GameObject workflows from the very beginning, without having to worry about the ECS. 
 
 > Related:
 >
@@ -307,7 +307,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Related:
 >
-> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos)
+> * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos)
 > * [Connection](#connection)
 
 ### Read access
@@ -339,7 +339,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects). Each scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Each scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
@@ -527,7 +527,7 @@ Unity ECS components contain only data and are represented as structs rather tha
 
 The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in the Unity Editor.
 
-Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 
 > Related:
 >
@@ -583,7 +583,7 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 > Related:
 > 
 > * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail)
-> [System update order in the GDK]({{urlRoot}}/content/ecs/ecs-system-update-order)
+> [System update order in the GDK]({{urlRoot}}/content/ecs/system-update-order)
 
 ### Worker
 

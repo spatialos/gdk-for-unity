@@ -1,5 +1,5 @@
 # (ECS) Authority
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities.md)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).
 
@@ -23,7 +23,7 @@ The authority tags in the GDK are (where `T` is a [SpatialOS component]({{urlRoo
 
         For more information on `AuthorityLossImminent`, [see the SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
-> **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
+> This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
 
 Here's an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component:
 
@@ -58,7 +58,7 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 > This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
-When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/content/glossary.md#worker-s-view), the GDK:
+When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/content/glossary#worker-s-view), the GDK:
 
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:

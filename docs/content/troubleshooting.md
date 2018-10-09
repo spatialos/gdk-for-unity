@@ -3,7 +3,7 @@
 
 # Troubleshooting
 
-We also maintain a [known issues page]({{urlRoot}}/known-issues.md) for any open bugs in the SpatialOS GDK for Unity.
+We also maintain a [known issues page]({{urlRoot}}/known-issues) for any open bugs in the SpatialOS GDK for Unity.
 
 **The following exception is thrown: `<name of a type>` is an IComponentData, and thus must be blittable
 (No managed object is allowed on the struct).**
@@ -33,7 +33,7 @@ These warnings are caused by code maintained by Unity over which we have no cont
 
 **Several error messages are logged after I destroyed a GameObject or ECS entity representing a SpatialOS entity.**
 <br/>
-Do not proactively destroy GameObjects or ECS entities representing SpatialOS entities. The SpatialOS GDK cleans them up automatically when the respective SpatialOS entity is removed from the worker. Send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/gomb-world-commands.md) to delete the entity on the SpatialOS side instead.
+Do not proactively destroy GameObjects or ECS entities representing SpatialOS entities. The SpatialOS GDK cleans them up automatically when the respective SpatialOS entity is removed from the worker. Send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
 
 **A Reader/Writer or CommandSender/Handler in my code is null.**
 <br/>
@@ -46,4 +46,4 @@ Do not proactively destroy GameObjects or ECS entities representing SpatialOS en
 <br/>
   * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [`Worker`]({{urlRoot}}/content/glossary#worker).
   * Ensure that the GameObject containing your MonoBehaviour is associated with a SpatialOS entity. You can verify this be examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject at runtime.
-  * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the SpatialOS entity associated with your GameObject in the Inspector. In the Inspector, ensure that all relevant components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
+  * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the SpatialOS entity associated with your GameObject in the Inspector. In the Inspector, ensure that all relevant components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
