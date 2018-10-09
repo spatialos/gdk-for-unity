@@ -1,21 +1,21 @@
 [//]: # (Doc of docs reference 21)
 [//]: # (TODO - technical author pass)
 # SpatialOS entities: update entity lifecycle
- _This document relates to both [GameObject-MonoBehaviour and ECS workflows](./intro-workflows-spos-entities.md)._
+ _This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
-The [SpatialOS runtime](./glossary.md#spatialos-runtime) manages the lifecycle of [SpatialOS entities](./glossary.md#spatialos-entity) in your worker’s [view](./glossary.md#workers-view), or the part of the [game world](./glossary.md#spatialos-world) that your worker has access to. The SpatialOS GDK for Unity interacts with the SpatialOS runtime through [Operations](https://docs.improbable.io/reference/latest/shared/design/operations#operations-how-workers-communicate-with-spatialos) and integrates the lifecycle natively into Unity.
+The [SpatialOS runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages the lifecycle of [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity) in your [worker’s view]({{urlRoot}}/content/glossary#worker-s-view), or the part of the [game world]({{urlRoot}}/content/glossary#spatialos-world) that your worker has access to. The SpatialOS GDK for Unity interacts with the SpatialOS runtime through [Operations](https://docs.improbable.io/reference/latest/shared/design/operations#operations-how-workers-communicate-with-spatialos) and integrates the lifecycle natively into Unity.
 This means that interacting with the entity lifecycle outside of the provided APIs can cause runtime errors or undefined behaviour.
-> Warning: Manually deleting entities locally will cause runtime errors. Use the [`Delete Entity` world command](TODO) instead.
+> Warning: Manually deleting entities locally will cause runtime errors. Use the [`DeleteEntity` world command]({{urlRoot}}/content/ecs/ecs-world-commands) instead.
 
 ## What happens when an entity enters your view
 
-When an entity moves into your worker's [view](./glossary.md#workers-view), the SpatialOS runtime sends a set of operations to your worker describing the current state of that entity. For a single entity, your worker receives a set of messages describing the entity:
+When an entity moves into your worker's [view]({{urlRoot}}/content/glossary#worker-s-view), the SpatialOS runtime sends a set of operations to your worker describing the current state of that entity. For a single entity, your worker receives a set of messages describing the entity:
 
  - A message stating which entity has entered your view
- - A message stating the current state of each [SpatialOS component](./glossary.md#spatialos-component) on that entity that your worker has interest in
- - (Optionally) A message stating that your worker has been delegated [authority](./glossary.md#authority) over a SpatialOS component.
+ - A message stating the current state of each [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) on that entity that your worker has interest in
+ - (Optionally) A message stating that your worker has been delegated [authority]({{urlRoot}}/content/glossary#authority) over a SpatialOS component.
 
-The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a process described in the [Entity Contracts documentation](./ecs/entity-contracts.md). You can also optionally associate a GameObject with this entity as described [in this doc](./gameobject/linking-spos-entities-gameobjects.md).
+The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a process described in the [Entity Contracts documentation]({{urlRoot}}/content/ecs/entity-contracts). You can also optionally associate a GameObject with this entity as described [in this doc]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
 
 ## What happens when an entity leaves your view
 

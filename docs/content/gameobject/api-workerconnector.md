@@ -1,8 +1,8 @@
 [//]: # (Doc of docs reference 15.1a)
 # (GameObject-Monobehaviour) API - WorkerConnector
-_This document relates to the [GameObject-MonoBehaviour workflow](./intro-workflows-spos-entities.md)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
-Before reading this document, see the documentation on [(GameObject-MonoBehaviour) Creating workers with the WorkerConnector](./gomb-creating-workers-with-workerconnector.md).
+Before reading this document, see the documentation on [(GameObject-MonoBehaviour) Creating workers with the WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector).
 
 During the creation of your workers, they attempt to connect to the SpatialOS Runtime. Only a successful connection leads to the creation of a worker. Many of the fields relate to this.
 
@@ -16,14 +16,15 @@ During the creation of your workers, they attempt to connect to the SpatialOS Ru
 | OnWorkerCreationFinished | Action<Worker> | A callback that is invoked when the worker was created successfully. |
 
 
-** Methods **
+**Methods**
 
 ```csharp
 public async Task Connect(string workerType, ILogDispatcher logger)
 ```
 Parameters:
+
   * `string workerType`: The type of the worker
-  * `ILogDispatcher logger`: The logdispatcher to use for [logging](../ecs/logging.md) on this worker.
+  * `ILogDispatcher logger`: The logdispatcher to use for [logging]({{urlRoot}}/content/ecs/logging) on this worker.
 
 Returns: a task which finishes when the worker either connects or fails to connect.
 
@@ -36,7 +37,7 @@ Returns: true, if the worker should connect using the Locator flow, false otherw
 ```csharp
 protected virtual string SelectDeploymentName(DeploymentList deployments)
 ```
-Only use this method when connecting through the [Locator connection flow](../glossary.md#locator-connection-flow).
+Only use this method when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary.md#locator-connection-flow).
 
 Parameters:
   * `DeploymentList deployment`: a list of all deployments for the project name specified in the `spatialos.json` file.
@@ -46,23 +47,23 @@ Returns: the name of the selected cloud deployment.
 ```csharp
 protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
 ```
-This method is only used when connecting through the [Receptionist connection flow](../glossary.md#receptionist-connection-flow).
+This method is only used when connecting through the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
 Parameters:
-* `string workerType`: The [type of the worker](../glossary.md#worker-types)
+* `string workerType`: The [type of the worker]({{urlRoot}}/content/glossary#worker-types)
 
-Returns: a connection configuration to connect using the [Receptionist connection flow](../glossary.md#receptionist-connection-flow).
+Returns: a connection configuration to connect using the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
 ```csharp
 protected virtual LocatorConfig GetLocatorConfig(string workerType)
 ```
-This method is only used when connecting through the [Locator connection flow](../glossary.md#locator-connection-flow).
+This method is only used when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
 Parameters:
-  * `string workerType`: The [type of the worker](../glossary.md#worker-types)
+  * `string workerType`: The [type of the worker]({{urlRoot}}/content/glossary#worker-types)
 
-Returns: a connection configuration to connect using the [Locator connection flow](../glossary.md#locator-connection-flow) stored
-as a [`LocatorConfig`](../../../tree/master/workers/unity/Packages/com.improbable.gdk.core/Config/LocatorConfig.cs) object.
+Returns: a connection configuration to connect using the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow) stored
+as a [`LocatorConfig`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.core/Config/LocatorConfig.cs) object.
 
 ```csharp
 protected virtual void HandleWorkerConnectionEstablished()

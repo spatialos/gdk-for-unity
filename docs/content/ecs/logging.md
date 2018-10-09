@@ -1,5 +1,5 @@
 #  (ECS) Logging
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
@@ -11,7 +11,7 @@ All workers use the `ForwardingDispatcher` by default in the Playground. If you 
 
 ## Using the ILogDispatcher
 
-You can access the dispatcher through the [WorkerSystem]({{urlRoot}}/content/ecs/accessing-worker-info). The dispatcher provides a single `HandleLog` function, which takes two arguments:
+You can access the dispatcher through the [WorkerSystem]({{urlRoot}}/content/workers/api-worker-system). The dispatcher provides a single `HandleLog` function, which takes two arguments:
 
 * `LogType` (e.g. `UnityEngine.LogType.Error`)
 * `LogEvent`, which stores the message and other context variables in the Data dictionary
@@ -36,6 +36,7 @@ workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
 ```
 
 The `LogEvent` class allows construction of enhanced log messages.
+
 * Use the `WithField` method to set additional information to be displayed with the log message.
 * Use the `WithContext(UnityEngine.Object)` method to add a context object to be passed into the Unity console.
 

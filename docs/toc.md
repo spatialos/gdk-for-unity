@@ -22,7 +22,6 @@
  ***
 - <h3>+ Reference</h3>
     - <h4> General</h4>
-        - [Workers]({{urlRoot}}/content/workers)
         - [Snapshots]({{urlRoot}}/content/snapshots)
     - <h4> ECS Workflow</h4>
     - <h4> GameObject Workflow</h4>

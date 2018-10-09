@@ -3,25 +3,22 @@
 
 # Connecting to the SpatialOS Runtime
 
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflow](./intro-workflows-spos-entities.md)._
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
-The SpatialOS [Runtime](./glossary.md#spatialos-runtime) manages your game world by keeping track of all SpatialOS entities and the current state of their components.
-To execute any kind of logic on these entities, we use [workers](./glossary.md#workers). We differentiate between [server-workers](./glossary.md#server-workers) and [client-workers](./glossary.md#client-workers).
+The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all SpatialOS entities and the current state of their components.
+To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary#worker). We differentiate between [server-workers]({{urlRoot}}/content/glossary#server-worker) and [client-workers]({{urlRoot}}/content/glossary#client-worker).
 
-(To find out more about workers in the GDK, see the introduction to [workers in the GDK](./workers/workers-in-the-gdk.md).)
+(To find out more about workers in the GDK, see the introduction to [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk).)
 
-It’s the workers which create a connection from your game to the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your workers as part of your game development. Then, when your game runs, it creates workers which connect to the SpatialOS Runtime.  During their creation, workers attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker fails.     
+It’s the workers which create a connection from your game to the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your workers as part of your game development. Then, when your game runs, it creates workers which connect to the SpatialOS Runtime.  During their creation, workers attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker fails.
 
-If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector](./gameobject/linking-spos-entities-gameobjects.md) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API](./workers/api-worker.md).
+If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API]({{urlRoot}}/content/workers/api-worker).
 
-
-
-(For information on the different workflows, see [GameObject and MonoBehaviour workflow vs ECS workflow](./intro-workflows-spos-entities.md).)
-
+(For information on the different workflows, see [GameObject and MonoBehaviour workflow vs ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities).)
 
 ## Which connection flow to use
 
-We provide two types of connection flow, depending on what kind of worker and what kind of [deployment](./glossary.md#deploying) you want to connect to.
+We provide two types of connection flow, depending on what kind of worker and what kind of [deployment]({{urlRoot}}/content/glossary#deploying) you want to connect to.
 In all cases, your worker contains a reference to a `Connection` object after successfully connecting to the SpatialOS Runtime.
 
 ### Receptionist service connection flow
@@ -44,8 +41,8 @@ The `ReceptionistConfig` class stores the following fields:
 
 | Field         	| Type 	| Description                        	|
 |-------------------|----------|--------------------------------------|
-| LinkProtocol| [NetworkConnectionType](add link) | The type of networking to use (either TCP or [Raknet (Wikipedia link)](https://en.wikipedia.org/wiki/RakNet)). The default is Raknet. |
-| ReceptionistHost| string | The host for connecting to the SpatialOS  [Runtime](./glossary.md#spatialos-runtime) using the Receptionist service. The default is `127.0.0.1`. |
+| LinkProtocol| [NetworkConnectionType](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#improbable-worker-networkconnectiontype-enum) | The type of networking to use (either TCP or [Raknet (Wikipedia link)](https://en.wikipedia.org/wiki/RakNet)). The default is Raknet. |
+| ReceptionistHost| string | The host for connecting to the SpatialOS  [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) using the Receptionist service. The default is `127.0.0.1`. |
 | ReceptionistPort| ushort | The port for connecting to the SpatialOS Runtime using the Receptionist service. The default is `7777`. |
 | EnableProtocolLoggingAtStartup| bool | Specifies whether to enable [protocol logging](#what-is-protocol-logging). The default is `false`. |
 | UseExternalIp| bool | If enabled, the worker won’t use the local IP to connect to the SpatialOS Runtime via the Receptionist service. You only need this when connecting client-workers to cloud deployments using the Receptionist service. The default is `false`. |
@@ -59,21 +56,21 @@ The `LocatorConfig` class stores the following fields:
 
 | Field         	| Type 	| Description                        	|
 |-------------------|----------|--------------------------------------|
-| LinkProtocol| [NetworkConnectionType](add link) | The type of networking that should be used (either TCP or [Raknet - Wikipedia link](https://en.wikipedia.org/wiki/RakNet)). The default is Raknet. |
-| LocatorHost| string | The host for connecting to the SpatialOS  [Runtime](./glossary.md#spatialos-runtime) using the Locator flow. The default is `locator.improbable.io`. You usually don’t need to change this. |
-| LocatorParameters| [LocatorParameters](add link) | The parameters needed to connect using the Locator service flow. |
+| LinkProtocol| [NetworkConnectionType](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#improbable-worker-networkconnectiontype-enum) | The type of networking that should be used (either TCP or [Raknet - Wikipedia link](https://en.wikipedia.org/wiki/RakNet)). The default is Raknet. |
+| LocatorHost| string | The host for connecting to the SpatialOS  [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) using the Locator flow. The default is `locator.improbable.io`. You usually don’t need to change this. |
+| LocatorParameters| [LocatorParameters](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#improbable-worker-locatorparameters-class) | The parameters needed to connect using the Locator service flow. |
 | EnableProtocolLoggingAtStartup| bool | Specifies whether to enable [protocol logging](#what-is-protocol-logging). The default is `false`.  |
 | UseExternalIp| bool | If enabled, the worker won’t use the local IP to connect to the SpatialOS Runtime via the Receptionist service. You only need this when connecting client-workers to cloud deployments using the Receptionist service. The default is `true`. |
 | WorkerId| string | The unique ID of the worker. |
-| WorkerType| string| The [type of the worker](./glossary.md#type-of-worker) |
+| WorkerType| string| The [type of the worker]({{urlRoot}}/content/glossary#worker-types) |
 
 ## When to use the `Connection` object
 Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 Use this object for:
-  * sending and receiving component updates and messages to and from the SpatialOS Runtime. This is done internally by the GDK and you shouldn't need to do it unless you create a [custom replication system](./ecs/custom-replication-system.md)
+  * sending and receiving component updates and messages to and from the SpatialOS Runtime. This is done internally by the GDK and you shouldn't need to do it unless you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
   * accessing the ID of the worker
-  * accessing the [worker flags](./glossary.md#worker-flags)
-  * accessing the used [worker attribute](./glossary.md#worker-attribute)
+  * accessing the [worker flags]({{urlRoot}}/content/glossary#worker-flags)
+  * accessing the used [worker attribute]({{urlRoot}}/content/glossary#worker-attribute)
 
 ## What is protocol logging?
 You can use protocol logging to log additional data to the data your worker sends and receives while being connected to the SpatialOS Runtime.

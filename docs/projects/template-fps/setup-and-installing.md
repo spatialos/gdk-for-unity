@@ -33,4 +33,4 @@
 
 ## Next Steps
 
-To get started with running a deployment with the FPS Starter Project, check out [Fake players in the cloud]({{urlRoot}}/projects/template-fps/cloud-fake-clients).
+To get started with running a deployment with the FPS Starter Project, check out [our guide for building and deploying]({{urlRoot}}/welcome#building-workers).

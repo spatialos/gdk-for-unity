@@ -6,15 +6,15 @@
 
 Before running a [deployment of your game]({{urlRoot}}/content/deploy) locally or in the cloud, you need to:
 
-1. Build the bridge configuration and launch configuration of your [workers]({{urlRoot}}/content/workers).
+1. Build the bridge configuration and launch configuration of your [workers]({{urlRoot}}/content/workers/workers-in-the-gdk).
 1. Prepare the build configuration of your workers.
 1. Build your workers.
 
 
 ## Building the bridge and launch configurations of your workers
-A [SpatialOS deployment](glossary#spatialos-deployment) requires [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config) and [launch](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration) configurations (“worker configs” in short) to be built for all of its server-workers and client-workers.
+A [SpatialOS deployment]({{urlRoot}}/content/glossary#deploying) requires [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config) and [launch](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration) configurations (commonly referred to as “worker configs”) to be built for all of its server-workers and client-workers.
 
-The worker configs are built using information contained within [worker configuration files](link to something about jsons here). You can find examples of worker configurations in the [example project](link).
+Worker configs are built using information contained within [worker configuration files](https://docs.improbable.io/reference/latest/shared/glossary#worker-configuration-worker-json). You can find examples of worker configurations for [client-workers](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityClient.worker.json) and [server-workers](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json) in the [Unity project](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity) in this repository.
 
 To build the worker configs, you can either:
 
