@@ -80,7 +80,7 @@ In the Unity Editor, you can build your workers from the SpatialOS menu by click
 
 <!-- TODO: Image of Unity editor SpatialOS menu  -->
 
-(Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor.)
+<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor.")%>
 
 ## Uploading
 
@@ -195,7 +195,7 @@ The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/oper
 
 <img src="{{assetRoot}}assets/metrics.png" style="margin: 0 auto; display: block;" />
 
-Note that the Logs and Metrics are [available via an API](https://docs.improbable.io/reference/latest/shared/operate/byo-metrics) if you with to create your own dashboards or alerts.
+<%(Callout type="info" message="Note that the Logs and Metrics are [available via an API](https://docs.improbable.io/reference/latest/shared/operate/byo-metrics) if you wish to create your own dashboards or alerts.")%>
 
 ## Well-done, and welcome to the GDK!
 
