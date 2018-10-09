@@ -24,7 +24,9 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 ##### Visual Studio
 
-If you are using Visual Studio, find the **Workloads** tab. If you already have Visual Studio installed, you must first select the **Modify** option within the Visual Studio Installer.
+If you are using Visual Studio, find the **Workloads** tab in the Visual Studio Installer by clicking on the **More** option for *Visual Studio Build Tools*, and selecting **Modify** from the drop-down menu.
+
+![]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
 On the **Workloads** tab:
 - Select **Game development with Unity**
