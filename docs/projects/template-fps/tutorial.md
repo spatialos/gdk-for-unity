@@ -97,10 +97,6 @@ The [EntityBuilder](fix) syntax provides a compact way to declare the relevant c
 
 To find out more you can read up on [well-known components](fix).<%(/Expandable)%>
 
-<%(#Expandable title="TODO: Troubleshooting for HealthComponent not recognised?")%>TODO: Troubleshooting for HealthComponent not recognised?<%(/Expandable)%>
-
-[!!!!!!!!](TODO: a ting^)
-
 #### Adding components
 
 From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers in your schema file (i.e. `= 1` and `= 2`) determine the order of properties expected as the function's parameters.
