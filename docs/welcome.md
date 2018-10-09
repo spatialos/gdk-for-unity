@@ -205,6 +205,6 @@ We’d love to know what you think, and invite you to join our community on [our
 
 To keep learning, here are a few suggestions!
 
-* Follow our [Health pickups tutorial]({{assetRoot}}/projects/template-fps/tutorial)
+* Follow our [Health pickups tutorial]({{urlRoot}}/projects/template-fps/tutorial)
 * Read more about SpatialOS workers in our [Concepts documentation](https://docs.improbable.io/reference/latest/shared/get-started/learn-spatialos)
 * Inspect the [FPS Starter Project]({{urlRoot}}/projects/template-fps/overview) code, and start making a mod!
