@@ -1,5 +1,3 @@
-[google-docs-link]: https://docs.google.com/document/d/14_FY-Chu_illhaCCym-pv6P8NHtyN9PLzVBGSuK0ou4/edit (Please place reviews as comments into this document here)
-
 # Writing a new unit test
 
 This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS GDK for Unity). It walks through creating tests for a made-up class to explain how you can test parts of the GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.
@@ -7,14 +5,15 @@ This document covers Unity tests only (that is tests of the Unity project which 
 ## Prerequisites
 
 Please look through and understand the following documentation and videos before writing a new test:
+
 * SpatialOS GDK for Unity documentation - [Testing overview]({{urlRoot}}/content/testing/testing-overview)
 * SpatialOS GDK for Unity documentation - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
 * SpatialOS GDK for Unity documentation - [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines)
-* NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)<br/>
-**Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing. <br/>
-**Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
+* NUnit video - [Introduction to NUnit](https://www.youtube.com/watch?v=1TPZetHaZ-A)
+  * **Skip** the part between 0:40 - 2:49 as it does not apply to Unity testing.
+  * **Skip** the part between 5:25 - 7:57 as it explains how to use the NUnit Runner and we’ll use Unity Test Runner instead.
 * [Unit Testing Using NUnit](https://www.codeproject.com/articles/178635/unit-testing-using-nunit)
-- Unity documentation - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
+* Unity documentation - [Writing and executing tests in Unity Test Runner](https://docs.unity3d.com/Manual/PlaymodeTestFramework.html)
 * Infallible Code video - [How To Test Unity ECS Code](http://infalliblecode.com/test-unity-ecs/) (Note the code for this is behind a paywall.)
 
 ## Example new test
@@ -55,7 +54,7 @@ namespace Improbable.Gdk.Core.Utility
 
         public void Dispose()
         {
-                // Pretend to clean up some state.
+                // Clean up some state.
         }
     }
 }
@@ -85,7 +84,10 @@ As `MyClass` has both static and non-static methods, you can create tests within
 
 You can use the following annotations for the setup and teardown logic:
 
-- `[SetUp]` methods run before each test and `[TearDown]` methods run after each test.- `[OneTimeSetUp]` methods run before all tests and `[OneTimeTearDown]` methods after all tests.
+* `[SetUp]` methods run before each test
+* `[TearDown]` methods run after each test.
+* `[OneTimeSetUp]` methods run before all tests
+* `[OneTimeTearDown]` methods after all tests.
 
 For each fixture, the execution happens in this order:
 
@@ -217,7 +219,7 @@ The tests above will not compile. This is because the test class is in a differe
 
 To solve this; make the internals of the `MyClass.cs` file visible to the test assembly as shown below.
 
-```
+```cs
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Improbable.Gdk.Core.EditModeTests")]
@@ -230,8 +232,8 @@ In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.
 
 You can follow the namespace and fixture name in the hierarchy:
 
-- **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassStaticTests**
-- **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassInstanceTests**
+* **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassStaticTests**
+* **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassInstanceTests**
 
 Double-click the test fixture name to run all tests within that fixture.
 
@@ -276,7 +278,7 @@ You need to edit the `.asmdef` file manually to add references to the entities p
 
 1. Add in these lines to references:
 
-```
+```cs
   "Unity.Entities",
   "Unity.Entities.Hybrid",
 ```
