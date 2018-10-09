@@ -14,7 +14,7 @@ To implement this feature we will:
 
 # Defining a new entity type
 
-Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema](fix).
+Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema]({{urlRoot}}/content/glossary#schema).
 
 Existing entities in the FPS starter project, such as the `Player` entity type, have components for movement, health, shooting and other mechanics. The project is constructed from GDK packages, such as the `SpatialOS GDK Health` package, which you can open from within the Unity project. In many of these packages you will find a `schema` folder, with files like `health.schema`.
 
@@ -85,7 +85,7 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 }
 ```
 
-The [EntityBuilder](fix) syntax provides a compact way to declare the relevant components. You may notice that `.AddPosition`, `.AddMetadata`, and `.SetPersistence` appear in the entity template function of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects.
+The `EntityBuilder` syntax provides a compact way to declare the relevant components. You may notice that `.AddPosition`, `.AddMetadata`, and `.SetPersistence` appear in the entity template function of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects.
 
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
@@ -93,9 +93,7 @@ The [EntityBuilder](fix) syntax provides a compact way to declare the relevant c
 
 **Metadata** is an identifier of the type of entity. The SpatialOS GDK for Unity uses `Metadata` for matching to a Unity prefab name within your project.
 
-**Persistence** indicates whether the entity can be saved out to snapshots.
-
-To find out more you can read up on [well-known components](fix).<%(/Expandable)%>
+**Persistence** indicates whether the entity can be saved out to snapshots.<%(/Expandable)%>
 
 #### Adding components
 
@@ -115,17 +113,17 @@ For this project, `UnityGameLogic` indicates that the `UnityGameLogic` worker is
 
 <%(#Expandable title="How would you give only a specific client write-access for a component?")%>Some component data should be editable/updateable by the player's client, but not by the clients of any other players. In the FPS starter project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write-access over a number of components: clientMovement, clientRotation, clientHeartbeat etc.
 
-The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [TODO FIX LINK: entity lifecycle](fix).<%(/Expandable)%>
+The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [entity lifecycle]({{urlRoot}}/content/entity-lifecycle).<%(/Expandable)%>
 
 <%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable, but we don't recommend it.
 
-As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration](fix).<%(/Expandable)%>
+As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration]({{urlRoot}}/content/build).<%(/Expandable)%>
 
 <%(#Expandable title="Can I specify more than one worker type to have write-access to a single component?")%>Yes, you are not restricted to just one worker type being granted write-access, but it's something to be careful of.
 
 
 
-To find out about how to do this, read up about [worker attribute sets](fix).
+To find out about how to do this, read up about [worker attribute sets](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 <%(/Expandable)%>
 
 ### Adding entities to the world
@@ -133,7 +131,7 @@ To find out about how to do this, read up about [worker attribute sets](fix).
 Once an entity template function exists you have a way of constructing the _template_ of an entity. You now have a couple of ways of adding a health pack entity to the world:
 
 * At runtime, by passing an `Entity` object to an entity creation function.
-* At start-time, by adding an entity instance to the [Snapshot](fix) so it is already in the world when the game begins.
+* At start-time, by adding an entity instance to the [Snapshot]({{urlRoot}}/content/glossary#snapshot) so it is already in the world when the game begins.
 
 For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
 
@@ -161,7 +159,7 @@ The `Improbable.FPS.Editor` *Import Settings* window contains a section called *
 
 Once you've added and applied this new package reference your use of `Vector3f` in `SnapshotGenerator.cs` will now be valid.
 
-<%(#Expandable title="Why does the FPS starter project use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules](fix) which make good use of packages.<%(/Expandable)%>
+<%(#Expandable title="Why does the FPS starter project use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules]({{urlRoot}}/content/modules/core-and-feature-module-overview) which make good use of packages.<%(/Expandable)%>
 
 This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
 
@@ -238,7 +236,7 @@ That means even two workers of the same type (e.g. `UnityGameLogic`) may not hav
 
 The `Player` entity has a special relationship with the `UnityClient` instance that is authoritative over it. That `UnityClient` is running on the gamer's machine, and that gamer "owns" that `Player` entity. It's their representation in the world. As such, there are big differences between how `Player` entity should be represented on the authoritative client (it should have a camera, collect player input etc.) compared to if the `Player` entity represents someone else in the game. The FPS starter project has some additional logic to manage these representations as a way of keeping the code more organised.
 
-Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority](fix).<%(/Expandable)%>
+Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority]({{urlRoot}}/content/glossary#authority).<%(/Expandable)%>
 
 
 
@@ -248,7 +246,7 @@ The FPS starter project contains a health pack prefab named `HealthPickup.prefab
 
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
-This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow](fix).<%(/Expandable)%>
+This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow]({{urlRoot}}/content/intro-workflows-spos-entities).<%(/Expandable)%>
 
 
 
@@ -340,15 +338,9 @@ The client-side representation of the health pack entity is now complete! Next w
 
 <%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow](fix) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow](fix) for you too.
+The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow]({{urlRoot}}/content/intro-workflows-spos-entities) for you.
 
-You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type. To find out more about you can read up about [entity representations](fix).<%(/Expandable)%>
-
-
-
-<%(#Expandable title="TO FINISH: Can workers differ in how they represent the same entity?")%>Yes! The local in-worker representation for entities can be customized for each of your worker types. For example, the server-side `UnityGameLogic` worker may represent the `Player` entity with a GameObject that contains no visual assets or sound effects, because the server does not need those assets to perform its duties.
-
-Similarly, !!!!!!! COME BACK TO THIS [!!!](fix)<%(/Expandable)%>
+You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
 
 ### Testing your changes
 
@@ -490,7 +482,7 @@ There is one more comment we must replace with code before our logic will work, 
 
 Our `HandleCollisionWithPlayer` function will run on a `UnityGameLogic` worker (because of the `[WorkerType(WorkerUtils.UnityGameLogic)]` annotation). That worker executes the code on behalf of each `HealthPack` entity for which is has `HealthPickup` component write-access (because of the `Writer` requirement). If your game has multiple `UnityGameLogic` workers then the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access for the `Player` entity who has tried to pick up the health pack.
 
-If we want a `HealthPack` entity's script to update the `Player` entity's current health we must notify the responsible worker and _request_ the update. SpatialOS allows you to do this with [commands](fix), which are defined in **schema**.
+If we want a `HealthPack` entity's script to update the `Player` entity's current health we must notify the responsible worker and _request_ the update. SpatialOS allows you to do this with [commands](https://docs.improbable.io/reference/latest/shared/glossary#command), which are defined in **schema**.
 
 The `Player` entity already has a `Health` component which defines both a property representing current health and a **command** called `modify_health`. The definition of that command in `health.schema` is:
 
