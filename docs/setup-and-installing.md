@@ -85,7 +85,6 @@ The SpatialOS installer should have added the SpatialOS CLI to your `path`, allo
 
 ### Clone the SpatialOS GDK for Unity repository
 
-|  |  |
 | --- | --- |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
