@@ -1,5 +1,5 @@
 # (ECS) World commands
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
 
@@ -108,8 +108,8 @@ You can use entity queries to get information about entities in the world.
 
 To send a request use a `WorldCommands.EntityQuery.CommandSender` component. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command.
 
-- For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
-- `TimeoutMillis` is optional.
+  * For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
+  * `TimeoutMillis` is optional.
 
 To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
 
