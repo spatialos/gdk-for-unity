@@ -4,6 +4,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using System.Collections.Generic;
 
 namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
@@ -55,6 +56,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public struct Update : ISpatialComponentUpdate
         {
+            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+
         }
 
         public struct ReceivedUpdates : IComponentData

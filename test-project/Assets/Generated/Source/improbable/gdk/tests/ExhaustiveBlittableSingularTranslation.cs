@@ -152,12 +152,12 @@ namespace Improbable.Gdk.Tests
                 }
                 else
                 {
+                    updates = Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update.Pool.Count > 0 ? Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update.Pool.Pop() : new List<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>();
                     var updatesComponent = new Improbable.Gdk.Tests.ExhaustiveBlittableSingular.ReceivedUpdates
                     {
                         handle = ReferenceTypeProviders.UpdatesProvider.Allocate(World)
                     };
-                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, new List<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>());
-                    updates = updatesComponent.Updates;
+                    ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                     entityManager.AddComponentData(entity, updatesComponent);
                 }
 
@@ -343,6 +343,12 @@ namespace Improbable.Gdk.Tests
                 for (var i = 0; i < entities.Length; i++)
                 {
                     buffer.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.ReceivedUpdates>(entities[i]);
+                    var updateList = data[i].Updates;
+
+                    // Pool update lists to avoid excessive allocation
+                    updateList.Clear();
+                    Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update.Pool.Push(updateList);
+
                     ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
                 }
             }

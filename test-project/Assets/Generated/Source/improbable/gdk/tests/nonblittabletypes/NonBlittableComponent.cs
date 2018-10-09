@@ -4,6 +4,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using System.Collections.Generic;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {
@@ -559,6 +560,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
         public struct Update : ISpatialComponentUpdate
         {
+            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+
             public Option<BlittableBool> BoolField;
             public Option<int> IntField;
             public Option<long> LongField;
