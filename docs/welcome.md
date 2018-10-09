@@ -57,6 +57,18 @@ Next, please clone the FPS starter project as follows:
 
 <%(/Expandable)%>
 
+#### Fix shader bugs (optional)
+
+There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
+
+There is a quick fix however:
+
+1. Open the FPS Starter Project in the Unity Editor.
+2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
+3. Right click on `Source_Shaders` and press Reimport.
+
+<%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
+
 ### Building Workers
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
@@ -64,7 +76,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 <!-- !!!! TODO: <Explain to people how to open the project in Unity - eg that you have to go to /workers to find the Unity project - just in case>
  !!!! -->
 
-In the Unity editor, you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
+In the Unity Editor, you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
 
 <!-- TODO: Image of Unity editor SpatialOS menu  -->
 
