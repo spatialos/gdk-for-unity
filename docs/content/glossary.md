@@ -493,7 +493,7 @@ Generated Unity ECS components can be injected into systems, read, and modified 
 
 > Not to be confused with a [SpatialOS entity](#spatialos-entity)
 
-In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS Entity. Every [SpatialOS component](#spatialos-component) that belongs to a SpatialOS entity is represented as an [Unity ECS component](#unity-ecs-component] on the corresponding ECS entity.
+In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS Entity. Every [SpatialOS component](#spatialos-component) that belongs to a SpatialOS entity is represented as an [Unity ECS component](#unity-ecs-component) on the corresponding ECS entity.
 
 
 > Related:
