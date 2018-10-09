@@ -57,6 +57,10 @@ Next, please clone the FPS starter project as follows:
 
 <%(/Expandable)%>
 
+### Opening the FPS starter project in Unity Engine
+
+From your Unity Engine file browser, navigate to where you downloaded the FPS starter project and open the `workers/unity` directory inside the project to get started.
+
 #### Fix shader bugs (optional)
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.

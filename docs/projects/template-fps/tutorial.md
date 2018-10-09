@@ -12,6 +12,12 @@ To implement this feature we will:
 * Add health pack entities to the snapshot so they appear in the world.
 * Write pick-up logic so packs grant health to players.
 
+# Opening the FPS starter project in Unity Engine
+
+Most of your interactions with the SpatialOS GDK will be from within the Unity Engine editor.
+
+From your Unity Engine file browser, open the `workers/unity` directory inside the FPS starter project to get started.
+
 # Defining a new entity type
 
 Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema]({{urlRoot}}/content/glossary#schema).
