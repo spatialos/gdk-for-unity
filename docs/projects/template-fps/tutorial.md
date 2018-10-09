@@ -200,6 +200,10 @@ You can regenerate the `default.snapshot` file from the SpatialOS menu option in
 
 While they are human-readable you are able to manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
+If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](http://localhost:21000/inspector/). You won't see the pickup in-game yet - this is the next step.
+
+![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector.png)
+
 ### Representing the entity on your workers
 
 If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server workers.
@@ -368,7 +372,9 @@ Once the world is ready you can:
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
 * Click Play in your Unity editor (if you have the `FPS-Development` scene open) to play the game.
 
-You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently they just sit there, inert. If you walk into them, nothing happens. Let's fix that!
+![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible.png)
+
+You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently it just sits there, inert. If you walk into it, nothing happens. Let's fix that!
 
 Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
 
@@ -662,37 +668,42 @@ At the beginning of the `HandleCollisionWithPlayer` function you could add an if
 
 The distributed game logic is now in place, and we can test if it is working correctly. To test this feature, you can follow these steps:
 
-<%(#Expandable title="1. Build your workers.")%>From the **SpatialOS** menu, click **Build UnityClient for local**.
+<%(#Expandable title="1. Enable the player health bar.")%>Modify the `OnScreenUI` prefab by enabling the `OnScreenUI > InGameHud > HealthBar` game object. This will display a health bar in the top left corner to make it easier for you to see how the health of a player changes.
+
+![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
+<%(/Expandable)%>
+
+<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, click **Build UnityClient for local**.
 
 This is necessary because you have modified the code for the workers. If you are running your workers from within the Unity editor a build is not necessary, however in a moment we will launch a built-out client worker. Building the workers is therefore essential.<%(/Expandable)%>
 
-<%(#Expandable title="2. Launch a local deployment.")%>From the **SpatialOS** menu, click **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
+<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, click **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
 
 It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
 
-<%(#Expandable title="3. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, click **Launch standalone client**.
+<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, click **Launch standalone client**.
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
 
-<%(#Expandable title="4. Launch a second client in-editor.")%>With the `FPS-Development` scene open in the Unity editor, click the Unity `Play` button.<%(/Expandable)%>
+<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` scene open in the Unity editor, click the Unity `Play` button.<%(/Expandable)%>
 
-<%(#Expandable title="5. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
+<%(#Expandable title="6. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
 
 This may require some switching between the editor and your standalone client, but you should be able to steer one player entity to the other and shoot them a few times.
 
 You can use the SpatialOS inspector to help you find where the two players are, and navigate them to the same location. You can also select the icon for the damaged player and, in the right-side of the SpatialOS inspector, view the component data for the player's `Health` component to confirm that damage from the gunfire has been applied.<%(/Expandable)%>
 
-<%(#Expandable title="6. Use the inspector to check the damage has been applied.")%>When a local deployment is running you can open the SpatialOS local inspector in your browser: http://localhost:21000/inspector/
+<%(#Expandable title="7. Use the inspector to check the damage has been applied.")%>When a local deployment is running you can open the SpatialOS local inspector in your browser: http://localhost:21000/inspector/
 
 By selecting the visual marker for an entity you can view its component values in the right-side panel, by expanding the `Components` section.
 
 Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
 
-<%(#Expandable title="7. Walk the damaged player over the health pack and check if it is consumed and applied.")%>Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
+<%(#Expandable title="8. Walk the damaged player over the health pack and check if it is consumed and applied.")%>Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
 
 **Don't forget to check how much health the player has before walking through the health pack so you can compare the before and after!**
 
-When the injured player collides with the health pack it should become invisible on the client. You can also check in the SpatialOS inspector to see whether the `HealthPack` component for the health pack entity now shows its `IsActive` property value as `false`.
+When the injured player collides with the health pack it should become invisible on the client. You can also check in the SpatialOS inspector to see whether the `HealthPickup` component for the health pack entity now shows its `IsActive` property value as `false`.
 
 Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace `improbable` > `gdk` > `health` > `HealthComponent` > `health`.<%(/Expandable)%>
 
