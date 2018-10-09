@@ -63,6 +63,7 @@ Call this to add the SpatialOS components used by the transform synchronization 
 You can optionally pass in a `rotation`, `location` or `velocity`.
 
 Call this during [entity templates creation]({{urlRoot}}/content/entity-templates).
+
 * See an [example use]({{urlRoot}}/content/entity-templates#transform-synchronization-module) in the *Entity template creation* documentation.
 * Find out more in the [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module) documentation.
 
