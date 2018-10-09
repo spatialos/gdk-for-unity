@@ -1,64 +1,76 @@
 - <h3> SpatialOS GDK for Unity</h3>
 - <h3> [ - Welcome]({{urlRoot}}/welcome)</h3>
+
+***
+- <h3> Tutorial</h3>
 - <h3> [ - FPS starter project]({{urlRoot}}/projects/template-fps/overview)</h3>
  
 ***
 - <h3> Reference</h3>
 - <h3> + Concepts and terminology</h3>
     - [SpatialOS concepts (SpatialOS site)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
-    - [GDK for Unity glossary](docs/content/glossary)
+    - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
 - <h3> + Get started</h3>
-    - [Installation and setup]({{urlRoot}}setup-and-installing)
+    - [Installation and setup]({{urlRoot}}/setup-and-installing)
     - [How to build your workers]({{urlRoot}}/content/build)
     - [How to deploy your game]({{urlRoot}}/content/deploy)
 - <h3> + Workflows</h3>
-    - [GameObject-Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)
+    - [GameObject-Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
 - <h3> + Modules</h3>
-    - [Core and Feature Module overview]({{urlRoot}}/content/core-module-feature-module-overview)
+    - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
 - <h3> + Configuring your project</h3>
     - [Setting up a new project]({{urlRoot}}/content/set-up-new-project)
     - <h4>Workers: </h4>
         - [ * Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-        - [ * API - worker]({{urlRoot}}/content/worker/api-worker)
-        - [ * API - workers system]({{urlRoot}}/content/ecs/api-workers-system)
+        - [ * API - worker]({{urlRoot}}/content/workers/api-worker)
+        - [ * API - workers system]({{urlRoot}}/content/workers/api-worker-system)
     - <h4>SpatialOS entities:</h4>
         - [* Creating SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
         - [* API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
-    - [Connecting to SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spos)
+    - [Connecting to SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
 - <h3> + Project design</h3>
     - <h4>SpatialOS entities:</h4>
         - [ * Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
     - <h4>Commands:</h4>
         - [ * World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 - <h3> + Tools </h3>
-    - [Snapshots](/docs/content/snapshots)
+    - [Snapshots]({{urlRoot}}/content/snapshots)
     - <h4>Code generation:</h4>
-        - [* The code generator](/docs/content/code-generator)
-        - [* ECS component generation](/docs/content/ecs/ecs-component-generation) 
-    - [Logging](/docs/content/ecs/logging)
+        - [* The code generator]({{urlRoot}}/content/code-generator)
+        - [* ECS component generation]({{urlRoot}}/content/ecs/component-generation) 
+    - [Logging]({{urlRoot}}/content/ecs/logging)
 - <h3> + GameObject-MonoBehaviour workflow</h3>
-    - [Which workflow?]({{urlRoot}}/content/intro-workflows-spos-entities)
+    - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
     - <h4>Create workers:</h4>
-        - [* WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
-        - [* API - WorkerConnector]({{urlRoot}}/content/gamebject/api-workerconnector)
+        - [* WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
+        - [* API - WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector)
     - <h4>Link to GameObjects:</h4>
-        - [* SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+        - [* SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
         - [* Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
     - <h4>MonoBehaviours with SpatialOS:</h4>
-        - [* Interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+        - [* Interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
         - [* Readers and writers]({{urlRoot}}/content/gameobject/readers-writers)
-        - [* Readers and writers: Component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
-        - [* Readers and writers: Send and receive events]({{urlRoot}}/content/gameobject/sending-receiving-events)
-        - [* Commands: Send and receive component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
-        - [* Commands: World commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
-    - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spos-entities)
+        - [* Readers and writers: SpatialOS component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
+        - [* Readers and writers: Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
+        - [* Commands: SpatialOS Component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+        - [* Commands: World commands]({{urlRoot}}/content/gameobject/world-commands)
+    - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
     - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
-- <h3> + ECS Workflow</h3>
-    - [System update order]({{urlRoot}}/content/ecs/ecs-system-update-order)
+- <h3> + ECS workflow</h3>
+    - [System update order]({{urlRoot}}/content/ecs/system-update-order)
     - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
-  
+    - <h4> + ECS interaction with SpatialOS:</h4>
+        - [* ECS component updates]({{urlRoot}}/content/ecs/component-updates)
+        - [* Send and receive events]({{urlRoot}}/content/ecs/events)
+        - [* Commands: SpatialOS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
+        - [* Commands: World commands]({{urlRoot}}/content/ecs/world-commands)
+        - [* Reactive components: Receiving updates from SpatialOS]({{urlRoot}}/content/ecs/reactive-components)
+        - [* Authority]({{urlRoot}}/content/ecs/authority)
+    - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
+    - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
+    - [Custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
 - <h3> + Tests</h3>
     - [Test overview]({{urlRoot}}/content/testing/testing-overview)
     - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
@@ -66,20 +78,19 @@
     - [Testing GDK systems]({{urlRoot}}/content/testing/testing-systems)
     - [Writing a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
 - <h3> [ - Troubleshooting]({{urlRoot}}/content/troubleshooting)</h3>
-
- ***
-- <h3>+ Contributing to the GDK</h3>
-    - [Github Issue log](https://github.com/spatialos/UnityGDK/issues)
-    - [Contribution policy](https://github.com/spatialos/gdk-for-unity#contributions)
-    - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
-    - [Development Roadmap](https://trello.com/b/29tMKyQC)
-
-***
-- <h3>+ GDK Community</h3>
-    - [Discord](https://discord.gg/SCZTCYm)
-    - [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
-    - [FAQs]({{urlRoot}}/content/faqs/faqs)
-    - [Sign up for e-mail updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
-
- ***
 - <h3>[- Known issues]({{urlRoot}}/known-issues)</h3>
+
+ ***
+- <h3>Get involved</h3>
+- <h3> + Contributing to the GDK</h3>
+    - <h4> Visit our GitHub:</h4>
+    - [* Issue log](https://github.com/spatialos/UnityGDK/issues)
+    - [* Contribution policy](https://github.com/spatialos/gdk-for-unity#contributions)
+    - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
+- <h3> + GDK Community</h3>
+    - <h4> Visit:</h4>
+    - [* Discord](https://discord.gg/SCZTCYm)
+    - [* Forums](https://forums.improbable.io/latest?tags=unity-gdk)
+    - [* Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
+- <h3> + Development Roadmap</h3>
+    - [Trello board](https://trello.com/b/29tMKyQC)
