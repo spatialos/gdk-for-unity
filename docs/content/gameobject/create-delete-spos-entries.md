@@ -6,6 +6,7 @@ _This document relates to the [GameObject-MonoBehaviour workflow](./intro-workfl
 
 
 Before reading this document, make sure you are familiar with:
+
   * [Workers in the GDK](../workers/workers-in-the-gdk.md)
   * [Read and write access](../glossary.md#authority)
   * [(GameObject-MonoBehaviour) World commands](gomb-world-commands.mb)
@@ -17,6 +18,7 @@ Before reading this document, make sure you are familiar with:
 To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API](https://docs.google.com/document/d/1SRKwGHvoqoi3SwOZHFJ8e-gT_zM5AVe85Br4J-l4u_w/edit#)
 ### How to create a SpatialOS entity
 To create an entity, you
+
   * [define the entity's template](../entity-templates.md)
   * [send the `CreateEntity` world command](./world-commands.md#CreateEntity).
 
@@ -75,8 +77,10 @@ public class EntityCreationBehaviour : MonoBehaviour
 ## How to create multiple entities
 
 There are two ways to create multiple entities. You can:
+
 * create entities one by one without reserving an entity ID
 * reserve multiple entity IDs first and then send a `CreateEntity` request for each of the received entity IDs.
+
 #### Creating multiple entities through bulk reservation
 
 The following code snippet shows an example of how to reserve and create multiple entities inside a MonoBehaviour. The example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
@@ -161,10 +165,12 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
 ## How to delete a SpatialOS entity
 
 To delete an entity, you
+
   * identify the SpatialOS entity id of the entity that you want to delete
   * [send the `DeleteEntity` world command](./world-commands.md#DeleteEntity).
 
-> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, f you used the [GameObject creation feature module](https://docs.google.com/document/d/1OWSlvKSg9jNDFIgJ6Z3SyLGvh75znZa95SwSyG4_A14/edit#) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
+> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, if you used the [GameObject creation feature module](https://docs.google.com/document/d/1OWSlvKSg9jNDFIgJ6Z3SyLGvh75znZa95SwSyG4_A14/edit#) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
+
 #### Example of deleting an entity
 The following code snippet shows an example of how to delete an entity inside a MonoBehaviour. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
 ```csharp

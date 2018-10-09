@@ -4,6 +4,7 @@
 _This document relates to the [GameObject-MonoBehaviour workflow](./intro-workflows-spos-entities.md)._
 
 See first the documentation on:
+
 * [Workers in the GDK](../workers/workers-in-the-gdk.md)  
 * [Worker API](../workers/api-worker.md)
 
@@ -22,10 +23,12 @@ In the GDK’s [`Playground` project](../../workers/unity/Assets/Playground), we
 an example implementation of a client-worker and a server-worker connecting using the `WorkerConnector`.
 These are stored as prefabs, so that you can use them directly in your Scenes.
 The prefabs are stored inside `Playground/Resources/Prefabs/Worker`:
+
   * `ClientWorker`: This prefab has the `ClientWorkerConnector` attached to it. This is a sample implementation to connect as a client-worker. (Note that the client-worker is sometimes called `UnityClient`.)
   * `GameLogicWorker`: This prefab has the `GameLogicWorkerConnector` attached to it. This is a sample implementation to connect as a server-worker.
 
 We provide three sample Scenes:
+
 * `SampleScene`: This Scene contains both the `ClientWorker` and the `GameLogicWorker` prefabs and starts both workers as soon as you load the scene.
 * `ClientScene`: This Scene contains only the `ClientWorker` prefab which you can use to build your client-worker for cloud deployments.
 * `GameLogicScene`: This Scene contains only the `GameLogicWorker` prefab which you can use to build your server worker for cloud deployments.
