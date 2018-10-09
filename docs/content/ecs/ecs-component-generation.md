@@ -1,12 +1,15 @@
 [//]: # (Doc of docs reference 31)
 [//]: # (TODO - Tech writer review)
+[//]: # (TODO - Move this doc from ECS to generic - and change its title to not be ECS)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1IGblyE-pvA4ZyJIjN8PcD1Ct6pE4FNhtlXRdp_Sy97o/edit)
-#  (ECS) ECS component generation
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+#  ECS component generation
+ _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)._
+
+> Note this document refers to ECS components but it is also relevant if you are using the GameObject-MonoBehaviour workflow. You don't need to know about ECS to use component generation.
 
 The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-> Note that code generation runs when you open the Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
+ Code generation runs when you open the Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
 
 ## Overview
 
