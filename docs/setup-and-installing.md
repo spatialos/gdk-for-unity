@@ -54,10 +54,6 @@ On the **Workloads** tab:
 
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
-**You can now skip ahead to [validating your installation](#validate-your-installation).**
-
----
-
 <%(/Expandable)%>
 
 <%(#Expandable title="Setup for Mac")%>
