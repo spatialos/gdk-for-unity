@@ -16,10 +16,12 @@ These structs only contain the defined schema data fields. They do *not* contain
 
 ## Generation details
 Each struct contains the following fields:
+
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang
   * the public property `BlittableBool DirtyBit` used internally to identify whether a component update needs to be sent to the SpatialOS Runtime
 
-Additionally, for each field defined in your schema file, the generated C# struct creates
+Additionally, for each field defined in your schema file, the generated C# struct creates:
+
   * a private field corresponding to the field defined in schemalang
   * a public property that can be used for reading and writing the value of this field. Changing the value of this property makes sure that `DirtyBit` is set to `true`.
 
