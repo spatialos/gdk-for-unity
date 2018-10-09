@@ -1,5 +1,5 @@
 # (ECS) Custom replication systems
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 ## What the SpatialOS GDK's replication system does
 

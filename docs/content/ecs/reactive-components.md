@@ -1,5 +1,5 @@
 # ECS: Receiving entity updates from SpatialOS: reactive components
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 
@@ -12,8 +12,8 @@ At the end of the tick, the GDK removes the reactive component.
 These are the types of reactive component available:
 
 1. `ReceivedUpdates`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/latest/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-2. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/ecs/authority.md) for information on how this works.
-3. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/ecs/events.md) for information on how this works.
+2. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/ecs/authority) for information on how this works.
+3. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/ecs/events) for information on how this works.
 4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
 5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
 

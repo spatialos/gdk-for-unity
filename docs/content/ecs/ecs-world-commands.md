@@ -1,5 +1,5 @@
 # (ECS) World commands
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
 
@@ -26,7 +26,7 @@ To send a request use a `WorldCommands.CreateEntity.CommandSender` component. Th
 
 To receive a response use `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
 
-Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates]({{urlRoot}}/content/entity-templates.md) page.
+Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates]({{urlRoot}}/content/entity-templates) page.
 
 ```csharp
 public class CreateCreatureSystem : ComponentSystem

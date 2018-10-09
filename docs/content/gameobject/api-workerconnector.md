@@ -24,7 +24,7 @@ public async Task Connect(string workerType, ILogDispatcher logger)
 Parameters:
 
   * `string workerType`: The type of the worker
-  * `ILogDispatcher logger`: The logdispatcher to use for [logging]({{urlRoot}}/content/ecs/logging.md) on this worker.
+  * `ILogDispatcher logger`: The logdispatcher to use for [logging]({{urlRoot}}/content/ecs/logging) on this worker.
 
 Returns: a task which finishes when the worker either connects or fails to connect.
 

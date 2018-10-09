@@ -3,7 +3,7 @@
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
 
 # (ECS) System update order
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 Unity provides attributes to define the [update order of systems (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
 
@@ -31,8 +31,8 @@ The groups are executed in the following order:
 * `SpatialOSUpdateGroup` - Most systems which use SpatialOS components should run in this group.
 * `SpatialOSSendGroup` - This group contains all systems related to sending data to SpatialOS .
   * `InternalSpatialOSSendGroup` - This group is used by the `SpatialOSSendSystem` to handle sending all replicated components to SpatialOS. **(Internal use only)**
-  * `CustomSpatialOSSendGroup` -  This group contains all systems running custom replication logic. If you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system.md), add your system to this group.
-  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/content/ecs/reactive-components.md) and [temporary components]({{urlRoot}}/content/ecs/temporary-components.md) at the end of each update loop. **(Internal use only)**
+  * `CustomSpatialOSSendGroup` -  This group contains all systems running custom replication logic. If you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system), add your system to this group.
+  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/content/ecs/reactive-components) and [temporary components]({{urlRoot}}/content/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
 
 Here's a diagram of the update order:
 

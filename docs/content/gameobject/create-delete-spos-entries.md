@@ -19,7 +19,7 @@ To see the exact API for using world commands inside a MonoBehaviour, take a loo
 ### How to create a SpatialOS entity
 To create an entity, you
 
-  * [define the entity's template]({{urlRoot}}/content/entity-templates.md)
+  * [define the entity's template]({{urlRoot}}/content/entity-templates)
   * [send the `CreateEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#createentity).
 
 > When you create an entity, the SpatialOS GDK for Unity by default does not associate a GameObject with it. For more information on how to enable this, see [representing entities with gameobjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
