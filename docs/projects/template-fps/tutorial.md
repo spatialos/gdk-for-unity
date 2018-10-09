@@ -8,9 +8,9 @@ This tutorial will implement a simple health pack pickup that will grant health 
 
 To implement this feature we will:
 
-* Define a new health pack entity and its data
-* Add health pack entities to the snapshot so they appear in the world
-* Write pick-up logic so packs grant health to players
+* Define a new health pack entity and its data.
+* Add health pack entities to the snapshot so they appear in the world.
+* Write pick-up logic so packs grant health to players.
 
 # Defining a new entity type
 
@@ -22,8 +22,8 @@ Existing entities in the FPS starter project, such as the `Player` entity type, 
 
 We will give your health pack entities two pieces of data by defining it in a new component:
 
-* The amount of health the pack will grant
-* A flag indicating whether the health pack is active, or has been consumed
+* The amount of health the pack will grant.
+* A flag indicating whether the health pack is active, or has been consumed.
 
 Create a `schema` directory in your project root, if it doesn't already exist. Then create a `pickups` directory within that.
 
