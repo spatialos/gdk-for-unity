@@ -3,7 +3,7 @@
 
 # Troubleshooting
 
-We also maintain a [known issues page]({{urlRoot}}/known-issues.md) for any open bugs in the SpatialOS GDK for Unity.
+We also maintain a [known issues page]({{urlRoot}}/known-issues) for any open bugs in the SpatialOS GDK for Unity.
 
 **The following exception is thrown: `<name of a type>` is an IComponentData, and thus must be blittable
 (No managed object is allowed on the struct).**
@@ -33,7 +33,7 @@ These warnings are caused by code maintained by Unity over which we have no cont
 
 **Several error messages are logged after I destroyed a GameObject or ECS entity representing a SpatialOS entity.**
 <br/>
-Do not proactively destroy GameObjects or ECS entities representing SpatialOS entities. The SpatialOS GDK cleans them up automatically when the respective SpatialOS entity is removed from the worker. Send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/gomb-world-commands.md) to delete the entity on the SpatialOS side instead.
+Do not proactively destroy GameObjects or ECS entities representing SpatialOS entities. The SpatialOS GDK cleans them up automatically when the respective SpatialOS entity is removed from the worker. Send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/gomb-world-commands) to delete the entity on the SpatialOS side instead.
 
 **A Reader/Writer or CommandSender/Handler in my code is null.**
 <br/>

@@ -37,7 +37,7 @@ Returns: true, if the worker should connect using the Locator flow, false otherw
 ```csharp
 protected virtual string SelectDeploymentName(DeploymentList deployments)
 ```
-Only use this method when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary.md#locator-connection-flow).
+Only use this method when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
 Parameters:
   * `DeploymentList deployment`: a list of all deployments for the project name specified in the `spatialos.json` file.

@@ -6,12 +6,12 @@ Before reading this document, make sure you are familiar with the [GameObject-Mo
 
 ## What is a SpatialOS worker?
 
-The SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) manages your [game world]({{urlRoot}}/content/glossary.md#world) by keeping track of all [SpatialOS entities]({{urlRoot}}/content/glossary.md#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary.md#spatialos-component).
+The SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) manages your [game world]({{urlRoot}}/content/glossary.md#world) by keeping track of all [SpatialOS entities]({{urlRoot}}/content/glossary.md#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary#spatialos-component).
 
-To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary.md#worker).
+To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary#worker).
 They perform the computation associated with a world: they can read what’s happening, watch for changes, and make changes of their own.
 
-We differentiate between [client-workers]({{urlRoot}}/content/glossary.md#client-worker) and [server-workers]({{urlRoot}}/content/glossary.md#server-worker).
+We differentiate between [client-workers]({{urlRoot}}/content/glossary.md#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker).
 
 >Find out more about SpatialOS entity, component, and worker concepts, in the [SpatialOS concept documentaiton](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
 
@@ -23,7 +23,7 @@ In the GDK, any server-worker or client-worker essentially consists of its conne
 
 When it connects, the worker creates an ECS world to keep track of all SpatialOS entities that are in its view and adds all systems that are defined inside it to its ECS world. These systems contain the logic necessary to simulate your game and synchronize changes with the SpatialOS Runtime.
 
-This means that, along with a SpatialOS game world and SpatialOS entities, there is an ECS world with ECS entities. However, while the SpatialOS world is game-wide and represents all SpatialOS entities, the ECS world is much narrower; it’s worker-specific and represents only the ECS entities which are currently in a [worker’s view]({{urlRoot}}/content/glossary.md#worker-s-view).   Of course, this means that you have as many ECS worlds in your game as you have workers.
+This means that, along with a SpatialOS game world and SpatialOS entities, there is an ECS world with ECS entities. However, while the SpatialOS world is game-wide and represents all SpatialOS entities, the ECS world is much narrower; it’s worker-specific and represents only the ECS entities which are currently in a [worker’s view]({{urlRoot}}/content/glossary#worker-s-view).   Of course, this means that you have as many ECS worlds in your game as you have workers.
 
 You add definitions of the systems inside your worker using the worker API `worker.World.GetOrCreateManager<YourSystem>()`. (See the [worker API]({{urlRoot}}/content/workers/api-worker) documentation for more information.)
 
@@ -50,4 +50,4 @@ In the GDK's [Playground project](https://github.com/spatialos/gdk-for-unity/tre
 
 * `GameLogicScene`: This Scene contains only the `UnityGameLogic` prefab and can be used to build your server worker for cloud deployments.
 
-The position of these prefabs in the Scene define the [`Origin` of the worker]({{urlRoot}}/content/glossary.md#worker-origin), which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.
+The position of these prefabs in the Scene define the [`Origin` of the worker]({{urlRoot}}/content/glossary#worker-origin), which is used to translate all entities that have been added to this worker. This ensures that entities checked out by different workers don't interfere with each other when running multiple workers in the same scene.

@@ -14,7 +14,7 @@ the `WorkerConnector` class which you can extend further by creating classes whi
 The `WorkerConnector` is a MonoBehaviour script. You can use it to create multiple workers
 in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker.
 
-When you have multiple workers represented as GameObjects in a scene, you are likely to have multiple ECS entities [checked out]({{urlRoot}}/content/glossary.md#authority) to that worker. To make sure you don’t have all the ECS entities which are checked out to a worker/GameObject in the same (x, y, z) location, we use an offset for each ECS entity against the origin of the worker/GameObject.  We call the offset of the worker/GameObject origin, the “translation”.
+When you have multiple workers represented as GameObjects in a scene, you are likely to have multiple ECS entities [checked out]({{urlRoot}}/content/glossary#authority) to that worker. To make sure you don’t have all the ECS entities which are checked out to a worker/GameObject in the same (x, y, z) location, we use an offset for each ECS entity against the origin of the worker/GameObject.  We call the offset of the worker/GameObject origin, the “translation”.
 
 
 ## How to use worker prefabs
