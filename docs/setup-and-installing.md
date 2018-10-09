@@ -88,20 +88,20 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-### Validate your installation
-
-We **thoroughly** recommend validating your installation using the SpatialOS CLI.
-
-In a terminal, run: `spatial diagnose` and hit enter.
-
-The SpatialOS CLI will check whether the installation dependencies are where it expects them to be, and alert you of any problems.
-
 <%(#Expandable title="Having problems?")%>
-On Windows you can use `powershell` as your terminal.
+If you need help using the GDK, please come and talk to us about the software and the documentation via:
 
-On Mac you can use `terminal`.
+**Discord**
 
-The SpatialOS installer should have added the SpatialOS CLI to your `path`, allowing you to use `spatial` commands from your terminal window of choice. You can test whether this is installed correctly by just typing `spatial`. Sometimes it is necessary to close and re-open your terminal after an installation in order to use the newly installed functionality.
+Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
+
+**The SpatialOS forums**
+
+Visit the [support section](https://forums.improbable.io/c/sup) in our forums and use the unity-gdk tag.
+
+**Github issues**
+
+Create an [issue](https://github.com/spatialos/gdk-for-unity/issues) in this repository.
 <%(/Expandable)%>
 
 ### Clone the SpatialOS GDK for Unity repository
@@ -113,9 +113,8 @@ The SpatialOS installer should have added the SpatialOS CLI to your `path`, allo
 
 The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
-- a Unity project at `gdk-for-unity/workers/unity`, which you need to open to use the GDK
-- SpatialOS features, such as the schema and snapshot files
-- development code
+  * a Unity project at `gdk-for-unity/workers/unity`, which you need to open in the Unity editor in order to use the GDK
+  * SpatialOS features, such as the schema and snapshot files
 
 ### Licensing
 
