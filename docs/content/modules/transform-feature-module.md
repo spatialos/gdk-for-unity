@@ -24,10 +24,8 @@ This feature module manages both types of location automatically; primarily upda
 
 ### How to use this Feature Module
 
-
 #### How to enable automatic transform synchronization for an entity
 [//]: # (TODO - Add link below to feature module helper function as noted - doc 35)
-
 When [creating a SpatialOS entity]({{urlRoot}}/content/gameobject/create-delete-spos-entities) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
 
 ```csharp
