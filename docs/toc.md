@@ -88,9 +88,9 @@
     - [* Contribution policy](https://github.com/spatialos/gdk-for-unity#contributions)
     - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
 - <h3> + GDK Community</h3>
-    - <h4> Visit:</h4>
+    - <h4> Check out:</h4>
     - [* Discord](https://discord.gg/SCZTCYm)
     - [* Forums](https://forums.improbable.io/latest?tags=unity-gdk)
     - [* Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
-- <h3> + Development Roadmap</h3>
+- <h3> + Development roadmap</h3>
     - [Trello board](https://trello.com/b/29tMKyQC)
