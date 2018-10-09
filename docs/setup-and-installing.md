@@ -35,11 +35,11 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 **Using Visual Studio?**
 
-Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/), find the **Workloads** tab in the Visual Studio Installer by clicking on the **More** option for *Visual Studio Build Tools*, and selecting **Modify** from the drop-down menu.
+As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
 
-![]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
+![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
-On the **Workloads** tab:
+Once you have navigated to the **Workloads** tab:
 
 * Select **.NET Core cross-platform development**
 
