@@ -1,5 +1,3 @@
-[google-docs-link]: https://docs.google.com/document/d/1VMK37eVnMy-CMNMjRE8tZGRniqq7SoRAbG9kZ5rIAgw/edit# (Please place reviews as comments into this document here)
-
 # Test overview
 
 We use tests to validate functionality and to ensure that the SpatialOS GDK for Unity (GDK) and the framework as a whole are resilient under different conditions.
@@ -7,26 +5,25 @@ We use tests to validate functionality and to ensure that the SpatialOS GDK for 
 ## Test categories
 
 We have two main test categories:
-- Tools tests, such as testing the linter
-- Unity tests - these test the Unity project which forms part of the GDK
+
+* Tools tests, such as testing the linter
+* Unity tests - these test the Unity project which forms part of the GDK
 
 The tests in both of these categories use the NUnit testing framework. NUnit is the open source library that’s included with Unity; it forms the basis of the Unity Test Runner. See the [NUnit’s documentation](https://github.com/nunit/docs/wiki/NUnit-Documentation) and Unity’s User Manual [Test Runner documentation](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) for further information.
 
 ## Where to find test code
 
 * The documentation linter tests are in `tools\DocsLinter\Tests`.
-* The code generator tests are in `code_generator\GdkCodeGenerator\src\Tests`.
-* For the Unity tests, each GDK Module has its own `Tests` directory.<br/>
-For example:
-  - `workers\unity\Assets\Gdk\Core\Tests`
-  - `workers\unity\Assets\Gdk\PlayerLifecycle\Tests`
+* The code generator tests are in `workers\unity\Packages\com.improbable.gdk.tools\.CodeGenerator\src\Tests`.
+* For the Unity tests, each GDK Module has its own `Tests` directory.
+  * For example: `workers\unity\Packages\com.improbable.gdk.core\Tests`
 
 Find out more about the GDK Unity project test directory structure and file names in [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines.md#test-directory-structure-and-file-names).
 
 ## Further information
 
 * [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
-* [Testing guidelines]({{urlRoot}}/content/testing/testing-guidelines) - covers Unity tests only (contains information on the GDK Unity project test directory structure and file names).
-* [Writing a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test) covers Unity tests only.
+* [Unity testing guidelines]({{urlRoot}}/content/testing/testing-guidelines)
+* [Writing a new Unity unit test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
 
 [//]: # (Editorial review status: Full review 2018-07-13)

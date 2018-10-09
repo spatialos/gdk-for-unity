@@ -1,30 +1,18 @@
 # How to run tests
 
 This document describes how to run tests for the two parts of the SpatialOS GDK for Unity (GDK):
+
 * the tools (which includes the document linter)
 * the Unity project
 
 Note that each part of the GDK project has its own separate testing.
 
-## Prepare the workspace
-To run any test, you need to prepare your workspace. To do this, open up a terminal window and, from the root directory of the GDK repository you cloned, run:
-
-```bash
-./prepare-workspace.sh
-```
-
-
-**Note:**<br/>
-Before you start using the GDK for any purpose, you will need to run `./prepare-workspace.sh` at least once.
-
 ## How to run all tests
-To run tests on all elements of the GDK (the tools and the Unity project which forms part of the GDK), open a terminal window and, from the root directory of the GDK repository, run the following command:
 
-```bash
-./ci/test.sh
-```
+To run tests on all elements of the GDK (the tools and the Unity project which forms part of the GDK), open a terminal window and, from the root directory of the GDK repository, run the following command: `bash ./ci/test.sh`
 
 ## Test success or failure
+
 * A successful test run displays this message: `All tests passed!`
 * A failed test run displays this message: `Tests failed! See above for more information.`
 
