@@ -78,7 +78,7 @@ static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispa
 
 Parameters:
 
-  * `ReceptionistConfig config`: The connection configuration used to connect via the [Receptionist]({{urlRoot}}/content/connecting-to-spos.md).
+  * `ReceptionistConfig config`: The connection configuration used to connect via the [Receptionist]({{urlRoot}}/content/connecting-to-spos.md#receptionist-service-connection-flow).
 
   * `ILogDispatcher logger`: A reference to the `ILogDispatcher` object that the worker uses for [logging]({{urlRoot}}/content/ecs/logging.md).
 
@@ -94,7 +94,7 @@ static async Task<Worker> CreateWorkerAsync(LocatorConfig config, Func<Deploymen
 
 Parameters:
 
-* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spos.md) flow.
+* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spos.md#locator-connection-flow) flow.
 
 * `Func<DeploymentList, string> deploymentListCallback`: The callback used to retrieve the correct [deployment]({{urlRoot}}/content/glossary.md#deploying) name given a list of deployments.
 

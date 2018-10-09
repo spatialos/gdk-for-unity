@@ -12,8 +12,8 @@ The worker’s worker entity performs certain tasks:
 
   * send and receive [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
   * register changes to the state of the Runtime connection (that is whether the worker is connected to the [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime) or not) by filtering for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components.md):
-     * `OnConnected`: the worker just connected to the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime).
-     * `OnDisconnected`: the worker just disconnected from the SpatialOS [Runtime]({{urlRoot}}/content/glossary.md#spatialos-runtime). This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
+     * `OnConnected`: the worker just connected to the SpatialOS Runtime.
+     * `OnDisconnected`: the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
 
 
