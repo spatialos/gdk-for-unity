@@ -67,7 +67,7 @@ There is a quick fix however:
 2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 
-<img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
+<%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
 
 ### Building Workers
 
