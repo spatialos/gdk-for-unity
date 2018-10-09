@@ -2,11 +2,12 @@
 [//]: # (TODO - Tech writer review)
 
 #  (ECS) ECS component updates
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
 Before reading this document, make sure you are familiar with
-  * [ECS component generation](./ecs-component-generation.md)
-  * [ECS system update order](./ecs-system-update-order.md)
+
+  * [ECS component generation]({{urlRoot}}/content/ecs/ecs-component-generation)
+  * [ECS system update order]({{urlRoot}}/content/ecs/ecs-system-update-order)
 
 The following schema file is used for the examples described below.
 
@@ -20,7 +21,7 @@ component Health {
 }
 ```
 
-When a SpatialOS entity is [checked out](entity-checkout-process.md), its components are automatically added to the corresponding ECS entity as part of the entity's check out process.
+When a SpatialOS entity is [checked out]({{urlRoot}}/content/glossary#checking-out), its components are automatically added to the corresponding ECS entity as part of the entity's check out process.
 
 ### How to send a component update
 To send a component update, set the component to the value to be sent. A component update will be constructed and sent at the end of the current update loop.
@@ -49,7 +50,7 @@ public class SendHealthUpdateSystem : ComponentSystem
 
 ### How to react to a component update
 
-When a component update is received this will be added as a [reactive component](reactive-components.md).
+When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/ecs/reactive-components).
 To access all component updates for the `Health` component that have happened since the last frame, access `Health.ReceivedUpdates.Updates`.
 If you only want the latest values, you can access the `Health.Component` directly.
 

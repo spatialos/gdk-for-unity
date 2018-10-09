@@ -1,33 +1,37 @@
 [//]: # (Doc of docs reference 34)
 [//]: # (Tech writer review)
 # (ECS) Sending and receiving component commands
- _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 Before reading this document, make sure you are familiar with:
-* [World and component command requests and responses](../world-component-commands-requests-responses.md)
-  * [Readers and Writers](./readers-writers.md)
-  * [Read and write access](./glossary.md#authority)
+
+* [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+  * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
+  * [Read and write access]({{urlRoot}}/content/glossary#authority)
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](../workers/workers-in-the-gdk.md). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflow-spos-entities.md).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
 
 There are two types of commands in SpatialOS:
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](../glossary.md#spatialos-entities).
-* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
+
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 This document is about GameObject-MonoBehaviour component commands. The commands documentation is:
-* [GameObject-MonoBehaviour world commands](./gomb-world-commands)
-* [ECS world commands](../ecs/ecs-world-commands.md)
-* GameObject-Monobehaviour component commands, see [(GameObject-MonoBehaviour) Sending and receiving component commands](../gameobject/sending-receiving-commands.md)
+
+* [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
+* [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands.md)
+* GameObject-Monobehaviour component commands, see [(GameObject-MonoBehaviour) Sending and receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
 * ECS component commands - this document.
-* Both workflows - [world and component command requests and responses](../world-component-commands-requests-responses.md)
+* Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 
 
 ## How to send and receive component commands
 The GDK generates the following ECS components to allow you to send and receive commands using the ECS flow:
+
   * `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
   * `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
-  * [Command request and response structs](): allows you to create and handle incoming and outgoing command requests and responses
+  * [Command request and response structs]({{urlRoot}}/content/world-component-commands-requests-responses): allows you to create and handle incoming and outgoing command requests and responses
 
 We use the following schema for all examples described in this documentation.
 ```
@@ -41,6 +45,7 @@ component CubeSpawner
 ```
 
 The GDK generates the following types in the `Playground` namespace:
+
   * `CubeSpawner.SpawnCube.Request`
   * `CubeSpawner.SpawnCube.ReceivedRequest`
   * `CubeSpawner.SpawnCube.Response`
@@ -179,3 +184,4 @@ public class HandleSpawnCubeResponseSystem : ComponentSystem
         }
     }
 }
+```
