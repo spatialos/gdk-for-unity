@@ -1,5 +1,6 @@
-#  (ECS) Logging
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+[//]: # (TODO: Move this doc from the ecs folder)
+#  Logging
+ _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
