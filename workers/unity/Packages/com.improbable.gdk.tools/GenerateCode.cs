@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tools
         private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
         private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
+        private const string DescriptorFile = "../../build/assembly/schema/schema.descriptor";
 
         private const int GenerateCodePriority = 38;
         private const int GenerateCodeForcePriority = 39;
@@ -125,6 +126,7 @@ namespace Improbable.Gdk.Tools
                 $"\"{projectPath}\"",
                 "--",
                 $"--json-dir=\"{ImprobableJsonDir}\"",
+                $"--descriptor-file=\"{DescriptorFile}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\""
             };
 

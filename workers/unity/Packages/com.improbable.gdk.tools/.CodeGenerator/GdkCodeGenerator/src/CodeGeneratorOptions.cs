@@ -10,6 +10,8 @@ namespace Improbable.Gdk.CodeGenerator
     public class CodeGeneratorOptions
     {
         public string JsonDirectory { get; private set; }
+
+        public string DescriptorFile { get; private set; }
         public string NativeOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
         public string HelpText { get; private set; }
@@ -24,6 +26,10 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     "json-dir=", "REQUIRED: the directory that will contain the json representation of your schema",
                     j => options.JsonDirectory = j
+                },
+                {
+                    "descriptor-file=", "REQUIRED: the file that will contain the Runtime's descriptor of your schema",
+                    j => options.DescriptorFile = j
                 },
                 {
                     "native-output-dir=", "REQUIRED: the directory to output generated components and structs to",

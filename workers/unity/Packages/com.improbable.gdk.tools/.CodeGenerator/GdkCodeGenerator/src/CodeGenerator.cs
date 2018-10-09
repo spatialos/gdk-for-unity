@@ -41,7 +41,6 @@ namespace Improbable.Gdk.CodeGenerator
             this.fileSystem = fileSystem;
         }
 
-
         public int Run()
         {
             if (options.ShouldShowHelp)
@@ -76,10 +75,12 @@ namespace Improbable.Gdk.CodeGenerator
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path={dir}");
 
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
+            File.Delete(options.DescriptorFile);
 
             var arguments = new[]
             {
-                $@"--ast_json_out={options.JsonDirectory}"
+                $@"--ast_json_out={options.JsonDirectory}",
+                $@"--descriptor_set_out={options.DescriptorFile}"
             }.Union(inputPaths).Union(files).ToList();
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
@@ -125,6 +126,12 @@ namespace Improbable.Gdk.CodeGenerator
 
         private bool ValidateOptions()
         {
+            if (string.IsNullOrEmpty(options.DescriptorFile))
+            {
+                Console.WriteLine("Descriptor output directory not specified");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(options.NativeOutputDirectory))
             {
                 Console.WriteLine("Native output directory not specified");
