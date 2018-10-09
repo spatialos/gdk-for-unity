@@ -30,7 +30,7 @@
  ***
 - <h3>+ Contributing to the GDK</h3>
     - [Github Issues](https://github.com/spatialos/UnityGDK/issues)
-    - [Contribution policy](https://github.com/spatialos/UnrealGDK#contributions)
+    - [Contribution policy](https://github.com/spatialos/gdk-for-unity#contributions)
     - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
     - [Development Roadmap](https://trello.com/b/29tMKyQC)
 
