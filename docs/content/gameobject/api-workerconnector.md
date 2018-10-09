@@ -22,6 +22,7 @@ During the creation of your workers, they attempt to connect to the SpatialOS Ru
 public async Task Connect(string workerType, ILogDispatcher logger)
 ```
 Parameters:
+
   * `string workerType`: The type of the worker
   * `ILogDispatcher logger`: The logdispatcher to use for [logging]({{urlRoot}}/content/ecs/logging.md) on this worker.
 
