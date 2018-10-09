@@ -128,7 +128,7 @@ Modify the `fps_fake_clients_per_coordinator` flag value from 0 to 10 and hit sa
 
 <img src="{{assetRoot}}assets/worker-flags-modification.png" style="margin: 0 auto; display: block;" />
 
-What this will do is start up 10 fake clients per Fake Client Coordinator worker (of which there are 20 running in the deployment), and they will connect in every 2 seconds (dictated by the `fps_fake_client_creation_interval` flag).
+What this will do is start up 10 simulated player clients per Fake Client Coordinator worker (of which there are 20 running in the deployment), and they will connect in every 2 seconds (dictated by the `fps_fake_client_creation_interval` flag).
 
 Back in the game, you will soon see the new simulated player clients running. Try to find them before they find you…
 
