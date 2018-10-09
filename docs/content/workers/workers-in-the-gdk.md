@@ -2,7 +2,7 @@
 # Workers: Workers in the GDK
 _This document relates to both GameObject-MonoBehaviour and ECS workflows._
 
-Before reading this document, make sure you are familiar with the [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities).
+Before reading this document, make sure you are familiar with the [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
 
 ## What is a SpatialOS worker?
 
@@ -17,7 +17,7 @@ We differentiate between [client-workers]({{urlRoot}}/content/glossary#client-wo
 
 ## Workers and ECS worlds
 
-As described in the [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities) document, the GDK uses ECS under the hood, even if you are using the GameObject and MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
+As described in the [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) document, the GDK uses ECS under the hood, even if you are using the GameObject and MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
 
 In the GDK, any server-worker or client-worker essentially consists of its connection to the SpatialOS Runtime and a list of ECS systems - which hold the logic relevant to the game world. When your GDK-created game runs and creates either a client-worker or server-worker, that worker tries to connect to the SpatialOS Runtime.
 
@@ -31,11 +31,11 @@ You add definitions of the systems inside your worker using the worker API `work
 ## Further information
 To learn about a workers’ connection to the SpatialOS Runtime, see:
 
-  * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos)
+  * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos)
 
 To learn more about how to create and use workers in the GDK, please see the following documentation:
 
-  * GameObject-MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector)
+  * GameObject-MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
   * ECS workflow - [worker entity]({{urlRoot}}/content/workers/worker-entity)
   * [API - worker]({{urlRoot}}/content/workers/api-worker)
   * [API - worker system]({{urlRoot}}/content/workers/api-worker-system)

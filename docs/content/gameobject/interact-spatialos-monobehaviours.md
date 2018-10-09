@@ -1,14 +1,14 @@
 [//]: # (Doc of docs reference 5.2)
 [//]: # (TODO - tech writer review)
 # (GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
 
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
 
-You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
+You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
 By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
 This is enabled by [code-generating]({{urlRoot}}/content/code-generator) the following types:
 

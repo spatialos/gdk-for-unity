@@ -3,11 +3,11 @@
 [//]: # (TODO - Remove “> Currently updating any field of the component will trigger the callback for all <component property name>Updated`.” line if if this PR gets merged in: https://github.com/spatialos/UnityGDK/pull/438 )
 
 # (GameObject-MonoBehaviour) Reading and writing SpatialOS component data
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
 * [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
 * [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/content/glossary#authority)
@@ -26,7 +26,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) containing the `Health` component.
+The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/content/gameobject/linking-spatialos-entities) containing the `Health` component.
 
 ## How to read component properties
 

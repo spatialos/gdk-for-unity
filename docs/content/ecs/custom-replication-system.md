@@ -1,5 +1,5 @@
 # (ECS) Custom replication systems
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 ## What the SpatialOS GDK's replication system does
 
@@ -17,7 +17,7 @@ When a worker sends a SpatialOS event, the GDK puts the event object into an int
 
 If some ECS components need more complex replication logic, you can create custom replication systems on a per-component basis. To do this:
 
-* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/ecs-system-update-order).
+* Your custom replication system must extend the `Improbable.Gdk.Core.CustomSpatialOSSendSystem<T>` class (where `T` is a SpatialOS component). Note that this disables the standard replication for `T` and ensures the system runs at the correct point in the update lifecycle. For more information about the update lifecycle see [System Update Order]({{urlRoot}}/content/ecs/system-update-order).
 
 * Handle replication of properties:
 
@@ -92,7 +92,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component
 }
 ```
 
-> **Note**: You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
+> You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
 
 Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData` and has no fields.
 

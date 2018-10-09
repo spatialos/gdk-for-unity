@@ -3,7 +3,7 @@
 
 # Connecting to the SpatialOS Runtime
 
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all SpatialOS entities and the current state of their components.
 To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary#worker). We differentiate between [server-workers]({{urlRoot}}/content/glossary#server-worker) and [client-workers]({{urlRoot}}/content/glossary#client-worker).
@@ -12,9 +12,9 @@ To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/con
 
 It’s the workers which create a connection from your game to the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your workers as part of your game development. Then, when your game runs, it creates workers which connect to the SpatialOS Runtime.  During their creation, workers attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker fails.
 
-If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API]({{urlRoot}}/content/workers/api-worker).
+If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API]({{urlRoot}}/content/workers/api-worker).
 
-(For information on the different workflows, see [GameObject and MonoBehaviour workflow vs ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities).)
+(For information on the different workflows, see [GameObject and MonoBehaviour workflow vs ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).)
 
 ## Which connection flow to use
 
@@ -27,11 +27,11 @@ Use the Receptionist service connection flow in the following cases:
   * Connecting server-workers to a cloud deployment.
   * The special case of connecting a client-worker to a cloud deployment from the Unity Editor for debugging.
 
-**Note:** You usually connect client-workers to a cloud deployment via the Locator connection flow (outlined below) but you may want to use the Receptionist connection flow for debugging from your Unity Editor. In this case you use the Receptionist service connection flow via `spatial cloud connect external <deploymentname>`. See the SpatialOS documentation to find out more about [`spatial cloud connect external <deploymentname> ](https://docs.improbable.io/reference/13.3/shared/spatial-cli/spatial-cloud-connect-external#spatial-cloud-connect-externall).
+**Note:** You usually connect client-workers to a cloud deployment via the Locator connection flow (outlined below) but you may want to use the Receptionist connection flow for debugging from your Unity Editor. In this case you use the Receptionist service connection flow via `spatial cloud connect external <deploymentname>`. See the SpatialOS documentation to find out more about [`spatial cloud connect external <deploymentname>`](https://docs.improbable.io/reference/13.3/shared/spatial-cli/spatial-cloud-connect-external#spatial-cloud-connect-externall).
 
 ### Locator connection flow
 Use the Locator service connection flow
-  * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher] (https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher).
+  * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher).
 
 ## How do I connect via the Receptionist service flow?
 

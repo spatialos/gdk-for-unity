@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 15.1)
 
 # (GameObject-MonoBehaviour) Creating workers with WorkerConnector
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 See first the documentation on:
 
@@ -81,7 +81,7 @@ public class ClientWorkerConnector : WorkerConnector
 
 When inheriting from the `WorkerConnector`, you can override `GetLocatorConfig` and
 `GetReceptionistConfig` to modify the connection configuration used to connect to the
-Locator or Receptionist. See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos) to find out more about the connection flows for client-workers and server-workers.
+Locator or Receptionist. See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) to find out more about the connection flows for client-workers and server-workers.
 
 **Example** </br>
 Override the connection Receptionist connection flow configuration.
@@ -99,7 +99,7 @@ protected override ReceptionistConfig GetReceptionistConfig(string workerType)
 ```
 
 ## How to decide whether to use the Locator or the Receptionist flow
-(See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spos) to find out more about the connection flows for client-workers and server-workers)
+(See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) to find out more about the connection flows for client-workers and server-workers)
 
 The `WorkerConnector` provides a default implementation to decide which connection
 flow to use based on whether the application is running in the Unity Editor and whether it

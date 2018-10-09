@@ -1,5 +1,5 @@
 # (ECS) Authority
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities.md)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).
 
@@ -23,7 +23,7 @@ The authority tags in the GDK are (where `T` is a [SpatialOS component]({{urlRoo
 
         For more information on `AuthorityLossImminent`, [see the SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
-> **Note**: This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
+> This is _different_ to the [behaviour around AuthorityLossImminent notifications in the SpatialOS SDKs](https://docs.improbable.io/reference/latest/shared/design/understanding-access#authority-states), where Authority can only be in one of three states at a time.
 
 Here's an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component:
 
