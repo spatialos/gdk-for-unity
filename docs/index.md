@@ -8,8 +8,6 @@ The SpatialOS Game Development Kit (GDK) for Unity enables game developers to bu
 
 * the example game, which both tests and demonstrates the Feature Modules; for use as a starting point or resource for game development.
 
-For further high-level information about this, see the [summary of key features]({{urlRoot}}/content/faqs/key-features).
-
 This is an alpha release of the GDK Core which is the foundation of the product. To find out more see the [GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps).
 
 ## Recommended use
