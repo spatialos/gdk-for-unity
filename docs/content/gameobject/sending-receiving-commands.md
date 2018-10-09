@@ -5,26 +5,26 @@
 [//]: # (TODO - add how to do spawn logic in code example below)
 
 # (GameObject-MonoBehaviour) Commands: Sending and receiving component commands
-_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
-* [World and component command requests and responses](../world-component-commands-requests-responses.md)
-  * [Readers and Writers](./readers-writers.md)
-  * [Read and write access](./glossary.md#authority)
+  * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+  * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
+  * [Read and write access]({{urlRoot}}/content/glossary#authority)
 
 ### About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](../workers/workers-in-the-gdk.md). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflow-spos-entities.md).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
 
 There are two types of commands in SpatialOS:
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](../glossary.md#spatialos-entities).
-* **Component commands** you set up in your [schema](../glossary.md#schema) for workers to invoke on any SpatialOS entity’s components.
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/content/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 This document is about GameObject-MonoBehaviour component commands. The commands documentation is:
-* [GameObject-MonoBehaviour world commands](./gomb-world-commands)
-* [ECS world commands](../ecs/ecs-world-commands.md)
+* Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+* [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
+* [ECS world commands]({{urlRoot}}/content/ecs/ecs-world-commands)
 * GameObject-Monobehaviour component commands - this document
-* ECS component commands, see [ECS: Sending and receiving component commands](../ecs/sending-receiving-component-commands.md)
-* Both workflows - [world and component command requests and responses](../world-component-commands-requests-responses.md)
+* ECS component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
 
 
 ### How to send and receive component commands
@@ -35,12 +35,12 @@ To send and handle commands the GDK automatically generates the following types
   * `CommandResponseHandler` for handling command responses
 .
 
-These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers](add link) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
+These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
 
-Any worker can send command requests and handle command responses for any command. However, only workers that have [write access](../glossary.md#authority) over the component that the command was defined in are able to handle command requests and send command responses.
+Any worker can send command requests and handle command responses for any command. However, only workers that have [write access]({{urlRoot}}/content/glossary#authority) over the component that the command was defined in are able to handle command requests and send command responses.
 
 ### Examples
-We use the following [schema](../glossary.md#schema) for all examples described in this documentation.
+We use the following [schema]({{urlRoot}}/content/glossary#schema) for all examples described in this documentation.
 ```
 package playground;
 
@@ -84,7 +84,7 @@ public class BuildCommandSenderBehaviour : MonoBehaviour
 
 #### How to respond to command requests
 The following code snippet provides an examples on how to respond to command request.
-This example MonoBehaviour would be enabled only on workers that have [write access](TODO: link to glossary - authority over the corresponding component.
+This example MonoBehaviour would be enabled only on workers that have [write access]({{urlRoot}}/content/glossary#write-access).
 
 ```csharp
 using Playground;
@@ -128,7 +128,7 @@ public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 ```
 [//]: # (TODO - add how to do spawn logic in code example above)
 
-**Note:** For an example of how to create an entity, you can look at the [how to create and delete entities](TODO: GDoc 26) document.
+**Note:** For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/content/gameobject/create-delete-spos-entries) document.
 
 #### How to receive command responses
 You can only listen to command responses on the entity that you sent the request from. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
@@ -173,7 +173,7 @@ Parameters:
   * `EntityId entityId` - The id of the SpatialOS entity that you want to send the command to.
   * `TPayload payload` - This is the payload of your command. The type `TPayload` depends on what you defined in your schema as the payload.
   * `uint? timeoutMillis` - Optional. Specifies after how many milliseconds this command should time out. This is null by default implying that the default of 5 seconds of the underlying Worker SDK will be used.
-  * `bool allowShortCircuiting` - Optional. A boolean describing whether or not the command can be handled without going through the Runtime if it would go to the same worker. See the [SpatialOS documentation](LINK) for more details.
+  * `bool allowShortCircuiting` - Optional. A boolean describing whether or not the command can be handled without going through the Runtime if it would go to the same worker. See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/csharpsdk/using/sending-data#sending-component-commandss) for more details.
   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response.
 
 Returns: the request id, stored as a `long`, corresponding to the request.
@@ -200,7 +200,7 @@ The API is as follows
 
 | Field         	| Type 	| Description                        	|
 |-------------------|----------|----------------------------------------|
-| Request | [ReceivedRequest](add link) | Contains information about the received command request. |
+| Request | [ReceivedRequest]({{urlRoot}}/content/world-component-commands-requests-responses) | Contains information about the received command request. |
 
 **Methods:**
 ```csharp
@@ -220,7 +220,10 @@ Calling `SendResponse` or `SendResponseFailure` multiple times will not result i
 #### CommandResponseHandler
 The `CommandResponseHandler`is used to handle command responses and provides one event for each command it is responsible for.
 You can register callbacks by subscribing to the events declared for this class.
-To learn more about the API of a `ReceivedResponse` API go to [this doc](add link).
+To learn more about the API of a `ReceivedResponse` API go to [this doc]({{urlRoot}}/content/world-component-commands-requests-responses).
+
+**Methods:**
+
 ```csharp
 event Action<{name of command}.ReceivedResponse> On{name of command}Response;
 ```

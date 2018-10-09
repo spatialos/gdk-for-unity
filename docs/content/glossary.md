@@ -593,6 +593,7 @@ There are two generic types of worker that define how you would want to connect 
   * [server-worker](#server-worker)
   * [client-worker](#client-worker) 
 Within these broad types, users can define their own worker sub-types to create more specialized workers.
+
 ### Worker’s view
 
 A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is currently [interested in (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#interest) and has [checked out](#checking-out). In the GDK, this view is used to populate the [worker’s world](#workers-world) and to synchronize any changes between the worker’s view and the worker’s world.

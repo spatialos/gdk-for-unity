@@ -3,13 +3,13 @@
 [//]: # (TODO - See if `option` struct needs defining)
 
 # (GameObject-MonoBehaviour) Readers and Writers
-_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
-  * [Linking SpatialOS entities with GameObjects](./linking-spos-entities-gameobjects.md)
-  * [Workers](../workers/workers-in-the-gdk.md)
-  * (Optional) [SpatialOS schema](../glossary.md#schema).
-  * (Optional) [Read and write access](../glossary.md#authority)
+  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+  * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
+  * (Optional) [SpatialOS schema]({{urlRoot}}/content/glossary#schema).
+  * (Optional) [Read and write access]({{urlRoot}}/content/glossary#authority)
 
 Readers and Writers allow you to inspect and change the state of SpatialOS components using MonoBehaviours by letting you perform the following actions:
 
@@ -30,14 +30,14 @@ For every SpatialOS component defined in schema, the GDK generates a Reader and 
 - `<namespace of schema component>.<component name>.Requirable.Reader`
 - `<namespace of schema component>.<component name>.Requirable.Writer`
 
-You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)](./interact-spos-monobehaviours.md). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
+You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
   * A reader for a specific component can be injected as long as the worker has read access over this component.
   * A writer for a specific component can only be injected, if the worker has write access over this component.
 
 You can find out more about how to work with Readers and Writers in:
-  * [How to interact with SpatialOS using MonoBehaviours](that's the current Developing SpatialOS games using GameObjects and MonoBehaviours doc)
-  * [How to read, update and react to changes](reading-and-writing-component-data.md)
-  * [How to send and receive events](sending-receiving-events.md)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+  * [How to read, update and react to changes]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
+  * [How to send and receive events]({{urlRoot}}/content/gameobject/sending-receiving-events)
 
 ## Reader API
 The `IReader` interface is bound to the following generic:
@@ -50,7 +50,7 @@ The exact type depends on the component that the reader is generated for.
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
 | Data  	| TSpatialComponentData              	| The data stored inside the component that this Reader is associated with. |
-| Authority | [Authority](../glossary.md#schema) | The authority state of the current worker of the component that this Reader is associated with. |
+| Authority | [Authority]({{urlRoot}}/content/glossary#schema) | The authority state of the current worker of the component that this Reader is associated with. |
 
 **Events:**
 ```csharp
@@ -94,7 +94,7 @@ The exact type of these generics depends on the component that the writer is gen
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
 | Data  	| TSpatialComponentData              	| Thee data stored inside the component that this Reader is associated with. |
-| Authority | [Authority](add link to SpatialOS doc) | The [authority]() status of the current worker of the component that this Reader is associated with. |
+| Authority | [Authority]({{urlRoot}}/content/glossary#authority) | The [authority]() status of the current worker of the component that this Reader is associated with. |
 
 
 **Events:**
@@ -133,7 +133,7 @@ Callback Parameters
 ```csharp
 void Send(TComponentUpdate update);
 ```
-Allows you to send a component update to the [SpatialOS Runtime](link to glossary).
+Allows you to send a component update to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
 
 Parameters:
   * `TComponentUpdate update`:  An update object which contains the changed field data. Any field that should not change, should not be set.

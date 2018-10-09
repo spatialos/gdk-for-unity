@@ -3,14 +3,14 @@
 [//]: # (TODO - Remove “> Currently updating any field of the component will trigger the callback for all <component property name>Updated`.” line if if this PR gets merged in: https://github.com/spatialos/UnityGDK/pull/438 )
 
 # (GameObject-MonoBehaviour) Reading and writing SpatialOS component data
-_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
-* [Linking SpatialOS entities with GameObjects](./linking-spos-entities-gameobjects.md)
-* [Reader and Writer](./readers-writers.md)
-* [SpatialOS components](../glossary.md/#spatialos-components)
-* [Read and write access](../glossary.md/#authority)
-* [Schema](../glossary.md#schema)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+* [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
+* [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component)
+* [Read and write access]({{urlRoot}}/content/glossary#authority)
+* [Schema]({{urlRoot}}/content/glossary#schema)
 
 
 We use the following schema for all examples described in this documentation.
@@ -25,7 +25,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a [GameObject that is linked to a SpatialOS entity](./linking-spos-entities-gameobjects.md) containing the `Health` component.
+The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) containing the `Health` component.
 
 ## How to read component properties
 
@@ -109,7 +109,7 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 
 The following code example sets up a specific field update callback.
 This example MonoBehaviour would be enabled on any worker which has read access to the `Health` component.
-> Currently updating any field of the component will trigger the callback for all <component property name>Updated`.
+> Currently updating any field of the component will trigger the callback for all `{name of component property}Updated`.
 
 ```csharp
 using Improbable.Examples;

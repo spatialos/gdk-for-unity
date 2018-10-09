@@ -5,9 +5,9 @@
  _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with
-  * [Workers](../workers/workers-in-the-gdk.md)
-  * [Linking SpatialOS entites as GameObjects](./linking-spos-entities-gameobjects.md)
-  * [Workers as GameObjects](./linking-workers-gameobjects.md)
+  * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
+  * [Linking SpatialOS entites as GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+  * [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
 
 The SpatialOS GDK automatically adds a `SpatialOSComponent` MonoBehaviour to each GameObject that is linked to a SpatialOS entity to allow you to access information about the corresponding worker and the underlying SpatialOS entity.
 
@@ -19,7 +19,7 @@ The SpatialOS GDK automatically adds a `SpatialOSComponent` MonoBehaviour to eac
 |-------------------|----------|----------------------------------------|
 | SpatialEntityId | EntityId | The SpatialOS Entity Id of the entity that this GameObject is linked to. |
 | Entity | Entity | The linked ECS entity. |
-| World | World | The [world](link to Unity docs) that the linked ECS entity belongs to. |
+| World | World | The [world]({{urlRoot}}/content/glossary#unity-ecs-world) that the linked ECS entity belongs to. |
 | Worker | WorkerSystem | The worker that is responsible for the linked SpatialOS entity. |
 
 **Methods:**

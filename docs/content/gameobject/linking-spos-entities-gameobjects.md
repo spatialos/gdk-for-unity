@@ -4,16 +4,16 @@
 _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with:
-* The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities](../intro-workflows-spos-entities.md)
-* [Workers in the GDK](../workers/workers-in-the-gdk.md)
+* The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/content/intro-workflows-spos-entities)
+* [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 
-As described in the [SpatialOS entity background documentation](../intro-workflows-spos-entities.md), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
+As described in the [SpatialOS entity background documentation]({{urlRoot}}/content/intro-workflows-spos-entities), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
 
 This document is a guide on how to link a SpatialOS entity with a GameObject using the GameObject Creation Feature Module.
 
-You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates](../entity-templates.md) documentation.
+You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates]({{urlRoot}}/content/entity-templates) documentation.
 
-When you are using the GameObject and MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime](../glossary.md#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema](../glossary.md#schema).  Find out how to use interact with SpatialOS entities in the [Reader and Writers](./readers-writers.md).
+When you are using the GameObject and MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema]({{urlRoot}}/content/glossary#schema). Find out how to use interact with SpatialOS entities in the [Reader and Writers]({{urlRoot}}/content/gameobject/readers-writers).
 
 ## The Creation Feature Module
 
@@ -25,7 +25,7 @@ To enable the Creation Feature Module in your project:
 	* In your Unity project’s `Packages` directory, locate the Unity Packages manifest `manifest.json`. </br>
  Add the Creation Feature Module to the manifest by adding: `"com.improbable.gdk.gameobjectcreation": "file:<path-to-gdk>/workers/unity/Packages/com.improbable.gdk.gameobjectcreation"`
 
-1. Set up your workers to use the Creation Feature Module when the [WorkerConnector](gomb-creating-workers-with-workerconnector.md) initializes them.
+1. Set up your workers to use the Creation Feature Module when the [WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector) initializes them.
 To do this, when you use the Worker Connector,   
 call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
 
@@ -33,7 +33,7 @@ call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
 *   For any worker, use the `Resources/Prefabs/Common/` directory.  
 * For specific worker types, use the `Resources/Prefabs/<WorkerType>` directory where `<WorkerType>` is the type of worker which is going to make this prefab. (Using this directory makes the prefab available for only for a specific worker type.)
 
-1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template](TODO: link to doc 22 - entity templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
+1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template]({{urlRoot}}/content/entity-templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
 
 Note: Do not proactively destroy GameObjects representing SpatialOS entities. The GDK manages the lifecycle of these GameObjects so by not destroying these GameObjects, you ensure that your worker’s internal state is not corrupted.
 
@@ -47,7 +47,7 @@ GameObject OnEntityCreated(SpatialOSEntity entity);
 ```
 
 Fields:
-  * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view](TODO: link to glossary - worker’s view).
+  * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view]({{urlRoot}}/content/glossary#worker-s-view).
 Returns:
   * The `GameObject` that should represent the entity. Return null to _not_ link a GameObject to the SpatialOS entity.
 

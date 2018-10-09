@@ -2,21 +2,21 @@
 [//]: # (TODO - Tech writer pass)
 
 # (GameObject-MonoBehaviour) How to send and receive events
-_This document relates to the [GameObject-MonoBehaviour workflow](../intro-workflows-spos-entities.md#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
 
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
 
-> For more information, see the documentation on [events](../glossary.md#events).
+> For more information, see the documentation on [events](https://docs.improbable.io/reference/latest/shared/glossary#events).
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
-* [Linking SpatialOS entities with GameObjects](./linking-spos-entities-gameobjects.md)
-* [Reader and Writer](./readers-writers.md)
-* [Read and write access](./reading-and-writing-component-data.md)
-* [Workers in the GDK](../workers/workers-in-the-gdk.md)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+* [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
+* [Read and write access]({{urlRoot}}/content/glossary#authority)
+* [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 
 
-We use the following [schema](../glossary.md#schema) for all examples described in this documentation.
+We use the following [schema]({{urlRoot}}/content/glossary#schema) for all examples described in this documentation.
 ```
 package playground;
 
