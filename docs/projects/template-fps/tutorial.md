@@ -69,7 +69,7 @@ You can find this file in your Unity project: `Assets/Fps/Scripts/Config/FpsEnti
 To define an entirely new entity type we will need to add a new function within the `FpsEntityTemplates` class:
 
 ```csharp
-public static EntityTemplate HealthPickup(Vector3f position, int healthValue)
+public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 {
     var gameLogic = WorkerUtils.UnityGameLogic;
 
