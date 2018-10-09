@@ -63,7 +63,7 @@ Parameters:
   * `string workerType`: The [type of the worker]({{urlRoot}}/content/glossary#worker-types)
 
 Returns: a connection configuration to connect using the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow) stored
-as a [`LocatorConfig`](https://github.com/spatialos/gdk-for-unity/workers/unity/Packages/com.improbable.gdk.core/Config/LocatorConfig.cs) object.
+as a [`LocatorConfig`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.core/Config/LocatorConfig.cs) object.
 
 ```csharp
 protected virtual void HandleWorkerConnectionEstablished()

@@ -178,7 +178,7 @@ Parameters:
   * `EntityId entityId` - The id of the SpatialOS entity that you want to send the command to.
   * `TPayload payload` - This is the payload of your command. The type `TPayload` depends on what you defined in your schema as the payload.
   * `uint? timeoutMillis` - Optional. Specifies after how many milliseconds this command should time out. This is null by default implying that the default of 5 seconds of the underlying Worker SDK will be used.
-  * `bool allowShortCircuiting` - Optional. A boolean describing whether or not the command can be handled without going through the Runtime if it would go to the same worker. See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/csharpsdk/using/sending-data#sending-component-commandss) for more details.
+  * `bool allowShortCircuiting` - Optional. A boolean describing whether or not the command can be handled without going through the Runtime if it would go to the same worker. See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/csharpsdk/using/sending-data#sending-component-commands) for more details.
   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response.
 
 Returns: the request id, stored as a `long`, corresponding to the request.

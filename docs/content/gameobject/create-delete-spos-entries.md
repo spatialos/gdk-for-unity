@@ -169,7 +169,7 @@ To delete an entity, you
   * identify the SpatialOS entity id of the entity that you want to delete
   * [send the `DeleteEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#deleteentity).
 
-> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, f you used the [GameObject creation feature module]({urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
+> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, if you used the [GameObject creation feature module]({urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
 
 #### Example of deleting an entity
 The following code snippet shows an example of how to delete an entity inside a MonoBehaviour. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.

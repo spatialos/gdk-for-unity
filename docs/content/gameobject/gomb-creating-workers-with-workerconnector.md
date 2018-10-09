@@ -19,7 +19,7 @@ When you have multiple workers represented as GameObjects in a scene, you are li
 
 ## How to use worker prefabs
 
-In the GDK’s [`Playground` project](https://github.com/spatialos/gdk-for-unity/workers/unity/Assets/Playground), we provide
+In the GDK’s [`Playground` project](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Assets/Playground), we provide
 an example implementation of a client-worker and a server-worker connecting using the `WorkerConnector`.
 These are stored as prefabs, so that you can use them directly in your Scenes.
 The prefabs are stored inside `Playground/Resources/Prefabs/Worker`:
