@@ -4,6 +4,7 @@
 
 using Unity.Entities;
 using Improbable.Gdk.Core;
+using System.Collections.Generic;
 
 namespace Improbable.Gdk.Tests
 {
@@ -625,6 +626,8 @@ namespace Improbable.Gdk.Tests
 
         public struct Update : ISpatialComponentUpdate
         {
+            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+
             public Option<BlittableBool> Field1;
             public Option<float> Field2;
             public Option<int> Field4;
