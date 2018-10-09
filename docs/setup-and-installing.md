@@ -24,8 +24,9 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 ##### Visual Studio
 
-If you are using Visual Studio, within the Visual Studio Installer, on the **Workloads** tab:
+If you are using Visual Studio, find the **Workloads** tab. If you already have Visual Studio installed, you must first select the **Modify** option within the Visual Studio Installer.
 
+On the **Workloads** tab:
 - Select **Game development with Unity**
 - Select **.NET Core cross-platform development**
 - In the **Summary** on the right:
