@@ -32,11 +32,10 @@ On the **Workloads** tab:
 
 * Select **.NET Core cross-platform development**
 
-- Select **Game development with Unity**
-  - In the **Summary** on the right:
-    - Deselect any options that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor)
+* After selecting **Game development with Unity**:
+	- Deselect any options in the **Summary** on the right that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor)
     - The SpatialOS GDK for Unity requires **Unity 2018.2.8**, which should already be installed if you have followed the setup guide correctly.
-  - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it)
+	- Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it)
 
 > **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
@@ -95,7 +94,7 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 - SpatialOS features, such as the schema and snapshot files
 - development code
 
-### Licensing
+#### Licensing
 
 *Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*
 
