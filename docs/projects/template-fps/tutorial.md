@@ -484,10 +484,6 @@ healthPickupWriter?.Send(new HealthPickup.Update
 });
 ```
 
-<%(#Expandable title="What is the 'Option' type?")%>blah<%(/Expandable)%>
-
-[!!!](TODO: Write a thing for that expandable ^)
-
 There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function. The `Player` entity prefab has already been given a "Player" tag, so this function will be called any time a player walks through a health pack.
 
 #### Cross-worker interaction using commands
