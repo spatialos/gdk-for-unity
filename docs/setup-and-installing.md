@@ -39,8 +39,6 @@ Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/)
 
 ![]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
-<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should prompt you to restart your computer.![]({{assetRoot}}assets/setup/windows/visualstudio.png)<%(/Expandable)%>
-
 On the **Workloads** tab:
 
 * Select **.NET Core cross-platform development**
@@ -55,8 +53,6 @@ On the **Workloads** tab:
 **Using Rider?**
 
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
-
-<%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>Once Rider is installed, the installer should prompt you to click *Finish* to close Setup.![]({{assetRoot}}assets/setup/windows/rider.png)<%(/Expandable)%>
 
 **You can now skip ahead to [validating your installation](#validate-your-installation).**
 
@@ -90,13 +86,9 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/), within the Visual Studio Installer, select **.NET Core + ASP .NET Core**.
 
-<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should should tell you that installation was successful.![]({{assetRoot}}assets/setup/mac/visualstudio.png)<%(/Expandable)%>
-
 **Using Rider?**
 
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
-
-<%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>When installing Rider, the installer will prompt you to drag the Rider icon into your `Applications` folder.![]({{assetRoot}}assets/setup/mac/rider.png)If no errors are thrown, then your installation was successful.<%(/Expandable)%>
 
 <%(/Expandable)%>
 
