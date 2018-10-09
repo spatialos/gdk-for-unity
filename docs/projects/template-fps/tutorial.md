@@ -693,3 +693,7 @@ Finally, using the SpatialOS inspector, check how much health the player has aft
 If you implemented the respawn coroutine then you should also see the health pack reappear after a short time. Here's how it should look:
 
 ![Two clients running locally demonstrate the health pickup behaviour]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-demo.gif)
+
+## Well-done, and welcome to the GDK!
+
+We’d love to know what you think, and invite you to join our community on [our forums](https://forums.improbable.io/), or on [Discord](https://discordapp.com/invite/SCZTCYm).

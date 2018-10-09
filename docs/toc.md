@@ -1,8 +1,10 @@
 - <h3> SpatialOS GDK for Unity</h3>
 - <h3> [ - Welcome]({{urlRoot}}/welcome)</h3>
+- <h3> [ - Get started]({{urlRoot}}/get-started)</h3>
+- <h3> [ - Add your first feature]({{urlRoot}}/projects/template-fps/tutorial)</h3>
 
 ***
-- <h3> Tutorial</h3>
+- <h3> Starter projects</h3>
 - <h3> [ - FPS starter project]({{urlRoot}}/projects/template-fps/overview)</h3>
  
 ***
@@ -11,18 +13,18 @@
 - <h3> + Concepts and terminology</h3>
     - [SpatialOS concepts (SpatialOS site)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
     - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
-- <h3> + Get started</h3>
-    - [Installation and setup]({{urlRoot}}/setup-and-installing)
-    - [How to build your workers]({{urlRoot}}/content/build)
-    - [How to deploy your game]({{urlRoot}}/content/deploy)
 - <h3> + Workflows</h3>
     - [GameObject-Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
 - <h3> + Modules</h3>
     - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
-- <h3> + Configuring your project</h3>
+- <h3> + Working on a new project</h3>
+    - [Installation and setup]({{urlRoot}}/setup-and-installing)
     - [Setting up a new project]({{urlRoot}}/content/set-up-new-project)
+    - [How to build your workers]({{urlRoot}}/content/build)
+    - [How to deploy your game]({{urlRoot}}/content/deploy)
+- <h3> + Configuring your project</h3>
     - <h4>Workers: </h4>
         - [ * Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
         - [ * API - worker]({{urlRoot}}/content/workers/api-worker)
