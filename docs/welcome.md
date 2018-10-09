@@ -79,7 +79,7 @@ In the Unity Editor, you can build your workers from the SpatialOS menu by click
 
 <!-- TODO: Image of Unity editor SpatialOS menu  -->
 
-> **It finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
+> **It has finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
 
 After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain the following files:
 ```text
