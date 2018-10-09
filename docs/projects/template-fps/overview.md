@@ -4,9 +4,11 @@
 
 The FPS starter project is a great starting point for working on the SpatialOS GDK for Unity. Many projects, whatever their genre, share some core elements and this starter project can get you off to a easy start.
 
-The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS starter project is already configured to scale-up, and you can test it out right now! Check out the [FPS at scale]({{urlRoot}}/projects/template-fps/cloud-fake-clients) guide to dive right in!
+The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS starter project is already configured to scale-up, and you can test it out right now! Check out the [FPS at scale]({{urlRoot}}/projects/template-fps/welcome) guide to dive right in!
 
-<%(#Expandable title="How is the FPS Starter Project licensed?")%><%(/Expandable)%>
+<%(#Expandable title="How is the FPS Starter Project licensed?")%>We _**want**_ you to build on top of the FPS starter project.
+
+You can find out information about licensing for the SpatialOS GDK for Unity, and its accompanying projects, on the [licensing]({{urlRoot}}/license) page.<%(/Expandable)%>
 
 ### Where to start?
 
@@ -15,7 +17,7 @@ Get started with the FPS starter project right now!
 We thoroughly recommend getting the FPS starter project set up on your computer and deploying it to the cloud so you can see how simple it is to launch a massive large-scale multiplayer game.
 
 * [Download the project]({{urlRoot}}/projects/template-fps/setup-and-installing)
-* [Start a large-scale cloud deployment]({{urlRoot}}/projects/template-fps/cloud-fake-clients)
+* [Start a large-scale cloud deployment]({{urlRoot}}/welcome)
 
 ### Get learning!
 
