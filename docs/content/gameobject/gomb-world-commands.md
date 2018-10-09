@@ -40,7 +40,7 @@ We provide the following types for sending and receiving world commands:
 
 Both of these objects can be injected without any condition. A MonoBehaviour that requires only these will be enabled as soon as the associated GameObject is created.
 
-If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spos-entries) document.
+If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spos-entities) document.
 
 ### CreateEntity
 You can use the `WorldCommandRequestSender.CreateEntity` method to request the creation of a new SpatialOS entity. It has the following signature:

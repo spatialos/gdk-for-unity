@@ -132,7 +132,7 @@ public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 ```
 [//]: # (TODO - add how to do spawn logic in code example above)
 
-> For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/content/gameobject/create-delete-spos-entries) document.
+> For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/content/gameobject/create-delete-spos-entities) document.
 
 #### How to receive command responses
 You can only listen to command responses on the entity that you sent the request from. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
