@@ -19,7 +19,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var config = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             if (config == null)
             {
-                throw new ArgumentException($"Unknown worker type {workerType}.");
+                Debug.LogWarning($"The worker type {workerType} does not have a build configuration.");
+                return null;
             }
 
             return config.GetEnvironmentConfig(environment);
