@@ -29,17 +29,24 @@ If you are using Visual Studio, find the **Workloads** tab in the Visual Studio 
 ![]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
 On the **Workloads** tab:
+
+* Select **.NET Core cross-platform development**
+
 - Select **Game development with Unity**
-- Select **.NET Core cross-platform development**
-- In the **Summary** on the right:
-  - Deselect **Unity 2017.2 64-bit Editor** (the SpatialOS GDK for Unity requires Unity 2018.2.8)
-  - Make sure **Visual Studio Tools for Unity** is selected
+  - In the **Summary** on the right:
+    - Deselect any options that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor)
+    - The SpatialOS GDK for Unity requires **Unity 2018.2.8**, which should already be installed if you have followed the setup guide correctly.
+  - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it)
 
 > **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
 ##### Rider
 
 If you are using Rider, install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
+
+**You can now skip ahead to [validating your installation](#validate-your-installation).**
+
+---
 
 #### Mac
 
@@ -78,7 +85,7 @@ The SpatialOS installer should have added the SpatialOS CLI to your `path`, allo
 
 ### Clone the SpatialOS GDK for Unity repository
 
-|     |     |
+|  |  |
 | --- | --- |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
@@ -89,7 +96,7 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 - SpatialOS features, such as the schema and snapshot files
 - development code
 
-#### Licensing
+### Licensing
 
 *Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*
 
