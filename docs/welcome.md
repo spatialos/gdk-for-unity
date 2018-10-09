@@ -69,7 +69,7 @@ There is a quick fix however:
 
 <%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
 
-### Building Workers
+## Building Workers
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
 
