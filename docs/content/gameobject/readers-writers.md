@@ -7,7 +7,7 @@ _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/co
 
 Before reading this document, make sure you are familiar with:
 
-  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
+  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * (Optional) [SpatialOS schema]({{urlRoot}}/content/glossary#schema).
   * (Optional) [Read and write access]({{urlRoot}}/content/glossary#authority)

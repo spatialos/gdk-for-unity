@@ -136,7 +136,7 @@ Callback parameters:
 
 The `DeleteEntity.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. However, in this case, the `EntityId` field represents the entity ID of the deleted entity. If the command failed, this field is null.
 
->  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [The GDK does this for you]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects#the-creation-feature-module).
+>  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [The GDK does this for you]({{urlRoot}}/content/gameobject/linking-spatialos-entities#the-creation-feature-module).
 EntityQuery
 You can use entity queries to get information about entities in the SpatialOS game world. (See SpatialOs documentation on entity queries.) The GDK currently only offers a prototype of the entity queries. The methods for sending and receiving entity queries exist, but you can not yet safely access the information in the responses. It is not recommended to use them. Any entity queries that specify a `SnapshotResultType
 ` will be ignored.

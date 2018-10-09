@@ -12,7 +12,7 @@ To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/con
 
 It’s the workers which create a connection from your game to the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your workers as part of your game development. Then, when your game runs, it creates workers which connect to the SpatialOS Runtime.  During their creation, workers attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker fails.
 
-If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API]({{urlRoot}}/content/workers/api-worker).
+If you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) to get going with setting up your workers to connect to SpatialOS, along with the [Worker API]({{urlRoot}}/content/workers/api-worker).
 
 (For information on the different workflows, see [GameObject and MonoBehaviour workflow vs ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).)
 

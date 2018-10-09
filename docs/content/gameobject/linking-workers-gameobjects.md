@@ -7,14 +7,14 @@ Before reading this document, make sure you are familiar with:
 
 * the SpatialOS entities section of  [GameObject-MonoBehaviour workflow and ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-* [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
+* [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
 
 
-Not only can you [represent SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene, you can also represent a worker with a GameObject in a Scene.
+Not only can you [represent SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities) in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene, you can also represent a worker with a GameObject in a Scene.
 
 By representing a worker as a GameObject, the worker can send SpatialOS [component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands) and [world commands]({{urlRoot}}/content/gameobject/world-commands) even when the worker has no SpatialOS entities [checked out]({{urlRoot}}/content/glossary#authority). 
 
-To represent a worker with a GameObject, you use the Creation Feature Module. Find out how the module works in the documentation on [The Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects).
+To represent a worker with a GameObject, you use the Creation Feature Module. Find out how the module works in the documentation on [The Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
 
 To represent a worker as a GameObject:
 1. Create a GameObject in your Scene.

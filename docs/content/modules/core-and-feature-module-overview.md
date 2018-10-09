@@ -78,8 +78,8 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 This module consists of:
 
 *    `IEntityGameObjectCreator` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities-gameobjects).
+<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
+<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities).
 
 * `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
 Use this to enable the default implementation or with the parameters below to change the default.

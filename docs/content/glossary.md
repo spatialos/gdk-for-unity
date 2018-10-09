@@ -339,7 +339,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects). Each scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Each scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
@@ -527,7 +527,7 @@ Unity ECS components contain only data and are represented as structs rather tha
 
 The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in the Unity Editor.
 
-Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 
 > Related:
 >

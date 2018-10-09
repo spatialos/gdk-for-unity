@@ -7,7 +7,7 @@ _This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/co
 
 Before reading this document, make sure you are familiar with:
 
-* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
 * [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
 * [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/content/glossary#authority)
@@ -26,7 +26,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) containing the `Health` component.
+The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/content/gameobject/linking-spatialos-entities) containing the `Health` component.
 
 ## How to read component properties
 

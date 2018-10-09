@@ -11,7 +11,7 @@ Events are SpatialOS's equivalent of broadcasted messages. They allow you to sen
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
 
-* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
 * [Reader and Writer]({{urlRoot}}/content/gameobject/readers-writers)
 * [Read and write access]({{urlRoot}}/content/glossary#authority)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)

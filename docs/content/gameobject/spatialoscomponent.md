@@ -7,7 +7,7 @@
 Before reading this document, make sure you are familiar with
 
   * [Workers]({{urlRoot}}/content/workers/workers-in-the-gdk)
-  * [Linking SpatialOS entites as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
+  * [Linking SpatialOS entites as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
   * [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
 
 The SpatialOS GDK automatically adds a `SpatialOSComponent` MonoBehaviour to each GameObject that is linked to a SpatialOS entity to allow you to access information about the corresponding worker and the underlying SpatialOS entity.

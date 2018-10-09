@@ -13,7 +13,7 @@ The `WorkerSystem` class stores information about a worker during [Runtime]({{ur
 | Field             | Type                   | Description                    |
 |-------------------|------------------------|--------------------------------|
 <<<<<<< HEAD
-| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spos) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
+| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spatialos) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
 | WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary#worker-types). |
 | Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
 =======
