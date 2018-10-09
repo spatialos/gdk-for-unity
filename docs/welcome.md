@@ -179,6 +179,10 @@ We can use it, for instance, to highlight where all the Simulated Players and Pl
 
 <img src="{{assetRoot}}assets/logs-app.png" style="margin: 0 auto; display: block;" />
 
+The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/operate/metrics#metrics), one more tab to the right, show a selection of useful metrics,with annotations to identify the health of your deployment.
+
+<img src="{{assetRoot}}assets/metrics.png" style="margin: 0 auto; display: block;" />
+
 Note that the Logs and Metrics are [available via an API](https://docs.improbable.io/reference/latest/shared/operate/byo-metrics) if you with to create your own dashboards or alerts.
 
 ## Well-done, and welcome to the GDK!
