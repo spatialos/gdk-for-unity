@@ -40,7 +40,7 @@ The `WorkerSystem` stores the following data:
 
 The Worker Entity provides the API to send and receive [commands]({{urlRoot}}/content/ecs/commands).
 
-To check whether the worker just connected or disconnected, you can filter for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components.md):
+To check whether the worker just connected or disconnected, you can filter for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components):
 
 * `OnConnected`: the worker just connected to the SpatialOS Runtime.
 

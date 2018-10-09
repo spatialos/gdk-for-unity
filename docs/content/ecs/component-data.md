@@ -1,5 +1,5 @@
 # ECS: Components and component updates
-_This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+_This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang docs (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 

@@ -2,7 +2,7 @@
 [//]: # (TODO - Tech writer pass)
 
 # (ECS) ECS entity contracts
-  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
+  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -22,7 +22,7 @@ A reactive component is implemented as a temporary component, and so has the sam
 
 ## Components on ECS Entities that represent SpatialOS entities
 
-For each SpatialOS entity that a [worker]../workers/workers-in-the-gdk.md) checks out, the `SpatialOSReceiveSystem` creates an ECS Entity for that worker’s ECS world.
+For each SpatialOS entity that a [worker]../workers/workers-in-the-gdk) checks out, the `SpatialOSReceiveSystem` creates an ECS Entity for that worker’s ECS world.
 The following guarantees hold for any ECS Entity representing a SpatialOS entity:
 
   * Any SpatialOS entity that is in the worker's view is represented as an ECS Entity.
