@@ -521,13 +521,9 @@ The code snippet calls `SendModifyHealthRequest`, specifies the entity id of the
 
 The `ModifyHealth` command is already used by the FPS starter project for applying damage as part of the shooting game mechanics. As this is the case we don't need to write any _additional_ logic for applying the health increase.
 
-<%(#Expandable title="How are clients prevented from sending health-giving commands?")%>blah<%(/Expandable)%>
+<%(#Expandable title="How are clients prevented from sending health-giving commands?")%>They're not - any worker can send a command. However, only the worker which has write access to the component holding a command is allowed to handle it. Each command request contains information about the caller of the command which could be used to enforce restrictions. Have a look at `ServerHealthModifierSystem.cs` in the Health feature module.<%(/Expandable)%>
 
-[!!!](TODO: Write a thing for that expandable ^)
-
-<%(#Expandable title="Could you put the collision logic on the 'Player' instead?")%>blah<%(/Expandable)%>
-
-[!!!](TODO: Write a thing for that expandable ^)
+<%(#Expandable title="Could you put the collision logic on the 'Player' instead?")%>Yes, and that would actually be better in some ways. If the collision with a health pickup is detected by the player, the command to update health can be replaced with a component update. This is a major simplification and should also have better performance. As a rule of thumb, always prefer component updates over commands. We have introduced you to commands so that you know their power, but it is your responsibility to use them wisely.<%(/Expandable)%>
 
 #### Respawning health packs
 
