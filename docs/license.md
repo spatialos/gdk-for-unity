@@ -1,7 +1,7 @@
 # Unity
 Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
-# SpatialOS Unity GDK License
+# SpatialOS GDK for Unity License
 
 Copyright 2018 Improbable Worlds Limited (“Improbable”)
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
