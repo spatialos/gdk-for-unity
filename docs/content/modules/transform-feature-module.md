@@ -2,10 +2,11 @@
 [//]: # (TODO - tech writer review - doc 35)
 [//]: # (TODO - Add links as noted - doc 35)
 [//]: # (TODO - ongoing updates in this doc https://docs.google.com/document/d/1fX6CP1OGBx281dAQmsNpp7bfnnXUmnyLwHCWOx3wz8E/edit#)
+
 # Transform Synchronization Feature Module
 
 ## What is transform synchronization?
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows](../intro-workflows-spos-entities.md)._
+_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities.md)._
 
 Transform synchronisation is making sure that when the authoritative worker moves an entity, that it also moves on all other workers.
 
@@ -24,7 +25,7 @@ This feature module manages both types of location automatically; primarily upda
 
 ### How to enable automatic transform synchronization for an entity
 [//]: # (TODO - Add link below to feature module helper function as noted - doc 35)
-When [creating a SpatialOS entity]((../gameobject/create-delete-spos-entities.md)) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
+When [creating a SpatialOS entity]({{urlRoot}}/content/gameobject/create-delete-spos-entries.md) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
 
 ```csharp
 
@@ -46,11 +47,12 @@ var entityBuilder = EntityBuilder.Begin()
 
 Add the [`TransformSynchronization`] MonoBehaviour (link) to the prefab that will be linked to the entity.
 
-![](../../assets/image-transform-feature-module-md-0.png)
+![]({{assetRoot}}assets/image-transform-feature-module-md-0.png)
 
-Add the appropriate [transform strategies](link to header) to the `TransformSynchronization` MonoBehaviour. If needed, create the transform strategy `ScriptableObject` (link to header), using the menu items.
+[//]: # (TODO - Add link to transfor strategies)
+Add the appropriate transform strategies to the `TransformSynchronization` MonoBehaviour. If needed, create the transform strategy `ScriptableObject` (link to header), using the menu items.
 
-![](../../assets/image-transform-feature-module-md-0.png)
+![]({{assetRoot}}assets/image-transform-feature-module-md-1.png)
 
 After this the entity’s location will be sent to all interested workers whenever the `Transform` or the `Rigidbody`, if one exists, moves.
 
@@ -72,7 +74,7 @@ An arbitrary number of strategies can be specified, but only one per worker type
 
 #### Set kinematic when not authoritative
 
-If this option is selected and there is a `Rigidbody` on the `GameObject`, the `Rigidbody` will become [kinematic] (TODO link to unity docs) when the given worker has no write accessnot authoritative. When write accessauthority is gained the Rigidbody will return to the state it was in before.
+If this option is selected and there is a `Rigidbody` on the `GameObject`, the `Rigidbody` will become [kinematic (Unity documentation)] (https://docs.unity3d.com/Manual/Glossary.html#kinematics) when the given worker has no write accessnot authoritative. When write accessauthority is gained the Rigidbody will return to the state it was in before.
 
 ## What strategies are available?
 

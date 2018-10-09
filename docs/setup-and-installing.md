@@ -1,13 +1,8 @@
 # Set up the SpatialOS GDK for Unity
 
-## Quick version
+<%(TOC)%>
 
-1. Sign up for a [SpatialOS account](https://improbable.io/get-spatialos).
-1. Set up your machine by installing the prerequisites. See the install guide for [Windows](#windows) or [MacOS](#mac).
-1. Clone the UnityGDK repository: `git clone git@github.com:spatialos/UnityGDK.git` or `git clone https://github.com/spatialos/UnityGDK.git`.
-1. Follow the [quickstart]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project) guide to run the example `Playground` project.
-
-## Full version
+To get set you'll need to create a SpatialOS account, install some dependencies and clone the GDK repository.
 
 ### Sign up for a SpatialOS account
 
@@ -20,10 +15,10 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 | Step | Requirement | |
 | --- | --- | --- |
-| 1 | [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) | Make sure to select the following components during installation: **Linux Build Support**, **Mac Build Support**<%(#Expandable title="How will I know when Unity is installed? (Expand for image)")%>Once Unity has been installed on your machine, the Download Assistant should prompt you to click *Finish* to close the installer.![](assets/setup/windows/unity.png)<%(/Expandable)%> |
+| 1 | [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) | Make sure to download the **Installer** version, and select the following components during installation: **Linux Build Support**, **Mac Build Support**<%(#Expandable title="How will I know when Unity is installed? (Expand for image)")%>Once Unity has been installed on your machine, the Download Assistant should prompt you to click *Finish* to close the installer.![](assets/setup/windows/unity.png)<%(/Expandable)%> |
 | 2 | [.NET Core SDK (x64)](https://www.microsoft.com/net/download/dotnet-core/2.1) | Verified with versions `2.1.3xx` and `2.1.4xx`<%(#Expandable title="How will I know when .NET Core SDK is installed? (Expand for image)")%>Once the .NET Core SDK has been installed, a window should appear stating that installation was successful and to prompt you to close the installer.![](assets/setup/windows/dotnetcoresdk.png)<%(/Expandable)%> |
-| 3 | [SpatialOS](https://console.improbable.io/installer/download/stable/latest/win) | This installs the [spatial CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction), the [SpatialOS Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher), and 32-bit and 64-bit Visual C++ Redistributables<%(#Expandable title="How will I know when SpatialOS is installed? (Expand for image)")%>Once SpatialOS has been installed, the installer should prompt you to click *Finish* to complete the installation.![](assets/setup/windows/spatialos.png)<%(/Expandable)%> |
-| 4 | Code Editor | We recommend either [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should prompt you to restart your computer.![](assets/setup/windows/visualstudio.png)<%(/Expandable)%><%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>Once Rider is installed, the installer should prompt you to click *Finish* to close Setup.![](assets/setup/windows/rider.png)<%(/Expandable)%> |
+| 3 | <a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded\|product=Docs\|platform=Win" target="_blank">SpatialOS installer</a> | This installs the `spatial CLI`, the `SpatialOS Launcher`, and 32-bit and 64-bit Visual C++ Redistributables<%(#Expandable title="How will I know when SpatialOS is installed? (Expand for image)")%>Once SpatialOS has been installed, the installer should prompt you to click *Finish* to complete the installation.![](assets/setup/windows/spatialos.png)<%(/Expandable)%> |
+| 4 | A code editor | We recommend either [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should prompt you to restart your computer.![](assets/setup/windows/visualstudio.png)<%(/Expandable)%><%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>Once Rider is installed, the installer should prompt you to click *Finish* to close Setup.![](assets/setup/windows/rider.png)<%(/Expandable)%> |
 
 > After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
@@ -47,10 +42,10 @@ If you are using Rider, install the [**Unity Support** plugin](https://github.co
 
 | Step | Requirement | |
 | --- | --- | --- |
-| 1 | [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) | Make sure to select the following components during installation: **Linux Build Support**, **Windows Build Support**<%(#Expandable title="How will I know when Unity is installed? (Expand for image)")%>Once Unity has been installed on your machine, the Download Assistant should tell you that installation was successful.![](assets/setup/mac/unity.png)<%(/Expandable)%> |
+| 1 | [Unity 2018.2.8](https://unity3d.com/get-unity/download/archive) | Make sure to download the **Installer** version, and select the following components during installation: **Linux Build Support**, **Windows Build Support**<%(#Expandable title="How will I know when Unity is installed? (Expand for image)")%>Once Unity has been installed on your machine, the Download Assistant should tell you that installation was successful.![](assets/setup/mac/unity.png)<%(/Expandable)%> |
 | 2 | [.NET Core SDK (x64)](https://www.microsoft.com/net/download/dotnet-core/2.1) | Verified with versions `2.1.3xx` and `2.1.4xx`<%(#Expandable title="How will I know when .NET Core SDK is installed? (Expand for image)")%>Once the .NET Core SDK has been installed, a window should appear stating that installation was successful and to prompt you to close the installer.![](assets/setup/mac/dotnetcoresdk.png)<%(/Expandable)%> |
-| 3 | [SpatialOS](https://console.improbable.io/installer/download/stable/latest/mac) | This installs the [spatial CLI](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction), the [SpatialOS Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher), and 32-bit and 64-bit Visual C++ Redistributables<%(#Expandable title="How will I know when SpatialOS is installed? (Expand for image)")%>Once SpatialOS has been installed, the installer should should tell you that installation was successful.![](assets/setup/mac/spatialos.png)<%(/Expandable)%> |
-| 4 | Code Editor | We recommend either [Visual Studio](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should should tell you that installation was successful.![](assets/setup/mac/visualstudio.png)<%(/Expandable)%><%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>When installing Rider, the installer will prompt you to drag the Rider icon into your `Applications` folder.![](assets/setup/mac/rider.png)If no errors are thrown, then your installation was successful.<%(/Expandable)%> |
+| 3 | <a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded\|product=Docs\|platform=Win" target="_blank">SpatialOS installer</a> | This installs the `spatial CLI`, the `SpatialOS Launcher`, and 32-bit and 64-bit Visual C++ Redistributables<%(#Expandable title="How will I know when SpatialOS is installed? (Expand for image)")%>Once SpatialOS has been installed, the installer should should tell you that installation was successful.![](assets/setup/mac/spatialos.png)<%(/Expandable)%> |
+| 4 | A code editor | We recommend either [Visual Studio](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).<%(#Expandable title="How will I know when Visual Studio is installed? (Expand for image)")%>Once Visual Studio has been installed, the installer should should tell you that installation was successful.![](assets/setup/mac/visualstudio.png)<%(/Expandable)%><%(#Expandable title="How will I know when Rider is installed? (Expand for image)")%>When installing Rider, the installer will prompt you to drag the Rider icon into your `Applications` folder.![](assets/setup/mac/rider.png)If no errors are thrown, then your installation was successful.<%(/Expandable)%> |
 
 > After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
@@ -61,6 +56,22 @@ If you are using Visual Studio, within the Visual Studio Installer, select **.NE
 ##### Rider
 
 If you are using Rider, install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience
+
+### Validate your installation
+
+We **thoroughly** recommend validating your installation using the SpatialOS CLI.
+
+In a terminal, run: `spatial diagnose` and hit enter.
+
+The SpatialOS CLI will check whether the installation dependencies are where it expects them to be, and alert you of any problems.
+
+<%(#Expandable title="Having problems?")%>
+On Windows you can use `powershell` as your terminal.
+
+On Mac you can use `terminal`.
+
+The SpatialOS installer should have added the SpatialOS CLI to your `path`, allowing you to use `spatial` commands from your terminal window of choice. You can test whether this is installed correctly by just typing `spatial`. Sometimes it is necessary to close and re-open your terminal after an installation in order to use the newly installed functionality.
+<%(/Expandable)%>
 
 ### Clone the SpatialOS GDK for Unity repository
 
@@ -75,6 +86,10 @@ The GDK repository is a SpatialOS project called `UnityGDK`. It contains:
 - SpatialOS features, such as the schema and snapshot files
 - development code
 
-## Next steps
+#### Licensing
 
-To learn how to build and run the included `Playground` project - follow the [quickstart]({{urlRoot}}/content/deploy#quickstart-how-to-deploy-the-playground-project).
+*Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*
+
+### What's next?
+
+Once you've got the GDK set up on your computer, dive right in with the FPS starter project and [deploy a game to the cloud]({{urlRoot}}/projects/template-fps/cloud-fake-clients)!
