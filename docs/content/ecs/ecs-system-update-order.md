@@ -3,11 +3,11 @@
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
 
 # (ECS) System update order
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Unity provides attributes to define the [update order of systems (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
 
-> Note: You can only have one attribute of each type assigned to a system. If multiple are assigned they might override each other.
+> You can only have one attribute of each type assigned to a system. If multiple are assigned they might override each other.
 
 Here’s an example of how to assign an attribute to a system:
 

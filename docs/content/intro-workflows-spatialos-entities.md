@@ -61,7 +61,7 @@ In the GameObject-MonoBehaviour workflow, to represent your SpatialOS entity as 
 
 * Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
 
-* GameObject workflow - [SpatialOS entities: How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects)
+* GameObject workflow - [SpatialOS entities: How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects)
 
 ### Unity ECS entities and SpatialOS entities
 

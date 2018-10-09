@@ -2,9 +2,9 @@
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
 # Workers: API - Worker
 
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)_
+_This document relates to both [GameObject-MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)_
 
-Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spos).
+Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos).
 
 We provide the `Worker` class to bootstrap the creation of your workers.
 
@@ -50,7 +50,7 @@ You can use the following fields, event callbacks, and methods, with `worker.Wor
 
 | Field             | Type                   | Description                    |
 |-------------------|------------------------|--------------------------------|
-| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spos) | The connection to the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime). You can use it to send data and messages. |
+| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spatialos) | The connection to the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime). You can use it to send data and messages. |
 | World         | `World`                  | The ECS world that this worker is associated with. |
 | WorkerId      | `string`                 | The ID of this worker. |
 | WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary#worker-types). |
@@ -77,7 +77,7 @@ static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispa
 
 Parameters:
 
-  * `ReceptionistConfig config`: The connection configuration used to connect via the [Receptionist]({{urlRoot}}/content/connecting-to-spos#receptionist-service-connection-flow).
+  * `ReceptionistConfig config`: The connection configuration used to connect via the [Receptionist]({{urlRoot}}/content/connecting-to-spatialos#receptionist-service-connection-flow).
 
   * `ILogDispatcher logger`: A reference to the `ILogDispatcher` object that the worker uses for [logging]({{urlRoot}}/content/ecs/logging).
 
@@ -93,7 +93,7 @@ static async Task<Worker> CreateWorkerAsync(LocatorConfig config, Func<Deploymen
 
 Parameters:
 
-* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spos#locator-connection-flow) flow.
+* `LocatorConfig config`: The connection configuration used to connect to the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) via the [Locator]({{urlRoot}}/content/connecting-to-spatialos#locator-connection-flow) flow.
 
 * `Func<DeploymentList, string> deploymentListCallback`: The callback used to retrieve the correct [deployment]({{urlRoot}}/content/glossary#deploying) name given a list of deployments.
 

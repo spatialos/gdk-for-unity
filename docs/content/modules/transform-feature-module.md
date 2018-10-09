@@ -5,7 +5,7 @@
 [//]: # (TODO - ongoing updates in this doc https://docs.google.com/document/d/1fX6CP1OGBx281dAQmsNpp7bfnnXUmnyLwHCWOx3wz8E/edit#)
 
 # Transform Synchronization Feature Module
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Transform synchronisation is making sure that when the authoritative worker moves an entity, that it also moves on all other workers.
 

@@ -4,17 +4,17 @@
 [//]: # (TODO - link to status codes for error messages - see note below.)
 
 # (GameObject-MonoBehaviour) World commands
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities#spatialos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
 
-  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
   * [Commands: World and component command requests and responses
 ]({{urlRoot}}/content/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities).<br/>
 
 There are two types of commands in SpatialOS:
 
@@ -136,7 +136,7 @@ Callback parameters:
 
 The `DeleteEntity.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. However, in this case, the `EntityId` field represents the entity ID of the deleted entity. If the command failed, this field is null.
 
->  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [The GDK does this for you]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects#the-creation-feature-module).
+>  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [The GDK does this for you]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects#the-creation-feature-module).
 EntityQuery
 You can use entity queries to get information about entities in the SpatialOS game world. (See SpatialOs documentation on entity queries.) The GDK currently only offers a prototype of the entity queries. The methods for sending and receiving entity queries exist, but you can not yet safely access the information in the responses. It is not recommended to use them. Any entity queries that specify a `SnapshotResultType
 ` will be ignored.

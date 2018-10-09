@@ -5,10 +5,10 @@ _This document relates to the GameObject-MonoBehaviour workflow._
 
 Before reading this document, make sure you are familiar with:
 
-* The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/content/intro-workflows-spos-entities)
+* The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/content/intro-workflows-spatialos-entities)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 
-As described in the [SpatialOS entity background documentation]({{urlRoot}}/content/intro-workflows-spos-entities), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
+As described in the [SpatialOS entity background documentation]({{urlRoot}}/content/intro-workflows-spatialos-entities), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
 
 This document is a guide on how to link a SpatialOS entity with a GameObject using the GameObject Creation Feature Module.
 

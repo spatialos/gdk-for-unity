@@ -1,6 +1,6 @@
 [//]: # (Doc of docs reference 15.1a)
 # (GameObject-Monobehaviour) API - WorkerConnector
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, see the documentation on [(GameObject-MonoBehaviour) Creating workers with the WorkerConnector]({{urlRoot}}/content/gameobject/gomb-creating-workers-with-workerconnector).
 
@@ -19,7 +19,7 @@ During the creation of your workers, they attempt to connect to the SpatialOS Ru
 **Methods**
 
 ```csharp
-public async Task Connect(string workerType, ILogDispatcher logger)
+public async Task Connect(string workerType, ILogDispatcher logger);
 ```
 Parameters:
 
@@ -29,13 +29,13 @@ Parameters:
 Returns: a task which finishes when the worker either connects or fails to connect.
 
 ```csharp
-protected virtual bool ShouldUseLocator()
+protected virtual bool ShouldUseLocator();
 ```
 
 Returns: true, if the worker should connect using the Locator flow, false otherwise.
 
 ```csharp
-protected virtual string SelectDeploymentName(DeploymentList deployments)
+protected virtual string SelectDeploymentName(DeploymentList deployments);
 ```
 Only use this method when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
@@ -45,7 +45,7 @@ Parameters:
 Returns: the name of the selected cloud deployment.
 
 ```csharp
-protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
+protected virtual ReceptionistConfig GetReceptionistConfig(string workerType);
 ```
 This method is only used when connecting through the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
@@ -55,7 +55,7 @@ Parameters:
 Returns: a connection configuration to connect using the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
 ```csharp
-protected virtual LocatorConfig GetLocatorConfig(string workerType)
+protected virtual LocatorConfig GetLocatorConfig(string workerType);
 ```
 This method is only used when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
@@ -66,17 +66,17 @@ Returns: a connection configuration to connect using the [Locator connection flo
 as a [`LocatorConfig`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.core/Config/LocatorConfig.cs) object.
 
 ```csharp
-protected virtual void HandleWorkerConnectionEstablished()
+protected virtual void HandleWorkerConnectionEstablished();
 ```
 This method provides a way to add additional logic after a connection has been established.
 
 
 ```csharp
-protected virtual void HandleWorkerConnectionFailure()
+protected virtual void HandleWorkerConnectionFailure();
 ```
 This method provides a way to add additional logic after the `WorkerConnector` failed to create a connection.
 
 ```csharp
-public virtual void Dispose()
+public virtual void Dispose();
 ```
 Disposes of the `WorkerConnector` object.

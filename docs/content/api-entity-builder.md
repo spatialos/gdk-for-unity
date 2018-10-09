@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 28)
 
 # SpatialOS entities: API - EntityBuilder
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities)_
+_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)_
 
 Before reading this document, make sure you are familiar with the documentation on [entity templates]({{urlRoot}}/content/entity-templates).
 

@@ -2,7 +2,7 @@
 [//]: # (TODO - Tech writer pass)
 
 # (ECS) ECS entity contracts
-  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 

@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 34)
 [//]: # (Tech writer review)
 # (ECS) Sending and receiving component commands
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -10,7 +10,7 @@ Before reading this document, make sure you are familiar with:
   * [Read and write access]({{urlRoot}}/content/glossary#authority)
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spos-entities).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities).<br/>
 
 There are two types of commands in SpatialOS:
 

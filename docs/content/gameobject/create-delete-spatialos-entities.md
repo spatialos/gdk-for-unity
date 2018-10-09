@@ -2,15 +2,14 @@
 [//]: # (TODO - technical author pass)
 
 # (GameObject-MonoBehaviour) SpatialOS entities: How to create and delete entities
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
-
+_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
   * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Read and write access]({{urlRoot}}/content/glossary#authority)
   * [(GameObject-MonoBehaviour) World commands]({{urlRoot}}/content/gameobject/gomb-world-commands)
-  * [(GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spos-monobehaviours)
+  * [(GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
   * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
 
@@ -22,7 +21,7 @@ To create an entity, you
   * [define the entity's template]({{urlRoot}}/content/entity-templates)
   * [send the `CreateEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#createentity).
 
-> When you create an entity, the SpatialOS GDK for Unity by default does not associate a GameObject with it. For more information on how to enable this, see [representing entities with gameobjects]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects).
+> When you create an entity, the SpatialOS GDK for Unity by default does not associate a GameObject with it. For more information on how to enable this, see [representing entities with gameobjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects).
 
 
 The following code snippet shows an example of how to create an entity inside a MonoBehaviour. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
@@ -169,7 +168,7 @@ To delete an entity, you
   * identify the SpatialOS entity id of the entity that you want to delete
   * [send the `DeleteEntity` world command]({{urlRoot}}/content/gameobject/gomb-world-commands#deleteentity).
 
-> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, if you used the [GameObject creation feature module]({{urlRoot}}/content/gameobject/linking-spos-entities-gameobjects) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
+> Do not delete the linked GameObjects. The GDK handles deleting the linked GameObjects, if you used the [GameObject creation feature module]({urlRoot}}/content/gameobject/linking-spatialos-entities-gameobjects) to link your SpatialOS entities to GameObjects. Deleting GameObjects locally will break many things badly.
 
 #### Example of deleting an entity
 The following code snippet shows an example of how to delete an entity inside a MonoBehaviour. This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.

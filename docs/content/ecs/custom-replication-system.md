@@ -1,5 +1,5 @@
 # (ECS) Custom replication systems
- _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spos-entities)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 ## What the SpatialOS GDK's replication system does
 
@@ -92,7 +92,7 @@ public class TransformSendSystem : CustomSpatialOSSendSystem<Transform.Component
 }
 ```
 
-> **Note**: You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
+> You need to create the `SchemaComponentUpdate` object with the correct component ID. We provide serialization methods to add data to this object automatically.
 
 Here's an example custom replication system for a component called `CubeColor`. The component has one event called `change_color` of the type `ColorData` and has no fields.
 
