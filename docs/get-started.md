@@ -312,4 +312,4 @@ The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/oper
 
 ## Well done getting set up!
 
-Now add your first feature by following the [Health Pick-up tutorial]({{urlRoot}}/projects/template-fps/tutorial).
+Now add your first feature by following the [Health Pick-up tutorial]({{urlRoot}}/projects/fps/tutorial).

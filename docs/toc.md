@@ -1,12 +1,12 @@
 - <h3> SpatialOS GDK for Unity</h3>
 - <h3> [ - Welcome]({{urlRoot}}/welcome)</h3>
 - <h3> [ - Get started]({{urlRoot}}/get-started)</h3>
-- <h3> [ - Add your first feature]({{urlRoot}}/projects/template-fps/tutorial)</h3>
+- <h3> [ - Add your first feature]({{urlRoot}}/projects/fps/tutorial)</h3>
 
 ***
 - <h3> Starter projects</h3>
-- <h3> [ - FPS starter project]({{urlRoot}}/projects/template-fps/overview)</h3>
- 
+- <h3> [ - FPS starter project]({{urlRoot}}/projects/fps/overview)</h3>
+
 ***
 - <h3> Reference</h3>
 - <h3> [ - Overview]({{urlRoot}}/content/intro-reference)</h3>
