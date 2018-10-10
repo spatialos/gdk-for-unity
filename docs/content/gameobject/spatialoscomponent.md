@@ -1,8 +1,8 @@
 [//]: # (Doc of docs reference 10)
 [//]: # (TODO: technical writer review)
 
-# (GameObject-MonoBehaviour) API - SpatialOSComponent
- _This document relates to the GameObject-MonoBehaviour workflow._
+#  API - SpatialOSComponent
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
 

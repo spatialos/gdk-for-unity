@@ -1,4 +1,5 @@
-# ECS: Sending and receiving commands
+# Sending and receiving commands
+_This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Commands are SpatialOS's equivalent of remote procedure calls.
 

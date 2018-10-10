@@ -2,7 +2,7 @@
 [//]: # (Document the options UTY-1168)
 [//]: # (Document the options UTY-1170)
 
-# How to build your game
+# Build your workers
 
 Before running a [deployment of your game]({{urlRoot}}/content/deploy) locally or in the cloud, you need to:
 

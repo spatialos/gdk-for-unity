@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 15.1)
 
-# (GameObject-MonoBehaviour) Creating workers with WorkerConnector
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+# Creating workers with WorkerConnector
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 See first the documentation on:
 

@@ -2,8 +2,8 @@
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - See if `option` struct needs defining)
 
-# (GameObject-MonoBehaviour) Readers and Writers
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
+# Readers and Writers
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 

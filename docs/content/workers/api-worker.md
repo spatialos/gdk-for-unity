@@ -2,7 +2,7 @@
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
 # Workers: API - Worker
 
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)_
+_This document relates to both [MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)_
 
 Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos).
 

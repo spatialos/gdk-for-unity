@@ -2,8 +2,8 @@
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - Remove “> Currently updating any field of the component will trigger the callback for all <component property name>Updated`.” line if if this PR gets merged in: https://github.com/spatialos/UnityGDK/pull/438 )
 
-# (GameObject-MonoBehaviour) Reading and writing SpatialOS component data
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
+# Reading and writing SpatialOS component data
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 

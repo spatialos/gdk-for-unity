@@ -3,12 +3,12 @@
 [//]: # (TODO - split into Commands intro doc + API doc)
 [//]: # (TODO - Update the ECS Commands doc to refer to this for relevant info. It doesn’t seem to have much of this duplicated, so IMO this is just a matter of removing 2 sentences of details about the request/response types and adding 1 sentence with a link here. Could do a straightforward PR once this doc is in.)
 # Commands: World and component command requests and responses
-_This document relates to both GameObject-MonoBehaviour and ECS workflows._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS]({{urlRoot}}/content/intro-workflows-spatialos-entities)) and [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk). You should also be familiar with the terms; [schema]({{urlRoot}}/content/glossary#schema), [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) and [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component).
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities).
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities).
 
 There are two types of commands in SpatialOS:
 
@@ -17,10 +17,10 @@ There are two types of commands in SpatialOS:
 
 You can find documentation for commands by following these links:
 
-* [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
+* [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
-* GameObject-Monobehaviour component commands, see [GameObject: Sending and receiving commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
-* GameObject-Monobehaviour component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
+* MonoBehaviour component commands, see [GameObject: Sending and receiving commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+* MonoBehaviour component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
 * Both workflows - world and component command requests and responses - this document
 
 

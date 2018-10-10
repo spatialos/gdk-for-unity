@@ -1,4 +1,4 @@
-# Setting up a new project
+# Set up your project
 
 Follow the [Setup and installation guide]({{urlRoot}}/setup-and-installing) to make sure you have everything installed.
 
@@ -29,6 +29,19 @@ Add the following dependencies to the `packages` manifest located inside `worker
   }
 }
 ```
+
+## Download dependencies
+
+Open your Unity project in the Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
+This triggers the following actions:
+  
+  * Unity downloads several required SpatialOS libraries. This may result in opening a browser windows prompting you to log in to your SpatialOS account.  Please log in.
+  
+  > This only happens the first time you open the project or if the required libraries change.
+
+  * Unity [generates code]({{urlRoot}}/content/code-generator) from the [schema]({{urlRoot}}/content/glossary#schema) files defines in your SpatialOS project.
+
+  > This only happens, if Unity detects any changes in the schema files since the last time it generated the code.
 
 ## Set up world initialization
 

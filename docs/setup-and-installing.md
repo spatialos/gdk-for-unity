@@ -1,4 +1,4 @@
-# Set up the SpatialOS GDK for Unity
+# Get the dependencies
 
 <%(TOC)%>
 
@@ -6,8 +6,7 @@ To get set you'll need to create a SpatialOS account, install some dependencies 
 
 ### Sign up for a SpatialOS account
 
-You'll need a SpatialOS account in order to run the SpatialOS GDK for Unity.
-Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
+In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](https://improbable.io/get-spatialos) for free.
 
 ### Set up your machine
 
@@ -15,7 +14,7 @@ Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
 
 **Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
 
-- Make sure to download the **Installer** version, and select the following components during installation:
+- Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Mac Build Support**
 
@@ -93,7 +92,7 @@ If you need help using the GDK, please come and talk to us about the software an
 
 **The SpatialOS forums**
 
-Visit the [support section](https://forums.improbable.io/c/sup) in our forums and use the unity-gdk tag.
+Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
 
 **Discord**
 
@@ -119,7 +118,3 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 ### Licensing
 
 *Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*
-
-### What's next?
-
-Once you've got the GDK set up on your computer, get back to [deploying a game to the cloud]({{urlRoot}}/welcome)!

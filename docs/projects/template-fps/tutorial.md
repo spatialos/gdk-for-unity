@@ -1,12 +1,12 @@
-# Setup
+# Health pick-up tutorial
 
-Before starting this tutorial, make sure you have followed the instructions in our [setup and installation guide]({{urlRoot}}/setup-and-installing).
+Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/get-started).
 
 # What will be covered?
 
-This tutorial will implement a simple health pack pickup that will grant health to players who walk over it. The amount of health granted will be fixed and the health pack will be consumed through use, respawning a little later.
+This tutorial implements a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
 
-To implement this feature we will:
+To implement this feature we:
 
 * Define a new health pack entity and its data.
 * Add health pack entities to the snapshot so they appear in the world.
@@ -195,9 +195,9 @@ You can regenerate the `default.snapshot` file from the SpatialOS menu option in
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
-While they are human-readable you are able to manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
+While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](http://localhost:21000/inspector/). You won't see the pickup in-game yet - this is the next step.
+If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
 
 ![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
 
