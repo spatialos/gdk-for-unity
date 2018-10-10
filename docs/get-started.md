@@ -1,6 +1,6 @@
 # Get started
 
-Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter project. This will introduce you to the workflows and tooling you’ll use with SpatialOS and Unity to allow you to run your game at scale with up to 200 simulated player clients running in the cloud.
+Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter project. This will introduce you to the workflows and tooling you’ll use with SpatialOS and Unity, allowing you to run your game at scale with up to 200 simulated player-clients running in the cloud.
 
 You’ll then be ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality will introduce you to this development experience.
 
@@ -12,7 +12,7 @@ You’ll then be ready to learn how to build your own features. Our tutorial for
 
 ### Sign up for a SpatialOS account, or make sure you are logged in
 
-If you have already signed up, please make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
+If you have already signed up, make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
 
 If you have not signed up before, you can do so [here](https://improbable.io/get-spatialos).
 
@@ -95,7 +95,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-If you need help using the GDK, please come and talk to us about the software and the documentation via:
+If you need help using the GDK, come and talk to us about the software and the documentation via:
 
   * **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
   * **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
@@ -114,14 +114,14 @@ Then navigate to the root folder of the FPS starter project and run the followin
 
 This ensures that you are on the alpha release version of the FPS starter project.
 
-### Setup dependencies by either:
+### Set up dependencies by either:
 
   * Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository: 
       * If you are using Windows: `powershell scripts/powershell/setup.ps1`
       * If you are using Mac: `bash scripts/shell/setup.sh`
   * Following the instructions below to set up manually.
 
-<%(#Expandable title="Manually setup dependencies")%>
+<%(#Expandable title="Manually set up dependencies")%>
 
 1. Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
 
@@ -129,14 +129,14 @@ This ensures that you are on the alpha release version of the FPS starter projec
     | --- | --- |
     | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
     | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
-    > The two repositories should share a common parent like the following:
+    > The two repositories should share a common parent, like the example below:
     ```text
     <common_parent_directory>
         ├── gdk-for-unity-fps-starter-project
         ├── gdk-for-unity
     ```
 
-2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which can be found in the `gdk.pinned` file in the root of the `gdk-for-unity-fps-starter-project` directory.
+2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
     - `git checkout <pinned_version>`
 
 <%(/Expandable)%>
