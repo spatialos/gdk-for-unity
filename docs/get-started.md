@@ -147,8 +147,6 @@ The following scripts clone the GDK and checkout the git tag of the latest relea
 
 Launch the Unity editor. It should automatically detect the project but if it doesn't, click Open and select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-<%(Callout type="info" message="Opening the Unity project for the first time may take while, as Unity needs to import and process the project's assets, and SpatialOS needs to generate code. Why not make yourself a cup of tea while you wait?")%>
-
 ### Fix shader bugs
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
@@ -166,6 +164,8 @@ There is a quick fix however:
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
 
 In the Unity Editor, you first need to make sure Burst compilation is **disabled** from **Jobs** > **Enable Burst Compilation**. Then you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
+
+<%(Callout type="info" message="Building workers for the first time may take while. Why not make yourself a cup of tea while you wait?")%>
 
 ![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.jpg)
 
