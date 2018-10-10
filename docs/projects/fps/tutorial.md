@@ -154,6 +154,12 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
+Additionally, add the following line at the top of the file to ensure that the `Vector3f` type can be resolved:
+
+```csharp
+using Improbable;
+```
+
 This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
 
 ```csharp
