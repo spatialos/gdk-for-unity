@@ -113,7 +113,7 @@ Clone the FPS starter project using one of the following commands:
 
   * Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository: 
       * If you are using Windows: `powershell scripts/powershell/setup.ps1`
-      *  If you are using Mac: `bash scripts/shell/setup.sh`
+      * If you are using Mac: `bash scripts/shell/setup.sh`
   * Following the instructions below to set up manually.
 
 <%(#Expandable title="Manually setup dependencies")%>
