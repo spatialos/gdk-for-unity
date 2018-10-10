@@ -147,7 +147,8 @@ From your Unity Engine file browser, navigate to where you downloaded the FPS st
 
 <%(Callout type="info" message="Opening a Unity project for the first time may take while, as Unity needs to import and process the project's assets. Why not make yourself a cup of tea while you wait?")%>
 
-### Fix shader bugs
+### Project load bugfixes
+<%(#Expandable title="High Definition Render Pipeline Shaders")%>
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
 
@@ -157,7 +158,23 @@ There is a quick fix however:
 2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 
-<%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
+<img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
+<%(/Expandable)%>
+
+<%(#Expandable title="SimulatedPlayerCoordinator NavMesh")%>
+
+There is a bug where the Unity Editor does not import the navmesh for the `FPS-SimulatedPlayerCoordinator` correctly when opening a project for the first time. To fix this, you need to rebake the navmesh for this scene.
+
+To do this:
+
+1. Open the `FPS-SimulatedPlayerCoordinator` scene located at `Assets/Fps/Scenes`.
+2. Click on the `FPS-Start_Large` object in the hierarchy, and enable the object.
+3. Open the **Navigation** pane by clicking on **Windows** > **AI** > **Navigation**.
+4. Navigate to the **Bake** tab and click on the **Bake** button.
+
+You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
+<img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
+<%(/Expandable)%>
 
 ## Building Workers
 
