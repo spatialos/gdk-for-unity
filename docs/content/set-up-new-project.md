@@ -35,7 +35,7 @@ Add the following dependencies to the `packages` manifest located inside `worker
 Open your Unity project in the Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
 This triggers the following actions:
   
-  * Unity downloads several required SpatialOS libraries. This may result in opening a brwoser windows prompting you to log in to your SpatialOS account.  Please log in.
+  * Unity downloads several required SpatialOS libraries. This may result in opening a browser windows prompting you to log in to your SpatialOS account.  Please log in.
   
   > This only happens the first time you open the project or if the required libraries change.
 

@@ -40,33 +40,33 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
 1. Change the `name` field so it matches the name of your SpatialOS project. You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 
 ### Build and upload the game assembly
-The assembly includes executable files for the client-workers and server-workers, and the assets both types of workers use (such as the models and textures used by the client-server - that is, the game executable code - to visualise the game).
+The assembly includes executable files for the client-workers and server-workers, as well as the assets both types of workers use. (The assets might be the models and textures that the client-servers - that is, the game executable code - use to visualise the game.)
 
   1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
-  1. To upload an assembly; open a terminal and navigate to the directory in which your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`. The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
+  1. To upload an assembly; open a terminal and navigate to the directory your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`. The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
 
-  > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your browser will open a console.improbable.io page dispaying the deployment.
+  > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your browser will open a console.improbable.io page dispaying the deployment.  Your browser automatically opens [https://console.improbable.io](https://console.improbable.io) displaying the deployment.
 
 ### Launch a cloud deployment
 1. Launch a cloud deployment
 
    * In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
-   * This command defaults to deploying to clusters located in the US. So if you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
+   * This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
    > **It’s done when:** You see `Deployment launched successfully` printed in your terminal output. This might take a couple of minutes.
 
 **About the `spatial cloud launch` command**   
 `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
 
- ```
+```
 spatial cloud launch <assembly name> <launch configuration> <deployment name> --snapshot=<snapshot file>
 ```
 
 where:
 
-  * `<assembly name>` is the name of the assembly the deployment will use (the one you named above).    
+  * `<assembly name>` identifies the worker assemblies to use. The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`
   * `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
-  * `<deployment name>` is a name of your choice, which you’ll use to identify the deployment. Must be in lowercase.
+  * `<deployment name>` is a name of your choice, which is used to identify the deployment. The name needs to conform to the following regex: `[a-z0-9_]{2,32}`
   * `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/content/snapshots) for further information.
 
 ### Launch the game client

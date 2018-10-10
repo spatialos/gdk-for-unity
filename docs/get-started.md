@@ -20,7 +20,7 @@ In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](h
 
 **Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
 
-- Make sure to download the **Installer** version, and select the following components during installation:
+- Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Mac Build Support**
 
@@ -95,7 +95,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 If you need help using the GDK, please come and talk to us about the software and the documentation via:
 
-  * **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/c/sup) in our forums and use the unity-gdk tag.
+  * **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
   * **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
   * **Github issues** - Create an [issue](https://github.com/spatialos/gdk-for-unity/issues) in this repository.
 
