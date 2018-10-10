@@ -12,7 +12,7 @@ You’ll then be ready to learn how to build your own features. Our tutorial for
 
 ### Sign up for a SpatialOS account, or make sure you are logged in
 
-If you have already signed up, please make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In" on the top right.)
+If you have already signed up, please make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
 
 If you have not signed up before, you can do so [here](https://improbable.io/get-spatialos).
 
