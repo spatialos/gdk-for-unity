@@ -2,9 +2,11 @@
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
+<%(TOC)%>
+
 Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/content/get-started/get-started).
 
-# What will be covered?
+## What will be covered?
 
 As part of this tutorial, we implement a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
 
@@ -14,13 +16,13 @@ To implement this feature we:
 * Add health pack entities to the snapshot so they appear in the world.
 * Write pick-up logic to let health packs grant health to players.
 
-# Opening the FPS starter project in Unity Engine
+## Opening the FPS starter project in Unity Engine
 
 Most of your interactions with the SpatialOS GDK will be from within the Unity Engine editor.
 
 From your Unity Engine file browser, open the `workers/unity` directory inside the FPS starter project to get started.
 
-# Defining a new entity type
+## Defining a new entity type
 
 Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema]({{urlRoot}}/content/glossary#schema).
 
@@ -131,7 +133,7 @@ The information that specifies exactly _which_ client should be granted permissi
 To find out about how to do this, read up about [worker attribute sets](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 <%(/Expandable)%>
 
-### Adding entities to the world
+## Adding entities to the world
 
 Once an entity template function exists you have a way of constructing the _template_ of an entity. You now have a couple of ways of adding a health pack entity to the world:
 
@@ -140,7 +142,7 @@ Once an entity template function exists you have a way of constructing the _temp
 
 For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
 
-#### Editing snapshot generation
+### Editing snapshot generation
 
 The **SpatialOS menu** option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
 
@@ -182,7 +184,7 @@ private static void GenerateDefaultSnapshot()
 
 You may want to consider separating default values (such as health pack positions, and health values) into a settings file. But for now, we will keep this example simple.
 
-#### Updating the snapshot
+### Updating the snapshot
 
 Snapshot files are found in your project root directory, in a directory named `snapshots`. The FPS starter project includes a snapshot called `default.snapshot`.
 
@@ -198,13 +200,13 @@ If you launch a local deployment (`Ctrl + L` in Unity), you should be able to se
 
 ![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
 
-### Representing the entity on your workers
+## Representing the entity on your workers
 
 If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server workers.
 
 SpatialOS will manage which subset of the world's entities each worker knows about, and provide them with the corresponding component data. You must define what the worker will do when it finds out about an entity it isn't currently tracking. Fortunately the SpatialOS GDK for Unity provides some great tools for exactly that!
 
-#### Planning your entity representations
+### Planning your entity representations
 
 First we must think about how each of the workers will want to represent the entity, so let's return to how we want our game mechanic to play out:
 
@@ -218,7 +220,7 @@ We can neatly separate this logic between the client-side and server-side repres
 * The `UnityClient` worker should display a visual representation for each health pack, based on whether the health pack is currently "active".
 * The `UnityGameLogic` worker should react to collisions with players, check whether they are injured, and consume the health pack if they are.
 
-#### Creating GameObject representations
+### Creating GameObject representations
 
 The FPS starter project uses the SpatialOS GDK's MonoBehaviour workflow, which is the familiar way of working with Unity Engine.
 
@@ -338,7 +340,7 @@ The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatia
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
 
-### Testing your changes
+## Testing your changes
 
 Our aim is to have health packs which restore lost health to players. So what have we accomplished so far?
 
@@ -365,7 +367,7 @@ Our next step will be to add some game logic to the health pack so that it react
 
 If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
 
-# Adding health pack logic
+## Adding health pack logic
 
 If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
 
@@ -475,7 +477,7 @@ healthPickupWriter?.Send(new HealthPickup.Update
 
 There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function. The `Player` entity prefab has already been given a "Player" tag, so this function will be called any time a player walks through a health pack.
 
-#### Cross-worker interaction using commands
+### Cross-worker interaction using commands
 
 Our `HandleCollisionWithPlayer` function will run on a `UnityGameLogic` worker (because of the `[WorkerType(WorkerUtils.UnityGameLogic)]` annotation). That worker executes the code on behalf of each `HealthPack` entity for which is has `HealthPickup` component write-access (because of the `Writer` requirement). If your game has multiple `UnityGameLogic` workers then the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access for the `Player` entity who has tried to pick up the health pack.
 
@@ -514,7 +516,7 @@ The `ModifyHealth` command is already used by the FPS starter project for applyi
 
 <%(#Expandable title="Could you put the collision logic on the 'Player' instead?")%>Yes, and that would actually be better in some ways. If the collision with a health pickup is detected by the player, the command to update health can be replaced with a component update. This is a major simplification and should also have better performance. As a rule of thumb, always prefer component updates over commands. We have introduced you to commands so that you know their power, but it is your responsibility to use them wisely.<%(/Expandable)%>
 
-#### Respawning health packs
+### Respawning health packs
 
 Our health packs use the `IsActive` property to indicate whether they can be visualised (and whether they will grant health on collision). One final feature we will add is a co-routine to re-activate consumed health packs after a cool-down period.
 
@@ -631,13 +633,13 @@ This is why you should specify in `OnEnable()` that if the `IsActive` property i
 
 The newly authoritative worker will not know how long the cool-down had already been running on the previous worker, so the cool-down timer is ultimately "refreshed" at this point. If this was a problem for our mechanic then we could store the timer's progress in a new property, but in this case we will keep it simple.<%(/Expandable)%>
 
-#### Optional: Ignoring healthy players
+### Optional: Ignoring healthy players
 
 The `HandleCollisionWithPlayer` function in your `HealthPickupServerBehaviour.cs` script currently attempts to heal any colliding player. If the player is already on full health we might want to ignore them so that the health pack is not consumed and the health modifier command is never sent.
 
 At the beginning of the `HandleCollisionWithPlayer` function you could add an if-statement which reads the player's current health from a Monobehaviour (that you will need to write) and returns early if their health is at the maximum. In the code that handles incoming `ModifyHealthRequest` commands the player's health is clamped to the value of the `Health` component's `max_health` property, but it's preferable to avoid sending the request if we know it will be denied anyway.
 
-# Testing health pickups locally
+## Testing health pickups locally
 
 The distributed game logic is now in place, and we can test if it is working correctly. To test this feature, you can follow these steps:
 
