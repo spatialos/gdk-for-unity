@@ -6,8 +6,7 @@ To get set you'll need to create a SpatialOS account, install some dependencies 
 
 ### Sign up for a SpatialOS account
 
-You'll need a SpatialOS account in order to run the SpatialOS GDK for Unity.
-Follow [this link](https://improbable.io/get-spatialos) to sign up for free.
+In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](https://improbable.io/get-spatialos) for free.
 
 ### Set up your machine
 
@@ -119,7 +118,3 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 ### Licensing
 
 *Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*
-
-### What's next?
-
-Once you've got the GDK set up on your computer, get back to [deploying a game to the cloud]({{urlRoot}}/welcome)!

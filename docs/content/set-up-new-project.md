@@ -30,6 +30,19 @@ Add the following dependencies to the `packages` manifest located inside `worker
 }
 ```
 
+## Download dependencies
+
+Open your Unity project in the Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
+This triggers the following actions:
+  
+  * Unity downloads several required SpatialOS libraries. This may result in opening a brwoser windows prompting you to log in to your SpatialOS account.  Please log in.
+  
+  > This only happens the first time you open the project or if the required libraries change.
+
+  * Unity [generates code]({{urlRoot}}/content/code-generator) from the [schema]({{urlRoot}}/content/glossary#schema) files defines in your SpatialOS project.
+
+  > This only happens, if Unity detects any changes in the schema files since the last time it generated the code.
+
 ## Set up world initialization
 
 By default, Unity creates a `DefaultWorld` and then searches the whole project for systems it can add to this world. You can use the `DefaultWorld` to run logic that is completely independent of SpatialOS. However, you can’t use it to run systems that interact with SpatialOS, because each worker creates its own world and stores additional information about its connection.

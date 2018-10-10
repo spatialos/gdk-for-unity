@@ -1,12 +1,12 @@
 # Setup
 
-Before starting this tutorial, make sure you have followed the instructions in our [setup and installation guide]({{urlRoot}}/setup-and-installing).
+Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/get-started).
 
 # What will be covered?
 
-This tutorial will implement a simple health pack pickup that will grant health to players who walk over it. The amount of health granted will be fixed and the health pack will be consumed through use, respawning a little later.
+This tutorial implements a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
 
-To implement this feature we will:
+To implement this feature we:
 
 * Define a new health pack entity and its data.
 * Add health pack entities to the snapshot so they appear in the world.
