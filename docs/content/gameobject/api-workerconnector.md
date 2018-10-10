@@ -40,6 +40,7 @@ protected virtual string SelectDeploymentName(DeploymentList deployments);
 Only use this method when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
 Parameters:
+
   * `DeploymentList deployment`: a list of all deployments for the project name specified in the `spatialos.json` file.
 
 Returns: the name of the selected cloud deployment.
@@ -50,6 +51,7 @@ protected virtual ReceptionistConfig GetReceptionistConfig(string workerType);
 This method is only used when connecting through the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
 Parameters:
+
 * `string workerType`: The [type of the worker]({{urlRoot}}/content/glossary#worker-types)
 
 Returns: a connection configuration to connect using the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
@@ -60,6 +62,7 @@ protected virtual LocatorConfig GetLocatorConfig(string workerType);
 This method is only used when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
 Parameters:
+
   * `string workerType`: The [type of the worker]({{urlRoot}}/content/glossary#worker-types)
 
 Returns: a connection configuration to connect using the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow) stored

@@ -23,16 +23,12 @@ public class TickSystemTests
         // Construct a world
         using (var world = new World("test-world"))
         {
-            // Add a system
+            // Add a system and assert the set up
             var tickSystem = world.GetOrCreateManager<TickSystem>();
-
-            // Assert that the system is set up correctly
             Assert.AreEqual(0, tickSystem.GlobalTick);
 
-            // Execute the system
+            // Execute the system and assert the behaviour
             tickSystem.Update();
-
-            // Assert the system behaves correctly
             Assert.AreEqual(1, tickSystem.GlobalTick);
         }
 
@@ -72,24 +68,24 @@ public class CleanReactiveComponentsSystemTests
     }
 
     [Test]
-    public void SomeTest() {
-      // The world will be disposed in the [TearDown] above.
-      var world = worker.World;
+    public void SomeTest() 
+    {
+        // The world will be disposed in the [TearDown] above.
+        var world = worker.World;
 
-      // The CleanReactiveComponentsSystem can now be created and it will be
-      // able to find the worker through the world.
-      world.GetOrCreateManager<CleanReactiveComponentsSystem>();
-      // ...
+        // The CleanReactiveComponentsSystem can now be created and it will be
+        // able to find the worker through the world.
+        world.GetOrCreateManager<CleanReactiveComponentsSystem>();
+        // ...
     }
 
     [Test]
     public void SomeOtherTest() {
-      // New worker, new world, since [SetUp] and [TearDown] happen for each
-      // test.
-      var world = worker.World;
-
-      world.GetOrCreateManager<CleanReactiveComponentsSystem>();
-      // ...
+        // New worker, new world, since [SetUp] and [TearDown] 
+        // happen for each test.
+        var world = worker.World;
+        world.GetOrCreateManager<CleanReactiveComponentsSystem>();
+        // ...
     }
 }
 ```
@@ -124,11 +120,7 @@ private class FixtureImplementingHybridTestBase : HybridGdkSystemTestBase
         using (var world = new World("test-world"))
         {
             var entityManager = world.GetOrCreateManager<EntityManager>();
-
-            var entity = entityManager.CreateEntity(
-                typeof(Rigidbody)
-            );
-
+            var entity = entityManager.CreateEntity(typeof(Rigidbody));
             var testSystem = world.GetOrCreateManager<ExampleHybridSystem>();
             // ...
         }

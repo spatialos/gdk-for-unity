@@ -74,17 +74,17 @@ The following code snippets shows shows how to use the logger from the correspon
 ```csharp
 public class LogToSpatialOSMonoBehaviour : MonoBehaviour
 {
-  private ILogDispatcher logDispatcher;
+    private ILogDispatcher logDispatcher;
 
-  private void OnEnable()
-  {
-    var spatialOSComponent = GetComponent<SpatialOSComponent>();
-    logDispatcher = spatialOSComponent.Worker.LogDispatcher;
-  }
+    private void OnEnable()
+    {
+        var spatialOSComponent = GetComponent<SpatialOSComponent>();
+        logDispatcher = spatialOSComponent.Worker.LogDispatcher;
+    }
 
-  public void LogMessage(LogType logType, string message)
-  {
-    logDispatcher.HandleLog(logType, new LogEvent(message));
-  }
+    public void LogMessage(LogType logType, string message)
+    {
+        logDispatcher.HandleLog(logType, new LogEvent(message));
+    }
 }
 ```
