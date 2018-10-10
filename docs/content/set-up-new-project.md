@@ -1,4 +1,4 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 -----
 
@@ -83,5 +83,4 @@ namespace YourProject
 ```
 This sets up the injection hooks needed to run Unity's hybrid ECS and ensures that all worlds are properly cleaned up. You need to set the `initialized` field to `true` to ensure it is only run once, otherwise `Init` is run whenever a scene gets loaded due to the `RuntimeInitializeOnLoadMethod` attribute.
 
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
+

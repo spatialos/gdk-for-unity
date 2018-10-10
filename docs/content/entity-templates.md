@@ -1,80 +1,98 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
-------
+------ 
+[//]: # (Doc of docs reference 22)
 
-## Creating entity templates
+# SpatialOS entities: Creating entity templates
+_This document relates to both GameObject-MonoBehaviour and ECS workflows._
 
-To create an [entity](https://docs.improbable.io/reference/latest/shared/glossary#entity) in the SpatialOS GDK for Unity, you need to create a template which specifies which components should be added to the entity and allows you to specify [authority](ecs/authority.md) on a per-[component](https://docs.improbable.io/reference/latest/shared/glossary#component) basis.
+Before reading this document, make sure you are familiar with the documentation on the [GameObject-MonoBehaviour and ECS workflows](./intro-workflows-spos-entities.md) and the [workers in the GDK](./workers/workers-in-the-gdk.md) overview. 
 
-Create the entity template using the `EntityBuilder` which is part of the `Improbable.Gdk.Core` assembly. The `EntityBuilder` class has the following public methods:
+Whether you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you need to set up entity templates to create a [SpatialOS entity](glossary.md#spatialos-entity). You use the `EntityTemplate` class to specify all the [components](./glossary.md#spatialos-component) that a SpatialOS entity has, the initial values of those components, and which workers have [write access](./glossary.md#authority) to each component. 
 
-| Public method                                                | Description                                                  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| `Begin()`                                                    | Create a new `EntityBuilder` instance for creating an entity template. |
-| `AddPosition(double x, double y, double z, string writeAccess)` | Add a [`Position`](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#position-required) component to your entity and specify which worker type(s) can have authority over it. |
-| `SetPersistence(bool persistence)`                           | Specify whether your entity should be saved in snapshots. For more information, see the documentation on [persistence](https://docs.improbable.io/reference/latest/shared/glossary#persistence). |
-| `SetReadAcl(string attribute, param string[] attribute)` or `SetReadAcl(List<string> attribute)` | Specify which worker type(s) can have [read access](https://docs.improbable.io/reference/latest/shared/glossary#read-and-write-access-authority) to the entity. |
-| `SetEntityAclComponentWriteAccess(string attribute)`         | Specify which worker type can have authority over the [`EntityAcl`](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#entityacl-required) component of your entity. This is useful if, while the game is running, you want to change which worker type(s) can have authority over the entity's other components. |
-| `AddComponent(ComponentData data, string writeAccess)`       | Add a user-defined component to your entity and specify which worker type(s) can have authority over it. |
-| `Build()`                                                    | Create a finished entity template.                           |
+For information on how to create SpatialOS entities once you have set up entity templates, see the documentation on [creating entities (GameObject and MonoBehaviour workflow)](./gameobject/create-delete-spos-entities.md) and [ECS World commands (ECS workflow)](./ecs/world-commands.md).
 
-For each [schema component](https://docs.improbable.io/reference/13.2/shared/glossary#schema) you define, [the code generator](ecs/code-generator.md) generates a helper method to create a `ComponentData` object for that component. For example, for the following schema:
+
+
+## How to create a SpatialOS entity template
+
+You have to create an `EntityTemplate` to specify which components a [SpatialOS entity](./glossary.md#spatialos-entity) has and the initial values of those [components](./glossary.md#spatialos-component). You have to also specify which workers have write access (also known as ”[authority](./glossary.md#authority)” on a per-component basis. 
+
+You use the [`EntityBuilder` class](./api-spos-entity-builder.md)) to do this. 
+
+There are examples of how to use this class below.
+
+
+### Create `ComponentData`
+For each [schema component](./glossary.md#schema) you define, the class created by the [code generator](./code-generator.md) has a method to create a `ComponentData` object for that component. For example, for the following schema:
 
 ```
 component Health {
   id = 1;
-  int32 health_value = 1;
+  int32 current_health = 1;
 }
 ```
 
-There is a method `Health.Component.CreateSchemaComponentData(int healthValue)` which will instantiate and populate a `ComponentData` object.
+The code generator creates a static method `Health.Component.CreateSchemaComponentData(int currentHealth)` which instantiates and populates a `ComponentData` object. 
 
-Below is an example of how to define an entity template using the `EntityBuilder`. In this example we will be creating a template for a creature:
+The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [GameObject-MonoBehaviour world commands](gameobject/world-commands.md) or [ECS world commands](ecs/world-commands.md), depending on your [workflow](./intro-workflows-spos-entities.md).
+
+
+**Note**: You need to create a new EntityTemplate for each call to `CreateEntity`. 
+
+**Example**<br/>
+Example defining a template for a SpatialOS entity `creature`. 
 
 ```csharp
 public static class CreatureTemplate
 {
-    public static Entity CreateCreatureEntityTemplate(Coordinates coords)
+    public static readonly List<string> AllWorkerAttributes = 
+        new List<string>
+        {
+            "UnityClient",
+            "UnityGameLogic"
+        };
+
+    public static EntityTemplate CreateCreatureEntityTemplate(Coordinates coords)
     {
-        var healthComponent = Health.Component.CreateSchemaComponentData(healthValue: 100);
+        var healthComponent = Health.Component.CreateSchemaComponentData(currentHealth: 100);
 
         var entity = EntityBuilder.Begin()
-            .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
-            .AddMetadata("Creature", WorkerUtils.UnityGameLogic)
+            .AddPosition(coords.X, coords.Y, coords.Z, "UnityGameLogic")
+            .AddMetadata("Creature", "UnityGameLogic")
             .SetPersistence(true)
-            .SetReadAcl(WorkerUtils.AllWorkerAttributes)
-            .AddComponent(healthComponent, WorkerUtils.UnityGameLogic)
+            .SetReadAcl(AllWorkerAttributes)
+            .AddComponent(healthComponent, "UnityGameLogic")
             .Build();
 
-        return entity;
+        return entityTemplate;
     }
 }
 ```
 
-You can use this entity template to spawn a Creature entity. This can be done using the [MonoBehaviour](gameobject/world-commands.md) or [ECS](ecs/world-commands.md) workflow.
+## Feature Module components
 
-### Feature Module components
+To take advantage of some Feature Modules, you need to add their SpatialOS components to your SpatialOS entity. You do this by calling the appropriate extension methods on the `EntityBuilder` for each Feature Module that requires additional components. This document lists the helper methods and how to use them.
 
-To take advantage of some Feature Modules, you need to add the SpatialOS components that these modules make use of to your entity. You do this by calling the appropriate extension method on the `EntityBuilder` for each feature module. This document lists the helper methods and how to use them.
+### Transform synchronization module
 
-#### Transform synchronization module
+To add the SpatialOS components required for the transform synchronization Feature Module to work on a SpatialOS entity, use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [worker attribute](./glossary.md#worker-attributes) of the [worker](./glossary.md#worker) you are giving [write-access](./glossary.md#authority) over SpatialOS transforms to.
 
-When you want to give a [worker](workers.md) [authority](ecs/authority.md) over the transform synchronization of a SpatialOS component, you use the `AddTransformSynchronizationComponents` extension method. This Feature Module requires the [attribute](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) of the worker you are giving authority to.
+You have the option to set a starting `location` of type `Vector3`, `velocity` of type `Vector3`, and `rotation` of type `Quaternion`. If you do not provide these, location and velocity default to `Vector3.zero`, and rotation defaults to `Quaternion.identity`.
 
-You have the option to set a starting `location`, `velocity` and `rotation`. If you do not provide these, location and velocity are set to `default(Vector3)`, and rotation is set to `Quaternion.identity`.
+The following code snippet shows how to use the `AddTransformSynchronizationComponents` extension method with an optional `location` parameter.
 
-Example showing how to use the `AddTransformSynchronizationComponents` extension method with an optional `location` parameter.
-
+**Example**<br/>
 ```csharp
 public static class CubeTemplate
 {
-    public static Entity CreateCubeEntityTemplate(Coordinates coords)
+    public static EntityTemplate CreateCubeEntityTemplate(Coordinates coords)
     {
         var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
+            .AddPosition(coords.X, coords.Y, coords.Z, "UnityGameLogic")
             ...
             ...
-            .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
+            .AddTransformSynchronizationComponents("UnityGameLogic",
 				location: coords.NarrowToUnityVector());
 
         return entityBuilder.Build();
@@ -82,31 +100,32 @@ public static class CubeTemplate
 }
 ```
 
-#### Player lifecycle module
+### Player lifecycle module
 
-The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires a `clientAttribute` and a `serverAttribute`.
+The `AddPlayerLifecycleComponents` extension method for this Feature Module adds the `PlayerHeartbeatClient` and `PlayerHeartbeatServer` components to an entity. It requires the [worker attributes](./glossary.md#worker-attributes) of the client, `clientAttribute`, and the server, `serverAttribute`.
 
-Example showing how to pass [worker attributes](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#worker-attributes) into the `AddPlayerLifecycleComponents` extension method.
+The following code snippet shows how to pass  [worker attributes](./glossary.md#worker-attributes) into the `AddPlayerLifecycleComponents` extension method. The `workerId` is the ID of the worker that sent a player creation request, and `clientAttributeSet` is the full list of attributes of this worker. Both fields are populated by the `HandleCreatePlayerRequestSystem.cs` system within the player lifecycle module.
 
+**Example**<br/>
 ```csharp
 public static class PlayerTemplate
 {
-    public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet, Improbable.Vector3f position)
+    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, List<string> clientAttributeSet, Improbable.Vector3f position)
     {
         // Obtain unique client attribute
-        var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
+        var clientAttribute = clientAttributeSet.First(attribute => attribute != "UnityClient");
 
         var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(position.X, position.Y, position.Z, WorkerUtils.UnityGameLogic)
+            .AddPosition(position.X, position.Y, position.Z, "UnityGameLogic")
             ...
             ...
-            .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
+            .AddPlayerLifecycleComponents(clientAttribute, "UnityGameLogic");
 
         return entityBuilder.Build();
     }
 }
 ```
 
-------
 
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).
+
+

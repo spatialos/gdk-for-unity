@@ -1,8 +1,10 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 -----
 
 ## Snapshots
+ _This document relates to both [GameObject-MonoBehaviour and ECS workflows](./intro-workflows-spos-entities.md)._
+ 
 A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/latest/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/latest/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
 
 You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/latest/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
@@ -26,6 +28,3 @@ You can start local or cloud deployments using the `spatial local launch` and `s
 
 Both of these commands can take the optional command line parameter `--snapshot=<path>`. This starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.
 
------
-
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../README.md#give-us-feedback).

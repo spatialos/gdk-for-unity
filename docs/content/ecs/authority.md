@@ -1,8 +1,9 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation - see the guidance on [Recommended use](../../../README.md#recommended-use).
+**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
 
 ----
 
-## ECS: Authority
+# (ECS) Authority
+ _This document relates to the [ECS workflow](../intro-workflows-spos-entities.md)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component).
 
@@ -10,7 +11,7 @@
 >
 > Crucially: at runtime, your worker instance may or may not have authority over a given SpatialOS component.
 
-### How authority is represented in Unity's ECS
+## How authority is represented in Unity's ECS
 
 For every [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
@@ -57,7 +58,7 @@ public class AuthoritativePositionSystem : ComponentSystem
 }
 ```
 
-### What happens when a SpatialOS entity enters a worker instance's view
+## What happens when a SpatialOS entity enters a worker instance's view
 
 > This section is just to tell you how the system works: all of this is handled automatically by the GDK, and you don't need to do anything to ensure that authority is correctly registered in authority tags.
 
@@ -106,5 +107,3 @@ public class OnPlayerSpawnSystem : ComponentSystem
 
 The GDK automatically adds and removes authority tags: see [Reactive components](reactive-components.md) for more information.
 
-----
-**Give us feedback:** We want your feedback on the SpatialOS GDK for Unity and its documentation - see [How to give us feedback](../../../README.md#give-us-feedback).
