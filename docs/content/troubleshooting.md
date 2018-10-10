@@ -37,6 +37,7 @@ Do not proactively destroy GameObjects or ECS entities representing SpatialOS en
 
 **A Reader/Writer or CommandSender/Handler in my code is null.**
 <br/>
+
   * Ensure that your field is declared in a MonoBehaviour. They are not supported in ECS systems.
   * Ensure that the field is decorated with a [Require] attribute.
   * Ensure that the GameObject containing your MonoBehaviour is associated with a SpatialOS entity. You can verify this by examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject at runtime.
@@ -44,6 +45,7 @@ Do not proactively destroy GameObjects or ECS entities representing SpatialOS en
 
 **A MonoBehaviour containing fields using the [Require] attribute stays disabled when I expect it to be enabled.**
 <br/>
+
   * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [`Worker`]({{urlRoot}}/content/glossary#worker).
   * Ensure that the GameObject containing your MonoBehaviour is associated with a SpatialOS entity. You can verify this be examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject at runtime.
   * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the SpatialOS entity associated with your GameObject in the Inspector. In the Inspector, ensure that all relevant components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
