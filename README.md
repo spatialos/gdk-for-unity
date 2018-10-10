@@ -1,43 +1,37 @@
 # The SpatialOS GDK for Unity (alpha)
 
-The SpatialOS Game Development Kit (GDK) for Unity enables game developers to build multiplayer [Unity](http://unity3d.com) games with [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos). It will be made up of three parts:
+The SpatialOS Game Development Kit (GDK) for Unity allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
 
-* the GDK Core, a performant, data-driven [SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) multiplayer integration.
+The GDK is composed of three layers:
 
-* a library of solutions for hard or common networked game development problems via Feature Modules.
+**The GDK Core:** a performant, data-oriented integration with our cloud platform SpatialOS, based on the familiar Unity-native workflows.
 
-* the example game, which both tests and demonstrates the Feature Modules; for use as a starting point or resource for game development.
+**The GDK Feature Modules:** a library of solutions for hard or common networked game development problems, such as Character Movement and Shooting.
 
-This is an alpha release of the GDK Core which is the foundation of the product. To find out more see the [GDK blogpost](https://improbable.io/games/blog/unity-gdk-our-first-steps).
+**The First Person Shooter (FPS) Starter Project:** a starter project for the GDK that enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games.
+
+[Get started](https://docs.improbable.io/unity/alpha/get-started) with the SpatialOS GDK for Unity, by setting up the FPS Starter Project.
 
 ---
 
-* [Setup Guide](https://docs.improbable.io/unity/alpha/setup-and-installing#set-up-your-machine)
+* [Get started](https://docs.improbable.io/unity/alpha/get-started)
 * [Documentation](https://docs.improbable.io/unity/alpha/)
-* [Development Roadmap](https://trello.com/b/29tMKyQC)
-* [Discord](https://discord.gg/SCZTCYm)
-* [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
-* [Github Issues](https://github.com/spatialos/UnityGDK/issues)
-* [Known Issues](https://docs.improbable.io/unity/alpha/known-issues)
-* [Sign up for e-mail updates](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
+
+* [Development roadmap](https://trello.com/b/29tMKyQC)
+* [Issue reporting](https://github.com/spatialos/UnityGDK/issues) ([Known issues](https://docs.improbable.io/unity/alpha/known-issues))
+
+* Community: [Discord](https://discord.gg/SCZTCYm) - [Forums](https://forums.improbable.io/latest?tags=unity-gdk) - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 
 ---
 
 ## Recommended use
 
-This alpha release is for experienced Unity developers who have some understanding of [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos), and want to give early feedback.
-
-This alpha version software and its documentation is, by its very nature, rough and ready; every part of it is subject to change, including the APIs, and it isn’t optimised for performance. In addition, the GDK is based on Unity’s experimental [Entity Component System and Job System](https://unity3d.com/unity/features/job-system-ECS).
-
-This release is for evaluation and feedback only, with limited documentation; we aren’t supporting any game development yet.
+This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback. 
 
 ## Contributions
 
-**Public contributors**<br/>
 We are not currently accepting public contributions - see our [contributions](.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your feedback.
 
-**Improbable developers**<br/>
-See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
 
 ## Give us feedback
 
@@ -52,17 +46,9 @@ Visit the **feedback** section in our [forums](https://forums.improbable.io) and
 **Github issues**<br/>
 Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issues).
 
-## Support policy
-
-We are not supporting the alpha release for game development, as this version is for evaluation only. However, please do give us your feedback.
-
-## Migration from the SpatialOS Unity SDK
-
-Currently the GDK is in its early development, so there is no migration path from the [SpatialOS SDK for Unity](https://github.com/spatialos/UnitySDK) to the GDK. There will be a migration path in later releases.
-
 ---
-* Version: alpha (for evaluation only)
-* Unity Game Development Kit repository: [github.com/spatialos/gdk-for-unity](https://github.com/spatialos/UnityGDK)
+* Version: [alpha](https://docs.improbable.io/reference/latest/shared/release-policy)
+* The SpatialOS GDK for Unity repository: [github.com/spatialos/gdk-for-unity](https://github.com/spatialos/gdk-for-unity)
 * Use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
 * Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
