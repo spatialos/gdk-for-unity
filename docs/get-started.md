@@ -65,9 +65,9 @@ As you will be launching a cloud deployment, you need to build out the code exec
 
 Open the Unity project, by starting the Unity Editor and navigating to `gdk-for-unity-fps-starter-project/workers/unity`.
 
-In the Unity Editor, you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
+In the Unity Editor, you first need to make sure Burst compilation is **disabled** from **Jobs** > **Enable Burst Compilation**. Then you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
 
-<!-- TODO: Image of Unity editor SpatialOS menu  -->
+![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.jpg)
 
 > **It has finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
 
@@ -82,7 +82,7 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
         ├── schema.descriptor
 ```
 
-<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor.")%>
+<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
 
 ## Uploading
 
