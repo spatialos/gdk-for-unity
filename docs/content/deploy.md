@@ -30,7 +30,7 @@ To start your client-workers, from a terminal window, in any directory, run `spa
 
 ## Cloud deployment
 
-To start a cloud deployment follow the section.
+Follow this section to start a cloud deployment.
 
 ### Setup the SpatialOS project name
 
@@ -45,7 +45,7 @@ The assembly includes executable files for the client-workers and server-workers
   1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
   1. To upload an assembly; open a terminal and navigate to the directory your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`. The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
 
-  > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your browser will open a console.improbable.io page dispaying the deployment.  Your browser automatically opens [https://console.improbable.io](https://console.improbable.io) displaying the deployment.
+  > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your automatically opens [https://console.improbable.io](https://console.improbable.io) displaying the deployment.
 
 ### Launch a cloud deployment
 1. Launch a cloud deployment
