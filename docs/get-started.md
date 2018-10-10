@@ -10,9 +10,11 @@ You’ll then be ready to learn how to build your own features. Our tutorial for
 
 <%(Callout type="info" message="Setting up SpatialOS, the GDK, the FPS Starter Project, and their dependencies should take you about 10 mins.")%>
 
-### Sign up for a SpatialOS account
+### Sign up for a SpatialOS account, or make sure you are logged in
 
-In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](https://improbable.io/get-spatialos) for free.
+If you have already signed up, please make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In" on the top right.)
+
+If you have not signed up before, you can do so [here](https://improbable.io/get-spatialos).
 
 ### Set up your machine
 
