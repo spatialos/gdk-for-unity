@@ -107,7 +107,7 @@ This component can then be added to the `HealthPickup` entity using the line: `.
 
 #### Setting permissions (ACLs)
 
-[Access Control Lists]({{urlRoot}}/content/glossary#access-control-list) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
+[Access Control Lists]({{urlRoot}}/content/glossary#access-control-list-acl) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
 
 In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` function call stated that all worker types should be able to read the data for this entity.
 

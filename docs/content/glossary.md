@@ -1,6 +1,3 @@
-**Warning:** The [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only.
-
------
 [//]: # (Doc of docs reference 1)
 [//]: # (TODO: Tech writer pass)
 [//]: # (Sam C has captured all remaining debates and contentious topics in this doc so that it can be reviewed and fixed after M2 release: https://docs.google.com/document/d/1jCKcf93gjvY1_T037ClcWEea0EdRCe943Mr6fJ0oBYg/edit?usp=sharing)
@@ -11,27 +8,26 @@
 
 >**Note:** There are many concepts in this glossary that mean different things in different contexts. When semantically overloaded words or phrases are unavoidable, we explicitly prefix them to avoid confusion. [.NET assemblies (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and [SpatialOS assemblies](#spatialos-assembly) are an example of this.
 
-### Access Control List
+### Access Control List (ACL)
 
-In order to read from or make changes to a [SpatialOS component](#spatialos-component), [workers](#worker) need to have [read access](#read-access) and [write access](#write-access) respectively.You cannot have write access without read access. Workers are granted this through an access control list (ACL).
-
-ACLs are a [SpatialOS component](#spatialos-component) in the standard [schema](#schema) library: [`EntityAcl` (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#entityacl-required). Every
-[entity](#spatialos-entity) needs to have one. The ACL determines:
+In order to read or modify a [SpatalOS component](#spatialos-component), a [worker](#worker) needs to have access to that component. Whether a worker is allowed [read](#read-access) or [write access](#write-access) is defined by an access control list (ACL). ACLs are components themselves, and are required on every [SpatialOS entity](#spatialos-entity). The ACL determines:
 
 * At an entity level, which workers have read access
-* At a component level, which workers have write access
+* At a component level, which workers may have write access
+
+In the SpatialOS GDK, the [EntityBuilder implementation]({{urlRoot}}/content/api-entity-builder) allows you to add ACL components to entities.
 
 > Related:
 >
->  * [The standard schema library (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library)
->  * [Understanding read and write access (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority)
+> * [Understanding read and write access (SpatialOS documentation)]({{urlRoot}}/content/api-entity-builder)
+> * [Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ### Authority
 >Also known as “write access”.
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). Each component on a [SpatialOS Entity](#spatialos-entity) has no more than one worker that is authoritative over it. This worker is the only one able to modify the component’s state and handling commands for that component. Authority is sometimes called [write-access](#write-access). 
 
-Which types of workers can have authority (or write access) is governed by each entity’s [access control list (ACL)](#access-control-list).
+Which types of workers can have authority (or write access) is governed by each entity’s [access control list (ACL)](#access-control-list-acl).
 Which specific worker actually has write access is managed by SpatialOS, and can change regularly due to [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing)
 
 > Related:
@@ -154,20 +150,6 @@ As their name suggests, [cloud deployments (SpatialOS documentation)](https://do
 > Related:
 >
 > * [How to deploy your game]({{urlRoot}}/content/deploy)
-
-### Access Control List (ACL)
-
-In order to read or modify a [SpatalOS component](#spatialos-component), a [worker](#worker) needs to have access to that component. Whether a worker is allowed [read](#read-access) or [write access](#write-access) is defined by an access control list (ACL). ACLs are components themselves, and are required on every [SpatialOS entity](#spatialos-entity). The ACL determines:
-
-* At an entity level, which workers have read access
-* At a component level, which workers may have write access
-
-In the SpatialOS GDK, the [EntityBuilder implementation]({{urlRoot}}/content/api-entity-builder) allows you to add ACL components to entities.
-
-> Related:
->
-> * [Understanding read and write access (SpatialOS documentation)]({{urlRoot}}/content/api-entity-builder)
-> * [Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ### Feature modules
 
@@ -312,7 +294,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 ### Read access
 
-[Access control lists](#access-control-list) define which workers can have read access over an entity. Read access is defined at the entity level: if a worker can read from an entity, it is allowed to read from all components on that entity.
+[Access control lists](#access-control-list-acl) define which workers can have read access over an entity. Read access is defined at the entity level: if a worker can read from an entity, it is allowed to read from all components on that entity.
 
 > Related: 
 >
@@ -403,14 +385,14 @@ Components can contain:
 * [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
 
 A SpatialOS entity can have as many components as you like, but it must have at least [`Position` (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#position) and
-[`EntityAcl`](#access-control-list). Most entities will have the [`Metadata` (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#metadata) component.
+[`EntityAcl`](#access-control-list-acl). Most entities will have the [`Metadata` (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#metadata) component.
 
 
 > Unlike Unity ECS components, it is not possible to add or remove SpatialOS components on already existing SpatialOS entities.
 
 Components are defined as files in your [schema](#schema).
 
-[Entity access control lists](#access-control-list) govern which workers can [read from](#read-access) or [write to](#write-access) each component on an entity.
+[Entity access control lists](#access-control-list-acl) govern which workers can [read from](#read-access) or [write to](#write-access) each component on an entity.
 
 > Related:
 > 
@@ -616,7 +598,7 @@ See also the [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk
 
 ### Worker attribute
 
-Worker attributes are used to denote a [worker’s](#worker) capabilities. The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list). A worker’s attributes are defined in its [worker configuration JSON (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
+Worker attributes are used to denote a [worker’s](#worker) capabilities. The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). A worker’s attributes are defined in its [worker configuration JSON (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 
 > Related:
 >  
@@ -668,7 +650,7 @@ It’s important to recognize this fundamental separation between the SpatialOS 
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, SpatialOS only allows one worker at a time to write to each [SpatialOS component](#spatialos-component). Write access is defined at the component level.
 
-Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the [access control lists](#access-control-list).
+Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the [access control lists](#access-control-list-acl).
 
 > Related: 
 > 
