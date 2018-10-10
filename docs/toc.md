@@ -89,7 +89,7 @@
 - <h3> + Contributing to the GDK</h3>
     - <h4> Visit our GitHub:</h4>
     - [* Issue log](https://github.com/spatialos/UnityGDK/issues)
-    - [* Contribution policy](https://github.com/spatialos/gdk-for-unity#contributions)
+    - [* Contribution policy]({{urlRoot}}/contributing)
     - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
 - <h3> + GDK Community</h3>
     - <h4> Check out:</h4>
