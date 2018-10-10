@@ -11,13 +11,5 @@ later releases and we’ll keep you posted on this). However, we are taking issu
 See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
 
 ## Coding standards
-See the [Unity GDK C# coding standards guide](../docs/contributions/unity-gdk-coding-standards.md).
 
-## Getting started
-See [About the SpatialOS Unity GDK](../docs/README.md) for
- details on how to get started using the Unity GDK.
-
-## Warning
-This [alpha](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages) release is for evaluation purposes only, with limited documentation -
- see the guidance on
-  [Recommended use](../README.md#recommended-use).
+See the [GDK for Unity C# coding standards guide](../coding-standards.md).
