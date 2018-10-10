@@ -11,3 +11,5 @@ The GDK is composed of three layers:
 * **The First Person Shooter (FPS) Starter Project:** a starting sandbox project for the GDK that enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games.
 
 Get started with the SpatialOS GDK for Unity, by [setting up the FPS Starter Project]({{urlRoot}}/get-started).
+
+<%(Callout type="info" message="This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback.")%>
