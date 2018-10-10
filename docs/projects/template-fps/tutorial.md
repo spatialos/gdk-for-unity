@@ -197,7 +197,7 @@ You can regenerate the `default.snapshot` file from the SpatialOS menu option in
 
 While they are human-readable you are able to manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](http://localhost:21000/inspector/). You won't see the pickup in-game yet - this is the next step.
+If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
 
 ![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
 
