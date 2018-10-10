@@ -39,8 +39,8 @@ package playground;
 
 component CubeSpawner
 {
-  id = 12002;
-  command improbable.common.Empty spawn_cube(improbable.common.Empty);
+    id = 12002;
+    command improbable.common.Empty spawn_cube(improbable.common.Empty);
 }
 ```
 
@@ -138,6 +138,7 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
                 // add it to the list of command responses to be sent at the end of the current update loop
                 responder.ResponsesToSend.Add(spawnCubeResponse);
             }
+
             data.CommandResponders[i] = responder;
         }
     }

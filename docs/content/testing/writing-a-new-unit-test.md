@@ -33,28 +33,28 @@ namespace Improbable.Gdk.Core.Utility
 
         public MyClass()
         {
-                // Pretend to set up some state.
-                InstanceValue = 0;
+            // Pretend to set up some state.
+            InstanceValue = 0;
         }
 
         public void DoInstanceOperation()
         {
-                InstanceValue++;
+            InstanceValue++;
         }
 
         public void DoSomethingElse()
         {
-                InstanceValue += 5;
+            InstanceValue += 5;
         }
 
         public static int AddTwoNumbers(int a, int b)
         {
-                return a + b;
+            return a + b;
         }
 
         public void Dispose()
         {
-                // Clean up some state.
+            // Clean up some state.
         }
     }
 }
@@ -287,9 +287,9 @@ The assembly definition file should look like this in your text editor:
 
 ```json
 {
-    "name": "Improbable.Gdk.Legacy.EditModeTests",
+    "name": "Improbable.Gdk.Core.EditModeTests",
     "references": [
-        "Improbable.Gdk.Legacy",
+        "Improbable.Gdk.Core",
         "Unity.Entities",
         "Unity.Entities.Hybrid"
     ],

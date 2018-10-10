@@ -151,15 +151,14 @@ By default, tests will fail if any code within it throws an exception.
 Sometimes, you may want to test for conditions which throw exceptions. You can do this using the `Assert.Throws` method. This method returns the caught exception, and you can test further assertions against that. (For an example, see the code snippet below.)
 
 ```cs
-        [Test]
-        public void Validate_should_return_false_when_LocatorHost_is_empty()
-        {
-            var config = GetDefaultWorkingConfig();
-            config.LocatorHost = "";
-
-            var exception = Assert.Throws<System.ArgumentException>(config.Validate);
-            Assert.IsTrue(exception.Message.Contains("locatorHost"));
-        }
+[Test]
+public void Validate_should_return_false_when_LocatorHost_is_empty()
+{
+    var config = GetDefaultWorkingConfig();
+    config.LocatorHost = "";
+    var exception = Assert.Throws<System.ArgumentException>(config.Validate);
+    Assert.IsTrue(exception.Message.Contains("locatorHost"));
+}
 ```
 
 ### Disposables vs setup and teardown

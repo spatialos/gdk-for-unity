@@ -49,8 +49,8 @@ package playground;
 
 component CubeSpawner
 {
-	    id = 12002;
-	    command improbable.common.Empty spawn_cube(improbable.common.Empty);
+    id = 12002;
+    command improbable.common.Empty spawn_cube(improbable.common.Empty);
 }
 ```
 The GDK generates the following classes in the `Playground` namespace:
@@ -74,15 +74,15 @@ using Playground;
 
 public class BuildCommandSenderBehaviour : MonoBehaviour
 {
-	    [Require] CubeSpawner.Requirable.CommandRequestSender commandSender;
+    [Require] CubeSpawner.Requirable.CommandRequestSender commandSender;
 
     private void SendRequest(EntityId targetId)
-	    {
-          If (commandSender != null)
-          {
-               commandSender.SendSpawnCubeRequest(targetId, new Empty());
-          }
-	    }
+    {
+        if (commandSender != null)
+        {
+            commandSender.SendSpawnCubeRequest(targetId, new Empty());
+        }
+    }
 }
 ```
 
@@ -96,37 +96,37 @@ using Playground;
 
 public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 {
-	    [Require] Builder.Requirable.CommandRequestHandler requestHandler;
+    [Require] Builder.Requirable.CommandRequestHandler requestHandler;
 
-	    void OnEnable()
-	    {
-    	// register callback for command OnBuildWallRequest
-    	requestHandler.OnSpawnCubeRequest += HandleSpawnCubeRequest;
-	    }
+    void OnEnable()
+    {
+        // register callback for command OnBuildWallRequest
+        requestHandler.OnSpawnCubeRequest += HandleSpawnCubeRequest;
+    }
 
-	    void OnDisable()
-	    {
-    	// Do not deregister the callback here.
-    	// Any registered callback is automatically deregistered
-    	// when the MonoBehaviour gets disabled.
-	    }
+    void OnDisable()
+    {
+        // Do not deregister the callback here.
+        // Any registered callback is automatically deregistered
+        // when the MonoBehaviour gets disabled.
+    }
 
     void HandleSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder responder)
-	    {
+    {
         // retrieve information about the request
         var payload = responder.Request.Payload;
         // do spawn logic....
         // send response and decide whether the command succeeded or failed
         if (SpawnSucceeded(out var entityId))
         {
-        	responder.SendResponse(new SpawnCubeResponse
-        	{
-          	    CreatedEntityId = entityId
+            responder.SendResponse(new SpawnCubeResponse
+            {
+                CreatedEntityId = entityId
             });
         }
         else
         {
-            responder.SendResponseFailure(“Failed to create new cube!”);
+            responder.SendResponseFailure("Failed to create new cube!");
         }
     }
 }
@@ -146,24 +146,24 @@ public class SpawnCubeCommandResponseHandlerBehaviour : MonoBehaviour
     [Require] CubeSpawner.Requirable.CommandResponseHandler responseHandler;
 
     void OnEnable()
-	    {
-        responseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
-	    }
-
-	    void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
     {
-    	if (response.StatusCode == StatusCode.Success)
-    	{
-        	    // Command succeeded. Handle the response
-        	    var payload = response.Payload;
-    	}
-    	else
-    	{
-        	     // Command failed. Handle the failure
-        	     // The payload will be null in this case.
-                 Debug.Log(response.Message);
-    	}
-	    }
+        responseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
+    }
+
+    void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
+    {
+        if (response.StatusCode == StatusCode.Success)
+        {
+            // Command succeeded. Handle the response
+            var payload = response.Payload;
+        }
+        else
+        {
+            // Command failed. Handle the failure
+            // The payload will be null in this case.
+            Debug.Log(response.Message);
+        }
+    }
 }
 ```
 [//]: # (TODO - split this section into a different doc)
@@ -172,7 +172,7 @@ public class SpawnCubeCommandResponseHandlerBehaviour : MonoBehaviour
 #### CommandRequestSender
 The `CommandRequestSender` is used to send command requests and provides one method per command it is responsible for:
 ```csharp
-long Send{name of command}Request(EntityId entityId, TPayload payload, uint? timeoutMillis, bool allowShortCircuiting, object context)
+long Send{name of command}Request(EntityId entityId, TPayload payload, uint? timeoutMillis, bool allowShortCircuiting, object context);
 ```
 Parameters:
 

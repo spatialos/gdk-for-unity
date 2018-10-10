@@ -223,9 +223,9 @@ We can neatly separate this logic between the client-side and server-side repres
 
 #### Creating GameObject representations
 
-The FPS starter project uses the SpatialOS GDK's GameObject workflow, which is the familiar way of working with Unity Engine.
+The FPS starter project uses the SpatialOS GDK's MonoBehaviour workflow, which is the familiar way of working with Unity Engine.
 
-In the GameObject workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `Assets/Fps/Resources/Prefabs/UnityClient` and `Assets/Fps/Resources/Prefabs/UnityGameLogic` respectively.
+In the MonoBehaviour workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `Assets/Fps/Resources/Prefabs/UnityClient` and `Assets/Fps/Resources/Prefabs/UnityGameLogic` respectively.
 
 The FPS starter project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 
@@ -251,7 +251,7 @@ The FPS starter project contains a health pack prefab named `HealthPickup.prefab
 
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
-This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
+This is because the FPS starter project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
 
 
 
@@ -343,7 +343,7 @@ The client-side representation of the health pack entity is now complete! Next w
 
 <%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
+The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
 
@@ -371,7 +371,7 @@ Our next step will be to add some game logic to the health pack so that it react
 
 <%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.
 
-If you are using the SpatialOS GDK's GameObject workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
+If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
 
 # Adding health pack logic
 

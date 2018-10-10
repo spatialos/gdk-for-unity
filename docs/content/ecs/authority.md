@@ -32,12 +32,10 @@ public class AuthoritativePositionSystem : ComponentSystem
 {
     public struct Data
     {
-        // This system will only run where the worker instance has authority over the SpatialOS component Position.
-
         public readonly int Length;
         // An ECS component representing the SpatialOS component Position.
         public ComponentDataArray<Position.Component> Position;
-        // An ECS component tag representing the worker instance's authority over the SpatialOS component Position.
+        // An ECS component tag representing the worker's authority over the SpatialOS component Position.
         public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
     }
 
@@ -83,8 +81,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
         public readonly int Length;
         public ComponentDataArray<PlayerInput.Component> PlayerInput;
         public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-
-        // This system will only run when there has been a change of authority over PlayerInput in the last tick
+        // This system  only runs when there has been a change of authority over PlayerInput in the last tick
         public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthorityChange;
     }
 
@@ -94,8 +91,10 @@ public class OnPlayerSpawnSystem : ComponentSystem
     {
         for(var i = 0; i < data.Length; i++)
         {
-            // The data being injected is for being authoritative over the SpatialOS component PlayerInput, and for changes to authority.
-            // So, write code here that you want to run when the worker instance receives authority over PlayerInput
+            // The data being injected is for being authoritative over the 
+            // SpatialOS component PlayerInput, and for changes to authority.
+            // So, write code here that you want to run when the worker instance 
+            // receives authority over PlayerInput
         }
     }
 }

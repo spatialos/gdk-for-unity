@@ -257,7 +257,7 @@ A [worker](#worker) can send and receive updates and messages to and from the [S
 ### MonoBehaviour
 
 
-A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours). This allows you to use traditional GameObject workflows from the very beginning, without having to worry about the ECS. 
+A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours). This allows you to use the traditional MonoBehaviour workflow using GameObjects from the very beginning, without having to worry about the ECS. 
 
 > Related:
 >
