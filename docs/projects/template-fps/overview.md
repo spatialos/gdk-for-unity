@@ -1,10 +1,10 @@
 # FPS Starter Project
 
-<img src="{{assetRoot}}assets/fps/unity-fps-starterproject.jpg" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; width: 100%; display: block;" />
 
 The FPS starter project is a great starting point for working on the SpatialOS GDK for Unity. Many projects, whatever their genre, share some core elements and this starter project can get you off to a easy start.
 
-The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS starter project is already configured to scale-up, and you can test it out right now! Check out the [FPS at scale]({{urlRoot}}/welcome) guide to dive right in!
+The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS starter project is already configured to scale-up, and you can test it out right now! Check out the [FPS at scale]({{urlRoot}}/get-started) guide to dive right in!
 
 ### Licensing
 
