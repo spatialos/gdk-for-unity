@@ -6,7 +6,7 @@ Before starting this tutorial, make sure you have followed the [Get started guid
 
 # What will be covered?
 
-As part of this tutorial, we will implement a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
+As part of this tutorial, we implement a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
 
 To implement this feature we:
 
@@ -142,7 +142,7 @@ For health packs we will do the latter, so that when the game begins there will 
 
 #### Editing snapshot generation
 
-The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor. We will now modify the snapshot generating logic to add a `HealthPack` entity to out snapshot.
+The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
 
 Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
