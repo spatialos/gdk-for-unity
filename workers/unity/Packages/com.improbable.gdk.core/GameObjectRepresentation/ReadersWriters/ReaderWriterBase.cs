@@ -170,7 +170,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 {
                     // Log the exception but do not rethrow it, as other delegates should still get called
                     logDispatcher.HandleLog(LogType.Exception,
-                        new LogEvent("Caught exception while processing authority changes").WithException(e));
+                        new LogEvent("Caught exception in a MonoBehaviour authority change callback").WithException(e));
                 }
             }
         }
@@ -215,7 +215,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 {
                     // Log the exception but do not rethrow it, as other delegates should still get called
                     logDispatcher.HandleLog(LogType.Exception,
-                        new LogEvent("Caught exception while processing component updates").WithException(e));
+                        new LogEvent("Caught exception in a MonoBehaviour component update callback").WithException(e));
                 }
             }
 
