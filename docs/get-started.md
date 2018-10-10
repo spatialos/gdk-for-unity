@@ -114,12 +114,14 @@ Then navigate to the root folder of the FPS starter project and run the followin
 
 This ensures that you are on the alpha release version of the FPS starter project.
 
-### Setup dependencies by either:
+### Clone the SpatialOS GDK for Unity and checkout the latest release
 
-  * Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository: 
-      * If you are using Windows: `powershell scripts/powershell/setup.ps1`
-      * If you are using Mac: `bash scripts/shell/setup.sh`
-  * Following the instructions below to set up manually.
+The following scripts clone the GDK and checkout the git tag of the latest release. If you prefer, you can follow the manual instructions instead:
+
+  * From the root of the `gdk-for-unity-fps-starter-project` repository: 
+      * If you are using Windows run: `powershell scripts/powershell/setup.ps1`
+      * If you are using Mac run: `bash scripts/shell/setup.sh`
+  * Alternatively, follow the manual instructions below.
 
 <%(#Expandable title="Manually setup dependencies")%>
 
