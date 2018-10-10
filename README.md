@@ -1,6 +1,8 @@
+![](./docs/assets/SpatialOS-GDK-Unity-Logo-black.png)
 # The SpatialOS GDK for Unity (alpha)
 
-The SpatialOS Game Development Kit (GDK) for Unity allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
+
+The SpatialOS Game Development Kit (GDK) for Unity in alpha allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
 
 The GDK is composed of three layers:
 
