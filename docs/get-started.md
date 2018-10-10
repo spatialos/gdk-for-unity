@@ -143,11 +143,11 @@ The following scripts clone the GDK and checkout the git tag of the latest relea
 
 <%(/Expandable)%>
 
-## Opening the FPS starter project in Unity Engine
+## Opening the FPS starter project in the Unity Editor
 
-From your Unity Engine file browser, navigate to where you downloaded the FPS starter project and open the `workers/unity` directory inside the project to get started.
+Launch the Unity editor. It should automatically detect the project but if it doesn't, click Open and select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-<%(Callout type="info" message="Opening a Unity project for the first time may take while, as Unity needs to import and process the project's assets. Why not make yourself a cup of tea while you wait?")%>
+<%(Callout type="info" message="Opening the Unity project for the first time may take while, as Unity needs to import and process the project's assets, and SpatialOS needs to generate code. Why not make yourself a cup of tea while you wait?")%>
 
 ### Fix shader bugs
 
