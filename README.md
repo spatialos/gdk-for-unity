@@ -19,7 +19,6 @@ The GDK is composed of three layers:
 
 * [Development roadmap](https://trello.com/b/29tMKyQC)
 * [Issue reporting](https://github.com/spatialos/UnityGDK/issues) ([Known issues](https://docs.improbable.io/unity/alpha/known-issues))
-* [Contributions](/.github/CONTRIBUTING.md)
 
 * Community: [Discord](https://discord.gg/SCZTCYm) - [Forums](https://forums.improbable.io/latest?tags=unity-gdk) - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 
@@ -31,11 +30,8 @@ This is the alpha release of the SpatialOS GDK for Unity. We invite projects to 
 
 ## Contributions
 
-**Public contributors**<br/>
 We are not currently accepting public contributions - see our [contributions](.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your feedback.
 
-**Improbable developers**<br/>
-See the [Contributions guide](https://improbableio.atlassian.net/wiki/x/foDrDw).
 
 ## Give us feedback
 
