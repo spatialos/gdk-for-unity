@@ -147,8 +147,8 @@ From your Unity Engine file browser, navigate to where you downloaded the FPS st
 
 <%(Callout type="info" message="Opening a Unity project for the first time may take while, as Unity needs to import and process the project's assets. Why not make yourself a cup of tea while you wait?")%>
 
-### Project load bugfixes
-<%(#Expandable title="High Definition Render Pipeline Shaders")%>
+#### Before you start, apply these quick bugfixes:
+<%(#Expandable title="Fix Shaders")%>
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
 
@@ -161,7 +161,7 @@ There is a quick fix however:
 <img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
 <%(/Expandable)%>
 
-<%(#Expandable title="SimulatedPlayerCoordinator NavMesh")%>
+<%(#Expandable title="Bake NavMesh")%>
 
 There is a bug where the Unity Editor does not import the navmesh for the `FPS-SimulatedPlayerCoordinator` correctly when opening a project for the first time. To fix this, you need to rebake the navmesh for this scene.
 
