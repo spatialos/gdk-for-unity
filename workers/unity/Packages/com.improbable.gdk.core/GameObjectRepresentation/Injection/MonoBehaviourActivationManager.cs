@@ -271,7 +271,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             catch (Exception e)
             {
                 // Log the exception but do not rethrow it.
-                logger.HandleLog(LogType.Exception, new LogEvent().WithException(e));
+                logger.HandleLog(LogType.Exception, new LogEvent("Caught exception in a MonoBehaviour").WithException(e));
             }
         }
 
