@@ -2,7 +2,7 @@
 [//]: # (TODO: Tech writer pass)
 
 # The code generator
-_This document relates to both GameObject-MonoBehaviour and ECS workflows._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 The SpatialOS GDK for Unity comes packaged with a custom code generator. This doc will detail how the code generator works on a high level and describe how to make changes to it. The source code for the code generator can be found in the [code_generator](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator) directory in the root of the repository and is written in C#.
 

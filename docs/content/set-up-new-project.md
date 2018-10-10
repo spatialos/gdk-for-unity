@@ -1,4 +1,4 @@
-# Setting up a new project
+# Set up your project
 
 Follow the [Setup and installation guide]({{urlRoot}}/setup-and-installing) to make sure you have everything installed.
 

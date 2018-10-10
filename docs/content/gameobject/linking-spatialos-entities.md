@@ -1,11 +1,11 @@
 [//]: # (Doc of docs reference 5.1)
 
-# (GameObject-MonoBehaviour) SpatialOS entities: How to link SpatialOS entities with GameObjects
-_This document relates to the GameObject-MonoBehaviour workflow._
+# SpatialOS entities: How to link SpatialOS entities with GameObjects
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-* The SpatialOS entity section of [GameObject-MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/content/intro-workflows-spatialos-entities)
+* The SpatialOS entity section of [MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/content/intro-workflows-spatialos-entities)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 
 As described in the [SpatialOS entity background documentation]({{urlRoot}}/content/intro-workflows-spatialos-entities), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
@@ -14,7 +14,7 @@ This document is a guide on how to link a SpatialOS entity with a GameObject usi
 
 You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates]({{urlRoot}}/content/entity-templates) documentation.
 
-When you are using the GameObject and MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema]({{urlRoot}}/content/glossary#schema). Find out how to use interact with SpatialOS entities in the [Reader and Writers]({{urlRoot}}/content/gameobject/readers-writers).
+When you are using the MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) by using Readers and Writers for every SpatialOS entity’s component in [schema]({{urlRoot}}/content/glossary#schema). Find out how to use interact with SpatialOS entities in the [Reader and Writers]({{urlRoot}}/content/gameobject/readers-writers).
 
 ## The Creation Feature Module
 

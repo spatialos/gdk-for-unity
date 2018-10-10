@@ -1,8 +1,8 @@
 [//]: # (Doc of docs reference 7)
 [//]: # (TODO - Tech writer pass)
 
-# (GameObject-MonoBehaviour) How to send and receive events
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
+# How to send and receive events
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.

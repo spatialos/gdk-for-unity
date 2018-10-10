@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 15.2a)
 [//]: # (TODO: Move to the ecs folder)
 
-# (ECS) Workers: Worker entity
+# Workers: Worker entity
 _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk).

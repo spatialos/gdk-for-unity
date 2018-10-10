@@ -2,7 +2,7 @@
 [//]: # (TODO - technical writer review)
 
 # Player Lifecycle Feature Module
-_This document relates to both [GameObject-MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 

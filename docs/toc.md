@@ -14,16 +14,16 @@
     - [SpatialOS concepts (SpatialOS site)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
     - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
 - <h3> + Workflows</h3>
-    - [GameObject-Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
+    - [Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
 - <h3> + Modules</h3>
     - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
-- <h3> + Working on a new project</h3>
-    - [Installation and setup]({{urlRoot}}/setup-and-installing)
-    - [Setting up a new project]({{urlRoot}}/content/set-up-new-project)
-    - [How to build your workers]({{urlRoot}}/content/build)
-    - [How to deploy your game]({{urlRoot}}/content/deploy)
+- <h3> + Creating a new project</h3>
+    - [Get the dependencies]({{urlRoot}}/setup-and-installing)
+    - [Set up your project]({{urlRoot}}/content/set-up-new-project)
+    - [Build your workers]({{urlRoot}}/content/build)
+    - [Deploy your game]({{urlRoot}}/content/deploy)
 - <h3> + Configuring your project</h3>
     - <h4>Workers: </h4>
         - [ * Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
@@ -44,7 +44,7 @@
         - [* The code generator]({{urlRoot}}/content/code-generator)
         - [* ECS component generation]({{urlRoot}}/content/ecs/component-generation) 
     - [Logging]({{urlRoot}}/content/ecs/logging)
-- <h3> + GameObject-MonoBehaviour workflow</h3>
+- <h3> + MonoBehaviour workflow</h3>
     - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
     - <h4>Create workers:</h4>
         - [* WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
@@ -62,6 +62,7 @@
     - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
     - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
 - <h3> + ECS workflow</h3>
+    - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
     - [System update order]({{urlRoot}}/content/ecs/system-update-order)
     - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
     - <h4> + ECS interaction with SpatialOS:</h4>

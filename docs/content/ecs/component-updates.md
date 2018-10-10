@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 33)
 [//]: # (TODO - Tech writer review)
 
-#  (ECS) ECS component updates
+#  Component updates
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with

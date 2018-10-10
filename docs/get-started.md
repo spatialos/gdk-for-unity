@@ -142,13 +142,13 @@ From your Unity Engine file browser, navigate to where you downloaded the FPS st
 
 <%(Callout type="info" message="Opening a Unity project for the first time may take while, as Unity needs to import and process the project's assets. Why not make yourself a cup of tea while you wait?")%>
 
-### Fix shader bugs (optional)
+### Fix shader bugs
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
 
 There is a quick fix however:
 
-1. Open the FPS Starter Project in the Unity Editor.
+1. Open the FPS Starter Project in the Unity Editor located in `workers/unity`.
 2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 

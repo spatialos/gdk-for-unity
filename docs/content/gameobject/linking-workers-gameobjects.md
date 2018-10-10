@@ -1,11 +1,11 @@
 [//]: # (Doc of docs reference 5.3)
 
-# (GameObject-MonoBehaviour) Workers: How to represent a worker as a GameObject
-_This document relates to the GameObject-MonoBehaviour workflow._
+# Workers: How to represent a worker as a GameObject
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-* the SpatialOS entities section of  [GameObject-MonoBehaviour workflow and ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)
+* the SpatialOS entities section of  [MonoBehaviour workflow and ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 * [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
 

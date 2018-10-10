@@ -1,15 +1,15 @@
 [//]: # (Doc of docs reference 26)
 [//]: # (TODO - technical author pass)
 
-# (GameObject-MonoBehaviour) SpatialOS entities: How to create and delete entities
-_This document relates to the [GameObject-MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+# SpatialOS entities: How to create and delete entities
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
   * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
   * [Read and write access]({{urlRoot}}/content/glossary#authority)
-  * [(GameObject-MonoBehaviour) World commands]({{urlRoot}}/content/gameobject/world-commands)
-  * [(GameObject-MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
+  * [(MonoBehaviour) World commands]({{urlRoot}}/content/gameobject/world-commands)
+  * [(MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
   * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/content/entity-templates)
 

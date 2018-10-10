@@ -1,4 +1,4 @@
-# Set up the SpatialOS GDK for Unity
+# Get the dependencies
 
 <%(TOC)%>
 

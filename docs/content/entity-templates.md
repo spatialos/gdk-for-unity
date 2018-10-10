@@ -1,13 +1,13 @@
 [//]: # (Doc of docs reference 22)
 
 # SpatialOS entities: Creating entity templates
-_This document relates to both GameObject-MonoBehaviour and ECS workflows._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-Before reading this document, make sure you are familiar with the documentation on the [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities) and the [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) overview.
+Before reading this document, make sure you are familiar with the documentation on the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities) and the [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) overview.
 
-Whether you are using the GameObject and MonoBehaviour workflow or the ECS workflow, you need to set up entity templates to create a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You use the `EntityTemplate` class to specify all the [components]({{urlRoot}}/content/glossary#spatialos-component) that a SpatialOS entity has, the initial values of those components, and which workers have [write access]({{urlRoot}}/content//glossary#authority) to each component.
+Whether you are using the MonoBehaviour workflow or the ECS workflow, you need to set up entity templates to create a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You use the `EntityTemplate` class to specify all the [components]({{urlRoot}}/content/glossary#spatialos-component) that a SpatialOS entity has, the initial values of those components, and which workers have [write access]({{urlRoot}}/content//glossary#authority) to each component.
 
-For information on how to create SpatialOS entities once you have set up entity templates, see the documentation on [creating entities (GameObject and MonoBehaviour workflow)]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities) and [ECS World commands (ECS workflow)]({{urlRoot}}/content/ecs/world-commands).
+For information on how to create SpatialOS entities once you have set up entity templates, see the documentation on [creating entities (MonoBehaviour workflow)]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities) and [ECS World commands (ECS workflow)]({{urlRoot}}/content/ecs/world-commands).
 
 ## How to create a SpatialOS entity template
 
@@ -30,7 +30,7 @@ component Health {
 
 The code generator creates a static method `Health.Component.CreateSchemaComponentData(int currentHealth)` which instantiates and populates a `ComponentData` object.
 
-The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [GameObject-MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
+The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
 
 
 > You need to create a new EntityTemplate for each call to `CreateEntity`.

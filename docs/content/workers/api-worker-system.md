@@ -2,7 +2,7 @@
 
 #  Workers: API - Worker system
 
-_This document relates to both [GameObject-MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 See first the documentation on [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) and the [Worker API]({{urlRoot}}/content/workers/api-worker)
 
@@ -66,7 +66,7 @@ public class YourSystem : ComponentSystem
 }
 ```
 
-### GameObject: How to access the WorkerSystem in the GameObject and MonoBehaviour workflow
+### GameObject: How to access the WorkerSystem in the MonoBehaviour workflow
 
 **Example**
 
