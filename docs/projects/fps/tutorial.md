@@ -1,16 +1,18 @@
 # Health pick-up tutorial
 
+![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
+
 Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/get-started).
 
 # What will be covered?
 
-This tutorial implements a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
+As part of this tutorial,  we will implement a simple health pack pickup granting health to players who walk over it. The amount of health granted is fixed and the health pack is consumed through use, respawning a little later.
 
 To implement this feature we:
 
 * Define a new health pack entity and its data.
 * Add health pack entities to the snapshot so they appear in the world.
-* Write pick-up logic so packs grant health to players.
+* Write pick-up logic to let health packs grant health to players.
 
 # Opening the FPS starter project in Unity Engine
 
@@ -33,7 +35,7 @@ We will give your health pack entities two pieces of data by defining it in a ne
 
 Create a `schema` directory in your project root, if it doesn't already exist. Then create a `pickups` directory within that.
 
-<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file, and likely a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity editor, and should use File Explorer (on Windows) or Finder (on Mac) to create your new directory.<%(/Expandable)%>
+<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file and a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity editor, and should use File Explorer (on Windows) or Finder (on Mac) to create your new directory.<%(/Expandable)%>
 
 Within your `schema/pickups/` directory, create a new file called `health_pickup.schema` and paste in the following definition:
 
@@ -49,11 +51,15 @@ component HealthPickup {
 
 This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The component id must be chosen by you, and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is a number that identifies the order in which these properties will appear within the component.
 
-Any time you you modify your `schema` files you **must** then run code generation. You do this from the SpatialOS menu by clicking **Generate code**.
+Any time you modify your `schema` files you **must** then run code generation. To do this, click **Generate code** from the SpatialOS menu in the Unity Editor menu bar.
 
-Code generation creates C# helper classes to allow you to make use of your `schema` within your game's code. It therefore must be run in order to make used of your newly defined `HealthPickup` component within your game logic. It's worth noting that when writing schemalang your properties must use snake case (e.g. "health_value"), and the code generation process will create the helper classes with PascalCase (i.e. "HealthValue").
+![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
+
+Code generation creates C# helper classes to allow you to make use of your `schema` within your game's code. It therefore must be run in order to make used of your newly defined `HealthPickup` component within your game logic. It's worth noting that when writing schema files, your properties must use snake case (e.g. "health_value"), and the code generation process will create the helper classes with PascalCase (i.e. "HealthValue").
 
 <%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
+
+Note: Code generation is automatically run once whenever you open the FPS starter project in the Unity Engine editor.
 
 If you are worried your generated code is in a bad state (such as having helper classes for since-deleted components and properties) you can run **Generate code (force)** from the SpatialOS menu to ensure existing generated code is cleaned and regenerated.
 <%(/Expandable)%>
@@ -61,10 +67,9 @@ If you are worried your generated code is in a bad state (such as having helper 
 <%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
 <%(/Expandable)%>
 
-
 ### Entity templates
 
-Health pickups are a new entity, and we must next define which components should be instantiated each time a new 'health pickup' entity is created.
+Health pickups are a new type of entity, and we must next define which components should be instantiated each time a new 'health pickup' entity is created.
 
 Typical for SpatialOS GDK projects, the FPS starter project contains a C# file that declares a function for each type of entity. This function defines what components are used to construct an entity. The object it returns is an [Entity Template]({{urlRoot}}/content/entity-templates). Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
 
@@ -119,13 +124,9 @@ For this project, `UnityGameLogic` indicates that the `UnityGameLogic` worker is
 
 The information that specifies exactly _which_ client should be granted permission is passed into the function in the `clientAttributeSet` parameter. If you'd like to read more on where this information comes from you can read about the [entity lifecycle]({{urlRoot}}/content/entity-lifecycle).<%(/Expandable)%>
 
-<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable, but we don't recommend it.
-
-As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration]({{urlRoot}}/content/build).<%(/Expandable)%>
+<%(#Expandable title="Can I rename my worker types?")%>Yes, worker types are customizable. As is typical for GDK projects, the FPS starter project uses `UnityGameLogic` for server-side workers, and `UnityClient` for client-side workers. To find out more about renaming worker types you can read about [build configuration]({{urlRoot}}/content/build).<%(/Expandable)%>
 
 <%(#Expandable title="Can I specify more than one worker type to have write-access to a single component?")%>Yes, you are not restricted to just one worker type being granted write-access, but it's something to be careful of.
-
-
 
 To find out about how to do this, read up about [worker attribute sets](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 <%(/Expandable)%>
@@ -141,12 +142,7 @@ For health packs we will do the latter, so that when the game begins there will 
 
 #### Editing snapshot generation
 
-The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor.
-
-We will modify the snapshot generating logic in two steps:
-
-1. Adding a function to create and add a `HealthPack` entity.
-2. Fix the package import settings so use of `Vector3f` is valid.
+The SpatialOS menu option in the Unity editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity editor.We will now modify the snapshot generating logic to add a `HealthPack` entity to out snapshot.
 
 Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
@@ -158,14 +154,6 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-The `Vector3f` type is a struct provided in the `Improbable` namespace, and initially the above code snippet will produce errors. You must add `using Improbable;` to the top of `SnapshotMenu.cs`. Then in your Unity editor Project window, navigate to `Assets/Fps/Scripts/Editor/`, and select `Improbable.Fps.Editor` so that its Import Settings can be viewed in the Unity inspector panel.
-
-The `Improbable.FPS.Editor` *Import Settings* window contains a section called **References**. You must click the `+` button to add a new reference, double-click the new field and in the asset-finder pop-up that appears, you must select `Improbable.Gdk.Generated`. This is because the `Vector3f` struct is defined within that particular assembly, and we must declare our intent to use this package.
-
-Once you've added and applied this new package reference your use of `Vector3f` in `SnapshotGenerator.cs` will now be valid.
-
-<%(#Expandable title="Why does the FPS starter project use packages?")%>Unity's packaging system is a great way to organize your code. SpatialOS GDK projects use packages extensively to provide modular code that can be easily imported and re-used across projects. If you'd like to know more about packages you can read up about [GDK Feature Modules]({{urlRoot}}/content/modules/core-and-feature-module-overview) which make good use of packages.<%(/Expandable)%>
-
 This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
 
 ```csharp
@@ -176,6 +164,9 @@ private static void GenerateDefaultSnapshot()
 
     var spawner = FpsEntityTemplates.Spawner();
     snapshot.AddEntity(spawner);
+
+    var SimulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
+    snapshot.AddEntity(SimulatedPlayerCoordinatorTrigger);
 
     AddHealthPacks(snapshot);
 
@@ -243,8 +234,6 @@ The `Player` entity has a special relationship with the `UnityClient` instance t
 
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority]({{urlRoot}}/content/glossary#authority).<%(/Expandable)%>
 
-
-
 ##### Creating a UnityClient entity prefab
 
 The FPS starter project contains a health pack prefab named `HealthPickup.prefab` in the folder: `Assets/Fps/Prefabs/`. Have a look at it and create a copy in the `Assets/Fps/Resources/Prefabs/UnityClient/` folder.
@@ -252,8 +241,6 @@ The FPS starter project contains a health pack prefab named `HealthPickup.prefab
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
 This is because the FPS starter project uses the GDK GameObject Creation package as part of the GameObject workflow. To find out more you can read up about the [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
-
-
 
 <%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies.
 
@@ -339,8 +326,6 @@ Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "
 
 The client-side representation of the health pack entity is now complete! Next we will test the game so far and make sure we are visualising the health packs correctly.
 
-
-
 <%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
 
 The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [GameObject workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
@@ -356,12 +341,13 @@ Our aim is to have health packs which restore lost health to players. So what ha
 * You added an instance of the health pack entity type to the snapshot so it will be present in the world when the game begins.
 * You associated a local representation with your new SpatialOS entity so that Unity will know how to visually represent any health pack it encounters.
 
-You can launch a local deployment of your updated game world from the SpatialOS menu within the Unity editor by clicking **"Local launch"**. This will open a terminal that should tell you when the world is ready.
+You can launch a local deployment of your updated game world from the SpatialOS menu within the Unity editor by clicking **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
 
 Once the world is ready you can:
 
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
-* Click Play in your Unity editor (if you have the `FPS-Development` scene open) to play the game.
+* Open the `FPS-Development` scene in the Unity editor. The scene file is located in `Assets > Fps > Scene`.
+* Press Play in your Unity editor to play the game.
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
