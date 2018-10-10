@@ -101,15 +101,20 @@ If you need help using the GDK, please come and talk to us about the software an
 
 ### Clone the SpatialOS GDK for Unity FPS Starter Project repository
 
-    |     |     |
-    | --- | --- |
-    | SSH | `git clone git@github.com:spatialos/gdk-for-unity-fps-starter-project.git` |
-    | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity-fps-starter-project.git` |
+Clone the FPS starter project using one of the following commands: 
+
+|     |     |
+| --- | --- |
+| SSH | `git clone git@github.com:spatialos/gdk-for-unity-fps-starter-project.git` |
+| HTTPS | `git clone https://github.com/spatialos/gdk-for-unity-fps-starter-project.git` |
 
 
 ### Setup dependencies by either:
-    - Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository: `powershell scripts/powershell/setup.ps1` (Windows) or `bash scripts/shell/setup.sh` (Mac).
-    - Manually by following the instructions below.
+
+  * Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository: 
+      * If you are using Windows: `powershell scripts/powershell/setup.ps1`
+      *  If you are using Mac: `bash scripts/shell/setup.sh`
+  * Manually by following the instructions below.
 
 <%(#Expandable title="Manually setup dependencies")%>
 
@@ -209,7 +214,6 @@ spatial cloud upload myassembly
 ```
 
 > **It’s finished uploading when:** You see an upload report printed in your terminal output, for example:
-
 ```
 Upload report:
   - 5 artifacts uploaded (4 successful, 1 skipped, 0 failed)
