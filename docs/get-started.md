@@ -171,15 +171,13 @@ In the Unity Editor, you first need to make sure Burst compilation is **disabled
 
 > **It has finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
 
-After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain the following files:
+After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain:
 ```text
     worker
         ├── SimulatedPlayerCoordinator@Linux.zip
         ├── UnityClient@Mac.zip
         ├── UnityClient@Windows.zip
         ├── UnityGameLogic@Linux.zip
-    schema
-        ├── schema.descriptor
 ```
 
 <%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building these workers, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
