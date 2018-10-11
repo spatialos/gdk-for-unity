@@ -62,24 +62,46 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             WorkerBuildConfigurations = new List<WorkerBuildConfiguration>
             {
+                new WorkerBuildConfiguration
                 {
-                    new WorkerBuildConfiguration
+                    WorkerType = "UnityClient",
+                    LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                },
+                new WorkerBuildConfiguration
+                {
+                    WorkerType = "UnityGameLogic",
+                    LocalBuildConfig =
+                        new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
+                    CloudBuildConfig = new BuildEnvironmentConfig
                     {
-                        WorkerType = "UnityClient",
-                        LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                        BuildPlatforms = SpatialBuildPlatforms.Linux,
+                        BuildOptions = BuildOptions.EnableHeadlessMode
                     }
                 },
+                new WorkerBuildConfiguration
                 {
-                    new WorkerBuildConfiguration
+                    WorkerType = "AndroidClient",
+                    LocalBuildConfig = new BuildEnvironmentConfig
                     {
-                        WorkerType = "UnityGameLogic",
-                        LocalBuildConfig =
-                            new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
-                        CloudBuildConfig = new BuildEnvironmentConfig
-                        {
-                            BuildPlatforms = SpatialBuildPlatforms.Linux,
-                            BuildOptions = BuildOptions.EnableHeadlessMode
-                        }
+                        BuildPlatforms = SpatialBuildPlatforms.Android,
+                        BuildOptions = BuildOptions.Development
+                    },
+                    CloudBuildConfig = new BuildEnvironmentConfig
+                    {
+                        BuildPlatforms = SpatialBuildPlatforms.Android
+                    }
+                },
+                new WorkerBuildConfiguration
+                {
+                    WorkerType = "IosClient",
+                    LocalBuildConfig = new BuildEnvironmentConfig
+                    {
+                        BuildPlatforms = SpatialBuildPlatforms.iOS,
+                        BuildOptions = BuildOptions.Development
+                    },
+                    CloudBuildConfig = new BuildEnvironmentConfig
+                    {
+                        BuildPlatforms = SpatialBuildPlatforms.iOS
                     }
                 }
             };

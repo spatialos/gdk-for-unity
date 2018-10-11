@@ -48,7 +48,7 @@ namespace Improbable.Gdk.BuildSystem
 
                 var workerTypesArg =
                     CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
-                        "UnityClient,UnityGameLogic");
+                        "UnityClient,UnityGameLogic,AndroidClient");
 
                 var wantedWorkerTypes = workerTypesArg.Split(',');
                 foreach (var wantedWorkerType in wantedWorkerTypes)
@@ -152,6 +152,16 @@ namespace Improbable.Gdk.BuildSystem
             else if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
             {
                 result.Add(BuildTarget.StandaloneWindows64);
+            }
+
+            if ((actualPlatforms & SpatialBuildPlatforms.Android) != 0)
+            {
+                result.Add(BuildTarget.Android);
+            }
+
+            if ((actualPlatforms & SpatialBuildPlatforms.iOS) != 0)
+            {
+                result.Add(BuildTarget.iOS);
             }
 
             return result.ToArray();
