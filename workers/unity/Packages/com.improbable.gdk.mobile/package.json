@@ -1,0 +1,10 @@
+{
+    "name": "com.improbable.gdk.mobile",
+    "displayName": "SpatialOS GDK Mobile Support",
+    "version": "0.0.1",
+    "unity": "2018.2",
+    "description": "SpatialOS GDK Mobile Support Module. THIS IS NOT MADE BY UNITY. IGNORE THE AUTHOR FIELD",
+    "dependencies": {
+        "com.improbable.gdk.core":"0.0.1"
+    }
+}
