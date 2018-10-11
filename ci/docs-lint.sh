@@ -5,9 +5,9 @@ cd "$(dirname "$0")/../"
 
 ci/bootstrap.sh
 
-source ci/includes/pinned-tools.sh
-source ci/includes/profiling.sh
+source .shared-ci/scripts/pinned-tools.sh
+source .shared-ci/scripts/profiling.sh
 
 markStartOfBlock "Running Docs Linter"
-dotnet run -p tools/DocsLinter/DocsLinter.csproj 
+dotnet run -p .shared-ci/tools/DocsLinter/DocsLinter.csproj 
 markEndOfBlock "Running Docs Linter"
