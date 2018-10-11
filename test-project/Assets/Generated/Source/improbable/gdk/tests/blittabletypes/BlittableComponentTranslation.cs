@@ -799,146 +799,183 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
+            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            {
+                All = Array.Empty<ComponentType>(),
+                Any = new ComponentType[]
+                {
+                    ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
+                    ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
+                    ComponentType.ReadOnly<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>(),
+                    ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
+                    ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(),
+                    ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(),
+                    ComponentType.ReadOnly<CommandRequests.FirstCommand>(),
+                    ComponentType.ReadOnly<CommandResponses.FirstCommand>(),
+                    ComponentType.ReadOnly<CommandRequests.SecondCommand>(),
+                    ComponentType.ReadOnly<CommandResponses.SecondCommand>(),
+                },
+                None = Array.Empty<ComponentType>(),
             };
 
-            public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(),
-                ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(),
-            };
-
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
-
-            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
-                ComponentType.ReadOnly<CommandRequests.FirstCommand>(),
-                ComponentType.ReadOnly<CommandResponses.FirstCommand>(),
-                ComponentType.ReadOnly<CommandRequests.SecondCommand>(),
-                ComponentType.ReadOnly<CommandResponses.SecondCommand>(),
-            };
-
-            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+                EntityCommandBuffer buffer)
             {
-                if (updateGroup.IsEmptyIgnoreFilter)
+                var entityType = system.GetArchetypeChunkEntityType();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>();
+                var FirstEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.FirstEvent>();
+                var SecondEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.SecondEvent>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
+
+                var FirstCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.FirstCommand>();
+                var FirstCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.FirstCommand>();
+
+                var SecondCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.SecondCommand>();
+                var SecondCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.SecondCommand>();
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+                foreach (var chunk in chunkArray)
                 {
-                    return;
-                }
+                    var entities = chunk.GetNativeArray(entityType);
 
-                var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>(entities[i]);
-                    var updateList = data[i].Updates;
+                    bool chunkHasComponentAddedType = chunk.Has(componentAddedType);
+                    bool chunkHasComponentRemovedType = chunk.Has(componentRemovedType);
 
-                    // Pool update lists to avoid excessive allocation
-                    updateList.Clear();
-                    Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update.Pool.Push(updateList);
-
-                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
-                }
-            }
-
-            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
-            {
-                if (authorityChangeGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entities[i]);
-                    AuthorityChangesProvider.Free(data[i].Handle);
-                }
-            }
-
-            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
-            {
-                // Clean FirstEvent
-                {
-                    var group = eventGroups[0];
-                    if (!group.IsEmptyIgnoreFilter)
+                    // Updates
+                    var updateArray = new NativeArray<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>();
+                    bool chunkHasUpdateType = chunk.Has(receivedUpdateType);
+                    if (chunkHasUpdateType)
                     {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.FirstEvent>();
-                        for (var i = 0; i < entities.Length; i++)
+                        updateArray = chunk.GetNativeArray(receivedUpdateType);
+                    }
+
+                    // FirstEvent Event
+                    var FirstEventEventArray = new NativeArray<ReceivedEvents.FirstEvent>();
+                    bool chunkHasFirstEventEventType = chunk.Has(FirstEventEventType);
+                    if (chunkHasFirstEventEventType)
+                    {
+                        FirstEventEventArray = chunk.GetNativeArray(FirstEventEventType);
+                    }
+
+                    // SecondEvent Event
+                    var SecondEventEventArray = new NativeArray<ReceivedEvents.SecondEvent>();
+                    bool chunkHasSecondEventEventType = chunk.Has(SecondEventEventType);
+                    if (chunkHasSecondEventEventType)
+                    {
+                        SecondEventEventArray = chunk.GetNativeArray(SecondEventEventType);
+                    }
+
+                    // Authority
+                    var authorityChangeArray = new NativeArray<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>();
+                    bool chunkHasAuthorityChangeType = chunk.Has(authorityChangeType);
+                    if (chunkHasAuthorityChangeType)
+                    {
+                        authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
+                    }
+
+                    // FirstCommand Command
+                    var FirstCommandRequestArray = new NativeArray<CommandRequests.FirstCommand>();
+                    bool chunkHasFirstCommandRequestType = chunk.Has(FirstCommandRequestType);
+                    if (chunkHasFirstCommandRequestType)
+                    {
+                        FirstCommandRequestArray = chunk.GetNativeArray(FirstCommandRequestType);
+                    }
+
+                    var FirstCommandResponseArray = new NativeArray<CommandResponses.FirstCommand>();
+                    bool chunkHasFirstCommandResponseType = chunk.Has(FirstCommandResponseType);
+                    if (chunkHasFirstCommandResponseType)
+                    {
+                        FirstCommandResponseArray = chunk.GetNativeArray(FirstCommandResponseType);
+                    }
+
+                    // SecondCommand Command
+                    var SecondCommandRequestArray = new NativeArray<CommandRequests.SecondCommand>();
+                    bool chunkHasSecondCommandRequestType = chunk.Has(SecondCommandRequestType);
+                    if (chunkHasSecondCommandRequestType)
+                    {
+                        SecondCommandRequestArray = chunk.GetNativeArray(SecondCommandRequestType);
+                    }
+
+                    var SecondCommandResponseArray = new NativeArray<CommandResponses.SecondCommand>();
+                    bool chunkHasSecondCommandResponseType = chunk.Has(SecondCommandResponseType);
+                    if (chunkHasSecondCommandResponseType)
+                    {
+                        SecondCommandResponseArray = chunk.GetNativeArray(SecondCommandResponseType);
+                    }
+
+                    for (int i = 0; i < entities.Length; ++i)
+                    {
+                        if (chunkHasComponentAddedType)
+                        {
+                            buffer.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entities[i]);
+                        }
+
+                        if (chunkHasComponentRemovedType)
+                        {
+                            buffer.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entities[i]);
+                        }
+
+                        if (chunkHasUpdateType)
+                        {
+                            buffer.RemoveComponent<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReceivedUpdates>(entities[i]);
+                            var updateList = updateArray[i].Updates;
+
+                            // Pool update lists to avoid excessive allocation
+                            updateList.Clear();
+                            Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update.Pool.Push(updateList);
+
+                            ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
+                        }
+
+                        if (chunkHasFirstEventEventType)
                         {
                             buffer.RemoveComponent<ReceivedEvents.FirstEvent>(entities[i]);
-                            ReferenceTypeProviders.FirstEventProvider.Free(data[i].handle);
+                            ReferenceTypeProviders.FirstEventProvider.Free(FirstEventEventArray[i].handle);
                         }
-                    }
-                }
-                // Clean SecondEvent
-                {
-                    var group = eventGroups[1];
-                    if (!group.IsEmptyIgnoreFilter)
-                    {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.SecondEvent>();
-                        for (var i = 0; i < entities.Length; i++)
+
+                        if (chunkHasSecondEventEventType)
                         {
                             buffer.RemoveComponent<ReceivedEvents.SecondEvent>(entities[i]);
-                            ReferenceTypeProviders.SecondEventProvider.Free(data[i].handle);
+                            ReferenceTypeProviders.SecondEventProvider.Free(SecondEventEventArray[i].handle);
+                        }
+
+                        if (chunkHasAuthorityChangeType)
+                        {
+                            buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entities[i]);
+                            AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
+                        }
+
+                        if (chunkHasFirstCommandRequestType)
+                        {
+                            buffer.RemoveComponent<CommandRequests.FirstCommand>(entities[i]);
+                            ReferenceTypeProviders.FirstCommandRequestsProvider.Free(FirstCommandRequestArray[i].CommandListHandle);
+                        }
+
+                        if (chunkHasFirstCommandResponseType)
+                        {
+                            buffer.RemoveComponent<CommandResponses.FirstCommand>(entities[i]);
+                            ReferenceTypeProviders.FirstCommandResponsesProvider.Free(FirstCommandResponseArray[i].CommandListHandle);
+                        }
+
+                        if (chunkHasSecondCommandRequestType)
+                        {
+                            buffer.RemoveComponent<CommandRequests.SecondCommand>(entities[i]);
+                            ReferenceTypeProviders.SecondCommandRequestsProvider.Free(SecondCommandRequestArray[i].CommandListHandle);
+                        }
+
+                        if (chunkHasSecondCommandResponseType)
+                        {
+                            buffer.RemoveComponent<CommandResponses.SecondCommand>(entities[i]);
+                            ReferenceTypeProviders.SecondCommandResponsesProvider.Free(SecondCommandResponseArray[i].CommandListHandle);
                         }
                     }
                 }
-            }
 
-            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
-            {
-                if (!commandCleanupGroups[0].IsEmptyIgnoreFilter)
-                {
-                    var requestsGroup = commandCleanupGroups[0];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.FirstCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandRequests.FirstCommand>(entities[i]);
-                        ReferenceTypeProviders.FirstCommandRequestsProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-
-                if (!commandCleanupGroups[1].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[1];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.FirstCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.FirstCommand>(entities[i]);
-                        ReferenceTypeProviders.FirstCommandResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-                if (!commandCleanupGroups[2].IsEmptyIgnoreFilter)
-                {
-                    var requestsGroup = commandCleanupGroups[2];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.SecondCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandRequests.SecondCommand>(entities[i]);
-                        ReferenceTypeProviders.SecondCommandRequestsProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-
-                if (!commandCleanupGroups[3].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[3];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.SecondCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.SecondCommand>(entities[i]);
-                        ReferenceTypeProviders.SecondCommandResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
+                chunkArray.Dispose();
             }
         }
     }
-
 }
