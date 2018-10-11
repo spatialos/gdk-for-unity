@@ -24,7 +24,7 @@ When building workers (Unity Editor menu: **Build For Cloud** > **my_worker_name
 
  * _**In addition**_, make sure you have Linux build settings enabled.<br/> 
  You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
- <br/>Fix this by runing the Unity installer and selecting the appropriate option. (See [Setup and installing]({{urlroot}} setup-and-installing#set-up-your-machine).
+ <br/>Fix this by runing the Unity installer and selecting the appropriate option. (See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine)).
  
  **Note:** When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux. This will cause further build errors.
 
