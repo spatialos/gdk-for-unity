@@ -81,9 +81,14 @@ namespace Improbable.Gdk.Tools
             return !failedPlugins.Any();
         }
 
+        internal static bool IsImprobablePlugin(string assetPath)
+        {
+            return assetPath.StartsWith("Assets/Plugins/Improbable");
+        }
+
         private static bool ShouldCheckPluginForLock(PluginImporter p)
         {
-            if (!p.assetPath.StartsWith("Assets/Plugins/Improbable"))
+            if (!IsImprobablePlugin(p.assetPath))
             {
                 return false;
             }
