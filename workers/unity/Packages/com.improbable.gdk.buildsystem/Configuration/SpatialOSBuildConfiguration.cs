@@ -78,32 +78,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         BuildOptions = BuildOptions.EnableHeadlessMode
                     }
                 },
-                new WorkerBuildConfiguration
-                {
-                    WorkerType = "AndroidClient",
-                    LocalBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.Android,
-                        BuildOptions = BuildOptions.Development
-                    },
-                    CloudBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.Android
-                    }
-                },
-                new WorkerBuildConfiguration
-                {
-                    WorkerType = "IosClient",
-                    LocalBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.iOS,
-                        BuildOptions = BuildOptions.Development
-                    },
-                    CloudBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.iOS
-                    }
-                }
             };
             isInitialised = true;
         }
