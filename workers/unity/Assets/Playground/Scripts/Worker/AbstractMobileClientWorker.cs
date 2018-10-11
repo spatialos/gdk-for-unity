@@ -6,27 +6,25 @@ using UnityEngine.UI;
 
 public abstract class AbstractMobileClientWorker : MobileWorkerConnector
 {
-    public GameObject ConnectionPanel;
-    public GameObject Level;
+    [SerializeField] private GameObject ConnectionPanel;
+    [SerializeField] private GameObject Level;
 
     private GameObject levelInstance;
     private bool connected;
-    private InputField input;
-    private Button button;
+    private InputField ipAddressInput;
+    private Button connectButton;
     private Text errorMessage;
+
+    protected string IpAddress => ipAddressInput != null ? ipAddressInput.text : null;
 
     public void Awake()
     {
-        input = ConnectionPanel.transform.Find("ConnectInput").GetComponent<InputField>();
-        button = ConnectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
+        ipAddressInput = ConnectionPanel.transform.Find("ConnectInput").GetComponent<InputField>();
+        connectButton = ConnectionPanel.transform.Find("ConnectButton").GetComponent<Button>();
         errorMessage = ConnectionPanel.transform.Find("ConnectionError").GetComponent<Text>();
 
-        input.text = PlayerPrefs.GetString("cachedIp");
-    }
-
-    public void Start()
-    {
-        button.onClick.AddListener(Connect);
+        ipAddressInput.text = PlayerPrefs.GetString("cachedIp");
+        connectButton.onClick.AddListener(Connect);
     }
 
     public async void Connect()
