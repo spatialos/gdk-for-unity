@@ -3,17 +3,30 @@
 
 # Troubleshooting
 
-We also maintain a [known issues page]({{urlRoot}}/known-issues) for any open bugs in the SpatialOS GDK for Unity.
+* [Errors](#errors)
+* [Exceptions](#exceptions)
+* [Problems](#problems)
 
+We also maintain a [known issues]({{urlRoot}}/known-issues) page for any open bugs in the SpatialOS GDK for Unity.
+
+
+## Errors
 
 #### Error reported
-When building workers (Unity Editor menu: **Build For Cloud** > **my_worker_name**):<br/>
- _Error building player because build target was unsupported_
+When building workers (Unity Editor menu: **Build For Cloud** > **my_worker_name**):
+###### _Error building player because build target was unsupported_
 
 **Issue and workarounds**<br/>
- You don't have linux build support enabled. You need this because all server-workers in a cloud deployment run in a Linux environment. 
+ You don't have the right Unity build settings enabled.<br/>
+ In your Unity Editor:
+
+ * Check what build support you have enabled (menu: **File** > **Build Settings**) and make sure you have your target build platform enabled (for example, Mac if you want your game to run on Mac, Windows if you want your game to run on Windows.) 
+
+ * _**In addition**_, make sure you have Linux build settings enabled.<br/> 
+ You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+ <br/>Fix this by runing the Unity installer and selecting the appropriate option. (See [Setup and installing]({{urlroot}} setup-and-installing#set-up-your-machine).
  
- **Note:** When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux
+ **Note:** When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux. This will cause further build errors.
 
 <br/>
 
@@ -28,11 +41,11 @@ and Unity after installing the .NET Core SDK.
 
 <br/>
 
+## Exceptions
+
 #### Exception thrown
 _`<name of a type>` is an IComponentData, and thus must be blittable
 (No managed object is allowed on the struct)._
-
-<br/>
 
 **Issue and workarounds**<br/>
 
@@ -44,7 +57,7 @@ implementation we provide, in that case.
 
 <br/>
 
-#### Exception thrown 
+### Exception thrown 
 When building a worker:<br/> 
 _`<path to burst package>\.Runtime\bcl.exe` did not run properly!_
 
@@ -53,6 +66,8 @@ This is a benign exception that is thrown when building a worker while burst com
 in the Unity Editor.
 
 <br/>
+
+## Log warnings
 
 #### Unity Editor logs warning
 
@@ -71,6 +86,8 @@ Several error messages are logged after I destroyed a GameObject or ECS entity r
 Do not proactively destroy GameObjects or ECS entities representing SpatialOS entities. The SpatialOS GDK cleans them up automatically when the respective SpatialOS entity is removed from the worker. Send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
 
 <br/>
+
+## Problems
 
 #### A Reader/Writer or CommandSender/Handler in my code is null
 

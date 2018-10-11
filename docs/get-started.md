@@ -303,7 +303,7 @@ This generates a short link to share with anyone who wants to join in for the du
 
 These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
 
-In fact, as far as SpatialOS is concerned, these Unity Clients  are indistinguishable from real players, so this is a good approach for regular scale testing.
+In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
 
 To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
 

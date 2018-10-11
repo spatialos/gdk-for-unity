@@ -91,7 +91,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-<%(Callout type="alert" message="You need select Linux Build Support as in your setup because all server-workers in a cloud deployment run in a Linux environment. When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
+<%(Callout type="alert" message="You need to select Linux Build Support during your setup because all server-workers in a cloud deployment run in a Linux environment. When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
 
 <%(#Expandable title="Having problems?")%>
 If you need help using the GDK, please come and talk to us about the software and the documentation via:
