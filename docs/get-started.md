@@ -1,6 +1,6 @@
 # Get started
 
-Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter project. This will introduce you to the workflows and tooling you’ll use with SpatialOS and Unity to allow you to run your game at scale with up to 200 simulated player clients running in the cloud.
+Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter project. This will introduce you to the workflows and tooling you’ll use with SpatialOS and Unity, allowing you to run your game at scale with up to 200 simulated player-clients running in the cloud.
 
 You’ll then be ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality will introduce you to this development experience.
 
@@ -12,7 +12,7 @@ You’ll then be ready to learn how to build your own features. Our tutorial for
 
 ### Sign up for a SpatialOS account, or make sure you are logged in
 
-If you have already signed up, please make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
+If you have already signed up, make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
 
 If you have not signed up before, you can do so [here](https://improbable.io/get-spatialos).
 
@@ -20,13 +20,13 @@ If you have not signed up before, you can do so [here](https://improbable.io/get
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Mac Build Support**
 
-**Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
@@ -65,13 +65,13 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Windows Build Support**
 
-**Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
@@ -95,7 +95,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-If you need help using the GDK, please come and talk to us about the software and the documentation via:
+If you need help using the GDK, come and talk to us about the software and the documentation via:
 
   * **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
   * **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
@@ -103,7 +103,7 @@ If you need help using the GDK, please come and talk to us about the software an
 
 ### Clone the SpatialOS GDK for Unity FPS Starter Project repository
 
-Clone the FPS starter project using one of the following commands: 
+Clone the FPS starter project using one of the following commands:
 
 |     |     |
 | --- | --- |
@@ -123,7 +123,7 @@ The following scripts clone the GDK and checkout the git tag of the latest relea
       * If you are using Mac run: `bash scripts/shell/setup.sh`
   * Alternatively, follow the manual instructions below.
 
-<%(#Expandable title="Manually setup dependencies")%>
+<%(#Expandable title="Manually set up dependencies")%>
 
 1. Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
 
@@ -131,14 +131,14 @@ The following scripts clone the GDK and checkout the git tag of the latest relea
     | --- | --- |
     | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
     | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
-    > The two repositories should share a common parent like the following:
+    > The two repositories should share a common parent, like the example below:
     ```text
     <common_parent_directory>
         ├── gdk-for-unity-fps-starter-project
         ├── gdk-for-unity
     ```
 
-2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which can be found in the `gdk.pinned` file in the root of the `gdk-for-unity-fps-starter-project` directory.
+2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
     - `git checkout <pinned_version>`
 
 <%(/Expandable)%>
@@ -147,7 +147,8 @@ The following scripts clone the GDK and checkout the git tag of the latest relea
 
 Launch the Unity editor. It should automatically detect the project but if it doesn't, click Open and select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-### Fix shader bugs
+#### Before you start, apply these quick bugfixes:
+<%(#Expandable title="Fix Shaders")%>
 
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
 
@@ -157,7 +158,23 @@ There is a quick fix however:
 2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 
-<%(#Expandable title="Reimport shaders")%><img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" /><%(/Expandable)%>
+<img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
+<%(/Expandable)%>
+
+<%(#Expandable title="Bake NavMesh")%>
+
+There is a bug where the Unity Editor does not import the navmesh for the `FPS-SimulatedPlayerCoordinator` correctly when opening a project for the first time. To fix this, you need to rebake the navmesh for this scene.
+
+To do this:
+
+1. Open the `FPS-SimulatedPlayerCoordinator` scene located at `Assets/Fps/Scenes`.
+2. Click on the `FPS-Start_Large` object in the hierarchy, and enable the object.
+3. Open the **Navigation** pane by clicking on **Windows** > **AI** > **Navigation**.
+4. Navigate to the **Bake** tab and click on the **Bake** button.
+
+You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
+<img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
+<%(/Expandable)%>
 
 ## Building Workers
 
@@ -234,7 +251,7 @@ When launching a cloud deployment you must provide three parameters:
 
 Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (e.g shootyshooty). A valid launch command would look like this:
 ```
-spatial cloud launch --snapshot=snapshots/default.snapshot myassembly cloud_launch_large.json shootyshooty 
+spatial cloud launch --snapshot=snapshots/default.snapshot myassembly cloud_launch_large.json shootyshooty
 ```
 
 This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
@@ -299,7 +316,7 @@ Let’s take a look at how many simulated player clients are now running around 
 
 The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) provides a real time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities they are reading from and writing to.
 
-We can use it, for instance, to highlight where all the Simulated Players and Player Entities are in the world (note: not cool to identify where you friends are hiding)
+We can use it, for instance, to highlight where all the Simulated Players and Player Entities are in the world (note: not cool to identify where your friends are hiding)
 
 <img src="{{assetRoot}}assets/inspector-simulated-player.png" style="margin: 0 auto; display: block;" />
 
@@ -307,7 +324,7 @@ We can use it, for instance, to highlight where all the Simulated Players and Pl
 
 <img src="{{assetRoot}}assets/logs-app.png" style="margin: 0 auto; display: block;" />
 
-The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/operate/metrics#metrics), one more tab to the right, show a selection of useful metrics,with annotations to identify the health of your deployment.
+The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/operate/metrics#metrics), one more tab to the right, show a selection of useful metrics, with annotations to identify the health of your deployment.
 
 <img src="{{assetRoot}}assets/metrics.png" style="margin: 0 auto; display: block;" />
 
