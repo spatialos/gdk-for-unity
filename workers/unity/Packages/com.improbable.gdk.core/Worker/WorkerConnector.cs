@@ -262,7 +262,7 @@ namespace Improbable.Gdk.Core
                 ConnectionErrorReason.ExceededMaximumRetries);
         }
 
-        private static string CreateNewWorkerId(string workerType)
+        protected static string CreateNewWorkerId(string workerType)
         {
             return $"{workerType}-{Guid.NewGuid()}";
         }
