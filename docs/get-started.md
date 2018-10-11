@@ -182,19 +182,17 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
         ├── schema.descriptor
 ```
 
-<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
+<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building these workers, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
 
 ## Uploading
 
-### Setting your project name (first time only)
+### Setting your project name
 
-Your SpatialOS account is associated with an organisation and a project which were created for you when you signed up, both with generated names.
-
-You’ll need your generated project name to deploy the FPS game to the cloud. To find it, enter the [Web Console](https://console.improbable.io/projects) and look for the `beta_randomword_anotherword_randomnumber` project name:
+When you signed up for SpatialOS, your account was automatically associated with an organisation and a project, both of which have the same generated name. To find this name enter the [Console](https://console.improbable.io/projects). It should looks like `beta_randomword_anotherword_randomnumber`:
 
 <img src="{{assetRoot}}assets/project-page.png" style="margin: 0 auto; display: block;" />
 
-Using a text editor of your choice, open the `gdk-for-unity-fps-starter-project/spatialos.json` file and replace the `unity_gdk` project name with the project name you were assigned in the Web Console. This will let the SpatialOS platform know which project you intend to upload to. Your `spatialos.json` should look like this:
+Using a text editor of your choice, open `gdk-for-unity-fps-starter-project/spatialos.json` and replace the `unity_gdk` project name with the project name you were assigned in the Console. This will tell SpatialOS which project you intend to upload to. Your `spatialos.json` should look like this:
 
 ```json
 {
