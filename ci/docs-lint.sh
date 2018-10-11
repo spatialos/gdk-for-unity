@@ -3,6 +3,8 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
+ci/bootstrap.sh
+
 source ci/includes/pinned-tools.sh
 source ci/includes/profiling.sh
 

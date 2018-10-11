@@ -39,10 +39,11 @@ CLONE_URL=$(fetchCloneUrl)
 TMP_DIR=$(mktemp -d)
 
 # Go to a temporary directory and simulate the merge
-cd ${TMP_DIR}
-mkdir -p unity-gdk
-git clone ${CLONE_URL} unity-gdk
-cd unity-gdk
+pushd ${TMP_DIR}
+    mkdir -p unity-gdk
+    git clone ${CLONE_URL} unity-gdk
+popd unity-gdk
+
 git checkout master
 git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
 CHANGED_FILES=$(git diff HEAD --name-only)
