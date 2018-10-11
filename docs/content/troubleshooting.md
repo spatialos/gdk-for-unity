@@ -14,7 +14,7 @@ We also maintain a [known issues]({{urlRoot}}/known-issues) page for any open bu
 
 #### Error reported
 When building workers (Unity Editor menu: **Build For Cloud** > **my_worker_name**):
-###### _Error building player because build target was unsupported_
+**_Error building player because build target was unsupported_**</br>
 
 **Issue and workarounds**<br/>
  You don't have the right Unity build settings enabled.<br/>
