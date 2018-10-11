@@ -107,6 +107,11 @@ namespace Improbable.Gdk.GameObjectCreation
         public GameObject OnEntityCreated(SpatialOSEntity entity)
         {
             var gameObject = creator.OnEntityCreated(entity);
+            if (gameObject == null)
+            {
+                return null;
+            }
+
             gameObject.name = nameProvider?.Invoke(entity, gameObject) ?? gameObject.name;
             return gameObject;
         }
@@ -114,19 +119,6 @@ namespace Improbable.Gdk.GameObjectCreation
         public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
         {
             creator.OnEntityRemoved(entityId, linkedGameObject);
-        }
-    }
-
-    public class AuthoritativeGameObjectCreator : IEntityGameObjectCreator
-    {
-        public GameObject OnEntityCreated(SpatialOSEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
-        {
-            throw new NotImplementedException();
         }
     }
 }
