@@ -20,13 +20,13 @@ If you have not signed up before, you can do so [here](https://improbable.io/get
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Mac Build Support**
 
-**Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
@@ -65,13 +65,13 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install [**Unity 2018.2.8**](https://unity3d.com/get-unity/download/archive)
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Windows Build Support**
 
-**Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
