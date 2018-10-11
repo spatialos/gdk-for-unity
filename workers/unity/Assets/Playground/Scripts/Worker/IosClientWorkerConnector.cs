@@ -12,7 +12,7 @@ namespace Playground.Worker
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            var hostIp = GetIpFromField();
+            var hostIp = IpAddress;
             if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && hostIp.Equals(string.Empty))
             {
                 return RuntimeConfigDefaults.ReceptionistHost;
