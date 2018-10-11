@@ -18,6 +18,8 @@ In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](h
     - **Linux Build Support**
     - **Mac Build Support**
 
+> **Note:** You need Linux build support because the cloud servers run on Linux. <br/>When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
+
 **Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
@@ -62,6 +64,8 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Windows Build Support**
+
+> **Note:** You need Linux build support because the cloud servers run on Linux. <br/>When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
 
 **Step 2.** Install [**.NET Core SDK (x64)**](https://www.microsoft.com/net/download/dotnet-core/2.1)
 
