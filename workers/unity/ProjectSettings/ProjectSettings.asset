@@ -151,7 +151,10 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: io.improbable.demo
+    Android: com.improbable.gdk
+    Standalone: com.improbable.gdk
+    iOS: com.improbable.gdk
+    tvOS: com.improbable.gdk
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
