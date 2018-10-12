@@ -26,6 +26,8 @@ If you have not signed up before, you can do so [here](https://improbable.io/get
     - **Linux Build Support**
     - **Mac Build Support**
 
+> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
@@ -51,7 +53,7 @@ Once you have navigated to the **Workloads** tab:
 * Select **.NET Core cross-platform development**.
 
 * After selecting **Game development with Unity**:
-    * Deselect any options in the **Summary** on the right that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
+    * Deselect any options in the **Summary** on the right that mention a Unity Editor (for example, Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
     * The SpatialOS GDK for Unity requires **Unity 2018.2.8**, which should already be installed if you have followed the setup guide correctly.
     * Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
@@ -70,6 +72,8 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
     - **Windows Build Support**
+
+> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -94,6 +98,9 @@ Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/)
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 <%(/Expandable)%>
+
+<%(Callout type="alert" message="You need to select Linux Build Support during your setup because all server-workers in a cloud deployment run in a Linux environment. When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration` file, do not change the `UnityGameLogic Cloud Environment` from Linux to a different target;  changing it causes further build errors.")%>
+
 
 If you need help using the GDK, come and talk to us about the software and the documentation via:
 
@@ -186,7 +193,9 @@ In the Unity Editor, you first need to make sure Burst compilation is **disabled
 
 ![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.jpg)
 
-> **It has finished building when:** You see the following message in the Unity Console: `Completed build for Cloud target`
+> **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`
+
+<%(Callout type="alert" message="If you encounter build errors, you might not have selected Linux Build Support during your setup. You need Linux build support because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
 
 After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain the following files:
 ```text
@@ -199,7 +208,7 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
         ├── schema.descriptor
 ```
 
-<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
+<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, because both of your workers can run in the Editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
 
 ## Uploading
 
@@ -207,7 +216,7 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
 
 Your SpatialOS account is associated with an organisation and a project which were created for you when you signed up, both with generated names.
 
-You’ll need your generated project name to deploy the FPS game to the cloud. To find it, enter the [Web Console](https://console.improbable.io/projects) and look for the `beta_randomword_anotherword_randomnumber` project name:
+You’ll need your generated project name to deploy the FPS game to the cloud. To find it, go to the [Web Console](https://console.improbable.io/projects) and look for the `beta_randomword_anotherword_randomnumber` project name:
 
 <img src="{{assetRoot}}assets/project-page.png" style="margin: 0 auto; display: block;" />
 
@@ -228,9 +237,9 @@ Using a text editor of your choice, open the `gdk-for-unity-fps-starter-project/
 
 An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
-To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. This can only be done in a terminal, via the [spatial CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). You must also give the worker assemblies a name so that you can reference them when launching a deployment.
+To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. You can only do this in a terminal, via the [spatial CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). You must also give the worker assemblies a name so that you can reference them when launching a deployment.
 
-Using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`, where `<assembly_name>` is a name of your choice (e.g fps-assembly). A valid upload command would look like this:
+Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`, where `<assembly_name>` is a name of your choice (for example fps-assembly). A valid upload command would look like this:
 ```
 spatial cloud upload myassembly
 ```
@@ -241,7 +250,7 @@ Upload report:
   - 5 artifacts uploaded (4 successful, 1 skipped, 0 failed)
 ```
 
-Based on your network speed, this may take a little while (1-10 mins) to complete.
+Based on your network speed, this may take a little while (1-10 minutes) to complete.
 
 ## Launch a cloud deployment
 
@@ -249,26 +258,26 @@ The next step is to [launch a cloud deployment](https://docs.improbable.io/refer
 
 When launching a cloud deployment you must provide three parameters:
 
-* **the assembly name**, which identifies the worker assemblies to use. The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`
-* **a launch configuration**, which declares the world and load balancing configuration
-* **a name for your deployment**, which is used to label the deployment in the SpatialOS console. The name needs to conform to the following regex: `[a-z0-9_]{2,32}`
+* **the assembly name**, which identifies the worker assemblies to use. The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.
+* **a launch configuration**, which declares the world and load balancing configuration.
+* **a name for your deployment**, which is used to label the deployment in the SpatialOS web Console. The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.
 
-Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (e.g shootyshooty). A valid launch command would look like this:
+Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (for example, shootyshooty). A valid launch command would look like this:
 ```
 spatial cloud launch --snapshot=snapshots/default.snapshot myassembly cloud_launch_large.json shootyshooty
 ```
 
 This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
-> **It's finished when:** You see `Deployment launched successfully` printed in your terminal console output.
+> **It's finished when:** You see `Deployment launched successfully` printed in your terminal output.
 
-## Time to Play!
+## Time to play!
 
-Back in your [Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
+Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
 
 <img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
 
-Hit the Play button on the left, and then Launch (you can skip Step 1 - the SpatialOS Launcher was previously installed during setup). The SpatialOS Launcher will download the game client for this deployment and launch it.
+Hit the **Play** button on the left, and then launch (you can skip Step 1 - the SpatialOS Launcher was previously installed during setup). The SpatialOS Launcher will download the game client for this deployment and launch it.
 
 <img src="{{assetRoot}}assets/launch.png" style="margin: 0 auto; display: block;" />
 
@@ -280,7 +289,7 @@ It’s a bit lonely in there isn’t it? Keep your client running while we get t
 
 ## Inviting friends
 
-To invite other players to this game, head back to the Deployment Overview page in your console, and select the Share button:
+To invite other players to this game, head back to the Deployment Overview page in your web Console, and select the **Share** button:
 
 <img src="{{assetRoot}}assets/overview-page-share.png" style="margin: 0 auto; display: block;" />
 
@@ -292,11 +301,11 @@ This generates a short link to share with anyone who wants to join in for the du
 
 **For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
 
-These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behaviour and load perspective. Their behaviour is currently quite simple, but could be extended to include additional gameplay features.
+These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
 
-In fact, as far as SpatialOS is concerned, these Clients  are indistinguishable from real players, so this is a good approach for regular scale testing.
+In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
 
-To get the legion of enemies started, we will use [Worker Flags](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#worker-flags), which you can find from your Deployment Overview page:
+To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
@@ -304,23 +313,23 @@ Modify the `fps_simulated_players_per_coordinator` flag value from 0 to 10 and h
 
 <img src="{{assetRoot}}assets/worker-flags-modification.png" style="margin: 0 auto; display: block;" />
 
-What this will do is start up 10 simulated player clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect in every 2 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
+What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 2 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
 
 <%(Callout type="warn" message="If you exceed 10 `fps_simulated_players_per_coordinator` you may experience deployment instability.")%>
 
-Back in the game, you will soon see the new simulated player clients running. Try to find them before they find you…
+Back in the game, you will soon see the new simulated player-clients running. Try to find them before they find you…
 
 <img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; display: block;" />
 
 ## Observing your deployment
 
-Let’s take a look at how many simulated player clients are now running around this world and how our deployment is performing, using the Inspector accessible from the Deployment Overview page:
+Let’s take a look at how many simulated player-clients are now running around this world and how our deployment is performing, using the World Inspector accessible from the Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-inspector.png" style="margin: 0 auto; display: block;" />
 
-The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) provides a real time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities they are reading from and writing to.
+The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) provides a real time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers ) provides a real-time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities they are reading from and writing to.
 
-We can use it, for instance, to highlight where all the Simulated Players and Player Entities are in the world (note: not cool to identify where your friends are hiding)
+We can use it, for instance, to highlight where all the simulated player-clients and player-entities are in the world (note: not cool to identify where your friends are hiding).
 
 <img src="{{assetRoot}}assets/inspector-simulated-player.png" style="margin: 0 auto; display: block;" />
 
