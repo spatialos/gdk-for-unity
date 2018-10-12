@@ -72,7 +72,7 @@ public class BuildSystem : ComponentSystem
             var requestSender = data.BuildWallSender[i];
             var targetEntityId = data.EntityIds[i];
 
-            Builder.BuildWall.Request request = new Builder.BuildWall.CreateRequest
+            Builder.BuildWall.Request request = Builder.BuildWall.CreateRequest
             (
                 targetEntityId,
                 new BuildRequest
