@@ -26,6 +26,9 @@ To build the worker configs, you can either:
 
 > **It’s finished building when:** there is a message stating `'spatial build build-config' succeeded`.
 
+<%(Callout type="alert" message="If you encounter build errors, you might not have Linux build support enabled. You need Linux build support because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux. To fix this, run the Unity installer and select the build options you are missing.")%>
+
+
 ## Preparing the build configuration of your workers
 
 To prepare the build of your server-workers and client-workers you can create a new [scriptable object](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) (Unity documentation) containing the information needed to build your workers correctly.
