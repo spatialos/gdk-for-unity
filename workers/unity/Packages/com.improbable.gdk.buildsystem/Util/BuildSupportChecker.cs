@@ -49,16 +49,12 @@ public static class BuildSupportChecker
 
         var editorDirectory = Directory.GetParent(editorExePath);
 
+#if UNITY_EDITOR_OSX
+        var playbackEnginesDirectory = Path.Combine(editorDirectory.FullName, "PlaybackEngines");
+#else
         var installDirectory = editorDirectory.Parent;
-        if (installDirectory == null)
-        {
-            Debug.LogError("Build support check failed: could not find Unity Editor installation directory.");
-
-            // Since we're not certain, let's allow a build attempt.
-            return new BuildSupportCheckResult(true, new BuildTarget[0]);
-        }
-
         var playbackEnginesDirectory = Path.Combine(installDirectory.FullName, "Editor", "Data", "PlaybackEngines");
+#endif
 
         var buildTargetsWithoutSupport = buildTargets
             .Where(target =>
