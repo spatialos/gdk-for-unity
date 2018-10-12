@@ -63,7 +63,7 @@ var workerType = workerTypeList[i];
             Debug.Log("Clean completed");
         }
 
-        private static bool VerifyWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
+        private static bool ValidateWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
         {
             var canInitiateBuild = true;
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
@@ -90,7 +90,7 @@ var workerType = workerTypeList[i];
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
-                if (!VerifyWorkersCanBuildForEnvironment(environment, workerTypes))
+                if (!ValidateWorkersCanBuildForEnvironment(environment, workerTypes))
                 {
                     DisplayBuildFailureDialog();
 
@@ -129,22 +129,22 @@ var workerType = workerTypeList[i];
         {
             Debug.Log("Checking for build platform support...");
 
-            var verificationsPassed = true;
+            var validationsPassed = true;
 
-            Debug.Log("Verifying local builds");
-            if (!VerifyWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers))
+            Debug.Log("Validating local builds");
+            if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers))
             {
-                verificationsPassed = false;
+                validationsPassed = false;
             }
 
-            Debug.Log("Verifying cloud builds");
-            if (!VerifyWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
+            Debug.Log("Validating cloud builds");
+            if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
             {
-                verificationsPassed = false;
+                validationsPassed = false;
             }
 
             EditorUtility.DisplayDialog("Build Support Validation",
-                verificationsPassed
+                validationsPassed
                     ? "Build support validation confirms your Unity Editor installation has all necessary components."
                     : "Build support validation failed. Please see the Unity Console Window for information.",
                 "OK");
