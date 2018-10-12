@@ -8,18 +8,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
     public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>
-    {        
-        [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations = 
+    {
+        [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
-        
+
         [SerializeField] private bool isInitialised;
-        
+
         public BuildEnvironmentConfig GetEnvironmentConfigForWorker(string workerType, BuildEnvironment environment)
         {
             var config = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             if (config == null)
             {
-                Debug.LogWarning($"The worker type {workerType} does not have a build configuration.");
+                Debug.LogWarning($"The worker type {workerType} does not have a build configuration.", this);
                 return null;
             }
 
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 .Select(AssetDatabase.GetAssetPath)
                 .ToArray();
         }
-        
+
         internal void UpdateEditorScenesForBuild()
         {
             EditorBuildSettings.scenes =

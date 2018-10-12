@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -52,6 +51,11 @@ namespace Improbable.Gdk.BuildSystem
                         "UnityClient,UnityGameLogic");
 
                 var wantedWorkerTypes = workerTypesArg.Split(',');
+                foreach (var wantedWorkerType in wantedWorkerTypes)
+                {
+                    AssertWorkerCanBuildForEnvironment(wantedWorkerType, buildEnvironment);
+                }
+
                 LocalLaunch.BuildConfig();
 
                 foreach (var wantedWorkerType in wantedWorkerTypes)
@@ -69,6 +73,30 @@ namespace Improbable.Gdk.BuildSystem
 
                 throw new BuildFailedException(e);
             }
+        }
+
+        public static void AssertWorkerCanBuildForEnvironment(string workerType, BuildEnvironment targetEnvironment)
+        {
+            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+            var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            if (environmentConfig == null)
+            {
+                return;
+            }
+
+            var buildPlatforms = environmentConfig.BuildPlatforms;
+            var buildTargets = GetUnityBuildTargets(buildPlatforms);
+            var buildSupportResult = BuildSupportChecker.CheckBuildSupport(buildTargets);
+
+            if (buildSupportResult.CanBuild)
+            {
+                return;
+            }
+
+            var targetsString = string.Join(", ", buildSupportResult.TargetsWithoutBuildSupport);
+            throw new BuildFailedException(
+                $"{workerType} cannot be built for {targetEnvironment}, missing build support for {targetsString}.\n" +
+                "Please configure your Unity Editor installation to add the missing build support components.");
         }
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
@@ -101,7 +129,7 @@ namespace Improbable.Gdk.BuildSystem
             Directory.Delete(EditorPaths.BuildScratchDirectory, true);
         }
 
-        private static IEnumerable<BuildTarget> GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
+        public static BuildTarget[] GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
         {
             var result = new List<BuildTarget>();
             if ((actualPlatforms & SpatialBuildPlatforms.Current) != 0)

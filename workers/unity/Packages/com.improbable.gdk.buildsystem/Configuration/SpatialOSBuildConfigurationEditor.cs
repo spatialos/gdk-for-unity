@@ -325,11 +325,25 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
 
                 var currentAdjustedPlatforms = newBuildPlatforms;
+
+                if ((currentAdjustedPlatforms & SpatialBuildPlatforms.Current) != 0)
+                {
+                    currentAdjustedPlatforms |= WorkerBuilder.GetCurrentBuildPlatform();
+                }
+
                 if ((currentAdjustedPlatforms & SpatialBuildPlatforms.Windows32) != 0 &&
                     (currentAdjustedPlatforms & SpatialBuildPlatforms.Windows64) != 0)
                 {
                     EditorGUILayout.HelpBox(WorkerBuilder.IncompatibleWindowsPlatformsErrorMessage,
                         MessageType.Error);
+                }
+
+                foreach (var buildTarget in WorkerBuilder.GetUnityBuildTargets(newBuildPlatforms))
+                {
+                    if (!BuildSupportChecker.CheckBuildSupport(buildTarget).CanBuild)
+                    {
+                        EditorGUILayout.HelpBox($"Missing build support for {buildTarget}", MessageType.Error);
+                    }
                 }
 
                 if (EditorGUI.EndChangeCheck())

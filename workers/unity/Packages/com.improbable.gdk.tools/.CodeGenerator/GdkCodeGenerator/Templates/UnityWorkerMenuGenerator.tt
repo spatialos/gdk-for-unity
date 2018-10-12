@@ -13,21 +13,21 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Improbable
-{ 
+{
     internal static class BuildWorkerMenu
     {
         private const string LocalMenu = "Build for local";
         private const string CloudMenu = "Build for cloud";
 
-        private static readonly string[] AllWorkers = 
+        private static readonly string[] AllWorkers =
         {
 <# foreach (var workerType in workerTypeList) { #>
             "<#= workerType #>",
 <# } #>
         };
 
-<# 
-for (var i = 0; i < workerTypeList.Count; i++) { 
+<#
+for (var i = 0; i < workerTypeList.Count; i++) {
 var workerType = workerTypeList[i];
 #>
         [MenuItem(EditorConfig.ParentMenu + "/" + LocalMenu + "/<#= workerType #>", false, EditorConfig.MenuOffset + <#=i #>)]
@@ -62,21 +62,62 @@ var workerType = workerTypeList[i];
             WorkerBuilder.Clean();
             Debug.Log("Clean completed");
         }
-        
-        private static void MenuBuild(BuildEnvironment environment, params string[] platforms)
+
+        private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
         {
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
+                foreach (var workerType in workerTypes)
+                {
+                    WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, environment);
+                }
+
                 LocalLaunch.BuildConfig();
 
-                foreach (var platform in platforms)
+                foreach (var workerType in workerTypes)
                 {
-                    WorkerBuilder.BuildWorkerForEnvironment(platform, environment);
+                    WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
                 }
 
                 Debug.LogFormat("Completed build for {0} target", environment);
             };
+        }
+
+        [MenuItem(EditorConfig.ParentMenu + "/Validate Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
+        private static void ValidateBuildSupport()
+        {
+            Debug.Log("Checking for build platform support...");
+
+            try
+            {
+                var buildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+
+                foreach (var workerType in AllWorkers)
+                {
+                    try
+                    {
+                        WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, BuildEnvironment.Local);
+                    }
+                    catch (System.Exception caughtException)
+                    {
+                        Debug.LogException(caughtException, buildConfiguration);
+                    }
+
+                    try
+                    {
+                        WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, BuildEnvironment.Cloud);
+                    }
+                    catch (System.Exception caughtException)
+                    {
+                        Debug.LogException(caughtException, buildConfiguration);
+                    }
+                }
+            }
+            finally
+            {
+                Debug.Log("Diagnosis complete.");
+            }
         }
     }
 }
