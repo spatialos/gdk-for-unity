@@ -1,6 +1,6 @@
+using System;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.Core;
-using Improbable.Worker.Query;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -10,46 +10,26 @@ namespace Improbable.Gdk.Core
     ///     Sends World Command requests.
     /// </summary>
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
     {
         private Connection connection;
 
-        private struct CreateEntitySenderData
+        private readonly EntityArchetypeQuery worldCommandSendersQuery = new EntityArchetypeQuery
         {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> Senders;
-        }
+            All = new[]
+            {
+                ComponentType.Create<WorldCommands.CreateEntity.CommandSender>(),
+                ComponentType.Create<WorldCommands.DeleteEntity.CommandSender>(),
+                ComponentType.Create<WorldCommands.ReserveEntityIds.CommandSender>(),
+                ComponentType.Create<WorldCommands.EntityQuery.CommandSender>(),
+            },
+            Any = Array.Empty<ComponentType>(),
+            None = Array.Empty<ComponentType>(),
+        };
 
-        [Inject] private CreateEntitySenderData createEntitySenderData;
-
-        private struct DeleteEntitySenderData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> Senders;
-        }
-
-        [Inject] private DeleteEntitySenderData deleteEntitySenderData;
-
-        private struct ReserveEntityIdsSenderData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.ReserveEntityIds.CommandSender> Senders;
-        }
-
-        [Inject] private ReserveEntityIdsSenderData reserveEntityIdsSenderData;
-
-        private struct EntityQuerySenderData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.EntityQuery.CommandSender> Senders;
-        }
-
-        [Inject] private EntityQuerySenderData entityQuerySenderData;
+        private ComponentGroup group;
 
         private WorldCommands.CreateEntity.Storage createEntityStorage;
         private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
@@ -60,6 +40,8 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
+
+            group = GetComponentGroup(worldCommandSendersQuery);
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
             createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
@@ -75,67 +57,81 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            for (var i = 0; i < createEntitySenderData.Length; i++)
+            var entityType = GetArchetypeChunkEntityType();
+
+            var createEntityType = GetArchetypeChunkComponentType<WorldCommands.CreateEntity.CommandSender>();
+            var deleteEntityType = GetArchetypeChunkComponentType<WorldCommands.DeleteEntity.CommandSender>();
+            var reserveEntityIdsType = GetArchetypeChunkComponentType<WorldCommands.ReserveEntityIds.CommandSender>();
+            var entityQueryType = GetArchetypeChunkComponentType<WorldCommands.EntityQuery.CommandSender>();
+
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+            foreach (var chunk in chunkArray)
             {
-                var sender = createEntitySenderData.Senders[i];
-                var entity = createEntitySenderData.Entities[i];
-                foreach (var req in sender.RequestsToSend)
+                var entityArray = chunk.GetNativeArray(entityType);
+
+                var createEntitySenders = chunk.GetNativeArray(createEntityType);
+                for (int i = 0; i < createEntitySenders.Length; ++i)
                 {
-                    var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
-                    createEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
-                        new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context, req.RequestId));
-                }
-
-                sender.RequestsToSend.Clear();
-            }
-
-            for (var i = 0; i < deleteEntitySenderData.Length; i++)
-            {
-                var sender = deleteEntitySenderData.Senders[i];
-                var entity = deleteEntitySenderData.Entities[i];
-                foreach (var req in sender.RequestsToSend)
-                {
-                    var reqId = connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
-                    deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
-                        new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context, req.RequestId));
-                }
-
-                sender.RequestsToSend.Clear();
-            }
-
-
-            for (var i = 0; i < reserveEntityIdsSenderData.Length; i++)
-            {
-                var sender = reserveEntityIdsSenderData.Senders[i];
-                var entity = reserveEntityIdsSenderData.Entities[i];
-                foreach (var req in sender.RequestsToSend)
-                {
-                    var reqId = connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
-                    reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id,
-                        new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context, req.RequestId));
-                }
-
-                sender.RequestsToSend.Clear();
-            }
-
-            for (var i = 0; i < entityQuerySenderData.Length; i++)
-            {
-                var sender = entityQuerySenderData.Senders[i];
-                var entity = entityQuerySenderData.Entities[i];
-                foreach (var req in sender.RequestsToSend)
-                {
-                    if (req.EntityQuery.ResultType is SnapshotResultType)
+                    var requestsToSend = createEntitySenders[i].RequestsToSend;
+                    var entity = entityArray[i];
+                    foreach (var req in requestsToSend)
                     {
-                        continue;
+                        var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
+                        createEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                            new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context, req.RequestId));
                     }
 
-                    var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
-                    entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
-                        new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));
+                    requestsToSend.Clear();
                 }
 
-                sender.RequestsToSend.Clear();
+                var deleteEntitySenders = chunk.GetNativeArray(deleteEntityType);
+                for (int i = 0; i < deleteEntitySenders.Length; ++i)
+                {
+                    var requestsToSend = deleteEntitySenders[i].RequestsToSend;
+                    var entity = entityArray[i];
+                    foreach (var req in requestsToSend)
+                    {
+                        var reqId = connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
+                        deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                            new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context, req.RequestId));
+                    }
+
+                    requestsToSend.Clear();
+                }
+
+                var reserveEntityIdsSenders = chunk.GetNativeArray(reserveEntityIdsType);
+                for (int i = 0; i < reserveEntityIdsSenders.Length; ++i)
+                {
+                    var requestsToSend = reserveEntityIdsSenders[i].RequestsToSend;
+                    var entity = entityArray[i];
+                    foreach (var req in requestsToSend)
+                    {
+                        var reqId = connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
+                        reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id,
+                            new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context, req.RequestId));
+                    }
+
+                    requestsToSend.Clear();
+                }
+
+                var entityQuerySenders = chunk.GetNativeArray(entityQueryType);
+                for (int i = 0; i < entityQuerySenders.Length; ++i)
+                {
+                    var requestsToSend = entityQuerySenders[i].RequestsToSend;
+                    var entity = entityArray[i];
+                    foreach (var req in requestsToSend)
+                    {
+                        var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
+                        entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
+                            new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));
+                    }
+
+                    requestsToSend.Clear();
+                }
             }
+
+            chunkArray.Dispose();
         }
     }
 }
