@@ -31,7 +31,7 @@ public static class BuildSupportChecker
 #endif
     }
 
-    public class BuildSupportCheckResult
+    public struct BuildSupportCheckResult
     {
         public readonly bool CanBuild;
         public readonly BuildTarget[] TargetsWithoutBuildSupport;
