@@ -121,12 +121,14 @@ Then navigate to the root folder of the FPS starter project and run the followin
 
 This ensures that you are on the alpha release version of the FPS starter project.
 
-### Set up dependencies by either:
+### Clone the SpatialOS GDK for Unity and checkout the latest release
 
-  * Running the bundled scripts in the `gdk-for-unity-fps-starter-project` repository:
-      * If you are using Windows: `powershell scripts/powershell/setup.ps1`
-      * If you are using Mac: `bash scripts/shell/setup.sh`
-  * Following the instructions below to set up manually.
+The following scripts clone the GDK and checkout the git tag of the latest release. If you prefer, you can follow the manual instructions instead:
+
+  * From the root of the `gdk-for-unity-fps-starter-project` repository: 
+      * If you are using Windows run: `powershell scripts/powershell/setup.ps1`
+      * If you are using Mac run: `bash scripts/shell/setup.sh`
+  * Alternatively, follow the manual instructions below.
 
 <%(#Expandable title="Manually set up dependencies")%>
 
@@ -148,11 +150,9 @@ This ensures that you are on the alpha release version of the FPS starter projec
 
 <%(/Expandable)%>
 
-## Opening the FPS starter project in Unity Engine
+## Opening the FPS starter project in the Unity Editor
 
-From your Unity Engine file browser, navigate to where you downloaded the FPS starter project and open the `workers/unity` directory inside the project to get started.
-
-<%(Callout type="info" message="Opening a Unity project for the first time may take while, as Unity needs to import and process the project's assets. Why not make yourself a cup of tea while you wait?")%>
+Launch the Unity editor. It should automatically detect the project but if it doesn't, click Open and select `gdk-for-unity-fps-starter-project/workers/unity`.
 
 #### Before you start, apply these quick bugfixes:
 <%(#Expandable title="Fix Shaders")%>
@@ -187,9 +187,9 @@ You can verify that the NavMesh has been baked correctly by navigating to **Asse
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
 
-Open the Unity project, by starting the Unity Editor and navigating to `gdk-for-unity-fps-starter-project/workers/unity`.
-
 In the Unity Editor, you first need to make sure Burst compilation is **disabled** from **Jobs** > **Enable Burst Compilation**. Then you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
+
+<%(Callout type="info" message="Building workers for the first time may take while. Why not make yourself a cup of tea while you wait?")%>
 
 ![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.jpg)
 
@@ -197,30 +197,26 @@ In the Unity Editor, you first need to make sure Burst compilation is **disabled
 
 <%(Callout type="alert" message="If you encounter build errors, you might not have selected Linux Build Support during your setup. You need Linux build support because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
 
-After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain the following files:
+After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain:
 ```text
     worker
         ├── SimulatedPlayerCoordinator@Linux.zip
         ├── UnityClient@Mac.zip
         ├── UnityClient@Windows.zip
         ├── UnityGameLogic@Linux.zip
-    schema
-        ├── schema.descriptor
 ```
 
-<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building executables, because both of your workers can run in the Editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
+<%(Callout type="info" message="Note that while you are developing locally with the GDK you can skip building these workers, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
 
 ## Uploading
 
-### Setting your project name (first time only)
+### Setting your project name
 
-Your SpatialOS account is associated with an organisation and a project which were created for you when you signed up, both with generated names.
-
-You’ll need your generated project name to deploy the FPS game to the cloud. To find it, go to the [Web Console](https://console.improbable.io/projects) and look for the `beta_randomword_anotherword_randomnumber` project name:
+When you signed up for SpatialOS, your account was automatically associated with an organisation and a project, both of which have the same generated name. To find this name enter the [Console](https://console.improbable.io/projects). It should looks like `beta_randomword_anotherword_randomnumber`:
 
 <img src="{{assetRoot}}assets/project-page.png" style="margin: 0 auto; display: block;" />
 
-Using a text editor of your choice, open the `gdk-for-unity-fps-starter-project/spatialos.json` file and replace the `unity_gdk` project name with the project name you were assigned in the Web Console. This will let the SpatialOS platform know which project you intend to upload to. Your `spatialos.json` should look like this:
+Using a text editor of your choice, open `gdk-for-unity-fps-starter-project/spatialos.json` and replace the `unity_gdk` project name with the project name you were assigned in the Console. This will tell SpatialOS which project you intend to upload to. Your `spatialos.json` should look like this:
 
 ```json
 {
