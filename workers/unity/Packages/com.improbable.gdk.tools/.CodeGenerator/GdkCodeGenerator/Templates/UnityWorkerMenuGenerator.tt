@@ -63,25 +63,65 @@ var workerType = workerTypeList[i];
             Debug.Log("Clean completed");
         }
 
+        private static bool VerifyWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
+        {
+            var canInitiateBuild = true;
+            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+
+            foreach (var workerType in workerTypes)
+            {
+                try
+                {
+                    WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, environment);
+                }
+                catch (System.Exception e)
+                {
+                    canInitiateBuild = false;
+
+                    Debug.LogException(e, spatialOSBuildConfiguration);
+                }
+            }
+
+            return canInitiateBuild;
+        }
+
         private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
         {
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
-                foreach (var workerType in workerTypes)
+                if (!VerifyWorkersCanBuildForEnvironment(environment, workerTypes))
                 {
-                    WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, environment);
+                    DisplayBuildFailureDialog();
+
+                    return;
                 }
 
-                LocalLaunch.BuildConfig();
-
-                foreach (var workerType in workerTypes)
+                try
                 {
-                    WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
-                }
+                    LocalLaunch.BuildConfig();
 
-                Debug.LogFormat("Completed build for {0} target", environment);
+                    foreach (var workerType in workerTypes)
+                    {
+                        WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
+                    }
+
+                    Debug.LogFormat("Completed build for {0} target", environment);
+                }
+                catch (System.Exception)
+                {
+                    DisplayBuildFailureDialog();
+
+                    throw;
+                }
             };
+        }
+
+        private static void DisplayBuildFailureDialog()
+        {
+            EditorUtility.DisplayDialog("Build Failed",
+                "Build failed. Please see the Unity Console Window for information.",
+                "OK");
         }
 
         [MenuItem(EditorConfig.ParentMenu + "/Validate Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
@@ -89,35 +129,27 @@ var workerType = workerTypeList[i];
         {
             Debug.Log("Checking for build platform support...");
 
-            try
-            {
-                var buildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+            var verificationsPassed = true;
 
-                foreach (var workerType in AllWorkers)
-                {
-                    try
-                    {
-                        WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, BuildEnvironment.Local);
-                    }
-                    catch (System.Exception caughtException)
-                    {
-                        Debug.LogException(caughtException, buildConfiguration);
-                    }
-
-                    try
-                    {
-                        WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, BuildEnvironment.Cloud);
-                    }
-                    catch (System.Exception caughtException)
-                    {
-                        Debug.LogException(caughtException, buildConfiguration);
-                    }
-                }
-            }
-            finally
+            Debug.Log("Verifying local builds");
+            if (!VerifyWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers))
             {
-                Debug.Log("Diagnosis complete.");
+                verificationsPassed = false;
             }
+
+            Debug.Log("Verifying cloud builds");
+            if (!VerifyWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
+            {
+                verificationsPassed = false;
+            }
+
+            EditorUtility.DisplayDialog("Build Support Validation",
+                verificationsPassed
+                    ? "Build support validation confirms your Unity Editor installation has all necessary components."
+                    : "Build support validation failed. Please see the Unity Console Window for information.",
+                "OK");
+
+            Debug.Log("Diagnosis complete.");
         }
     }
 }
