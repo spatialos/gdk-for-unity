@@ -24,7 +24,7 @@ public static class BuildSupportChecker
 #endif
 
 #if !UNITY_EDITOR_WIN
-        var windowsStandaloneSupport = "WindowsStandaloneSupport";
+        const string windowsStandaloneSupport = "WindowsStandaloneSupport";
 
         BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows] = windowsStandaloneSupport;
         BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows64] = windowsStandaloneSupport;
@@ -45,7 +45,7 @@ public static class BuildSupportChecker
 
     public static BuildSupportCheckResult CheckBuildSupport(params BuildTarget[] buildTargets)
     {
-        string editorExePath = Environment.GetCommandLineArgs()[0];
+        string editorExePath = EditorApplication.applicationPath;
 
         var editorDirectory = Directory.GetParent(editorExePath);
 
