@@ -97,8 +97,8 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void Clean()
         {
-            Directory.Delete(PlayerBuildDirectory);
-            Directory.Delete(EditorPaths.BuildScratchDirectory);
+            Directory.Delete(PlayerBuildDirectory, true);
+            Directory.Delete(EditorPaths.BuildScratchDirectory, true);
         }
 
         private static IEnumerable<BuildTarget> GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
@@ -127,7 +127,7 @@ namespace Improbable.Gdk.BuildSystem
                 }
 
                 result.Add(BuildTarget.StandaloneWindows);
-            } 
+            }
             else if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
             {
                 result.Add(BuildTarget.StandaloneWindows64);
@@ -184,7 +184,7 @@ namespace Improbable.Gdk.BuildSystem
         {
             using (new ShowProgressBarScope($"Package {basePath}"))
             {
-                RedirectedProcess.Run(Common.SpatialBinary, "file", "zip", 
+                RedirectedProcess.Run(Common.SpatialBinary, "file", "zip",
                     $"--output=\"{Path.GetFullPath(zipAbsolutePath)}\"",
                     $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
                     $"--compression={useCompression}");
