@@ -3,8 +3,8 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
-source ci/includes/pinned-tools.sh
-source ci/includes/profiling.sh
+source .shared-ci/scripts/pinned-tools.sh
+source .shared-ci/scripts/profiling.sh
 
 UNITY_PROJECT_DIR="$(pwd)/workers/unity"
 
@@ -18,7 +18,7 @@ TARGET=${1:-local}
 spatial build build-config UnityClient
 
 pushd "${UNITY_PROJECT_DIR}"
-    dotnet run -p ../../tools/RunUnity/RunUnity.csproj -- \
+    dotnet run -p ../../.shared-ci/tools/RunUnity/RunUnity.csproj -- \
         -projectPath "${UNITY_PROJECT_DIR}" \
         -batchmode \
         -quit \
