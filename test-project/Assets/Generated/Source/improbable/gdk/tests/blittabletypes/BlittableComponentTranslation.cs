@@ -570,18 +570,21 @@ namespace Improbable.Gdk.Tests.BlittableTypes
         {
             public override uint ComponentId => 1001;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<EventSender.FirstEvent>(),
-                ComponentType.ReadOnly<EventSender.SecondEvent>(),
-                ComponentType.Create<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(),
-                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<EventSender.FirstEvent>(),
+                    ComponentType.Create<EventSender.SecondEvent>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(),
+                    ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-            private CommandStorages.FirstCommand firstCommandStorage;
-            private CommandStorages.SecondCommand secondCommandStorage;
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
                 new EntityArchetypeQuery()
                 {
@@ -605,6 +608,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 },
             };
 
+            private CommandStorages.FirstCommand firstCommandStorage;
+            private CommandStorages.SecondCommand secondCommandStorage;
+
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -612,73 +618,81 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 secondCommandStorage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.SecondCommand>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("BlittableComponent");
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
-                var eventFirstEventArray = replicationGroup.GetComponentDataArray<EventSender.FirstEvent>();
-                var eventSecondEventArray = replicationGroup.GetComponentDataArray<EventSender.SecondEvent>();
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
+                var eventFirstEventType = system.GetArchetypeChunkComponentType<EventSender.FirstEvent>(true);
+                var eventSecondEventType = system.GetArchetypeChunkComponentType<EventSender.SecondEvent>(true);
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
-                    var eventsFirstEvent = eventFirstEventArray[i].Events;
-                    dirtyEvents += eventsFirstEvent.Count;
-                    var eventsSecondEvent = eventSecondEventArray[i].Events;
-                    dirtyEvents += eventsSecondEvent.Count;
-
-                    if (data.DirtyBit || dirtyEvents > 0)
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
+                    var eventFirstEventArray = chunk.GetNativeArray(eventFirstEventType);
+                    var eventSecondEventArray = chunk.GetNativeArray(eventSecondEventType);
+                    for (var i = 0; i < componentArray.Length; i++)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1001);
-                        Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.SerializeUpdate(data, update);
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
+                        var eventsFirstEvent = eventFirstEventArray[i].Events;
+                        dirtyEvents += eventsFirstEvent.Count;
+                        var eventsSecondEvent = eventSecondEventArray[i].Events;
+                        dirtyEvents += eventsSecondEvent.Count;
 
-                        // Serialize events
-                        var eventsObject = update.GetEvents();
-                        if (eventsFirstEvent.Count > 0)
+                        if (data.DirtyBit || dirtyEvents > 0)
                         {
-                            foreach (var e in eventsFirstEvent)
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1001);
+                            Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.SerializeUpdate(data, update);
+
+                            // Serialize events
+                            var eventsObject = update.GetEvents();
+                            if (eventsFirstEvent.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(1);
-                                global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
+                                foreach (var e in eventsFirstEvent)
+                                {
+                                    var obj = eventsObject.AddObject(1);
+                                    global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
+                                }
+
+                                eventsFirstEvent.Clear();
                             }
 
-                            eventsFirstEvent.Clear();
-                        }
-
-                        if (eventsSecondEvent.Count > 0)
-                        {
-                            foreach (var e in eventsSecondEvent)
+                            if (eventsSecondEvent.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(2);
-                                global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
+                                foreach (var e in eventsSecondEvent)
+                                {
+                                    var obj = eventsObject.AddObject(2);
+                                    global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
+                                }
+
+                                eventsSecondEvent.Clear();
                             }
 
-                            eventsSecondEvent.Clear();
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
                         }
-
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
-
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
                     }
                 }
 
+                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("BlittableComponent");
-                var entityType = sendSystem.GetArchetypeChunkEntityType();
+                var entityType = system.GetArchetypeChunkEntityType();
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.FirstCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.FirstCommand>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.FirstCommand>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.FirstCommand>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[0], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -734,10 +748,10 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     chunks.Dispose();
                 }
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.SecondCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.SecondCommand>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.SecondCommand>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.SecondCommand>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[1], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);

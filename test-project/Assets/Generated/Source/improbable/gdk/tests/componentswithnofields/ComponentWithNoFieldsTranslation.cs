@@ -256,51 +256,63 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public override uint ComponentId => 1003;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>(),
-                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>(),
+                    ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
             };
+
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("ComponentWithNoFields");
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>();
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>();
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
-
-                    if (data.DirtyBit || dirtyEvents > 0)
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
+                    for (var i = 0; i < componentArray.Length; i++)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1003);
-                        Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.SerializeUpdate(data, update);
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
 
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+                        if (data.DirtyBit || dirtyEvents > 0)
+                        {
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1003);
+                            Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.SerializeUpdate(data, update);
 
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
+                        }
                     }
                 }
 
+                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
             }
         }
