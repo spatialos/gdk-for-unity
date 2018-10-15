@@ -172,9 +172,9 @@ There is a quick fix however:
 
 There is a bug in the Unity Editor that stops it importing the navmesh for the `FPS-SimulatedPlayerCoordinator` correctly when you open the project. To fix this, you need to rebake the navmesh. To do this:
 
-1. In the Project tab, open the `FPS-SimulatedPlayerCoordinator` scene located at `Assets/Fps/Scenes`.
-2. In the Hierarchy tab, click on the `FPS-Start_Large` object and, in the Inspector tab, enable the object by clicking the checkbox.
-3. Open the **Navigation** tab by clicking **Window** > **AI** > **Navigation**.
+1. In the [Project](https://docs.unity3d.com/Manual/ProjectView.html) tab, open the `FPS-SimulatedPlayerCoordinator` scene located at `Assets/Fps/Scenes`.
+2. In the [Hierarchy](https://docs.unity3d.com/Manual/Hierarchy.html) tab, click on the `FPS-Start_Large` object and, in the Inspector tab, enable the object by clicking the checkbox.
+3. Open the Navigation tab by clicking **Window** > **AI** > **Navigation**.
 4. Navigate to the **Bake** section and click on the **Bake** button.
 
 You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
