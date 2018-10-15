@@ -84,8 +84,7 @@ namespace Improbable.Gdk.BuildSystem
                 return;
             }
 
-            var buildPlatforms = environmentConfig.BuildPlatforms;
-            var buildTargets = GetUnityBuildTargets(buildPlatforms);
+            var buildTargets = GetUnityBuildTargets(environmentConfig.BuildPlatforms);
             var buildSupportResult = BuildSupportChecker.CheckBuildSupport(buildTargets);
 
             if (buildSupportResult.CanBuild)

@@ -127,17 +127,13 @@ var workerType = workerTypeList[i];
         [MenuItem(EditorConfig.ParentMenu + "/Validate Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
         private static void ValidateBuildSupport()
         {
-            Debug.Log("Checking for build platform support...");
-
             var validationsPassed = true;
 
-            Debug.Log("Validating local builds");
             if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers))
             {
                 validationsPassed = false;
             }
 
-            Debug.Log("Validating cloud builds");
             if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
             {
                 validationsPassed = false;
