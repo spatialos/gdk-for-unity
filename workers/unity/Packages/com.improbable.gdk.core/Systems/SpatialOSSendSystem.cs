@@ -17,6 +17,9 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
+        // Can't access the generated component ID in Core code.
+        private const uint PositionComponentId = 54;
+
         private Connection connection;
 
         private readonly List<ComponentReplicator> componentReplicators =
@@ -89,6 +92,16 @@ namespace Improbable.Gdk.Core
 
                 AddComponentReplicator(componentReplicationHandler);
             }
+
+            // Force the position component to be replicated last to delay authority changes until this frame's updates
+            // are applied as expected. If the position update is applied earlier and triggers an authority change -
+            // the other updates may be dropped leading to inconsistent states.
+            var positionReplicatorIndex =
+                componentReplicators.FindIndex(replicator => replicator.ComponentId == PositionComponentId);
+            var positionReplicator = componentReplicators[positionReplicatorIndex];
+
+            componentReplicators.RemoveAt(positionReplicatorIndex);
+            componentReplicators.Add(positionReplicator);
         }
 
         private struct ComponentReplicator
