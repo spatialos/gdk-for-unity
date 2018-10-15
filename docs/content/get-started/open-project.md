@@ -13,7 +13,7 @@ There is a quick fix however:
 2. In the Project panel, navigate to **Assets** > **Fps** > **Art** > **Materials**.
 3. Right click on `Source_Shaders` and press Reimport.
 
-<img src="{{assetRoot}}assets/shader-fix.jpg" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/shader-fix.png" style="margin: 0 auto; display: block;" />
 
 #### Bake Navmesh
 There is a bug where the Unity Editor does not import the navmesh for the `FPS-SimulatedPlayerCoordinator` correctly when opening a project for the first time. To fix this, you need to rebake the navmesh for this scene.
