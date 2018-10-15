@@ -1,90 +1,98 @@
-﻿using Improbable.Gdk.Core.Commands;
+﻿using System;
+using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Removes reactive World Command components 
+    ///     Removes reactive World Command components
     /// </summary>
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
     public class WorldCommandsCleanSystem : ComponentSystem
     {
-        private struct CreateEntityResponsesData
+        private readonly EntityArchetypeQuery worldCommandResponseQuery = new EntityArchetypeQuery()
         {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> Responses;
-        }
+            All = Array.Empty<ComponentType>(),
+            Any = new[]
+            {
+                ComponentType.Create<WorldCommands.CreateEntity.CommandResponses>(),
+                ComponentType.Create<WorldCommands.DeleteEntity.CommandResponses>(),
+                ComponentType.Create<WorldCommands.ReserveEntityIds.CommandResponses>(),
+                ComponentType.Create<WorldCommands.EntityQuery.CommandResponses>(),
+            },
+            None = Array.Empty<ComponentType>(),
+        };
 
-        [Inject] private CreateEntityResponsesData createEntityResponsesData;
+        private ComponentGroup worldCommandResponseGroup;
 
-        private struct DeleteEntityResponsesData
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.DeleteEntity.CommandResponses> Responses;
+            base.OnCreateManager();
+            worldCommandResponseGroup = GetComponentGroup(worldCommandResponseQuery);
         }
-
-        [Inject] private DeleteEntityResponsesData deleteEntityResponsesData;
-
-        private struct ReserveEntityIdsResponsesData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.ReserveEntityIds.CommandResponses> Responses;
-        }
-
-        [Inject] private ReserveEntityIdsResponsesData reserveEntityIdsResponsesData;
-
-        private struct EntityQueryResponsesData
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<WorldCommands.EntityQuery.CommandResponses> Responses;
-        }
-
-        [Inject] private EntityQueryResponsesData entityQueryResponsesData;
-
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < createEntityResponsesData.Length; i++)
-            {
-                var responses = createEntityResponsesData.Responses[i];
-                var entity = createEntityResponsesData.Entities[i];
+            var entityType = GetArchetypeChunkEntityType();
 
-                WorldCommands.CreateEntity.ResponsesProvider.Free(responses.Handle);
-                PostUpdateCommands.RemoveComponent<WorldCommands.CreateEntity.CommandResponses>(entity);
+            var createEntityType = GetArchetypeChunkComponentType<WorldCommands.CreateEntity.CommandResponses>();
+            var deleteEntityType = GetArchetypeChunkComponentType<WorldCommands.DeleteEntity.CommandResponses>();
+            var reserveEntityIdsType =
+                GetArchetypeChunkComponentType<WorldCommands.ReserveEntityIds.CommandResponses>();
+            var entityQueryType = GetArchetypeChunkComponentType<WorldCommands.EntityQuery.CommandResponses>();
+
+            var chunkArray = worldCommandResponseGroup.CreateArchetypeChunkArray(Allocator.Temp);
+
+            foreach (var chunk in chunkArray)
+            {
+                var entityArray = chunk.GetNativeArray(entityType);
+
+                if (chunk.Has(createEntityType))
+                {
+                    var responseArray = chunk.GetNativeArray(createEntityType);
+                    for (var i = 0; i < entityArray.Length; i++)
+                    {
+                        WorldCommands.CreateEntity.ResponsesProvider.Free(responseArray[i].Handle);
+                        PostUpdateCommands.RemoveComponent<WorldCommands.CreateEntity.CommandResponses>(entityArray[i]);
+                    }
+                }
+
+                if (chunk.Has(deleteEntityType))
+                {
+                    var responseArray = chunk.GetNativeArray(deleteEntityType);
+                    for (var i = 0; i < entityArray.Length; i++)
+                    {
+                        WorldCommands.DeleteEntity.ResponsesProvider.Free(responseArray[i].Handle);
+                        PostUpdateCommands.RemoveComponent<WorldCommands.DeleteEntity.CommandResponses>(entityArray[i]);
+                    }
+                }
+
+                if (chunk.Has(reserveEntityIdsType))
+                {
+                    var responseArray = chunk.GetNativeArray(reserveEntityIdsType);
+                    for (var i = 0; i < entityArray.Length; i++)
+                    {
+                        WorldCommands.ReserveEntityIds.ResponsesProvider.Free(responseArray[i].Handle);
+                        PostUpdateCommands.RemoveComponent<WorldCommands.ReserveEntityIds.CommandResponses>(
+                            entityArray[i]);
+                    }
+                }
+
+                if (chunk.Has(entityQueryType))
+                {
+                    var responseArray = chunk.GetNativeArray(entityQueryType);
+                    for (var i = 0; i < entityArray.Length; i++)
+                    {
+                        WorldCommands.EntityQuery.ResponsesProvider.Free(responseArray[i].Handle);
+                        PostUpdateCommands.RemoveComponent<WorldCommands.EntityQuery.CommandResponses>(entityArray[i]);
+                    }
+                }
             }
 
-            for (var i = 0; i < deleteEntityResponsesData.Length; i++)
-            {
-                var responses = deleteEntityResponsesData.Responses[i];
-                var entity = deleteEntityResponsesData.Entities[i];
-
-                WorldCommands.DeleteEntity.ResponsesProvider.Free(responses.Handle);
-                PostUpdateCommands.RemoveComponent<WorldCommands.DeleteEntity.CommandResponses>(entity);
-            }
-
-            for (var i = 0; i < reserveEntityIdsResponsesData.Length; i++)
-            {
-                var responses = reserveEntityIdsResponsesData.Responses[i];
-                var entity = reserveEntityIdsResponsesData.Entities[i];
-
-                WorldCommands.ReserveEntityIds.ResponsesProvider.Free(responses.Handle);
-                PostUpdateCommands.RemoveComponent<WorldCommands.ReserveEntityIds.CommandResponses>(entity);
-            }
-
-            for (var i = 0; i < entityQueryResponsesData.Length; i++)
-            {
-                var responses = entityQueryResponsesData.Responses[i];
-                var entity = entityQueryResponsesData.Entities[i];
-
-                WorldCommands.EntityQuery.ResponsesProvider.Free(responses.Handle);
-                PostUpdateCommands.RemoveComponent<WorldCommands.EntityQuery.CommandResponses>(entity);
-            }
+            chunkArray.Dispose();
         }
     }
 }

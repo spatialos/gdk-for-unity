@@ -584,18 +584,21 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             public override uint ComponentId => 1002;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<EventSender.FirstEvent>(),
-                ComponentType.ReadOnly<EventSender.SecondEvent>(),
-                ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
-                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<EventSender.FirstEvent>(),
+                    ComponentType.Create<EventSender.SecondEvent>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
+                    ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-            private CommandStorages.FirstCommand firstCommandStorage;
-            private CommandStorages.SecondCommand secondCommandStorage;
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
                 new EntityArchetypeQuery()
                 {
@@ -619,6 +622,9 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 },
             };
 
+            private CommandStorages.FirstCommand firstCommandStorage;
+            private CommandStorages.SecondCommand secondCommandStorage;
+
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -626,73 +632,81 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 secondCommandStorage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.SecondCommand>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("NonBlittableComponent");
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
-                var eventFirstEventArray = replicationGroup.GetComponentDataArray<EventSender.FirstEvent>();
-                var eventSecondEventArray = replicationGroup.GetComponentDataArray<EventSender.SecondEvent>();
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
+                var eventFirstEventType = system.GetArchetypeChunkComponentType<EventSender.FirstEvent>(true);
+                var eventSecondEventType = system.GetArchetypeChunkComponentType<EventSender.SecondEvent>(true);
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
-                    var eventsFirstEvent = eventFirstEventArray[i].Events;
-                    dirtyEvents += eventsFirstEvent.Count;
-                    var eventsSecondEvent = eventSecondEventArray[i].Events;
-                    dirtyEvents += eventsSecondEvent.Count;
-
-                    if (data.DirtyBit || dirtyEvents > 0)
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
+                    var eventFirstEventArray = chunk.GetNativeArray(eventFirstEventType);
+                    var eventSecondEventArray = chunk.GetNativeArray(eventSecondEventType);
+                    for (var i = 0; i < componentArray.Length; i++)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1002);
-                        Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.SerializeUpdate(data, update);
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
+                        var eventsFirstEvent = eventFirstEventArray[i].Events;
+                        dirtyEvents += eventsFirstEvent.Count;
+                        var eventsSecondEvent = eventSecondEventArray[i].Events;
+                        dirtyEvents += eventsSecondEvent.Count;
 
-                        // Serialize events
-                        var eventsObject = update.GetEvents();
-                        if (eventsFirstEvent.Count > 0)
+                        if (data.DirtyBit || dirtyEvents > 0)
                         {
-                            foreach (var e in eventsFirstEvent)
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1002);
+                            Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.SerializeUpdate(data, update);
+
+                            // Serialize events
+                            var eventsObject = update.GetEvents();
+                            if (eventsFirstEvent.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(1);
-                                global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
+                                foreach (var e in eventsFirstEvent)
+                                {
+                                    var obj = eventsObject.AddObject(1);
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload.Serialization.Serialize(e, obj);
+                                }
+
+                                eventsFirstEvent.Clear();
                             }
 
-                            eventsFirstEvent.Clear();
-                        }
-
-                        if (eventsSecondEvent.Count > 0)
-                        {
-                            foreach (var e in eventsSecondEvent)
+                            if (eventsSecondEvent.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(2);
-                                global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
+                                foreach (var e in eventsSecondEvent)
+                                {
+                                    var obj = eventsObject.AddObject(2);
+                                    global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload.Serialization.Serialize(e, obj);
+                                }
+
+                                eventsSecondEvent.Clear();
                             }
 
-                            eventsSecondEvent.Clear();
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
                         }
-
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
-
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
                     }
                 }
 
+                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("NonBlittableComponent");
-                var entityType = sendSystem.GetArchetypeChunkEntityType();
+                var entityType = system.GetArchetypeChunkEntityType();
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[0], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -748,10 +762,10 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     chunks.Dispose();
                 }
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[1], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -813,146 +827,160 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            {
+                All = Array.Empty<ComponentType>(),
+                Any = new ComponentType[]
+                {
+                    ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                    ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(),
+                    ComponentType.Create<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(),
+                    ComponentType.Create<ReceivedEvents.FirstEvent>(),
+                    ComponentType.Create<ReceivedEvents.SecondEvent>(),
+                    ComponentType.Create<CommandRequests.FirstCommand>(),
+                    ComponentType.Create<CommandResponses.FirstCommand>(),
+                    ComponentType.Create<CommandRequests.SecondCommand>(),
+                    ComponentType.Create<CommandResponses.SecondCommand>(),
+                },
+                None = Array.Empty<ComponentType>(),
             };
 
-            public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ReceivedEvents.FirstEvent>(),
-                ComponentType.ReadOnly<ReceivedEvents.SecondEvent>(),
-            };
-
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
-
-            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
-                ComponentType.ReadOnly<CommandRequests.FirstCommand>(),
-                ComponentType.ReadOnly<CommandResponses.FirstCommand>(),
-                ComponentType.ReadOnly<CommandRequests.SecondCommand>(),
-                ComponentType.ReadOnly<CommandResponses.SecondCommand>(),
-            };
-
-            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+                EntityCommandBuffer buffer)
             {
-                if (updateGroup.IsEmptyIgnoreFilter)
+                var entityType = system.GetArchetypeChunkEntityType();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
+                var firstEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.FirstEvent>();
+                var secondEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.SecondEvent>();
+
+                var firstCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.FirstCommand>();
+                var firstCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.FirstCommand>();
+
+                var secondCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.SecondCommand>();
+                var secondCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.SecondCommand>();
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+                foreach (var chunk in chunkArray)
                 {
-                    return;
-                }
+                    var entities = chunk.GetNativeArray(entityType);
 
-                var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entities[i]);
-                    var updateList = data[i].Updates;
-
-                    // Pool update lists to avoid excessive allocation
-                    updateList.Clear();
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update.Pool.Push(updateList);
-
-                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
-                }
-            }
-
-            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
-            {
-                if (authorityChangeGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
-                    AuthorityChangesProvider.Free(data[i].Handle);
-                }
-            }
-
-            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
-            {
-                // Clean FirstEvent
-                {
-                    var group = eventGroups[0];
-                    if (!group.IsEmptyIgnoreFilter)
+                    // Updates
+                    if (chunk.Has(receivedUpdateType))
                     {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.FirstEvent>();
-                        for (var i = 0; i < entities.Length; i++)
+                        var updateArray = chunk.GetNativeArray(receivedUpdateType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReceivedUpdates>(entities[i]);
+                            var updateList = updateArray[i].Updates;
+
+                            // Pool update lists to avoid excessive allocation
+                            updateList.Clear();
+                            Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update.Pool.Push(updateList);
+
+                            ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
+                        }
+                    }
+
+                    // Component Added
+                    if (chunk.Has(componentAddedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Component Removed
+                    if (chunk.Has(componentRemovedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Authority
+                    if (chunk.Has(authorityChangeType))
+                    {
+                        var authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entities[i]);
+                            AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
+                        }
+                    }
+
+                    // FirstEvent Event
+                    if (chunk.Has(firstEventEventType))
+                    {
+                        var firstEventEventArray = chunk.GetNativeArray(firstEventEventType);
+                        for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<ReceivedEvents.FirstEvent>(entities[i]);
-                            ReferenceTypeProviders.FirstEventProvider.Free(data[i].handle);
+                            ReferenceTypeProviders.FirstEventProvider.Free(firstEventEventArray[i].handle);
                         }
                     }
-                }
-                // Clean SecondEvent
-                {
-                    var group = eventGroups[1];
-                    if (!group.IsEmptyIgnoreFilter)
+
+                    // SecondEvent Event
+                    if (chunk.Has(secondEventEventType))
                     {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.SecondEvent>();
-                        for (var i = 0; i < entities.Length; i++)
+                        var secondEventEventArray = chunk.GetNativeArray(secondEventEventType);
+                        for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<ReceivedEvents.SecondEvent>(entities[i]);
-                            ReferenceTypeProviders.SecondEventProvider.Free(data[i].handle);
+                            ReferenceTypeProviders.SecondEventProvider.Free(secondEventEventArray[i].handle);
+                        }
+                    }
+
+                    // FirstCommand Command
+                    if (chunk.Has(firstCommandRequestType))
+                    {
+                            var firstCommandRequestArray = chunk.GetNativeArray(firstCommandRequestType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandRequests.FirstCommand>(entities[i]);
+                            ReferenceTypeProviders.FirstCommandRequestsProvider.Free(firstCommandRequestArray[i].CommandListHandle);
+                        }
+                    }
+
+                    if (chunk.Has(firstCommandResponseType))
+                    {
+                        var firstCommandResponseArray = chunk.GetNativeArray(firstCommandResponseType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandResponses.FirstCommand>(entities[i]);
+                            ReferenceTypeProviders.FirstCommandResponsesProvider.Free(firstCommandResponseArray[i].CommandListHandle);
+                        }
+                    }
+                    // SecondCommand Command
+                    if (chunk.Has(secondCommandRequestType))
+                    {
+                            var secondCommandRequestArray = chunk.GetNativeArray(secondCommandRequestType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandRequests.SecondCommand>(entities[i]);
+                            ReferenceTypeProviders.SecondCommandRequestsProvider.Free(secondCommandRequestArray[i].CommandListHandle);
+                        }
+                    }
+
+                    if (chunk.Has(secondCommandResponseType))
+                    {
+                        var secondCommandResponseArray = chunk.GetNativeArray(secondCommandResponseType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandResponses.SecondCommand>(entities[i]);
+                            ReferenceTypeProviders.SecondCommandResponsesProvider.Free(secondCommandResponseArray[i].CommandListHandle);
                         }
                     }
                 }
-            }
 
-            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
-            {
-                if (!commandCleanupGroups[0].IsEmptyIgnoreFilter)
-                {
-                    var requestsGroup = commandCleanupGroups[0];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.FirstCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandRequests.FirstCommand>(entities[i]);
-                        ReferenceTypeProviders.FirstCommandRequestsProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-
-                if (!commandCleanupGroups[1].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[1];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.FirstCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.FirstCommand>(entities[i]);
-                        ReferenceTypeProviders.FirstCommandResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-                if (!commandCleanupGroups[2].IsEmptyIgnoreFilter)
-                {
-                    var requestsGroup = commandCleanupGroups[2];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.SecondCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandRequests.SecondCommand>(entities[i]);
-                        ReferenceTypeProviders.SecondCommandRequestsProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-
-                if (!commandCleanupGroups[3].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[3];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.SecondCommand>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.SecondCommand>(entities[i]);
-                        ReferenceTypeProviders.SecondCommandResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
+                chunkArray.Dispose();
             }
         }
     }
-
 }

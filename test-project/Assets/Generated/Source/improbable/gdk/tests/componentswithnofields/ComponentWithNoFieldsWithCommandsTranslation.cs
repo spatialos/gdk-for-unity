@@ -373,15 +373,19 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public override uint ComponentId => 1005;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(),
-                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(),
+                    ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-            private CommandStorages.Cmd cmdStorage;
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
                 new EntityArchetypeQuery()
                 {
@@ -395,49 +399,57 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 },
             };
 
+            private CommandStorages.Cmd cmdStorage;
+
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
                 cmdStorage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.Cmd>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>();
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>();
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
-
-                    if (data.DirtyBit || dirtyEvents > 0)
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
+                    for (var i = 0; i < componentArray.Length; i++)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1005);
-                        Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.SerializeUpdate(data, update);
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
 
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+                        if (data.DirtyBit || dirtyEvents > 0)
+                        {
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1005);
+                            Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.SerializeUpdate(data, update);
 
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
+                        }
                     }
                 }
 
+                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
-                var entityType = sendSystem.GetArchetypeChunkEntityType();
+                var entityType = system.GetArchetypeChunkEntityType();
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[0], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -499,91 +511,109 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            {
+                All = Array.Empty<ComponentType>(),
+                Any = new ComponentType[]
+                {
+                    ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(),
+                    ComponentType.Create<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.Create<CommandRequests.Cmd>(),
+                    ComponentType.Create<CommandResponses.Cmd>(),
+                },
+                None = Array.Empty<ComponentType>(),
             };
 
-            public override ComponentType[] EventComponentTypes => new ComponentType[] {
-            };
-
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
-
-            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
-                ComponentType.ReadOnly<CommandRequests.Cmd>(),
-                ComponentType.ReadOnly<CommandResponses.Cmd>(),
-            };
-
-            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+                EntityCommandBuffer buffer)
             {
-                if (updateGroup.IsEmptyIgnoreFilter)
+                var entityType = system.GetArchetypeChunkEntityType();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
+
+                var cmdRequestType = system.GetArchetypeChunkComponentType<CommandRequests.Cmd>();
+                var cmdResponseType = system.GetArchetypeChunkComponentType<CommandResponses.Cmd>();
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+                foreach (var chunk in chunkArray)
                 {
-                    return;
-                }
+                    var entities = chunk.GetNativeArray(entityType);
 
-                var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(entities[i]);
-                    var updateList = data[i].Updates;
-
-                    // Pool update lists to avoid excessive allocation
-                    updateList.Clear();
-                    Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update.Pool.Push(updateList);
-
-                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
-                }
-            }
-
-            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
-            {
-                if (authorityChangeGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(entities[i]);
-                    AuthorityChangesProvider.Free(data[i].Handle);
-                }
-            }
-
-            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
-            {
-            }
-
-            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
-            {
-                if (!commandCleanupGroups[0].IsEmptyIgnoreFilter)
-                {
-                    var requestsGroup = commandCleanupGroups[0];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.Cmd>();
-                    for (var i = 0; i < entities.Length; i++)
+                    // Updates
+                    if (chunk.Has(receivedUpdateType))
                     {
-                        buffer.RemoveComponent<CommandRequests.Cmd>(entities[i]);
-                        ReferenceTypeProviders.CmdRequestsProvider.Free(data[i].CommandListHandle);
+                        var updateArray = chunk.GetNativeArray(receivedUpdateType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(entities[i]);
+                            var updateList = updateArray[i].Updates;
+
+                            // Pool update lists to avoid excessive allocation
+                            updateList.Clear();
+                            Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update.Pool.Push(updateList);
+
+                            ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
+                        }
+                    }
+
+                    // Component Added
+                    if (chunk.Has(componentAddedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Component Removed
+                    if (chunk.Has(componentRemovedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Authority
+                    if (chunk.Has(authorityChangeType))
+                    {
+                        var authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(entities[i]);
+                            AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
+                        }
+                    }
+
+                    // Cmd Command
+                    if (chunk.Has(cmdRequestType))
+                    {
+                            var cmdRequestArray = chunk.GetNativeArray(cmdRequestType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandRequests.Cmd>(entities[i]);
+                            ReferenceTypeProviders.CmdRequestsProvider.Free(cmdRequestArray[i].CommandListHandle);
+                        }
+                    }
+
+                    if (chunk.Has(cmdResponseType))
+                    {
+                        var cmdResponseArray = chunk.GetNativeArray(cmdResponseType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandResponses.Cmd>(entities[i]);
+                            ReferenceTypeProviders.CmdResponsesProvider.Free(cmdResponseArray[i].CommandListHandle);
+                        }
                     }
                 }
 
-                if (!commandCleanupGroups[1].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[1];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.Cmd>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.Cmd>(entities[i]);
-                        ReferenceTypeProviders.CmdResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
+                chunkArray.Dispose();
             }
         }
     }
-
 }

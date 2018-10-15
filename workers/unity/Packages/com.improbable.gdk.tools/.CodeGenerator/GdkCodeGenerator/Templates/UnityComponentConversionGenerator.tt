@@ -486,20 +486,22 @@ namespace <#= qualifiedNamespace #>
         {
             public override uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
 <# foreach (var eventDetail in eventDetailsList) { #>
-                ComponentType.ReadOnly<EventSender.<#= eventDetail.EventName #>>(),
+                    ComponentType.Create<EventSender.<#= eventDetail.EventName #>>(),
 <# } #>
-                ComponentType.Create<<#= componentNamespace #>.Component>(),
-                ComponentType.ReadOnly<Authoritative<<#= componentNamespace #>.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+                    ComponentType.Create<<#= componentNamespace #>.Component>(),
+                    ComponentType.ReadOnly<Authoritative<<#= componentNamespace #>.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-<# foreach (var commandDetails in commandDetailsList) { #>
-            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
-<# } #>
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
                 new EntityArchetypeQuery()
@@ -515,6 +517,10 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
+<# foreach (var commandDetails in commandDetailsList) { #>
+            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
+<# } #>
+
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -523,63 +529,72 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 <#= profilingStart #>
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<<#= componentNamespace #>.Component>();
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<<#= componentNamespace #>.Component>();
 <# foreach (var eventDetail in eventDetailsList) { #>
-                var event<#= eventDetail.EventName #>Array = replicationGroup.GetComponentDataArray<EventSender.<#= eventDetail.EventName #>>();
+                var event<#= eventDetail.EventName #>Type = system.GetArchetypeChunkComponentType<EventSender.<#= eventDetail.EventName #>>(true);
 <# } #>
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
 <# foreach (var eventDetail in eventDetailsList) { #>
-                    var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
-                    dirtyEvents += events<#= eventDetail.EventName #>.Count;
+                    var event<#= eventDetail.EventName #>Array = chunk.GetNativeArray(event<#= eventDetail.EventName #>Type);
+<# } #>
+                    for (var i = 0; i < componentArray.Length; i++)
+                    {
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
+<# foreach (var eventDetail in eventDetailsList) { #>
+                        var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
+                        dirtyEvents += events<#= eventDetail.EventName #>.Count;
 <# } #>
 
-                    if (data.DirtyBit || dirtyEvents > 0)
-                    {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
-                        <#= componentNamespace #>.Serialization.SerializeUpdate(data, update);
+                        if (data.DirtyBit || dirtyEvents > 0)
+                        {
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
+                            <#= componentNamespace #>.Serialization.SerializeUpdate(data, update);
 
 <# if (eventDetailsList.Count > 0) { #>
-                        // Serialize events
-                        var eventsObject = update.GetEvents();
+                            // Serialize events
+                            var eventsObject = update.GetEvents();
 <# foreach (var eventDetail in eventDetailsList) { #>
-                        if (events<#= eventDetail.EventName #>.Count > 0)
-                        {
-                            foreach (var e in events<#= eventDetail.EventName #>)
+                            if (events<#= eventDetail.EventName #>.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
-                                <#= eventDetail.FqnPayloadType #>.Serialization.Serialize(e, obj);
+                                foreach (var e in events<#= eventDetail.EventName #>)
+                                {
+                                    var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
+                                    <#= eventDetail.FqnPayloadType #>.Serialization.Serialize(e, obj);
+                                }
+
+                                events<#= eventDetail.EventName #>.Clear();
                             }
 
-                            events<#= eventDetail.EventName #>.Clear();
+<# } #>
+<# } #>
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
                         }
-
-<# } #>
-<# } #>
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
-
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
                     }
                 }
 
+                chunkArray.Dispose();
                 <#= profilingEnd #>
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
 <# if (commandDetailsList.Count > 0) { #>
                 <#= profilingStart #>
-                var entityType = sendSystem.GetArchetypeChunkEntityType();
+                var entityType = system.GetArchetypeChunkEntityType();
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandDetails = commandDetailsList[i];
@@ -587,10 +602,10 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
 #>
                 {
-                    var senderType = sendSystem.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
-                    var responderType = sendSystem.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
+                    var senderType = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
+                    var responderType = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
 
-                    var chunks = EntityManager.CreateArchetypeChunkArray(CommandQueries[<#= i #>], Allocator.TempJob);
+                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -654,118 +669,146 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<<#= componentNamespace #>.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<<#= componentNamespace #>.Component>>(),
-            };
-
-            public override ComponentType[] EventComponentTypes => new ComponentType[] {
+            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            {
+                All = Array.Empty<ComponentType>(),
+                Any = new ComponentType[]
+                {
+                    ComponentType.Create<ComponentAdded<<#= componentNamespace #>.Component>>(),
+                    ComponentType.Create<ComponentRemoved<<#= componentNamespace #>.Component>>(),
+                    ComponentType.Create<<#= componentNamespace #>.ReceivedUpdates>(),
+                    ComponentType.Create<AuthorityChanges<<#= componentNamespace #>.Component>>(),
 <# foreach (var eventDetails in eventDetailsList) { #>
-                ComponentType.ReadOnly<ReceivedEvents.<#= eventDetails.EventName #>>(),
+                    ComponentType.Create<ReceivedEvents.<#= eventDetails.EventName #>>(),
 <# } #>
-            };
-
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<<#= componentNamespace #>.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<<#= componentNamespace #>.Component>>();
-
-            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
 <# foreach (var commandDetails in commandDetailsList) { #>
-                ComponentType.ReadOnly<CommandRequests.<#= commandDetails.CommandName #>>(),
-                ComponentType.ReadOnly<CommandResponses.<#= commandDetails.CommandName #>>(),
+                    ComponentType.Create<CommandRequests.<#= commandDetails.CommandName #>>(),
+                    ComponentType.Create<CommandResponses.<#= commandDetails.CommandName #>>(),
 <# } #>
+                },
+                None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+                EntityCommandBuffer buffer)
             {
-                if (updateGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<<#= componentNamespace #>.ReceivedUpdates>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<<#= componentNamespace #>.ReceivedUpdates>(entities[i]);
-                    var updateList = data[i].Updates;
-
-                    // Pool update lists to avoid excessive allocation
-                    updateList.Clear();
-                    <#= componentNamespace #>.Update.Pool.Push(updateList);
-
-                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
-                }
-            }
-
-            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
-            {
-                if (authorityChangeGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<<#= componentNamespace #>.Component>>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<AuthorityChanges<<#= componentNamespace #>.Component>>(entities[i]);
-                    AuthorityChangesProvider.Free(data[i].Handle);
-                }
-            }
-
-            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
-            {
-<# for (var i = 0; i < eventDetailsList.Count; i++) { #>
-<# var eventDetails = eventDetailsList[i]; #>
-                // Clean <#= eventDetails.EventName #>
-                {
-                    var group = eventGroups[<#= i #>];
-                    if (!group.IsEmptyIgnoreFilter)
-                    {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.<#= eventDetails.EventName #>>();
-                        for (var i = 0; i < entities.Length; i++)
-                        {
-                            buffer.RemoveComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entities[i]);
-                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Free(data[i].handle);
-                        }
-                    }
-                }
+                var entityType = system.GetArchetypeChunkEntityType();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<<#= componentNamespace #>.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<<#= componentNamespace #>.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<<#= componentNamespace #>.ReceivedUpdates>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<<#= componentNamespace #>.Component>>();
+<#
+for (var i = 0; i < eventDetailsList.Count; i++) {
+var eventDetails = eventDetailsList[i];
+#>
+                var <#= eventDetails.CamelCaseEventName #>EventType = system.GetArchetypeChunkComponentType<ReceivedEvents.<#= eventDetails.EventName #>>();
 <# } #>
-            }
-
-            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
-            {
 <#
 for (var j = 0; j < commandDetailsList.Count; j++) {
     var commandDetails = commandDetailsList[j];
 #>
-                if (!commandCleanupGroups[<#= 2*j #>].IsEmptyIgnoreFilter)
+
+                var <#= commandDetails.CamelCaseCommandName #>RequestType = system.GetArchetypeChunkComponentType<CommandRequests.<#= commandDetails.CommandName #>>();
+                var <#= commandDetails.CamelCaseCommandName #>ResponseType = system.GetArchetypeChunkComponentType<CommandResponses.<#= commandDetails.CommandName #>>();
+<# } #>
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+                foreach (var chunk in chunkArray)
                 {
-                    var requestsGroup = commandCleanupGroups[<#= 2*j #>];
-                    var entities = requestsGroup.GetEntityArray();
-                    var data = requestsGroup.GetComponentDataArray<CommandRequests.<#= commandDetails.CommandName #>>();
-                    for (var i = 0; i < entities.Length; i++)
+                    var entities = chunk.GetNativeArray(entityType);
+
+                    // Updates
+                    if (chunk.Has(receivedUpdateType))
                     {
-                        buffer.RemoveComponent<CommandRequests.<#= commandDetails.CommandName #>>(entities[i]);
-                        ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Free(data[i].CommandListHandle);
+                        var updateArray = chunk.GetNativeArray(receivedUpdateType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<<#= componentNamespace #>.ReceivedUpdates>(entities[i]);
+                            var updateList = updateArray[i].Updates;
+
+                            // Pool update lists to avoid excessive allocation
+                            updateList.Clear();
+                            <#= componentNamespace #>.Update.Pool.Push(updateList);
+
+                            ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
+                        }
                     }
+
+                    // Component Added
+                    if (chunk.Has(componentAddedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentAdded<<#= componentNamespace #>.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Component Removed
+                    if (chunk.Has(componentRemovedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentRemoved<<#= componentNamespace #>.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Authority
+                    if (chunk.Has(authorityChangeType))
+                    {
+                        var authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<AuthorityChanges<<#= componentNamespace #>.Component>>(entities[i]);
+                            AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
+                        }
+                    }
+
+<#
+for (var i = 0; i < eventDetailsList.Count; i++) {
+var eventDetails = eventDetailsList[i];
+#>
+                    // <#= eventDetails.EventName #> Event
+                    if (chunk.Has(<#= eventDetails.CamelCaseEventName #>EventType))
+                    {
+                        var <#= eventDetails.CamelCaseEventName #>EventArray = chunk.GetNativeArray(<#= eventDetails.CamelCaseEventName #>EventType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entities[i]);
+                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Free(<#= eventDetails.CamelCaseEventName #>EventArray[i].handle);
+                        }
+                    }
+
+<# } #>
+<#
+for (var j = 0; j < commandDetailsList.Count; j++) {
+    var commandDetails = commandDetailsList[j];
+#>
+                    // <#= commandDetails.CommandName #> Command
+                    if (chunk.Has(<#= commandDetails.CamelCaseCommandName #>RequestType))
+                    {
+                            var <#= commandDetails.CamelCaseCommandName #>RequestArray = chunk.GetNativeArray(<#= commandDetails.CamelCaseCommandName #>RequestType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandRequests.<#= commandDetails.CommandName #>>(entities[i]);
+                            ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Free(<#= commandDetails.CamelCaseCommandName #>RequestArray[i].CommandListHandle);
+                        }
+                    }
+
+                    if (chunk.Has(<#= commandDetails.CamelCaseCommandName #>ResponseType))
+                    {
+                        var <#= commandDetails.CamelCaseCommandName #>ResponseArray = chunk.GetNativeArray(<#= commandDetails.CamelCaseCommandName #>ResponseType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<CommandResponses.<#= commandDetails.CommandName #>>(entities[i]);
+                            ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Free(<#= commandDetails.CamelCaseCommandName #>ResponseArray[i].CommandListHandle);
+                        }
+                    }
+<# } #>
                 }
 
-                if (!commandCleanupGroups[<#= 2*j + 1 #>].IsEmptyIgnoreFilter)
-                {
-                    var responsesGroup = commandCleanupGroups[<#= 2*j + 1 #>];
-                    var entities = responsesGroup.GetEntityArray();
-                    var data = responsesGroup.GetComponentDataArray<CommandResponses.<#= commandDetails.CommandName #>>();
-                    for (var i = 0; i < entities.Length; i++)
-                    {
-                        buffer.RemoveComponent<CommandResponses.<#= commandDetails.CommandName #>>(entities[i]);
-                        ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Free(data[i].CommandListHandle);
-                    }
-                }
-<# } #>
+                chunkArray.Dispose();
             }
         }
     }
-
 }

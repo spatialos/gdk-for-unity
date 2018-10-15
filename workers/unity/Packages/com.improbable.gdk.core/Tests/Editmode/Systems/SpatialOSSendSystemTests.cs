@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.Core.CodegenAdapters;
+﻿using System;
+using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.Core;
 using NUnit.Framework;
@@ -58,18 +59,26 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     public class TestComponentReplicationHandler : ComponentReplicationHandler
     {
         public override uint ComponentId => SpatialOSSendSystemTests.TestComponentId;
-        public override ComponentType[] ReplicationComponentTypes => new ComponentType[0];
+
+        public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+        {
+            All = Array.Empty<ComponentType>(),
+            Any = Array.Empty<ComponentType>(),
+            None = Array.Empty<ComponentType>(),
+        };
+
+        public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[] { };
 
         public TestComponentReplicationHandler(EntityManager entityManager) : base(entityManager)
         {
         }
 
-        public override void ExecuteReplication(ComponentGroup replicationGroup, Connection connection)
+        public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, Connection connection)
         {
             throw new System.NotImplementedException();
         }
 
-        public override void SendCommands(SpatialOSSendSystem sendSystem, Connection connection)
+        public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, Connection connection)
         {
             throw new System.NotImplementedException();
         }

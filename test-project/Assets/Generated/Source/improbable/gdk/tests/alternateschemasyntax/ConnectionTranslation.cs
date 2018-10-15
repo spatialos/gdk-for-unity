@@ -302,149 +302,178 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             public override uint ComponentId => 1105;
 
-            public override ComponentType[] ReplicationComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<EventSender.MyEvent>(),
-                ComponentType.Create<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
-                ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
-                ComponentType.ReadOnly<SpatialEntityId>()
+            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<EventSender.MyEvent>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
+                    ComponentType.ReadOnly<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>(),
             };
 
-
-            private readonly EntityArchetypeQuery[] CommandQueries =
+            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
             };
+
 
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
                 Profiler.BeginSample("Connection");
 
-                var entityIdDataArray = replicationGroup.GetComponentDataArray<SpatialEntityId>();
-                var componentDataArray = replicationGroup.GetComponentDataArray<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>();
-                var eventMyEventArray = replicationGroup.GetComponentDataArray<EventSender.MyEvent>();
-
-                for (var i = 0; i < componentDataArray.Length; i++)
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>();
+                var eventMyEventType = system.GetArchetypeChunkComponentType<EventSender.MyEvent>(true);
+                foreach (var chunk in chunkArray)
                 {
-                    var data = componentDataArray[i];
-                    var dirtyEvents = 0;
-                    var eventsMyEvent = eventMyEventArray[i].Events;
-                    dirtyEvents += eventsMyEvent.Count;
-
-                    if (data.DirtyBit || dirtyEvents > 0)
+                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                    var componentArray = chunk.GetNativeArray(componentType);
+                    var eventMyEventArray = chunk.GetNativeArray(eventMyEventType);
+                    for (var i = 0; i < componentArray.Length; i++)
                     {
-                        var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1105);
-                        Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
+                        var data = componentArray[i];
+                        var dirtyEvents = 0;
+                        var eventsMyEvent = eventMyEventArray[i].Events;
+                        dirtyEvents += eventsMyEvent.Count;
 
-                        // Serialize events
-                        var eventsObject = update.GetEvents();
-                        if (eventsMyEvent.Count > 0)
+                        if (data.DirtyBit || dirtyEvents > 0)
                         {
-                            foreach (var e in eventsMyEvent)
+                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1105);
+                            Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
+
+                            // Serialize events
+                            var eventsObject = update.GetEvents();
+                            if (eventsMyEvent.Count > 0)
                             {
-                                var obj = eventsObject.AddObject(1);
-                                global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Serialize(e, obj);
+                                foreach (var e in eventsMyEvent)
+                                {
+                                    var obj = eventsObject.AddObject(1);
+                                    global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Serialize(e, obj);
+                                }
+
+                                eventsMyEvent.Clear();
                             }
 
-                            eventsMyEvent.Clear();
+                            // Send serialized update over the wire
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+
+                            data.DirtyBit = false;
+                            componentArray[i] = data;
                         }
-
-                        // Send serialized update over the wire
-                        connection.SendComponentUpdate(entityIdDataArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
-
-                        data.DirtyBit = false;
-                        componentDataArray[i] = data;
                     }
                 }
 
+                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(SpatialOSSendSystem sendSystem, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
             {
             }
         }
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override ComponentType[] CleanUpComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
-                ComponentType.ReadOnly<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            {
+                All = Array.Empty<ComponentType>(),
+                Any = new ComponentType[]
+                {
+                    ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                    ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                    ComponentType.Create<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(),
+                    ComponentType.Create<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(),
+                    ComponentType.Create<ReceivedEvents.MyEvent>(),
+                },
+                None = Array.Empty<ComponentType>(),
             };
 
-            public override ComponentType[] EventComponentTypes => new ComponentType[] {
-                ComponentType.ReadOnly<ReceivedEvents.MyEvent>(),
-            };
-
-            public override ComponentType ComponentUpdateType => ComponentType.ReadOnly<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
-            public override ComponentType AuthorityChangesType => ComponentType.ReadOnly<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
-
-            public override ComponentType[] CommandReactiveTypes => new ComponentType[] {
-            };
-
-            public override void CleanupUpdates(ComponentGroup updateGroup, ref EntityCommandBuffer buffer)
+            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+                EntityCommandBuffer buffer)
             {
-                if (updateGroup.IsEmptyIgnoreFilter)
+                var entityType = system.GetArchetypeChunkEntityType();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
+                var myEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.MyEvent>();
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+                foreach (var chunk in chunkArray)
                 {
-                    return;
-                }
+                    var entities = chunk.GetNativeArray(entityType);
 
-                var entities = updateGroup.GetEntityArray();
-                var data = updateGroup.GetComponentDataArray<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entities[i]);
-                    var updateList = data[i].Updates;
-
-                    // Pool update lists to avoid excessive allocation
-                    updateList.Clear();
-                    Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update.Pool.Push(updateList);
-
-                    ReferenceTypeProviders.UpdatesProvider.Free(data[i].handle);
-                }
-            }
-
-            public override void CleanupAuthChanges(ComponentGroup authorityChangeGroup, ref EntityCommandBuffer buffer)
-            {
-                if (authorityChangeGroup.IsEmptyIgnoreFilter)
-                {
-                    return;
-                }
-
-                var entities = authorityChangeGroup.GetEntityArray();
-                var data = authorityChangeGroup.GetComponentDataArray<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
-                for (var i = 0; i < entities.Length; i++)
-                {
-                    buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
-                    AuthorityChangesProvider.Free(data[i].Handle);
-                }
-            }
-
-            public override void CleanupEvents(ComponentGroup[] eventGroups, ref EntityCommandBuffer buffer)
-            {
-                // Clean MyEvent
-                {
-                    var group = eventGroups[0];
-                    if (!group.IsEmptyIgnoreFilter)
+                    // Updates
+                    if (chunk.Has(receivedUpdateType))
                     {
-                        var entities = group.GetEntityArray();
-                        var data = group.GetComponentDataArray<ReceivedEvents.MyEvent>();
-                        for (var i = 0; i < entities.Length; i++)
+                        var updateArray = chunk.GetNativeArray(receivedUpdateType);
+                        for (int i = 0; i < entities.Length; ++i)
                         {
-                            buffer.RemoveComponent<ReceivedEvents.MyEvent>(entities[i]);
-                            ReferenceTypeProviders.MyEventProvider.Free(data[i].handle);
+                            buffer.RemoveComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entities[i]);
+                            var updateList = updateArray[i].Updates;
+
+                            // Pool update lists to avoid excessive allocation
+                            updateList.Clear();
+                            Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update.Pool.Push(updateList);
+
+                            ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
                         }
                     }
-                }
-            }
 
-            public override void CleanupCommands(ComponentGroup[] commandCleanupGroups, ref EntityCommandBuffer buffer)
-            {
+                    // Component Added
+                    if (chunk.Has(componentAddedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Component Removed
+                    if (chunk.Has(componentRemovedType))
+                    {
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
+                        }
+                    }
+
+                    // Authority
+                    if (chunk.Has(authorityChangeType))
+                    {
+                        var authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entities[i]);
+                            AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
+                        }
+                    }
+
+                    // MyEvent Event
+                    if (chunk.Has(myEventEventType))
+                    {
+                        var myEventEventArray = chunk.GetNativeArray(myEventEventType);
+                        for (int i = 0; i < entities.Length; ++i)
+                        {
+                            buffer.RemoveComponent<ReceivedEvents.MyEvent>(entities[i]);
+                            ReferenceTypeProviders.MyEventProvider.Free(myEventEventArray[i].handle);
+                        }
+                    }
+
+                }
+
+                chunkArray.Dispose();
             }
         }
     }
-
 }

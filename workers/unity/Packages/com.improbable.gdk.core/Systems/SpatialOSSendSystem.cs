@@ -52,8 +52,13 @@ namespace Improbable.Gdk.Core
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.ReplicateComponent(connection);
-                replicator.SendCommands(this, connection);
+                Profiler.BeginSample("ExecuteReplication");
+                replicator.Handler.ExecuteReplication(replicator.UpdateGroup, this, connection);
+                Profiler.EndSample();
+
+                Profiler.BeginSample("SendCommands");
+                replicator.Handler.SendCommands(replicator.CommandGroup, this, connection);
+                Profiler.EndSample();
             }
         }
 
@@ -63,8 +68,8 @@ namespace Improbable.Gdk.Core
             {
                 ComponentId = componentReplicationHandler.ComponentId,
                 Handler = componentReplicationHandler,
-                ReplicationComponentGroup =
-                    GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
+                UpdateGroup = GetComponentGroup(componentReplicationHandler.ComponentUpdateQuery),
+                CommandGroup = GetComponentGroup(componentReplicationHandler.CommandQueries),
             });
         }
 
@@ -90,24 +95,8 @@ namespace Improbable.Gdk.Core
         {
             public uint ComponentId;
             public ComponentReplicationHandler Handler;
-            public ComponentGroup ReplicationComponentGroup;
-
-            public void ReplicateComponent(Connection connection)
-            {
-                if (!ReplicationComponentGroup.IsEmptyIgnoreFilter)
-                {
-                    Profiler.BeginSample("ExecuteReplication");
-                    Handler.ExecuteReplication(ReplicationComponentGroup, connection);
-                    Profiler.EndSample();
-                }
-            }
-
-            public void SendCommands(SpatialOSSendSystem sendSystem, Connection connection)
-            {
-                Profiler.BeginSample("SendCommands");
-                Handler.SendCommands(sendSystem, connection);
-                Profiler.EndSample();
-            }
+            public ComponentGroup UpdateGroup;
+            public ComponentGroup CommandGroup;
         }
     }
 }
