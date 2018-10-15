@@ -53,7 +53,7 @@ namespace Improbable.Gdk.BuildSystem
                 var wantedWorkerTypes = workerTypesArg.Split(',');
                 foreach (var wantedWorkerType in wantedWorkerTypes)
                 {
-                    AssertWorkerCanBuildForEnvironment(wantedWorkerType, buildEnvironment);
+                    ValidateWorkerCanBuildForEnvironment(wantedWorkerType, buildEnvironment);
                 }
 
                 LocalLaunch.BuildConfig();
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        public static void AssertWorkerCanBuildForEnvironment(string workerType, BuildEnvironment targetEnvironment)
+        public static void ValidateWorkerCanBuildForEnvironment(string workerType, BuildEnvironment targetEnvironment)
         {
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);

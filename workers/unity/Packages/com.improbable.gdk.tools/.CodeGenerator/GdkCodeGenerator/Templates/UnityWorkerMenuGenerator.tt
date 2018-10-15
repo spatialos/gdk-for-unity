@@ -72,7 +72,7 @@ var workerType = workerTypeList[i];
             {
                 try
                 {
-                    WorkerBuilder.AssertWorkerCanBuildForEnvironment(workerType, environment);
+                    WorkerBuilder.ValidateWorkerCanBuildForEnvironment(workerType, environment);
                 }
                 catch (System.Exception e)
                 {
