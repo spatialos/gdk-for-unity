@@ -45,15 +45,12 @@ public static class BuildSupportChecker
 
     public static BuildSupportCheckResult CheckBuildSupport(params BuildTarget[] buildTargets)
     {
-        string editorExePath = EditorApplication.applicationPath;
-
-        var editorDirectory = Directory.GetParent(editorExePath);
+        var editorDirectory = Directory.GetParent(EditorApplication.applicationPath);
 
 #if UNITY_EDITOR_OSX
         var playbackEnginesDirectory = Path.Combine(editorDirectory.FullName, "PlaybackEngines");
 #else
-        var installDirectory = editorDirectory.Parent;
-        var playbackEnginesDirectory = Path.Combine(installDirectory.FullName, "Editor", "Data", "PlaybackEngines");
+        var playbackEnginesDirectory = Path.Combine(editorDirectory.FullName, "Data", "PlaybackEngines");
 #endif
 
         var buildTargetsWithoutSupport = buildTargets
