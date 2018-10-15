@@ -175,7 +175,7 @@ There is a bug where the Unity Editor does not import the navmesh for the `FPS-S
 To do this:
 
 1. Open the `FPS-SimulatedPlayerCoordinator` scene located at `Assets/Fps/Scenes`.
-2. Click on the `FPS-Start_Large` object in the hierarchy, and enable the object.
+2. Click on the `FPS-Start_Large` object in the [Unity Hierarchy window](https://docs.unity3d.com/Manual/Hierarchy.html), and enable the object.
 3. Open the **Navigation** pane by clicking on **Windows** > **AI** > **Navigation**.
 4. Navigate to the **Bake** tab and click on the **Bake** button.
 
