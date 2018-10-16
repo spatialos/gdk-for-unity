@@ -1,26 +1,58 @@
-using System;
-using UnityEngine;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Mobile;
 #if UNITY_IOS
 using Improbable.Gdk.Mobile.Ios;
 #endif
-using Improbable.Gdk.Core;
+using System;
+using UnityEngine;
 
-namespace Playground.Worker
+namespace Playground
 {
-    public class IosClientWorkerConnector : AbstractMobileClientWorker
+    public class iOSClientWorkerConnector : MobileWorkerConnector
     {
+        [NonSerialized] public string IpAddress;
+        [NonSerialized] public ConnectionScreenController ConnectionScreenController;
+
+        [SerializeField] private GameObject level;
+
+        private GameObject levelInstance;
+
+        public async void TryConnect()
+        {
+            await Connect(WorkerUtils.iOSClient, new ForwardingDispatcher()).ConfigureAwait(false);
+        }
+
+        protected override void HandleWorkerConnectionEstablished()
+        {
+            ConnectionScreenController.OnSuccess();
+
+            WorkerUtils.AddClientSystems(Worker.World);
+            if (level == null)
+            {
+                return;
+            }
+
+            levelInstance = Instantiate(level, transform);
+            levelInstance.transform.SetParent(null);
+        }
+
+        protected override void HandleWorkerConnectionFailure()
+        {
+            ConnectionScreenController.OnConnectionFailed();
+        }
+
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            var hostIp = IpAddress;
-            if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && hostIp.Equals(string.Empty))
+            if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && IpAddress.Equals(string.Empty))
             {
                 return RuntimeConfigDefaults.ReceptionistHost;
             }
 
-            return hostIp;
+            return IpAddress;
 #else
-            throw new NotImplementedException("Incompatible platform: Please use iOS");
+            throw new PlatformNotSupportedException(
+                "This method is only defined for the iOS platform. Please check your build settings.");
 #endif
         }
     }
