@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.PlayerLifecycle;
@@ -11,72 +12,82 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatResponseSystem : ComponentSystem
     {
-        private struct InitializeGroup
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-            [ReadOnly]
-            public ComponentDataArray<PlayerHeartbeatClient.Component> NeedsHeartbeat;
-            public SubtractiveComponent<HeartbeatData> NoHeartbeatData;
-        }
+        private ComponentGroup group;
 
-        private struct HeartbeatGroup
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public EntityArray Entities;
-            public ComponentDataArray<HeartbeatData> Heartbeats;
-            public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> WorldCommandSenders;
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat> PlayerHeartbeatResponses;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-        }
+            base.OnCreateManager();
 
-        [Inject] private InitializeGroup initializeGroup;
-        [Inject] private HeartbeatGroup heartbeatGroup;
+            var query = new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.Create<HeartbeatData>(),
+                    ComponentType.Create<WorldCommands.DeleteEntity.CommandSender>(),
+                    ComponentType.ReadOnly<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(),
+                    ComponentType.ReadOnly<SpatialEntityId>(),
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>()
+            };
+
+            group = GetComponentGroup(query);
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < initializeGroup.Length; i++)
+            var heartbeatType = GetArchetypeChunkComponentType<HeartbeatData>();
+            var entityDeleterType = GetArchetypeChunkComponentType<WorldCommands.DeleteEntity.CommandSender>();
+            var responsesType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(true);
+            var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
+
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+            foreach (var chunk in chunkArray)
             {
-                PostUpdateCommands.AddComponent(initializeGroup.Entities[i], new HeartbeatData());
+                var heartbeats = chunk.GetNativeArray(heartbeatType);
+                var responses = chunk.GetNativeArray(responsesType);
+                var deleteRequesters = chunk.GetNativeArray(entityDeleterType);
+                var spatialIds = chunk.GetNativeArray(spatialIdType);
+
+                for (int i = 0; i < responses.Length; i++)
+                {
+                    var heartbeatData = heartbeats[i];
+
+                    var stillAlive = false;
+                    foreach (var response in responses[i].Responses)
+                    {
+                        if (response.StatusCode == StatusCode.Success)
+                        {
+                            stillAlive = true;
+                            break;
+                        }
+                    }
+
+                    if (stillAlive)
+                    {
+                        heartbeatData.NumFailedHeartbeats = 0;
+                    }
+                    else
+                    {
+                        heartbeatData.NumFailedHeartbeats += 1;
+
+                        if (heartbeatData.NumFailedHeartbeats >= PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
+                        {
+                            var entityDeleteSender = deleteRequesters[i];
+                            entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+                            (
+                                spatialIds[i].EntityId
+                            ));
+                            deleteRequesters[i] = entityDeleteSender;
+                        }
+                    }
+
+                    heartbeats[i] = heartbeatData;
+                }
             }
 
-            for (var i = 0; i < heartbeatGroup.Length; i++)
-            {
-                var heartbeatsComponent = heartbeatGroup.Heartbeats[i];
-
-                var stillAlive = false;
-                var responses = heartbeatGroup.PlayerHeartbeatResponses[i].Responses;
-                foreach (var response in responses)
-                {
-                    if (response.StatusCode == StatusCode.Success)
-                    {
-                        stillAlive = true;
-                        break;
-                    }
-                }
-
-                if (stillAlive)
-                {
-                    heartbeatsComponent.NumFailedHeartbeats = 0;
-                }
-                else
-                {
-                    heartbeatsComponent.NumFailedHeartbeats++;
-
-                    if (heartbeatsComponent.NumFailedHeartbeats >=
-                        PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
-                    {
-                        var entityDeleteSender = heartbeatGroup.WorldCommandSenders[i];
-                        entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
-                        (
-                            heartbeatGroup.SpatialEntityIds[i].EntityId
-                        ));
-                        heartbeatGroup.WorldCommandSenders[i] = entityDeleteSender;
-                    }
-                }
-
-                heartbeatGroup.Heartbeats[i] = heartbeatsComponent;
-            }
+            chunkArray.Dispose();
         }
     }
 }
