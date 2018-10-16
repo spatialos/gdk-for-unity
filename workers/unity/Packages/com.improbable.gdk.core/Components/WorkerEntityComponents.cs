@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -35,5 +36,16 @@ namespace Improbable.Gdk.Core
         ///     The reported reason for disconnecting
         /// </summary>
         public string ReasonForDisconnect;
+    }
+
+    /// <summary>
+    ///     ECS Component added to the worker entity which contains the worker flags
+    /// </summary>
+    public struct WorkerFlags : ISharedComponentData
+    {
+        /// <summary>
+        ///     A dictionary from flag name to flag value
+        /// </summary>
+        public Dictionary<string, string> Flags;
     }
 }

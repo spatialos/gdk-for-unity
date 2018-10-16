@@ -53,8 +53,14 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
             var entityManager = World.GetOrCreateManager<EntityManager>();
-            WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
+            WorkerEntity = entityManager.CreateEntity(ComponentType.Create<OnConnected>(),
+                ComponentType.Create<WorkerEntityTag>(), ComponentType.Create<WorkerFlags>());
             Enabled = false;
+
+            entityManager.SetSharedComponentData(WorkerEntity, new WorkerFlags
+            {
+                Flags = new Dictionary<string, string>()
+            });
         }
 
         protected override void OnUpdate()
