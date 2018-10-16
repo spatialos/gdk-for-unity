@@ -86,7 +86,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                             worker.LogDispatcher.HandleLog(LogType.Log,
                                 new LogEvent(
-                                        $"Client failed to respond to too many heartbeats. Deleting player.")
+                                        $"A client failed to respond to too many heartbeats. Deleting their player.")
                                     .WithField("EntityID", entityId));
                         }
                     }
