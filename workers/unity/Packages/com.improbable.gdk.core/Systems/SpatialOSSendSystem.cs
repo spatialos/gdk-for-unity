@@ -93,9 +93,8 @@ namespace Improbable.Gdk.Core
                 AddComponentReplicator(componentReplicationHandler);
             }
 
-            // Force the position component to be replicated last to delay authority changes until this frame's updates
-            // are applied as expected. If the position update is applied earlier and triggers an authority change -
-            // the other updates may be dropped leading to inconsistent states.
+            // Force the position component to be replicated last. A position update can trigger an authority
+            // change, which could cause subsequent updates to be dropped.
             var positionReplicatorIndex =
                 componentReplicators.FindIndex(replicator => replicator.ComponentId == PositionComponentId);
             var positionReplicator = componentReplicators[positionReplicatorIndex];
