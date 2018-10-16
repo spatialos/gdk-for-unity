@@ -5,6 +5,7 @@ using Improbable.PlayerLifecycle;
 using Improbable.Worker.Core;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -13,6 +14,8 @@ namespace Improbable.Gdk.PlayerLifecycle
     public class HandlePlayerHeartbeatResponseSystem : ComponentSystem
     {
         private ComponentGroup group;
+
+        [Inject] private WorkerSystem worker;
 
         protected override void OnCreateManager()
         {
@@ -38,7 +41,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             var heartbeatType = GetArchetypeChunkComponentType<HeartbeatData>();
             var entityDeleterType = GetArchetypeChunkComponentType<WorldCommands.DeleteEntity.CommandSender>();
-            var responsesType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(true);
+            var responsesType =
+                GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(true);
             var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
 
             var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
@@ -50,21 +54,21 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var deleteRequesters = chunk.GetNativeArray(entityDeleterType);
                 var spatialIds = chunk.GetNativeArray(spatialIdType);
 
-                for (int i = 0; i < responses.Length; i++)
+                for (var i = 0; i < responses.Length; i++)
                 {
                     var heartbeatData = heartbeats[i];
 
-                    var stillAlive = false;
+                    var responded = false;
                     foreach (var response in responses[i].Responses)
                     {
                         if (response.StatusCode == StatusCode.Success)
                         {
-                            stillAlive = true;
+                            responded = true;
                             break;
                         }
                     }
 
-                    if (stillAlive)
+                    if (responded)
                     {
                         heartbeatData.NumFailedHeartbeats = 0;
                     }
@@ -74,12 +78,16 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                         if (heartbeatData.NumFailedHeartbeats >= PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
                         {
-                            var entityDeleteSender = deleteRequesters[i];
-                            entityDeleteSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+                            var entityId = spatialIds[i].EntityId;
+                            deleteRequesters[i].RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
                             (
-                                spatialIds[i].EntityId
+                                entityId
                             ));
-                            deleteRequesters[i] = entityDeleteSender;
+
+                            worker.LogDispatcher.HandleLog(LogType.Log,
+                                new LogEvent(
+                                        $"Client failed to respond to too many heartbeats. Deleting player.")
+                                    .WithField("EntityID", entityId));
                         }
                     }
 

@@ -35,7 +35,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         protected override void OnUpdate()
         {
             var requestsType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>(true);
-            var responderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>(true);
+            var responderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>();
 
             var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
 
