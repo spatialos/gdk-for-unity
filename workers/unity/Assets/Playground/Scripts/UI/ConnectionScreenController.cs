@@ -28,31 +28,16 @@ namespace Playground
         private void TryConnect()
         {
             worker = Instantiate(clientWorkerPrefab);
-            var workerConnector = worker.GetComponent<MobileWorkerConnector>();
+            var workerConnector = worker.GetComponent<IMobileClient>();
 
-            switch (workerConnector)
+            if (workerConnector == null)
             {
-                case AndroidClientWorkerConnector _:
-                    var androidConnector = workerConnector as AndroidClientWorkerConnector;
-                    if (androidConnector != null)
-                    {
-                        androidConnector.IpAddress = IpAddress;
-                        androidConnector.ConnectionScreenController = this;
-                        androidConnector.TryConnect();
-                    }
-
-                    break;
-                case iOSClientWorkerConnector _:
-                    var iOSConnector = workerConnector as iOSClientWorkerConnector;
-                    if (iOSConnector != null)
-                    {
-                        iOSConnector.IpAddress = IpAddress;
-                        iOSConnector.ConnectionScreenController = this;
-                        iOSConnector.TryConnect();
-                    }
-
-                    break;
+                return;
             }
+
+            workerConnector.IpAddress = IpAddress;
+            workerConnector.ConnectionScreenController = this;
+            workerConnector.TryConnect();
         }
 
         public void OnSuccess()

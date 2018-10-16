@@ -9,10 +9,10 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class AndroidClientWorkerConnector : MobileWorkerConnector
+    public class AndroidClientWorkerConnector : MobileWorkerConnector, IMobileClient
     {
-        [NonSerialized] public string IpAddress;
-        [NonSerialized] public ConnectionScreenController ConnectionScreenController;
+        public string IpAddress { get; set; }
+        public ConnectionScreenController ConnectionScreenController { get; set; }
 
         [SerializeField] private GameObject level;
 

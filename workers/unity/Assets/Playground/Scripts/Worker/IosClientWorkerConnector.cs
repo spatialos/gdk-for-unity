@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class iOSClientWorkerConnector : MobileWorkerConnector
+    public class iOSClientWorkerConnector : MobileWorkerConnector, IMobileClient
     {
-        [NonSerialized] public string IpAddress;
-        [NonSerialized] public ConnectionScreenController ConnectionScreenController;
+        public string IpAddress { get; set; }
+        public ConnectionScreenController ConnectionScreenController { get; set; }
 
         [SerializeField] private GameObject level;
 
