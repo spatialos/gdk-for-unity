@@ -194,6 +194,7 @@ namespace Improbable.Gdk.Core
             World.CreateManager<WorkerSystem>(Connection, LogDispatcher, WorkerType, Origin);
             World.GetOrCreateManager<SpatialOSSendSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
+            World.GetOrCreateManager<WorkerFlagSystem>();
             World.GetOrCreateManager<CleanReactiveComponentsSystem>();
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
