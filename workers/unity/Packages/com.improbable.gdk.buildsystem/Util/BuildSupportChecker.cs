@@ -7,6 +7,8 @@ using UnityEngine;
 
 public static class BuildSupportChecker
 {
+    private static readonly HashSet<BuildTarget> UnsupportedBuildTargetWarningDisplayed = new HashSet<BuildTarget>();
+
     public static BuildTarget[] GetBuildTargetsMissingBuildSupport(params BuildTarget[] buildTargets)
     {
         var editorDirectory = Directory.GetParent(EditorApplication.applicationPath);
@@ -33,7 +35,11 @@ public static class BuildSupportChecker
                     return !Directory.Exists(Path.Combine(playbackEnginesDirectory, playbackEnginesDirectoryName));
                 }
 
-                Debug.LogWarning($"Unsupported build target: {target}");
+                if (!UnsupportedBuildTargetWarningDisplayed.Contains(target))
+                {
+                    Debug.LogWarning($"Unsupported build target: {target}");
+                    UnsupportedBuildTargetWarningDisplayed.Add(target);
+                }
 
                 return false;
             })
