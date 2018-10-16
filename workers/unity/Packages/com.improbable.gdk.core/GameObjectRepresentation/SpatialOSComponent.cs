@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
@@ -30,7 +31,17 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// </summary>
         public WorkerSystem Worker;
 
+        /// <summary>
+        ///     An event that triggers when a worker flag changes.
+        /// </summary>
+        public event Action<string, string> OnWorkerFlagChange
+        {
+            add => flagSystem.OnWorkerFlagChange += value;
+            remove => flagSystem.OnWorkerFlagChange -= value;
+        }
+
         private EntityManager entityManager;
+        private WorkerFlagSystem flagSystem;
 
         /// <summary>
         ///     Initialise the SpatialOSComponent with its context.
@@ -46,6 +57,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             Worker = world.GetExistingManager<WorkerSystem>();
 
             entityManager = world.GetExistingManager<EntityManager>();
+            flagSystem = world.GetExistingManager<WorkerFlagSystem>();
         }
 
         /// <summary>
