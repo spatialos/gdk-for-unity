@@ -33,6 +33,22 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private EntityManager entityManager;
 
         /// <summary>
+        ///     Initialise the SpatialOSComponent with its context.
+        /// </summary>
+        /// <param name="world">The ECS world which the underlying ECS entity belongs to.</param>
+        /// <param name="spatialEntityId">The entity ID of the SpatialOS entity.</param>
+        /// <param name="entity">The ECS entity that represents the SpatialOS entity.</param>
+        public void Init(World world, EntityId spatialEntityId, Entity entity)
+        {
+            World = world;
+            SpatialEntityId = spatialEntityId;
+            Entity = entity;
+            Worker = world.GetExistingManager<WorkerSystem>();
+
+            entityManager = world.GetExistingManager<EntityManager>();
+        }
+
+        /// <summary>
         ///     Checks whether a SpatialOS entity is in this worker's view.
         /// </summary>
         /// <param name="entityId">The entity ID to check.</param>
@@ -59,7 +75,6 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return false;
             }
 
-            entityManager = entityManager ?? World.GetOrCreateManager<EntityManager>();
             if (!entityManager.HasComponent<GameObjectReference>(entity))
             {
                 return false;
@@ -94,7 +109,6 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return false;
             }
 
-            entityManager = entityManager ?? World.GetOrCreateManager<EntityManager>();
             if (!entityManager.HasComponent<GameObjectReference>(component.Entity))
             {
                 return false;

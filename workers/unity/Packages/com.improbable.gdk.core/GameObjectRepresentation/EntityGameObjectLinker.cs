@@ -92,10 +92,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             viewCommandBuffer.AddComponent(entity, new GameObjectReference { GameObject = gameObject });
 
             var spatialOSComponent = gameObject.AddComponent<SpatialOSComponent>();
-            spatialOSComponent.World = world;
-            spatialOSComponent.Worker = worker;
-            spatialOSComponent.Entity = entity;
-            spatialOSComponent.SpatialEntityId = spatialEntityId;
+            spatialOSComponent.Init(world, spatialEntityId, entity);
         }
 
         /// <summary>

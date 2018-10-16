@@ -140,10 +140,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         private static SpatialOSComponent LinkGameObjectToEntity(EntityId entityId, Entity entity, GameObject gameObject, World world)
         {
             var spatialOSComponent = gameObject.AddComponent<SpatialOSComponent>();
-            spatialOSComponent.Worker = world.GetExistingManager<WorkerSystem>();
-            spatialOSComponent.World = world;
-            spatialOSComponent.Entity = entity;
-            spatialOSComponent.SpatialEntityId = entityId;
+            spatialOSComponent.Init(world, entityId, entity);
             return spatialOSComponent;
         }
     }
