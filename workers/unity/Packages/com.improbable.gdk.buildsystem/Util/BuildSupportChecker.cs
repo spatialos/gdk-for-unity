@@ -7,29 +7,32 @@ using UnityEngine;
 
 public static class BuildSupportChecker
 {
+    private const string LinuxStandaloneSupportDirectoryName = "LinuxStandaloneSupport";
+    private const string WindowsStandaloneSupportDirectoryName = "WindowsStandaloneSupport";
+    private const string MacStandaloneSupportDirectoryName = "MacStandaloneSupport";
+
     private static readonly Dictionary<BuildTarget, string> BuildPlatformSupportModuleDirectoryNames;
 
     static BuildSupportChecker()
     {
-        BuildPlatformSupportModuleDirectoryNames = new Dictionary<BuildTarget, string>();
-
-        const string linuxStandaloneSupport = "LinuxStandaloneSupport";
-        const string windowsStandaloneSupport = "WindowsStandaloneSupport";
-        const string macStandaloneSupport = "MacStandaloneSupport";
-
-        BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneLinux] = linuxStandaloneSupport;
-        BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneLinux64] = linuxStandaloneSupport;
-        BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneLinuxUniversal] = linuxStandaloneSupport;
+        BuildPlatformSupportModuleDirectoryNames = new Dictionary<BuildTarget, string>
+        {
+            [BuildTarget.StandaloneLinux] = LinuxStandaloneSupportDirectoryName,
+            [BuildTarget.StandaloneLinux64] = LinuxStandaloneSupportDirectoryName,
+            [BuildTarget.StandaloneLinuxUniversal] = LinuxStandaloneSupportDirectoryName
+        };
 
         if (Application.platform != RuntimePlatform.OSXEditor)
         {
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneOSX] = macStandaloneSupport;
+            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneOSX] = MacStandaloneSupportDirectoryName;
         }
 
         if (Application.platform != RuntimePlatform.WindowsEditor)
         {
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows] = windowsStandaloneSupport;
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows64] = windowsStandaloneSupport;
+            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows] =
+                WindowsStandaloneSupportDirectoryName;
+            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows64] =
+                WindowsStandaloneSupportDirectoryName;
         }
     }
 
