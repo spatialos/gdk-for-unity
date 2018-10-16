@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -52,6 +51,17 @@ namespace Improbable.Gdk.BuildSystem
                         "UnityClient,UnityGameLogic");
 
                 var wantedWorkerTypes = workerTypesArg.Split(',');
+                foreach (var wantedWorkerType in wantedWorkerTypes)
+                {
+                    var buildTargetsForWorker = GetBuildTargetsForWorkerForEnvironment(wantedWorkerType, buildEnvironment);
+                    var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+
+                    if (buildTargetsMissingBuildSupport.Length > 0)
+                    {
+                        throw new BuildFailedException(BuildSupportChecker.ConstructMissingSupportMessage(wantedWorkerType, buildEnvironment, buildTargetsMissingBuildSupport));
+                    }
+                }
+
                 LocalLaunch.BuildConfig();
 
                 foreach (var wantedWorkerType in wantedWorkerTypes)
@@ -69,6 +79,17 @@ namespace Improbable.Gdk.BuildSystem
 
                 throw new BuildFailedException(e);
             }
+        }
+
+        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
+        {
+            var environmentConfig = SpatialOSBuildConfiguration.GetInstance().GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            if (environmentConfig == null)
+            {
+                return new BuildTarget[0];
+            }
+
+            return GetUnityBuildTargets(environmentConfig.BuildPlatforms);
         }
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
@@ -101,7 +122,7 @@ namespace Improbable.Gdk.BuildSystem
             Directory.Delete(EditorPaths.BuildScratchDirectory, true);
         }
 
-        private static IEnumerable<BuildTarget> GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
+        public static BuildTarget[] GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
         {
             var result = new List<BuildTarget>();
             if ((actualPlatforms & SpatialBuildPlatforms.Current) != 0)
