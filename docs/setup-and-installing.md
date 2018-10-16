@@ -18,7 +18,9 @@ In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](h
     - **Linux Build Support**
     - **Mac Build Support**
 
-> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+> **Note:** You need these build supports even though you are developing on a Mac.<br/>
+You need **Linux build support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
+You need **Windows Build Support** because your end-users may play your game on a Windows PC, so SpatialOS requires it.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -65,7 +67,9 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
     - **Linux Build Support**
     - **Windows Build Support**
 
-> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+> **Note:** You need these build supports even though you are developing on a Mac.<br/>
+You need **Linux build support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
+You need **Windows Build Support** because your end-users may play your game on a Windows PC, so SpatialOS requires it.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -91,7 +95,11 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-<%(Callout type="alert" message="You need to select Linux Build Support during your setup because all server-workers in a cloud deployment run in a Linux environment. When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
+<%(Callout type="alert" message="
+* You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/>
+* You need **Mac** build support if you are developing on a Windows PC.<br/>
+* You need **Windows** build support if you are developing on a Mac. <br/>
+This is so your game supports end-users who may be playing on a different platform to your development machine.")%>
 
 <%(#Expandable title="Having problems?")%>
 If you need help using the GDK, please come and talk to us about the software and the documentation via:

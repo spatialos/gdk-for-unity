@@ -20,9 +20,12 @@ When building workers (Unity Editor menu: **Build For Cloud** > **my_worker_name
  You don't have the right Unity build settings enabled.<br/>
  In your Unity Editor:
 
- * Check what build support you have enabled (menu: **File** > **Build Settings**) and make sure you have your target build platform enabled (for example, Mac if you want your game to run on Mac, Windows if you want your game to run on Windows.) 
+ * Check what build support you have enabled (menu: **File** > **Build Settings**) and make sure you have your target build platform enabled. <br/>
+You need **Mac** build support if you are developing on a Windows PC.<br/>
+You need **Windows** build support if you are developing on a Mac. <br/>
+This is so your game supports end-users who may be playing on a different platform to your development machine.
 
- * _**In addition**_, make sure you have Linux build settings enabled.<br/> 
+ * _**In addition**_, make sure you have **Linux** build support enabled.<br/> 
  You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
  <br/>Fix this by runing the Unity installer and selecting the appropriate option. (See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine)).
  
