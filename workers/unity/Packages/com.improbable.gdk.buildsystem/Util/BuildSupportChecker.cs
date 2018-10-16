@@ -7,35 +7,6 @@ using UnityEngine;
 
 public static class BuildSupportChecker
 {
-    private const string LinuxStandaloneSupportDirectoryName = "LinuxStandaloneSupport";
-    private const string WindowsStandaloneSupportDirectoryName = "WindowsStandaloneSupport";
-    private const string MacStandaloneSupportDirectoryName = "MacStandaloneSupport";
-
-    private static readonly Dictionary<BuildTarget, string> BuildPlatformSupportModuleDirectoryNames;
-
-    static BuildSupportChecker()
-    {
-        BuildPlatformSupportModuleDirectoryNames = new Dictionary<BuildTarget, string>
-        {
-            [BuildTarget.StandaloneLinux] = LinuxStandaloneSupportDirectoryName,
-            [BuildTarget.StandaloneLinux64] = LinuxStandaloneSupportDirectoryName,
-            [BuildTarget.StandaloneLinuxUniversal] = LinuxStandaloneSupportDirectoryName
-        };
-
-        if (Application.platform != RuntimePlatform.OSXEditor)
-        {
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneOSX] = MacStandaloneSupportDirectoryName;
-        }
-
-        if (Application.platform != RuntimePlatform.WindowsEditor)
-        {
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows] =
-                WindowsStandaloneSupportDirectoryName;
-            BuildPlatformSupportModuleDirectoryNames[BuildTarget.StandaloneWindows64] =
-                WindowsStandaloneSupportDirectoryName;
-        }
-    }
-
     public static BuildTarget[] GetBuildTargetsMissingBuildSupport(params BuildTarget[] buildTargets)
     {
         var editorDirectory = Directory.GetParent(EditorApplication.applicationPath);
@@ -57,13 +28,13 @@ public static class BuildSupportChecker
         return buildTargets
             .Where(target =>
             {
-                if (BuildPlatformSupportModuleDirectoryNames.TryGetValue(target, out var playbackEnginesDirectoryName))
+                if (WorkerBuildData.BuildTargetSupportDirectoryNames.TryGetValue(target, out var playbackEnginesDirectoryName))
                 {
                     return !Directory.Exists(Path.Combine(playbackEnginesDirectory, playbackEnginesDirectoryName));
                 }
 
-                // If it's not in the dictionary, then assume it's not missing support.
-                // e.g. if we're on a Windows Editor, it should have windows support.
+                Debug.LogWarning($"Unsupported build target: {target}");
+
                 return false;
             })
             .ToArray();
