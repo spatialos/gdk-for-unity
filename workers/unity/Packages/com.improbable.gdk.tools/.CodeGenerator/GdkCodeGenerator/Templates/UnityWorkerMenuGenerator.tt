@@ -124,7 +124,7 @@ var workerType = workerTypeList[i];
                 "OK");
         }
 
-        [MenuItem(EditorConfig.ParentMenu + "/Check Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
+        [MenuItem(EditorConfig.ParentMenu + "/Check build support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
         private static void CheckBuildSupport()
         {
             bool checksPassed = CheckWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers);
