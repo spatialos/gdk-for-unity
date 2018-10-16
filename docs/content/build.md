@@ -26,7 +26,11 @@ To build the worker configs, you can either:
 
 > **It’s finished building when:** there is a message stating `'spatial build build-config' succeeded`.
 
-<%(Callout type="alert" message="If you encounter build errors, you might not have Linux build support enabled. You need Linux build support because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux. To fix this, run the Unity installer and select the build options you are missing.")%>
+<%(Callout type="alert" message="If you encounter build errors, you might not have selected the build supports your game needs during your Unity setup. <br/><br/>
+* You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/> <br/>
+* You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
+* You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
+Unity gives you build support for your development machine (Windows or Mac) by default.")%>
 
 
 ## Preparing the build configuration of your workers

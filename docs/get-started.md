@@ -26,7 +26,11 @@ If you have not signed up before, you can do so [here](https://improbable.io/get
     - **Linux Build Support**
     - **Mac Build Support**
 
-> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+> **Note:** 
+Even though you are developing on a Windows PC, you need:<br/>
+**Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
+**Mac Build Support** if you want to share your game with end-users on a Mac.<br/>
+Unity gives you Windows build support by default.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -73,7 +77,11 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
     - **Linux Build Support**
     - **Windows Build Support**
 
-> **Note:** You need Linux build support because all server-workers in a cloud deployment run in a Linux environment. 
+> **Note:** 
+Even though you are developing on a Mac, you need:<br/>
+**Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
+**Windows Build Support** if you want to share your game with end-users on a Windows PC.<br/>
+Unity gives you Mac build support by default.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -99,7 +107,11 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(/Expandable)%>
 
-<%(Callout type="alert" message="You need to select Linux Build Support during your setup because all server-workers in a cloud deployment run in a Linux environment. When you come to build your project, in the `Assets/Fps/Config/BuildConfiguration` file, do not change the `UnityGameLogic Cloud Environment` from Linux to a different target;  changing it causes further build errors.")%>
+<%(Callout type="alert" message="
+* You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/>
+* You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
+* You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
+* Unity gives you build support for your development machine (Windows or PC) by default.")%>
 
 
 If you need help using the GDK, come and talk to us about the software and the documentation via:
@@ -195,7 +207,11 @@ In the Unity Editor, you first need to make sure Burst compilation is **disabled
 
 > **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`
 
-<%(Callout type="alert" message="If you encounter build errors, you might not have selected Linux Build Support during your setup. You need Linux build support because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.")%>
+<%(Callout type="alert" message="If you encounter build errors, you might not have selected the build supports your game needs during your Unity setup. <br/><br/>
+* You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/> <br/>
+* You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
+* You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
+* Unity gives you build support for your development machine (Windows or Mac) by default.")%>
 
 After the build has successfully finished, the `gdk-for-unity-fps-starter-project/build/assembly` folder should contain:
 ```text
