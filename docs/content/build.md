@@ -28,9 +28,9 @@ To build the worker configs, you can either:
 
 <%(Callout type="alert" message="If you encounter build errors, you might not have selected the build supports your game needs during your Unity setup. <br/><br/>
 * You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/> <br/>
-* You need **Mac** build support if you are developing on a Windows PC.<br/>
-* You need **Windows** build support if you are developing on a Mac. <br/>
-This is so your game supports end-users who may be playing on a different platform to your development machine.")%>
+* You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
+* You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
+Unity gives you build support for your development machine (Windows or Mac) by default.")%>
 
 
 ## Preparing the build configuration of your workers
