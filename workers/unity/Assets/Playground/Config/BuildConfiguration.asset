@@ -39,7 +39,7 @@ MonoBehaviour:
     CloudBuildConfig:
       BuildPlatforms: 0
       BuildOptions: 16384
-  - WorkerType: IosClient
+  - WorkerType: iOSClient
     ScenesForWorker:
     - {fileID: 102900000, guid: 424c4b2c090874512badc5e7ee757d5f, type: 3}
     LocalBuildConfig:

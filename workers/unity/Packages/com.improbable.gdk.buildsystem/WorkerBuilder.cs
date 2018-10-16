@@ -48,7 +48,7 @@ namespace Improbable.Gdk.BuildSystem
 
                 var workerTypesArg =
                     CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
-                        "UnityClient,UnityGameLogic,AndroidClient,IosClient");
+                        "UnityClient,UnityGameLogic");
 
                 var wantedWorkerTypes = workerTypesArg.Split(',');
                 foreach (var wantedWorkerType in wantedWorkerTypes)
@@ -204,6 +204,12 @@ namespace Improbable.Gdk.BuildSystem
             if (result.summary.result != BuildResult.Succeeded)
             {
                 throw new BuildFailedException($"Build failed for {workerType}");
+            }
+
+            if (buildTarget == BuildTarget.Android || buildTarget == BuildTarget.iOS)
+            {
+                // Uploading Mobile workers doesn't really make sense
+                return;
             }
 
             var zipPath = Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName);

@@ -31,7 +31,16 @@
       }
     },
     {
-      "worker_type": "UnityClient",
+      "worker_type": "AndroidClient",
+      "permissions": [{
+          "all": {}
+      }],
+      "load_balancing": {
+        "singleton_worker": {}
+      }
+    },
+    {
+      "worker_type": "iOSClient",
       "permissions": [{
           "all": {}
       }],
