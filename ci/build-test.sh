@@ -9,5 +9,5 @@ ci/bootstrap.sh
 .shared-ci/scripts/prepare-unity.sh
 
 ci/test.sh
-ci/build-client.sh
-ci/build-gamelogic.sh
+.shared-ci/scripts/build.sh "workers/unity" UnityClient local "$(pwd)/logs/UnityClientBuild.log"
+.shared-ci/scripts/build.sh "workers/unity" UnityGameLogic cloud "$(pwd)/logs/UnityGameLogicBuild.log"
