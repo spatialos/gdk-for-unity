@@ -338,12 +338,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         MessageType.Error);
                 }
 
-                foreach (var buildTarget in WorkerBuilder.GetUnityBuildTargets(newBuildPlatforms))
+                var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(WorkerBuilder.GetUnityBuildTargets(newBuildPlatforms));
+                if (buildTargetsMissingBuildSupport.Length > 0)
                 {
-                    if (!BuildSupportChecker.CheckBuildSupport(buildTarget).CanBuild)
-                    {
-                        EditorGUILayout.HelpBox($"Missing build support for {buildTarget}", MessageType.Error);
-                    }
+                    EditorGUILayout.HelpBox($"Missing build support for {string.Join(", ", buildTargetsMissingBuildSupport)}", MessageType.Error);
                 }
 
                 if (EditorGUI.EndChangeCheck())

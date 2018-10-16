@@ -53,7 +53,13 @@ namespace Improbable.Gdk.BuildSystem
                 var wantedWorkerTypes = workerTypesArg.Split(',');
                 foreach (var wantedWorkerType in wantedWorkerTypes)
                 {
-                    ValidateWorkerCanBuildForEnvironment(wantedWorkerType, buildEnvironment);
+                    var buildTargetsForWorker = GetBuildTargetsForWorkerForEnvironment(wantedWorkerType, buildEnvironment);
+                    var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+
+                    if (buildTargetsMissingBuildSupport.Length > 0)
+                    {
+                        throw new BuildFailedException(BuildSupportChecker.ConstructMissingSupportMessage(wantedWorkerType, buildEnvironment, buildTargetsMissingBuildSupport));
+                    }
                 }
 
                 LocalLaunch.BuildConfig();
@@ -75,27 +81,15 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        public static void ValidateWorkerCanBuildForEnvironment(string workerType, BuildEnvironment targetEnvironment)
+        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
         {
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
-            var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            var environmentConfig = SpatialOSBuildConfiguration.GetInstance().GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             if (environmentConfig == null)
             {
-                return;
+                return new BuildTarget[0];
             }
 
-            var buildTargets = GetUnityBuildTargets(environmentConfig.BuildPlatforms);
-            var buildSupportResult = BuildSupportChecker.CheckBuildSupport(buildTargets);
-
-            if (buildSupportResult.CanBuild)
-            {
-                return;
-            }
-
-            var targetsString = string.Join(", ", buildSupportResult.TargetsWithoutBuildSupport);
-            throw new BuildFailedException(
-                $"{workerType} cannot be built for {targetEnvironment}, missing build support for {targetsString}.\n" +
-                "Please configure your Unity Editor installation to add the missing build support components.");
+            return GetUnityBuildTargets(environmentConfig.BuildPlatforms);
         }
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)

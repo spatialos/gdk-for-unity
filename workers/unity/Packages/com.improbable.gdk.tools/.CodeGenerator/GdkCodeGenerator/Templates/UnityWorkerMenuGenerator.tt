@@ -63,22 +63,22 @@ var workerType = workerTypeList[i];
             Debug.Log("Clean completed");
         }
 
-        private static bool ValidateWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
+        private static bool CheckWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
         {
             var canInitiateBuild = true;
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
 
             foreach (var workerType in workerTypes)
             {
-                try
-                {
-                    WorkerBuilder.ValidateWorkerCanBuildForEnvironment(workerType, environment);
-                }
-                catch (System.Exception e)
+                var buildTargetsForWorker = WorkerBuilder.GetBuildTargetsForWorkerForEnvironment(workerType, environment);
+                var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+
+                if (buildTargetsMissingBuildSupport.Length > 0)
                 {
                     canInitiateBuild = false;
 
-                    Debug.LogException(e, spatialOSBuildConfiguration);
+                    Debug.LogError(BuildSupportChecker.ConstructMissingSupportMessage(workerType, environment, buildTargetsMissingBuildSupport),
+                        spatialOSBuildConfiguration);
                 }
             }
 
@@ -90,7 +90,7 @@ var workerType = workerTypeList[i];
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
-                if (!ValidateWorkersCanBuildForEnvironment(environment, workerTypes))
+                if (!CheckWorkersCanBuildForEnvironment(environment, workerTypes))
                 {
                     DisplayBuildFailureDialog();
 
@@ -124,28 +124,23 @@ var workerType = workerTypeList[i];
                 "OK");
         }
 
-        [MenuItem(EditorConfig.ParentMenu + "/Validate Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
-        private static void ValidateBuildSupport()
+        [MenuItem(EditorConfig.ParentMenu + "/Check Build Support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
+        private static void CheckBuildSupport()
         {
-            var validationsPassed = true;
+            bool checksPassed = CheckWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers);
 
-            if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers))
+            if (!CheckWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
             {
-                validationsPassed = false;
+                checksPassed = false;
             }
 
-            if (!ValidateWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
-            {
-                validationsPassed = false;
-            }
-
-            EditorUtility.DisplayDialog("Build Support Validation",
-                validationsPassed
-                    ? "Build support validation confirms your Unity Editor installation has all necessary components."
-                    : "Build support validation failed. Please see the Unity Console Window for information.",
+            EditorUtility.DisplayDialog("Build Support Check",
+                checksPassed
+                    ? "Build support check passed. Your Unity Editor installation has all necessary components."
+                    : "Build support check failed. Please see the Unity Console Window for information.",
                 "OK");
 
-            Debug.Log("Diagnosis complete.");
+            Debug.Log("Build support check completed.");
         }
     }
 }
