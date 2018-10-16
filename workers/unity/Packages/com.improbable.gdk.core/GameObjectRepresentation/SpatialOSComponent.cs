@@ -44,6 +44,20 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private WorkerFlagSystem flagSystem;
 
         /// <summary>
+        ///     Attempts to retrieve the value of a worker flag.
+        /// </summary>
+        /// <remarks>
+        ///     Will return null if no worker flag of "<see cref="name"/>" is found.
+        /// </remarks>
+        /// <param name="name">The name of the worker flag</param>
+        /// <returns>The value of the worker flag, if it exists, null otherwise.</returns>
+        public string TryGetWorkerFlag(string name)
+        {
+            var flags = entityManager.GetSharedComponentData<WorkerFlags>(Worker.WorkerEntity);
+            return !flags.Flags.TryGetValue(name, out var value) ? null : value;
+        }
+
+        /// <summary>
         ///     Initialise the SpatialOSComponent with its context.
         /// </summary>
         /// <param name="world">The ECS world which the underlying ECS entity belongs to.</param>
