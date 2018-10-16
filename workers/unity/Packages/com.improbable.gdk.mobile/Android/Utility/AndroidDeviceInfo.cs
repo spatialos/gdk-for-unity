@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Mobile.Android
 {
-    public class DeviceInfo
+    public static class AndroidDeviceInfo
     {
         public const string AndroidStudioEmulatorDefaultCallbackIp = "10.0.2.2";
 
