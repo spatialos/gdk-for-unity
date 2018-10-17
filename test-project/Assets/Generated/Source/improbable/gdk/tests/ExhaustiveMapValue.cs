@@ -2,14 +2,18 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
-using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
+using System;
 using System.Collections.Generic;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Tests
 {
     public partial class ExhaustiveMapValue
     {
+        public const uint ComponentId = 197718;
+
         public struct Component : IComponentData, ISpatialComponentData
         {
             public uint ComponentId => 197718;
@@ -1736,6 +1740,38 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.List<Update> Updates
             {
                 get => Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+            }
+        }
+
+        internal class ExhaustiveMapValueDynamic : IDynamicInvokable
+        {
+            public uint ComponentId => ExhaustiveMapValue.ComponentId;
+
+            private static Component DeserializeData(ComponentData data, World world)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
+            }
+
+            private static Update DeserializeUpdate(ComponentUpdate update, World world)
+            {
+                var schemaDataOpt = update.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
+                }
+
+                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
+            }
+
+            public void InvokeHandler(Dynamic.IHandler handler)
+            {
+                handler.Accept<Component, Update>(ExhaustiveMapValue.ComponentId, DeserializeData, DeserializeUpdate);
             }
         }
     }
