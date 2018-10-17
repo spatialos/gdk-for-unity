@@ -154,6 +154,16 @@ namespace Improbable.Gdk.BuildSystem
                 result.Add(BuildTarget.StandaloneWindows64);
             }
 
+            if ((actualPlatforms & SpatialBuildPlatforms.Android) != 0)
+            {
+                result.Add(BuildTarget.Android);
+            }
+
+            if ((actualPlatforms & SpatialBuildPlatforms.iOS) != 0)
+            {
+                result.Add(BuildTarget.iOS);
+            }
+
             return result.ToArray();
         }
 
@@ -194,6 +204,13 @@ namespace Improbable.Gdk.BuildSystem
             if (result.summary.result != BuildResult.Succeeded)
             {
                 throw new BuildFailedException($"Build failed for {workerType}");
+            }
+
+			// After building the worker we package them to be uploaded
+            if (buildTarget == BuildTarget.Android || buildTarget == BuildTarget.iOS)
+            {
+                // Mobile clients can only be ran locally, so we don't need to package them
+                return;
             }
 
             var zipPath = Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName);

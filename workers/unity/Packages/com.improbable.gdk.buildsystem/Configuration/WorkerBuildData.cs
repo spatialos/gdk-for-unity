@@ -25,7 +25,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneWindows, "Windows" },
                 { BuildTarget.StandaloneWindows64, "Windows" },
                 { BuildTarget.StandaloneLinux64, "Linux" },
-                { BuildTarget.StandaloneOSX, "Mac" }
+                { BuildTarget.StandaloneOSX, "Mac" },
+                { BuildTarget.Android, "Android" },
+                { BuildTarget.iOS, "iOS" }
             };
 
         private static readonly Dictionary<BuildTarget, string> BuildPlatformExtensions =
@@ -34,7 +36,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneWindows, ".exe" },
                 { BuildTarget.StandaloneWindows64, ".exe" },
                 { BuildTarget.StandaloneLinux64, "" },
-                { BuildTarget.StandaloneOSX, "" }
+                { BuildTarget.StandaloneOSX, "" },
+                { BuildTarget.Android, ".apk" },
+                { BuildTarget.iOS, "" }
             };
 
         public static readonly Dictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
@@ -43,7 +47,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneWindows, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneWindows64, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneLinux64, "LinuxStandaloneSupport" },
-                { BuildTarget.StandaloneOSX, "MacStandaloneSupport" }
+                { BuildTarget.StandaloneOSX, "MacStandaloneSupport" },
+                { BuildTarget.Android, "AndroidPlayer" },
+                { BuildTarget.iOS, "iOSSupport" }
             };
 
         public WorkerBuildData(string workerType, BuildTarget buildTarget)
