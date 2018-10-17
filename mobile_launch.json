@@ -1,0 +1,52 @@
+{
+  "template": "small_bridge_v2",
+  "world": {
+    "chunkEdgeLengthMeters": 50,
+    "snapshots": {
+      "snapshotWritePeriodSeconds": 0
+    },
+    "dimensions": {
+      "xMeters": 5000,
+      "zMeters": 5000
+    },
+    "legacy_flags": [
+      {
+        "name": "bridge_qos_max_timeout",
+        "value": "0"
+      }
+    ]
+  },
+  "workers": [
+    {
+      "worker_type": "UnityGameLogic",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ],
+      "load_balancing": {
+        "auto_hex_grid": {
+          "num_workers": 1
+        }
+      }
+    },
+    {
+      "worker_type": "AndroidClient",
+      "permissions": [{
+          "all": {}
+      }],
+      "load_balancing": {
+        "singleton_worker": {}
+      }
+    },
+    {
+      "worker_type": "iOSClient",
+      "permissions": [{
+          "all": {}
+      }],
+      "load_balancing": {
+        "singleton_worker": {}
+      }
+    }
+  ]
+}
