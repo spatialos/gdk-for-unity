@@ -51,7 +51,7 @@ public static class BuildSupportChecker
     {
         return
             $"The worker \"{workerType}\" cannot be built for a {environment} deployment:" +
-            $" the Unity Editor is missing build support for {string.Join(", ", buildTargetsMissingBuildSupport)}.\n" +
+            $" your Unity Editor is missing build support for {string.Join(", ", buildTargetsMissingBuildSupport)}.\n" +
             "Please add the missing build support options to your Unity Editor.";
     }
 }
