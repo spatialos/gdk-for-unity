@@ -8,7 +8,7 @@ The **spatialos.json** file for your project needs to have the same `sdk_version
 
 For a basic set up of two workers, one `UnityGameLogic` and one `UnityClient`, we recommend you to reuse these files (within `workers/unity`):
 - [spatialos.UnityGameLogic.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json)
-- [spatialos.UnityClient.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json)
+- [spatialos.UnityClient.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityClient.worker.json)
 
 ## Set up base assets and directories
 - Copy [this file](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef) into `workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
