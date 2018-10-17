@@ -47,7 +47,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneWindows, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneWindows64, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneLinux64, "LinuxStandaloneSupport" },
-                { BuildTarget.StandaloneOSX, "MacStandaloneSupport" }
+                { BuildTarget.StandaloneOSX, "MacStandaloneSupport" },
+                { BuildTarget.Android, "AndroidPlayer" },
+                { BuildTarget.iOS, "iOSSupport" }
             };
 
         public WorkerBuildData(string workerType, BuildTarget buildTarget)

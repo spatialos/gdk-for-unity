@@ -206,9 +206,10 @@ namespace Improbable.Gdk.BuildSystem
                 throw new BuildFailedException($"Build failed for {workerType}");
             }
 
+			// After building the worker we package them to be uploaded
             if (buildTarget == BuildTarget.Android || buildTarget == BuildTarget.iOS)
             {
-                // Uploading Mobile workers doesn't really make sense
+                // Mobile clients can only be ran locally, so we don't need to package them
                 return;
             }
 
