@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Worker;
 
@@ -37,11 +38,29 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public override void Validate()
         {
-            ValidateConfig(LocatorHost, RuntimeConfigNames.LocatorHost);
+            ValidateString(LocatorHost, RuntimeConfigNames.LocatorHost);
+            ValidateString(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+            ValidateCondition(
+                LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken ||
+                LocatorParameters.CredentialsType == LocatorCredentialsType.Steam,
+                "LocatorConfig has invalid CredentialsType.");
+
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
-                ValidateConfig(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
-                ValidateConfig(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
+                ValidateString(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
+                ValidateCondition(
+                    string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) &&
+                    string.IsNullOrEmpty(LocatorParameters.Steam.Ticket),
+                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously.");
+            }
+
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
+            {
+                ValidateString(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.DeploymentTag);
+                ValidateString(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamTicket);
+                ValidateCondition(
+                    string.IsNullOrEmpty(LocatorParameters.LoginToken.Token),
+                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously.");
             }
         }
 
@@ -55,16 +74,51 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Sets the login token for the Locator to use.
+        ///     Sets the LocatorCredentialsType to LoginToken and sets the login token for the Locator to use.
         /// </summary>
+        /// <remarks>
+        ///     SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.
+        /// </remarks>
         /// <param name="loginToken">The login token.</param>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if SetLoginToken() is called after SetSteamCredentials() was called before.
+        /// </exception>
         public void SetLoginToken(string loginToken)
         {
-            LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
-            LocatorParameters.LoginToken = new LoginTokenCredentials
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
             {
-                Token = loginToken
-            };
+                throw new ConnectionFailedException(
+                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.",
+                    ConnectionErrorReason.InvalidConfig);
+            }
+
+            LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
+            LocatorParameters.LoginToken.Token = loginToken;
+        }
+
+        /// <summary>
+        ///     Sets the LocatorCredentialsType to Steam and sets the deploymentTag and steam ticket for the Locator to use.
+        /// </summary>
+        /// <remarks>
+        ///     SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.
+        /// </remarks>
+        /// <param name="deploymentTag">The deployment tag.</param>
+        /// <param name="steamTicket">The steam ticket.</param>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if SetSteamCredentials() is called after SetLoginToken() was called before.
+        /// </exception>
+        public void SetSteamCredentials(string deploymentTag, string steamTicket)
+        {
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
+            {
+                throw new ConnectionFailedException(
+                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.",
+                    ConnectionErrorReason.InvalidConfig);
+            }
+
+            LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            LocatorParameters.Steam.DeploymentTag = deploymentTag;
+            LocatorParameters.Steam.Ticket = steamTicket;
         }
 
         /// <summary>
@@ -75,12 +129,26 @@ namespace Improbable.Gdk.Core
         public static LocatorConfig CreateConnectionConfigFromCommandLine(Dictionary<string, string> parsedArgs)
         {
             var config = new LocatorConfig();
-            var loginToken = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.LoginToken, string.Empty);
             var projectName = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.ProjectName, string.Empty);
-            config.SetLoginToken(loginToken);
             config.SetProjectName(projectName);
+
+            var loginToken = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.LoginToken, string.Empty);
+            if (!string.IsNullOrEmpty(loginToken))
+            {
+                config.SetLoginToken(loginToken);
+            }
+
+            var deploymentTag = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.DeploymentTag, string.Empty);
+            var steamTicket = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamTicket, string.Empty);
+            if (!string.IsNullOrEmpty(deploymentTag) && !string.IsNullOrEmpty(steamTicket))
+            {
+                config.SetSteamCredentials(deploymentTag, steamTicket);
+            }
+
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.LocatorHost, RuntimeConfigDefaults.LocatorHost);
             config.LinkProtocol = CommandLineUtility.GetCommandLineValue(

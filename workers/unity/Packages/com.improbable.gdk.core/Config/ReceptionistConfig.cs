@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public override void Validate()
         {
-            ValidateConfig(ReceptionistHost, RuntimeConfigNames.ReceptionistHost);
+            ValidateString(ReceptionistHost, RuntimeConfigNames.ReceptionistHost);
         }
 
         /// <summary>

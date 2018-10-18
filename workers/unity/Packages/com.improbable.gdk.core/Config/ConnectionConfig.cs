@@ -77,13 +77,26 @@ namespace Improbable.Gdk.Core
         /// <exception cref="ConnectionFailedException">
         ///     Thrown if configValue is null or empty.
         /// </exception>
-        protected void ValidateConfig(string configValue, string configName)
+        protected void ValidateString(string configValue, string configName)
         {
-            if (string.IsNullOrEmpty(configValue))
+            ValidateCondition(!string.IsNullOrEmpty(configValue),
+                $"Config validation failed with: No valid {configName} has been provided");
+        }
+
+        /// <summary>
+        ///     Checks that a condition is satisfied.
+        /// </summary>
+        /// <param name="condition">The condition to satisfy.</param>
+        /// <param name="errorMessage">Error message in the Exception if condition is not satisfied.</param>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if condition is not satisfied.
+        /// </exception>
+        protected void ValidateCondition(bool condition, string errorMessage)
+        {
+            if (!condition)
             {
                 throw new ConnectionFailedException(
-                    $"Config validation failed with: No valid {configName} has been provided",
-                    ConnectionErrorReason.InvalidConfig);
+                    errorMessage, ConnectionErrorReason.InvalidConfig);
             }
         }
     }
