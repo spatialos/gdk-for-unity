@@ -255,10 +255,12 @@ MonoBehaviour:
   ReceiveStrategies:
   - {fileID: 11400000, guid: 3d4e3c9d4646410429b49892bdf0b52c, type: 2}
   - {fileID: 11400000, guid: 7e00873dd53438245919187ebd00e937, type: 2}
-  AutomaticallyApplyTransformToGameObject: 1
+  - {fileID: 11400000, guid: d3eeea3be1ea96949b63c46a6353d4d1, type: 2}
+  - {fileID: 11400000, guid: 511304a26155d2f4ba98f4eb2003f326, type: 2}
   SendStrategies:
   - {fileID: 11400000, guid: f312e7c0a0c68bd459f6b523a151cbb6, type: 2}
-  AutomaticallyGetTransformFromGameObject: 1
+  - {fileID: 11400000, guid: f744e75b6283f6d48ad23018d67547ed, type: 2}
+  - {fileID: 11400000, guid: ea6888e42dd86884891ba6f89a8df6be, type: 2}
   SetKinematicWhenNotAuthoritative: 1
 --- !u!114 &114894172867123548
 MonoBehaviour:
