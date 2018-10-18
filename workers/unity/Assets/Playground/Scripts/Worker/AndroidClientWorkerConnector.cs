@@ -56,5 +56,15 @@ namespace Playground
                 "AndroidClientWorkerConnector can only be used for the Android platform. Please check your build settings.");
 #endif
         }
+
+        public override void Dispose()
+        {
+            if (levelInstance != null)
+            {
+                Destroy(levelInstance);
+            }
+
+            base.Dispose();
+        }
     }
 }

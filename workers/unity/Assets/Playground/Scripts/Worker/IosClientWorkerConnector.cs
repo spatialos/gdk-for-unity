@@ -55,5 +55,15 @@ namespace Playground
                 "iOSClientWorkerConnector can only be used for the iOS platform. Please check your build settings.");
 #endif
         }
+
+        public override void Dispose()
+        {
+            if (levelInstance != null)
+            {
+                Destroy(levelInstance);
+            }
+
+            base.Dispose();
+        }
     }
 }
