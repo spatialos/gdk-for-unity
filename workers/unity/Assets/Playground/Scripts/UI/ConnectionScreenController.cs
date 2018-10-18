@@ -28,7 +28,7 @@ namespace Playground
         private void TryConnect()
         {
             worker = Instantiate(clientWorkerPrefab);
-            var workerConnector = worker.GetComponent<IMobileClient>();
+            var workerConnector = worker.GetComponent<IMobileConnectionController>();
 
             if (workerConnector == null)
             {

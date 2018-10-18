@@ -1,6 +1,6 @@
 namespace Playground
 {
-    public interface IMobileClient
+    public interface IMobileConnectionController
     {
         string IpAddress { get; set; }
 

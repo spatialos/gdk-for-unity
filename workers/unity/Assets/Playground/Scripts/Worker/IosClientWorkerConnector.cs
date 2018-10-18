@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class iOSClientWorkerConnector : MobileWorkerConnector, IMobileClient
+    public class iOSClientWorkerConnector : MobileWorkerConnector, IMobileConnectionController
     {
         public string IpAddress { get; set; }
         public ConnectionScreenController ConnectionScreenController { get; set; }

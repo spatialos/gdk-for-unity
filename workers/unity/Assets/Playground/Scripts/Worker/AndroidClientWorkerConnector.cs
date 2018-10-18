@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class AndroidClientWorkerConnector : MobileWorkerConnector, IMobileClient
+    public class AndroidClientWorkerConnector : MobileWorkerConnector, IMobileConnectionController
     {
         public string IpAddress { get; set; }
         public ConnectionScreenController ConnectionScreenController { get; set; }
