@@ -3,6 +3,7 @@
     "com.improbable.gdk.buildsystem": "file:com.improbable.gdk.buildsystem",
     "com.improbable.gdk.core": "file:com.improbable.gdk.core",
     "com.improbable.gdk.gameobjectcreation": "file:com.improbable.gdk.gameobjectcreation",
+    "com.improbable.gdk.mobile": "file:com.improbable.gdk.mobile",
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:com.improbable.gdk.tools",

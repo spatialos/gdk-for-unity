@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Gdk.iOS",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Mobile"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
