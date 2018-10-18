@@ -45,7 +45,7 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_ANDROID
-            if (Application.isMobilePlatform && DeviceInfo.IsAndroidStudioEmulator() && IpAddress.Equals(string.Empty))
+            if (Application.isMobilePlatform && DeviceInfo.IsAndroidStudioEmulator() && string.Empty.Equals(IpAddress))
             {
                 return DeviceInfo.AndroidStudioEmulatorDefaultCallbackIp;
             }

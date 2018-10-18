@@ -44,7 +44,7 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && IpAddress.Equals(string.Empty))
+            if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && string.Empty.Equals(IpAddress))
             {
                 return RuntimeConfigDefaults.ReceptionistHost;
             }
