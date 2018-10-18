@@ -11,8 +11,8 @@
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.StandardLibraryUtils",
         "Improbable.Gdk.Mobile",
-        "Improbable.Gdk.Android",
-        "Improbable.Gdk.Ios"
+        "Improbable.Gdk.Mobile.Android",
+        "Improbable.Gdk.Mobile.iOS"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

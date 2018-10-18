@@ -1,7 +1,7 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Mobile;
 #if UNITY_IOS
-using Improbable.Gdk.Mobile.Ios;
+using Improbable.Gdk.Mobile.iOS;
 #endif
 using System;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            if ((Application.isEditor || DeviceInfo.IsIosSimulator()) && string.Empty.Equals(IpAddress))
+            if ((Application.isEditor || iOSDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual) && string.Empty.Equals(IpAddress))
             {
                 return RuntimeConfigDefaults.ReceptionistHost;
             }

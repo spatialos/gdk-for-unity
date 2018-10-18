@@ -4,9 +4,21 @@ namespace Improbable.Gdk.Mobile.iOS
 {
     public static class iOSDeviceInfo
     {
-        public static bool IsSimulator()
+        private static MobileDeviceType activeDeviceType = MobileDeviceType.Unknown;
+
+        public static MobileDeviceType ActiveDeviceType
         {
-            return SystemInfo.deviceModel.Equals("x86_64");
+            get
+            {
+                if (activeDeviceType == MobileDeviceType.Unknown)
+                {
+                    activeDeviceType = SystemInfo.deviceModel.Equals("x86_64")
+                        ? MobileDeviceType.Virtual
+                        : MobileDeviceType.Physical;
+                }
+
+                return activeDeviceType;
+            }
         }
     }
 }
