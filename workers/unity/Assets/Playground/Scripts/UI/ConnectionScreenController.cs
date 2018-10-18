@@ -7,7 +7,7 @@ namespace Playground
 {
     public class ConnectionScreenController : MonoBehaviour
     {
-        private const string CachedIp = "cachedIp";
+        private const string HostIpPlayerPrefsKey = "SpatialOSHostIp";
 
         [SerializeField] private GameObject connectionPanel;
         [SerializeField] private InputField ipAddressInput;
@@ -21,7 +21,7 @@ namespace Playground
 
         public void Awake()
         {
-            ipAddressInput.text = PlayerPrefs.GetString(CachedIp);
+            ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             connectButton.onClick.AddListener(TryConnect);
         }
 
@@ -43,7 +43,7 @@ namespace Playground
 
         public void OnConnectionSucceeded()
         {
-            PlayerPrefs.SetString(CachedIp, IpAddress);
+            PlayerPrefs.SetString(HostIpPlayerPrefsKey, IpAddress);
             PlayerPrefs.Save();
 
             connectionPanel.SetActive(false);

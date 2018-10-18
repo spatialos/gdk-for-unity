@@ -26,7 +26,7 @@ namespace Playground
         {
             ConnectionScreenController.OnConnectionSucceeded();
             WorkerUtils.AddClientSystems(Worker.World);
-            
+
             if (level == null)
             {
                 return;
