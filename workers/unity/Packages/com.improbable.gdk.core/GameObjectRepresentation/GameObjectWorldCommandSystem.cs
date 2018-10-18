@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
@@ -76,9 +75,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
                 foreach (var receivedResponse in reserveEntityIdsResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var injectable in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
                     {
-                        var worldCommandHandler = (WorldCommands.Requirables.WorldCommandResponseHandler) injectable;
                         worldCommandHandler.OnReserveEntityIdsResponseInternal(receivedResponse);
                     }
                 }
@@ -96,9 +94,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
                 foreach (var receivedResponse in createEntityResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var injectable in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
                     {
-                        var worldCommandHandler = (WorldCommands.Requirables.WorldCommandResponseHandler) injectable;
                         worldCommandHandler.OnCreateEntityResponseInternal(receivedResponse);
                     }
                 }
@@ -116,9 +113,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
                 foreach (var receivedResponse in deleteEntityResponseData.CommandResponses[i].Responses)
                 {
-                    foreach (var injectable in worldCommandResponseHandlers)
+                    foreach (var worldCommandHandler in worldCommandResponseHandlers)
                     {
-                        var worldCommandHandler = (WorldCommands.Requirables.WorldCommandResponseHandler) injectable;
                         worldCommandHandler.OnDeleteEntityResponseInternal(receivedResponse);
                     }
                 }
