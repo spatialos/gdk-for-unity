@@ -6,34 +6,38 @@ namespace Improbable.Gdk.Mobile.Android
     {
         public const string AndroidStudioEmulatorDefaultCallbackIp = "10.0.2.2";
 
-        private static bool isInitialised = false;
-        private static bool isEmulator = false;
-
-        public static bool IsAndroidStudioEmulator()
+        private enum DeviceType
         {
-            if (!isInitialised)
-            {
-                AndroidJavaObject build = new AndroidJavaObject("android.os.Build");
-                string fingerprint = GetValue(build, "FINGERPRINT");
-                string model = GetValue(build, "MODEL");
-                string brand = GetValue(build, "BRAND");
-                string device = GetValue(build, "DEVICE");
-                string product = GetValue(build, "PRODUCT");
-
-                isEmulator = fingerprint.StartsWith("generic") || fingerprint.StartsWith("unknown") ||
-                    model.Contains("google_sdk") || model.Contains("Emulator") ||
-                    model.Contains("Android SDK built for x86") ||
-                    brand.StartsWith("generic") && device.StartsWith("generic") ||
-                    product.Equals("google_sdk");
-                isInitialised = true;
-            }
-
-            return isEmulator;
+            Unknown,
+            Physical,
+            Emulator
         }
 
-        private static string GetValue(AndroidJavaObject build, string parameter)
+        private static DeviceType activeDeviceType = DeviceType.Unknown;
+
+        public static bool IsEmulator()
         {
-            return build.GetStatic<string>(parameter);
+            if (activeDeviceType == DeviceType.Unknown)
+            {
+                using (var build = new AndroidJavaObject("android.os.Build"))
+                {
+                    var fingerprint = build.GetStatic<string>("FINGERPRINT");
+                    var model = build.GetStatic<string>("MODEL");
+                    var brand = build.GetStatic<string>("BRAND");
+                    var device = build.GetStatic<string>("DEVICE");
+                    var product = build.GetStatic<string>("PRODUCT");
+
+                    activeDeviceType = (fingerprint.StartsWith("generic") || fingerprint.StartsWith("unknown") ||
+                        model.Contains("google_sdk") || model.Contains("Emulator") ||
+                        model.Contains("Android SDK built for x86") ||
+                        brand.StartsWith("generic") && device.StartsWith("generic") ||
+                        product.Equals("google_sdk"))
+                        ? DeviceType.Emulator
+                        : DeviceType.Physical;
+                }
+            }
+
+            return (activeDeviceType == DeviceType.Emulator);
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.Ios",
+    "name": "Improbable.Gdk.iOS",
     "references": [
         "Improbable.Gdk.Core",
         "Improbable.Gdk.Mobile"
