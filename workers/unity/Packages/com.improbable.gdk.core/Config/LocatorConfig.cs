@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core
                 ValidateCondition(
                     string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) &&
                     string.IsNullOrEmpty(LocatorParameters.Steam.Ticket),
-                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously.");
+                    "SpatialOS login token and Steam credentials may not be set at the same time.");
             }
 
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.Core
                 ValidateString(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamTicket);
                 ValidateCondition(
                     string.IsNullOrEmpty(LocatorParameters.LoginToken.Token),
-                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously.");
+                    "SpatialOS login token and Steam credentials may not be set at the same time.");
             }
         }
 
@@ -77,18 +77,18 @@ namespace Improbable.Gdk.Core
         ///     Sets the LocatorCredentialsType to LoginToken and sets the login token for the Locator to use.
         /// </summary>
         /// <remarks>
-        ///     SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.
+        ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
         /// </remarks>
         /// <param name="loginToken">The login token.</param>
         /// <exception cref="ConnectionFailedException">
-        ///     Thrown if SetLoginToken() is called after SetSteamCredentials() was called before.
+        ///     Thrown if this method is called after Steam credentials were set before.
         /// </exception>
         public void SetLoginToken(string loginToken)
         {
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
             {
                 throw new ConnectionFailedException(
-                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.",
+                    "SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.",
                     ConnectionErrorReason.InvalidConfig);
             }
 
@@ -100,19 +100,19 @@ namespace Improbable.Gdk.Core
         ///     Sets the LocatorCredentialsType to Steam and sets the deploymentTag and steam ticket for the Locator to use.
         /// </summary>
         /// <remarks>
-        ///     SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.
+        ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
         /// </remarks>
         /// <param name="deploymentTag">The deployment tag.</param>
         /// <param name="steamTicket">The steam ticket.</param>
         /// <exception cref="ConnectionFailedException">
-        ///     Thrown if SetSteamCredentials() is called after SetLoginToken() was called before.
+        ///     Thrown if this method is called after a SpatialOS login token was set before.
         /// </exception>
         public void SetSteamCredentials(string deploymentTag, string steamTicket)
         {
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
                 throw new ConnectionFailedException(
-                    "SetLoginToken() and SetSteamCredentials() may not be called simultaneously when connecting to a deployment.",
+                    "SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.",
                     ConnectionErrorReason.InvalidConfig);
             }
 
