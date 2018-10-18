@@ -52,7 +52,7 @@ namespace Playground
             return IpAddress;
 #else
             throw new PlatformNotSupportedException(
-                "This method is only defined for the iOS platform. Please check your build settings.");
+                "iOSClientWorkerConnector can only be used for the iOS platform. Please check your build settings.");
 #endif
         }
     }
