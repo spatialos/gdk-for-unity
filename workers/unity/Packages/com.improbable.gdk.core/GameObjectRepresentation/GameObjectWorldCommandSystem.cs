@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
@@ -163,8 +161,14 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return null;
             }
 
-            return Array.ConvertAll(injectables.ToArray(),
-                injectable => (WorldCommands.Requirable.WorldCommandResponseHandler) injectable);
+            var result = new WorldCommands.Requirable.WorldCommandResponseHandler[injectables.Count];
+
+            for (var i = 0; i < injectables.Count; ++i)
+            {
+                result[i] = (WorldCommands.Requirable.WorldCommandResponseHandler) injectables[i];
+            }
+
+            return result;
         }
     }
 }

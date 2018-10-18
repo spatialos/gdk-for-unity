@@ -13,8 +13,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private readonly Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>> injectablesForBehaviours
             = new Dictionary<MonoBehaviour, Dictionary<InjectableId, IInjectable[]>>();
 
-        private readonly Dictionary<InjectableId, HashSet<IInjectable>> injectablesForIds =
-            new Dictionary<InjectableId, HashSet<IInjectable>>();
+        private readonly Dictionary<InjectableId, List<IInjectable>> injectablesForIds =
+            new Dictionary<InjectableId, List<IInjectable>>();
 
         public void AddInjectablesForBehaviour(MonoBehaviour behaviour,
             Dictionary<InjectableId, IInjectable[]> incomingInjectableArraysFromIds)
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 var incomingInjectables = idToIncomingInjectables.Value;
                 if (!injectablesForIds.TryGetValue(id, out var allInjectablesForId))
                 {
-                    allInjectablesForId = new HashSet<IInjectable>();
+                    allInjectablesForId = new List<IInjectable>();
                     injectablesForIds.Add(id, allInjectablesForId);
                 }
 
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             injectablesForBehaviours.Remove(behaviour);
         }
 
-        public bool TryGetInjectablesForComponent(InjectableId injectableId, out HashSet<IInjectable> injectables)
+        public bool TryGetInjectablesForComponent(InjectableId injectableId, out List<IInjectable> injectables)
         {
             return injectablesForIds.TryGetValue(injectableId, out injectables);
         }
