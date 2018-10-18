@@ -30,6 +30,12 @@ public static class BuildSupportChecker
         return buildTargets
             .Where(target =>
             {
+                if (target == BuildTarget.StandaloneOSX && Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    // OSXEditor will always have StandaloneOSX support
+                    return false;
+                }
+
                 if (WorkerBuildData.BuildTargetSupportDirectoryNames.TryGetValue(target, out var playbackEnginesDirectoryName))
                 {
                     return !Directory.Exists(Path.Combine(playbackEnginesDirectory, playbackEnginesDirectoryName));
@@ -51,7 +57,7 @@ public static class BuildSupportChecker
     {
         return
             $"The worker \"{workerType}\" cannot be built for a {environment} deployment:" +
-            $" the Unity Editor is missing build support for {string.Join(", ", buildTargetsMissingBuildSupport)}.\n" +
+            $" your Unity Editor is missing build support for {string.Join(", ", buildTargetsMissingBuildSupport)}.\n" +
             "Please add the missing build support options to your Unity Editor.";
     }
 }
