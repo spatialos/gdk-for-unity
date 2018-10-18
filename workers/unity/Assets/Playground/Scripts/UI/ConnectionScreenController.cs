@@ -32,8 +32,8 @@ namespace Playground
 
             if (workerConnector == null)
             {
-                errorMessage.text = "Failed to create a mobile worker connector.";
-                return;
+                UnityObjectDestroyer.Destroy(worker);
+                throw new MissingComponentException("The WorkerConnector behaviour was not found on the worker prefab");
             }
 
             workerConnector.IpAddress = IpAddress;
