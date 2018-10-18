@@ -40,7 +40,7 @@ namespace Playground
             workerConnector.TryConnect();
         }
 
-        public void OnSuccess()
+        public void OnConnectionSucceeded()
         {
             PlayerPrefs.SetString(CachedIp, IpAddress);
             PlayerPrefs.Save();
