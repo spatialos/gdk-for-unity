@@ -32,6 +32,7 @@ namespace Playground
 
             if (workerConnector == null)
             {
+                errorMessage.text = "Failed to create a mobile worker connector.";
                 return;
             }
 
