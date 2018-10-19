@@ -6,7 +6,7 @@ In the Unity Editor, you first need to make sure Burst compilation is **disabled
 
 <%(Callout type="info" message="Building workers for the first time may take while. Why not make yourself a cup of tea while you wait?")%>
 
-![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.jpg)
+![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.png)
 
 > **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`
 
