@@ -27,5 +27,5 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
 
 <%(Callout type="info" message="Note that when you are developing locally with the GDK you can skip building these workers, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
 <br/>
-#### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/4-upload-launch.md)
+#### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch.md)
 

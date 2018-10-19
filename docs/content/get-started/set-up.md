@@ -170,5 +170,5 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 
 <%(/Expandable)%>
 <br/>
-#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/2-open-project.md)
+#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md)
 

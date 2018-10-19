@@ -69,5 +69,5 @@ This command defaults to deploying to clusters located in the US. If you’re in
 ## Well done getting set up!
 It’s time to play your game.
 
-#### Next: [Get playing!]({{urlRoot}}/content/get-started/5-get-playing.md)
+#### Next: [Get playing!]({{urlRoot}}/content/get-started/get-playing.md)
 

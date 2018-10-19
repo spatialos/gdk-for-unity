@@ -30,5 +30,5 @@ You can verify that the NavMesh has been baked correctly by navigating to **Asse
 
 
 <br/>
-#### Next: [Build your workers]({{urlRoot}}/content/get-started/3-build-workers.md)
+#### Next: [Build your workers]({{urlRoot}}/content/get-started/build-workers.md)
 

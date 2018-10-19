@@ -51,5 +51,5 @@ Back in the game, you will soon see the new simulated player-clients running. Tr
 ## Job done!
 Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
 
-#### Next: [View your game world]({{urlRoot}}/content/get-started/6-view-game-world.md)
+#### Next: [View your game world]({{urlRoot}}/content/get-started/view-game-world.md)
 

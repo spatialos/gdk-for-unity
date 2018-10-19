@@ -1,5 +1,5 @@
-[//]: # (This is a duplicate of the content/get-started/0-get-started doc)
-[//]: # (Dupe of content/get-started/0-get-started for the time-being)
+[//]: # (This is a duplicate of the content/get-started/get-started doc)
+[//]: # (Dupe of content/get-started/get-started for the time-being)
 
 # Get started: Introduction
 
@@ -7,7 +7,7 @@ Get started with SpatialOS for Unity by launching a cloud deployment of our FPS 
 
 Once you’ve done this, you’ll then be ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality will introduce you to this development experience.
 
-#### Next: [Set up]({{urlRoot}}/content/get-started/1-set-up.md)
+#### Next: [Set up]({{urlRoot}}/content/get-started/set-up.md)
 <br/>
 <br/>
 ![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/headline.png)
