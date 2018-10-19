@@ -1,6 +1,6 @@
 - <h3> SpatialOS GDK for Unity</h3>
 - <h3> [ - Welcome]({{urlRoot}}/welcome)</h3>
-- <h3> [ - Get started]({{urlRoot}}/get-started)</h3>
+- <h3> [ - Get started]({{urlRoot}}/content/get-started)</h3>
 - <h3> [ - Add your first feature]({{urlRoot}}/projects/fps/tutorial)</h3>
 
 ***

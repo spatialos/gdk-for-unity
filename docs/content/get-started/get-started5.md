@@ -1,0 +1,55 @@
+# 5. Get playing!
+
+Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
+
+<img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
+
+Hit the **Play** button on the left, and then launch (you can skip Step 1 - the SpatialOS Launcher was previously installed during setup). The SpatialOS Launcher will download the game client for this deployment and launch it.
+
+<img src="{{assetRoot}}assets/launch.png" style="margin: 0 auto; display: block;" />
+
+Once the client has launched, enter the game and fire a few celebratory shots - you are now playing in your first SpatialOS cloud deployment!
+
+<img src="{{assetRoot}}assets/fps/by-yourself.png" style="margin: 0 auto; display: block;" />
+
+It’s a bit lonely in there isn’t it? Keep your client running while we get this world populated.
+
+## a.Invite friends
+
+To invite other players to this game, head back to the Deployment Overview page in your web Console, and select the **Share** button:
+
+<img src="{{assetRoot}}assets/overview-page-share.png" style="margin: 0 auto; display: block;" />
+
+This generates a short link to share with anyone who wants to join in for the duration of the deployment, providing them with Launcher download instructions and a button to join the deployment.
+
+<img src="{{assetRoot}}assets/share-modal.png" style="margin: 0 auto; display: block;" />
+
+## b.Invite enemies
+
+**For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
+
+These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
+
+In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
+
+To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
+
+<img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
+
+Modify the `fps_simulated_players_per_coordinator` flag value from 0 to 10 and hit save:
+
+<img src="{{assetRoot}}assets/worker-flags-modification.png" style="margin: 0 auto; display: block;" />
+
+What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 2 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
+
+<%(Callout type="warn" message="If you exceed 10 `fps_simulated_players_per_coordinator` you may experience deployment instability.")%>
+
+Back in the game, you will soon see the new simulated player-clients running. Try to find them before they find you…
+
+<img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; display: block;" />
+
+## Job done!
+Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
+
+**[[1]]({{urlRoot}}/content/get-started/get-started1.md) [[2]]({{urlRoot}}/content/get-started/get-started2.md) [[3]]({{urlRoot}}/content/get-started/get-started3.md) [[4]]({{urlRoot}}/content/get-started/get-started4.md)  < Back - Next > [6: Checkout what’s happening in your game world]({{urlRoot}}/content/get-started/get-started6.md)**
+
