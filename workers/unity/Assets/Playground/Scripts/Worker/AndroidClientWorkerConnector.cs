@@ -14,7 +14,7 @@ namespace Playground
         public string IpAddress { get; set; }
         public ConnectionScreenController ConnectionScreenController { get; set; }
 
-        [SerializeField] private GameObject level;
+        public GameObject Level;
 
         private GameObject levelInstance;
 
@@ -28,12 +28,12 @@ namespace Playground
             ConnectionScreenController.OnConnectionSucceeded();
             WorkerUtils.AddClientSystems(Worker.World);
 
-            if (level == null)
+            if (Level == null)
             {
                 return;
             }
 
-            levelInstance = Instantiate(level, transform);
+            levelInstance = Instantiate(Level, transform);
             levelInstance.transform.SetParent(null);
         }
 

@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -13,7 +14,8 @@ namespace Improbable.Gdk.Mobile
                 ReceptionistHost = GetHostIp(),
                 WorkerType = workerType,
                 WorkerId = CreateNewWorkerId(workerType),
-                UseExternalIp = UseExternalIp
+                UseExternalIp = UseExternalIp,
+                LinkProtocol = NetworkConnectionType.Tcp,
             };
         }
     }
