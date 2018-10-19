@@ -1,4 +1,4 @@
-# 5. Get playing!
+# Get started: 4 - Get playing!
 
 Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
 
@@ -14,7 +14,7 @@ Once the client has launched, enter the game and fire a few celebratory shots - 
 
 It’s a bit lonely in there isn’t it? Keep your client running while we get this world populated.
 
-## a.Invite friends
+## Invite friends
 
 To invite other players to this game, head back to the Deployment Overview page in your web Console, and select the **Share** button:
 
@@ -24,7 +24,7 @@ This generates a short link to share with anyone who wants to join in for the du
 
 <img src="{{assetRoot}}assets/share-modal.png" style="margin: 0 auto; display: block;" />
 
-## b.Invite enemies
+## Invite enemies
 
 **For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
 
@@ -51,5 +51,5 @@ Back in the game, you will soon see the new simulated player-clients running. Tr
 ## Job done!
 Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
 
-**[[1]]({{urlRoot}}/content/get-started/get-started1.md) [[2]]({{urlRoot}}/content/get-started/get-started2.md) [[3]]({{urlRoot}}/content/get-started/get-started3.md) [[4]]({{urlRoot}}/content/get-started/get-started4.md)  < Back - Next > [6: Checkout what’s happening in your game world]({{urlRoot}}/content/get-started/get-started6.md)**
+#### Next: [View your game world]({{urlRoot}}/content/get-started/6-view-game-world.md)
 

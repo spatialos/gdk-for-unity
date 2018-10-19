@@ -1,23 +1,26 @@
-# 1. Setup
-There are three parts to the setup: 
+# Get started: 1 - Set up
+There are three parts to this step: 
 
-a. Sign up for a SpatialOS account <br/>
-b. Set up your machine <br/>
-c. Clone the repos 
+* Sign up for a SpatialOS account
+* Set up your machine
+* Clone the repos 
 
-This setup step is the longest of the 5 steps - the others are much quicker.
-
-## a. Sign up for a SpatialOS account, or make sure you are logged in
+(This step is the longest of the 6 steps - the others are much quicker.)
+<br/>
+<br/>
+## Sign up for a SpatialOS account, or make sure you are logged in
 
 If you have already signed up, make sure you are logged in (you should see your picture in the top right of the page if you are, if not - hit "Sign In".)
 
-If you have not signed up before, you can do so [here](https://improbable.io/get-spatialos).
+If you have not signed up before, you can do this [here](https://improbable.io/get-spatialos).
+<br/>
+<br/>
 
-## b. Set up your machine
+## Set up your machine
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Windows setup step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.8</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure you download the **Installer** version, and select the following components during installation:
   - **Linux Build Support**
@@ -29,17 +32,17 @@ Even though you are developing on a Windows PC, you need:<br/>
 **Mac Build Support** if you want to share your game with end-users on a Mac.<br/>
 Unity gives you Windows build support by default.
 
-**Windows setup step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
 > **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
-**Windows setup step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
+**Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
 
 - This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
 
-**Windows setup step 4.** Install a **code editor** if you don't have one already
+**Step 4.** Install a **code editor** if you don't have one already
 
 - We recommend either [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).
 
@@ -68,7 +71,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Mac setup step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.8</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.8</strong></a>**
 
 - Make sure to download the **Installer** version, and select the following components during installation:
   - **Linux Build Support**
@@ -80,17 +83,17 @@ Even though you are developing on a Mac, you need:<br/>
 **Windows Build Support** if you want to share your game with end-users on a Windows PC.<br/>
 Unity gives you Mac build support by default.
 
-**Mac setup step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
+**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
 > **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
-**Mac setup step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Mac|label=Mac" target="_blank">SpatialOS installer</a>**
+**Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Mac|label=Mac" target="_blank">SpatialOS installer</a>**
 
 * This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables.
 
-**Mac setup step 4.** Install a **code editor** if you don't have one already
+**Step 4.** Install a **code editor** if you don't have one already
 
 * We recommend either [Visual Studio](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).
 
@@ -108,7 +111,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 * You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/>
 * You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
 * You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
-* Unity gives you build support for your development machine (Windows or PC) by default.")%>
+* Unity gives you build support for your development machine (Windows or Mac) by default.")%>
 
 
 If you need help using the GDK, come and talk to us about the software and the documentation via:
@@ -116,8 +119,13 @@ If you need help using the GDK, come and talk to us about the software and the d
 * **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
 * **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
 * **Github issues** - Create an [issue](https://github.com/spatialos/gdk-for-unity/issues) in this repository.
+<br/>
+<br/>
 
-## c. Clone the repos
+
+## Clone the repos
+
+You need to clone two repositories; the FPS Starter Project and the GDK for Unreal.
 
 ### Clone the FPS Starter Project repository
 
@@ -161,6 +169,6 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
   - `git checkout <pinned_version>`
 
 <%(/Expandable)%>
-
-**Next > [2: Open the FPS Starter Project]({{urlRoot}}/content/get-started/get-started2.md) [3] [4] [5] [6]**
+<br/>
+#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/2-open-project.md)
 

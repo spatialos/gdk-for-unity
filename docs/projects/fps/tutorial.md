@@ -2,7 +2,7 @@
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
-Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/get-started).
+Before starting this tutorial, make sure you have followed the [Get started guide]({{urlRoot}}/content/get-started/0-get-started).
 
 # What will be covered?
 

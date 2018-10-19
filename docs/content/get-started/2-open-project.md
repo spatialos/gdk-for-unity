@@ -1,9 +1,8 @@
-# 2. Open the FPS Starter Project and set up the Unity Editor
+# Get started: 2 - Open the FPS Starter Project
 
-Launch the Unity Editor. It should automatically detect the project but if it doesn't, click Open and select `gdk-for-unity-fps-starter-project/workers/unity`.
+Launch the Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-### Before you start, apply these quick Unity bug fixes:
-<%(#Expandable title="Fix Shaders")%>
+**Before you start, apply these two quick Unity bug fixes:**
 
 #### Shaders
 There is a bug in the current preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
@@ -30,5 +29,6 @@ You can verify that the NavMesh has been baked correctly by navigating to **Asse
 <img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
 
 
-**[[1]]({{urlRoot}}/content/get-started/get-started1.md) < Back - Next > [3: Build your workers]({{urlRoot}}/content/get-started/get-started3.md) [4] [5] [6]**
+<br/>
+#### Next: [Build your workers]({{urlRoot}}/content/get-started/3-build-workers.md)
 

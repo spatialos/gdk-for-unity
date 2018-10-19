@@ -1,6 +1,13 @@
-# 4. Upload and launch your game in SpatialOS
+# Get started: 4 - Upload and launch your game
 
-## a. Set your project name
+This has 3 steps:
+
+* Set your project name
+* Upload worker assemblies
+* Launch a cloud deployment
+
+
+### Set your project name
 
 When you signed up for SpatialOS, your account was automatically associated with an organisation and a project, both of which have the same generated name. To find this name enter the [Console](https://console.improbable.io/projects). It should looks like `beta_randomword_anotherword_randomnumber`:
 
@@ -19,7 +26,8 @@ Using a text editor of your choice, open `gdk-for-unity-fps-starter-project/spat
 }
 ```
 
-## b. Upload worker assemblies
+<br/>
+### Upload worker assemblies
 
 An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
@@ -38,7 +46,8 @@ Upload report:
 
 Based on your network speed, this may take a little while (1-10 minutes) to complete.
 
-## c. Launch a cloud deployment
+<br/>
+### Launch a cloud deployment
 
 The next step is to [launch a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. This can only be done through the spatial CLI.
 
@@ -60,5 +69,5 @@ This command defaults to deploying to clusters located in the US. If you’re in
 ## Well done getting set up!
 It’s time to play your game.
 
-**[[1]]({{urlRoot}}/content/get-started/get-started1.md) [[2]]({{urlRoot}}/content/get-started/get-started2.md) [[3]]({{urlRoot}}/content/get-started/get-started3.md) < Back - Next > [5: Get playing!]({{urlRoot}}/content/get-started/get-started5.md) [6]**
+#### Next: [Get playing!]({{urlRoot}}/content/get-started/5-get-playing.md)
 

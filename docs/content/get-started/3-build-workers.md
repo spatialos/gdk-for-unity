@@ -1,6 +1,6 @@
-# 3. Build your workers
+# Get started: 3 - Build your workers
 
-As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing).
+As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers]({{urlRoot}}/content/glossary#worker).
 
 In the Unity Editor, you first need to make sure Burst compilation is **disabled** from **Jobs** > **Enable Burst Compilation**. Then you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
 
@@ -26,6 +26,6 @@ After the build has successfully finished, the `gdk-for-unity-fps-starter-projec
 ```
 
 <%(Callout type="info" message="Note that when you are developing locally with the GDK you can skip building these workers, since both of your workers can run in the editor. To do this press `Ctrl+L` to start a local deployment, wait until you see a message that SpatialOS is ready, and then play the `FPS-Development` scene.")%>
-
-**[[1]]({{urlRoot}}/content/get-started/get-started1.md)[[2]]({{urlRoot}}/content/get-started/get-started2.md)[[3]]({{urlRoot}}/content/get-started/get-started3.md) < Back - Next > [4: Build your workers]({{urlRoot}}/content/get-started/get-started4.md) [5] [6]**
+<br/>
+#### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/4-upload-launch.md)
 
