@@ -125,7 +125,7 @@ If you need help using the GDK, come and talk to us about the software and the d
 
 ## Clone the repos
 
-You need to clone two repositories; the FPS Starter Project and the GDK for Unreal.
+You need to clone two repositories; the FPS Starter Project and the GDK for Unity.
 
 ### Clone the FPS Starter Project repository
 
