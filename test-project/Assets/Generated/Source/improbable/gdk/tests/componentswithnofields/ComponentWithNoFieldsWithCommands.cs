@@ -2,14 +2,18 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
-using Unity.Entities;
 using Improbable.Gdk.Core;
+using Improbable.Worker.Core;
+using System;
 using System.Collections.Generic;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     public partial class ComponentWithNoFieldsWithCommands
     {
+        public const uint ComponentId = 1005;
+
         public struct Component : IComponentData, ISpatialComponentData
         {
             public uint ComponentId => 1005;
@@ -66,6 +70,38 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             public global::System.Collections.Generic.List<Update> Updates
             {
                 get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+            }
+        }
+
+        internal class ComponentWithNoFieldsWithCommandsDynamic : IDynamicInvokable
+        {
+            public uint ComponentId => ComponentWithNoFieldsWithCommands.ComponentId;
+
+            private static Component DeserializeData(ComponentData data, World world)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
+            }
+
+            private static Update DeserializeUpdate(ComponentUpdate update, World world)
+            {
+                var schemaDataOpt = update.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
+                }
+
+                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
+            }
+
+            public void InvokeHandler(Dynamic.IHandler handler)
+            {
+                handler.Accept<Component, Update>(ComponentWithNoFieldsWithCommands.ComponentId, DeserializeData, DeserializeUpdate);
             }
         }
     }
