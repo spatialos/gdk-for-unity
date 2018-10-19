@@ -34,34 +34,65 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Checks that the LocatorConfig instance is valid. This does not guarantee a successful connection.
+        ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
-        public override void Validate()
+        /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
+        /// <returns>True fo the connection configuration is valid.</returns>
+        public override bool Validate(out string errorMessage)
         {
-            ValidateString(LocatorHost, RuntimeConfigNames.LocatorHost);
-            ValidateString(LocatorParameters.ProjectName, RuntimeConfigNames.ProjectName);
-            ValidateCondition(
-                LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken ||
-                LocatorParameters.CredentialsType == LocatorCredentialsType.Steam,
-                "LocatorConfig has invalid CredentialsType.");
+            if (string.IsNullOrEmpty(LocatorHost))
+            {
+                errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.LocatorHost);
+                return false;
+            }
+            if (string.IsNullOrEmpty(LocatorParameters.ProjectName))
+            {
+                errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.ProjectName);
+                return false;
+            }
+            if (LocatorParameters.CredentialsType != LocatorCredentialsType.LoginToken &&
+                LocatorParameters.CredentialsType != LocatorCredentialsType.Steam)
+            {
+                errorMessage = "LocatorConfig is using an invalid CredentialsType. Valid CredentialsTypes are: LoginToken, Steam.";
+                return false;
+            }
 
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
-                ValidateString(LocatorParameters.LoginToken.Token, RuntimeConfigNames.LoginToken);
-                ValidateCondition(
-                    string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) &&
-                    string.IsNullOrEmpty(LocatorParameters.Steam.Ticket),
-                    "SpatialOS login token and Steam credentials may not be set at the same time.");
+                if (string.IsNullOrEmpty(LocatorParameters.LoginToken.Token))
+                {
+                    errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.LoginToken);
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) ||
+                    !string.IsNullOrEmpty(LocatorParameters.Steam.Ticket))
+                {
+                    errorMessage = "SpatialOS login token and Steam credentials may not be set at the same time.";
+                    return false;
+                }
             }
 
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
             {
-                ValidateString(LocatorParameters.Steam.DeploymentTag, RuntimeConfigNames.DeploymentTag);
-                ValidateString(LocatorParameters.Steam.Ticket, RuntimeConfigNames.SteamTicket);
-                ValidateCondition(
-                    string.IsNullOrEmpty(LocatorParameters.LoginToken.Token),
-                    "SpatialOS login token and Steam credentials may not be set at the same time.");
+                if (string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag))
+                {
+                    errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.SteamDeploymentTag);
+                    return false;
+                }
+                if (string.IsNullOrEmpty(LocatorParameters.Steam.Ticket))
+                {
+                    errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.SteamTicket);
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(LocatorParameters.LoginToken.Token))
+                {
+                    errorMessage = "SpatialOS login token and Steam credentials may not be set at the same time.";
+                    return false;
+                }
             }
+
+            errorMessage = string.Empty;
+            return true;
         }
 
         /// <summary>
@@ -74,7 +105,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Sets the LocatorCredentialsType to LoginToken and sets the login token for the Locator to use.
+        ///     Sets the login token for the locator to use. Additionally, sets the CredentialsType to LocatorCredentialsType.LoginToken.
         /// </summary>
         /// <remarks>
         ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
@@ -97,17 +128,17 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Sets the LocatorCredentialsType to Steam and sets the deploymentTag and steam ticket for the Locator to use.
+        ///     Sets the Steam deployment tag and steam ticket for the locator to use. Additionally, sets the CredentialsType to LocatorCredentialsType.Steam.
         /// </summary>
         /// <remarks>
         ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
         /// </remarks>
-        /// <param name="deploymentTag">The deployment tag.</param>
+        /// <param name="steamDeploymentTag">The deployment tag.</param>
         /// <param name="steamTicket">The steam ticket.</param>
         /// <exception cref="ConnectionFailedException">
         ///     Thrown if this method is called after a SpatialOS login token was set before.
         /// </exception>
-        public void SetSteamCredentials(string deploymentTag, string steamTicket)
+        public void SetSteamCredentials(string steamDeploymentTag, string steamTicket)
         {
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
@@ -117,7 +148,7 @@ namespace Improbable.Gdk.Core
             }
 
             LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
-            LocatorParameters.Steam.DeploymentTag = deploymentTag;
+            LocatorParameters.Steam.DeploymentTag = steamDeploymentTag;
             LocatorParameters.Steam.Ticket = steamTicket;
         }
 
@@ -140,13 +171,13 @@ namespace Improbable.Gdk.Core
                 config.SetLoginToken(loginToken);
             }
 
-            var deploymentTag = CommandLineUtility.GetCommandLineValue(
-                parsedArgs, RuntimeConfigNames.DeploymentTag, string.Empty);
+            var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
+                parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
             var steamTicket = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamTicket, string.Empty);
-            if (!string.IsNullOrEmpty(deploymentTag) && !string.IsNullOrEmpty(steamTicket))
+            if (!string.IsNullOrEmpty(steamDeploymentTag) && !string.IsNullOrEmpty(steamTicket))
             {
-                config.SetSteamCredentials(deploymentTag, steamTicket);
+                config.SetSteamCredentials(steamDeploymentTag, steamTicket);
             }
 
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(

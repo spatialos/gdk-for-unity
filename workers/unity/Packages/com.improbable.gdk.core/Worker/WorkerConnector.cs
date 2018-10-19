@@ -159,7 +159,7 @@ namespace Improbable.Gdk.Core
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
             var shouldUseLocator = commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken) ||
-                commandLineArgs.ContainsKey(RuntimeConfigNames.DeploymentTag) ||
+                commandLineArgs.ContainsKey(RuntimeConfigNames.SteamDeploymentTag) ||
                 commandLineArgs.ContainsKey(RuntimeConfigNames.SteamTicket);
             return shouldUseLocator;
         }

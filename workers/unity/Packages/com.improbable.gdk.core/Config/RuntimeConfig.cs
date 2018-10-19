@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public static class RuntimeConfigNames
     {
-        public const string DeploymentTag = "deploymentTag";
+        public const string SteamDeploymentTag = "steamDeploymentTag";
         public const string LinkProtocol = "linkProtocol";
         public const string LocatorHost = "locatorHost";
         public const string LoginToken = "loginToken";

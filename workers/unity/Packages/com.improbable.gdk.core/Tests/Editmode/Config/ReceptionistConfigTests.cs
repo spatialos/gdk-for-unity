@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Validate_should_return_true_when_ReceptionistConfig_is_set_to_default_value()
         {
             var config = GetDefaultWorkingConfig();
-            Assert.DoesNotThrow(() => config.Validate());
+            Assert.IsTrue(config.Validate(out var errorMessage));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var config = GetDefaultWorkingConfig();
             config.ReceptionistHost = "test";
-            Assert.DoesNotThrow(() => config.Validate());
+            Assert.IsTrue(config.Validate(out var errorMessage));
         }
 
         [Test]
@@ -35,9 +35,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             var config = GetDefaultWorkingConfig();
             config.ReceptionistHost = "";
-
-            var exception = Assert.Throws<ConnectionFailedException>(() => config.Validate());
-            Assert.IsTrue(exception.Message.Contains("receptionistHost"));
+            Assert.IsFalse(config.Validate(out var errorMessage));
         }
 
         [Test]
