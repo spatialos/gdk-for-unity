@@ -1,6 +1,6 @@
 # Get started: 6 - View your game world
 
-Let’s take a look at how many simulated player-clients are now running around this world and how our deployment is performing, using the World Inspector accessible from the Deployment Overview page of the [SpatialOS Console](https://console.improbable.io) (shown below).
+Let’s take a look at how many simulated player-clients are now running around this world and how our deployment is performing, using the World Inspector accessible from the Deployment Overview page of the SpatialOS [web Console](https://console.improbable.io) (shown below).
 
 <img src="{{assetRoot}}assets/overview-page-inspector.png" style="margin: 0 auto; display: block;" />
 <br/>
