@@ -1,4 +1,4 @@
-# Get started: 4 - Get playing!
+# Get started: 5 - Get playing!
 
 Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
 
