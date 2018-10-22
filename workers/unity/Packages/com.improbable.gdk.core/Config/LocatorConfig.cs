@@ -46,11 +46,13 @@ namespace Improbable.Gdk.Core
                 errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.LocatorHost);
                 return false;
             }
+
             if (string.IsNullOrEmpty(LocatorParameters.ProjectName))
             {
                 errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.ProjectName);
                 return false;
             }
+
             if (LocatorParameters.CredentialsType != LocatorCredentialsType.LoginToken &&
                 LocatorParameters.CredentialsType != LocatorCredentialsType.Steam)
             {
@@ -65,6 +67,7 @@ namespace Improbable.Gdk.Core
                     errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.LoginToken);
                     return false;
                 }
+
                 if (!string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) ||
                     !string.IsNullOrEmpty(LocatorParameters.Steam.Ticket))
                 {
@@ -80,11 +83,13 @@ namespace Improbable.Gdk.Core
                     errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.SteamDeploymentTag);
                     return false;
                 }
+
                 if (string.IsNullOrEmpty(LocatorParameters.Steam.Ticket))
                 {
                     errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.SteamTicket);
                     return false;
                 }
+
                 if (!string.IsNullOrEmpty(LocatorParameters.LoginToken.Token))
                 {
                     errorMessage = UseOfMultipleCredentialTypesError;
@@ -120,7 +125,7 @@ namespace Improbable.Gdk.Core
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.Steam)
             {
                 throw new ConnectionFailedException(
-                    "SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.",
+                    "SpatialOS login token may not be set when Steam credentials are already specified.",
                     ConnectionErrorReason.InvalidConfig);
             }
 
@@ -144,7 +149,7 @@ namespace Improbable.Gdk.Core
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
                 throw new ConnectionFailedException(
-                    "SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.",
+                    "Steam credentials may not be set when a SpatialOS login token is already specified.",
                     ConnectionErrorReason.InvalidConfig);
             }
 
