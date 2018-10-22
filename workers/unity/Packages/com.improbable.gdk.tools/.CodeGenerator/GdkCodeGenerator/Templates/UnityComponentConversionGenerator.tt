@@ -216,9 +216,9 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
+                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= eventDetails.EventIndex #>, i));
                             eventList.Add(e);
                         }
                     }
