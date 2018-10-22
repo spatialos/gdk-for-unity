@@ -18,13 +18,13 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public static class RuntimeConfigNames
     {
-        public const string SteamDeploymentTag = "steamDeploymentTag";
         public const string LinkProtocol = "linkProtocol";
         public const string LocatorHost = "locatorHost";
         public const string LoginToken = "loginToken";
         public const string ProjectName = "projectName";
         public const string ReceptionistHost = "receptionistHost";
         public const string ReceptionistPort = "receptionistPort";
+        public const string SteamDeploymentTag = "steamDeploymentTag";
         public const string SteamTicket = "steamTicket";
         public const string WorkerId = "workerId";
         public const string WorkerType = "workerType";

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Worker;
 
@@ -28,6 +27,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public readonly LocatorParameters LocatorParameters = new LocatorParameters();
 
+        private const string UseOfMultipleCredentialTypesError = "SpatialOS login token and Steam credentials may not be set at the same time.";
+
         public LocatorConfig()
         {
             UseExternalIp = true;
@@ -37,7 +38,7 @@ namespace Improbable.Gdk.Core
         ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
         /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
-        /// <returns>True fo the connection configuration is valid.</returns>
+        /// <returns>True, if the connection configuration is valid.</returns>
         public override bool Validate(out string errorMessage)
         {
             if (string.IsNullOrEmpty(LocatorHost))
@@ -67,7 +68,7 @@ namespace Improbable.Gdk.Core
                 if (!string.IsNullOrEmpty(LocatorParameters.Steam.DeploymentTag) ||
                     !string.IsNullOrEmpty(LocatorParameters.Steam.Ticket))
                 {
-                    errorMessage = "SpatialOS login token and Steam credentials may not be set at the same time.";
+                    errorMessage = UseOfMultipleCredentialTypesError;
                     return false;
                 }
             }
@@ -86,7 +87,7 @@ namespace Improbable.Gdk.Core
                 }
                 if (!string.IsNullOrEmpty(LocatorParameters.LoginToken.Token))
                 {
-                    errorMessage = "SpatialOS login token and Steam credentials may not be set at the same time.";
+                    errorMessage = UseOfMultipleCredentialTypesError;
                     return false;
                 }
             }

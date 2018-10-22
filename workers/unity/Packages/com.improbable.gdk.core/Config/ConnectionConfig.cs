@@ -43,13 +43,13 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public string WorkerType;
 
-        protected const string MissingConfigError = "Config validation failed with: No valid {0} has been provided";
+        protected const string MissingConfigError = "Config validation failed with: No valid {0} has been provided.";
 
         /// <summary>
         ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
         /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
-        /// <returns>True fo the connection configuration is valid.</returns>
+        /// <returns>True, if the connection configuration is valid.</returns>
         public abstract bool Validate(out string errorMessage);
 
         /// <summary>

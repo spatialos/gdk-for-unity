@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Core
         ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
         /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
-        /// <returns>True fo the connection configuration is valid.</returns>
+        /// <returns>True, if the connection configuration is valid.</returns>
         public override bool Validate(out string errorMessage)
         {
             if (string.IsNullOrEmpty(ReceptionistHost))
