@@ -19,8 +19,9 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
+        public Dispatcher Dispatcher;
+
         private WorkerSystem worker;
-        private Dispatcher dispatcher;
 
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
             new Dictionary<uint, ComponentDispatcherHandler>();
@@ -44,7 +45,7 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager();
 
             worker = World.GetExistingManager<WorkerSystem>();
-            dispatcher = new Dispatcher();
+            Dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
 
             var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
@@ -76,7 +77,7 @@ namespace Improbable.Gdk.Core
             {
                 using (var opList = worker.Connection.GetOpList(0))
                 {
-                    dispatcher.Process(opList);
+                    Dispatcher.Process(opList);
                 }
             }
             while (inCriticalSection);
@@ -404,23 +405,23 @@ namespace Improbable.Gdk.Core
                     Activator.CreateInstance(componentDispatcherType, worker, World));
             }
 
-            dispatcher.OnAddEntity(OnAddEntity);
-            dispatcher.OnRemoveEntity(OnRemoveEntity);
-            dispatcher.OnDisconnect(OnDisconnect);
-            dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
+            Dispatcher.OnAddEntity(OnAddEntity);
+            Dispatcher.OnRemoveEntity(OnRemoveEntity);
+            Dispatcher.OnDisconnect(OnDisconnect);
+            Dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
 
-            dispatcher.OnAddComponent(OnAddComponent);
-            dispatcher.OnRemoveComponent(OnRemoveComponent);
-            dispatcher.OnComponentUpdate(OnComponentUpdate);
-            dispatcher.OnAuthorityChange(OnAuthorityChange);
+            Dispatcher.OnAddComponent(OnAddComponent);
+            Dispatcher.OnRemoveComponent(OnRemoveComponent);
+            Dispatcher.OnComponentUpdate(OnComponentUpdate);
+            Dispatcher.OnAuthorityChange(OnAuthorityChange);
 
-            dispatcher.OnCommandRequest(OnCommandRequest);
-            dispatcher.OnCommandResponse(OnCommandResponse);
+            Dispatcher.OnCommandRequest(OnCommandRequest);
+            Dispatcher.OnCommandResponse(OnCommandResponse);
 
-            dispatcher.OnCreateEntityResponse(OnCreateEntityResponse);
-            dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
-            dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
-            dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
+            Dispatcher.OnCreateEntityResponse(OnCreateEntityResponse);
+            Dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
+            Dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
+            Dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
 
             ClientError.ExceptionCallback = HandleException;
         }
