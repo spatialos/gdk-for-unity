@@ -9,12 +9,14 @@ namespace Playground
         private readonly Font[] fontCache;
         private readonly int[] fontSizeCache;
 
-        public ResizedGui(Font font, int fontSize, params GUIStyle[] skins)
+        public ResizedGui(Font font, float screenWidthFontRatio, params GUIStyle[] skins)
         {
             styles = skins;
 
             fontCache = new Font[skins.Length];
             fontSizeCache = new int[skins.Length];
+
+            var actualFontSize = (int) (Screen.width * screenWidthFontRatio);
 
             for (var i = 0; i < styles.Length; i++)
             {
@@ -23,7 +25,7 @@ namespace Playground
                 fontSizeCache[i] = guiStyle.fontSize;
 
                 guiStyle.font = font;
-                guiStyle.fontSize = fontSize;
+                guiStyle.fontSize = actualFontSize;
             }
         }
 

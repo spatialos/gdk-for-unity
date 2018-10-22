@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.6126345, g: 0.7149495, b: 0.9649808, a: 1}
+  m_IndirectSpecularColor: {r: 0.61263436, g: 0.7149493, b: 0.96498007, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -158,6 +158,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1765859764722708, guid: 2063b16e67e5b41c2a15dd0981a4da10,
         type: 2}
+    - target: {fileID: 114977187379559466, guid: cb8dbba4c65c91e46ad63edeccf8273a,
+        type: 2}
+      propertyPath: wantedFontSize
+      value: 4868
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb8dbba4c65c91e46ad63edeccf8273a, type: 2}
   m_IsPrefabAsset: 0

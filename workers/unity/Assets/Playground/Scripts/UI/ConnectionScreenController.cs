@@ -11,7 +11,7 @@ namespace Playground
 
         [SerializeField] private GameObject clientWorkerPrefab;
         [SerializeField] private Font font;
-        [SerializeField] private int wantedFontSize = 20;
+        [SerializeField] private float screenWidthFontRatio = 20;
 
         private bool showConnectionGui = true;
         private bool isConnecting = false;
@@ -34,7 +34,7 @@ namespace Playground
 
             using (new GUILayout.AreaScope(new Rect(
                 GuiPadding,
-                GuiPadding,
+                Screen.height * 0.4f,
                 Screen.width - GuiPadding * 2,
                 Screen.height - GuiPadding * 2)))
             {
@@ -43,7 +43,7 @@ namespace Playground
                 GUI.enabled = !isConnecting;
                 try
                 {
-                    using (new ResizedGui(font, wantedFontSize,
+                    using (new ResizedGui(font, screenWidthFontRatio,
                         GUI.skin.label,
                         GUI.skin.textField,
                         GUI.skin.button,
