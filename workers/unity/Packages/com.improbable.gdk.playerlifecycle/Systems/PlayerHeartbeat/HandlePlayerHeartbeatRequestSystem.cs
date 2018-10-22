@@ -1,3 +1,4 @@
+using System;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
@@ -7,34 +8,53 @@ using Unity.Entities;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatRequestSystem : ComponentSystem
     {
-        private struct HeartbeatData
+        private ComponentGroup group;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>
-                HeartbeatRequests;
+            var query = new EntityArchetypeQuery
+            {
+                All = new[]
+                {
+                    ComponentType.ReadOnly<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>(),
+                    ComponentType.Create<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>(),
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>()
+            };
 
-            [ReadOnly] public ComponentDataArray<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>
-                HeartbeatResponders;
+            group = GetComponentGroup(query);
         }
-
-        [Inject] private HeartbeatData heartbeatData;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < heartbeatData.Length; i++)
-            {
-                var requests = heartbeatData.HeartbeatRequests[i].Requests;
-                var responder = heartbeatData.HeartbeatResponders[i].ResponsesToSend;
+            var requestsType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>(true);
+            var responderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>();
 
-                foreach (var request in requests)
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+
+            foreach (var chunk in chunkArray)
+            {
+                var requests = chunk.GetNativeArray(requestsType);
+                var responders = chunk.GetNativeArray(responderType);
+
+                for (var i = 0; i < requests.Length; i++)
                 {
-                    responder.Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateResponse(request, new Empty()));
+                    var responsesToSend = responders[i].ResponsesToSend;
+                    foreach (var request in requests[i].Requests)
+                    {
+                        responsesToSend.Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateResponse(request, new Empty()));
+                    }
                 }
             }
+
+            chunkArray.Dispose();
         }
     }
 }

@@ -57,6 +57,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static void AddServerSystems(World world)
         {
             world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();
+            world.GetOrCreateManager<PlayerHeartbeatInitializationSystem>();
             world.GetOrCreateManager<SendPlayerHeartbeatRequestSystem>();
             world.GetOrCreateManager<HandlePlayerHeartbeatResponseSystem>();
         }
