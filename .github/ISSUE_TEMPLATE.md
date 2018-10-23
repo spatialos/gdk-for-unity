@@ -1,4 +1,3 @@
-
 We are accepting issues and we want your [feedback](../README.md#give-us-feedback).
 
 -------
