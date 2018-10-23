@@ -36,7 +36,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         protected override void OnUpdate()
         {
             var entityType = GetArchetypeChunkEntityType();
-            var chunkArray = initializerGroup.CreateArchetypeChunkArray(Allocator.Temp);
+            var chunkArray = initializerGroup.CreateArchetypeChunkArray(Allocator.TempJob);
 
             foreach (var chunk in chunkArray)
             {

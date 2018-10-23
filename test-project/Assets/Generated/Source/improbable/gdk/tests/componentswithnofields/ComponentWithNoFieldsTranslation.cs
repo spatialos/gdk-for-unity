@@ -282,7 +282,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 Profiler.BeginSample("ComponentWithNoFields");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>();
                 foreach (var chunk in chunkArray)
@@ -341,7 +341,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.ReceivedUpdates>();
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {

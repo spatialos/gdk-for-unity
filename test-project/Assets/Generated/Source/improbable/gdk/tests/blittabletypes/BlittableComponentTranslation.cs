@@ -191,9 +191,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload.Serialization.Deserialize(eventsObject.GetObject(1));
+                            var e = global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload.Serialization.Deserialize(eventsObject.IndexObject(1, i));
                             eventList.Add(e);
                         }
                     }
@@ -222,9 +222,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload.Serialization.Deserialize(eventsObject.GetObject(2));
+                            var e = global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload.Serialization.Deserialize(eventsObject.IndexObject(2, i));
                             eventList.Add(e);
                         }
                     }
@@ -622,7 +622,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 Profiler.BeginSample("BlittableComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
                 var eventFirstEventType = system.GetArchetypeChunkComponentType<EventSender.FirstEvent>(true);
@@ -849,7 +849,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 var secondCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.SecondCommand>();
                 var secondCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.SecondCommand>();
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {

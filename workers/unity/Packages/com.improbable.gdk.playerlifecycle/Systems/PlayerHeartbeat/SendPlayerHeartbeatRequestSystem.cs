@@ -53,7 +53,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
             var senderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat>();
             var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
