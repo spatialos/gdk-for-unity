@@ -20,6 +20,7 @@ namespace Improbable.Gdk.Core
 
     /// <summary>
     ///     ECS component denotes that this worker will lose authority over <see cref="T"/> imminently.
+    ///     If AcknowledgeAuthorityLoss is set then authority handover will complete before the handover timeout.
     /// </summary>
     /// <remarks>
     ///     Note that this worker may still be authoritative over this component.
@@ -27,5 +28,6 @@ namespace Improbable.Gdk.Core
     /// <typeparam name="T">The SpatialOS component.</typeparam>
     public struct AuthorityLossImminent<T> : IComponentData where T : ISpatialComponentData
     {
+        public BlittableBool AcknowledgeAuthorityLoss;
     }
 }

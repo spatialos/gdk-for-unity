@@ -77,6 +77,30 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
         }
 
+        /// <summary>
+        ///     Yield authority during soft handover
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the authority is not <see cref="Improbable.Worker.Core.Authority.AuthorityLossImminent"/>
+        /// </exception>
+        public void SendAuthorityLossImminentAcknowledgement()
+        {
+            if (!VerifyNotDisposed())
+            {
+                return;
+            }
+
+            if (!EntityManager.HasComponent<AuthorityLossImminent<TSpatialComponentData>>(Entity))
+            {
+                throw new InvalidOperationException(
+                    "Can not send authority loss acknowledgement when the Authority state is not " +
+                    $"{nameof(Authority.AuthorityLossImminent)}");
+            }
+
+            EntityManager.SetComponentData(Entity,
+                new AuthorityLossImminent<TSpatialComponentData> { AcknowledgeAuthorityLoss = true });
+        }
+
         protected abstract void ApplyUpdate(TComponentUpdate update, ref TSpatialComponentData data);
 
         /// <summary>
