@@ -1,6 +1,8 @@
 using Improbable.Gdk.Core;
 using Improbable.Worker;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace Improbable.Gdk.Mobile
 {
@@ -18,6 +20,12 @@ namespace Improbable.Gdk.Mobile
                 UseExternalIp = UseExternalIp,
                 LinkProtocol = NetworkConnectionType.Tcp,
             };
+        }
+
+        protected override bool ShouldUseLocator()
+        {
+            // We currently only support local deployments for Mobile
+            return false;
         }
 
         private void OnValidate()

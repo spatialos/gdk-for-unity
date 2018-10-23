@@ -43,7 +43,12 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            if ((Application.isEditor || iOSDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual) && string.Empty.Equals(IpAddress))
+            if (Application.isEditor)
+            {
+                return RuntimeConfigDefaults.ReceptionistHost;
+            }
+
+            if (Application.isMobilePlatform && iOSDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual && string.Empty.Equals(IpAddress))
             {
                 return RuntimeConfigDefaults.ReceptionistHost;
             }
