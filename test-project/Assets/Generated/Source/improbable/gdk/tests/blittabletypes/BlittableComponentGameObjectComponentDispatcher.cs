@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
@@ -300,18 +301,23 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
-                        {
-                            continue;
-                        }
+                        injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
+                            out var commandResponseHandlers);
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (var commandResponse in commandResponseList.Responses)
                         {
-                            foreach (var commandResponse in commandResponseList.Responses)
+                            if (commandResponseHandlers != null)
                             {
-                                commandResponseHandler.OnFirstCommandResponseInternal(commandResponse);
+                                foreach (Requirable.CommandResponseHandler commandResponseHandler in
+                                    commandResponseHandlers)
+                                {
+                                    commandResponseHandler.OnFirstCommandResponseInternal(commandResponse);
+                                }
                             }
+
+                            var callback = commandResponse.Context as Action<FirstCommand.ReceivedResponse>;
+                            callback?.Invoke(commandResponse);
                         }
                     }
                 }
@@ -323,21 +329,27 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
-                        {
-                            continue;
-                        }
+                        injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
+                            out var commandResponseHandlers);
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (var commandResponse in commandResponseList.Responses)
                         {
-                            foreach (var commandResponse in commandResponseList.Responses)
+                            if (commandResponseHandlers != null)
                             {
-                                commandResponseHandler.OnSecondCommandResponseInternal(commandResponse);
+                                foreach (Requirable.CommandResponseHandler commandResponseHandler in
+                                    commandResponseHandlers)
+                                {
+                                    commandResponseHandler.OnSecondCommandResponseInternal(commandResponse);
+                                }
                             }
+
+                            var callback = commandResponse.Context as Action<SecondCommand.ReceivedResponse>;
+                            callback?.Invoke(commandResponse);
                         }
                     }
                 }
+
                 Profiler.EndSample();
             }
 

@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void SendEvt(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }

@@ -60,7 +60,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -84,7 +84,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -93,7 +93,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -132,7 +132,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -141,7 +141,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -156,7 +156,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -165,7 +165,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -213,7 +213,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -222,7 +222,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -238,7 +238,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendFirstEvent(global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }
@@ -253,7 +253,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -262,7 +262,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -278,7 +278,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public void SendSecondEvent(global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }

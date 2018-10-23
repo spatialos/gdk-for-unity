@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
@@ -197,21 +198,27 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
-                        {
-                            continue;
-                        }
+                        injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
+                            out var commandResponseHandlers);
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (var commandResponse in commandResponseList.Responses)
                         {
-                            foreach (var commandResponse in commandResponseList.Responses)
+                            if (commandResponseHandlers != null)
                             {
-                                commandResponseHandler.OnCmdResponseInternal(commandResponse);
+                                foreach (Requirable.CommandResponseHandler commandResponseHandler in
+                                    commandResponseHandlers)
+                                {
+                                    commandResponseHandler.OnCmdResponseInternal(commandResponse);
+                                }
                             }
+
+                            var callback = commandResponse.Context as Action<Cmd.ReceivedResponse>;
+                            callback?.Invoke(commandResponse);
                         }
                     }
                 }
+
                 Profiler.EndSample();
             }
 

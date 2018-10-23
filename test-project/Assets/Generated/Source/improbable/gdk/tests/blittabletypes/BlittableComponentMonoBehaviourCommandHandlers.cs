@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 public long SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -114,16 +114,44 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return request.RequestId;
                 }
 
+                public long SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest payload,
+                    Action<FirstCommand.ReceivedResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (!IsValid())
+                    {
+                        return -1;
+                    }
+
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
+                    var request = FirstCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
+                }
+
                 public long SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
                     var request = SecondCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
+                }
+
+                public long SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest payload,
+                    Action<SecondCommand.ReceivedResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (!IsValid())
+                    {
+                        return -1;
+                    }
+
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
+                    var request = SecondCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
@@ -158,7 +186,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -167,7 +195,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -185,7 +213,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -194,7 +222,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -238,7 +266,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -247,7 +275,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -266,7 +294,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -275,7 +303,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
