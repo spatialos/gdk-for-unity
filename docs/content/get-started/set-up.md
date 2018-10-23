@@ -154,10 +154,10 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 
 1. Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
 
-  |     |     |
-  | --- | --- |
-  | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
-  | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
+|     |     |
+| --- | --- |
+| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
+| HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
   > The two repositories should share a common parent, like the example below:
   ```text
   <common_parent_directory>
@@ -166,7 +166,7 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
   ```
 
 2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
-  - `git checkout <pinned_version>`
+  * `git checkout <pinned_version>`
 
 <%(/Expandable)%>
 <br/>
