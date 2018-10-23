@@ -51,12 +51,23 @@ namespace Improbable.Gdk.TransformSynchronization
                     Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
                     Velocity = transformToSend.Velocity.ToImprobableVelocity(),
                     PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks,
-                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond,
-                    DirtyBit = true
+                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
                 };
 
-                if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||
-                    TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation)))
+                var locationHasChanged = TransformUtils.HasChanged(currentTransform.Location, transform.Location);
+                var rotationHasChanged = TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation);
+                var velocityHasChanged = TransformUtils.HasChanged(currentTransform.Velocity, transform.Velocity);
+                var physicsTickHasChanged = currentTransform.PhysicsTick == transform.PhysicsTick;
+                var ticksPerSecondHasChanged =
+                    Mathf.Abs(currentTransform.TicksPerSecond - transform.TicksPerSecond) < Mathf.Epsilon;
+
+                currentTransform.DirtyBits |= locationHasChanged ? TransformInternal.Component.DirtyBitsFlag.Location : TransformInternal.Component.DirtyBitsFlag.None;
+                currentTransform.DirtyBits |= rotationHasChanged ? TransformInternal.Component.DirtyBitsFlag.Rotation : TransformInternal.Component.DirtyBitsFlag.None;
+                currentTransform.DirtyBits |= velocityHasChanged ? TransformInternal.Component.DirtyBitsFlag.Velocity : TransformInternal.Component.DirtyBitsFlag.None;
+                currentTransform.DirtyBits |= physicsTickHasChanged ? TransformInternal.Component.DirtyBitsFlag.PhysicsTick : TransformInternal.Component.DirtyBitsFlag.None;
+                currentTransform.DirtyBits |= ticksPerSecondHasChanged ? TransformInternal.Component.DirtyBitsFlag.TicksPerSecond : TransformInternal.Component.DirtyBitsFlag.None;
+
+                if (!locationHasChanged && rotationHasChanged)
                 {
                     continue;
                 }

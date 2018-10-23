@@ -24,8 +24,9 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
+            // Represents a bit mask for tracking which component properties were changed locally and need to be synced.
             [Flags]
-            public enum DirtyBitsEnum
+            public enum DirtyBitsFlag
             {
                 None = 0,
 <# for(int i = 0; i < fieldDetailsList.Count; i++) { #>
@@ -33,23 +34,21 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            private DirtyBitsEnum dirtyBits;
-
-            public DirtyBitsEnum DirtyBits => dirtyBits;
+            public DirtyBitsFlag DirtyBits;
 
             public bool IsDirty()
             {
-                return (DirtyBits != DirtyBitsEnum.None);
+                return (DirtyBits != DirtyBitsFlag.None);
             }
 
-            public bool IsDirty(DirtyBitsEnum currentField)
+            public bool IsDirty(DirtyBitsFlag componentProperty)
             {
-                return (dirtyBits & currentField) != DirtyBitsEnum.None;
+                return (DirtyBits & componentProperty) != DirtyBitsFlag.None;
             }
 
             public void ClearDirtyBits()
             {
-                dirtyBits = DirtyBitsEnum.None;
+                DirtyBits = DirtyBitsFlag.None;
             }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 <# if (fieldDetails.IsBlittable) { #>
@@ -61,7 +60,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
-                    dirtyBits = dirtyBits | DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>;
+                    DirtyBits = DirtyBits | DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>;
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -74,7 +73,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
-                    dirtyBits = dirtyBits | DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>;
+                    DirtyBits = DirtyBits | DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>;
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
@@ -93,7 +92,9 @@ namespace <#= qualifiedNamespace #>
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                {
+                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                }
 <# } #>
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -106,14 +107,16 @@ namespace <#= qualifiedNamespace #>
             {
                 var obj = updateObj.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                if (component.IsDirty(<#= componentNamespace #>.Component.DirtyBitsEnum.<#= fieldDetails.PascalCaseName #>))
                 {
-                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                    if (component.IsDirty(<#= componentNamespace #>.Component.DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>))
+                    {
+                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                    }
 
 <# if (ShouldGenerateClearedFieldsSet()) { #>
-                <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
+                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
 <# } #>
+                }
 <# } #>
             }
 
@@ -125,7 +128,9 @@ namespace <#= qualifiedNamespace #>
 <# if (!fieldDetails.IsBlittable) { #>
                 component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
-                <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                {
+                    <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }                
 <# } #>
                 return component;
             }
