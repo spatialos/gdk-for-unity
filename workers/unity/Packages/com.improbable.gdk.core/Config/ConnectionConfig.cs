@@ -43,10 +43,14 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public string WorkerType;
 
+        protected const string MissingConfigError = "Config validation failed with: No valid {0} has been provided.";
+
         /// <summary>
-        ///    Validates that the connection configuration is sane.
+        ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
-        public abstract void Validate();
+        /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
+        /// <returns>True, if the connection configuration is valid.</returns>
+        public abstract bool Validate(out string errorMessage);
 
         /// <summary>
         ///     Creates the <see cref="Improbable.Worker.Core.ConnectionParameters"/> corresponding to this
@@ -67,24 +71,6 @@ namespace Improbable.Gdk.Core
                 DefaultComponentVtable = new PassthroughComponentVtable()
             };
             return connectionParameters;
-        }
-
-        /// <summary>
-        ///     Checks that a string value is non-null or empty.
-        /// </summary>
-        /// <param name="configValue">The value to validate.</param>
-        /// <param name="configName">The name of the configuration.</param>
-        /// <exception cref="ConnectionFailedException">
-        ///     Thrown if configValue is null or empty.
-        /// </exception>
-        protected void ValidateConfig(string configValue, string configName)
-        {
-            if (string.IsNullOrEmpty(configValue))
-            {
-                throw new ConnectionFailedException(
-                    $"Config validation failed with: No valid {configName} has been provided",
-                    ConnectionErrorReason.InvalidConfig);
-            }
         }
     }
 }

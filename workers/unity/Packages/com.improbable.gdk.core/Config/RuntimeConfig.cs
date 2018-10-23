@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Core
         public const string ProjectName = "projectName";
         public const string ReceptionistHost = "receptionistHost";
         public const string ReceptionistPort = "receptionistPort";
+        public const string SteamDeploymentTag = "steamDeploymentTag";
+        public const string SteamTicket = "steamTicket";
         public const string WorkerId = "workerId";
         public const string WorkerType = "workerType";
     }
