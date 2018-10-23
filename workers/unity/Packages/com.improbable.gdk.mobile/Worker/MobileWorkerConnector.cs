@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Mobile
                 ReceptionistHost = GetHostIp(),
                 WorkerType = workerType,
                 WorkerId = CreateNewWorkerId(workerType),
-                UseExternalIp = true,
+                UseExternalIp = UseExternalIp,
                 LinkProtocol = NetworkConnectionType.Tcp,
             };
         }
