@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,7 +27,7 @@ namespace Improbable.Gdk.Tools
 
         private readonly GUIStyle errorLayoutOption = new GUIStyle();
 
-        [MenuItem("SpatialOS/GDK tools configuration")]
+        [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
         public static void ShowWindow()
         {
             GetWindow<GdkToolsConfigurationWindow>().Show();

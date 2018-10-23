@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-echo 
-echo " ============================================"
-echo "    Don't forget to lint before running CI"
-echo "       Run ci/lint.sh to run the linter!"
-echo "           - The Linting Fairy"
-echo " ============================================"
-echo

@@ -5,13 +5,21 @@ using UnityEngine;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Logs logEvents to console.
+    ///     Logs to the Unity Console.
     /// </summary>
+    /// <remarks>
+    ///    Forwards logs to UnityEngine.Debug.unityLogger.
+    /// </remarks>
     public class LoggingDispatcher : ILogDispatcher
     {
         public Connection Connection { get; set; }
         public string WorkerType { get; set; }
 
+        /// <summary>
+        ///     Log locally to the console.
+        /// </summary>
+        /// <param name="type">The type of the log.</param>
+        /// <param name="logEvent">A LogEvent instance.</param>
         public void HandleLog(LogType type, LogEvent logEvent)
         {
             if (type == LogType.Exception)

@@ -1,0 +1,146 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var workerTypeList = GetWorkerTypes();
+#>
+<#= generatedHeader #>
+
+using Improbable.Gdk.BuildSystem;
+using Improbable.Gdk.BuildSystem.Configuration;
+using Improbable.Gdk.Tools;
+using UnityEditor;
+using UnityEngine;
+
+namespace Improbable
+{
+    internal static class BuildWorkerMenu
+    {
+        private const string LocalMenu = "Build for local";
+        private const string CloudMenu = "Build for cloud";
+
+        private static readonly string[] AllWorkers =
+        {
+<# foreach (var workerType in workerTypeList) { #>
+            "<#= workerType #>",
+<# } #>
+        };
+
+<#
+for (var i = 0; i < workerTypeList.Count; i++) {
+var workerType = workerTypeList[i];
+#>
+        [MenuItem(EditorConfig.ParentMenu + "/" + LocalMenu + "/<#= workerType #>", false, EditorConfig.MenuOffset + <#=i #>)]
+        public static void BuildLocal<#= workerType #>()
+        {
+            MenuBuild(BuildEnvironment.Local, "<#= workerType #>");
+        }
+
+        [MenuItem(EditorConfig.ParentMenu + "/" + CloudMenu + "/<#= workerType #>", false, EditorConfig.MenuOffset + <#= i #>)]
+        public static void BuildCloud<#= workerType #>()
+        {
+            MenuBuild(BuildEnvironment.Cloud, "<#= workerType #>");
+        }
+
+<# } #>
+
+        [MenuItem(EditorConfig.ParentMenu + "/" + LocalMenu + "/All workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
+        public static void BuildLocalAll()
+        {
+            MenuBuild(BuildEnvironment.Local, AllWorkers);
+        }
+
+        [MenuItem(EditorConfig.ParentMenu + "/" + CloudMenu + "/All workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
+        public static void BuildCloudAll()
+        {
+            MenuBuild(BuildEnvironment.Cloud, AllWorkers);
+        }
+
+        [MenuItem(EditorConfig.ParentMenu + "/Clean all workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
+        public static void Clean()
+        {
+            WorkerBuilder.Clean();
+            Debug.Log("Clean completed");
+        }
+
+        private static bool CheckWorkersCanBuildForEnvironment(BuildEnvironment environment, string[] workerTypes)
+        {
+            var canInitiateBuild = true;
+            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+
+            foreach (var workerType in workerTypes)
+            {
+                var buildTargetsForWorker = WorkerBuilder.GetBuildTargetsForWorkerForEnvironment(workerType, environment);
+                var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+
+                if (buildTargetsMissingBuildSupport.Length > 0)
+                {
+                    canInitiateBuild = false;
+
+                    Debug.LogError(BuildSupportChecker.ConstructMissingSupportMessage(workerType, environment, buildTargetsMissingBuildSupport),
+                        spatialOSBuildConfiguration);
+                }
+            }
+
+            return canInitiateBuild;
+        }
+
+        private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
+        {
+            // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
+            EditorApplication.delayCall += () =>
+            {
+                if (!CheckWorkersCanBuildForEnvironment(environment, workerTypes))
+                {
+                    DisplayBuildFailureDialog();
+
+                    return;
+                }
+
+                try
+                {
+                    LocalLaunch.BuildConfig();
+
+                    foreach (var workerType in workerTypes)
+                    {
+                        WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
+                    }
+
+                    Debug.LogFormat("Completed build for {0} target", environment);
+                }
+                catch (System.Exception)
+                {
+                    DisplayBuildFailureDialog();
+
+                    throw;
+                }
+            };
+        }
+
+        private static void DisplayBuildFailureDialog()
+        {
+            EditorUtility.DisplayDialog("Build Failed",
+                "Build failed. Please see the Unity Console Window for information.",
+                "OK");
+        }
+
+        [MenuItem(EditorConfig.ParentMenu + "/Check build support", false, EditorConfig.MenuOffset + <#= workerTypeList.Count + 1 #>)]
+        private static void CheckBuildSupport()
+        {
+            bool checksPassed = CheckWorkersCanBuildForEnvironment(BuildEnvironment.Local, AllWorkers);
+
+            if (!CheckWorkersCanBuildForEnvironment(BuildEnvironment.Cloud, AllWorkers))
+            {
+                checksPassed = false;
+            }
+
+            EditorUtility.DisplayDialog("Build Support Check",
+                checksPassed
+                    ? "Build support check passed. Your Unity Editor installation has all necessary components."
+                    : "Build support check failed. Please see the Unity Console Window for information.",
+                "OK");
+
+            Debug.Log("Build support check completed.");
+        }
+    }
+}

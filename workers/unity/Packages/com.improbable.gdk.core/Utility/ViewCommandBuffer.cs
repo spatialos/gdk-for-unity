@@ -37,11 +37,23 @@ namespace Improbable.Gdk.Core
                 typeof(Action<Entity, ComponentType, object>), entityManager, setComponentObjectMethodInfo);
         }
 
+        /// <summary>
+        ///     Adds a GameObject <see cref="Component"/> to an ECS entity.
+        /// </summary>
+        /// <param name="entity">The ECS entity</param>
+        /// <param name="component">The component</param>
+        /// <typeparam name="T">The type of the component.</typeparam>
         public void AddComponent<T>(Entity entity, T component) where T : Component
         {
             AddComponent(entity, ComponentType.Create<T>(), component);
         }
 
+        /// <summary>
+        ///     Adds a GameObject <see cref="Component"/> to an ECS entity.
+        /// </summary>
+        /// <param name="entity">The ECS entity</param>
+        /// <param name="componentType">The type of the component</param>
+        /// <param name="componentObj">The component</param>
         public void AddComponent(Entity entity, ComponentType componentType, object componentObj)
         {
             bufferedCommands.Enqueue(new BufferedCommand
@@ -53,6 +65,11 @@ namespace Improbable.Gdk.Core
             });
         }
 
+        /// <summary>
+        ///     Removes a GameObject <see cref="Component"/> from an ECS entity.
+        /// </summary>
+        /// <param name="entity">The ECS entity.</param>
+        /// <param name="componentType">The type of the component to remove.</param>
         public void RemoveComponent(Entity entity, ComponentType componentType)
         {
             bufferedCommands.Enqueue(new BufferedCommand
@@ -64,6 +81,9 @@ namespace Improbable.Gdk.Core
             });
         }
 
+        /// <summary>
+        ///     Plays back and applies all buffered actions in order.
+        /// </summary>
         public void FlushBuffer()
         {
             foreach (var bufferedCommand in bufferedCommands)

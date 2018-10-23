@@ -11,16 +11,9 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static Entity CreatePlayerEntityTemplate(List<string> clientAttributeSet,
-            Improbable.Vector3f position)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
         {
-            var clientAttribute = clientAttributeSet.First(attribute => attribute != WorkerUtils.UnityClient);
-
-            if (clientAttribute == null)
-            {
-                throw new InvalidOperationException(
-                    $"Expected an attribute that is not \"{WorkerUtils.UnityClient}\" but none was found.");
-            }
+            var clientAttribute = $"workerId:{workerId}";
 
             var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
             var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
@@ -29,7 +22,7 @@ namespace Playground
             var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
 
             var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
+                .AddPosition(0, 0, 0, clientAttribute)
                 .AddMetadata("Character", WorkerUtils.UnityGameLogic)
                 .SetPersistence(false)
                 .SetReadAcl(WorkerUtils.AllWorkerAttributes)
@@ -39,7 +32,7 @@ namespace Playground
                 .AddComponent(score, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic)
                 .AddTransformSynchronizationComponents(clientAttribute)
-                .AddPlayerLifecycleComponents(clientAttribute, WorkerUtils.UnityGameLogic);
+                .AddPlayerLifecycleComponents(workerId, clientAttribute, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();
         }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Unity.Entities;
@@ -55,28 +54,18 @@ namespace Improbable.Gdk.Core
                 // Find all ComponentCleanupHandlers
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (typeof(ComponentCleanupHandler).IsAssignableFrom(type) && !type.IsAbstract)
+                    if (!typeof(ComponentCleanupHandler).IsAssignableFrom(type) || type.IsAbstract)
                     {
-                        var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
-                        foreach (var componentType in componentCleanupHandler.CleanUpComponentTypes)
-                        {
-                            typesToRemove.Add(componentType.GetManagedType());
-                            componentGroupsToRemove.Add((GetComponentGroup(componentType), componentType));
-                        }
-
-                        // Updates group
-                        componentCleanups.Add(new ComponentCleanup
-                        {
-                            Handler = componentCleanupHandler,
-                            UpdateGroup = GetComponentGroup(componentCleanupHandler.ComponentUpdateType),
-                            AuthorityChangesGroup = GetComponentGroup(componentCleanupHandler.AuthorityChangesType),
-                            EventGroups =
-                                componentCleanupHandler.EventComponentTypes
-                                    .Select(eventType => GetComponentGroup(eventType)).ToArray(),
-                            CommandsGroups = componentCleanupHandler.CommandReactiveTypes
-                                .Select(t => GetComponentGroup(t)).ToArray()
-                        });
+                        continue;
                     }
+
+                    var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
+
+                    componentCleanups.Add(new ComponentCleanup
+                    {
+                        Handler = componentCleanupHandler,
+                        ComponentsToCleanGroup = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
+                    });
                 }
             }
         }
@@ -84,35 +73,14 @@ namespace Improbable.Gdk.Core
         protected override void OnUpdate()
         {
             var buffer = PostUpdateCommands;
-            foreach (var cleanup in componentCleanups)
-            {
-                Profiler.BeginSample("CleanupUpdates");
-                cleanup.Handler.CleanupUpdates(cleanup.UpdateGroup, ref buffer);
-                Profiler.EndSample();
-            }
 
             foreach (var cleanup in componentCleanups)
             {
-                Profiler.BeginSample("CleanupEvents");
-                cleanup.Handler.CleanupEvents(cleanup.EventGroups, ref buffer);
+                Profiler.BeginSample("CleanReactiveComponents");
+                cleanup.Handler.CleanComponents(cleanup.ComponentsToCleanGroup, this, PostUpdateCommands);
                 Profiler.EndSample();
             }
 
-            foreach (var cleanup in componentCleanups)
-            {
-                Profiler.BeginSample("CleanupAuthChanges");
-                cleanup.Handler.CleanupAuthChanges(cleanup.AuthorityChangesGroup, ref buffer);
-                Profiler.EndSample();
-            }
-
-            foreach (var cleanup in componentCleanups)
-            {
-                Profiler.BeginSample("CleanupCommands");
-                cleanup.Handler.CleanupCommands(cleanup.CommandsGroups, ref buffer);
-                Profiler.EndSample();
-            }
-
-            // Clean components with RemoveAtEndOfTick attribute
             Profiler.BeginSample("RemoveRemoveAtEndOfTick");
             foreach ((var componentGroup, var componentType) in componentGroupsToRemove)
             {
@@ -128,16 +96,13 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            Profiler.EndSample();			
+            Profiler.EndSample();
         }
 
         private struct ComponentCleanup
         {
             public ComponentCleanupHandler Handler;
-            public ComponentGroup UpdateGroup;
-            public ComponentGroup AuthorityChangesGroup;
-            public ComponentGroup[] EventGroups;
-            public ComponentGroup[] CommandsGroups;
+            public ComponentGroup ComponentsToCleanGroup;
         }
     }
 }

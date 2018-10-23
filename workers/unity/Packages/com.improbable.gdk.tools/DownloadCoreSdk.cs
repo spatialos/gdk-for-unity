@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -108,6 +109,11 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         private static DownloadResult Download()
         {
+            if (!CheckDependencies())
+            {
+                return DownloadResult.Error;
+            }
+
             RemoveMarkerFile();
 
             int exitCode;
@@ -134,6 +140,46 @@ namespace Improbable.Gdk.Tools
             }
 
             return exitCode == 0 ? DownloadResult.Success : DownloadResult.Error;
+        }
+
+        private static bool CheckDependencies()
+        {
+            var hasDotnet = !string.IsNullOrEmpty(Common.DotNetBinary);
+            var hasSpatial = !string.IsNullOrEmpty(Common.SpatialBinary);
+
+            if (hasDotnet && hasSpatial)
+            {
+                return true;
+            }
+
+            var builder = new StringBuilder();
+
+            builder.AppendLine(
+                "The SpatialOS GDK for Unity requires 'dotnet' and 'spatial' on your PATH to run its tooling.");
+            builder.AppendLine();
+
+            if (!hasDotnet)
+            {
+                builder.AppendLine("Could not find 'dotnet' on your PATH.");
+            }
+
+            if (!hasSpatial)
+            {
+                builder.AppendLine("Could not find 'spatial' on your PATH.");
+            }
+
+            builder.AppendLine();
+            builder.AppendLine("If these exist on your PATH, restart Unity and Unity Hub.");
+            builder.AppendLine();
+            builder.AppendLine("Otherwise, install them by following our setup guide:");
+            builder.AppendLine("https://docs.improbable.io/unity/alpha/get-started#set-up-your-machine");
+
+            EditorApplication.delayCall += () =>
+            {
+                EditorUtility.DisplayDialog("GDK dependencies check failed", builder.ToString(), "OK");
+            };
+
+            return false;
         }
 
         private static string[] ConstructArguments()

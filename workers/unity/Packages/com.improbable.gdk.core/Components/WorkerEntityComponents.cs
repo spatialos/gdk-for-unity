@@ -3,25 +3,31 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Component denoting a worker entity
+    ///     ECS Component denoting a worker entity
     /// </summary>
     public struct WorkerEntityTag : IComponentData
     {
     }
 
     /// <summary>
-    ///     Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment
-    ///     Removed at the end of the tick it was added
+    ///     ECS Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment.
     /// </summary>
+    /// <remarks>
+    ///    This is a reactive component and the <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/> will
+    ///    remove it at the end of the frame.
+    /// </remarks>
     [RemoveAtEndOfTick]
     public struct OnConnected : IComponentData
     {
     }
 
     /// <summary>
-    ///     Component added to the worker entity immediately after disconnecting from SpatialOS
-    ///     Removed at the end of the tick it was added
+    ///     ECS Component added to the worker entity immediately after disconnecting from SpatialOS
     /// </summary>
+    /// <remarks>
+    ///    This is a reactive component and the <see cref="Improbable.Gdk.Core.CleanReactiveComponentsSystem"/> will
+    ///    remove it at the end of the frame.
+    /// </remarks>
     [RemoveAtEndOfTick]
     public struct OnDisconnected : ISharedComponentData
     {

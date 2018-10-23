@@ -9,6 +9,13 @@ using Object = UnityEngine.Object;
 
 namespace Improbable.Gdk.GameObjectRepresentation.Editor
 {
+    /// <summary>
+    ///     A prefab processor which disables any Monobehaviours on top-level GameObjects in the Resources folder
+    ///     which have fields with the <see cref="RequireAttribute"/> on them.
+    /// </summary>
+    /// <remarks>
+    ///     This processes the prefabs when you build or when you press play in the Unity Editor.
+    /// </remarks>
     [InitializeOnLoad]
     public class PrefabPreprocessor : IPreprocessBuildWithReport
     {

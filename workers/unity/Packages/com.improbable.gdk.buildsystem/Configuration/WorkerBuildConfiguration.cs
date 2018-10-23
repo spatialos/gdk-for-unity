@@ -1,36 +1,31 @@
 using System;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [Serializable]
     public class WorkerBuildConfiguration
     {
-        public WorkerPlatform WorkerPlatform;
-        public SceneAsset[] ScenesForWorker;
+        public string WorkerType;
+        public SceneAsset[] ScenesForWorker = { };
 
         public BuildEnvironmentConfig LocalBuildConfig = new BuildEnvironmentConfig();
         public BuildEnvironmentConfig CloudBuildConfig = new BuildEnvironmentConfig();
+        
+        [NonSerialized] public bool ShowFoldout = true;
 
         public BuildEnvironmentConfig GetEnvironmentConfig(BuildEnvironment targetEnvironment)
         {
-            BuildEnvironmentConfig buildEnvironmentConfig;
-
             switch (targetEnvironment)
             {
                 case BuildEnvironment.Local:
-                    buildEnvironmentConfig = LocalBuildConfig;
-                    break;
+                    return LocalBuildConfig;
                 case BuildEnvironment.Cloud:
-                    buildEnvironmentConfig = CloudBuildConfig;
-                    break;
+                    return CloudBuildConfig;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(targetEnvironment), targetEnvironment, null);
             }
-
-            return buildEnvironmentConfig;
         }
-
-        [NonSerialized] public bool ShowFoldout = true;
     }
 }

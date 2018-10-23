@@ -9,11 +9,17 @@ using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Executes the default replication logic for each SpatialOS component.
+    /// </summary>
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
+        // Can't access the generated component ID in Core code.
+        private const uint PositionComponentId = 54;
+
         private Connection connection;
 
         private readonly List<ComponentReplicator> componentReplicators =
@@ -49,8 +55,13 @@ namespace Improbable.Gdk.Core
 
             foreach (var replicator in componentReplicators)
             {
-                replicator.ReplicateComponent(connection);
-                replicator.SendCommands(this, connection);
+                Profiler.BeginSample("ExecuteReplication");
+                replicator.Handler.ExecuteReplication(replicator.UpdateGroup, this, connection);
+                Profiler.EndSample();
+
+                Profiler.BeginSample("SendCommands");
+                replicator.Handler.SendCommands(replicator.CommandGroup, this, connection);
+                Profiler.EndSample();
             }
         }
 
@@ -60,8 +71,8 @@ namespace Improbable.Gdk.Core
             {
                 ComponentId = componentReplicationHandler.ComponentId,
                 Handler = componentReplicationHandler,
-                ReplicationComponentGroup =
-                    GetComponentGroup(componentReplicationHandler.ReplicationComponentTypes),
+                UpdateGroup = GetComponentGroup(componentReplicationHandler.ComponentUpdateQuery),
+                CommandGroup = GetComponentGroup(componentReplicationHandler.CommandQueries),
             });
         }
 
@@ -81,30 +92,23 @@ namespace Improbable.Gdk.Core
 
                 AddComponentReplicator(componentReplicationHandler);
             }
+
+            // Force the position component to be replicated last. A position update can trigger an authority
+            // change, which could cause subsequent updates to be dropped.
+            var positionReplicatorIndex =
+                componentReplicators.FindIndex(replicator => replicator.ComponentId == PositionComponentId);
+            var positionReplicator = componentReplicators[positionReplicatorIndex];
+
+            componentReplicators.RemoveAt(positionReplicatorIndex);
+            componentReplicators.Add(positionReplicator);
         }
 
         private struct ComponentReplicator
         {
             public uint ComponentId;
             public ComponentReplicationHandler Handler;
-            public ComponentGroup ReplicationComponentGroup;
-
-            public void ReplicateComponent(Connection connection)
-            {
-                if (!ReplicationComponentGroup.IsEmptyIgnoreFilter)
-                {
-                    Profiler.BeginSample("ExecuteReplication");
-                    Handler.ExecuteReplication(ReplicationComponentGroup, connection);
-                    Profiler.EndSample();
-                }
-            }
-
-            public void SendCommands(SpatialOSSendSystem sendSystem, Connection connection)
-            {
-                Profiler.BeginSample("SendCommands");
-                Handler.SendCommands(sendSystem, connection);
-                Profiler.EndSample();
-            }
+            public ComponentGroup UpdateGroup;
+            public ComponentGroup CommandGroup;
         }
     }
 }

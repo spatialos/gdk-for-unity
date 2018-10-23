@@ -3,6 +3,9 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {
+    /// <summary>
+    ///     Base class for a GameObjectComponentDispatcher. Used in code generation.
+    /// </summary>
     public abstract class GameObjectComponentDispatcherBase
     {
         public abstract ComponentType[] ComponentAddedComponentTypes { get; }
