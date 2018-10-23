@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using UnityEngine;
 
 namespace Playground
@@ -22,8 +22,7 @@ namespace Playground
                 return;
             }
 
-            levelInstance = Instantiate(Level, transform);
-            levelInstance.transform.SetParent(null);
+            levelInstance = Instantiate(Level, transform.position, transform.rotation);
         }
 
         public override void Dispose()
