@@ -173,9 +173,9 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Deserialize(eventsObject.GetObject(1));
+                            var e = global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType.Serialization.Deserialize(eventsObject.IndexObject(1, i));
                             eventList.Add(e);
                         }
                     }
@@ -329,7 +329,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 Profiler.BeginSample("Connection");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>();
                 var eventMyEventType = system.GetArchetypeChunkComponentType<EventSender.MyEvent>(true);
@@ -407,7 +407,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>();
                 var myEventEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.MyEvent>();
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {

@@ -283,7 +283,7 @@ namespace Improbable.Gdk.Tests
             {
                 Profiler.BeginSample("NestedComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NestedComponent.Component>();
                 foreach (var chunk in chunkArray)
@@ -342,7 +342,7 @@ namespace Improbable.Gdk.Tests
                 var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NestedComponent.ReceivedUpdates>();
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.NestedComponent.Component>>();
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
