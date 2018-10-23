@@ -52,7 +52,7 @@ namespace Playground
             return IpAddress;
 #else
             throw new PlatformNotSupportedException(
-                "AndroidClientWorkerConnector can only be used for the Android platform. Please check your build settings.");
+                $"{nameof(AndroidClientWorkerConnector)} can only be used for the Android platform. Please check your build settings.");
 #endif
         }
 

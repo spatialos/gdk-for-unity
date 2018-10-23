@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Worker;
+using UnityEditor;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -14,9 +15,20 @@ namespace Improbable.Gdk.Mobile
                 ReceptionistHost = GetHostIp(),
                 WorkerType = workerType,
                 WorkerId = CreateNewWorkerId(workerType),
-                UseExternalIp = UseExternalIp,
+                UseExternalIp = true,
                 LinkProtocol = NetworkConnectionType.Tcp,
             };
+        }
+
+        private void OnValidate()
+        {
+            if (UseExternalIp == false)
+            {
+                UseExternalIp = true;
+#if UNITY_EDITOR
+                EditorUtility.DisplayDialog("Invalid configuration", "Use External Ip needs to be set to true for mobile client workers.", "Ok");
+#endif
+            }
         }
     }
 }
