@@ -45,7 +45,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(true);
             var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
             foreach (var chunk in chunkArray)
             {

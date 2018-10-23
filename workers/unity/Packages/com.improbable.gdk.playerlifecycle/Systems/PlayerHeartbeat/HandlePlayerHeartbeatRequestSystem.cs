@@ -37,7 +37,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             var requestsType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandRequests.PlayerHeartbeat>(true);
             var responderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponders.PlayerHeartbeat>();
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
             foreach (var chunk in chunkArray)
             {
