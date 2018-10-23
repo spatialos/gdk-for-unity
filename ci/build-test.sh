@@ -7,7 +7,10 @@ cd "$(dirname "$0")/../"
 # Get shared CI and prepare unity
 ci/bootstrap.sh
 .shared-ci/scripts/prepare-unity.sh
-.shared-ci/scripts/prepare-unity-mobile.sh "$(pwd)/logs/PrepareUnityMobile.log"
+
+if isWindows; then
+    .shared-ci/scripts/prepare-unity-mobile.sh "$(pwd)/logs/PrepareUnityMobile.log"
+fi
 
 source ".shared-ci/scripts/pinned-tools.sh"
 
