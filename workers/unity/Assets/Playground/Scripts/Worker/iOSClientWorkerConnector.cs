@@ -35,9 +35,9 @@ namespace Playground
             levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
-        protected override void HandleWorkerConnectionFailure()
+        protected override void HandleWorkerConnectionFailure(string errorMessage)
         {
-            ConnectionScreenController.OnConnectionFailed();
+            ConnectionScreenController.OnConnectionFailed(errorMessage);
         }
 
         protected override string GetHostIp()
