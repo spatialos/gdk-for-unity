@@ -130,7 +130,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                 {
                     <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }                
+                }
 <# } #>
                 return component;
             }
