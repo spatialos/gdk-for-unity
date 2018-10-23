@@ -5,7 +5,7 @@ namespace Playground
 {
     public class GameLogicWorkerConnector : WorkerConnector
     {
-        public GameObject Level;
+        [SerializeField] private GameObject level;
 
         private GameObject levelInstance;
 
@@ -17,12 +17,12 @@ namespace Playground
         protected override void HandleWorkerConnectionEstablished()
         {
             WorkerUtils.AddGameLogicSystems(Worker.World);
-            if (Level == null)
+            if (level == null)
             {
                 return;
             }
 
-            levelInstance = Instantiate(Level, transform.position, transform.rotation);
+            levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
         public override void Dispose()
