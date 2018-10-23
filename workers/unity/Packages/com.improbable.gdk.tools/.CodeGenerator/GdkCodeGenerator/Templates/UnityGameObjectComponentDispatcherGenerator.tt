@@ -12,6 +12,7 @@
 #>
 <#= generatedHeader #>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
@@ -274,8 +275,8 @@ namespace <#= qualifiedNamespace #>
             {
 <# if (commandDetailsList.Count > 0) { #>
                 <#= profilingStart #>
-<# for (var j = 0; j < commandDetailsList.Count; j++) { #>
 
+<# for (var j = 0; j < commandDetailsList.Count; j++) { #>
                 if (!CommandResponsesComponentGroups[<#= j #>].IsEmptyIgnoreFilter)
                 {
                     var entities = CommandResponsesComponentGroups[<#= j #>].GetEntityArray();
@@ -283,21 +284,28 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        if (!injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId, out var commandResponseHandlers))
-                        {
-                            continue;
-                        }
+                        bool thereIsResponseHandler =
+                            injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
+                                out var commandResponseHandlers);
 
                         var commandResponseList = commandResponseLists[i];
-                        foreach (Requirable.CommandResponseHandler commandResponseHandler in commandResponseHandlers)
+                        foreach (var commandResponse in commandResponseList.Responses)
                         {
-                            foreach (var commandResponse in commandResponseList.Responses)
+                            if (thereIsResponseHandler)
                             {
-                                commandResponseHandler.On<#= commandDetailsList[j].CommandName #>ResponseInternal(commandResponse);
+                                foreach (Requirable.CommandResponseHandler commandResponseHandler in
+                                    commandResponseHandlers)
+                                {
+                                    commandResponseHandler.On<#= commandDetailsList[j].CommandName #>ResponseInternal(commandResponse);
+                                }
                             }
+
+                            var callback = commandResponse.Context as Action<<#= commandDetailsList[j].CommandName + ".ReceivedResponse" #>>;
+                            callback?.Invoke(commandResponse);
                         }
                     }
                 }
+
 <# } #>
                 <#= profilingEnd #>
 <# } #>

@@ -82,7 +82,10 @@ namespace <#= qualifiedNamespace #>
                     this.logger = logger;
                 }
 
-<# foreach(var commandDetails in commandDetailsList) { #>
+<#
+    foreach(var commandDetails in commandDetailsList) {
+        var receivedResponseType = commandDetails.CommandName + ".ReceivedResponse";
+#>
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
@@ -93,6 +96,20 @@ namespace <#= qualifiedNamespace #>
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
+                }
+
+                public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
+                    Action<<#= receivedResponseType #>> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
+                    var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
