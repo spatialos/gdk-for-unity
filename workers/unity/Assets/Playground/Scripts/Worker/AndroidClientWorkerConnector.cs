@@ -14,7 +14,7 @@ namespace Playground
         public string IpAddress { get; set; }
         public ConnectionScreenController ConnectionScreenController { get; set; }
 
-        public GameObject Level;
+        [SerializeField] private GameObject level;
 
         private GameObject levelInstance;
 
@@ -28,13 +28,12 @@ namespace Playground
             ConnectionScreenController.OnConnectionSucceeded();
             WorkerUtils.AddClientSystems(Worker.World);
 
-            if (Level == null)
+            if (level == null)
             {
                 return;
             }
 
-            levelInstance = Instantiate(Level, transform);
-            levelInstance.transform.SetParent(null);
+            levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
         protected override void HandleWorkerConnectionFailure()
