@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.GameObjectRepresentation;
+﻿using System;
+using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
 using Unity.Entities;
 
@@ -61,6 +62,34 @@ namespace Improbable.Gdk.Core.Commands
                 }
 
                 /// <summary>
+                ///     Sends a ReserveEntityIds command request.
+                /// </summary>
+                /// <param name="numberOfEntityIds">The number of entity IDs to reserve.</param>
+                /// <param name="callback">
+                ///     A callback that will be called with the command response.
+                /// </param>
+                /// <param name="timeoutMillis">
+                ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+                /// </param>
+                /// <returns>The request ID of the command request.</returns>
+                public long ReserveEntityIds(uint numberOfEntityIds, Action<ReserveEntityIds.ReceivedResponse> callback,
+                    uint? timeoutMillis = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request =
+                        WorldCommands.ReserveEntityIds.CreateRequest(numberOfEntityIds, timeoutMillis, callback);
+
+                    entityManager.GetComponentData<ReserveEntityIds.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                /// <summary>
                 ///     Sends a CreateEntity command request.
                 /// </summary>
                 /// <param name="entityTemplate">
@@ -95,6 +124,71 @@ namespace Improbable.Gdk.Core.Commands
                 }
 
                 /// <summary>
+                ///     Sends a CreateEntity command request.
+                /// </summary>
+                /// <param name="entityTemplate">
+                ///     The EntityTemplate object that defines the SpatialOS components on the to-be-created entity.
+                /// </param>
+                /// <param name="callback">
+                ///     A callback that will be called with the command response.
+                /// </param>
+                /// <param name="timeoutMillis">
+                ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+                /// </param>
+                /// <returns>The request ID of the command request.</returns>
+                public long CreateEntity(EntityTemplate entityTemplate, Action<CreateEntity.ReceivedResponse> callback,
+                    uint? timeoutMillis = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request =
+                        WorldCommands.CreateEntity.CreateRequest(entityTemplate, null, timeoutMillis, callback);
+
+                    entityManager.GetComponentData<CreateEntity.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                /// <summary>
+                ///     Sends a CreateEntity command request.
+                /// </summary>
+                /// <param name="entityTemplate">
+                ///     The EntityTemplate object that defines the SpatialOS components on the to-be-created entity.
+                /// </param>
+                /// <param name="entityId">
+                ///     (Optional) The EntityId that the to-be-created entity should take.
+                ///     This should only be provided if received as the result of a ReserveEntityIds command.
+                /// </param>
+                /// <param name="callback">
+                ///     A callback that will be called with the command response.
+                /// </param>
+                /// <param name="timeoutMillis">
+                ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+                /// </param>
+                /// <returns>The request ID of the command request.</returns>
+                public long CreateEntity(EntityTemplate entityTemplate, EntityId entityId,
+                    Action<CreateEntity.ReceivedResponse> callback,
+                    uint? timeoutMillis = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request =
+                        WorldCommands.CreateEntity.CreateRequest(entityTemplate, entityId, timeoutMillis, callback);
+
+                    entityManager.GetComponentData<CreateEntity.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                /// <summary>
                 ///     Sends a DeleteEntity command request.
                 /// </summary>
                 /// <param name="entityId"> The entity ID that is to be deleted.</param>
@@ -121,6 +215,33 @@ namespace Improbable.Gdk.Core.Commands
                 }
 
                 /// <summary>
+                ///     Sends a DeleteEntity command request.
+                /// </summary>
+                /// <param name="entityId"> The entity ID that is to be deleted.</param>
+                /// <param name="callback">
+                ///     A callback that will be called with the command response.
+                /// </param>
+                /// <param name="timeoutMillis">
+                ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+                /// </param>
+                /// <returns>The request ID of the command request.</returns>
+                public long DeleteEntity(EntityId entityId, Action<DeleteEntity.ReceivedResponse> callback,
+                    uint? timeoutMillis = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request = WorldCommands.DeleteEntity.CreateRequest(entityId, timeoutMillis, callback);
+
+                    entityManager.GetComponentData<DeleteEntity.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                /// <summary>
                 ///     Sends an EntityQuery command request.
                 /// </summary>
                 /// <param name="entityQuery">The EntityQuery object defining the constraints and query type.</param>
@@ -128,7 +249,7 @@ namespace Improbable.Gdk.Core.Commands
                 ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
                 /// </param>
                 /// <param name="context">
-                ///    (Optional) A context object that will be returned with the command response.
+                ///     (Optional) A context object that will be returned with the command response.
                 /// </param>
                 /// <returns>The request ID of the command request.</returns>
                 public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null,
@@ -140,6 +261,32 @@ namespace Improbable.Gdk.Core.Commands
                     }
 
                     var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, context);
+                    entityManager.GetComponentData<EntityQuery.CommandSender>(entity)
+                        .RequestsToSend.Add(request);
+
+                    return request.RequestId;
+                }
+
+                /// <summary>
+                ///     Sends an EntityQuery command request.
+                /// </summary>
+                /// <param name="entityQuery">The EntityQuery object defining the constraints and query type.</param>
+                /// <param name="callback">
+                ///     A callback that will be called with the command response.
+                /// </param>
+                /// <param name="timeoutMillis">
+                ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
+                /// </param>
+                /// <returns>The request ID of the command request.</returns>
+                public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery,
+                    Action<EntityQuery.ReceivedResponse> callback, uint? timeoutMillis = null)
+                {
+                    if (!VerifyNotDisposed())
+                    {
+                        return -1;
+                    }
+
+                    var request = WorldCommands.EntityQuery.CreateRequest(entityQuery, timeoutMillis, callback);
                     entityManager.GetComponentData<EntityQuery.CommandSender>(entity)
                         .RequestsToSend.Add(request);
 

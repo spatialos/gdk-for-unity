@@ -284,14 +284,13 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < entities.Length; i++)
                     {
                         var injectableStore = entityToInjectableStore[entities[i]];
-                        bool thereIsResponseHandler =
-                            injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
-                                out var commandResponseHandlers);
+                        injectableStore.TryGetInjectablesForComponent(commandResponseHandlerInjectableId,
+                            out var commandResponseHandlers);
 
                         var commandResponseList = commandResponseLists[i];
                         foreach (var commandResponse in commandResponseList.Responses)
                         {
-                            if (thereIsResponseHandler)
+                            if (commandResponseHandlers != null)
                             {
                                 foreach (Requirable.CommandResponseHandler commandResponseHandler in
                                     commandResponseHandlers)
