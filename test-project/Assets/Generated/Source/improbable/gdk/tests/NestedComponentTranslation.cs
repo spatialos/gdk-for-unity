@@ -399,5 +399,45 @@ namespace Improbable.Gdk.Tests
                 chunkArray.Dispose();
             }
         }
+
+        internal class AcknowledgeAuthorityLossHandler : AbstractAcknowledgeAuthorityLossHandler
+        {
+            public override EntityArchetypeQuery Query => new EntityArchetypeQuery
+            {
+                All = new ComponentType[]
+                {
+                    ComponentType.ReadOnly<AuthorityLossImminent<Improbable.Gdk.Tests.NestedComponent.Component>>(),
+                    ComponentType.ReadOnly<SpatialEntityId>()
+                },
+                Any = Array.Empty<ComponentType>(),
+                None = Array.Empty<ComponentType>()
+            };
+
+            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+                Improbable.Worker.Core.Connection connection)
+            {
+                var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.NestedComponent.Component>>();
+                var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
+
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
+
+                foreach (var chunk in chunkArray)
+                {
+                    var authorityArray = chunk.GetNativeArray(authorityLossType);
+                    var spatialEntityIdArray = chunk.GetNativeArray(spatialEntityType);
+
+                    for (int i = 0; i < authorityArray.Length; ++i)
+                    {
+                        if (authorityArray[i].AcknowledgeAuthorityLoss)
+                        {
+                            connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdArray[i].EntityId,
+                                20152);
+                        }
+                    }
+                }
+
+                chunkArray.Dispose();
+            }
+        }
     }
 }
