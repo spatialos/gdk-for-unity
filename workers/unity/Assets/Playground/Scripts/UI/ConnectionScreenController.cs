@@ -8,6 +8,7 @@ namespace Playground
     {
         private const string HostIpPlayerPrefsKey = "SpatialOSHostIp";
         private const int GuiPadding = 10;
+        private const float VerticalPositionRatio = 0.4f;
 
         [SerializeField] private GameObject clientWorkerPrefab;
         [SerializeField] private Font font;
@@ -34,7 +35,7 @@ namespace Playground
 
             using (new GUILayout.AreaScope(new Rect(
                 GuiPadding,
-                Screen.height * 0.4f,
+                Screen.height * VerticalPositionRatio,
                 Screen.width - GuiPadding * 2,
                 Screen.height - GuiPadding * 2)))
             {
