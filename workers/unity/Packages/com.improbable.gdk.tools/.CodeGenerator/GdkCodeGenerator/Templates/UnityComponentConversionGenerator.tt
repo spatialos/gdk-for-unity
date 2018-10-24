@@ -549,13 +549,13 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < componentArray.Length; i++)
                     {
                         var data = componentArray[i];
-                        var dirtyEvents = 0;
+                        var eventsToSend = 0;
 <# foreach (var eventDetail in eventDetailsList) { #>
                         var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
-                        dirtyEvents += events<#= eventDetail.EventName #>.Count;
+                        eventsToSend += events<#= eventDetail.EventName #>.Count;
 <# } #>
 
-                        if (data.IsDirty() || dirtyEvents > 0)
+                        if (data.IsDirty() || eventsToSend > 0)
                         {
                             var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
                             <#= componentNamespace #>.Serialization.SerializeUpdate(data, update);

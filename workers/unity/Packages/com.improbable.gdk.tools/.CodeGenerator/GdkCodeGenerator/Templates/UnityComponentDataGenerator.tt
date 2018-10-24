@@ -29,7 +29,7 @@ namespace <#= qualifiedNamespace #>
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             // Each byte tracks 8 component properties.
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
-            private byte dityBits<#= i #>;
+            private byte dirtyBits<#= i #>;
 <# } #>
 
             public bool IsDirty()
@@ -46,13 +46,13 @@ namespace <#= qualifiedNamespace #>
                 bool val_a = 1;
                 bool val_b = 3;
             }
-            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 for this method.
+            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
             */
             public bool IsDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
-                    throw new Exception("Out of range");
+                    throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
                 var byteBatch = propertyIndex / 8;
@@ -63,7 +63,7 @@ namespace <#= qualifiedNamespace #>
                         return (dityBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
 <# } #>
                     default:
-                        throw new Exception("Out of range");
+                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
             }
 
@@ -72,7 +72,7 @@ namespace <#= qualifiedNamespace #>
             {
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
-                    throw new Exception("Out of range");
+                    throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
                 var byteBatch = propertyIndex / 8;
@@ -84,7 +84,7 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                     default:
-                        throw new Exception("Out of range");
+                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
                 isDirty = true;
