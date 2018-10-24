@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Playground
@@ -62,7 +63,7 @@ namespace Playground
         public static string TextArea(string text)
         {
             TempGuiContent.text = text;
-            return GUILayout.TextArea(text, 
+            return GUILayout.TextArea(text,
                 GUILayout.Height(GUI.skin.textArea.CalcHeight(TempGuiContent, Screen.width)));
         }
     }

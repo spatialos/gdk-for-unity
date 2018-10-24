@@ -14,9 +14,8 @@ namespace Playground
         [SerializeField] private Font font;
         [SerializeField] private float screenWidthFontRatio = 20;
 
-        private bool showConnectionGui = true;
-        private bool isConnecting = false;
-        private string ipAddressText = null;
+        private bool isConnecting;
+        private string ipAddressText;
         private string errorMessage = "";
 
         private GameObject worker;
@@ -28,11 +27,6 @@ namespace Playground
 
         public void OnGUI()
         {
-            if (!showConnectionGui)
-            {
-                return;
-            }
-
             using (new GUILayout.AreaScope(new Rect(
                 GuiPadding,
                 Screen.height * VerticalPositionRatio,
@@ -54,19 +48,14 @@ namespace Playground
                         ResizedGui.Label("Enter IP address:");
                         ipAddressText = ResizedGui.TextField(ipAddressText);
 
-                        if (ResizedGui.Button("Connect"))
+                        if (ResizedGui.Button("Connect") && Application.isPlaying)
                         {
-                            if (Application.isPlaying)
-                            {
-                                TryConnect();
-                            }
+                            TryConnect();
                         }
 
                         if (!string.IsNullOrEmpty(errorMessage))
                         {
-                            ResizedGui.Label("Error:");
-
-                            ResizedGui.TextArea(errorMessage);
+                            ResizedGui.TextArea($"Error: {errorMessage}");
                         }
                     }
                 }
@@ -101,8 +90,7 @@ namespace Playground
             PlayerPrefs.SetString(HostIpPlayerPrefsKey, ipAddressText);
             PlayerPrefs.Save();
 
-            showConnectionGui = false;
-            isConnecting = false;
+            Destroy(gameObject);
         }
 
         public void OnConnectionFailed(string connectionError)
