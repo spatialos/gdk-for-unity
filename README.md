@@ -30,7 +30,7 @@ This is the alpha release of the SpatialOS GDK for Unity. We invite projects to 
 
 ## Contributions
 
-We are not currently accepting public contributions - see our [contributions](.github/CONTRIBUTING.md) policy. However, we are accepting issues and we do want your feedback.
+We are not currently accepting public contributions - see our [contributions](https://docs.improbable.io/unity/alpha/contributing) policy. However, we are accepting issues and we do want your feedback.
 
 
 ## Give us feedback

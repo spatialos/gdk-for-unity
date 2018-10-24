@@ -29,11 +29,20 @@ namespace Improbable.Gdk.Core
         public ushort ReceptionistPort = RuntimeConfigDefaults.ReceptionistPort;
 
         /// <summary>
-        ///     Checks that the ReceptionistConfig instance is valid. This does not guarantee a successful connection.
+        ///    Checks that the connection configuration is valid. This does not guarantee a successful connection.
         /// </summary>
-        public override void Validate()
+        /// <param name="errorMessage">Reason for failing the validation in case false is returned.</param>
+        /// <returns>True, if the connection configuration is valid.</returns>
+        public override bool Validate(out string errorMessage)
         {
-            ValidateConfig(ReceptionistHost, RuntimeConfigNames.ReceptionistHost);
+            if (string.IsNullOrEmpty(ReceptionistHost))
+            {
+                errorMessage = string.Format(MissingConfigError, RuntimeConfigNames.ReceptionistHost);
+                return false;
+            }
+
+            errorMessage = string.Empty;
+            return true;
         }
 
         /// <summary>

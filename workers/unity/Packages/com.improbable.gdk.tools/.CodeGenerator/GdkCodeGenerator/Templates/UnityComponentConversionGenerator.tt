@@ -216,9 +216,9 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.GetObject(<#= eventDetails.EventIndex #>));
+                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= eventDetails.EventIndex #>, i));
                             eventList.Add(e);
                         }
                     }
@@ -533,7 +533,7 @@ namespace <#= qualifiedNamespace #>
             {
                 <#= profilingStart #>
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<<#= componentNamespace #>.Component>();
 <# foreach (var eventDetail in eventDetailsList) { #>
@@ -712,7 +712,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                 var <#= commandDetails.CamelCaseCommandName #>ResponseType = system.GetArchetypeChunkComponentType<CommandResponses.<#= commandDetails.CommandName #>>();
 <# } #>
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {

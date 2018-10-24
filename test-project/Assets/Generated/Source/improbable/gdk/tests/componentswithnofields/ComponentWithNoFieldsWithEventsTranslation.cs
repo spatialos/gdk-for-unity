@@ -173,9 +173,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
 
                         // Deserialize events onto component
-                        for (var i = 0; i < eventCount; i++)
+                        for (uint i = 0; i < eventCount; i++)
                         {
-                            var e = global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Deserialize(eventsObject.GetObject(1));
+                            var e = global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty.Serialization.Deserialize(eventsObject.IndexObject(1, i));
                             eventList.Add(e);
                         }
                     }
@@ -329,7 +329,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>();
                 var eventEvtType = system.GetArchetypeChunkComponentType<EventSender.Evt>(true);
@@ -407,7 +407,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>();
                 var evtEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.Evt>();
 
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {

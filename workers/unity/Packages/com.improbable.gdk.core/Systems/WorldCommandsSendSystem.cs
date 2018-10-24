@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Core
             var reserveEntityIdsType = GetArchetypeChunkComponentType<WorldCommands.ReserveEntityIds.CommandSender>();
             var entityQueryType = GetArchetypeChunkComponentType<WorldCommands.EntityQuery.CommandSender>();
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.Temp);
+            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
             foreach (var chunk in chunkArray)
             {

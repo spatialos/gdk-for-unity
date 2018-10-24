@@ -172,7 +172,7 @@ namespace Improbable.Gdk.Tools
             builder.AppendLine("If these exist on your PATH, restart Unity and Unity Hub.");
             builder.AppendLine();
             builder.AppendLine("Otherwise, install them by following our setup guide:");
-            builder.AppendLine("https://docs.improbable.io/unity/alpha/get-started#set-up-your-machine");
+            builder.AppendLine("https://docs.improbable.io/unity/alpha/content/get-started/set-up");
 
             EditorApplication.delayCall += () =>
             {
