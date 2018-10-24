@@ -19,7 +19,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             this.logDispatcher = logDispatcher;
         }
 
-        protected bool VerifyNotDisposed()
+        protected bool IsValid()
         {
             if (isDisposed)
             {

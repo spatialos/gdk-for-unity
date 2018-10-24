@@ -71,7 +71,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -80,7 +80,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -117,7 +117,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -126,7 +126,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -142,7 +142,7 @@ namespace <#= qualifiedNamespace #>
 
                 public void Send<#= eventDetails.EventName #>(<#= eventDetails.FqnPayloadType #> payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }

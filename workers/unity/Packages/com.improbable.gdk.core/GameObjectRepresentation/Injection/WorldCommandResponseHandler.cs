@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -74,7 +74,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -99,7 +99,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -124,7 +124,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -133,7 +133,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }

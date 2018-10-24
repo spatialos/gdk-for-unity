@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Core.Commands
                 /// <returns>The request ID of the command request.</returns>
                 public long ReserveEntityIds(uint numberOfEntityIds, uint? timeoutMillis = null, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long ReserveEntityIds(uint numberOfEntityIds, Action<ReserveEntityIds.ReceivedResponse> callback,
                     uint? timeoutMillis = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long CreateEntity(EntityTemplate entityTemplate, EntityId? entityId = null,
                     uint? timeoutMillis = null, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -139,7 +139,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long CreateEntity(EntityTemplate entityTemplate, Action<CreateEntity.ReceivedResponse> callback,
                     uint? timeoutMillis = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -174,7 +174,7 @@ namespace Improbable.Gdk.Core.Commands
                     Action<CreateEntity.ReceivedResponse> callback,
                     uint? timeoutMillis = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -201,7 +201,7 @@ namespace Improbable.Gdk.Core.Commands
                 /// <returns>The request ID of the command request.</returns>
                 public long DeleteEntity(EntityId entityId, uint? timeoutMillis = null, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -228,7 +228,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long DeleteEntity(EntityId entityId, Action<DeleteEntity.ReceivedResponse> callback,
                     uint? timeoutMillis = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -255,7 +255,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null,
                     object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -281,7 +281,7 @@ namespace Improbable.Gdk.Core.Commands
                 public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery,
                     Action<EntityQuery.ReceivedResponse> callback, uint? timeoutMillis = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }

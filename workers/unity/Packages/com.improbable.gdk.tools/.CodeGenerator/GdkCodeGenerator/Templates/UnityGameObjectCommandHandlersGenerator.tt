@@ -89,7 +89,7 @@ namespace <#= qualifiedNamespace #>
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -103,7 +103,7 @@ namespace <#= qualifiedNamespace #>
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     Action<<#= receivedResponseType #>> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
@@ -152,7 +152,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -161,7 +161,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -210,7 +210,7 @@ namespace <#= qualifiedNamespace #>
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -219,7 +219,7 @@ namespace <#= qualifiedNamespace #>
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
