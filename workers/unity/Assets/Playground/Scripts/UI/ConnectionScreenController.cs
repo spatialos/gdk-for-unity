@@ -96,7 +96,7 @@ namespace Playground
         public void OnConnectionFailed(string connectionError)
         {
             UnityObjectDestroyer.Destroy(worker);
-            errorMessage = $"Connection failed. Please check the IP address entered. {connectionError}";
+            errorMessage = $"Connection failed. Please check the IP address entered.\n{connectionError}";
             isConnecting = false;
         }
     }
