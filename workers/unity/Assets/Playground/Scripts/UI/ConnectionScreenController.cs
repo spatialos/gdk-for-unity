@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Mobile;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,10 +49,10 @@ namespace Playground
             connectionPanel.SetActive(false);
         }
 
-        public void OnConnectionFailed()
+        public void OnConnectionFailed(string connectionError)
         {
             UnityObjectDestroyer.Destroy(worker);
-            errorMessage.text = "Connection failed. Please check the IP address entered.";
+            errorMessage.text = $"Connection failed. Please check the IP address entered. {connectionError}";
         }
     }
 }

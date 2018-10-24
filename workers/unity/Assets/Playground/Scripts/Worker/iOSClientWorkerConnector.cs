@@ -32,27 +32,26 @@ namespace Playground
                 return;
             }
 
-            levelInstance = Instantiate(level, transform);
-            levelInstance.transform.SetParent(null);
+            levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
-        protected override void HandleWorkerConnectionFailure()
+        protected override void HandleWorkerConnectionFailure(string errorMessage)
         {
-            ConnectionScreenController.OnConnectionFailed();
+            ConnectionScreenController.OnConnectionFailed(errorMessage);
         }
 
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            if ((Application.isEditor || iOSDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual) && string.Empty.Equals(IpAddress))
+            if (!string.Empty.Equals(IpAddress))
             {
-                return RuntimeConfigDefaults.ReceptionistHost;
+                return IpAddress;
             }
 
-            return IpAddress;
+            return RuntimeConfigDefaults.ReceptionistHost;
 #else
             throw new PlatformNotSupportedException(
-                "iOSClientWorkerConnector can only be used for the iOS platform. Please check your build settings.");
+                $"{nameof(iOSClientWorkerConnector)} can only be used for the iOS platform. Please check your build settings.");
 #endif
         }
 

@@ -33,27 +33,31 @@ namespace Playground
                 return;
             }
 
-            levelInstance = Instantiate(level, transform);
-            levelInstance.transform.SetParent(null);
+            levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
-        protected override void HandleWorkerConnectionFailure()
+        protected override void HandleWorkerConnectionFailure(string errorMessage)
         {
-            ConnectionScreenController.OnConnectionFailed();
+            ConnectionScreenController.OnConnectionFailed(errorMessage);
         }
 
         protected override string GetHostIp()
         {
 #if UNITY_ANDROID
-            if (Application.isMobilePlatform && AndroidDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual && string.Empty.Equals(IpAddress))
+            if (!string.Empty.Equals(IpAddress))
+            {
+                return IpAddress;
+            }
+
+            if (Application.isMobilePlatform && AndroidDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual)
             {
                 return AndroidDeviceInfo.EmulatorDefaultCallbackIp;
             }
 
-            return IpAddress;
+            return RuntimeConfigDefaults.ReceptionistHost;
 #else
             throw new PlatformNotSupportedException(
-                "AndroidClientWorkerConnector can only be used for the Android platform. Please check your build settings.");
+                $"{nameof(AndroidClientWorkerConnector)} can only be used for the Android platform. Please check your build settings.");
 #endif
         }
 

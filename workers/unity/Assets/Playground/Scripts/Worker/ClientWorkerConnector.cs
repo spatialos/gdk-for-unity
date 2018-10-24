@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ namespace Playground
 {
     public class ClientWorkerConnector : WorkerConnector
     {
-        public GameObject Level;
+        [SerializeField] private GameObject level;
 
         private GameObject levelInstance;
 
@@ -24,13 +24,12 @@ namespace Playground
         protected override void HandleWorkerConnectionEstablished()
         {
             WorkerUtils.AddClientSystems(Worker.World);
-            if (Level == null)
+            if (level == null)
             {
                 return;
             }
 
-            levelInstance = Instantiate(Level, transform);
-            levelInstance.transform.SetParent(null);
+            levelInstance = Instantiate(level, transform.position, transform.rotation);
         }
 
         public override void Dispose()
