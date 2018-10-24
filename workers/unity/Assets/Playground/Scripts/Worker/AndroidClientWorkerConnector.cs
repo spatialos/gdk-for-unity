@@ -44,17 +44,17 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_ANDROID
-            if (Application.isEditor)
+            if (!string.Empty.Equals(IpAddress))
             {
-                return RuntimeConfigDefaults.ReceptionistHost;
+                return IpAddress;
             }
 
-            if (Application.isMobilePlatform && AndroidDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual && string.Empty.Equals(IpAddress))
+            if (Application.isMobilePlatform && AndroidDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual)
             {
                 return AndroidDeviceInfo.EmulatorDefaultCallbackIp;
             }
 
-            return IpAddress;
+            return RuntimeConfigDefaults.ReceptionistHost;
 #else
             throw new PlatformNotSupportedException(
                 $"{nameof(AndroidClientWorkerConnector)} can only be used for the Android platform. Please check your build settings.");

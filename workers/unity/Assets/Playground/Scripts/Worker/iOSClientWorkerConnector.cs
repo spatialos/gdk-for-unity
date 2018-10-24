@@ -43,17 +43,12 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_IOS
-            if (Application.isEditor)
+            if (!string.Empty.Equals(IpAddress))
             {
-                return RuntimeConfigDefaults.ReceptionistHost;
+                return IpAddress;
             }
 
-            if (Application.isMobilePlatform && iOSDeviceInfo.ActiveDeviceType == MobileDeviceType.Virtual && string.Empty.Equals(IpAddress))
-            {
-                return RuntimeConfigDefaults.ReceptionistHost;
-            }
-
-            return IpAddress;
+            return RuntimeConfigDefaults.ReceptionistHost;
 #else
             throw new PlatformNotSupportedException(
                 $"{nameof(iOSClientWorkerConnector)} can only be used for the iOS platform. Please check your build settings.");
