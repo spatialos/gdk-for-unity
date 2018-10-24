@@ -34,27 +34,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 .ToArray();
         }
 
-        internal void UpdateEditorScenesForBuild()
-        {
-            EditorBuildSettings.scenes =
-                WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerType))
-                    .Select(AssetDatabase.GetAssetPath)
-                    .Distinct()
-                    .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
-                    .ToArray();
-        }
-
         public override void OnEnable()
         {
             base.OnEnable();
             if (!isInitialised)
             {
                 ResetToDefault();
-            }
-
-            if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(this)))
-            {
-                EditorApplication.delayCall += UpdateEditorScenesForBuild;
             }
         }
 
