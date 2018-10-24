@@ -60,7 +60,7 @@ namespace <#= qualifiedNamespace #>
                 {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
                     case <#= i #>:
-                        return (dityBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
+                        return (dirtyBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
 <# } #>
                     default:
                         throw new ArgumentException("propertyIndex argument out of range.");
@@ -80,7 +80,7 @@ namespace <#= qualifiedNamespace #>
                 {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
                     case <#= i #>:
-                        dityBits<#= i #> |= (byte) (0x1 << propertyIndex % 8);
+                        dirtyBits<#= i #> |= (byte) (0x1 << propertyIndex % 8);
                         break;
 <# } #>
                     default:
@@ -93,7 +93,7 @@ namespace <#= qualifiedNamespace #>
             public void MarkNotDirty()
             {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
-                dityBits<#= i #> = 0x0;
+                dirtyBits<#= i #> = 0x0;
 <# } #>
                 isDirty = false;
             }

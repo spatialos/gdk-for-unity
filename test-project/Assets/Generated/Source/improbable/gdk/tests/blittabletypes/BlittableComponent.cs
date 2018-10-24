@@ -18,7 +18,71 @@ namespace Improbable.Gdk.Tests.BlittableTypes
         {
             public uint ComponentId => 1001;
 
-            public BlittableBool DirtyBit { get; set; }
+            private BlittableBool isDirty;
+
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+            private byte dirtyBits0;
+
+            public bool IsDirty()
+            {
+                return isDirty;
+            }
+
+            /*
+            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
+            your component properties in a schema component but is not the schema field number itself. E.g.
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
+            */
+            public bool IsDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 5)
+                {
+                    throw new ArgumentException("propertyIndex argument out of range.");
+                }
+
+                var byteBatch = propertyIndex / 8;
+                switch (byteBatch)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                    default:
+                        throw new ArgumentException("propertyIndex argument out of range.");
+                }
+            }
+
+            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 5)
+                {
+                    throw new ArgumentException("propertyIndex argument out of range.");
+                }
+
+                var byteBatch = propertyIndex / 8;
+                switch (byteBatch)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    default:
+                        throw new ArgumentException("propertyIndex argument out of range.");
+                }
+
+                isDirty = true;
+            }
+
+            public void MarkNotDirty()
+            {
+                dirtyBits0 = 0x0;
+                isDirty = false;
+            }
 
             private BlittableBool boolField;
 
@@ -27,7 +91,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => boolField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDirty(0);
                     boolField = value;
                 }
             }
@@ -39,7 +103,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => intField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDirty(1);
                     intField = value;
                 }
             }
@@ -51,7 +115,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => longField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDirty(2);
                     longField = value;
                 }
             }
@@ -63,7 +127,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => floatField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDirty(3);
                     floatField = value;
                 }
             }
@@ -75,7 +139,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => doubleField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDirty(4);
                     doubleField = value;
                 }
             }
@@ -115,19 +179,39 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 var obj = updateObj.GetFields();
                 {
-                    obj.AddBool(1, component.BoolField);
+                    if (component.IsDirty(0))
+                    {
+                        obj.AddBool(1, component.BoolField);
+                    }
+
                 }
                 {
-                    obj.AddInt32(2, component.IntField);
+                    if (component.IsDirty(1))
+                    {
+                        obj.AddInt32(2, component.IntField);
+                    }
+
                 }
                 {
-                    obj.AddInt64(3, component.LongField);
+                    if (component.IsDirty(2))
+                    {
+                        obj.AddInt64(3, component.LongField);
+                    }
+
                 }
                 {
-                    obj.AddFloat(4, component.FloatField);
+                    if (component.IsDirty(3))
+                    {
+                        obj.AddFloat(4, component.FloatField);
+                    }
+
                 }
                 {
-                    obj.AddDouble(5, component.DoubleField);
+                    if (component.IsDirty(4))
+                    {
+                        obj.AddDouble(5, component.DoubleField);
+                    }
+
                 }
             }
 

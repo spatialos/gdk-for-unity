@@ -7,14 +7,11 @@ namespace Improbable.Gdk.EditmodeTests.Ecs
     [TestFixture]
     public class BlittableComponentTests
     {
-        private static readonly BlittableBool BlittableBoolFalse = false;
-        private static readonly BlittableBool BlittableBoolTrue = true;
-
         private const int IntValue = 123;
         private const long LongValue = 5678L;
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
-        private static readonly BlittableBool BoolValue = BlittableBoolTrue;
+        private static readonly BlittableBool BoolValue = true;
 
         [Test]
         public void component_should_implement_ISpatialComponentData()
@@ -48,26 +45,31 @@ namespace Improbable.Gdk.EditmodeTests.Ecs
         {
             var component = new BlittableComponent.Component();
 
-            Assert.AreEqual(BlittableBoolFalse, component.DirtyBit, "Dirty bit is initially false.");
+            Assert.AreEqual(false, component.IsDirty(), "Component is not dirty initially.");
 
             component.BoolField = true;
-            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting bool field.");
+            Assert.AreEqual(true, component.IsDirty(), "Component is dirty after setting bool field.");
+            Assert.AreEqual(true, component.IsDirty(0), "Component property 0 is dirty after setting bool field.");
 
-            component.DirtyBit = false;
-            component.DoubleField = DoubleValue;
-            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting double field.");
-
-            component.DirtyBit = false;
-            component.FloatField = FloatValue;
-            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting float field.");
-
-            component.DirtyBit = false;
+            component.MarkNotDirty();
             component.IntField = IntValue;
-            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting int field.");
+            Assert.AreEqual(true, component.IsDirty(), "Component is dirty after setting int field.");
+            Assert.AreEqual(true, component.IsDirty(1), "Component property 0 is dirty after setting int field.");
 
-            component.DirtyBit = false;
+            component.MarkNotDirty();
             component.LongField = LongValue;
-            Assert.AreEqual(BlittableBoolTrue, component.DirtyBit, "Dirty bit true after setting long field.");
+            Assert.AreEqual(true, component.IsDirty(), "Component is dirty after setting long field.");
+            Assert.AreEqual(true, component.IsDirty(2), "Component property 0 is dirty after setting long field.");
+
+            component.MarkNotDirty();
+            component.FloatField = FloatValue;
+            Assert.AreEqual(true, component.IsDirty(), "Component is dirty after setting float field.");
+            Assert.AreEqual(true, component.IsDirty(3), "Component property 0 is dirty after setting float field.");
+
+            component.MarkNotDirty();
+            component.DoubleField = DoubleValue;
+            Assert.AreEqual(true, component.IsDirty(), "Component is dirty after setting double field.");
+            Assert.AreEqual(true, component.IsDirty(4), "Component property 0 is dirty after setting double field.");
         }
     }
 }
