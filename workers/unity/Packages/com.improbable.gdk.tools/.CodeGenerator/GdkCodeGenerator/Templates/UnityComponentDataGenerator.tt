@@ -24,33 +24,81 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            // Represents a bit mask for tracking which component properties were changed locally and need to be synced.
-            [Flags]
-            public enum DirtyBitsFlag
-            {
-                None = 0,
-<# for(int i = 0; i < fieldDetailsList.Count; i++) { #>
-                <#= fieldDetailsList[i].PascalCaseName #> = <#= 1 << i #>,
-<# } #>
-            }
+            private BlittableBool isDirty;
 
-            public DirtyBitsFlag DirtyBits;
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+            private byte dityBits<#= i #>;
+<# } #>
 
             public bool IsDirty()
             {
-                return (DirtyBits != DirtyBitsFlag.None);
+                return isDirty;
             }
 
-            public bool IsDirty(DirtyBitsFlag componentProperty)
+            /*
+            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
+            your component properties in a schema component but is not the schema field number itself. E.g.
+            component MyComponent
             {
-                return (DirtyBits & componentProperty) != DirtyBitsFlag.None;
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 for this method.
+            */
+            public bool IsDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
+                {
+                    throw new Exception("Out of range");
+                }
+
+                var byteBatch = propertyIndex / 8;
+                switch (byteBatch)
+                {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                    case <#= i #>:
+                        return (dityBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
+<# } #>
+                    default:
+                        throw new Exception("Out of range");
+                }
             }
 
-            public void ClearDirtyBits()
+            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDirty(int propertyIndex)
             {
-                DirtyBits = DirtyBitsFlag.None;
+                if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
+                {
+                    throw new Exception("Out of range");
+                }
+
+                var byteBatch = propertyIndex / 8;
+                switch (byteBatch)
+                {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                    case <#= i #>:
+                        dityBits<#= i #> |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+<# } #>
+                    default:
+                        throw new Exception("Out of range");
+                }
+
+                isDirty = true;
             }
-<# foreach(var fieldDetails in fieldDetailsList) { #>
+
+            public void MarkNotDirty()
+            {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                dityBits<#= i #> = 0x0;
+<# } #>
+                isDirty = false;
+            }
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
 <# if (fieldDetails.IsBlittable) { #>
 
             private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
@@ -60,7 +108,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
-                    DirtyBits = DirtyBits | DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>;
+                    MarkDirty(<#= i #>);
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -73,7 +121,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
-                    DirtyBits = DirtyBits | DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>;
+                    MarkDirty(<#= i #>);
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
@@ -106,9 +154,10 @@ namespace <#= qualifiedNamespace #>
             public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
                 {
-                    if (component.IsDirty(<#= componentNamespace #>.Component.DirtyBitsFlag.<#= fieldDetails.PascalCaseName #>))
+                    if (component.IsDirty(<#= i #>))
                     {
                         <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
                     }

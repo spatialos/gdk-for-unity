@@ -24,12 +24,6 @@ namespace Improbable.Gdk.TransformSynchronization
             return a.W != b.W || a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
 
-        // Checking for no change, so exact equality is fine
-        public static bool HasChanged(Velocity a, Velocity b)
-        {
-            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
-        }
-
         public static Quaternion ToUnityQuaternion(this Improbable.Transform.Quaternion quaternion)
         {
             return new Quaternion(quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);

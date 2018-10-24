@@ -45,29 +45,17 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var transformToSend = data.TransformToSend[i];
 
-                var currentTransform = new TransformInternal.Component
-                {
-                    Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
-                    Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
-                    Velocity = transformToSend.Velocity.ToImprobableVelocity(),
-                    PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks,
-                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
-                };
+                var currentTransform = new TransformInternal.Component();
+                currentTransform.Location = (transformToSend.Position - worker.Origin).ToImprobableLocation();
+                currentTransform.Rotation = transformToSend.Orientation.ToImprobableQuaternion();
+                currentTransform.Velocity = transformToSend.Velocity.ToImprobableVelocity();
+                currentTransform.PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks;
+                currentTransform.TicksPerSecond = tickRate.PhysicsTicksPerRealSecond;
 
                 var locationHasChanged = TransformUtils.HasChanged(currentTransform.Location, transform.Location);
                 var rotationHasChanged = TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation);
-                var velocityHasChanged = TransformUtils.HasChanged(currentTransform.Velocity, transform.Velocity);
-                var physicsTickHasChanged = currentTransform.PhysicsTick == transform.PhysicsTick;
-                var ticksPerSecondHasChanged =
-                    Mathf.Abs(currentTransform.TicksPerSecond - transform.TicksPerSecond) < Mathf.Epsilon;
 
-                currentTransform.DirtyBits |= locationHasChanged ? TransformInternal.Component.DirtyBitsFlag.Location : TransformInternal.Component.DirtyBitsFlag.None;
-                currentTransform.DirtyBits |= rotationHasChanged ? TransformInternal.Component.DirtyBitsFlag.Rotation : TransformInternal.Component.DirtyBitsFlag.None;
-                currentTransform.DirtyBits |= velocityHasChanged ? TransformInternal.Component.DirtyBitsFlag.Velocity : TransformInternal.Component.DirtyBitsFlag.None;
-                currentTransform.DirtyBits |= physicsTickHasChanged ? TransformInternal.Component.DirtyBitsFlag.PhysicsTick : TransformInternal.Component.DirtyBitsFlag.None;
-                currentTransform.DirtyBits |= ticksPerSecondHasChanged ? TransformInternal.Component.DirtyBitsFlag.TicksPerSecond : TransformInternal.Component.DirtyBitsFlag.None;
-
-                if (!locationHasChanged && rotationHasChanged)
+                if (!locationHasChanged && !rotationHasChanged)
                 {
                     continue;
                 }
