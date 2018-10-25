@@ -18,58 +18,61 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197720;
 
-            private BlittableBool isDirty;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             // Each byte tracks 8 component properties.
             private byte dirtyBits0;
             private byte dirtyBits1;
 
-            public bool IsDirty()
+            public bool IsDataDirty()
             {
-                return isDirty;
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                isDataDirty |= (dirtyBits1 != 0x0);
+                return isDataDirty;
             }
 
             /*
-            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
-            your component properties in a schema component but is not the schema field number itself. E.g.
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
             component MyComponent
             {
                 id = 1337;
                 bool val_a = 1;
                 bool val_b = 3;
             }
-            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
             */
-            public bool IsDirty(int propertyIndex)
+            public bool IsDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 15)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
                     case 1:
                         return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
+
+                return false;
             }
 
-            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
-            public void MarkDirty(int propertyIndex)
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 15)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
@@ -77,18 +80,13 @@ namespace Improbable.Gdk.Tests
                     case 1:
                         dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
                         break;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
-
-                isDirty = true;
             }
 
-            public void MarkNotDirty()
+            public void MarkDataClean()
             {
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
-                isDirty = false;
             }
 
             private BlittableBool field1;
@@ -98,7 +96,7 @@ namespace Improbable.Gdk.Tests
                 get => field1;
                 set
                 {
-                    MarkDirty(0);
+                    MarkDataDirty(0);
                     field1 = value;
                 }
             }
@@ -110,7 +108,7 @@ namespace Improbable.Gdk.Tests
                 get => field2;
                 set
                 {
-                    MarkDirty(1);
+                    MarkDataDirty(1);
                     field2 = value;
                 }
             }
@@ -122,7 +120,7 @@ namespace Improbable.Gdk.Tests
                 get => field4;
                 set
                 {
-                    MarkDirty(2);
+                    MarkDataDirty(2);
                     field4 = value;
                 }
             }
@@ -134,7 +132,7 @@ namespace Improbable.Gdk.Tests
                 get => field5;
                 set
                 {
-                    MarkDirty(3);
+                    MarkDataDirty(3);
                     field5 = value;
                 }
             }
@@ -146,7 +144,7 @@ namespace Improbable.Gdk.Tests
                 get => field6;
                 set
                 {
-                    MarkDirty(4);
+                    MarkDataDirty(4);
                     field6 = value;
                 }
             }
@@ -158,7 +156,7 @@ namespace Improbable.Gdk.Tests
                 get => field8;
                 set
                 {
-                    MarkDirty(5);
+                    MarkDataDirty(5);
                     field8 = value;
                 }
             }
@@ -170,7 +168,7 @@ namespace Improbable.Gdk.Tests
                 get => field9;
                 set
                 {
-                    MarkDirty(6);
+                    MarkDataDirty(6);
                     field9 = value;
                 }
             }
@@ -182,7 +180,7 @@ namespace Improbable.Gdk.Tests
                 get => field10;
                 set
                 {
-                    MarkDirty(7);
+                    MarkDataDirty(7);
                     field10 = value;
                 }
             }
@@ -194,7 +192,7 @@ namespace Improbable.Gdk.Tests
                 get => field11;
                 set
                 {
-                    MarkDirty(8);
+                    MarkDataDirty(8);
                     field11 = value;
                 }
             }
@@ -206,7 +204,7 @@ namespace Improbable.Gdk.Tests
                 get => field12;
                 set
                 {
-                    MarkDirty(9);
+                    MarkDataDirty(9);
                     field12 = value;
                 }
             }
@@ -218,7 +216,7 @@ namespace Improbable.Gdk.Tests
                 get => field13;
                 set
                 {
-                    MarkDirty(10);
+                    MarkDataDirty(10);
                     field13 = value;
                 }
             }
@@ -230,7 +228,7 @@ namespace Improbable.Gdk.Tests
                 get => field14;
                 set
                 {
-                    MarkDirty(11);
+                    MarkDataDirty(11);
                     field14 = value;
                 }
             }
@@ -242,7 +240,7 @@ namespace Improbable.Gdk.Tests
                 get => field15;
                 set
                 {
-                    MarkDirty(12);
+                    MarkDataDirty(12);
                     field15 = value;
                 }
             }
@@ -254,7 +252,7 @@ namespace Improbable.Gdk.Tests
                 get => field16;
                 set
                 {
-                    MarkDirty(13);
+                    MarkDataDirty(13);
                     field16 = value;
                 }
             }
@@ -266,7 +264,7 @@ namespace Improbable.Gdk.Tests
                 get => field17;
                 set
                 {
-                    MarkDirty(14);
+                    MarkDataDirty(14);
                     field17 = value;
                 }
             }
@@ -346,105 +344,105 @@ namespace Improbable.Gdk.Tests
             {
                 var obj = updateObj.GetFields();
                 {
-                    if (component.IsDirty(0))
+                    if (component.IsDataDirty(0))
                     {
                         obj.AddBool(1, component.Field1);
                     }
 
                 }
                 {
-                    if (component.IsDirty(1))
+                    if (component.IsDataDirty(1))
                     {
                         obj.AddFloat(2, component.Field2);
                     }
 
                 }
                 {
-                    if (component.IsDirty(2))
+                    if (component.IsDataDirty(2))
                     {
                         obj.AddInt32(4, component.Field4);
                     }
 
                 }
                 {
-                    if (component.IsDirty(3))
+                    if (component.IsDataDirty(3))
                     {
                         obj.AddInt64(5, component.Field5);
                     }
 
                 }
                 {
-                    if (component.IsDirty(4))
+                    if (component.IsDataDirty(4))
                     {
                         obj.AddDouble(6, component.Field6);
                     }
 
                 }
                 {
-                    if (component.IsDirty(5))
+                    if (component.IsDataDirty(5))
                     {
                         obj.AddUint32(8, component.Field8);
                     }
 
                 }
                 {
-                    if (component.IsDirty(6))
+                    if (component.IsDataDirty(6))
                     {
                         obj.AddUint64(9, component.Field9);
                     }
 
                 }
                 {
-                    if (component.IsDirty(7))
+                    if (component.IsDataDirty(7))
                     {
                         obj.AddSint32(10, component.Field10);
                     }
 
                 }
                 {
-                    if (component.IsDirty(8))
+                    if (component.IsDataDirty(8))
                     {
                         obj.AddSint64(11, component.Field11);
                     }
 
                 }
                 {
-                    if (component.IsDirty(9))
+                    if (component.IsDataDirty(9))
                     {
                         obj.AddFixed32(12, component.Field12);
                     }
 
                 }
                 {
-                    if (component.IsDirty(10))
+                    if (component.IsDataDirty(10))
                     {
                         obj.AddFixed64(13, component.Field13);
                     }
 
                 }
                 {
-                    if (component.IsDirty(11))
+                    if (component.IsDataDirty(11))
                     {
                         obj.AddSfixed32(14, component.Field14);
                     }
 
                 }
                 {
-                    if (component.IsDirty(12))
+                    if (component.IsDataDirty(12))
                     {
                         obj.AddSfixed64(15, component.Field15);
                     }
 
                 }
                 {
-                    if (component.IsDirty(13))
+                    if (component.IsDataDirty(13))
                     {
                         obj.AddEntityId(16, component.Field16);
                     }
 
                 }
                 {
-                    if (component.IsDirty(14))
+                    if (component.IsDataDirty(14))
                     {
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17, obj.AddObject(17));
                     }

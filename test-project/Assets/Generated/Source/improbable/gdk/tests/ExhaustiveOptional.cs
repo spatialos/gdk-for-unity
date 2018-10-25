@@ -18,39 +18,42 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197716;
 
-            private BlittableBool isDirty;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             // Each byte tracks 8 component properties.
             private byte dirtyBits0;
             private byte dirtyBits1;
             private byte dirtyBits2;
 
-            public bool IsDirty()
+            public bool IsDataDirty()
             {
-                return isDirty;
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                isDataDirty |= (dirtyBits1 != 0x0);
+                isDataDirty |= (dirtyBits2 != 0x0);
+                return isDataDirty;
             }
 
             /*
-            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
-            your component properties in a schema component but is not the schema field number itself. E.g.
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
             component MyComponent
             {
                 id = 1337;
                 bool val_a = 1;
                 bool val_b = 3;
             }
-            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
             */
-            public bool IsDirty(int propertyIndex)
+            public bool IsDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 17)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
@@ -58,21 +61,22 @@ namespace Improbable.Gdk.Tests
                         return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
                     case 2:
                         return (dirtyBits2 & (0x1 << propertyIndex % 8)) != 0x0;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
+
+                return false;
             }
 
-            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
-            public void MarkDirty(int propertyIndex)
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 17)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
@@ -83,19 +87,14 @@ namespace Improbable.Gdk.Tests
                     case 2:
                         dirtyBits2 |= (byte) (0x1 << propertyIndex % 8);
                         break;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
-
-                isDirty = true;
             }
 
-            public void MarkNotDirty()
+            public void MarkDataClean()
             {
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
-                isDirty = false;
             }
 
             internal uint field1Handle;
@@ -105,7 +104,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
                 {
-                    MarkDirty(0);
+                    MarkDataDirty(0);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
                 }
             }
@@ -117,7 +116,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
                 set
                 {
-                    MarkDirty(1);
+                    MarkDataDirty(1);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
                 }
             }
@@ -129,7 +128,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
                 set
                 {
-                    MarkDirty(2);
+                    MarkDataDirty(2);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
                 }
             }
@@ -141,7 +140,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
                 set
                 {
-                    MarkDirty(3);
+                    MarkDataDirty(3);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
                 }
             }
@@ -153,7 +152,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
                 set
                 {
-                    MarkDirty(4);
+                    MarkDataDirty(4);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
                 }
             }
@@ -165,7 +164,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Get(field6Handle);
                 set
                 {
-                    MarkDirty(5);
+                    MarkDataDirty(5);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Set(field6Handle, value);
                 }
             }
@@ -177,7 +176,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
                 set
                 {
-                    MarkDirty(6);
+                    MarkDataDirty(6);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
                 }
             }
@@ -189,7 +188,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Get(field8Handle);
                 set
                 {
-                    MarkDirty(7);
+                    MarkDataDirty(7);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Set(field8Handle, value);
                 }
             }
@@ -201,7 +200,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Get(field9Handle);
                 set
                 {
-                    MarkDirty(8);
+                    MarkDataDirty(8);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Set(field9Handle, value);
                 }
             }
@@ -213,7 +212,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Get(field10Handle);
                 set
                 {
-                    MarkDirty(9);
+                    MarkDataDirty(9);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Set(field10Handle, value);
                 }
             }
@@ -225,7 +224,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Get(field11Handle);
                 set
                 {
-                    MarkDirty(10);
+                    MarkDataDirty(10);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Set(field11Handle, value);
                 }
             }
@@ -237,7 +236,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Get(field12Handle);
                 set
                 {
-                    MarkDirty(11);
+                    MarkDataDirty(11);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Set(field12Handle, value);
                 }
             }
@@ -249,7 +248,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Get(field13Handle);
                 set
                 {
-                    MarkDirty(12);
+                    MarkDataDirty(12);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Set(field13Handle, value);
                 }
             }
@@ -261,7 +260,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Get(field14Handle);
                 set
                 {
-                    MarkDirty(13);
+                    MarkDataDirty(13);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Set(field14Handle, value);
                 }
             }
@@ -273,7 +272,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Get(field15Handle);
                 set
                 {
-                    MarkDirty(14);
+                    MarkDataDirty(14);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Set(field15Handle, value);
                 }
             }
@@ -285,7 +284,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
                 {
-                    MarkDirty(15);
+                    MarkDataDirty(15);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Set(field16Handle, value);
                 }
             }
@@ -297,7 +296,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Get(field17Handle);
                 set
                 {
-                    MarkDirty(16);
+                    MarkDataDirty(16);
                     Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Set(field17Handle, value);
                 }
             }
@@ -453,7 +452,7 @@ namespace Improbable.Gdk.Tests
             {
                 var obj = updateObj.GetFields();
                 {
-                    if (component.IsDirty(0))
+                    if (component.IsDataDirty(0))
                     {
                         if (component.Field1.HasValue)
                     {
@@ -469,7 +468,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(1))
+                    if (component.IsDataDirty(1))
                     {
                         if (component.Field2.HasValue)
                     {
@@ -485,7 +484,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(2))
+                    if (component.IsDataDirty(2))
                     {
                         if (component.Field3.HasValue)
                     {
@@ -501,7 +500,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(3))
+                    if (component.IsDataDirty(3))
                     {
                         if (component.Field4.HasValue)
                     {
@@ -517,7 +516,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(4))
+                    if (component.IsDataDirty(4))
                     {
                         if (component.Field5.HasValue)
                     {
@@ -533,7 +532,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(5))
+                    if (component.IsDataDirty(5))
                     {
                         if (component.Field6.HasValue)
                     {
@@ -549,7 +548,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(6))
+                    if (component.IsDataDirty(6))
                     {
                         if (component.Field7.HasValue)
                     {
@@ -565,7 +564,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(7))
+                    if (component.IsDataDirty(7))
                     {
                         if (component.Field8.HasValue)
                     {
@@ -581,7 +580,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(8))
+                    if (component.IsDataDirty(8))
                     {
                         if (component.Field9.HasValue)
                     {
@@ -597,7 +596,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(9))
+                    if (component.IsDataDirty(9))
                     {
                         if (component.Field10.HasValue)
                     {
@@ -613,7 +612,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(10))
+                    if (component.IsDataDirty(10))
                     {
                         if (component.Field11.HasValue)
                     {
@@ -629,7 +628,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(11))
+                    if (component.IsDataDirty(11))
                     {
                         if (component.Field12.HasValue)
                     {
@@ -645,7 +644,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(12))
+                    if (component.IsDataDirty(12))
                     {
                         if (component.Field13.HasValue)
                     {
@@ -661,7 +660,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(13))
+                    if (component.IsDataDirty(13))
                     {
                         if (component.Field14.HasValue)
                     {
@@ -677,7 +676,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(14))
+                    if (component.IsDataDirty(14))
                     {
                         if (component.Field15.HasValue)
                     {
@@ -693,7 +692,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(15))
+                    if (component.IsDataDirty(15))
                     {
                         if (component.Field16.HasValue)
                     {
@@ -709,7 +708,7 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    if (component.IsDirty(16))
+                    if (component.IsDataDirty(16))
                     {
                         if (component.Field17.HasValue)
                     {

@@ -18,70 +18,67 @@ namespace Improbable.Gdk.Tests.BlittableTypes
         {
             public uint ComponentId => 1001;
 
-            private BlittableBool isDirty;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             // Each byte tracks 8 component properties.
             private byte dirtyBits0;
 
-            public bool IsDirty()
+            public bool IsDataDirty()
             {
-                return isDirty;
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                return isDataDirty;
             }
 
             /*
-            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
-            your component properties in a schema component but is not the schema field number itself. E.g.
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
             component MyComponent
             {
                 id = 1337;
                 bool val_a = 1;
                 bool val_b = 3;
             }
-            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
             */
-            public bool IsDirty(int propertyIndex)
+            public bool IsDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 5)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
+
+                return false;
             }
 
-            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
-            public void MarkDirty(int propertyIndex)
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 5)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
                     case 0:
                         dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
                         break;
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
-
-                isDirty = true;
             }
 
-            public void MarkNotDirty()
+            public void MarkDataClean()
             {
                 dirtyBits0 = 0x0;
-                isDirty = false;
             }
 
             private BlittableBool boolField;
@@ -91,7 +88,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => boolField;
                 set
                 {
-                    MarkDirty(0);
+                    MarkDataDirty(0);
                     boolField = value;
                 }
             }
@@ -103,7 +100,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => intField;
                 set
                 {
-                    MarkDirty(1);
+                    MarkDataDirty(1);
                     intField = value;
                 }
             }
@@ -115,7 +112,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => longField;
                 set
                 {
-                    MarkDirty(2);
+                    MarkDataDirty(2);
                     longField = value;
                 }
             }
@@ -127,7 +124,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => floatField;
                 set
                 {
-                    MarkDirty(3);
+                    MarkDataDirty(3);
                     floatField = value;
                 }
             }
@@ -139,7 +136,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => doubleField;
                 set
                 {
-                    MarkDirty(4);
+                    MarkDataDirty(4);
                     doubleField = value;
                 }
             }
@@ -179,35 +176,35 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 var obj = updateObj.GetFields();
                 {
-                    if (component.IsDirty(0))
+                    if (component.IsDataDirty(0))
                     {
                         obj.AddBool(1, component.BoolField);
                     }
 
                 }
                 {
-                    if (component.IsDirty(1))
+                    if (component.IsDataDirty(1))
                     {
                         obj.AddInt32(2, component.IntField);
                     }
 
                 }
                 {
-                    if (component.IsDirty(2))
+                    if (component.IsDataDirty(2))
                     {
                         obj.AddInt64(3, component.LongField);
                     }
 
                 }
                 {
-                    if (component.IsDirty(3))
+                    if (component.IsDataDirty(3))
                     {
                         obj.AddFloat(4, component.FloatField);
                     }
 
                 }
                 {
-                    if (component.IsDirty(4))
+                    if (component.IsDataDirty(4))
                     {
                         obj.AddDouble(5, component.DoubleField);
                     }

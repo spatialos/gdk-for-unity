@@ -24,78 +24,77 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            private BlittableBool isDirty;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             // Each byte tracks 8 component properties.
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
             private byte dirtyBits<#= i #>;
 <# } #>
 
-            public bool IsDirty()
+            public bool IsDataDirty()
             {
-                return isDirty;
+                var isDataDirty = false;
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                isDataDirty |= (dirtyBits<#= i #> != 0x0);
+<# } #>
+                return isDataDirty;
             }
 
             /*
-            The propertyIndex arguments starts counting from 0. It depends on the order of which you defined
-            your component properties in a schema component but is not the schema field number itself. E.g.
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
             component MyComponent
             {
                 id = 1337;
                 bool val_a = 1;
                 bool val_b = 3;
             }
-            In that case, val_a uses propertyIndex 0 and val_b uses propertyIndex 1 in this method.
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
             */
-            public bool IsDirty(int propertyIndex)
+            public bool IsDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
                     case <#= i #>:
                         return (dirtyBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
 <# } #>
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
+
+                return false;
             }
 
-            // like the IsDirty() method above, the propertyIndex arguments starts counting from 0.
-            public void MarkDirty(int propertyIndex)
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            public void MarkDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
                     throw new ArgumentException("propertyIndex argument out of range.");
                 }
 
-                var byteBatch = propertyIndex / 8;
-                switch (byteBatch)
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
                 {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
                     case <#= i #>:
                         dirtyBits<#= i #> |= (byte) (0x1 << propertyIndex % 8);
                         break;
 <# } #>
-                    default:
-                        throw new ArgumentException("propertyIndex argument out of range.");
                 }
-
-                isDirty = true;
             }
 
-            public void MarkNotDirty()
+            public void MarkDataClean()
             {
 <# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
                 dirtyBits<#= i #> = 0x0;
 <# } #>
-                isDirty = false;
             }
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
@@ -108,7 +107,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
-                    MarkDirty(<#= i #>);
+                    MarkDataDirty(<#= i #>);
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -121,7 +120,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
-                    MarkDirty(<#= i #>);
+                    MarkDataDirty(<#= i #>);
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
@@ -157,7 +156,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
                 {
-                    if (component.IsDirty(<#= i #>))
+                    if (component.IsDataDirty(<#= i #>))
                     {
                         <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
                     }

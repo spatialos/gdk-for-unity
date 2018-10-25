@@ -60,7 +60,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 Profiler.BeginSample("BlittableComponent");
                 var data = Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.MarkNotDirty();
+                data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
 
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(entity);
                     Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.MarkNotDirty();
+                    data.MarkDataClean();
                     entityManager.SetComponentData(entity, data);
                 }
 
@@ -642,7 +642,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         var eventsSecondEvent = eventSecondEventArray[i].Events;
                         eventsToSend += eventsSecondEvent.Count;
 
-                        if (data.IsDirty() || eventsToSend > 0)
+                        if (data.IsDataDirty() || eventsToSend > 0)
                         {
                             var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1001);
                             Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Serialization.SerializeUpdate(data, update);
@@ -674,7 +674,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                             // Send serialized update over the wire
                             connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-                            data.MarkNotDirty();
+                            data.MarkDataClean();
                             componentArray[i] = data;
                         }
                     }

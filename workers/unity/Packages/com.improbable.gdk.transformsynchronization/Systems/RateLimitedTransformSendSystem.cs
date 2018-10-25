@@ -45,12 +45,14 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var transformToSend = data.TransformToSend[i];
 
-                var currentTransform = new TransformInternal.Component();
-                currentTransform.Location = (transformToSend.Position - worker.Origin).ToImprobableLocation();
-                currentTransform.Rotation = transformToSend.Orientation.ToImprobableQuaternion();
-                currentTransform.Velocity = transformToSend.Velocity.ToImprobableVelocity();
-                currentTransform.PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks;
-                currentTransform.TicksPerSecond = tickRate.PhysicsTicksPerRealSecond;
+                var currentTransform = new TransformInternal.Component
+                {
+                    Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
+                    Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
+                    Velocity = transformToSend.Velocity.ToImprobableVelocity(),
+                    PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks,
+                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
+                };
 
                 var locationHasChanged = TransformUtils.HasChanged(currentTransform.Location, transform.Location);
                 var rotationHasChanged = TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation);
