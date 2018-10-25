@@ -22,6 +22,8 @@ namespace Improbable.Gdk.Mobile.Android
                         var device = build.GetStatic<string>("DEVICE");
                         var product = build.GetStatic<string>("PRODUCT");
 
+                        // How to detect an Android emulator by Stackoverflow:
+                        // https://stackoverflow.com/questions/2799097/how-can-i-detect-when-an-android-application-is-running-in-the-emulator/21505193#21505193
                         activeDeviceType = (fingerprint.StartsWith("generic") || fingerprint.StartsWith("unknown") ||
                             model.Contains("google_sdk") || model.Contains("Emulator") ||
                             model.Contains("Android SDK built for x86") ||
