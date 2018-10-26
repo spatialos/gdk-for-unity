@@ -55,14 +55,16 @@ namespace Improbable.Gdk.Tools
             CPUType cpuType = CPUType.Unused,
             bool compatibleWithEditor = true)
         {
-            
             PluginType = pluginType;
             PluginPath = Path.Combine(DownloadCoreSdk.ImprobablePluginsPath, pluginType.ToString(), BuildTargetToFolder[compatiblePlatform]);
             CompatibleWithAnyPlatform = false;
             CompatibleWithEditor = compatibleWithEditor;
             CompatiblePlatform = compatiblePlatform;
-            CPU = string.Empty;
-            if (CPUType.Unused != cpuType)
+            if (cpuType == CPUType.Unused)
+            {
+                CPU = string.Empty;
+            }
+            else
             {
                 PluginPath = Path.Combine(PluginPath, CPUToFolder[cpuType]);
                 CPU = CPUToFolder[cpuType];

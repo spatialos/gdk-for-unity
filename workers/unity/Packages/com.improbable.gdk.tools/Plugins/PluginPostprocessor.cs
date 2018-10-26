@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Tools
                 PluginType.Sdk,
                 BuildTarget.iOS,
                 CPUType.Unused,
-                false
+                compatibleWithEditor: false
                 ),
         };
 

@@ -98,7 +98,7 @@ namespace Playground
         public void OnConnectionFailed(string connectionError)
         {
             UnityObjectDestroyer.Destroy(worker);
-            errorMessage = $"Connection failed. Please check the IP address entered.\nError received by SpatialOS:\n{connectionError}";
+            errorMessage = $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
             isConnecting = false;
         }
     }
