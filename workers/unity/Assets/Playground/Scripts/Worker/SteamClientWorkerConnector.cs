@@ -1,5 +1,5 @@
 ﻿using Improbable.Gdk.Core;
-using Steamworks; // Uncomment this line after installing Steamworks.NET. (https://steamworks.github.io)
+// using Steamworks; // Uncomment this line after installing Steamworks.NET. (https://steamworks.github.io)
 using UnityEngine;
 
 namespace Playground
