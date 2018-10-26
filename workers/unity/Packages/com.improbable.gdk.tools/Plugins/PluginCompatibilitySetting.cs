@@ -19,17 +19,17 @@ namespace Improbable.Gdk.Tools
         Unused,
     }
 
-    internal class PluginDirectoryCompatibility
+    internal class PluginCompatibilitySetting
     {
-        public readonly bool CompatibleWithAnyPlatform;
-        public readonly bool CompatibleWithEditor;
         public readonly string CPU;
         public readonly string PluginPath;
         public readonly PluginType PluginType;
         public readonly BuildTarget CompatiblePlatform;
         public readonly List<BuildTarget> IncompatiblePlatforms;
+        public readonly bool CompatibleWithAnyPlatform;
+        public readonly bool CompatibleWithEditor;
 
-        private static readonly Dictionary<BuildTarget, string> targetToFolder =
+        private static readonly Dictionary<BuildTarget, string> BuildTargetToFolder =
             new Dictionary<BuildTarget, string>
             {
                 { BuildTarget.StandaloneOSX, "OSX" },
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Tools
                 { BuildTarget.iOS, "iOS" },
             };
 
-        private static readonly Dictionary<CPUType, string> cpuToFolder =
+        private static readonly Dictionary<CPUType, string> CPUToFolder =
             new Dictionary<CPUType, string>
             {
                 { CPUType.ARMv7, "armv7" },
@@ -49,27 +49,27 @@ namespace Improbable.Gdk.Tools
                 { CPUType.X86_64, "x86_64" },
             };
 
-        public PluginDirectoryCompatibility(
+        public PluginCompatibilitySetting(
             PluginType pluginType,
-            BuildTarget buildTarget,
+            BuildTarget compatiblePlatform,
             CPUType cpuType = CPUType.Unused,
             bool compatibleWithEditor = true)
         {
             
             PluginType = pluginType;
-            PluginPath = Path.Combine(DownloadCoreSdk.ImprobablePluginsPath, pluginType.ToString(), targetToFolder[buildTarget]);
+            PluginPath = Path.Combine(DownloadCoreSdk.ImprobablePluginsPath, pluginType.ToString(), BuildTargetToFolder[compatiblePlatform]);
             CompatibleWithAnyPlatform = false;
             CompatibleWithEditor = compatibleWithEditor;
-            CompatiblePlatform = buildTarget;
+            CompatiblePlatform = compatiblePlatform;
             if (CPUType.Unused != cpuType)
             {
-                PluginPath = Path.Combine(PluginPath, cpuToFolder[cpuType]);
-                CPU = cpuToFolder[cpuType];
+                PluginPath = Path.Combine(PluginPath, CPUToFolder[cpuType]);
+                CPU = CPUToFolder[cpuType];
             }
             IncompatiblePlatforms = new List<BuildTarget>();
         }
 
-        public PluginDirectoryCompatibility(
+        public PluginCompatibilitySetting(
             PluginType pluginType,
             List<BuildTarget> incompatiblePlatforms,
             bool compatibleWithEditor = true)

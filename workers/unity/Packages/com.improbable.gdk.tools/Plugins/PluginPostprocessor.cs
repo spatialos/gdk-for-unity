@@ -8,50 +8,50 @@ namespace Improbable.Gdk.Tools
 {
     internal class PluginPostprocessor : AssetPostprocessor
     {
-        private static readonly List<PluginDirectoryCompatibility> PluginsCompatibilityList = new List<PluginDirectoryCompatibility>
+        private static readonly List<PluginCompatibilitySetting> PluginCompatibilitySettings = new List<PluginCompatibilitySetting>
         {
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneOSX
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneLinux64
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows64,
                 CPUType.X86_64
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows,
                 CPUType.X86
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CPUType.Arm64
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CPUType.ARMv7
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CPUType.X86
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.iOS
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Sdk,
                 new List<BuildTarget> { BuildTarget.iOS }
                 ),
-            new PluginDirectoryCompatibility(
+            new PluginCompatibilitySetting(
                 PluginType.Sdk,
                 BuildTarget.iOS,
                 CPUType.Unused,
@@ -73,14 +73,14 @@ namespace Improbable.Gdk.Tools
         internal static void SetPluginsCompatibility()
         {
             AssetDatabase.StartAssetEditing();
-            foreach (var pluginDirectoryCompatibility in PluginsCompatibilityList)
+            foreach (var pluginCompatibilitySetting in PluginCompatibilitySettings)
             {
-                if (!Directory.Exists(pluginDirectoryCompatibility.PluginPath))
+                if (!Directory.Exists(pluginCompatibilitySetting.PluginPath))
                 {
                     continue;
                 }
 
-                var pluginGuids = AssetDatabase.FindAssets(string.Empty, new[] { pluginDirectoryCompatibility.PluginPath });
+                var pluginGuids = AssetDatabase.FindAssets(string.Empty, new[] { pluginCompatibilitySetting.PluginPath });
                 foreach (var pluginGuid in pluginGuids)
                 {
                     var pluginImporter = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(pluginGuid)) as PluginImporter;
@@ -90,29 +90,29 @@ namespace Improbable.Gdk.Tools
                     }
 
                     var needsReimport = false;
-                    if (pluginDirectoryCompatibility.CompatibleWithAnyPlatform != pluginImporter.GetCompatibleWithAnyPlatform())
+                    if (pluginCompatibilitySetting.CompatibleWithAnyPlatform != pluginImporter.GetCompatibleWithAnyPlatform())
                     {
-                        pluginImporter.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.CompatibleWithAnyPlatform);
+                        pluginImporter.SetCompatibleWithAnyPlatform(pluginCompatibilitySetting.CompatibleWithAnyPlatform);
                         needsReimport = true;
                     }
 
-                    if (pluginDirectoryCompatibility.CompatibleWithEditor != pluginImporter.GetCompatibleWithEditor())
+                    if (pluginCompatibilitySetting.CompatibleWithEditor != pluginImporter.GetCompatibleWithEditor())
                     {
-                        pluginImporter.SetCompatibleWithEditor(pluginDirectoryCompatibility.CompatibleWithEditor);
+                        pluginImporter.SetCompatibleWithEditor(pluginCompatibilitySetting.CompatibleWithEditor);
                         needsReimport = true;
                     }
 
-                    if (pluginDirectoryCompatibility.CompatiblePlatform != 0 && !pluginImporter.GetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform))
+                    if (pluginCompatibilitySetting.CompatiblePlatform != 0 && !pluginImporter.GetCompatibleWithPlatform(pluginCompatibilitySetting.CompatiblePlatform))
                     {
-                        pluginImporter.SetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform, true);
-                        if (!string.IsNullOrEmpty(pluginDirectoryCompatibility.CPU))
+                        pluginImporter.SetCompatibleWithPlatform(pluginCompatibilitySetting.CompatiblePlatform, true);
+                        if (!string.IsNullOrEmpty(pluginCompatibilitySetting.CPU))
                         {
-                            pluginImporter.SetPlatformData(pluginDirectoryCompatibility.CompatiblePlatform, "CPU", pluginDirectoryCompatibility.CPU);
+                            pluginImporter.SetPlatformData(pluginCompatibilitySetting.CompatiblePlatform, "CPU", pluginCompatibilitySetting.CPU);
                         }
                         needsReimport = true;
                     }
 
-                    foreach (var incompatiblePlatform in pluginDirectoryCompatibility.IncompatiblePlatforms)
+                    foreach (var incompatiblePlatform in pluginCompatibilitySetting.IncompatiblePlatforms)
                     {
                         if (!pluginImporter.GetExcludeFromAnyPlatform(incompatiblePlatform))
                         {
