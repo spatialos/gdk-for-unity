@@ -21,8 +21,8 @@ namespace Improbable.Gdk.Tools
 
     internal class PluginDirectoryCompatibility
     {
-        public readonly bool AnyPlatformCompatible;
-        public readonly bool IsEditorCompatible;
+        public readonly bool CompatibleWithAnyPlatform;
+        public readonly bool CompatibleWithEditor;
         public readonly string CPU;
         public readonly string PluginPath;
         public readonly PluginType PluginType;
@@ -53,14 +53,13 @@ namespace Improbable.Gdk.Tools
             PluginType pluginType,
             BuildTarget buildTarget,
             CPUType cpuType = CPUType.Unused,
-            bool isEditorCompatible = true
-            )
+            bool compatibleWithEditor = true)
         {
             
             PluginType = pluginType;
             PluginPath = Path.Combine(DownloadCoreSdk.ImprobablePluginsPath, pluginType.ToString(), targetToFolder[buildTarget]);
-            AnyPlatformCompatible = false;
-            IsEditorCompatible = isEditorCompatible;
+            CompatibleWithAnyPlatform = false;
+            CompatibleWithEditor = compatibleWithEditor;
             CompatiblePlatform = buildTarget;
             if (CPUType.Unused != cpuType)
             {
@@ -73,14 +72,13 @@ namespace Improbable.Gdk.Tools
         public PluginDirectoryCompatibility(
             PluginType pluginType,
             List<BuildTarget> incompatiblePlatforms,
-            bool isEditorCompatible = true
-        )
+            bool compatibleWithEditor = true)
         {
             PluginType = pluginType;
             PluginPath = Path.Combine(DownloadCoreSdk.ImprobablePluginsPath, pluginType.ToString(), "Common");
-            AnyPlatformCompatible = true;
+            CompatibleWithAnyPlatform = true;
             IncompatiblePlatforms = incompatiblePlatforms;
-            IsEditorCompatible = isEditorCompatible;
+            CompatibleWithEditor = compatibleWithEditor;
         }
     }
 }

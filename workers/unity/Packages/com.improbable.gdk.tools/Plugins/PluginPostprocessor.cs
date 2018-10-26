@@ -77,54 +77,53 @@ namespace Improbable.Gdk.Tools
             {
                 if (!Directory.Exists(pluginDirectoryCompatibility.PluginPath))
                 {
-                    Debug.Log("directory doesn't exist " + pluginDirectoryCompatibility.PluginPath);
                     continue;
                 }
 
-                var pluginPaths = AssetDatabase.FindAssets(string.Empty, new[] { pluginDirectoryCompatibility.PluginPath });
-                foreach (var pluginPath in pluginPaths)
+                var pluginGuids = AssetDatabase.FindAssets(string.Empty, new[] { pluginDirectoryCompatibility.PluginPath });
+                foreach (var pluginGuid in pluginGuids)
                 {
-                    var plugin = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(pluginPath)) as PluginImporter;
-                    var needsReimport = false;
-                    if (plugin == null)
+                    var pluginImporter = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(pluginGuid)) as PluginImporter;
+                    if (pluginImporter == null)
                     {
                         continue;
                     }
 
-                    if (pluginDirectoryCompatibility.AnyPlatformCompatible != plugin.GetCompatibleWithAnyPlatform())
+                    var needsReimport = false;
+                    if (pluginDirectoryCompatibility.CompatibleWithAnyPlatform != pluginImporter.GetCompatibleWithAnyPlatform())
                     {
-                        plugin.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.AnyPlatformCompatible);
+                        pluginImporter.SetCompatibleWithAnyPlatform(pluginDirectoryCompatibility.CompatibleWithAnyPlatform);
                         needsReimport = true;
                     }
 
-                    if (pluginDirectoryCompatibility.IsEditorCompatible != plugin.GetCompatibleWithEditor())
+                    if (pluginDirectoryCompatibility.CompatibleWithEditor != pluginImporter.GetCompatibleWithEditor())
                     {
-                        plugin.SetCompatibleWithEditor(pluginDirectoryCompatibility.IsEditorCompatible);
+                        pluginImporter.SetCompatibleWithEditor(pluginDirectoryCompatibility.CompatibleWithEditor);
                         needsReimport = true;
                     }
 
-                    if (pluginDirectoryCompatibility.CompatiblePlatform > 0 && !plugin.GetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform))
+                    if (pluginDirectoryCompatibility.CompatiblePlatform != 0 && !pluginImporter.GetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform))
                     {
-                        plugin.SetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform, true);
+                        pluginImporter.SetCompatibleWithPlatform(pluginDirectoryCompatibility.CompatiblePlatform, true);
                         if (!string.IsNullOrEmpty(pluginDirectoryCompatibility.CPU))
                         {
-                            plugin.SetPlatformData(pluginDirectoryCompatibility.CompatiblePlatform, "CPU", pluginDirectoryCompatibility.CPU);
+                            pluginImporter.SetPlatformData(pluginDirectoryCompatibility.CompatiblePlatform, "CPU", pluginDirectoryCompatibility.CPU);
                         }
                         needsReimport = true;
                     }
 
                     foreach (var incompatiblePlatform in pluginDirectoryCompatibility.IncompatiblePlatforms)
                     {
-                        if (!plugin.GetExcludeFromAnyPlatform(incompatiblePlatform))
+                        if (!pluginImporter.GetExcludeFromAnyPlatform(incompatiblePlatform))
                         {
-                            plugin.SetExcludeFromAnyPlatform(incompatiblePlatform, true);
+                            pluginImporter.SetExcludeFromAnyPlatform(incompatiblePlatform, true);
                             needsReimport = true;
                         }
                     }
 
                     if (needsReimport)
                     {
-                        plugin.SaveAndReimport();
+                        pluginImporter.SaveAndReimport();
                     }
                 }
             }
