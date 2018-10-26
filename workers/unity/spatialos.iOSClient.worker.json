@@ -38,14 +38,16 @@
         "command": "echo",
         "arguments": [
           "+workerType",
-          "iOSClient"
+          "iOSClient",
+          "This worker can only be run on iOS."
         ]
       },
       "macos": {
         "command": "echo",
         "arguments": [
           "+workerType",
-          "iOSClient"
+          "iOSClient",
+          "This worker can only be run on iOS."
         ]
       }
     }

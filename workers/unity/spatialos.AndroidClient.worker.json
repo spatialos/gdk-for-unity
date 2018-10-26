@@ -38,14 +38,16 @@
         "command": "echo",
         "arguments": [
           "+workerType",
-          "AndroidClient"
+          "AndroidClient",
+          "This worker can only be run on Android."
         ]
       },
       "macos": {
         "command": "echo",
         "arguments": [
           "+workerType",
-          "AndroidClient"
+          "AndroidClient",
+          "This worker can only be run on Android."
         ]
       }
     }
