@@ -215,7 +215,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Creates the Locator configuration.
+        ///     Creates a Locator configuration.
         /// </summary>
         /// <remarks>
         ///     If in a standalone build, will use the command line arguments.

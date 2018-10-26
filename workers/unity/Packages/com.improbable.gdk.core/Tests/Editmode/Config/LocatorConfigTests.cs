@@ -96,14 +96,23 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
-        public void SetSteamCredentials_should_update_LoginToken_and_CredentialsType_properties()
+        public void SetSteamDeploymentTag_should_update_corresponding_field_and_CredentialsType()
         {
             var config = new LocatorConfig();
             const string steamDeploymentTag = "mysteamdeploymenttag";
-            const string steamTicket = "mysteamTicket";
-            config.SetSteamCredentials(steamDeploymentTag, steamTicket);
+            config.SetSteamDeploymentTag(steamDeploymentTag);
 
             Assert.AreEqual(steamDeploymentTag, config.LocatorParameters.Steam.DeploymentTag);
+            Assert.AreEqual(LocatorCredentialsType.Steam, config.LocatorParameters.CredentialsType);
+        }
+
+        [Test]
+        public void SetSteamTicket_should_update_corresponding_field_and_CredentialsType()
+        {
+            var config = new LocatorConfig();
+            const string steamTicket = "mysteamTicket";
+            config.SetSteamTicket(steamTicket);
+
             Assert.AreEqual(steamTicket, config.LocatorParameters.Steam.Ticket);
             Assert.AreEqual(LocatorCredentialsType.Steam, config.LocatorParameters.CredentialsType);
         }

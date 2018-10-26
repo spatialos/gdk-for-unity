@@ -134,17 +134,16 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Sets the Steam deployment tag and steam ticket for the locator to use. Additionally, sets the CredentialsType to LocatorCredentialsType.Steam.
+        ///     Sets the Steam deployment tag for the locator to use. Additionally, sets the CredentialsType to LocatorCredentialsType.Steam.
         /// </summary>
         /// <remarks>
         ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
         /// </remarks>
         /// <param name="steamDeploymentTag">The deployment tag.</param>
-        /// <param name="steamTicket">The steam ticket.</param>
         /// <exception cref="ConnectionFailedException">
-        ///     Thrown if this method is called after a SpatialOS login token was set before.
+        ///     Thrown if this method is called after a SpatialOS login token was already specified.
         /// </exception>
-        public void SetSteamCredentials(string steamDeploymentTag, string steamTicket)
+        public void SetSteamDeploymentTag(string steamDeploymentTag)
         {
             if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
             {
@@ -155,6 +154,28 @@ namespace Improbable.Gdk.Core
 
             LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
             LocatorParameters.Steam.DeploymentTag = steamDeploymentTag;
+        }
+
+        /// <summary>
+        ///     Sets the Steam ticket for the locator to use. Additionally, sets the CredentialsType to LocatorCredentialsType.Steam.
+        /// </summary>
+        /// <remarks>
+        ///     SpatialOS login token and Steam credentials may not be set at the same time when connecting to a deployment.
+        /// </remarks>
+        /// <param name="steamTicket">The steam ticket.</param>
+        /// <exception cref="ConnectionFailedException">
+        ///     Thrown if this method is called after a SpatialOS login token was already specified.
+        /// </exception>
+        public void SetSteamTicket(string steamTicket)
+        {
+            if (LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
+            {
+                throw new ConnectionFailedException(
+                    "Steam credentials may not be set when a SpatialOS login token is already specified.",
+                    ConnectionErrorReason.InvalidConfig);
+            }
+
+            LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
             LocatorParameters.Steam.Ticket = steamTicket;
         }
 
@@ -179,11 +200,16 @@ namespace Improbable.Gdk.Core
 
             var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamDeploymentTag, string.Empty);
+            if (!string.IsNullOrEmpty(steamDeploymentTag))
+            {
+                config.SetSteamDeploymentTag(steamDeploymentTag);
+            }
+
             var steamTicket = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamTicket, string.Empty);
             if (!string.IsNullOrEmpty(steamDeploymentTag) && !string.IsNullOrEmpty(steamTicket))
             {
-                config.SetSteamCredentials(steamDeploymentTag, steamTicket);
+                config.SetSteamTicket(steamTicket);
             }
 
             config.LocatorHost = CommandLineUtility.GetCommandLineValue(
