@@ -207,7 +207,7 @@ namespace Improbable.Gdk.Core
 
             var steamTicket = CommandLineUtility.GetCommandLineValue(
                 parsedArgs, RuntimeConfigNames.SteamTicket, string.Empty);
-            if (!string.IsNullOrEmpty(steamDeploymentTag) && !string.IsNullOrEmpty(steamTicket))
+            if (!string.IsNullOrEmpty(steamTicket))
             {
                 config.SetSteamTicket(steamTicket);
             }
