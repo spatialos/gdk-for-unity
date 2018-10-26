@@ -5,7 +5,7 @@
 # Glossary
 
 >**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary) sections for a full glossary of generic SpatialOS concepts.
-
+> 
 >**Note:** There are many concepts in this glossary that mean different things in different contexts. When semantically overloaded words or phrases are unavoidable, we explicitly prefix them to avoid confusion. [.NET assemblies (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and [SpatialOS assemblies](#spatialos-assembly) are an example of this.
 
 ### Access Control List (ACL)
@@ -28,7 +28,7 @@ In the SpatialOS GDK, the [EntityBuilder implementation]({{urlRoot}}/content/api
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). Each component on a [SpatialOS Entity](#spatialos-entity) has no more than one worker that is authoritative over it. This worker is the only one able to modify the component’s state and handling commands for that component. Authority is sometimes called [write-access](#write-access). 
 
 Which types of workers can have authority (or write access) is governed by each entity’s [access control list (ACL)](#access-control-list-acl).
-Which specific worker actually has write access is managed by SpatialOS, and can change regularly due to [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing)
+Which specific worker actually has write access is managed by SpatialOS, and can change regularly due to [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
 
 > Related:
 >
@@ -46,8 +46,10 @@ The guide on [how to build your game]({{urlRoot}}/content/build) explains this p
 ### Checking out
 
 Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [(SpatialOS documentation) chunk](https://docs.improbable.io/reference/latest/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
-The worker has a local representation of every [SpatialOS entity](#spatialos-entity) in that chunk
-SpatialOS Runtime sends updates about those entities to the worker
+
+* The worker has a local representation of every [SpatialOS entity](#spatialos-entity) in that chunk
+* The SpatialOS Runtime sends updates about those entities to the worker
+
 A worker checks out all chunks that it is [interested in (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#interest).
 
 > Related:
@@ -143,9 +145,11 @@ Both of these use cases are made possible by custom replication, a system that g
 
 When you want to try out your game, you need to deploy it. This means
 launching SpatialOS itself. SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot), then starts up the [server-workers](#worker) needed to run the world.
-There are two types of deployment:
+There are two types of deployment: local and cloud.
+
 [Local deployments (SpatialOS documentation)](https://docs.improbable.io/reference/cloud/shared/deploy/deploy-local) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
-As their name suggests, [cloud deployments (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud) run in the cloud on [nodes](#node). They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
+
+As their name suggests, [cloud deployments (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud) run in the cloud on [nodes](#node). They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
 
 > Related:
 >
@@ -181,9 +185,9 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 
 The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
 
-In the [MonoBehaviour workflow] the GDK performs injection via [reflection] using the [`[Require]`attribute]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour will only be enabled when all of its dependencies are populated.
+In the [MonoBehaviour workflow]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) the GDK performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`[Require]` attribute]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour is only enabled when all of its dependencies are populated.
 
-In the ECS workflow, Unity performs injection via [reflection] using the `[Inject]` attribute inside systems to iterate over all the [Unity ECS entities] matching a required [component] type.
+In the ECS workflow, Unity performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`Inject`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/injection.md) attribute inside systems to iterate over all the [Unity ECS Entities](#unity-ecs-entity) matching a required [Unity ECS component](#unity-ecs-component) type.
 
 ### Inspector
 
@@ -225,7 +229,7 @@ Note that there are [other ways (SpatialOS documentation)](https://docs.improbab
 
 ### Message
 
-A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component] that the worker is [interested (SpatialOS documentation)](https://docs.improbable.io/reference/latestshared/glossary#interest) in, messages can be either
+A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component](#spatialos-component) that the worker is [interested (SpatialOS documentation)](https://docs.improbable.io/reference/latestshared/glossary#interest) in, messages can be either
 
   * [Events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
   * [Commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
@@ -270,7 +274,7 @@ This is used by SpatialOS few specific purposes, like [load balancing (SpatialOS
 
 ### Reactive component
 
-Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received by the [SpatialOS Runtime](#spatialos-runtime). The SpatialOS Runtime attaches reactive components to an [Unity ECS entity](#unity-ecs-entity) representing a SpatialOS entity for the duration of one [update](#update-loop).
+Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received by the [SpatialOS Runtime](#spatialos-runtime). The SpatialOS Runtime attaches reactive components to a [Unity ECS Entity](#unity-ecs-entity) representing a SpatialOS entity for the duration of one [update](#update-loop).
 
 An example reactive component is the `ComponentAdded` component. It is added to an Unity ECS Entity representing a SpatialOS entity when a new SpatialOS component has been added to the SpatialOS entity. The GDK adds the corresponding ECS component automatically to the ECS entity, however you might want to run additional systems to react to this change in the current update loop. The `ComponentAdded` component is removed when the `CleanReactiveComponentsSystem` runs.
 
@@ -308,7 +312,7 @@ Replication is the process by which all workers in the [SpatialOS world](#spatia
 
 ### Server-worker
 
-A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. When running a [deployment](#deploying), the SpatialOS Runtime will start and stop server-workers based on chosen [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing)  configuration.
+A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. When running a [deployment](#deploying), the SpatialOS Runtime starts and stops server-workers based on your chosen [load balancing (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) configuration.
 
 Server-workers are usually tasked with implementing game logic and physics simulation.
 
@@ -368,13 +372,13 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 
 > Related:
 > 
-> * [An introducion to the `spatial` command-line tool (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
+> * [An introduction to the `spatial` command-line tool (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
 > * [`spatial` reference (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial)
 
 
-### SpatialOS Component
+### SpatialOS component
 
-> Not to be confused with [Unity ECS component](#unity-ecs-component)
+> Not to be confused with a [Unity ECS component](#unity-ecs-component)
 
 A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Common components in a game might be things like `Health`, `Position`, or `PlayerControls`. They're the storage mechanism for data about the [world](#spatialos-world) that you want to be shared between [workers](#worker).
 
@@ -400,9 +404,9 @@ Components are defined as files in your [schema](#schema).
 > * [Component best practices (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/component-best-practices)
 > * [Introduction to schema (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction)
 
-### SpatialOS Entity
+### SpatialOS entity
 
-> Not to be confused with a [Unity ECS entity](#unity-ecs-entity)
+> Not to be confused with a [Unity ECS Entity](#unity-ecs-entity).
 
 All of the objects inside a [SpatialOS world](#spatialos-world) are SpatialOS entities: they’re the basic building blocks of the world. Examples include players, NPCs, and objects in the world like trees.
 
@@ -420,7 +424,7 @@ You can have other objects that are *not* entities locally on workers - like UI 
 > * [Designing SpatialOS entities (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/design-entities)
 
 
-### SpatialOS Project
+### SpatialOS project
 
 > Also referred to as "your game".
 >
@@ -503,7 +507,7 @@ The GDK uses the Unity ECS as the underlying implementation of its Core while en
 
 > Not to be confused with a [SpatialOS component](#spatialos-component)
 
-Just as [Unity ECS entities](#unity-ecs-entity) represent [SpatialOS entities](#spatialos-entity), Unity ECS components represent [SpatialOS components](#spatialos-component) in the [Unity ECS World](#unity-ecs-world).
+Just as [Unity ECS Entities](#unity-ecs-entity) represent [SpatialOS entities](#spatialos-entity), Unity ECS components represent [SpatialOS components](#spatialos-component) in the [Unity ECS World](#unity-ecs-world).
 
 Unity ECS components contain only data and are represented as structs rather than classes. This means that they are passed [by value instead of by reference](https://stackoverflow.com/questions/373419/whats-the-difference-between-passing-by-reference-vs-passing-by-value?answertab=votes#tab-top). Any behaviour that you want to associate with an ECS component needs to be defined in a [Unity ECS system](#unity-ecs-system). 
 
@@ -515,11 +519,11 @@ Generated Unity ECS components can be injected into systems, read, and modified 
 >
 > * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/content/ecs_in_detail#icomponentdata)
 
-### Unity ECS entity
+### Unity ECS Entity
 
 > Not to be confused with a [SpatialOS entity](#spatialos-entity)
 
-In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS Entity. Every [SpatialOS component](#spatialos-component) that belongs to a SpatialOS entity is represented as an [Unity ECS component](#unity-ecs-component) on the corresponding ECS entity.
+In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS Entity. Every [SpatialOS component](#spatialos-component) that belongs to a SpatialOS entity is represented as an [Unity ECS component](#unity-ecs-component) on the corresponding ECS Entity.
 
 
 > Related:
@@ -528,7 +532,7 @@ In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS 
 
 ### Unity ECS system
 
-The code you use to perform operations on [Unity ECS entities](#unity-ecs-entity) and their [components](#unity-ecs-component) exist in the form of Unity ECS Systems that can be added to ECS worlds. They act, in bulk, on all of the entities in the [Unity ECS world](#unity-ecs-world) that contain the components you tell them to act on. For example, a health system might iterate over all entities that have health and damage components, and decrement health components by the value of the damage components.
+The code you use to perform operations on [Unity ECS Entities](#unity-ecs-entity) and their [components](#unity-ecs-component) exist in the form of Unity ECS Systems that can be added to ECS worlds. They act, in bulk, on all of the entities in the [Unity ECS world](#unity-ecs-world) that contain the components you tell them to act on. For example, a health system might iterate over all entities that have health and damage components, and decrement health components by the value of the damage components.
 
 ### Unity ECS world
 
