@@ -34,7 +34,7 @@ namespace Improbable
                 new Package(tempPath, "worker_sdk", "c-static-fullylinked-arm-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/arm", new List<string> {"include", "libworker_static_fullylinked.a.pic", "worker_static_fullylinked.lib"}, postprocessCallback:PostProcess_iOS_Arm),
                 new Package(tempPath, "worker_sdk", "c-static-fullylinked-x86_64-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/x86_64", new List<string> {"include", "libworker_static_fullylinked.a.pic", "worker_static_fullylinked.lib"}, postprocessCallback:PostProcess_iOS_x86_64),
                 new Package(tempPath, "worker_sdk", "c-dynamic-arm64-clang_libcpp-android", $"{nativeDependenciesPath}/Android/arm64", new List<string> {"include"}),
-                new Package(tempPath, "worker_sdk", "c-dynamic-armeabi_v7a-clang_libcpp-android", $"{nativeDependenciesPath}/Android/armeabi-v7a", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "c-dynamic-armeabi_v7a-clang_libcpp-android", $"{nativeDependenciesPath}/Android/armv7", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86-android-clang_libcpp-android", $"{nativeDependenciesPath}/Android/x86", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/Common"),
                 new Package(tempPath, "worker_sdk", "csharp_core-static", $"{managedDependenciesPath}/iOS"),

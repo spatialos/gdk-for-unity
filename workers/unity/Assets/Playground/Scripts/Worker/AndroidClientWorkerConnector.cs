@@ -44,7 +44,7 @@ namespace Playground
         protected override string GetHostIp()
         {
 #if UNITY_ANDROID
-            if (!string.Empty.Equals(IpAddress))
+            if (!string.IsNullOrEmpty(IpAddress))
             {
                 return IpAddress;
             }

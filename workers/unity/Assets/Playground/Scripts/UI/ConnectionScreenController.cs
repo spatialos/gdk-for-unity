@@ -16,7 +16,7 @@ namespace Playground
 
         private bool isConnecting;
         private string ipAddressText;
-        private string errorMessage = "";
+        private string errorMessage = string.Empty;
 
         private GameObject worker;
 
@@ -68,7 +68,7 @@ namespace Playground
 
         private void TryConnect()
         {
-            errorMessage = "";
+            errorMessage = string.Empty;
             isConnecting = true;
 
             worker = Instantiate(clientWorkerPrefab);
@@ -76,8 +76,10 @@ namespace Playground
 
             if (workerConnector == null)
             {
+                isConnecting = false;
                 UnityObjectDestroyer.Destroy(worker);
-                throw new MissingComponentException("The WorkerConnector behaviour was not found on the worker prefab");
+                errorMessage = "The WorkerConnector behaviour was not found on the worker prefab";
+                throw new MissingComponentException("The WorkerConnector behaviour was not found on the worker prefab.");
             }
 
             workerConnector.IpAddress = ipAddressText;
@@ -96,7 +98,7 @@ namespace Playground
         public void OnConnectionFailed(string connectionError)
         {
             UnityObjectDestroyer.Destroy(worker);
-            errorMessage = $"Connection failed. Please check the IP address entered.\n{connectionError}";
+            errorMessage = $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
             isConnecting = false;
         }
     }
