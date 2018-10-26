@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Tools
         Unused,
     }
 
-    internal class PluginCompatibilitySetting
+    internal struct PluginCompatibilitySetting
     {
         public readonly string CPU;
         public readonly string PluginPath;
@@ -61,6 +61,7 @@ namespace Improbable.Gdk.Tools
             CompatibleWithAnyPlatform = false;
             CompatibleWithEditor = compatibleWithEditor;
             CompatiblePlatform = compatiblePlatform;
+            CPU = string.Empty;
             if (CPUType.Unused != cpuType)
             {
                 PluginPath = Path.Combine(PluginPath, CPUToFolder[cpuType]);
@@ -79,6 +80,8 @@ namespace Improbable.Gdk.Tools
             CompatibleWithAnyPlatform = true;
             IncompatiblePlatforms = incompatiblePlatforms;
             CompatibleWithEditor = compatibleWithEditor;
+            CompatiblePlatform = 0;
+            CPU = string.Empty;
         }
     }
 }
