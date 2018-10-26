@@ -54,10 +54,8 @@ namespace Improbable.Gdk.TransformSynchronization
                     TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
                 };
 
-                var locationHasChanged = TransformUtils.HasChanged(currentTransform.Location, transform.Location);
-                var rotationHasChanged = TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation);
-
-                if (!locationHasChanged && !rotationHasChanged)
+                if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||
+                    TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation)))
                 {
                     continue;
                 }
