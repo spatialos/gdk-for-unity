@@ -5,11 +5,11 @@ namespace Playground
 {
     /// <summary>
     ///     The SteamClientWorkerConnector class provides a sample solution for connecting a game client published
-    ///     on Steam to a SpatialOS deployment using either Steamworks.NET (https://steamworks.github.io) or
-    ///     Facepunch.Steamworks (https://github.com/Facepunch/Facepunch.Steamworks) to retrieve a
-    ///     Steam auth session token at runtime.
+    ///     on Steam to a SpatialOS deployment. It provides example code for retrieving a
+    ///     Steam auth session token at runtime using either Steamworks.NET (https://steamworks.github.io) or
+    ///     Facepunch.Steamworks (https://github.com/Facepunch/Facepunch.Steamworks).
     ///     You can also use the ClientWorkerConnector parent class to parse the Steam auth session token
-    ///     from the commandline arguments in case the Steam auth session token is not known in advance.
+    ///     from the commandline arguments in case the Steam auth session token is known in advance.
     ///     You will need to install either Steamworks.NET (https://steamworks.github.io) or
     ///     Facepunch.Steamworks (https://github.com/Facepunch/Facepunch.Steamworks) in order to use this code.
     /// </summary>
