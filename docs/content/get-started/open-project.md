@@ -11,7 +11,7 @@ There is a quick fix however:
 
 1. Open the FPS Starter Project in the Unity Editor located in `workers/unity`.
 2. In the Project window, navigate to **Assets** > **Fps** > **Art** > **Materials**.
-3. Right click on `Source_Shaders` and press Reimport.
+3. Right click on the `Source_Shaders` directory and select Reimport.
 
 <img src="{{assetRoot}}assets/shader-fix.png" style="margin: 0 auto; display: block;" />
 
