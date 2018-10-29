@@ -21,9 +21,12 @@ namespace Improbable.Gdk.Core
         ///    The entity ID is automatically assigned.
         /// </remarks>
         /// <param name="entityTemplate">The entity to be added to the snapshot.</param>
-        public void AddEntity(EntityTemplate entityTemplate)
+        /// <returns>The entity ID assigned to the entity in the snapshot.</returns>
+        public EntityId AddEntity(EntityTemplate entityTemplate)
         {
-            entities[new EntityId(entities.Count + 1)] = entityTemplate.GetEntity();
+            var entityId = new EntityId(entities.Count + 1);
+            entities[entityId] = entityTemplate.GetEntity();
+            return entityId;
         }
 
         /// <summary>
