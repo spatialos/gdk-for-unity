@@ -104,8 +104,7 @@ namespace Playground
             if (!SteamManager.Initialized)
             {
                 errorMessage = "SteamManager is not initialized. " +
-                    "Ensure that you have a SteamManager MonoBehaviour instance in the scene and that this code is not called before SteamManager.Awake(). " +
-                    "Also ensure that your Steam client is running and that you are logged in.";
+                    "Ensure that your Steam client is running and that you are logged in.";
                 return false;
             }
 
