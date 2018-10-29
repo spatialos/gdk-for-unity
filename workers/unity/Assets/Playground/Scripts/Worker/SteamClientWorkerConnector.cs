@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.Core;
+using System;
+using Improbable.Gdk.Core;
 using Improbable.Worker;
 using UnityEngine;
 
@@ -16,6 +17,27 @@ namespace Playground
     /// </summary>
     public class SteamClientWorkerConnector : ClientWorkerConnector
     {
+        private bool attemptedToConnect = false;
+
+        // We have an empty Start() method here to overwrite the method implementation of the parent class.
+        // Unlike the parent class, we do not attempt to connect during Start() because the Steam client
+        // that we depend on for retrieving a Steam auth session token might not be initialized yet at that time.
+        private void Start()
+        {
+        }
+
+        private async void Update()
+        {
+            if (attemptedToConnect)
+            {
+                return;
+            }
+
+            // Attempt to connect during the first time Update() is called.
+            await Connect(WorkerUtils.UnityClient, new ForwardingDispatcher()).ConfigureAwait(false);
+            attemptedToConnect = true;
+        }
+
         protected override bool ShouldUseLocator()
         {
             return true;
@@ -115,6 +137,8 @@ namespace Playground
 
             // Uncomment this code and remove the preceding method stub after installing Facepunch.Steamworks. (https://github.com/Facepunch/Facepunch.Steamworks)
             /*
+            steamTicket = string.Empty;
+            errorMessage = string.Empty;
             if (Facepunch.Steamworks.Client.Instance == null)
             {
                 errorMessage = "Facepunch client not initialized. " +
@@ -130,7 +154,17 @@ namespace Playground
                 return false;
             }
 
-            steamTicket = System.BitConverter.ToString(response.Data, 0, response.Data.Length).Replace("-", "");
+            try
+            {
+                steamTicket = BitConverter.ToString(response.Data, 0, response.Data.Length).Replace("-", "");
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                errorMessage = e.Message;
+                return false;
+            }
+
             return true;
             */
         }
