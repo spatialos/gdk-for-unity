@@ -1,4 +1,5 @@
 ﻿using Improbable.Gdk.Core;
+using Improbable.Worker;
 using UnityEngine;
 
 namespace Playground
@@ -24,23 +25,37 @@ namespace Playground
         ///     Creates a Locator configuration where the Steam ticket field is populated through an API call.
         /// </summary>
         /// <remarks>
-        ///     All other configuration parameters are populated according to the logic of the parent class implementation.
-        ///     (Based on the command line arguments)
+        ///     All other configuration parameters are populated through command line arguments
+        ///     according to the logic of the parent class implementation. In case a SpatialOS login token is specified,
+        ///     this method will not retrieve a Steam auth session ticket and behave just like the parent class method.
+        ///     In case a Steam auth session ticket is already specified, this method will not retrieve a Steam auth
+        ///     session ticket and behave just like the parent class method (the command line argument takes priority).
         /// </remarks>
         /// <param name="workerType">The type of the worker to create.</param>
         /// <returns>The Locator connection configuration</returns>
         protected override LocatorConfig GetLocatorConfig(string workerType)
         {
             var config = base.GetLocatorConfig(workerType);
+            if (config.LocatorParameters.CredentialsType == LocatorCredentialsType.LoginToken)
+            {
+                // Game client is started via the Launcher. Do not retrieve a Steam auth session ticket and connect normally.
+                return config;
+            }
+
+            if (!string.IsNullOrEmpty(config.LocatorParameters.Steam.Ticket))
+            {
+                // Steam auth session ticket has been specified through the command line. The command line takes priority.
+                return config;
+            }
+
             var result = GetSteamAuthSessionTicketSteamworksNET(out var steamTicket, out var errorMessage);
-            // var result = GetSteamAuthSessionTicketFacepunch(out var steamTicket, out var errorMessage); // Comment/un-comment this line depending on your Steamworks library of choice.
+            // var result = GetSteamAuthSessionTicketFacepunch(out var steamTicket, out var errorMessage); // Comment/un-comment this line depending on which Steamworks library you are using.
             if (!result)
             {
                 Debug.LogError("Error getting Steam auth session ticket: " + errorMessage);
             }
             else
             {
-                Debug.LogError("Jonas success " + steamTicket);
                 config.SetSteamTicket(steamTicket);
             }
 
