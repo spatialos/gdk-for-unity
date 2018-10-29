@@ -20,27 +20,27 @@ namespace Improbable.Gdk.Tools
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows64,
-                CPUType.X86_64
+                CpuType.X86_64
                 ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows,
-                CPUType.X86
+                CpuType.X86
                 ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
-                CPUType.Arm64
+                CpuType.Arm64
                 ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
-                CPUType.ARMv7
+                CpuType.ARMv7
                 ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
-                CPUType.X86
+                CpuType.X86
                 ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Tools
             new PluginCompatibilitySetting(
                 PluginType.Sdk,
                 BuildTarget.iOS,
-                CPUType.Agnostic,
+                CpuType.Agnostic,
                 compatibleWithEditor: false
                 ),
         };

@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Tools
         Sdk,
     }
 
-    internal enum CPUType
+    internal enum CpuType
     {
         ARMv7,
         Arm64,
@@ -40,19 +40,19 @@ namespace Improbable.Gdk.Tools
                 { BuildTarget.iOS, "iOS" },
             };
 
-        private static readonly Dictionary<CPUType, string> CPUToFolder =
-            new Dictionary<CPUType, string>
+        private static readonly Dictionary<CpuType, string> CpuToFolder =
+            new Dictionary<CpuType, string>
             {
-                { CPUType.ARMv7, "armv7" },
-                { CPUType.Arm64, "arm64" },
-                { CPUType.X86, "x86" },
-                { CPUType.X86_64, "x86_64" },
+                { CpuType.ARMv7, "armv7" },
+                { CpuType.Arm64, "arm64" },
+                { CpuType.X86, "x86" },
+                { CpuType.X86_64, "x86_64" },
             };
 
         public PluginCompatibilitySetting(
             PluginType pluginType,
             BuildTarget compatiblePlatform,
-            CPUType cpuType = CPUType.Agnostic,
+            CpuType cpuType = CpuType.Agnostic,
             bool compatibleWithEditor = true)
         {
             PluginType = pluginType;
@@ -60,14 +60,14 @@ namespace Improbable.Gdk.Tools
             CompatibleWithAnyPlatform = false;
             CompatibleWithEditor = compatibleWithEditor;
             CompatiblePlatform = compatiblePlatform;
-            if (cpuType == CPUType.Agnostic)
+            if (cpuType == CpuType.Agnostic)
             {
                 CPU = string.Empty;
             }
             else
             {
-                PluginPath = Path.Combine(PluginPath, CPUToFolder[cpuType]);
-                CPU = CPUToFolder[cpuType];
+                PluginPath = Path.Combine(PluginPath, CpuToFolder[cpuType]);
+                CPU = CpuToFolder[cpuType];
             }
             IncompatiblePlatforms = new List<BuildTarget>();
         }
