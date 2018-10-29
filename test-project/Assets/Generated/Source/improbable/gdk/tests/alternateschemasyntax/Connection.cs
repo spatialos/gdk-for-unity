@@ -42,20 +42,6 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 0)
-                {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, -1]. " +
-                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
-                        "Please contact SpatialOS support if you encounter this issue.");
-                }
-
-                // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex / 8;
-                switch (dirtyBitsByteIndex)
-                {
-                    case 0:
-                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
-                }
 
                 return false;
             }
@@ -63,21 +49,6 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 0)
-                {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, -1]. " +
-                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
-                        "Please contact SpatialOS support if you encounter this issue.");
-                }
-
-                // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex / 8;
-                switch (dirtyBitsByteIndex)
-                {
-                    case 0:
-                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
-                        break;
-                }
             }
 
             public void MarkDataClean()

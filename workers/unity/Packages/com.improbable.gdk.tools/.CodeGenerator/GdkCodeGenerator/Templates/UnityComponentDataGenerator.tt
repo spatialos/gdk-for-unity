@@ -52,6 +52,7 @@ namespace <#= qualifiedNamespace #>
             */
             public bool IsDataDirty(int propertyIndex)
             {
+<# if (fieldDetailsList.Count > 1) { #>
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
                     throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, <#= fieldDetailsList.Count  - 1#>]. " +
@@ -68,6 +69,7 @@ namespace <#= qualifiedNamespace #>
                         return (dirtyBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
 <# } #>
                 }
+<# } #>
 
                 return false;
             }
@@ -75,6 +77,7 @@ namespace <#= qualifiedNamespace #>
             // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
             public void MarkDataDirty(int propertyIndex)
             {
+<# if (fieldDetailsList.Count > 1) { #>
                 if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
                 {
                     throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, <#= fieldDetailsList.Count  - 1#>]. " +
@@ -92,6 +95,7 @@ namespace <#= qualifiedNamespace #>
                         break;
 <# } #>
                 }
+<# } #>
             }
 
             public void MarkDataClean()
