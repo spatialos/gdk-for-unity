@@ -10,8 +10,8 @@ There is a [known issue]({{urlRoot}}/known-issues) in the preview version of the
 There is a quick fix however:
 
 1. Open the FPS Starter Project in the Unity Editor located in `workers/unity`.
-2. In the Project window, navigate to **Assets** > **Fps** > **Art** > **Materials**.
-3. Right click on the `Source_Shaders` directory and select Reimport.
+1. In the Project window, navigate to **Assets** > **Fps** > **Art** > **Materials**.
+1. Right click on the `Source_Shaders` directory and select Reimport.
 
 <img src="{{assetRoot}}assets/shader-fix.png" style="margin: 0 auto; display: block;" />
 
@@ -19,9 +19,9 @@ There is a quick fix however:
 There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding importing a navmesh. The navmseh for the `FPS-SimulatedPlayerCoordinator` is not imported correctly when you open the project for the first time. To fix this, you need to rebake the navmesh for this Scene. To do this:
 
 1. In the [Project window (Unity documentation)](https://docs.unity3d.com/Manual/ProjectView.html), open the `FPS-SimulatedPlayerCoordinator` Scene located at `Assets/Fps/Scenes`.
-2. In the [Hierarchy window (Unity documentation)](https://docs.unity3d.com/Manual/Hierarchy.html), click on the `FPS-Start_Large` object to see it in the [Inspector window (Unity documentation)](https://docs.unity3d.com/Manual/UsingTheInspector.html), and enable the object by clicking the checkbox next to its name.
-3. Open the **Navigation** window (Unity Editor menu: **Windows** > **AI** > **Navigation**).
-4. Select the **Bake** tab, and then the **Bake** button.
+1. In the [Hierarchy window (Unity documentation)](https://docs.unity3d.com/Manual/Hierarchy.html), click on the `FPS-Start_Large` object to see it in the [Inspector window (Unity documentation)](https://docs.unity3d.com/Manual/UsingTheInspector.html), and enable the object by clicking the checkbox next to its name.
+1. Open the **Navigation** window (Unity Editor menu: **Windows** > **AI** > **Navigation**).
+1. Select the **Bake** tab, and then the **Bake** button.
 
 You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
 <img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
