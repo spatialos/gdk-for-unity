@@ -93,15 +93,31 @@ namespace Improbable.Gdk.Core
                 ConnectionDelegate connectionDelegate;
                 if (ShouldUseLocator())
                 {
+                    var config = GetLocatorConfig(workerType);
+                    if (!config.Validate(out var errorMessage))
+                    {
+                        throw new ConnectionFailedException(
+                            $"Connection config failed validation with error: {errorMessage}",
+                            ConnectionErrorReason.InvalidConfig);
+                    }
+
                     connectionDelegate = async () =>
                         await Worker
-                            .CreateWorkerAsync(GetLocatorConfig(workerType), SelectDeploymentName, logger, origin)
+                            .CreateWorkerAsync(config, SelectDeploymentName, logger, origin)
                             .ConfigureAwait(false);
                 }
                 else
                 {
+                    var config = GetReceptionistConfig(workerType);
+                    if (!config.Validate(out var errorMessage))
+                    {
+                        throw new ConnectionFailedException(
+                            $"Connection config failed validation with error: {errorMessage}",
+                            ConnectionErrorReason.InvalidConfig);
+                    }
+
                     connectionDelegate = async () =>
-                        await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), logger, origin)
+                        await Worker.CreateWorkerAsync(config, logger, origin)
                             .ConfigureAwait(false);
                 }
 
