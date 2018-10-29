@@ -110,7 +110,7 @@ namespace Playground
 
             var steamTicketData = new byte[1024];
             var hAuthTicket = Steamworks.SteamUser.GetAuthSessionTicket(steamTicketData, 1024, out var steamTicketLength);
-            if (hAuthTicket == HAuthTicket.Invalid)
+            if (hAuthTicket == Steamworks.HAuthTicket.Invalid)
             {
                 errorMessage = "SteamUser.GetAuthSessionTicket returned with invalid result.";
                 return false;
