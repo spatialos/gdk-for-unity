@@ -116,7 +116,17 @@ namespace Playground
                 return false;
             }
 
-            steamTicket = System.BitConverter.ToString(steamTicketData, 0, (int) steamTicketLength).Replace("-", "");
+            try
+            {
+                steamTicket = System.BitConverter.ToString(steamTicketData, 0, (int) steamTicketLength).Replace("-", "");
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                errorMessage = e.Message;
+                return false;
+            }
+            
             return true;
             */
         }
