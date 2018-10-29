@@ -35,10 +35,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 { BuildTarget.StandaloneWindows, ".exe" },
                 { BuildTarget.StandaloneWindows64, ".exe" },
-                { BuildTarget.StandaloneLinux64, "" },
-                { BuildTarget.StandaloneOSX, "" },
+                { BuildTarget.StandaloneLinux64, string.Empty },
+                { BuildTarget.StandaloneOSX, string.Empty },
                 { BuildTarget.Android, ".apk" },
-                { BuildTarget.iOS, "" }
+                { BuildTarget.iOS, string.Empty }
             };
 
         public static readonly Dictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             if (!BuildTargetNames.ContainsKey(buildTarget))
             {
-                throw new ArgumentException("Unsupported BuildPlatform " + buildTarget);
+                throw new ArgumentException($"Unsupported BuildPlatform {buildTarget}");
             }
 
             WorkerType = workerType;
