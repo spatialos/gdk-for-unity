@@ -44,7 +44,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 if (propertyIndex < 0 || propertyIndex >= 0)
                 {
-                    throw new ArgumentException("propertyIndex argument out of range.");
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, -1]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
                 }
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
@@ -63,7 +65,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 if (propertyIndex < 0 || propertyIndex >= 0)
                 {
-                    throw new ArgumentException("propertyIndex argument out of range.");
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, -1]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
                 }
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
