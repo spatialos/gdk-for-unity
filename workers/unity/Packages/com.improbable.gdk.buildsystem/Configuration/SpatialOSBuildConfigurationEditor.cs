@@ -12,7 +12,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     {
         private const int ScreenWidthForHorizontalLayout = 450;
 
-        private bool scenesChanged;
         private SceneAsset[] scenesInAssetDatabase;
         private string workerTypeName = "WorkerType";
 
@@ -60,8 +59,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             EditorGUILayout.EndHorizontal();
 
-            scenesChanged = false;
-
             var configs = workerConfiguration.WorkerBuildConfigurations;
             foreach (var workerConfig in configs)
             {
@@ -70,12 +67,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     configs.Remove(workerConfig);
                     break;
                 }
-            }
-
-            if (scenesChanged)
-            {
-                scenesChanged = false;
-                EditorApplication.delayCall += workerConfiguration.UpdateEditorScenesForBuild;
             }
         }
 
@@ -157,8 +148,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         .Where(item => item.Included)
                         .Select(item => item.SceneAsset)
                         .ToArray();
-
-                    scenesChanged = true;
                 }
             }
         }

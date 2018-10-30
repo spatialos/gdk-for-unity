@@ -9,6 +9,8 @@ namespace Improbable
 {
     internal class Program
     {
+        private delegate void PostprocessPackage(string directoryPath);
+
         private static void Main(string[] args)
         {
             if (args.Length != 3)
@@ -29,7 +31,13 @@ namespace Improbable
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86_64-msvc_mt-win32", $"{nativeDependenciesPath}/Windows/x86_64", new List<string> {"include", "worker.lib"}),
                 new Package(tempPath, "worker_sdk", "c-dynamic-x86_64-gcc_libstdcpp-linux", $"{nativeDependenciesPath}/Linux/x86_64", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "c-bundle-x86_64-clang_libcpp-macos", $"{nativeDependenciesPath}/OSX", new List<string> {"include"}),
-                new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/OSX"),
+                new Package(tempPath, "worker_sdk", "c-static-fullylinked-arm-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/arm", new List<string> {"include", "libworker_static_fullylinked.a.pic", "worker_static_fullylinked.lib"}, postprocessCallback:PostProcess_iOS_Arm),
+                new Package(tempPath, "worker_sdk", "c-static-fullylinked-x86_64-clang_libcpp-ios", $"{nativeDependenciesPath}/iOS/x86_64", new List<string> {"include", "libworker_static_fullylinked.a.pic", "worker_static_fullylinked.lib"}, postprocessCallback:PostProcess_iOS_x86_64),
+                new Package(tempPath, "worker_sdk", "c-dynamic-arm64-clang_libcpp-android", $"{nativeDependenciesPath}/Android/arm64", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "c-dynamic-armeabi_v7a-clang_libcpp-android", $"{nativeDependenciesPath}/Android/armv7", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "c-dynamic-x86-android-clang_libcpp-android", $"{nativeDependenciesPath}/Android/x86", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "csharp_core", $"{managedDependenciesPath}/Common"),
+                new Package(tempPath, "worker_sdk", "csharp_core-static", $"{managedDependenciesPath}/iOS"),
                 new Package(tempPath, "schema", "standard_library", schemaStdLibDir),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-win32", $"{tempPath}/schema_compiler", null, OSPlatform.Windows),
                 new Package(tempPath, "tools", "schema_compiler-x86_64-macos", $"{tempPath}/schema_compiler", null, OSPlatform.OSX),
@@ -73,6 +81,8 @@ namespace Improbable
                         Directory.Delete(cleanPath, true);
                     }
                 }
+
+                package.PostprocessCallback?.Invoke(package.TargetPath);
             }
         }
 
@@ -103,6 +113,20 @@ namespace Improbable
             }
         }
 
+        private static void PostProcess_iOS_Arm(string directoryPath)
+        {
+            var originalPath = Path.Combine(directoryPath, "libworker_static_fullylinked.a");
+            var destinationPath = Path.Combine(directoryPath, "libworker_static_fullylinked_arm.a");
+            File.Move(originalPath, destinationPath);
+        }
+
+        private static void PostProcess_iOS_x86_64(string directoryPath)
+        {
+            var originalPath = Path.Combine(directoryPath, "libworker_static_fullylinked.a");
+            var destinationPath = Path.Combine(directoryPath, "libworker_static_fullylinked_x86_64.a");
+            File.Move(originalPath, destinationPath);
+        }
+
         private static void WriteException(Exception e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -112,7 +136,7 @@ namespace Improbable
 
         private class Package
         {
-            public Package(string tempPath, string type, string name, string targetPath, List<string> cleanPaths = null, OSPlatform? platform = null)
+            public Package(string tempPath, string type, string name, string targetPath, List<string> cleanPaths = null, OSPlatform? platform = null, PostprocessPackage postprocessCallback = null)
             {
                 Type = type;
                 Name = name;
@@ -120,6 +144,7 @@ namespace Improbable
                 CleanPaths = cleanPaths ?? new List<string>();
                 SourceFile = Path.Combine(tempPath, $"{Name}.zip");
                 InstallOnThisPlatform = !platform.HasValue || RuntimeInformation.IsOSPlatform(platform.Value);
+                PostprocessCallback = postprocessCallback;
             }
 
             public string Type { get; }
@@ -128,6 +153,7 @@ namespace Improbable
             public string TargetPath { get; }
             public List<string> CleanPaths { get; }
             public bool InstallOnThisPlatform { get; }
+            public PostprocessPackage PostprocessCallback { get; }
         }
     }
 }

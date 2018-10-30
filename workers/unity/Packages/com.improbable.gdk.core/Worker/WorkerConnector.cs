@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Core
                 // A check is needed for the case that play mode is exited before the connection can complete.
                 if (Application.isPlaying)
                 {
-                    HandleWorkerConnectionFailure();
+                    HandleWorkerConnectionFailure(e.Message);
                     Dispose();
                 }
             }
@@ -236,7 +236,7 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        protected virtual void HandleWorkerConnectionFailure()
+        protected virtual void HandleWorkerConnectionFailure(string errorMessage)
         {
         }
 
@@ -265,7 +265,7 @@ namespace Improbable.Gdk.Core
                 ConnectionErrorReason.ExceededMaximumRetries);
         }
 
-        private static string CreateNewWorkerId(string workerType)
+        protected static string CreateNewWorkerId(string workerType)
         {
             return $"{workerType}-{Guid.NewGuid()}";
         }

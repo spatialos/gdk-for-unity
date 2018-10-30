@@ -34,16 +34,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 .ToArray();
         }
 
-        internal void UpdateEditorScenesForBuild()
-        {
-            EditorBuildSettings.scenes =
-                WorkerBuildConfigurations.SelectMany(x => GetScenesForWorker(x.WorkerType))
-                    .Select(AssetDatabase.GetAssetPath)
-                    .Distinct()
-                    .Select(scenePath => new EditorBuildSettingsScene(scenePath, true))
-                    .ToArray();
-        }
-
         public override void OnEnable()
         {
             base.OnEnable();
@@ -51,37 +41,28 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 ResetToDefault();
             }
-
-            if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(this)))
-            {
-                EditorApplication.delayCall += UpdateEditorScenesForBuild;
-            }
         }
 
         private void ResetToDefault()
         {
             WorkerBuildConfigurations = new List<WorkerBuildConfiguration>
             {
+                new WorkerBuildConfiguration
                 {
-                    new WorkerBuildConfiguration
+                    WorkerType = "UnityClient",
+                    LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                },
+                new WorkerBuildConfiguration
+                {
+                    WorkerType = "UnityGameLogic",
+                    LocalBuildConfig =
+                        new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
+                    CloudBuildConfig = new BuildEnvironmentConfig
                     {
-                        WorkerType = "UnityClient",
-                        LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                        BuildPlatforms = SpatialBuildPlatforms.Linux,
+                        BuildOptions = BuildOptions.EnableHeadlessMode
                     }
                 },
-                {
-                    new WorkerBuildConfiguration
-                    {
-                        WorkerType = "UnityGameLogic",
-                        LocalBuildConfig =
-                            new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
-                        CloudBuildConfig = new BuildEnvironmentConfig
-                        {
-                            BuildPlatforms = SpatialBuildPlatforms.Linux,
-                            BuildOptions = BuildOptions.EnableHeadlessMode
-                        }
-                    }
-                }
             };
             isInitialised = true;
         }

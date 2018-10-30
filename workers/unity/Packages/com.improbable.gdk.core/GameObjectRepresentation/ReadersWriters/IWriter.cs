@@ -14,5 +14,6 @@ namespace Improbable.Gdk.GameObjectRepresentation
         where TComponentUpdate : ISpatialComponentUpdate
     {
         void Send(TComponentUpdate update);
+        void SendAuthorityLossImminentAcknowledgement();
     }
 }

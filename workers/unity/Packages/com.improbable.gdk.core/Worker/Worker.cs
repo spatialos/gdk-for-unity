@@ -198,6 +198,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<WorldCommandsCleanSystem>();
             World.GetOrCreateManager<WorldCommandsSendSystem>();
             World.GetOrCreateManager<CommandRequestTrackerSystem>();
+            World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
         }
 
         public void Dispose()

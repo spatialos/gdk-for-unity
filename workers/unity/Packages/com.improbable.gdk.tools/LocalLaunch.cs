@@ -1,5 +1,4 @@
 using Improbable.Gdk.Tools.MiniJSON;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +11,8 @@ namespace Improbable.Gdk.Tools
 {
     public static class LocalLaunch
     {
+        private const string InspectorUrl = "http://localhost:21000/inspector";
+
         private static readonly string
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
@@ -48,6 +49,12 @@ namespace Improbable.Gdk.Tools
         {
             Debug.Log("Launching a standalone client");
             EditorApplication.delayCall += LaunchClient;
+        }
+
+        [MenuItem("SpatialOS/Open inspector", false, MenuPriorities.OpenInspector)]
+        private static void OpenInspector()
+        {
+            Application.OpenURL(InspectorUrl);
         }
 
         public static void BuildConfig()
