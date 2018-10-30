@@ -1,0 +1,55 @@
+{
+  "build": {
+    "tasks": [
+      {
+        "name": "Codegen",
+        "steps": [{"name": "** Open Unity to generate code **", "command": "echo", "arguments": ["No-op."]}]
+      },
+      {
+        "name": "build",
+        "steps": [{"name": "** Open Unity to build for Android **", "command": "echo", "arguments": ["No-op."]}]
+      },
+      {
+        "name": "clean",
+        "steps": [{"name": "No-op", "command": "echo", "arguments": ["No-op."]}]
+      }
+    ]
+  },
+  "bridge": {
+    "worker_attribute_set": {
+      "attributes": [
+        "AndroidClient"
+      ]
+    },
+    "entity_interest": {
+      "range_entity_interest": {
+        "radius": 100
+      }
+    },
+    "component_delivery": {
+      "default": "RELIABLE_ORDERED",
+      "checkoutAllInitially": true
+    }
+  },
+  "external": {
+    "default": {
+      "run_type": "EXECUTABLE",
+      "windows": {
+        "command": "echo",
+        "arguments": [
+          "+workerType",
+          "AndroidClient",
+          "This worker can only be run on Android."
+        ]
+      },
+      "macos": {
+        "command": "echo",
+        "arguments": [
+          "+workerType",
+          "AndroidClient",
+          "This worker can only be run on Android."
+        ]
+      }
+    }
+  }
+}

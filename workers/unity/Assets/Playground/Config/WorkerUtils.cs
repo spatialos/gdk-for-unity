@@ -11,12 +11,16 @@ namespace Playground
     {
         public const string UnityClient = "UnityClient";
         public const string UnityGameLogic = "UnityGameLogic";
+        public const string AndroidClient = "AndroidClient";
+        public const string iOSClient = "iOSClient";
 
         public static readonly List<string> AllWorkerAttributes =
             new List<string>
             {
                 UnityGameLogic,
-                UnityClient
+                UnityClient,
+                AndroidClient,
+                iOSClient
             };
 
         public static void AddClientSystems(World world)

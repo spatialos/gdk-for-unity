@@ -1,0 +1,10 @@
+{
+    "name": "Improbable.Gdk.Mobile",
+    "references": [
+        "Improbable.Gdk.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

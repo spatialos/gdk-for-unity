@@ -16,6 +16,8 @@ namespace Improbable.Gdk.Tools
 
     internal static class DownloadCoreSdk
     {
+        internal static readonly string ImprobablePluginsPath = Path.Combine("Assets", "Plugins", "Improbable");
+
         private const int DownloadForcePriority = 50;
 
         private static readonly string InstallMarkerFile =
@@ -25,6 +27,11 @@ namespace Improbable.Gdk.Tools
             Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), ".DownloadCoreSdk/DownloadCoreSdk.csproj"));
 
         private const string DownloadForceMenuItem = "SpatialOS/Download CoreSdk (force)";
+
+        internal static bool IsImprobablePlugin(string assetPath)
+        {
+            return Path.GetFullPath(assetPath).Contains(ImprobablePluginsPath);
+        }
 
         [MenuItem(DownloadForceMenuItem, false, DownloadForcePriority)]
         private static void DownloadForceMenu()
@@ -83,7 +90,7 @@ namespace Improbable.Gdk.Tools
 
         private static bool ShouldCheckPluginForLock(PluginImporter p)
         {
-            if (!p.assetPath.StartsWith("Assets/Plugins/Improbable"))
+            if (!IsImprobablePlugin(p.assetPath))
             {
                 return false;
             }
