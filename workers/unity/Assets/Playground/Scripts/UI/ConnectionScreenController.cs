@@ -27,6 +27,26 @@ namespace Playground
             connectButton.onClick.AddListener(TryConnect);
         }
 
+        public void OnDestroy()
+        {
+            connectButton.onClick.RemoveListener(TryConnect);
+        }
+
+        public void OnConnectionSucceeded()
+        {
+            PlayerPrefs.SetString(HostIpPlayerPrefsKey, IpAddress);
+            PlayerPrefs.Save();
+
+            connectionPanel.SetActive(false);
+        }
+
+        public void OnConnectionFailed(string connectionError)
+        {
+            UnityObjectDestroyer.Destroy(worker);
+            errorMessage.text =
+                $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
+        }
+
         private void TryConnect()
         {
             errorMessage.text = string.Empty;
@@ -43,20 +63,6 @@ namespace Playground
             workerConnector.IpAddress = IpAddress;
             workerConnector.ConnectionScreenController = this;
             workerConnector.TryConnect();
-        }
-
-        public void OnConnectionSucceeded()
-        {
-            PlayerPrefs.SetString(HostIpPlayerPrefsKey, IpAddress);
-            PlayerPrefs.Save();
-
-            connectionPanel.SetActive(false);
-        }
-
-        public void OnConnectionFailed(string connectionError)
-        {
-            UnityObjectDestroyer.Destroy(worker);
-            errorMessage.text = $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
         }
     }
 }
