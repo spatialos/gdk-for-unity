@@ -77,7 +77,7 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 
 This module consists of:
 
-*    `IEntityGameObjectCreator` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
+* `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
 <br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
 <br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities).
 
@@ -101,7 +101,7 @@ This module consists of:
 * `MobileWorkerConnector` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).<br/>
 Inherit from this class to define your custom mobile worker connectors.
 
-*    `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).
+* `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).
 <br/>It provides additional functionality that you might need when developing for Android.
 
 * `Improbable.Gdk.Mobile.iOS` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/iOS).

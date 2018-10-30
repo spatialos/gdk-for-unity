@@ -13,7 +13,7 @@ For standard workflows and for minor changes, run your game in the Editor. When 
 
 ## Unity Remote
 
-With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities the game running on a device.
+With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
 
 For more information, see the following documentation:
 
