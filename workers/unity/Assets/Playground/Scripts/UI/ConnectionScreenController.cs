@@ -19,6 +19,7 @@ namespace Playground
 
         private string ipAddressText;
         private string errorMessage;
+        private bool isConnecting;
 
         private GameObject worker;
 
@@ -29,6 +30,7 @@ namespace Playground
 
         public void OnGUI()
         {
+            GUI.enabled = !isConnecting;
             using (new GUILayout.AreaScope(new Rect(
                 GuiPadding,
                 Screen.height * VerticalPositionRatio,
@@ -61,13 +63,13 @@ namespace Playground
         private void TryConnect()
         {
             errorMessage = string.Empty;
-            GUI.enabled = false;
+            isConnecting = true;
             worker = Instantiate(clientWorkerPrefab);
             var workerConnector = worker.GetComponent<IMobileConnectionController>();
 
             if (workerConnector == null)
             {
-                GUI.enabled = true;
+                isConnecting  = false;
                 UnityObjectDestroyer.Destroy(worker);
                 errorMessage = MissingWorkerConnectorMessage;
                 throw new MissingComponentException(MissingWorkerConnectorMessage);
@@ -90,7 +92,7 @@ namespace Playground
         {
             UnityObjectDestroyer.Destroy(worker);
             errorMessage = $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
-            GUI.enabled = true;
+            isConnecting = false;
         }
     }
 }

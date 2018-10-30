@@ -1,8 +1,13 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Playground
 {
+    /// <summary>
+    /// A custom GUI implementation to resize different UI elements depending on the font.
+    /// This is necessary as using the default GUI input field in an iOS application will cause the
+    /// app to crash. Can be removed as soon as that bug is fixed.
+    /// </summary>
     internal struct ResizedGui : IDisposable
     {
         private readonly GUIStyle[] styles;
