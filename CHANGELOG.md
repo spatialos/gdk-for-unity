@@ -14,7 +14,7 @@
 
 - Changed the allocation type used internally for Unity ECS chunk iteration from `Temp` to `TempJob`
 - Running a build in the Editor no longer automatically selects all scenes in the Unity build configuration
-- `Improbable.Gdk.Core.Snapshot::AddEntity` now returns the `EntityId` assigned in the snapshot.
+- `Improbable.Gdk.Core.Snapshot.AddEntity` now returns the `EntityId` assigned in the snapshot.
 
 ### Fixed
 
