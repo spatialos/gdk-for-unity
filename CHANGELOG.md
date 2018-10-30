@@ -7,8 +7,9 @@
 - Added support for the Steam authentication flow.
 - Added the ability to acknowledge `AuthorityLossImminent` messages.
 - Added an `Open Inspector` button to the `SpatialOS` menu in the Unity Editor.
-- Added support for local mobile development
-- Added a changelog
+- Added support for local mobile development.
+- Added a changelog.
+- Added field level dirty markers in components. This allows for partial automatic component updates to be sent.
 
 ### Changed
 
