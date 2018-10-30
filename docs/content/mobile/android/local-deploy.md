@@ -41,7 +41,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
   1. In the Unity Editor, navigate to **File** > **Build Settings**. Select **Android** as your Build Platform and choose the virtual device from the drop-down menu in the **Run Device** field. The device is likely to be called **Google Android SDK built for x86 (emulator-XXXX)**.
-  1. In the Unity Editor, navigate to **File** > **Build Settings** and click **Build and Run**.
+  1. Click **Build and Run**.
 
     > For subsequent runs using the same Emulator, you can just select **File** > **Build and Run**.
 
@@ -64,7 +64,8 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     >
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the type of mobile device from the drop-down menu and click **Build and Run**.
+  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the mobile device that you connected to your computer from the drop-down menu in the **Run Device** field..
+  1. Click **Build and Run**.
 
     > For subsequent runs you can just select **File** > **Build and Run**.)
 
