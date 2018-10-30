@@ -64,10 +64,10 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     >
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the mobile device that you connected to your computer from the drop-down menu in the **Run Device** field..
+  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the mobile device that you connected to your computer from the drop-down menu in the **Run Device** field.
   1. Click **Build and Run**.
 
-    > For subsequent runs you can just select **File** > **Build and Run**.)
+    > For subsequent runs you can just select **File** > **Build and Run**.
 
   1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and click **Connect**.
   1. Play the game on your mobile device.
