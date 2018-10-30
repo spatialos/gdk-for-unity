@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -73,7 +73,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -88,7 +88,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -97,7 +97,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -112,7 +112,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -121,7 +121,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -136,7 +136,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -145,7 +145,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -160,7 +160,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -169,7 +169,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -184,7 +184,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -193,7 +193,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -208,7 +208,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -217,7 +217,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -232,7 +232,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -241,7 +241,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -256,7 +256,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -265,7 +265,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -333,7 +333,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -342,7 +342,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -358,7 +358,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendFirstEvent(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }
@@ -373,7 +373,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -382,7 +382,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -398,7 +398,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 public void SendSecondEvent(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }

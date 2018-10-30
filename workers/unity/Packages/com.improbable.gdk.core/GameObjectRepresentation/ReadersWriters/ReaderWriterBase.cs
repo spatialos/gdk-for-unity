@@ -35,7 +35,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         {
             get
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return default(TSpatialComponentData);
                 }
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// </exception>
         public void Send(TComponentUpdate update)
         {
-            if (!VerifyNotDisposed())
+            if (!IsValid())
             {
                 return;
             }
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         /// </exception>
         public void SendAuthorityLossImminentAcknowledgement()
         {
-            if (!VerifyNotDisposed())
+            if (!IsValid())
             {
                 return;
             }
@@ -113,7 +113,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         {
             get
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return Authority.NotAuthoritative;
                 }
@@ -148,7 +148,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         {
             add
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return;
                 }
@@ -157,7 +157,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
             remove
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return;
                 }
@@ -209,7 +209,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         {
             add
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return;
                 }
@@ -218,7 +218,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
             remove
             {
-                if (!VerifyNotDisposed())
+                if (!IsValid())
                 {
                     return;
                 }

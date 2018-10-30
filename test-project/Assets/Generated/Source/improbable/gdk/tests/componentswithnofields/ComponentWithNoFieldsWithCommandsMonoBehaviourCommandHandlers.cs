@@ -74,13 +74,27 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 public long SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return -1;
                     }
 
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
                     var request = Cmd.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    ecsCommandRequestSender.RequestsToSend.Add(request);
+                    return request.RequestId;
+                }
+
+                public long SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload,
+                    Action<Cmd.ReceivedResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (!IsValid())
+                    {
+                        return -1;
+                    }
+
+                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
+                    var request = Cmd.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
@@ -115,7 +129,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -124,7 +138,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -168,7 +182,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -177,7 +191,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }

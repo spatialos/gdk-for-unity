@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public void SendMyEvent(global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
-                    if (!VerifyNotDisposed())
+                    if (!IsValid())
                     {
                         return;
                     }

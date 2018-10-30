@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -90,7 +90,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -99,7 +99,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -114,7 +114,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -123,7 +123,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -147,7 +147,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -162,7 +162,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -171,7 +171,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -186,7 +186,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -195,7 +195,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -210,7 +210,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -219,7 +219,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -234,7 +234,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -243,7 +243,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -258,7 +258,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -267,7 +267,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -282,7 +282,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -291,7 +291,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -306,7 +306,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -315,7 +315,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -330,7 +330,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -339,7 +339,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -354,7 +354,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -363,7 +363,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -378,7 +378,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -387,7 +387,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -402,7 +402,7 @@ namespace Improbable.Gdk.Tests
                 {
                     add
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
@@ -411,7 +411,7 @@ namespace Improbable.Gdk.Tests
                     }
                     remove
                     {
-                        if (!VerifyNotDisposed())
+                        if (!IsValid())
                         {
                             return;
                         }
