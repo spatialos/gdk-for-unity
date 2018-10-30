@@ -29,6 +29,7 @@ namespace Playground
 
         private void TryConnect()
         {
+            errorMessage.text = string.Empty;
             worker = Instantiate(clientWorkerPrefab);
             var workerConnector = worker.GetComponent<IMobileConnectionController>();
 
