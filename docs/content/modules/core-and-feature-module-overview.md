@@ -73,7 +73,7 @@ Find out more in the [Transform synchronization feature module]({{urlRoot}}/cont
 
 To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It offers a default implementation of spawning GameObjects for your SpatialOS entities.
 
-`Improbable.Gdk.GameObjectCreation`  is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation).
+`Improbable.Gdk.GameObjectCreation` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation).
 
 This module consists of:
 
@@ -89,3 +89,22 @@ Use this enable custom spawning by passing in parameters to change the default.
 
 
 Call these during [entity templates creation]({{urlRoot}}/content/entity-templates).
+
+### Mobile support module
+
+To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/content/glossary#client-worker) to SpatialOS.
+
+`Improbable.Gdk.Mobile` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).
+
+This module consists of:
+
+* `MobileWorkerConnector` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).<br/>
+Inherit from this class to define your custom mobile worker connectors.
+
+*    `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).
+<br/>It provides additional functionality that you might need when developing for Android.
+
+* `Improbable.Gdk.Mobile.iOS` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/iOS).
+<br/>It provides additional functionality that you might need when developing for iOS.
+
+Find out more in the [Mobile support]({{urlRoot}}/content/mobile/overview) documentation.

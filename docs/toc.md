@@ -49,7 +49,7 @@
     - [Snapshots]({{urlRoot}}/content/snapshots)
     - <h4>Code generation:</h4>
         - [* The code generator]({{urlRoot}}/content/code-generator)
-        - [* ECS component generation]({{urlRoot}}/content/ecs/component-generation) 
+        - [* ECS component generation]({{urlRoot}}/content/ecs/component-generation)
     - [Logging]({{urlRoot}}/content/ecs/logging)
 - <h3> + MonoBehaviour workflow</h3>
     - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
@@ -82,6 +82,16 @@
     - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
     - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
     - [Custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
+- <h3> + Mobile support</h3>
+    - [Overview]({{urlRoot}}/content/mobile/overview)
+    - <h4> + Android Support:</h4>
+        - [* Setting up Android support]({{urlRoot}}/content/mobile/android/setup)
+        - [* Ways to  test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
+        - [* Connecting to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
+    - <h4> + iOS Support:</h4>
+        - [* Setting up iOS support]({{urlRoot}}/content/mobile/ios/setup)
+        - [* Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
+        - [* Connecting to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
 - <h3> + Tests</h3>
     - [Test overview]({{urlRoot}}/content/testing/testing-overview)
     - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
