@@ -43,6 +43,7 @@ namespace Improbable.Gdk.Tests
                 bool val_b = 3;
             }
             In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
             */
             public bool IsDataDirty(int propertyIndex)
             {
@@ -69,6 +70,7 @@ namespace Improbable.Gdk.Tests
             }
 
             // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 17)
