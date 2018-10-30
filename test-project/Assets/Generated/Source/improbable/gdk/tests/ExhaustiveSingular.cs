@@ -18,7 +18,90 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197715;
 
-            public BlittableBool DirtyBit { get; set; }
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+            private byte dirtyBits0;
+            private byte dirtyBits1;
+            private byte dirtyBits2;
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                isDataDirty |= (dirtyBits1 != 0x0);
+                isDataDirty |= (dirtyBits2 != 0x0);
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+            public bool IsDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 17)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 1:
+                        return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 2:
+                        return (dirtyBits2 & (0x1 << propertyIndex % 8)) != 0x0;
+                }
+
+                return false;
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 17)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    case 1:
+                        dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    case 2:
+                        dirtyBits2 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                }
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits0 = 0x0;
+                dirtyBits1 = 0x0;
+                dirtyBits2 = 0x0;
+            }
 
             private BlittableBool field1;
 
@@ -27,7 +110,7 @@ namespace Improbable.Gdk.Tests
                 get => field1;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(0);
                     field1 = value;
                 }
             }
@@ -39,7 +122,7 @@ namespace Improbable.Gdk.Tests
                 get => field2;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(1);
                     field2 = value;
                 }
             }
@@ -51,7 +134,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(2);
                     Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
                 }
             }
@@ -63,7 +146,7 @@ namespace Improbable.Gdk.Tests
                 get => field4;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(3);
                     field4 = value;
                 }
             }
@@ -75,7 +158,7 @@ namespace Improbable.Gdk.Tests
                 get => field5;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(4);
                     field5 = value;
                 }
             }
@@ -87,7 +170,7 @@ namespace Improbable.Gdk.Tests
                 get => field6;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(5);
                     field6 = value;
                 }
             }
@@ -99,7 +182,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(6);
                     Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
                 }
             }
@@ -111,7 +194,7 @@ namespace Improbable.Gdk.Tests
                 get => field8;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(7);
                     field8 = value;
                 }
             }
@@ -123,7 +206,7 @@ namespace Improbable.Gdk.Tests
                 get => field9;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(8);
                     field9 = value;
                 }
             }
@@ -135,7 +218,7 @@ namespace Improbable.Gdk.Tests
                 get => field10;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(9);
                     field10 = value;
                 }
             }
@@ -147,7 +230,7 @@ namespace Improbable.Gdk.Tests
                 get => field11;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(10);
                     field11 = value;
                 }
             }
@@ -159,7 +242,7 @@ namespace Improbable.Gdk.Tests
                 get => field12;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(11);
                     field12 = value;
                 }
             }
@@ -171,7 +254,7 @@ namespace Improbable.Gdk.Tests
                 get => field13;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(12);
                     field13 = value;
                 }
             }
@@ -183,7 +266,7 @@ namespace Improbable.Gdk.Tests
                 get => field14;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(13);
                     field14 = value;
                 }
             }
@@ -195,7 +278,7 @@ namespace Improbable.Gdk.Tests
                 get => field15;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(14);
                     field15 = value;
                 }
             }
@@ -207,7 +290,7 @@ namespace Improbable.Gdk.Tests
                 get => field16;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(15);
                     field16 = value;
                 }
             }
@@ -219,7 +302,7 @@ namespace Improbable.Gdk.Tests
                 get => field17;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(16);
                     field17 = value;
                 }
             }
@@ -307,55 +390,123 @@ namespace Improbable.Gdk.Tests
             {
                 var obj = updateObj.GetFields();
                 {
-                    obj.AddBool(1, component.Field1);
+                    if (component.IsDataDirty(0))
+                    {
+                        obj.AddBool(1, component.Field1);
+                    }
+
                 }
                 {
-                    obj.AddFloat(2, component.Field2);
+                    if (component.IsDataDirty(1))
+                    {
+                        obj.AddFloat(2, component.Field2);
+                    }
+
                 }
                 {
-                    obj.AddBytes(3, component.Field3);
+                    if (component.IsDataDirty(2))
+                    {
+                        obj.AddBytes(3, component.Field3);
+                    }
+
                 }
                 {
-                    obj.AddInt32(4, component.Field4);
+                    if (component.IsDataDirty(3))
+                    {
+                        obj.AddInt32(4, component.Field4);
+                    }
+
                 }
                 {
-                    obj.AddInt64(5, component.Field5);
+                    if (component.IsDataDirty(4))
+                    {
+                        obj.AddInt64(5, component.Field5);
+                    }
+
                 }
                 {
-                    obj.AddDouble(6, component.Field6);
+                    if (component.IsDataDirty(5))
+                    {
+                        obj.AddDouble(6, component.Field6);
+                    }
+
                 }
                 {
-                    obj.AddString(7, component.Field7);
+                    if (component.IsDataDirty(6))
+                    {
+                        obj.AddString(7, component.Field7);
+                    }
+
                 }
                 {
-                    obj.AddUint32(8, component.Field8);
+                    if (component.IsDataDirty(7))
+                    {
+                        obj.AddUint32(8, component.Field8);
+                    }
+
                 }
                 {
-                    obj.AddUint64(9, component.Field9);
+                    if (component.IsDataDirty(8))
+                    {
+                        obj.AddUint64(9, component.Field9);
+                    }
+
                 }
                 {
-                    obj.AddSint32(10, component.Field10);
+                    if (component.IsDataDirty(9))
+                    {
+                        obj.AddSint32(10, component.Field10);
+                    }
+
                 }
                 {
-                    obj.AddSint64(11, component.Field11);
+                    if (component.IsDataDirty(10))
+                    {
+                        obj.AddSint64(11, component.Field11);
+                    }
+
                 }
                 {
-                    obj.AddFixed32(12, component.Field12);
+                    if (component.IsDataDirty(11))
+                    {
+                        obj.AddFixed32(12, component.Field12);
+                    }
+
                 }
                 {
-                    obj.AddFixed64(13, component.Field13);
+                    if (component.IsDataDirty(12))
+                    {
+                        obj.AddFixed64(13, component.Field13);
+                    }
+
                 }
                 {
-                    obj.AddSfixed32(14, component.Field14);
+                    if (component.IsDataDirty(13))
+                    {
+                        obj.AddSfixed32(14, component.Field14);
+                    }
+
                 }
                 {
-                    obj.AddSfixed64(15, component.Field15);
+                    if (component.IsDataDirty(14))
+                    {
+                        obj.AddSfixed64(15, component.Field15);
+                    }
+
                 }
                 {
-                    obj.AddEntityId(16, component.Field16);
+                    if (component.IsDataDirty(15))
+                    {
+                        obj.AddEntityId(16, component.Field16);
+                    }
+
                 }
                 {
-                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17, obj.AddObject(17));
+                    if (component.IsDataDirty(16))
+                    {
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17, obj.AddObject(17));
+                    }
+
                 }
             }
 

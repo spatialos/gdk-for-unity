@@ -24,8 +24,94 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public BlittableBool DirtyBit { get; set; }
-<# foreach(var fieldDetails in fieldDetailsList) { #>
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+            private byte dirtyBits<#= i #>;
+<# } #>
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                isDataDirty |= (dirtyBits<#= i #> != 0x0);
+<# } #>
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+            public bool IsDataDirty(int propertyIndex)
+            {
+<# if (fieldDetailsList.Count == 0) { #>
+                throw new InvalidOperationException("IsDataDirty(int propertyIndex) may not be called on components with no properties.");
+<# } else { #>
+                if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, <#= fieldDetailsList.Count  - 1#>]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                    case <#= i #>:
+                        return (dirtyBits<#= i #> & (0x1 << propertyIndex % 8)) != 0x0;
+<# } #>
+                }
+
+                return false;
+<# } #>
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+<# if (fieldDetailsList.Count == 0) { #>
+                throw new InvalidOperationException("MarkDataDirty(int propertyIndex) may not be called on components with no properties.");
+<# } else { #>
+                if (propertyIndex < 0 || propertyIndex >= <#= fieldDetailsList.Count #>)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, <#= fieldDetailsList.Count  - 1#>]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                    case <#= i #>:
+                        dirtyBits<#= i #> |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+<# } #>
+                }
+<# } #>
+            }
+
+            public void MarkDataClean()
+            {
+<# for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++) { #>
+                dirtyBits<#= i #> = 0x0;
+<# } #>
+            }
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
 <# if (fieldDetails.IsBlittable) { #>
 
             private <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #>;
@@ -35,7 +121,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= fieldDetails.CamelCaseName #>;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(<#= i #>);
                     <#= fieldDetails.CamelCaseName #> = value;
                 }
             }
@@ -48,7 +134,7 @@ namespace <#= qualifiedNamespace #>
                 get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(<#= i #>);
                     <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
@@ -81,9 +167,14 @@ namespace <#= qualifiedNamespace #>
             public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
                 {
-                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                    if (component.IsDataDirty(<#= i #>))
+                    {
+                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                    }
+
 <# if (ShouldGenerateClearedFieldsSet()) { #>
                     <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
 <# } #>

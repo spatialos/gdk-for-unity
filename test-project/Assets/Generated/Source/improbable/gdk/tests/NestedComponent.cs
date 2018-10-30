@@ -18,7 +18,74 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 20152;
 
-            public BlittableBool DirtyBit { get; set; }
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+            private byte dirtyBits0;
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+            public bool IsDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 1)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 0]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                }
+
+                return false;
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 1)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 0]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                }
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits0 = 0x0;
+            }
 
             private global::Improbable.Gdk.Tests.TypeName nestedType;
 
@@ -27,7 +94,7 @@ namespace Improbable.Gdk.Tests
                 get => nestedType;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(0);
                     nestedType = value;
                 }
             }
@@ -51,7 +118,11 @@ namespace Improbable.Gdk.Tests
             {
                 var obj = updateObj.GetFields();
                 {
-                    global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
+                    if (component.IsDataDirty(0))
+                    {
+                        global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
+                    }
+
                 }
             }
 

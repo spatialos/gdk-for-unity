@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
                 var data = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.DirtyBit = false;
+                data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>());
 
@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>(entity);
                     Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.DirtyBit = false;
+                    data.MarkDataClean();
                     entityManager.SetComponentData(entity, data);
                 }
 
@@ -341,11 +341,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     for (var i = 0; i < componentArray.Length; i++)
                     {
                         var data = componentArray[i];
-                        var dirtyEvents = 0;
+                        var eventsToSend = 0;
                         var eventsEvt = eventEvtArray[i].Events;
-                        dirtyEvents += eventsEvt.Count;
+                        eventsToSend += eventsEvt.Count;
 
-                        if (data.DirtyBit || dirtyEvents > 0)
+                        if (data.IsDataDirty() || eventsToSend > 0)
                         {
                             var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1004);
                             Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Serialization.SerializeUpdate(data, update);
@@ -366,7 +366,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                             // Send serialized update over the wire
                             connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-                            data.DirtyBit = false;
+                            data.MarkDataClean();
                             componentArray[i] = data;
                         }
                     }

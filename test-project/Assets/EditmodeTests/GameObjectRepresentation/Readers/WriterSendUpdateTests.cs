@@ -52,7 +52,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
             {
                 IntField = new Option<int>(42)
             });
-            Assert.IsTrue(EntityManager.GetComponentData<BlittableComponent.Component>(Entity).DirtyBit);
+            Assert.IsTrue(EntityManager.GetComponentData<BlittableComponent.Component>(Entity).IsDataDirty());
         }
     }
 }

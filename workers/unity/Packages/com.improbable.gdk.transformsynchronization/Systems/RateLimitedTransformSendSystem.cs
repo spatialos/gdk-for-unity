@@ -51,8 +51,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
                     Velocity = transformToSend.Velocity.ToImprobableVelocity(),
                     PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks,
-                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond,
-                    DirtyBit = true
+                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
                 };
 
                 if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||

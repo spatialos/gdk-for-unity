@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 Profiler.BeginSample("Connection");
                 var data = Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
-                data.DirtyBit = false;
+                data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
                 entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
 
@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
                     Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.DirtyBit = false;
+                    data.MarkDataClean();
                     entityManager.SetComponentData(entity, data);
                 }
 
@@ -341,11 +341,11 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     for (var i = 0; i < componentArray.Length; i++)
                     {
                         var data = componentArray[i];
-                        var dirtyEvents = 0;
+                        var eventsToSend = 0;
                         var eventsMyEvent = eventMyEventArray[i].Events;
-                        dirtyEvents += eventsMyEvent.Count;
+                        eventsToSend += eventsMyEvent.Count;
 
-                        if (data.DirtyBit || dirtyEvents > 0)
+                        if (data.IsDataDirty() || eventsToSend > 0)
                         {
                             var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1105);
                             Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.SerializeUpdate(data, update);
@@ -366,7 +366,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                             // Send serialized update over the wire
                             connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
 
-                            data.DirtyBit = false;
+                            data.MarkDataClean();
                             componentArray[i] = data;
                         }
                     }

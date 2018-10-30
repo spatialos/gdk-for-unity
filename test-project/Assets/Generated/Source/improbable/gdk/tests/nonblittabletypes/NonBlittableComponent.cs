@@ -18,7 +18,82 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             public uint ComponentId => 1002;
 
-            public BlittableBool DirtyBit { get; set; }
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+            private byte dirtyBits0;
+            private byte dirtyBits1;
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                isDataDirty |= (dirtyBits1 != 0x0);
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+            public bool IsDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 9)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 8]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 1:
+                        return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
+                }
+
+                return false;
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 9)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 8]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    case 1:
+                        dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                }
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits0 = 0x0;
+                dirtyBits1 = 0x0;
+            }
 
             private BlittableBool boolField;
 
@@ -27,7 +102,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => boolField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(0);
                     boolField = value;
                 }
             }
@@ -39,7 +114,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => intField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(1);
                     intField = value;
                 }
             }
@@ -51,7 +126,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => longField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(2);
                     longField = value;
                 }
             }
@@ -63,7 +138,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => floatField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(3);
                     floatField = value;
                 }
             }
@@ -75,7 +150,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => doubleField;
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(4);
                     doubleField = value;
                 }
             }
@@ -87,7 +162,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Get(stringFieldHandle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(5);
                     Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Set(stringFieldHandle, value);
                 }
             }
@@ -99,7 +174,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Get(optionalFieldHandle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(6);
                     Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Set(optionalFieldHandle, value);
                 }
             }
@@ -111,7 +186,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Get(listFieldHandle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(7);
                     Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Set(listFieldHandle, value);
                 }
             }
@@ -123,7 +198,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Get(mapFieldHandle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(8);
                     Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(mapFieldHandle, value);
                 }
             }
@@ -193,35 +268,63 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var obj = updateObj.GetFields();
                 {
-                    obj.AddBool(1, component.BoolField);
+                    if (component.IsDataDirty(0))
+                    {
+                        obj.AddBool(1, component.BoolField);
+                    }
+
                     
                 }
                 {
-                    obj.AddInt32(2, component.IntField);
+                    if (component.IsDataDirty(1))
+                    {
+                        obj.AddInt32(2, component.IntField);
+                    }
+
                     
                 }
                 {
-                    obj.AddInt64(3, component.LongField);
+                    if (component.IsDataDirty(2))
+                    {
+                        obj.AddInt64(3, component.LongField);
+                    }
+
                     
                 }
                 {
-                    obj.AddFloat(4, component.FloatField);
+                    if (component.IsDataDirty(3))
+                    {
+                        obj.AddFloat(4, component.FloatField);
+                    }
+
                     
                 }
                 {
-                    obj.AddDouble(5, component.DoubleField);
+                    if (component.IsDataDirty(4))
+                    {
+                        obj.AddDouble(5, component.DoubleField);
+                    }
+
                     
                 }
                 {
-                    obj.AddString(6, component.StringField);
+                    if (component.IsDataDirty(5))
+                    {
+                        obj.AddString(6, component.StringField);
+                    }
+
                     
                 }
                 {
-                    if (component.OptionalField.HasValue)
+                    if (component.IsDataDirty(6))
+                    {
+                        if (component.OptionalField.HasValue)
                     {
                         obj.AddInt32(7, component.OptionalField.Value);
                     }
                     
+                    }
+
                     if (!component.OptionalField.HasValue)
                     {
                         updateObj.AddClearedField(7);
@@ -229,11 +332,15 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     
                 }
                 {
-                    foreach (var value in component.ListField)
+                    if (component.IsDataDirty(7))
+                    {
+                        foreach (var value in component.ListField)
                     {
                         obj.AddInt32(8, value);
                     }
                     
+                    }
+
                     if (component.ListField.Count == 0)
                     {
                         updateObj.AddClearedField(8);
@@ -241,13 +348,17 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     
                 }
                 {
-                    foreach (var keyValuePair in component.MapField)
+                    if (component.IsDataDirty(8))
+                    {
+                        foreach (var keyValuePair in component.MapField)
                     {
                         var mapObj = obj.AddObject(9);
                         mapObj.AddInt32(1, keyValuePair.Key);
                         mapObj.AddString(2, keyValuePair.Value);
                     }
                     
+                    }
+
                     if (component.MapField.Count == 0)
                     {
                         updateObj.AddClearedField(9);

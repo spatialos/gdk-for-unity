@@ -18,7 +18,90 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197717;
 
-            public BlittableBool DirtyBit { get; set; }
+            // Bit masks for tracking which component properties were changed locally and need to be synced.
+            // Each byte tracks 8 component properties.
+            private byte dirtyBits0;
+            private byte dirtyBits1;
+            private byte dirtyBits2;
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+                isDataDirty |= (dirtyBits0 != 0x0);
+                isDataDirty |= (dirtyBits1 != 0x0);
+                isDataDirty |= (dirtyBits2 != 0x0);
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+            public bool IsDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 17)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 1:
+                        return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 2:
+                        return (dirtyBits2 & (0x1 << propertyIndex % 8)) != 0x0;
+                }
+
+                return false;
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 17)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    case 1:
+                        dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                    case 2:
+                        dirtyBits2 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                }
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits0 = 0x0;
+                dirtyBits1 = 0x0;
+                dirtyBits2 = 0x0;
+            }
 
             internal uint field1Handle;
 
@@ -27,7 +110,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(0);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
                 }
             }
@@ -39,7 +122,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(1);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
                 }
             }
@@ -51,7 +134,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(2);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
                 }
             }
@@ -63,7 +146,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(3);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
                 }
             }
@@ -75,7 +158,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(4);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
                 }
             }
@@ -87,7 +170,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Get(field6Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(5);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Set(field6Handle, value);
                 }
             }
@@ -99,7 +182,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(6);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
                 }
             }
@@ -111,7 +194,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Get(field8Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(7);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Set(field8Handle, value);
                 }
             }
@@ -123,7 +206,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Get(field9Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(8);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Set(field9Handle, value);
                 }
             }
@@ -135,7 +218,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Get(field10Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(9);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Set(field10Handle, value);
                 }
             }
@@ -147,7 +230,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Get(field11Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(10);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Set(field11Handle, value);
                 }
             }
@@ -159,7 +242,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Get(field12Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(11);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Set(field12Handle, value);
                 }
             }
@@ -171,7 +254,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Get(field13Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(12);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Set(field13Handle, value);
                 }
             }
@@ -183,7 +266,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Get(field14Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(13);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Set(field14Handle, value);
                 }
             }
@@ -195,7 +278,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Get(field15Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(14);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Set(field15Handle, value);
                 }
             }
@@ -207,7 +290,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(15);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Set(field16Handle, value);
                 }
             }
@@ -219,7 +302,7 @@ namespace Improbable.Gdk.Tests
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Get(field17Handle);
                 set
                 {
-                    DirtyBit = true;
+                    MarkDataDirty(16);
                     Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Set(field17Handle, value);
                 }
             }
@@ -375,11 +458,15 @@ namespace Improbable.Gdk.Tests
             {
                 var obj = updateObj.GetFields();
                 {
-                    foreach (var value in component.Field1)
+                    if (component.IsDataDirty(0))
+                    {
+                        foreach (var value in component.Field1)
                     {
                         obj.AddBool(1, value);
                     }
                     
+                    }
+
                     if (component.Field1.Count == 0)
                     {
                         updateObj.AddClearedField(1);
@@ -387,11 +474,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field2)
+                    if (component.IsDataDirty(1))
+                    {
+                        foreach (var value in component.Field2)
                     {
                         obj.AddFloat(2, value);
                     }
                     
+                    }
+
                     if (component.Field2.Count == 0)
                     {
                         updateObj.AddClearedField(2);
@@ -399,11 +490,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field3)
+                    if (component.IsDataDirty(2))
+                    {
+                        foreach (var value in component.Field3)
                     {
                         obj.AddBytes(3, value);
                     }
                     
+                    }
+
                     if (component.Field3.Count == 0)
                     {
                         updateObj.AddClearedField(3);
@@ -411,11 +506,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field4)
+                    if (component.IsDataDirty(3))
+                    {
+                        foreach (var value in component.Field4)
                     {
                         obj.AddInt32(4, value);
                     }
                     
+                    }
+
                     if (component.Field4.Count == 0)
                     {
                         updateObj.AddClearedField(4);
@@ -423,11 +522,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field5)
+                    if (component.IsDataDirty(4))
+                    {
+                        foreach (var value in component.Field5)
                     {
                         obj.AddInt64(5, value);
                     }
                     
+                    }
+
                     if (component.Field5.Count == 0)
                     {
                         updateObj.AddClearedField(5);
@@ -435,11 +538,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field6)
+                    if (component.IsDataDirty(5))
+                    {
+                        foreach (var value in component.Field6)
                     {
                         obj.AddDouble(6, value);
                     }
                     
+                    }
+
                     if (component.Field6.Count == 0)
                     {
                         updateObj.AddClearedField(6);
@@ -447,11 +554,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field7)
+                    if (component.IsDataDirty(6))
+                    {
+                        foreach (var value in component.Field7)
                     {
                         obj.AddString(7, value);
                     }
                     
+                    }
+
                     if (component.Field7.Count == 0)
                     {
                         updateObj.AddClearedField(7);
@@ -459,11 +570,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field8)
+                    if (component.IsDataDirty(7))
+                    {
+                        foreach (var value in component.Field8)
                     {
                         obj.AddUint32(8, value);
                     }
                     
+                    }
+
                     if (component.Field8.Count == 0)
                     {
                         updateObj.AddClearedField(8);
@@ -471,11 +586,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field9)
+                    if (component.IsDataDirty(8))
+                    {
+                        foreach (var value in component.Field9)
                     {
                         obj.AddUint64(9, value);
                     }
                     
+                    }
+
                     if (component.Field9.Count == 0)
                     {
                         updateObj.AddClearedField(9);
@@ -483,11 +602,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field10)
+                    if (component.IsDataDirty(9))
+                    {
+                        foreach (var value in component.Field10)
                     {
                         obj.AddSint32(10, value);
                     }
                     
+                    }
+
                     if (component.Field10.Count == 0)
                     {
                         updateObj.AddClearedField(10);
@@ -495,11 +618,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field11)
+                    if (component.IsDataDirty(10))
+                    {
+                        foreach (var value in component.Field11)
                     {
                         obj.AddSint64(11, value);
                     }
                     
+                    }
+
                     if (component.Field11.Count == 0)
                     {
                         updateObj.AddClearedField(11);
@@ -507,11 +634,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field12)
+                    if (component.IsDataDirty(11))
+                    {
+                        foreach (var value in component.Field12)
                     {
                         obj.AddFixed32(12, value);
                     }
                     
+                    }
+
                     if (component.Field12.Count == 0)
                     {
                         updateObj.AddClearedField(12);
@@ -519,11 +650,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field13)
+                    if (component.IsDataDirty(12))
+                    {
+                        foreach (var value in component.Field13)
                     {
                         obj.AddFixed64(13, value);
                     }
                     
+                    }
+
                     if (component.Field13.Count == 0)
                     {
                         updateObj.AddClearedField(13);
@@ -531,11 +666,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field14)
+                    if (component.IsDataDirty(13))
+                    {
+                        foreach (var value in component.Field14)
                     {
                         obj.AddSfixed32(14, value);
                     }
                     
+                    }
+
                     if (component.Field14.Count == 0)
                     {
                         updateObj.AddClearedField(14);
@@ -543,11 +682,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field15)
+                    if (component.IsDataDirty(14))
+                    {
+                        foreach (var value in component.Field15)
                     {
                         obj.AddSfixed64(15, value);
                     }
                     
+                    }
+
                     if (component.Field15.Count == 0)
                     {
                         updateObj.AddClearedField(15);
@@ -555,11 +698,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field16)
+                    if (component.IsDataDirty(15))
+                    {
+                        foreach (var value in component.Field16)
                     {
                         obj.AddEntityId(16, value);
                     }
                     
+                    }
+
                     if (component.Field16.Count == 0)
                     {
                         updateObj.AddClearedField(16);
@@ -567,11 +714,15 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 {
-                    foreach (var value in component.Field17)
+                    if (component.IsDataDirty(16))
+                    {
+                        foreach (var value in component.Field17)
                     {
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
                     }
                     
+                    }
+
                     if (component.Field17.Count == 0)
                     {
                         updateObj.AddClearedField(17);
