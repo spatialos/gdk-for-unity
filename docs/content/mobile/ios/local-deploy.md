@@ -57,7 +57,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
   1. In the Unity Editor, navigate to **File** > **Build Settings**. Select **Player Settings**, navigate to **Settings for iOS** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**
-  1.In the Unity Editor, navigate to **File** > **Build Settings** and click **Build**. This prompts you to choose where to save the XCode project that Unity generates. After you've selected the directory, Unity generates the XCode project and opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and make sure to fix all the errors if there are any.
+  1. In the Unity Editor, navigate to **File** > **Build Settings** and click **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
 
     > If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described in the previous step.
     >
