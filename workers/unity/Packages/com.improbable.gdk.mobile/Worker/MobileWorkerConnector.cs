@@ -1,8 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Worker;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Improbable.Gdk.Mobile
 {
@@ -17,26 +14,19 @@ namespace Improbable.Gdk.Mobile
                 ReceptionistHost = GetHostIp(),
                 WorkerType = workerType,
                 WorkerId = CreateNewWorkerId(workerType),
-                UseExternalIp = UseExternalIp,
+                UseExternalIp = true,
                 LinkProtocol = NetworkConnectionType.Tcp,
             };
         }
 
-        protected override bool ShouldUseLocator()
+        protected override LocatorConfig GetLocatorConfig(string workerType)
         {
-            // We currently only support local deployments for Mobile
-            return false;
+            throw new System.NotImplementedException("The locator flow is currently not available for mobile workers.");
         }
 
-        private void OnValidate()
+        protected override bool ShouldUseLocator()
         {
-            if (UseExternalIp == false)
-            {
-                UseExternalIp = true;
-#if UNITY_EDITOR
-                EditorUtility.DisplayDialog("Invalid configuration", "Use External Ip needs to be set to true for mobile client workers.", "Ok");
-#endif
-            }
+            return false;
         }
     }
 }
