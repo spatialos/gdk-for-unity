@@ -17,9 +17,13 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
   1. In the **Unity Remote** section, click on the drop-down menu beside the **Device** option and select **Any Android Device**.
   1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
   1. In the Unity Editor, Select **SpatialOS** > **Local launch**.
-  > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
+
+    > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
+
   1. In the Editor’s Game view, select **Play**.
+
     > You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
+
   1. You should now see your Unity Editor game view mirrored on your Android device.
 
 ## Connecting your Android emulator to a local deployment
@@ -37,7 +41,10 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
   1. In the Unity Editor, navigate to **File** > **Build Settings**. Select **Android** as your Build Platform and choose the virtual device from the drop-down menu in the **Run Device** field. The device is likely to be called **Google Android SDK built for x86 (emulator-XXXX)**.
-  1. In the Unity Editor, navigate to **File** > **Build Settings** and click **Build and Run**. (For subsequent runs using the same Emulator, you can just select **File** > **Build and Run**.)
+  1. In the Unity Editor, navigate to **File** > **Build Settings** and click **Build and Run**.
+
+    > For subsequent runs using the same Emulator, you can just select **File** > **Build and Run**.
+
   1. Once the game is deployed and started on the Emulator, you see an empty text field and a **Connect** button: Select **Connect**.
 
     > You don’t need to enter anything in the text field.
@@ -57,6 +64,9 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     >
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the type of mobile device from the drop-down menu and click **Build and Run**. (For subsequent runs you can just select **File** > **Build and Run**.)
+  1. In the Unity Editor, go to **File** > **Build Settings**. Choose the type of mobile device from the drop-down menu and click **Build and Run**.
+
+    > For subsequent runs you can just select **File** > **Build and Run**.)
+
   1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and click **Connect**.
   1. Play the game on your mobile device.
