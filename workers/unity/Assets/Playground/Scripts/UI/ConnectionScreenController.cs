@@ -1,98 +1,68 @@
 using Improbable.Gdk.Core;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Playground
 {
-    [ExecuteInEditMode]
     public class ConnectionScreenController : MonoBehaviour
     {
         private const string HostIpPlayerPrefsKey = "SpatialOSHostIp";
+
         private const string MissingWorkerConnectorMessage =
             "The WorkerConnector behaviour was not found on the worker prefab";
 
-        private const int GuiPadding = 10;
-        private const float VerticalPositionRatio = 0.4f;
-
+        [SerializeField] private GameObject connectionPanel;
+        [SerializeField] private InputField ipAddressInput;
+        [SerializeField] private Button connectButton;
+        [SerializeField] private Text errorMessage;
         [SerializeField] private GameObject clientWorkerPrefab;
-        [SerializeField] private Font font;
-        [SerializeField] private float screenWidthFontRatio = 20;
-
-        private string ipAddressText;
-        private string errorMessage;
-        private bool isConnecting;
 
         private GameObject worker;
 
+        private string IpAddress => ipAddressInput != null ? ipAddressInput.text : null;
+
         public void Awake()
         {
-            ipAddressText = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
+            ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
+            connectButton.onClick.AddListener(TryConnect);
         }
 
-        public void OnGUI()
+        public void OnDestroy()
         {
-            GUI.enabled = !isConnecting;
-            using (new GUILayout.AreaScope(new Rect(
-                GuiPadding,
-                Screen.height * VerticalPositionRatio,
-                Screen.width - GuiPadding * 2,
-                Screen.height - GuiPadding * 2)))
-            {
-                using (new ResizedGui(font, screenWidthFontRatio,
-                    GUI.skin.label,
-                    GUI.skin.textField,
-                    GUI.skin.button,
-                    GUI.skin.textArea
-                ))
-                {
-                    ResizedGui.Label("Enter IP address:");
-                    ipAddressText = ResizedGui.TextField(ipAddressText);
-
-                    if (ResizedGui.Button("Connect") && Application.isPlaying)
-                    {
-                        TryConnect();
-                    }
-
-                    if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        ResizedGui.TextArea($"Error: {errorMessage}");
-                    }
-                }
-            }
-        }
-
-        private void TryConnect()
-        {
-            errorMessage = string.Empty;
-            isConnecting = true;
-            worker = Instantiate(clientWorkerPrefab);
-            var workerConnector = worker.GetComponent<IMobileConnectionController>();
-
-            if (workerConnector == null)
-            {
-                isConnecting  = false;
-                UnityObjectDestroyer.Destroy(worker);
-                errorMessage = MissingWorkerConnectorMessage;
-                throw new MissingComponentException(MissingWorkerConnectorMessage);
-            }
-
-            workerConnector.IpAddress = ipAddressText;
-            workerConnector.ConnectionScreenController = this;
-            workerConnector.TryConnect();
+            connectButton.onClick.RemoveListener(TryConnect);
         }
 
         public void OnConnectionSucceeded()
         {
-            PlayerPrefs.SetString(HostIpPlayerPrefsKey, ipAddressText);
+            PlayerPrefs.SetString(HostIpPlayerPrefsKey, IpAddress);
             PlayerPrefs.Save();
 
-            Destroy(gameObject);
+            connectionPanel.SetActive(false);
         }
 
         public void OnConnectionFailed(string connectionError)
         {
             UnityObjectDestroyer.Destroy(worker);
-            errorMessage = $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
-            isConnecting = false;
+            errorMessage.text =
+                $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
+        }
+
+        private void TryConnect()
+        {
+            errorMessage.text = string.Empty;
+            worker = Instantiate(clientWorkerPrefab);
+            var workerConnector = worker.GetComponent<IMobileConnectionController>();
+
+            if (workerConnector == null)
+            {
+                UnityObjectDestroyer.Destroy(worker);
+                errorMessage.text = MissingWorkerConnectorMessage;
+                throw new MissingComponentException(MissingWorkerConnectorMessage);
+            }
+
+            workerConnector.IpAddress = IpAddress;
+            workerConnector.ConnectionScreenController = this;
+            workerConnector.TryConnect();
         }
     }
 }
