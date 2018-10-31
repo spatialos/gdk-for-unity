@@ -3,10 +3,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    /// <summary>
-    ///     Connect workers via Monobehaviours.
-    /// </summary>
-    public class StandaloneWorkerConnector : WorkerConnector
+    public abstract class StandaloneWorkerConnector : WorkerConnector
     {
         /// <summary>
         ///     Denotes whether to connect using an external IP address.
