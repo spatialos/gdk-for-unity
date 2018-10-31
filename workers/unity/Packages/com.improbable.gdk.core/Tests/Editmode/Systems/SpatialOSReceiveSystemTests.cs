@@ -532,8 +532,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
                 Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
                 Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.Result, response.Result);
                 Assert.AreEqual(wrappedOp.Op.ResultCount, response.ResultCount);
+
+                // Check that the result and the op contain snapshots of the same entities
+                // Or that they are both null if one of them is null
+                // todo UTY-1361 clean this up
+                if (wrappedOp.Op.Result == null)
+                {
+                    Assert.IsNull(response.Result);
+                }
+                else
+                {
+                    CollectionAssert.AreEquivalent(wrappedOp.Op.Result.Keys, response.Result.Keys);
+                }
             }
         }
 

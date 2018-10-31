@@ -142,7 +142,9 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new EntityQueryResponseOp
             {
-                RequestId = new RequestId<EntityQueryRequest>(requestId)
+                RequestId = new RequestId<EntityQueryRequest>(requestId),
+                Result = new Dictionary<EntityId, Entity>(),
+                ResultCount = 0,
             };
 
             return new WrappedOp<EntityQueryResponseOp>(op);
