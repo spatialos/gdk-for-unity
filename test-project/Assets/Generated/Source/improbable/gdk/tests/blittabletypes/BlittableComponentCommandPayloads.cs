@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using Improbable.Worker;
 using Improbable.Worker.Core;
+using Improbable.Gdk.Core.Commands;
 
 namespace Improbable.Gdk.Tests.BlittableTypes
 {
@@ -93,7 +94,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 };
             }
 
-            public struct ReceivedResponse
+            public struct ReceivedResponse : IReceivedResponse
             {
                 public EntityId EntityId { get; }
                 public string Message { get; }
@@ -204,7 +205,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 };
             }
 
-            public struct ReceivedResponse
+            public struct ReceivedResponse : IReceivedResponse
             {
                 public EntityId EntityId { get; }
                 public string Message { get; }
