@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Connect workers via Monobehaviours.
     /// </summary>
-    public class WorkerConnector : MonoBehaviour, IDisposable
+    public abstract class WorkerConnector : MonoBehaviour, IDisposable
     {
         private delegate Task<Worker> ConnectionDelegate();
 
@@ -21,11 +21,6 @@ namespace Improbable.Gdk.Core
         ///     The number of connection attempts before giving up.
         /// </summary>
         public int MaxConnectionAttempts = 3;
-
-        /// <summary>
-        ///     Denotes whether to connect using an external IP address.
-        /// </summary>
-        public bool UseExternalIp;
 
         /// <summary>
         ///     Represents a SpatialOS worker.
@@ -149,30 +144,7 @@ namespace Improbable.Gdk.Core
         ///     Determines whether to connect via the locator.
         /// </summary>
         /// <returns>True, if should connect via the Locator, false otherwise.</returns>
-        protected virtual bool ShouldUseLocator()
-        {
-            if (Application.isEditor)
-            {
-                return false;
-            }
-
-            var commandLineArguments = Environment.GetCommandLineArgs();
-            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-            var shouldUseLocator = commandLineArgs.ContainsKey(RuntimeConfigNames.LoginToken) ||
-                commandLineArgs.ContainsKey(RuntimeConfigNames.SteamDeploymentTag) ||
-                commandLineArgs.ContainsKey(RuntimeConfigNames.SteamTicket);
-            return shouldUseLocator;
-        }
-
-        /// <summary>
-        ///     Selects which deployment to connect to.
-        /// </summary>
-        /// <param name="deployments">The list of deployments.</param>
-        /// <returns>The name of the deployment to connect to.</returns>
-        protected virtual string SelectDeploymentName(DeploymentList deployments)
-        {
-            return null;
-        }
+        protected abstract bool ShouldUseLocator();
 
         /// <summary>
         ///     Creates a Receptionist configuration.
@@ -185,34 +157,7 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         /// <param name="workerType">The type of the worker to create.</param>
         /// <returns>The Receptionist connection configuration</returns>
-        protected virtual ReceptionistConfig GetReceptionistConfig(string workerType)
-        {
-            ReceptionistConfig config;
-
-            if (Application.isEditor)
-            {
-                config = new ReceptionistConfig
-                {
-                    WorkerType = workerType,
-                    WorkerId = CreateNewWorkerId(workerType),
-                    UseExternalIp = UseExternalIp
-                };
-            }
-            else
-            {
-                var commandLineArguments = Environment.GetCommandLineArgs();
-                var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-                config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
-                config.WorkerType = workerType;
-                config.UseExternalIp = UseExternalIp;
-                if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
-                {
-                    config.WorkerId = CreateNewWorkerId(workerType);
-                }
-            }
-
-            return config;
-        }
+        protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 
         /// <summary>
         ///     Creates the Locator configuration.
@@ -222,14 +167,16 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         /// <param name="workerType">The type of the worker to create.</param>
         /// <returns>The Locator connection configuration</returns>
-        protected virtual LocatorConfig GetLocatorConfig(string workerType)
+        protected abstract LocatorConfig GetLocatorConfig(string workerType);
+
+        /// <summary>
+        ///     Selects which deployment to connect to.
+        /// </summary>
+        /// <param name="deployments">The list of deployments.</param>
+        /// <returns>The name of the deployment to connect to.</returns>
+        protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
-            var commandLineArguments = Environment.GetCommandLineArgs();
-            var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
-            var config = LocatorConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
-            config.WorkerType = workerType;
-            config.WorkerId = CreateNewWorkerId(workerType);
-            return config;
+            return null;
         }
 
         protected virtual void HandleWorkerConnectionEstablished()
