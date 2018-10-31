@@ -325,7 +325,7 @@ namespace Improbable.Gdk.Tests
                 long? field15,
                 global::Improbable.Worker.EntityId? field16,
                 global::Improbable.Gdk.Tests.SomeType? field17
-        )
+            )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197716);
                 var obj = schemaComponentData.GetFields();
@@ -450,6 +450,29 @@ namespace Improbable.Gdk.Tests
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
+        }
+
+        public struct Snapshot : ISpatialComponentSnapshot
+        {
+            public uint ComponentId => 197716;
+
+            public BlittableBool? Field1;
+            public float? Field2;
+            public global::Improbable.Gdk.Core.Option<byte[]> Field3;
+            public int? Field4;
+            public long? Field5;
+            public double? Field6;
+            public global::Improbable.Gdk.Core.Option<string> Field7;
+            public uint? Field8;
+            public ulong? Field9;
+            public int? Field10;
+            public long? Field11;
+            public uint? Field12;
+            public ulong? Field13;
+            public int? Field14;
+            public long? Field15;
+            public global::Improbable.Worker.EntityId? Field16;
+            public global::Improbable.Gdk.Tests.SomeType? Field17;
         }
 
         public static class Serialization
@@ -1241,6 +1264,149 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
+            public static Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot();
+
+                {
+                    if (obj.GetBoolCount(1) == 1)
+                    {
+                        component.Field1 = new BlittableBool?(obj.GetBool(1));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetFloatCount(2) == 1)
+                    {
+                        component.Field2 = new float?(obj.GetFloat(2));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetBytesCount(3) == 1)
+                    {
+                        component.Field3 = new global::Improbable.Gdk.Core.Option<byte[]>(obj.GetBytes(3));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetInt32Count(4) == 1)
+                    {
+                        component.Field4 = new int?(obj.GetInt32(4));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetInt64Count(5) == 1)
+                    {
+                        component.Field5 = new long?(obj.GetInt64(5));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetDoubleCount(6) == 1)
+                    {
+                        component.Field6 = new double?(obj.GetDouble(6));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetStringCount(7) == 1)
+                    {
+                        component.Field7 = new global::Improbable.Gdk.Core.Option<string>(obj.GetString(7));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetUint32Count(8) == 1)
+                    {
+                        component.Field8 = new uint?(obj.GetUint32(8));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetUint64Count(9) == 1)
+                    {
+                        component.Field9 = new ulong?(obj.GetUint64(9));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetSint32Count(10) == 1)
+                    {
+                        component.Field10 = new int?(obj.GetSint32(10));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetSint64Count(11) == 1)
+                    {
+                        component.Field11 = new long?(obj.GetSint64(11));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetFixed32Count(12) == 1)
+                    {
+                        component.Field12 = new uint?(obj.GetFixed32(12));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetFixed64Count(13) == 1)
+                    {
+                        component.Field13 = new ulong?(obj.GetFixed64(13));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetSfixed32Count(14) == 1)
+                    {
+                        component.Field14 = new int?(obj.GetSfixed32(14));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetSfixed64Count(15) == 1)
+                    {
+                        component.Field15 = new long?(obj.GetSfixed64(15));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetEntityIdCount(16) == 1)
+                    {
+                        component.Field16 = new global::Improbable.Worker.EntityId?(obj.GetEntityId(16));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetObjectCount(17) == 1)
+                    {
+                        component.Field17 = new global::Improbable.Gdk.Tests.SomeType?(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17)));
+                    }
+                    
+                }
+
+                return component;
+            }
+
             public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveOptional.Component component)
             {
                 var obj = updateObj.GetFields();
@@ -1665,9 +1831,25 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            {
+                var schemaDataOpt = snapshot.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveOptional.ComponentId, DeserializeData, DeserializeUpdate);
+            }
+
+            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
+            {
+                handler.Accept<Snapshot>(ExhaustiveOptional.ComponentId, DeserializeSnapshot);
             }
         }
     }

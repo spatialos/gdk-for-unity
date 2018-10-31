@@ -42,7 +42,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     instance.Field1 = obj.GetFloat(1);
                 }
                 {
-                    var list = instance.Field2 = new global::System.Collections.Generic.List<double>();
+                    instance.Field2 = new global::System.Collections.Generic.List<double>();
+                    var list = instance.Field2;
                     var listLength = obj.GetDoubleCount(2);
                     for (var i = 0; i < listLength; i++)
                     {
