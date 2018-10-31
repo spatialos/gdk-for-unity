@@ -69,7 +69,7 @@ namespace <#= qualifiedNamespace #>
 
             [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : RequirableBase
+            public class CommandRequestSender : RequirableBase, ICommandRequestSender
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
@@ -86,6 +86,8 @@ namespace <#= qualifiedNamespace #>
     foreach(var commandDetails in commandDetailsList) {
         var receivedResponseType = commandDetails.CommandName + ".ReceivedResponse";
 #>
+                public CommandTypeInformation<<#= commandDetails.CommandName #>, <#= commandDetails.FqnRequestType #>, <#= receivedResponseType #>> <#= commandDetails.CommandName #>TypeInformation;
+
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
                 {
@@ -108,6 +110,14 @@ namespace <#= qualifiedNamespace #>
                         return -1;
                     }
 
+                    Action<<#= receivedResponseType #>> wrappedCallback = response =>
+                    {
+                        if (this.IsValid() && callback != null)
+                        {
+                            callback(response);
+                        }
+                    };
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
@@ -115,6 +125,40 @@ namespace <#= qualifiedNamespace #>
                 }
 
 <# } #>
+                long ICommandRequestSender.SendCommand<TCommand, TRequest, TResponse>(CommandTypeInformation<TCommand, TRequest, TResponse> commandTypeInformation, EntityId entityId, TRequest request,
+                    Action<TResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+<#
+    foreach(var commandDetails in commandDetailsList) {
+        var receivedResponseType = commandDetails.CommandName + ".ReceivedResponse";
+#>
+                    if (typeof(TCommand) == typeof(<#= commandDetails.CommandName #>))
+                    {
+                        if (callback != null && !(typeof(TResponse) == typeof(<#= receivedResponseType #>)))
+                        {
+                            throw new ArgumentException(
+                                $"Callback for command {nameof(<#= commandDetails.CommandName #>)} must be an Action taking type {typeof(<#= receivedResponseType #>).FullName}");
+                        }
+
+                        // Can not directly cast to a struct and can not use unsafe code as the request type can not be constrained using unmanaged
+                        switch (request)
+                        {
+                            case <#= commandDetails.FqnRequestType #> concreteRequest:
+                            {
+                                var concreteCallback = callback as Action<<#= receivedResponseType #>>;
+                                return Send<#= commandDetails.CommandName #>Request(entityId, concreteRequest, concreteCallback, timeoutMillis,
+                                    allowShortCircuiting);
+                            }
+                            default:
+                                throw new ArgumentException(
+                                    $"Request payload for command <#= commandDetails.CommandName #>, must be of type {nameof(<#= commandDetails.FqnRequestType #>)}");
+                        }
+                    }
+
+<# } #>
+
+                    throw new ArgumentException($"Can not send unknown command {typeof(TRequest)}");
+                }
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
