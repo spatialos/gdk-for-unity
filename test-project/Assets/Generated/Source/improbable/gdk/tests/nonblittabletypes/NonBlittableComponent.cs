@@ -213,7 +213,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 int? optionalField,
                 global::System.Collections.Generic.List<int> listField,
                 global::System.Collections.Generic.Dictionary<int,string> mapField
-        )
+            )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1002);
                 var obj = schemaComponentData.GetFields();
@@ -260,6 +260,21 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
+        }
+
+        public struct Snapshot : ISpatialComponentSnapshot
+        {
+            public uint ComponentId => 1002;
+
+            public BlittableBool BoolField;
+            public int IntField;
+            public long LongField;
+            public float FloatField;
+            public double DoubleField;
+            public string StringField;
+            public int? OptionalField;
+            public global::System.Collections.Generic.List<int> ListField;
+            public global::System.Collections.Generic.Dictionary<int,string> MapField;
         }
 
         public static class Serialization
@@ -400,7 +415,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
                 component.listFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
                 {
-                    var list = component.ListField = new global::System.Collections.Generic.List<int>();
+                    component.ListField = new global::System.Collections.Generic.List<int>();
+                    var list = component.ListField;
                     var listLength = obj.GetInt32Count(8);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -410,7 +426,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
                 component.mapFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
                 {
-                    var map = component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var map = component.MapField;
                     var mapSize = obj.GetObjectCount(9);
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -547,6 +564,70 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     
                 }
                 return update;
+            }
+
+            public static Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot();
+
+                {
+                    component.BoolField = obj.GetBool(1);
+                }
+
+                {
+                    component.IntField = obj.GetInt32(2);
+                }
+
+                {
+                    component.LongField = obj.GetInt64(3);
+                }
+
+                {
+                    component.FloatField = obj.GetFloat(4);
+                }
+
+                {
+                    component.DoubleField = obj.GetDouble(5);
+                }
+
+                {
+                    component.StringField = obj.GetString(6);
+                }
+
+                {
+                    if (obj.GetInt32Count(7) == 1)
+                    {
+                        component.OptionalField = new int?(obj.GetInt32(7));
+                    }
+                    
+                }
+
+                {
+                    component.ListField = new global::System.Collections.Generic.List<int>();
+                    var list = component.ListField;
+                    var listLength = obj.GetInt32Count(8);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexInt32(8, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
+                    var map = component.MapField;
+                    var mapSize = obj.GetObjectCount(9);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(9, (uint) i);
+                        var key = mapObj.GetInt32(1);
+                        var value = mapObj.GetString(2);
+                        map.Add(key, value);
+                    }
+                    
+                }
+
+                return component;
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component component)
@@ -723,9 +804,25 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            {
+                var schemaDataOpt = snapshot.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(NonBlittableComponent.ComponentId, DeserializeData, DeserializeUpdate);
+            }
+
+            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
+            {
+                handler.Accept<Snapshot>(NonBlittableComponent.ComponentId, DeserializeSnapshot);
             }
         }
     }

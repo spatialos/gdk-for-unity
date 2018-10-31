@@ -325,7 +325,7 @@ namespace Improbable.Gdk.Tests
                 global::System.Collections.Generic.List<long> field15,
                 global::System.Collections.Generic.List<global::Improbable.Worker.EntityId> field16,
                 global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17
-        )
+            )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197717);
                 var obj = schemaComponentData.GetFields();
@@ -450,6 +450,29 @@ namespace Improbable.Gdk.Tests
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
+        }
+
+        public struct Snapshot : ISpatialComponentSnapshot
+        {
+            public uint ComponentId => 197717;
+
+            public global::System.Collections.Generic.List<BlittableBool> Field1;
+            public global::System.Collections.Generic.List<float> Field2;
+            public global::System.Collections.Generic.List<byte[]> Field3;
+            public global::System.Collections.Generic.List<int> Field4;
+            public global::System.Collections.Generic.List<long> Field5;
+            public global::System.Collections.Generic.List<double> Field6;
+            public global::System.Collections.Generic.List<string> Field7;
+            public global::System.Collections.Generic.List<uint> Field8;
+            public global::System.Collections.Generic.List<ulong> Field9;
+            public global::System.Collections.Generic.List<int> Field10;
+            public global::System.Collections.Generic.List<long> Field11;
+            public global::System.Collections.Generic.List<uint> Field12;
+            public global::System.Collections.Generic.List<ulong> Field13;
+            public global::System.Collections.Generic.List<int> Field14;
+            public global::System.Collections.Generic.List<long> Field15;
+            public global::System.Collections.Generic.List<global::Improbable.Worker.EntityId> Field16;
+            public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> Field17;
         }
 
         public static class Serialization
@@ -737,7 +760,8 @@ namespace Improbable.Gdk.Tests
 
                 component.field1Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Allocate(world);
                 {
-                    var list = component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    var list = component.Field1;
                     var listLength = obj.GetBoolCount(1);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -747,7 +771,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field2Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Allocate(world);
                 {
-                    var list = component.Field2 = new global::System.Collections.Generic.List<float>();
+                    component.Field2 = new global::System.Collections.Generic.List<float>();
+                    var list = component.Field2;
                     var listLength = obj.GetFloatCount(2);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -757,7 +782,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field3Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 {
-                    var list = component.Field3 = new global::System.Collections.Generic.List<byte[]>();
+                    component.Field3 = new global::System.Collections.Generic.List<byte[]>();
+                    var list = component.Field3;
                     var listLength = obj.GetBytesCount(3);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -767,7 +793,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field4Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Allocate(world);
                 {
-                    var list = component.Field4 = new global::System.Collections.Generic.List<int>();
+                    component.Field4 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field4;
                     var listLength = obj.GetInt32Count(4);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -777,7 +804,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field5Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Allocate(world);
                 {
-                    var list = component.Field5 = new global::System.Collections.Generic.List<long>();
+                    component.Field5 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field5;
                     var listLength = obj.GetInt64Count(5);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -787,7 +815,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field6Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Allocate(world);
                 {
-                    var list = component.Field6 = new global::System.Collections.Generic.List<double>();
+                    component.Field6 = new global::System.Collections.Generic.List<double>();
+                    var list = component.Field6;
                     var listLength = obj.GetDoubleCount(6);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -797,7 +826,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field7Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 {
-                    var list = component.Field7 = new global::System.Collections.Generic.List<string>();
+                    component.Field7 = new global::System.Collections.Generic.List<string>();
+                    var list = component.Field7;
                     var listLength = obj.GetStringCount(7);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -807,7 +837,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field8Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Allocate(world);
                 {
-                    var list = component.Field8 = new global::System.Collections.Generic.List<uint>();
+                    component.Field8 = new global::System.Collections.Generic.List<uint>();
+                    var list = component.Field8;
                     var listLength = obj.GetUint32Count(8);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -817,7 +848,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field9Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Allocate(world);
                 {
-                    var list = component.Field9 = new global::System.Collections.Generic.List<ulong>();
+                    component.Field9 = new global::System.Collections.Generic.List<ulong>();
+                    var list = component.Field9;
                     var listLength = obj.GetUint64Count(9);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -827,7 +859,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field10Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Allocate(world);
                 {
-                    var list = component.Field10 = new global::System.Collections.Generic.List<int>();
+                    component.Field10 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field10;
                     var listLength = obj.GetSint32Count(10);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -837,7 +870,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field11Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Allocate(world);
                 {
-                    var list = component.Field11 = new global::System.Collections.Generic.List<long>();
+                    component.Field11 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field11;
                     var listLength = obj.GetSint64Count(11);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -847,7 +881,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field12Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Allocate(world);
                 {
-                    var list = component.Field12 = new global::System.Collections.Generic.List<uint>();
+                    component.Field12 = new global::System.Collections.Generic.List<uint>();
+                    var list = component.Field12;
                     var listLength = obj.GetFixed32Count(12);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -857,7 +892,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field13Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Allocate(world);
                 {
-                    var list = component.Field13 = new global::System.Collections.Generic.List<ulong>();
+                    component.Field13 = new global::System.Collections.Generic.List<ulong>();
+                    var list = component.Field13;
                     var listLength = obj.GetFixed64Count(13);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -867,7 +903,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field14Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Allocate(world);
                 {
-                    var list = component.Field14 = new global::System.Collections.Generic.List<int>();
+                    component.Field14 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field14;
                     var listLength = obj.GetSfixed32Count(14);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -877,7 +914,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field15Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Allocate(world);
                 {
-                    var list = component.Field15 = new global::System.Collections.Generic.List<long>();
+                    component.Field15 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field15;
                     var listLength = obj.GetSfixed64Count(15);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -887,7 +925,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field16Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 {
-                    var list = component.Field16 = new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>();
+                    component.Field16 = new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>();
+                    var list = component.Field16;
                     var listLength = obj.GetEntityIdCount(16);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -897,7 +936,8 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field17Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Allocate(world);
                 {
-                    var list = component.Field17 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>();
+                    component.Field17 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>();
+                    var list = component.Field17;
                     var listLength = obj.GetObjectCount(17);
                     for (var i = 0; i < listLength; i++)
                     {
@@ -1290,6 +1330,200 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 return update;
+            }
+
+            public static Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot();
+
+                {
+                    component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    var list = component.Field1;
+                    var listLength = obj.GetBoolCount(1);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexBool(1, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field2 = new global::System.Collections.Generic.List<float>();
+                    var list = component.Field2;
+                    var listLength = obj.GetFloatCount(2);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexFloat(2, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field3 = new global::System.Collections.Generic.List<byte[]>();
+                    var list = component.Field3;
+                    var listLength = obj.GetBytesCount(3);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexBytes(3, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field4 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field4;
+                    var listLength = obj.GetInt32Count(4);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexInt32(4, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field5 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field5;
+                    var listLength = obj.GetInt64Count(5);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexInt64(5, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field6 = new global::System.Collections.Generic.List<double>();
+                    var list = component.Field6;
+                    var listLength = obj.GetDoubleCount(6);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexDouble(6, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field7 = new global::System.Collections.Generic.List<string>();
+                    var list = component.Field7;
+                    var listLength = obj.GetStringCount(7);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexString(7, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field8 = new global::System.Collections.Generic.List<uint>();
+                    var list = component.Field8;
+                    var listLength = obj.GetUint32Count(8);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexUint32(8, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field9 = new global::System.Collections.Generic.List<ulong>();
+                    var list = component.Field9;
+                    var listLength = obj.GetUint64Count(9);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexUint64(9, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field10 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field10;
+                    var listLength = obj.GetSint32Count(10);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexSint32(10, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field11 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field11;
+                    var listLength = obj.GetSint64Count(11);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexSint64(11, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field12 = new global::System.Collections.Generic.List<uint>();
+                    var list = component.Field12;
+                    var listLength = obj.GetFixed32Count(12);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexFixed32(12, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field13 = new global::System.Collections.Generic.List<ulong>();
+                    var list = component.Field13;
+                    var listLength = obj.GetFixed64Count(13);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexFixed64(13, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field14 = new global::System.Collections.Generic.List<int>();
+                    var list = component.Field14;
+                    var listLength = obj.GetSfixed32Count(14);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexSfixed32(14, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field15 = new global::System.Collections.Generic.List<long>();
+                    var list = component.Field15;
+                    var listLength = obj.GetSfixed64Count(15);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexSfixed64(15, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field16 = new global::System.Collections.Generic.List<global::Improbable.Worker.EntityId>();
+                    var list = component.Field16;
+                    var listLength = obj.GetEntityIdCount(16);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(obj.IndexEntityId(16, (uint) i));
+                    }
+                    
+                }
+
+                {
+                    component.Field17 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>();
+                    var list = component.Field17;
+                    var listLength = obj.GetObjectCount(17);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i)));
+                    }
+                    
+                }
+
+                return component;
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveRepeated.Component component)
@@ -1733,9 +1967,25 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            {
+                var schemaDataOpt = snapshot.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveRepeated.ComponentId, DeserializeData, DeserializeUpdate);
+            }
+
+            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
+            {
+                handler.Accept<Snapshot>(ExhaustiveRepeated.ComponentId, DeserializeSnapshot);
             }
         }
     }

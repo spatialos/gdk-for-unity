@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Tests
 
             public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
                 global::Improbable.Gdk.Tests.TypeName nestedType
-        )
+            )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(20152);
                 var obj = schemaComponentData.GetFields();
@@ -110,6 +110,13 @@ namespace Improbable.Gdk.Tests
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
+        }
+
+        public struct Snapshot : ISpatialComponentSnapshot
+        {
+            public uint ComponentId => 20152;
+
+            public global::Improbable.Gdk.Tests.TypeName NestedType;
         }
 
         public static class Serialization
@@ -150,6 +157,17 @@ namespace Improbable.Gdk.Tests
                     
                 }
                 return update;
+            }
+
+            public static Improbable.Gdk.Tests.NestedComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new Improbable.Gdk.Tests.NestedComponent.Snapshot();
+
+                {
+                    component.NestedType = global::Improbable.Gdk.Tests.TypeName.Serialization.Deserialize(obj.GetObject(1));
+                }
+
+                return component;
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.NestedComponent.Component component)
@@ -209,9 +227,25 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            {
+                var schemaDataOpt = snapshot.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(NestedComponent.ComponentId, DeserializeData, DeserializeUpdate);
+            }
+
+            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
+            {
+                handler.Accept<Snapshot>(NestedComponent.ComponentId, DeserializeSnapshot);
             }
         }
     }
