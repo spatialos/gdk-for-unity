@@ -148,7 +148,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 #>
                 <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
 <# } #>
-        )
+            )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
                 var obj = schemaComponentData.GetFields();
@@ -159,6 +159,15 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
+<# } #>
+        }
+
+        public struct Snapshot : ISpatialComponentSnapshot
+        {
+            public uint ComponentId => <#= componentDetails.ComponentId #>;
+
+<# foreach(var fieldDetails in fieldDetailsList) { #>
+            public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
 <# } #>
         }
 
@@ -212,6 +221,19 @@ var fieldDetails = fieldDetailsList[i]; #>
                 }
 <# } #>
                 return update;
+            }
+
+            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                var component = new <#= componentNamespace #>.Snapshot();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+
+<# } #>
+                return component;
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
@@ -274,9 +296,25 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            {
+                var schemaDataOpt = snapshot.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
+                }
+
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeData, DeserializeUpdate);
+            }
+
+            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
+            {
+                handler.Accept<Snapshot>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeSnapshot);
             }
         }
     }

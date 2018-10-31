@@ -373,7 +373,7 @@ namespace Improbable.Gdk.Core
 
             responses.Add(
                 new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
-                    requestBundle.RequestId));
+                    requestBundle.RequestId, World));
         }
 
         internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)

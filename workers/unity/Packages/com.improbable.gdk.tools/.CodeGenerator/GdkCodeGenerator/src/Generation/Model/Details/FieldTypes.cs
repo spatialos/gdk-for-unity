@@ -230,7 +230,8 @@ namespace Improbable.Gdk.CodeGenerator
         public string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var list = {fieldInstance} = new {Type}();");
+            codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
+            codeWriter.WriteLine($"var list = {fieldInstance};");
             codeWriter.WriteLine($"var listLength = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
             codeWriter.WriteLine("for (var i = 0; i < listLength; i++)");
             using (codeWriter.Scope())
@@ -335,7 +336,8 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var codeWriter = new CodeWriter();
 
-            codeWriter.WriteLine($"var map = {fieldInstance} = new {Type}();");
+            codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
+            codeWriter.WriteLine($"var map = {fieldInstance};");
             codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
             codeWriter.WriteLine("for (var i = 0; i < mapSize; i++)");
             using (codeWriter.Scope())

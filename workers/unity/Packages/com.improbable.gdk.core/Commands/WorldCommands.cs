@@ -887,11 +887,6 @@ namespace Improbable.Gdk.Core.Commands
             /// <returns></returns>
             public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
             {
-                if (entityQuery.ResultType is SnapshotResultType)
-                {
-                    Debug.LogWarning("Cannot safely access component data from entity query - this is a known issue. To protect its integrity, the worker will drop the request before sending.");
-                }
-
                 return new Request
                 {
                     EntityQuery = entityQuery,
@@ -918,13 +913,10 @@ namespace Improbable.Gdk.Core.Commands
                 public string Message { get; }
 
                 /// <summary>
-                ///     A dictionary that represents the results of the entity query.
+                ///     A dictionary that represents the results of a <see cref="SnapshotResultType"/> entity query.
+                ///     This is null for <see cref="CountResultType"/> entity queries.
                 /// </summary>
-                /// <remarks>
-                ///     Warning: Accessing underlying component data on the Entity object will cause crashes.
-                ///     This dictionary should not be populated until this bug is fixed.
-                /// </remarks>
-                public Dictionary<EntityId, Entity> Result { get; }
+                public Dictionary<EntityId, EntityQuerySnapshot> Result { get; }
 
                 /// <summary>
                 ///     The number of entities that matched the entity query constraints.
@@ -946,15 +938,26 @@ namespace Improbable.Gdk.Core.Commands
                 /// </summary>
                 public long RequestId { get; }
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId)
+                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId, World world)
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    Result = op.Result;
                     ResultCount = op.ResultCount;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
+
+                    if (op.Result == null)
+                    {
+                        Result = null;
+                        return;
+                    }
+
+                    Result = new Dictionary<EntityId, EntityQuerySnapshot>();
+                    foreach (var entityIdToEntity in op.Result)
+                    {
+                        Result.Add(entityIdToEntity.Key, new EntityQuerySnapshot(entityIdToEntity.Value, world));
+                    }
                 }
             }
 
