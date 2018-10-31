@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class ClientWorkerConnector : StandaloneWorkerConnector
+    public class ClientWorkerConnector : DefaultWorkerConnector
     {
         [SerializeField] private GameObject level;
 

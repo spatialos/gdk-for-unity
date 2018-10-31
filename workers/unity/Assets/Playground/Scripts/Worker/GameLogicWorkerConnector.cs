@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    public class GameLogicWorkerConnector : StandaloneWorkerConnector
+    public class GameLogicWorkerConnector : DefaultWorkerConnector
     {
         [SerializeField] private GameObject level;
 
