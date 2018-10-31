@@ -28,21 +28,19 @@
     - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
 - <h3> + Creating a new project</h3>
     - [Get the dependencies]({{urlRoot}}/setup-and-installing)
-    - [Set up your project]({{urlRoot}}/content/set-up-new-project)
+    - [Add the GDK to your project]({{urlRoot}}/content/set-up-new-project)
     - [Build your workers]({{urlRoot}}/content/build)
     - [Deploy your game]({{urlRoot}}/content/deploy)
-- <h3> + Configuring your project</h3>
+- <h3> + GDK concepts</h3>
     - <h4>Workers: </h4>
         - [ * Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
+        - [ * Connecting to SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
         - [ * API - worker]({{urlRoot}}/content/workers/api-worker)
-        - [ * API - workers system]({{urlRoot}}/content/workers/api-worker-system)
-    - <h4>SpatialOS entities:</h4>
-        - [* Creating SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
-        - [* API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
-    - [Connecting to SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
-- <h3> + Project design</h3>
+        - [ * API - worker system]({{urlRoot}}/content/workers/api-worker-system)
     - <h4>SpatialOS entities:</h4>
         - [ * Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
+        - [* Creating SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
+        - [* API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
     - <h4>Commands:</h4>
         - [ * World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 - <h3> + Tools </h3>

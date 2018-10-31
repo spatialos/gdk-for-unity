@@ -27,7 +27,7 @@ If you are using the MonoBehaviour workflow, you should look at [How to link Spa
 
 #### ECS 
 
-The GDK currently uses Unity's 0.0.12-preview.13 version of the entities preview packages. This GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
+The GDK currently uses Unity's `0.0.12-preview.18` version of the entities preview packages. This GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
 
 For information on the ECS system, see:
 
