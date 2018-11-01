@@ -9,7 +9,7 @@ See first the documentation on:
 * [Worker API]({{urlRoot}}/content/workers/api-worker)
 
 To demonstrate use of the `Worker` class, the GDK contains an example implementation
-of how to create your workers. We provide an abstract `WorkerConnector` class and a `DefaultWorkerConnector` implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it. 
+of how to create a `Worker` object and connect to SpatialOS. We provide an abstract `WorkerConnector` class and a `DefaultWorkerConnector` implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it. 
 The `WorkerConnector` is a MonoBehaviour script. You can use it to create multiple workers
 in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker.
 
