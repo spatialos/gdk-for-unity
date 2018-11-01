@@ -12,7 +12,7 @@ In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](h
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.8</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.14</strong></a>**
 
 - Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
@@ -50,10 +50,10 @@ Once you have navigated to the **Workloads** tab:
 
 * After selecting **Game development with Unity**:
 	- Deselect any options in the **Summary** on the right that mention a Unity Editor (e.g. Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor)
-    - The SpatialOS GDK for Unity requires **Unity 2018.2.8**, which should already be installed if you have followed the setup guide correctly.
+    - The SpatialOS GDK for Unity requires **Unity 2018.2.14**, which should already be installed if you have followed the setup guide correctly.
 	- Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it)
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.8 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.2.14 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
 
 **Using Rider?**
 
@@ -63,7 +63,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.8</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.14</strong></a>**
 
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
