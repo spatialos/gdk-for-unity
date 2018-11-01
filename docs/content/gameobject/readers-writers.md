@@ -26,7 +26,7 @@ Readers and Writers allow you to inspect and change the state of SpatialOS compo
 
   * Change the property values of a SpatialOS component.
   * Send events defined in a SpatialOS component.
-  * Send acknowledgement for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+  * Send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
   * All the functionality that a Reader provides.
 
 > Note that a writer will only receive authority state change callbacks for `AuthorityLossImminent`.
@@ -168,6 +168,6 @@ Parameters:
 ```csharp
 void SendAuthorityLossImminentAcknowledgement();
 ```
-Allows you to send acknowledgements to [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+Allows you to send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
 > This method throws an `InvalidOperationException` if the authority state of `TComponent` is not `AuthorityLossImminent`.
