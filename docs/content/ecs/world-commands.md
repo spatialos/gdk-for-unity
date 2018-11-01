@@ -112,5 +112,3 @@ To send a request use a `WorldCommands.EntityQuery.CommandSender` component. Thi
   * `TimeoutMillis` is optional.
 
 To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
-
-**Warning**: Entity queries only exist in the GDK in a prototype form, the methods for sending and receiving them exist, but you can only access some information safely in the responses. It is not recommended to use them at this time.

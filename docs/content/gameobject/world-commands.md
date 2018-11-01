@@ -137,7 +137,9 @@ Callback parameters:
 The `DeleteEntity.ReceivedResponse` struct contains the same fields as any `ReceivedResponse` struct. However, in this case, the `EntityId` field represents the entity ID of the deleted entity. If the command failed, this field is null.
 
 >  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [The GDK does this for you]({{urlRoot}}/content/gameobject/linking-spatialos-entities#the-creation-feature-module).
-EntityQuery
+
+
+### EntityQuery
 You can use entity queries to get information about entities in the SpatialOS game world. (See SpatialOs documentation on entity queries.) The GDK currently only offers a prototype of the entity queries. The methods for sending and receiving entity queries exist, but you can not yet safely access the information in the responses. It is not recommended to use them. Any entity queries that specify a `SnapshotResultType
 ` will be ignored.
 
@@ -169,5 +171,5 @@ The `EntityQuery.ReceivedResponse` struct contains the same fields as any `Recei
 
 | Name          	| Type 	| Description                                                                                                                                                            	|
 |-------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ResultCount 	| `int` | "The number of entities that matched the query. <br/><br/> Note that a best-effort attempt is made to count the entities when the status code is ApplicationError. In this case, the count can still be non-zero, but should be considered a lower bound (i.e. there might be entities matching the query that were not counted)." |
-| Result | `Dictionary<EntityId, Entity>`  	| "The result of the query. Not used for CountResultType queries. <br/> </br> Note that a best-effort attempt is made to get results when the status code is ApplicationError. In this case, the result can still be non-empty, but should be considered incomplete (i.e. there might be entities matching the query that were not returned).<br/><br/> > Note: since the GDK currently offers a prototype of Entity Queries, the `Result` will always be null."                                                                                        	|
+| ResultCount 	| `int` | The number of entities that matched the query. <br/><br/> Note that a best-effort attempt is made to count the entities when the status code is ApplicationError. In this case, the count can still be non-zero, but should be considered a lower bound (i.e. there might be entities matching the query that were not counted). |
+| Result | `Dictionary<EntityId, EntityQuerySnapshot>`  	| The result of a `SnapshotResultType` query. For `CountResultType` queries this will be `null`.<br/> </br> Note that a best-effort attempt is made to get results when the status code is ApplicationError. In this case, the result can still be non-empty, but there might be entities matching the query that were not returned.<br/><br/> 
