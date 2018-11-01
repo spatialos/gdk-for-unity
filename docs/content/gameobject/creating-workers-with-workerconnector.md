@@ -9,8 +9,7 @@ See first the documentation on:
 * [Worker API]({{urlRoot}}/content/workers/api-worker)
 
 To demonstrate use of the `Worker` class, the GDK contains an example implementation
-of how to create your workers. We have implemented this in
-the `WorkerConnector` class which you can extend further by creating classes which inherit from it.
+of how to create your workers. We provide an abstract `WorkerConnector` class and a `DefaultWorkerConnector` implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it. 
 The `WorkerConnector` is a MonoBehaviour script. You can use it to create multiple workers
 in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker.
 
@@ -35,14 +34,13 @@ We provide three sample Scenes:
 
 
 ## How to create your own WorkerConnector
-You can inherit from the `WorkerConnector `class to create your own connection logic,
-dependent on the [type of the worker]({{urlRoot}}/content/glossary#worker-types) that you want to create.
+You can inherit from the `WorkerConnector `class to create your own connection logic, dependent on the [type of the worker]({{urlRoot}}/content/glossary#worker-types) that you want to create.
 
 **Example**</br>
-Showing what your implementation, inheriting from `WorkerConnector`, could look like.
+Showing what your implementation, inheriting from `DefaultWorkerConnector`, could look like.
 
 ```csharp
-public class ClientWorkerConnector : WorkerConnector
+public class ClientWorkerConnector : DefaultWorkerConnector
 {
 	private async void Start()
 	{
