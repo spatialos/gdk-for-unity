@@ -10,6 +10,9 @@
 - Added support for local mobile development.
 - Added a changelog.
 - Added field level dirty markers in components. This allows for partial automatic component updates to be sent.
+- Added full support for `EntityQuery` world commands.
+    - Added `Improbable.Gdk.Core.EntitySnapshot` to hold the result of a snapshot query.
+    - Added `Improbable.Gdk.Core.ISpatialComponentSnapshot` to differentiate between a snapshot of a component state and component data.
 
 ### Changed
 
