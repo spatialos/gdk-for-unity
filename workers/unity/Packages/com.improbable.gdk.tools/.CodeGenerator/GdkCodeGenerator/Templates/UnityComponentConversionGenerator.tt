@@ -667,6 +667,89 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             }
         }
 
+        public class CommandSender : ICommandSender
+        {
+            private readonly Improbable.Worker.Core.CommandParameters shortCircuitingParameters = new CommandParameters
+            {
+                AllowShortCircuiting = true
+            };
+
+            private WorkerSystem workerSystem;
+            private EntityManager entityManager;
+
+<# foreach (var command in commandDetailsList) { #>
+            private CommandStorages.<#= command.CommandName #> <#= command.CamelCaseCommandName #>Storage;
+<# } #>
+
+<# foreach (var command in commandDetailsList) { #>
+            private List<(Unity.Entities.Entity SendingEntity, <#= command.CommandName #>.Request Request)> <#= command.CamelCaseCommandName #>Requests;
+
+            public void Send<#= command.CommandName #>Request(Unity.Entities.Entity sendingEntity, <#= command.CommandName #>.Request request)
+            {
+                if (<#= command.CamelCaseCommandName #>Requests == null)
+                {
+                    <#= command.CamelCaseCommandName #>Requests =
+                        new List<(Unity.Entities.Entity SendingEntity, <#= command.CommandName #>.Request Request)>();
+                }
+
+                <#= command.CamelCaseCommandName #>Requests.Add((sendingEntity, request));
+            }
+
+            public void Send<#= command.CommandName #>Request(Improbable.Worker.EntityId sendingEntityId, <#= command.CommandName #>.Request request)
+            {
+                if (!workerSystem.TryGetEntity(sendingEntityId, out var entity))
+                {
+                    throw new ArgumentException($"Can not send a command from Entity with ID {sendingEntityId.Id} as it is not in the worker view");
+                }
+
+                Send<#= command.CommandName #>Request(entity, request);
+            }
+
+<# } #>
+            void ICommandSender.Init(World world)
+            {
+                workerSystem = world.GetExistingManager<WorkerSystem>();
+
+                if (workerSystem == null)
+                {
+                    throw new ArgumentException("World instance is not running a valid SpatialOS worker");
+                }
+
+                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
+<# foreach (var command in commandDetailsList) { #>
+                <#= command.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= command.CommandName #>>();
+<# } #>
+            }
+
+            void ICommandSender.SendAll()
+            {
+                var connection = workerSystem.Connection;
+<# foreach (var command in commandDetailsList) { #>
+
+                if (<#= command.CamelCaseCommandName #>Requests == null)
+                {
+                    return;
+                }
+
+                foreach (var (entity, request) in <#= command.CamelCaseCommandName #>Requests)
+                {
+                    var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
+                    <#= command.FqnRequestType #>.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
+
+                    var requestId = connection.SendCommandRequest(request.TargetEntityId,
+                        new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                        request.TimeoutMillis,
+                        request.AllowShortCircuiting ? shortCircuitingParameters : null);
+
+                    <#= command.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId.Id] =
+                        new CommandRequestStore<<#= command.FqnRequestType #>>(entity, request.Payload, request.Context, request.RequestId);
+                }
+
+                <#= command.CamelCaseCommandName #>Requests.Clear();
+<# } #>
+            }
+        }
+
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
