@@ -40,21 +40,28 @@ TMP_DIR=$(mktemp -d)
 
 # Go to a temporary directory and simulate the merge
 pushd ${TMP_DIR}
+
     mkdir -p unity-gdk
     git clone ${CLONE_URL} unity-gdk
-popd unity-gdk
 
-git checkout master
-git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
-CHANGED_FILES=$(git diff HEAD --name-only)
+    pushd unity-gdk 
 
-NON_DOCS_FILES=()
-for file_path in ${CHANGED_FILES} 
-do
-    if ! isDocsFile ${file_path} ; then
-        NON_DOCS_FILES+=(${file_path})
-    fi
-done
+        git checkout master
+        git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
+        CHANGED_FILES=$(git diff HEAD --name-only)
+
+        NON_DOCS_FILES=()
+        for file_path in ${CHANGED_FILES} 
+        do
+            if ! isDocsFile ${file_path} ; then
+                NON_DOCS_FILES+=(${file_path})
+            fi
+        done
+        
+    popd
+
+popd 
+
 
 if [ ${#NON_DOCS_FILES[@]} -ne 0 ]; then
     echo "Docs verification failed. The following files are not doc files:"
