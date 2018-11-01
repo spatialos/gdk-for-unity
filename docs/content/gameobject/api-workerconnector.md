@@ -29,7 +29,7 @@ Parameters:
 Returns: a task which finishes when the worker either connects or fails to connect.
 
 ```csharp
-protected virtual bool ShouldUseLocator();
+protected abstract bool ShouldUseLocator();
 ```
 
 Returns: true, if the worker should connect using the Locator flow, false otherwise.
@@ -46,7 +46,7 @@ Parameters:
 Returns: the name of the selected cloud deployment.
 
 ```csharp
-protected virtual ReceptionistConfig GetReceptionistConfig(string workerType);
+protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 ```
 This method is only used when connecting through the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
@@ -57,7 +57,7 @@ Parameters:
 Returns: a connection configuration to connect using the [Receptionist connection flow]({{urlRoot}}/content/glossary#receptionist-connection-flow).
 
 ```csharp
-protected virtual LocatorConfig GetLocatorConfig(string workerType);
+protected abstract LocatorConfig GetLocatorConfig(string workerType);
 ```
 This method is only used when connecting through the [Locator connection flow]({{urlRoot}}/content/glossary#locator-connection-flow).
 
@@ -75,9 +75,13 @@ This method provides a way to add additional logic after a connection has been e
 
 
 ```csharp
-protected virtual void HandleWorkerConnectionFailure();
+protected virtual void HandleWorkerConnectionFailure(string errorMessage);
 ```
 This method provides a way to add additional logic after the `WorkerConnector` failed to create a connection.
+
+Parameters:
+
+  * `string errorMessage`: Contains the reason for failing the connection.
 
 ```csharp
 public virtual void Dispose();
