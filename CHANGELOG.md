@@ -5,6 +5,11 @@
 ### Added
 
 - Added support for the Steam authentication flow.
+
+## `0.1.2` - 2018-11-01
+
+### Added
+
 - Added the ability to acknowledge `AuthorityLossImminent` messages.
 - Added an `Open Inspector` button to the `SpatialOS` menu in the Unity Editor.
 - Added support for local mobile development.
