@@ -27,7 +27,9 @@ Readers and Writers allow you to inspect and change the state of SpatialOS compo
   * Change the property values of a SpatialOS component.
   * Send events defined in a SpatialOS component.
   * Send acknowledgement for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
-  * All the functionality that a Reader provides (except for listening to authority state changes).
+  * All the functionality that a Reader provides.
+
+> Note that a writer will only receive authority state change callbacks for `AuthorityLossImminent`.
 
 For every SpatialOS component defined in schema, the GDK generates a Reader and Writer. After code generation has finished, the generated Readers and Writers are located in the following namespace:
 
