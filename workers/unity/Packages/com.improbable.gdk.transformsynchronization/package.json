@@ -1,11 +1,11 @@
 {
     "name": "com.improbable.gdk.transformsynchronization",
     "displayName": "SpatialOS GDK Transform Synchronization",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "unity": "2018.2",
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Transform Synchronization Module. Made by Improbable.",
     "dependencies": {
-        "com.improbable.gdk.core":"0.1.1"
+        "com.improbable.gdk.core":"0.1.2"
     }
 }
