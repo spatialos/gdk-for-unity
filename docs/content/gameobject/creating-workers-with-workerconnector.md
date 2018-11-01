@@ -34,7 +34,7 @@ We provide three sample Scenes:
 
 
 ## How to create your own WorkerConnector
-You can inherit from the `WorkerConnector `class to create your own connection logic, dependent on the [type of the worker]({{urlRoot}}/content/glossary#worker-types) that you want to create.
+You can inherit from the `WorkerConnector` class to create your own connection logic, dependent on the [type of the worker]({{urlRoot}}/content/glossary#worker-types) that you want to create.
 
 **Example**</br>
 Showing what your implementation, inheriting from `DefaultWorkerConnector`, could look like.
