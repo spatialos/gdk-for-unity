@@ -38,16 +38,18 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
         }
 
+        [Inject] private CommandSenderSystem commandSender;
         [Inject] private LaunchCommandData launchCommandData;
         [Inject] private LaunchableData launchableData;
 
         protected override void OnUpdate()
         {
             // Handle Launch Commands from players. Only allow if they have energy etc.
+            var launchableSender = commandSender.GetCommandSender<Launchable.CommandSender>();
             for (var i = 0; i < launchCommandData.Length; i++)
             {
-                var sender = launchCommandData.Senders[i];
                 var launcher = launchCommandData.Launcher[i];
+                var entity = launchCommandData.Entity[i];
 
                 if (launcher.RechargeTimeLeft > 0)
                 {
@@ -61,9 +63,10 @@ namespace Playground
                 {
                     var info = requests[j].Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    sender.RequestsToSend.Add(Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
+                    var request = Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
                         new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
-                            energy, info.Player)));
+                            energy, info.Player));
+                    launchableSender.SendLaunchMeRequest(entity, request);
                     energyLeft -= energy;
                     j++;
                 }
