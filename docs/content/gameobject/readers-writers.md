@@ -170,4 +170,4 @@ void SendAuthorityLossImminentAcknowledgement();
 ```
 Allows you to send acknowledgements to [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
-> This method will throw an `InvalidOperationException` if the authority state of `TComponent` is not `AuthorityLossImminent`.
+> This method throws an `InvalidOperationException` if the authority state of `TComponent` is not `AuthorityLossImminent`.
