@@ -21,6 +21,9 @@ namespace Playground
             var score = Score.Component.CreateSchemaComponentData(0);
             var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
 
+            var health = Health.Component.CreateSchemaComponentData(100);
+            var shootBullet = ShootBullet.Component.CreateSchemaComponentData();
+
             var entityBuilder = EntityBuilder.Begin()
                 .AddPosition(0, 0, 0, clientAttribute)
                 .AddMetadata("Character", WorkerUtils.UnityGameLogic)
@@ -31,7 +34,9 @@ namespace Playground
                 .AddComponent(launcher, WorkerUtils.UnityGameLogic)
                 .AddComponent(score, WorkerUtils.UnityGameLogic)
                 .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic)
-                .AddTransformSynchronizationComponents(clientAttribute)
+                .AddComponent(health, WorkerUtils.UnityGameLogic)
+                .AddComponent(shootBullet, WorkerUtils.UnityGameLogic)
+                .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic)
                 .AddPlayerLifecycleComponents(workerId, clientAttribute, WorkerUtils.UnityGameLogic);
 
             return entityBuilder.Build();

@@ -1,8 +1,8 @@
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.GameObjectCreation;
-using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using System.Collections.Generic;
 using Unity.Entities;
 
 namespace Playground
@@ -23,7 +23,18 @@ namespace Playground
                 iOSClient
             };
 
-        public static void AddClientSystems(World world)
+        public static void AddMobileClientSystems(World world)
+        {
+            AddCommonClientSystems(world);
+        }
+
+        public static void AddPCClientSystems(World world)
+        {
+            AddCommonClientSystems(world);
+            world.GetOrCreateManager<PlayerCommandsSystem>();
+        }
+
+        public static void AddCommonClientSystems(World world)
         {
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddClientSystems(world);
@@ -32,12 +43,10 @@ namespace Playground
             GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
-            world.GetOrCreateManager<MoveLocalPlayerSystem>();
             world.GetOrCreateManager<InitCameraSystem>();
             world.GetOrCreateManager<FollowCameraSystem>();
             world.GetOrCreateManager<InitUISystem>();
             world.GetOrCreateManager<UpdateUISystem>();
-            world.GetOrCreateManager<PlayerCommandsSystem>();
             world.GetOrCreateManager<MetricSendSystem>();
         }
 
@@ -55,6 +64,7 @@ namespace Playground
             world.GetOrCreateManager<MetricSendSystem>();
             world.GetOrCreateManager<ProcessScoresSystem>();
             world.GetOrCreateManager<CollisionProcessSystem>();
+            world.GetOrCreateManager<MoveLocalPlayerSystem>();
         }
 
         private static void AddLifecycleSystems(World world)

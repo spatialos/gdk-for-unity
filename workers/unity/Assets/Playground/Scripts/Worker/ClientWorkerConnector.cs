@@ -23,7 +23,7 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddClientSystems(Worker.World);
+            WorkerUtils.AddPCClientSystems(Worker.World);
             if (level == null)
             {
                 return;

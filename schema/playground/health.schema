@@ -1,0 +1,14 @@
+package playground;
+
+import "from_gdk_packages/com.improbable.gdk.core/common.schema";
+
+type TakeDamageRequest
+{
+	int32 damage = 1;
+}
+
+component Health {
+    id = 12021;
+    int32 health = 1;
+    command improbable.common.Empty take_damage(TakeDamageRequest);
+}

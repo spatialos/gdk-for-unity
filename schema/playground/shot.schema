@@ -1,0 +1,16 @@
+package playground;
+
+import "improbable/vector3.schema";
+import "from_gdk_packages/com.improbable.gdk.core/common.schema";
+
+type ShootRequest {
+    int32 damage = 1;
+    improbable.Vector3f start_point = 2;
+    improbable.Vector3f direction = 3;
+}
+
+component ShootBullet
+{
+    id = 12020;
+	command improbable.common.Empty shoot(ShootRequest);
+}
