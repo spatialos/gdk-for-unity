@@ -26,7 +26,10 @@ Readers and Writers allow you to inspect and change the state of SpatialOS compo
 
   * Change the property values of a SpatialOS component.
   * Send events defined in a SpatialOS component.
-  * All the functionality that a Reader provides (except for listening to authority state changes)
+  * Send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+  * All the functionality that a Reader provides.
+
+> Note that a writer will only receive authority state change callbacks for `AuthorityLossImminent`.
 
 For every SpatialOS component defined in schema, the GDK generates a Reader and Writer. After code generation has finished, the generated Readers and Writers are located in the following namespace:
 
@@ -104,7 +107,7 @@ The exact type of these generics depends on the component that the writer is gen
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
 | Data  	| TSpatialComponentData              	| Thee data stored inside the component that this Reader is associated with. |
-| Authority | [Authority]({{urlRoot}}/content/glossary#authority) | The [authority]() status of the current worker of the component that this Reader is associated with. |
+| Authority | [Authority]({{urlRoot}}/content/glossary#authority) | The [authority](https://docs.improbable.io/reference/latest/shared/concepts/interest-authority#authority) status of the current worker of the component that this Reader is associated with. |
 
 
 **Events:**
@@ -161,3 +164,10 @@ Allows you to send an event. These methods are code-generated for each event in 
 Parameters:
 
   * `TEventPayload payload`: The data that you want to send with your event. The exact type is specified by the schema definition of the event.
+
+```csharp
+void SendAuthorityLossImminentAcknowledgement();
+```
+Allows you to send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+
+> This method throws an `InvalidOperationException` if the authority state of `TComponent` is not `AuthorityLossImminent`.
