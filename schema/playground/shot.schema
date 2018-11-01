@@ -9,8 +9,7 @@ type ShootRequest {
     improbable.Vector3f direction = 3;
 }
 
-component ShootBullet
-{
+component Shooting {
     id = 12020;
-	command improbable.common.Empty shoot(ShootRequest);
+    command improbable.common.Empty shoot(ShootRequest);
 }

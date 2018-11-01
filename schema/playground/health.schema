@@ -2,9 +2,8 @@ package playground;
 
 import "from_gdk_packages/com.improbable.gdk.core/common.schema";
 
-type TakeDamageRequest
-{
-	int32 damage = 1;
+type TakeDamageRequest {
+    int32 damage = 1;
 }
 
 component Health {
