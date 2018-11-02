@@ -13,6 +13,7 @@
 ***
 - <h3> Starter projects</h3>
 - <h3> [ - FPS starter project]({{urlRoot}}/projects/fps/overview)</h3>
+- <h3> [ - Blank starter project]({{urlRoot}}/projects/blank/overview)</h3>
 
 ***
 - <h3> Reference</h3>
