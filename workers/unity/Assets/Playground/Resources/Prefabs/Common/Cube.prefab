@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 65435046857257052}
   - component: {fileID: 54117405590287678}
   - component: {fileID: 114454894841283872}
+  - component: {fileID: 114768882323281002}
   m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
@@ -130,3 +131,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 511304a26155d2f4ba98f4eb2003f326, type: 2}
   SendStrategies: []
   SetKinematicWhenNotAuthoritative: 0
+--- !u!114 &114768882323281002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1019506993461512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f167a6f4d03ed341b98d856635e1d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
