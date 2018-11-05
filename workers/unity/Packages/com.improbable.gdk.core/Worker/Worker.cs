@@ -1,11 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.CInterop;
-
+using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
-using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -200,6 +198,8 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
             World.GetOrCreateManager<CommandSystem>();
             World.GetOrCreateManager<CommandComponentSystem>();
+            World.GetOrCreateManager<CommandReceiverCallbackSystem>();
+            World.GetOrCreateManager<SubscriptionSystem>();
         }
 
         public void Dispose()
