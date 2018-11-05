@@ -1,5 +1,4 @@
-using Improbable.Common;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
 #region Diagnostic control
@@ -15,7 +14,7 @@ namespace Playground.MonoBehaviours
     {
         public float TimeBetweenSpinChanges = 1.0f;
 
-        [Require] private SpinnerRotation.Requirable.CommandRequestHandler requestHandler;
+        [Require] private SpinnerRotationCommandReceiver requestHandler;
 
         private RotationBehaviour rotationBehaviour;
 
@@ -24,7 +23,7 @@ namespace Playground.MonoBehaviours
         private void OnEnable()
         {
             rotationBehaviour = GetComponent<RotationBehaviour>();
-            requestHandler.OnSpinnerToggleRotationRequest += OnSpinnerToggleRotationRequest;
+            requestHandler.OnSpinnerToggleRotationRequestReceived += OnSpinnerToggleRotationRequest;
         }
 
         private void OnDisable()
@@ -32,11 +31,11 @@ namespace Playground.MonoBehaviours
             nextAvailableSpinChangeTime = Time.time;
         }
 
-        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.RequestResponder spinnerToggleRotationRequest)
+        private void OnSpinnerToggleRotationRequest(SpinnerRotation.SpinnerToggleRotation.ReceivedRequest spinnerToggleRotationRequest)
         {
             if (Time.time < nextAvailableSpinChangeTime)
             {
-                spinnerToggleRotationRequest.SendResponseFailure("Cannot change spinning direction too frequently.");
+                //spinnerToggleRotationRequest.SendResponseFailure("Cannot change spinning direction too frequently.");
             }
             else
             {
@@ -44,7 +43,7 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + TimeBetweenSpinChanges;
 
-                spinnerToggleRotationRequest.SendResponse(new Empty());
+                //spinnerToggleRotationRequest.SendResponse(new Empty());
             }
         }
     }

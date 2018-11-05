@@ -1,5 +1,5 @@
 ﻿using System;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
 #region Diagnostic control
@@ -13,7 +13,7 @@ namespace Playground.MonoBehaviours
 {
     public class UpdateSpinnerColor : MonoBehaviour
     {
-        [Require] private SpinnerColor.Requirable.Writer spinnerColorWriter;
+        [Require] private SpinnerColorWriter spinnerColorWriter;
 
         private Array colorValues;
         private int colorIndex;
@@ -34,7 +34,7 @@ namespace Playground.MonoBehaviours
             colorIndex = (colorIndex + 1) % colorValues.Length;
             nextColorChangeTime = Time.time + 2;
 
-            spinnerColorWriter.Send(new SpinnerColor.Update
+            spinnerColorWriter.SendUpdate(new SpinnerColor.Update
             {
                 Color = (Color) colorValues.GetValue(colorIndex)
             });

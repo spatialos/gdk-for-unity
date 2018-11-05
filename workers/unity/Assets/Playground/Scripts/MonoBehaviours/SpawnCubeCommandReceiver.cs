@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Improbable;
-using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using Improbable.Transform;
 using Improbable.Worker.CInterop;
 using UnityEngine;
@@ -22,27 +21,31 @@ namespace Playground.MonoBehaviours
 {
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private TransformInternal.Requirable.Reader transformReader;
-        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
-        [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
-        [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private TransformInternalReader transformReader;
+        [Require] private CubeSpawnerCommandReceiver cubeSpawnerCommandRequestHandler;
+        [Require] private CubeSpawnerWriter cubeSpawnerWriter;
+        [Require] private WorldCommandSender worldCommandRequestSender;
 
         private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
-            logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
-            cubeSpawnerCommandRequestHandler.OnSpawnCubeRequest += OnSpawnCubeRequest;
-            worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
-            worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
+            //logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
+            cubeSpawnerCommandRequestHandler.OnSpawnCubeRequestReceived += OnSpawnCubeRequest;
+            // worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
+            // worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
         }
 
-        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.RequestResponder requestResponder)
+        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestResponder)
         {
-            requestResponder.SendResponse(new Empty());
+            //requestResponder.SendResponse(new Empty());
 
-            worldCommandRequestSender.ReserveEntityIds(1, context: this);
+            var request = new WorldCommands.ReserveEntityIds.Request
+            {
+                NumberOfEntityIds = 1,
+                Context = this,
+            };
+            worldCommandRequestSender.SendReserveEntityIdsCommand(request);
         }
 
         private void OnEntityIdsReserved(WorldCommands.ReserveEntityIds.ReceivedResponse response)
@@ -55,9 +58,9 @@ namespace Playground.MonoBehaviours
 
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("ReserveEntityIds failed.")
-                        .WithField("Reason", response.Message));
+                // logDispatcher.HandleLog(LogType.Error,
+                //     new LogEvent("ReserveEntityIds failed.")
+                //         .WithField("Reason", response.Message));
 
                 return;
             }
@@ -75,7 +78,7 @@ namespace Playground.MonoBehaviours
             });
             var expectedEntityId = response.FirstEntityId.Value;
 
-            worldCommandRequestSender.CreateEntity(cubeEntityTemplate, expectedEntityId, context: this);
+            //worldCommandRequestSender.CreateEntity(cubeEntityTemplate, expectedEntityId, context: this);
         }
 
         private void OnEntityCreated(WorldCommands.CreateEntity.ReceivedResponse response)
@@ -102,7 +105,7 @@ namespace Playground.MonoBehaviours
 
             spawnedCubesCopy.Add(newEntityId);
 
-            cubeSpawnerWriter.Send(new CubeSpawner.Update
+            cubeSpawnerWriter.SendUpdate(new CubeSpawner.Update
             {
                 SpawnedCubes = spawnedCubesCopy
             });
