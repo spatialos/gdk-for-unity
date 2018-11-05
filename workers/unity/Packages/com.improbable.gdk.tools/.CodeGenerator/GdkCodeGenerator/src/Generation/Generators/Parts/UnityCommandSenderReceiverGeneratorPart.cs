@@ -4,12 +4,13 @@ using System.Linq;
 namespace Improbable.Gdk.CodeGenerator
 {
     /// <summary>
-    ///     This class contains the data required to fill out the "UnityGameObjectComponentDispatcherGenerator.tt" templates.
-    ///     This template generates the GameObjectComponentDispatcher implementation for Components.
+    ///     This class contains the data required to fill out the "UnityCommandSenderReceiverGenerator.tt" templates.
+    ///     This generates the command senders and receivers as well as their subscriptions and callback managers.
     /// </summary>
-    public partial class UnityGameObjectComponentDispatcherGenerator
+    public partial class UnityCommandSenderReceiverGenerator
     {
         private string qualifiedNamespace;
+        private string spatialNamespace;
         private UnityComponentDefinition unityComponentDefinition;
         private HashSet<string> enumSet;
 
@@ -17,6 +18,7 @@ namespace Improbable.Gdk.CodeGenerator
             HashSet<string> enumSet)
         {
             qualifiedNamespace = package;
+            spatialNamespace = package;
             this.unityComponentDefinition = unityComponentDefinition;
             this.enumSet = enumSet;
 
@@ -36,16 +38,17 @@ namespace Improbable.Gdk.CodeGenerator
                 .ToList();
         }
 
-        private List<UnityEventDetails> GetEventDetailsList()
-        {
-            return unityComponentDefinition.EventDefinitions
-                .Select(eventDefinition => new UnityEventDetails(eventDefinition)).ToList();
-        }
-
         private List<UnityCommandDetails> GetCommandDetailsList()
         {
             return unityComponentDefinition.CommandDefinitions
                 .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
         }
+
+        private List<UnityEventDetails> GetEventDetailsList()
+        {
+            return unityComponentDefinition.EventDefinitions
+                .Select(eventDefinition => new UnityEventDetails(eventDefinition)).ToList();
+        }
     }
 }
+
