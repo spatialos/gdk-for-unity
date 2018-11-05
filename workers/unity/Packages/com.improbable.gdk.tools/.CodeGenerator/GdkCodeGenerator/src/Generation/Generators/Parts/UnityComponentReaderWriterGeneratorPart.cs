@@ -3,11 +3,7 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
 {
-    /// <summary>
-    ///     This class contains the data required to fill out the "UnityReaderWriterGenerator.tt" templates.
-    ///     This template generates the ReaderWriter implementation for Components.
-    /// </summary>
-    public partial class UnityReaderWriterGenerator
+    public partial class UnityComponentReaderWriterGenerator
     {
         private string qualifiedNamespace;
         private UnityComponentDetails details;

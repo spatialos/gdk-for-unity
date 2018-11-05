@@ -75,9 +75,7 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}GameObjectComponentDispatcher", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ReaderWriter", FileExtension)));
+                    Path.ChangeExtension($"{component.Name}ComponentReaderWriter", FileExtension)));
             }
 
             foreach (var enumTarget in enumsToGenerate)
@@ -97,9 +95,8 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
-            var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
-            var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
-            var readerWriterGenerator = new UnityReaderWriterGenerator();
+            var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
+            var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -139,12 +136,11 @@ namespace Improbable.Gdk.CodeGenerator
                         commandComponentsGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
 
-                    var monobehaviourCommandHandlerFileName =
-                        Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension);
-                    var monobehaviourCommandHandlerCode =
-                        gameObjectCommandHandlersGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName),
-                        monobehaviourCommandHandlerCode);
+                    var commandSenderReceiverFileName =
+                        Path.ChangeExtension($"{component.Name}CommandSenderReceiver", FileExtension);
+                    var commandSenderReceiverCode =
+                        commandSenderReceiverGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
@@ -164,18 +160,11 @@ namespace Improbable.Gdk.CodeGenerator
                 Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
                     referenceProviderTranslationCode);
 
-                var gameObjectComponentDispatcherFileName =
-                    Path.ChangeExtension($"{componentName}GameObjectComponentDispatcher", FileExtension);
-                var gameObjectComponentDispatcherCode =
-                    gameObjectComponentDispatcherGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName),
-                    gameObjectComponentDispatcherCode);
-
-                var readerWriterFileName =
-                    Path.ChangeExtension($"{componentName}ReaderWriter", FileExtension);
-                var readerWriterCode =
-                    readerWriterGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
+                var componentReaderWriterFileName =
+                    Path.ChangeExtension($"{component.Name}ComponentReaderWriter", FileExtension);
+                var componentReaderWriterCode =
+                    componentReaderWriterGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
         }
 
