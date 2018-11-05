@@ -51,10 +51,6 @@ namespace Improbable.Gdk.GameObjectCreation
                             "GameObject once the World has already started running")
                         .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationHelper)));
                 }
-                else
-                {
-                    world.CreateManager<WorkerEntityGameObjectLinkerSystem>(workerGameObject);
-                }
             }
         }
     }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
@@ -16,6 +17,8 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly ILogDispatcher logger;
 
+        private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
+
         public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
         {
             this.workerType = workerType;
@@ -23,18 +26,18 @@ namespace Improbable.Gdk.GameObjectCreation
             this.logger = logger;
         }
 
-        public GameObject OnEntityCreated(SpatialOSEntity entity)
+        public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
         {
             if (!entity.HasComponent<Metadata.Component>())
             {
-                return null;
+                return;
             }
 
             var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
             if (!entity.HasComponent<Position.Component>())
             {
                 cachedPrefabs[prefabName] = null;
-                return null;
+                return;
             }
 
             var spatialOSPosition = entity.GetComponent<Position.Component>();
@@ -56,20 +59,21 @@ namespace Improbable.Gdk.GameObjectCreation
 
             if (prefab == null)
             {
-                return null;
+                return;
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
-            return gameObject;
+
+            entityIdToGameObject.Add(entity.SpatialOSEntityId, gameObject);
+            linker.LinkGameObjectToSpatialOSEntity(entity.SpatialOSEntityId, gameObject);
         }
 
-        public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
+        public void OnEntityRemoved(EntityId entityId)
         {
-            if (linkedGameObject != null)
-            {
-                UnityObjectDestroyer.Destroy(linkedGameObject);
-            }
+            var go = entityIdToGameObject[entityId];
+            GameObject.Destroy(go);
+            entityIdToGameObject.Remove(entityId);
         }
     }
 }

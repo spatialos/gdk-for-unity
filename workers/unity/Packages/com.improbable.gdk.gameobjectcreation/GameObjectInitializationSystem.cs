@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.CInterop;
+using Improbable.Gdk.Subscriptions;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
-using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -43,23 +40,21 @@ namespace Improbable.Gdk.GameObjectCreation
         [Inject] private AddedEntitiesData addedEntitiesData;
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
-        [Inject] private EntityGameObjectLinkerSystem linkerSystem;
         [Inject] private WorkerSystem worker;
 
         private readonly IEntityGameObjectCreator gameObjectCreator;
-        private readonly Dictionary<Entity, GameObject> entityToGameObjects = new Dictionary<Entity, GameObject>();
-        private ViewCommandBuffer viewCommandBuffer;
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
-        {
-            this.gameObjectCreator = gameObjectCreator;
-        }
+        private EntityGameObjectLinker linker;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+            linker = new EntityGameObjectLinker(World);
+        }
 
-            viewCommandBuffer = new ViewCommandBuffer(EntityManager, worker.LogDispatcher);
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
+        {
+            this.gameObjectCreator = gameObjectCreator;
         }
 
         protected override void OnUpdate()
@@ -68,52 +63,28 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 var entity = addedEntitiesData.Entities[i];
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
-                var gameObject = gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager));
-                PostUpdateCommands.AddComponent(entity, new InitializedEntitySystemState { EntityId = spatialEntityId });
-                if (gameObject == null)
-                {
-                    continue;
-                }
+                gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), linker);
 
-                linkerSystem.Linker.LinkGameObjectToEntity(gameObject, entity, viewCommandBuffer);
-                entityToGameObjects.Add(entity, gameObject);
+                PostUpdateCommands.AddComponent<InitializedEntitySystemState>(entity, new InitializedEntitySystemState
+                {
+                    EntityId = spatialEntityId
+                });
             }
 
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
                 var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
-                if (entityToGameObjects.TryGetValue(entity, out var gameObject))
-                {
-                    linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
-                }
+                linker.UnlinkAllGameObjectsFromEntity(spatialEntityId);
 
-                gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
-                entityToGameObjects.Remove(entity);
                 PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
             }
 
-            viewCommandBuffer.FlushBuffer();
+            linker.FlushCommandBuffer();
         }
 
         protected override void OnDestroyManager()
         {
-            if (entityToGameObjects.Count > 0)
-            {
-                foreach (var entityToGameObject in entityToGameObjects)
-                {
-                    var entity = entityToGameObject.Key;
-                    var gameObject = entityToGameObject.Value;
-                    var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
-                    linkerSystem.Linker.UnlinkGameObjectFromEntity(gameObject, entity, viewCommandBuffer);
-                    gameObjectCreator.OnEntityRemoved(spatialEntityId, gameObject);
-                }
-
-                viewCommandBuffer.FlushBuffer();
-                entityToGameObjects.Clear();
-            }
-
-            base.OnDestroyManager();
         }
     }
 }
