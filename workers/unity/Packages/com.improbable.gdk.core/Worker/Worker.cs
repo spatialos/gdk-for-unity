@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
+using Improbable.Gdk.Subscriptions;
 using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 
 namespace Improbable.Gdk.Core
@@ -253,6 +254,8 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
             World.GetOrCreateManager<CommandSystem>();
             World.GetOrCreateManager<CommandComponentSystem>();
+            World.GetOrCreateManager<CommandReceiverCallbackSystem>();
+            World.GetOrCreateManager<SubscriptionSystem>();
         }
 
         public void Dispose()
