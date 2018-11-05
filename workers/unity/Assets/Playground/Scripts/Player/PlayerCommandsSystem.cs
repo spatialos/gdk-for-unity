@@ -1,7 +1,6 @@
 using System;
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
@@ -79,7 +78,7 @@ namespace Playground
             var sender = playerData.Sender[0];
             var playerId = playerData.SpatialEntity[0].EntityId;
 
-            var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
+            var component = rigidBody.gameObject.GetComponent<LaunchableBehaviour>();
 
             if (component == null || !EntityManager.HasComponent(component.Entity, typeof(Launchable.Component)))
             {
