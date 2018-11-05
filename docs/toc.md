@@ -12,7 +12,7 @@
 
 ***
 - <h3> Starter projects</h3>
-- <h3> [ - FPS starter project]({{urlRoot}}/projects/fps/overview)</h3>
+- <h3> [ - FPS Starter Project]({{urlRoot}}/projects/fps/overview)</h3>
 
 ***
 - <h3> Reference</h3>
@@ -26,7 +26,7 @@
     - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
-- <h3> + Creating a new project</h3>
+- <h3> + Create a new project</h3>
     - [Get the dependencies]({{urlRoot}}/setup-and-installing)
     - [Add the GDK to your project]({{urlRoot}}/content/set-up-new-project)
     - [Build your workers]({{urlRoot}}/content/build)
@@ -48,7 +48,7 @@
     - Code generation
         - [The code generator]({{urlRoot}}/content/code-generator)
         - [ECS component generation]({{urlRoot}}/content/ecs/component-generation)
-    - [Logging]({{urlRoot}}/content/ecs/logging)
+    - [Logs]({{urlRoot}}/content/ecs/logging)
 - <h3> + MonoBehaviour workflow</h3>
     - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
     - Create workers
@@ -75,7 +75,7 @@
         - [Send and receive events]({{urlRoot}}/content/ecs/events)
         - [Commands: SpatialOS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
         - [Commands: World commands]({{urlRoot}}/content/ecs/world-commands)
-        - [Reactive components: Receiving updates from SpatialOS]({{urlRoot}}/content/ecs/reactive-components)
+        - [Reactive components: Receive updates from SpatialOS]({{urlRoot}}/content/ecs/reactive-components)
         - [Authority]({{urlRoot}}/content/ecs/authority)
     - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
     - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
@@ -85,17 +85,17 @@
     - Android support
         - [Set up Android support]({{urlRoot}}/content/mobile/android/setup)
         - [Ways to  test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
-        - [Connecting to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
+        - [Connect to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
     - iOS support
         - [Set up iOS support]({{urlRoot}}/content/mobile/ios/setup)
         - [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
-        - [Connecting to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
+        - [Connect to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
 - <h3> + Tests</h3>
     - [Test overview]({{urlRoot}}/content/testing/testing-overview)
     - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
     - [Test guidelines]({{urlRoot}}/content/testing/testing-guidelines)
     - [Test GDK systems]({{urlRoot}}/content/testing/testing-systems)
-    - [Writing a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
+    - [Write a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
 - <h3>[- Troubleshooting]({{urlRoot}}/content/troubleshooting)</h3>
 - <h3>[- Known issues]({{urlRoot}}/known-issues)</h3>
 
