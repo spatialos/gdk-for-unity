@@ -131,7 +131,7 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
     {
         for (var i = 0; i < numberOfReservedEntityIds; ++i)
         {
-            var entityIdToCreate = new EntityId(firstEntityId.Id + numberOfReservedEntityIds);
+            var entityIdToCreate = new EntityId(firstEntityId.Id + i);
 
             // Send create entity command request using the reserved entity id.
             // The SpatialOS Runtime will automatically assign a SpatialOS entity id to the newly created entity.
