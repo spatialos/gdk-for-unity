@@ -9,7 +9,7 @@ Check out the [Blank starter project on Github](https://github.com/spatialos/gdk
 It has the minimal feature set required to start developing:
 
 - A Unity project setup with the SpatialOS GDK for Unity.
-- Sample local and cloud deployment configurations
+- Sample local and cloud deployment configurations.
 - An empty snapshot.
 - Client and server workers JSON configurations.
 - Client and server worker connectors and prefabs.
