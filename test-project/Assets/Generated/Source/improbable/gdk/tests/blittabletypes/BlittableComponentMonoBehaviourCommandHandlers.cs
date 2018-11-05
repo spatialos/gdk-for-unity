@@ -87,7 +87,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             [InjectableId(InjectableType.CommandRequestSender, 1001)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : RequirableBase
+            public class CommandRequestSender : RequirableBase, ICommandRequestSender
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
@@ -99,6 +99,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
+
+                public CommandTypeInformation<FirstCommand, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest, FirstCommand.ReceivedResponse> FirstCommandTypeInformation;
 
                 public long SendFirstCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
@@ -122,11 +124,21 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         return -1;
                     }
 
+                    Action<FirstCommand.ReceivedResponse> wrappedCallback = response =>
+                    {
+                        if (this.IsValid() && callback != null)
+                        {
+                            callback(response);
+                        }
+                    };
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.FirstCommand>(entity);
                     var request = FirstCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
+
+                public CommandTypeInformation<SecondCommand, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest, SecondCommand.ReceivedResponse> SecondCommandTypeInformation;
 
                 public long SendSecondCommandRequest(EntityId entityId, global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
@@ -150,12 +162,72 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         return -1;
                     }
 
+                    Action<SecondCommand.ReceivedResponse> wrappedCallback = response =>
+                    {
+                        if (this.IsValid() && callback != null)
+                        {
+                            callback(response);
+                        }
+                    };
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.SecondCommand>(entity);
                     var request = SecondCommand.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
 
+                long ICommandRequestSender.SendCommand<TCommand, TRequest, TResponse>(CommandTypeInformation<TCommand, TRequest, TResponse> commandTypeInformation, EntityId entityId, TRequest request,
+                    Action<TResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (typeof(TCommand) == typeof(FirstCommand))
+                    {
+                        if (callback != null && !(typeof(TResponse) == typeof(FirstCommand.ReceivedResponse)))
+                        {
+                            throw new ArgumentException(
+                                $"Callback for command {nameof(FirstCommand)} must be an Action taking type {typeof(FirstCommand.ReceivedResponse).FullName}");
+                        }
+
+                        // Can not directly cast to a struct and can not use unsafe code as the request type can not be constrained using unmanaged
+                        switch (request)
+                        {
+                            case global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest concreteRequest:
+                            {
+                                var concreteCallback = callback as Action<FirstCommand.ReceivedResponse>;
+                                return SendFirstCommandRequest(entityId, concreteRequest, concreteCallback, timeoutMillis,
+                                    allowShortCircuiting);
+                            }
+                            default:
+                                throw new ArgumentException(
+                                    $"Request payload for command FirstCommand, must be of type {nameof(global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest)}");
+                        }
+                    }
+
+                    if (typeof(TCommand) == typeof(SecondCommand))
+                    {
+                        if (callback != null && !(typeof(TResponse) == typeof(SecondCommand.ReceivedResponse)))
+                        {
+                            throw new ArgumentException(
+                                $"Callback for command {nameof(SecondCommand)} must be an Action taking type {typeof(SecondCommand.ReceivedResponse).FullName}");
+                        }
+
+                        // Can not directly cast to a struct and can not use unsafe code as the request type can not be constrained using unmanaged
+                        switch (request)
+                        {
+                            case global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest concreteRequest:
+                            {
+                                var concreteCallback = callback as Action<SecondCommand.ReceivedResponse>;
+                                return SendSecondCommandRequest(entityId, concreteRequest, concreteCallback, timeoutMillis,
+                                    allowShortCircuiting);
+                            }
+                            default:
+                                throw new ArgumentException(
+                                    $"Request payload for command SecondCommand, must be of type {nameof(global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest)}");
+                        }
+                    }
+
+
+                    throw new ArgumentException($"Can not send unknown command {typeof(TRequest)}");
+                }
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, 1001)]

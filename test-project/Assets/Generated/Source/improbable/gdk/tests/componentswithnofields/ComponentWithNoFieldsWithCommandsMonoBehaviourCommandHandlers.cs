@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             [InjectableId(InjectableType.CommandRequestSender, 1005)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
-            public class CommandRequestSender : RequirableBase
+            public class CommandRequestSender : RequirableBase, ICommandRequestSender
             {
                 private Entity entity;
                 private readonly EntityManager entityManager;
@@ -70,6 +70,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     this.entityManager = entityManager;
                     this.logger = logger;
                 }
+
+                public CommandTypeInformation<Cmd, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty, Cmd.ReceivedResponse> CmdTypeInformation;
 
                 public long SendCmdRequest(EntityId entityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
@@ -93,12 +95,49 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         return -1;
                     }
 
+                    Action<Cmd.ReceivedResponse> wrappedCallback = response =>
+                    {
+                        if (this.IsValid() && callback != null)
+                        {
+                            callback(response);
+                        }
+                    };
+
                     var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.Cmd>(entity);
                     var request = Cmd.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     ecsCommandRequestSender.RequestsToSend.Add(request);
                     return request.RequestId;
                 }
 
+                long ICommandRequestSender.SendCommand<TCommand, TRequest, TResponse>(CommandTypeInformation<TCommand, TRequest, TResponse> commandTypeInformation, EntityId entityId, TRequest request,
+                    Action<TResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                {
+                    if (typeof(TCommand) == typeof(Cmd))
+                    {
+                        if (callback != null && !(typeof(TResponse) == typeof(Cmd.ReceivedResponse)))
+                        {
+                            throw new ArgumentException(
+                                $"Callback for command {nameof(Cmd)} must be an Action taking type {typeof(Cmd.ReceivedResponse).FullName}");
+                        }
+
+                        // Can not directly cast to a struct and can not use unsafe code as the request type can not be constrained using unmanaged
+                        switch (request)
+                        {
+                            case global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty concreteRequest:
+                            {
+                                var concreteCallback = callback as Action<Cmd.ReceivedResponse>;
+                                return SendCmdRequest(entityId, concreteRequest, concreteCallback, timeoutMillis,
+                                    allowShortCircuiting);
+                            }
+                            default:
+                                throw new ArgumentException(
+                                    $"Request payload for command Cmd, must be of type {nameof(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty)}");
+                        }
+                    }
+
+
+                    throw new ArgumentException($"Can not send unknown command {typeof(TRequest)}");
+                }
             }
 
             [InjectableId(InjectableType.CommandRequestHandler, 1005)]
