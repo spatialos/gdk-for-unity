@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -81,8 +82,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
 
         private static bool IsBehaviourEnabledInEditor(Object obj)
         {
-            return !ReferenceEquals(obj, null)
-                   && EditorUtility.GetObjectEnabled(obj) == 1;
+            return !ReferenceEquals(obj, null) && EditorUtility.GetObjectEnabled(obj) == 1;
         }
 
         private static bool DoesBehaviourNeedConditionalEnabling(Type targetType)
@@ -97,7 +97,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
         private static bool DoesBehaviourNeedFixing(MonoBehaviour monoBehaviour)
         {
             return IsBehaviourEnabledInEditor(monoBehaviour) &&
-                   DoesBehaviourNeedConditionalEnabling(monoBehaviour.GetType());
+                DoesBehaviourNeedConditionalEnabling(monoBehaviour.GetType());
         }
     }
 }
