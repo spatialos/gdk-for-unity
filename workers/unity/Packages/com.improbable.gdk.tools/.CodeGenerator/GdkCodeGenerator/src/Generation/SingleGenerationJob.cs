@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Improbable.CodeGeneration.FileHandling;
 using Improbable.CodeGeneration.Jobs;
 using Improbable.CodeGeneration.Model;
@@ -49,6 +50,8 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandSenderReceiver", fileExtension)));
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -62,15 +65,7 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension)));
-
-                if (component.CommandDefinitions.Count > 0)
-                {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension)));
-                }
+                    Path.ChangeExtension($"{component.Name}ComponentReaderWriter", fileExtension)));
             }
 
             enumsToGenerate = new List<EnumDefinitionRaw>();
@@ -94,9 +89,8 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
-            var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
-            var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
-            var readerWriterGenerator = new UnityReaderWriterGenerator();
+            var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
+            var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -131,6 +125,12 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandComponentsCode =
                         commandComponentsGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
+
+                    var commandSenderReceiverFileName =
+                        Path.ChangeExtension($"{component.Name}CommandSenderReceiver", fileExtension);
+                    var commandSenderReceiverCode =
+                        commandSenderReceiverGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -150,28 +150,11 @@ namespace Improbable.Gdk.CodeGenerator
                 Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
                     referenceProviderTranslationCode);
 
-                var gameObjectComponentDispatcherFileName =
-                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension);
-                var gameObjectComponentDispatcherCode =
-                    gameObjectComponentDispatcherGenerator.Generate(component, package, enumSet);
-                Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName),
-                    gameObjectComponentDispatcherCode);
-
-                var readerWriterFileName =
-                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension);
-                var readerWriterCode =
-                    readerWriterGenerator.Generate(component, package, enumSet);
-                Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
-
-                if (component.CommandDefinitions.Count > 0)
-                {
-                    var monobehaviourCommandHandlerFileName =
-                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension);
-                    var monobehaviourCommandHandlerCode =
-                        gameObjectCommandHandlersGenerator.Generate(component, package);
-                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName),
-                        monobehaviourCommandHandlerCode);
-                }
+                var componentReaderWriterFileName =
+                    Path.ChangeExtension($"{component.Name}ComponentReaderWriter", fileExtension);
+                var componentReaderWriterCode =
+                    componentReaderWriterGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
         }
 
