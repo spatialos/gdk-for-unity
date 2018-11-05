@@ -1,4 +1,4 @@
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using Improbable.Transform;
 using UnityEngine;
 using SpatialQuaternion = Improbable.Transform.Quaternion;
@@ -15,7 +15,7 @@ public class RotationBehaviour : MonoBehaviour
     public bool RotatingClockWise = true;
 
     // Should only run when authoritative
-    [Require] private TransformInternal.Requirable.Writer transformWriter;
+    [Require] private TransformInternalWriter transformWriter;
 
     private void Update()
     {

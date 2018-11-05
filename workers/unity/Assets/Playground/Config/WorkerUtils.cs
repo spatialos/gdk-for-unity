@@ -1,4 +1,3 @@
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.GameObjectCreation;
 using System.Collections.Generic;
 using Improbable.Gdk.PlayerLifecycle;
@@ -28,7 +27,6 @@ namespace Playground
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddClientSystems(world);
             PlayerLifecycleHelper.AddClientSystems(world);
-            GameObjectRepresentationHelper.AddSystems(world);
             GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<ProcessColorChangeSystem>();
             world.GetOrCreateManager<LocalPlayerInputSync>();
@@ -46,7 +44,6 @@ namespace Playground
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddServerSystems(world);
             PlayerLifecycleHelper.AddServerSystems(world);
-            GameObjectRepresentationHelper.AddSystems(world);
             GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
             world.GetOrCreateManager<CubeMovementSystem>();
             world.GetOrCreateManager<TriggerColorChangeSystem>();
