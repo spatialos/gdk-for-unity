@@ -60,7 +60,7 @@ namespace Improbable.Gdk.Core
                 Profiler.EndSample();
 
                 Profiler.BeginSample("SendCommands");
-                replicator.Handler.SendCommands(replicator.CommandGroup, this, connection);
+                replicator.Handler.SendCommands(replicator.CommandGroup, this, World, connection);
                 Profiler.EndSample();
             }
         }
