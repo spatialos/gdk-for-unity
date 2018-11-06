@@ -101,6 +101,7 @@ namespace <#= qualifiedNamespace #>
 
             public struct ReceivedResponse
             {
+                public Unity.Entities.Entity Sender;
                 public EntityId EntityId { get; }
                 public string Message { get; }
                 public StatusCode StatusCode { get; }
@@ -117,6 +118,7 @@ namespace <#= qualifiedNamespace #>
                     System.Object context,
                     long requestId)
                 {
+                    Sender = Unity.Entities.Entity.Null;
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
