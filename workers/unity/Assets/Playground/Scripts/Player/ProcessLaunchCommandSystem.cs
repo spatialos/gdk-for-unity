@@ -38,14 +38,13 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
         }
 
-        [Inject] private CommandSenderSystem commandSender;
+        [Inject] private CommandSystem commandSender;
         [Inject] private LaunchCommandData launchCommandData;
         [Inject] private LaunchableData launchableData;
 
         protected override void OnUpdate()
         {
             // Handle Launch Commands from players. Only allow if they have energy etc.
-            var launchableSender = commandSender.GetCommandSender<Launchable.CommandSender>();
             for (var i = 0; i < launchCommandData.Length; i++)
             {
                 var launcher = launchCommandData.Launcher[i];
@@ -66,7 +65,7 @@ namespace Playground
                     var request = Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
                         new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
                             energy, info.Player));
-                    launchableSender.SendLaunchMeRequest(entity, request);
+                    commandSender.SendCommand(request, entity);
                     energyLeft -= energy;
                     j++;
                 }
