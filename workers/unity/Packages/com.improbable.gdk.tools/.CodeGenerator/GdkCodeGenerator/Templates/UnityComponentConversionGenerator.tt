@@ -263,6 +263,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
+                return;
                 var commandIndex = op.CommandIndex;
 <# if (commandDetailsList.Count > 0) { #>
 
@@ -590,7 +591,7 @@ namespace <#= qualifiedNamespace #>
                 <#= profilingEnd #>
             }
 
-            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, World world, global::Improbable.Worker.CInterop.Connection connection)
             {
 <# if (commandDetailsList.Count > 0) { #>
                 <#= profilingStart #>
@@ -602,6 +603,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
 #>
                 {
+                    var commandSystem = world.GetExistingManager<CommandSystem>();
+
                     var senderType = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
                     var responderType = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
 
@@ -619,17 +622,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             {
                                 foreach (var request in requests)
                                 {
-                                    var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, <#= commandDetails.CommandIndex #>);
-                                    <#= commandDetails.FqnRequestType #>.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
-
-                                    var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
-                                        new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
-                                        <#= commandDetails.CommandIndex #>,
-                                        request.TimeoutMillis,
-                                        request.AllowShortCircuiting ? ShortCircuitParameters : null);
-
-                                    <#= commandDetails.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId] =
-                                        new CommandRequestStore<<#= commandDetails.FqnRequestType #>>(entities[i], request.Payload, request.Context, request.RequestId);
+                                    commandSystem.SendCommand(request, entities[i]);
                                 }
 
                                 requests.Clear();
@@ -667,8 +660,18 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 <# } #>
             }
         }
+<# foreach (var command in commandDetailsList) {
+        var requestType = command.CommandName + ".Request";
+        var receivedRequestType = command.CommandName + ".ReceivedRequest";
+        var responseType = command.CommandName + ".Response";
+        var receivedResponseType = command.CommandName + ".ReceivedResponse";
+#>
 
-        public class CommandSender : ICommandSender
+        public class <#= command.CommandName #>CommandManager :
+            ICommandRequestReceiver<<#= receivedRequestType #>>,
+            ICommandRequestSender<<#= requestType #>>,
+            ICommandResponseSender<<#= responseType #>>,
+            ICommandResponseReceiver<<#= receivedResponseType #>>
         {
             private readonly Improbable.Worker.Core.CommandParameters shortCircuitingParameters = new CommandParameters
             {
@@ -678,61 +681,47 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
 
-<# foreach (var command in commandDetailsList) { #>
-            private CommandStorages.<#= command.CommandName #> <#= command.CamelCaseCommandName #>Storage;
-<# } #>
+            private List<<#= requestType #>> requestsToSend = new List<<#= requestType #>>();
+            private List<<#= receivedRequestType #>> requestsReceived = new List<<#= receivedRequestType #>>();
 
-<# foreach (var command in commandDetailsList) { #>
-            private List<(Unity.Entities.Entity SendingEntity, <#= command.CommandName #>.Request Request)> <#= command.CamelCaseCommandName #>Requests;
+            private List<<#= receivedResponseType #>> responsesReceived = new List<<#= receivedResponseType #>>();
+            private List<<#= responseType #>> responsesToSend = new List<<#= responseType #>>();
 
-            public void Send<#= command.CommandName #>Request(Unity.Entities.Entity sendingEntity, <#= command.CommandName #>.Request request)
+            private Dictionary<long, <#= requestType #>> sentRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
+            private Dictionary<long, Unity.Entities.Entity> sentRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();
+
+            private Dictionary<long, long> sentWorkerRequestIdToInternalRequestId = new Dictionary<long, long>();
+
+            public Type GetRequestType()
             {
-                if (<#= command.CamelCaseCommandName #>Requests == null)
-                {
-                    <#= command.CamelCaseCommandName #>Requests =
-                        new List<(Unity.Entities.Entity SendingEntity, <#= command.CommandName #>.Request Request)>();
-                }
-
-                <#= command.CamelCaseCommandName #>Requests.Add((sendingEntity, request));
+                return typeof(<#= requestType #>);
             }
 
-            public void Send<#= command.CommandName #>Request(Improbable.Worker.EntityId sendingEntityId, <#= command.CommandName #>.Request request)
+            public Type GetReceivedRequestType()
             {
-                if (!workerSystem.TryGetEntity(sendingEntityId, out var entity))
-                {
-                    throw new ArgumentException($"Can not send a command from Entity with ID {sendingEntityId.Id} as it is not in the worker view");
-                }
-
-                Send<#= command.CommandName #>Request(entity, request);
+                return typeof(<#= receivedRequestType #>);
             }
 
-<# } #>
-            void ICommandSender.Init(World world)
+            public Type GetResponseType()
             {
-                workerSystem = world.GetExistingManager<WorkerSystem>();
-
-                if (workerSystem == null)
-                {
-                    throw new ArgumentException("World instance is not running a valid SpatialOS worker");
-                }
-
-                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
-<# foreach (var command in commandDetailsList) { #>
-                <#= command.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= command.CommandName #>>();
-<# } #>
+                return typeof(<#= responseType #>);
             }
 
-            void ICommandSender.SendAll()
+            public Type GetReceivedResponseType()
+            {
+                return typeof(<#= receivedResponseType #>);
+            }
+
+            public void SendAll()
             {
                 var connection = workerSystem.Connection;
-<# foreach (var command in commandDetailsList) { #>
 
-                if (<#= command.CamelCaseCommandName #>Requests == null)
+                if (requestsToSend.Count == 0)
                 {
                     return;
                 }
 
-                foreach (var (entity, request) in <#= command.CamelCaseCommandName #>Requests)
+                foreach (var request in requestsToSend)
                 {
                     var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
                     <#= command.FqnRequestType #>.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
@@ -742,14 +731,165 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         request.TimeoutMillis,
                         request.AllowShortCircuiting ? shortCircuitingParameters : null);
 
-                    <#= command.CamelCaseCommandName #>Storage.CommandRequestsInFlight[requestId.Id] =
-                        new CommandRequestStore<<#= command.FqnRequestType #>>(entity, request.Payload, request.Context, request.RequestId);
+                    sentWorkerRequestIdToInternalRequestId[requestId.Id] = request.RequestId;
                 }
 
-                <#= command.CamelCaseCommandName #>Requests.Clear();
-<# } #>
+                requestsToSend.Clear();
+                requestsReceived.Clear();
+                responsesReceived.Clear();
+                responsesToSend.Clear();
+            }
+
+            public void Init(World world)
+            {
+                workerSystem = world.GetExistingManager<WorkerSystem>();
+
+                if (workerSystem == null)
+                {
+                    throw new ArgumentException("World instance is not running a valid SpatialOS worker");
+                }
+
+                var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
+
+                dispatcher.OnCommandRequest(AddRequest);
+                dispatcher.OnCommandResponse(AddResponse);
+            }
+
+            public void SendCommand(<#= requestType #> request, Unity.Entities.Entity entity)
+            {
+                requestsToSend.Add(request);
+                sentRequestIdToEntity.Add(request.RequestId, entity);
+                sentRequestIdToRequest[request.RequestId] = request;
+            }
+
+            public void SendResponse(<#= responseType #> response, long requestId)
+            {
+                responsesToSend.Add(response);
+            }
+
+            public List<<#= requestType #>> GetRequestsToSend()
+            {
+                return requestsToSend;
+            }
+
+            public List<<#= receivedRequestType #>> GetRequestsReceived()
+            {
+                return requestsReceived;
+            }
+
+            public List<<#= receivedRequestType #>> GetRequestsReceivedForEntityId(Improbable.Worker.EntityId entityId)
+            {
+                return null;
+                // todo don't actually use this - decide if this function is needed or not and if so index things properly
+                //return requestsReceived.Where(request => request.TargetId == entityId).ToList();
+            }
+
+            public List<<#= responseType #>> GetResponsesToSend()
+            {
+                return responsesToSend;
+            }
+
+            public List<<#= receivedResponseType #>> GetResponsesReceived()
+            {
+                return responsesReceived;
+            }
+
+            public List<<#= receivedResponseType #>> GetResponsesReceivedForEntity(Unity.Entities.Entity entity)
+            {
+                // todo don't actually use this - decide if this function is needed or not and if so index things properly
+                return responsesReceived.Where(response =>
+                {
+                    if (!sentRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
+                    {
+                        return false;
+                    }
+
+                    return entityForRequest == entity;
+                }).ToList();
+                return null;
+            }
+
+            public bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
+            {
+                foreach (var r in responsesReceived)
+                {
+                    if (r.RequestId == requestId)
+                    {
+                        response = r;
+                        return true;
+                    }
+                }
+
+                response = default(<#= receivedResponseType #>);
+                return false;
+            }
+
+            private void AddRequest(CommandRequestOp op)
+            {
+                var componentId = op.Request.ComponentId;
+                if (componentId != ComponentId)
+                {
+                    return;
+                }
+
+                var commandIndex = op.Request.CommandIndex;
+                if (commandIndex != <#= command.CommandIndex #>)
+                {
+                    return;
+                }
+
+                var deserializedRequest = <#= command.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
+
+                var request = new <#= receivedRequestType #>(op.RequestId.Id,
+                    op.CallerWorkerId,
+                    op.CallerAttributeSet,
+                    deserializedRequest);
+
+                requestsReceived.Add(request);
+            }
+
+            private void AddResponse(CommandResponseOp op)
+            {
+                var componentId = op.Response.ComponentId;
+                if (componentId != ComponentId)
+                {
+                    return;
+                }
+
+                var commandIndex = op.Response.CommandIndex;
+                if (commandIndex != <#= command.CommandIndex #>)
+                {
+                    return;
+                }
+
+                <#= command.FqnResponseType #>? rawResponse = null;
+                if (op.StatusCode == StatusCode.Success)
+                {
+                    rawResponse = <#= command.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
+                }
+
+                var sentRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
+                sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
+
+                var sendingEntity = sentRequestIdToEntity[sentRequestId];
+                sentRequestIdToEntity.Remove(sentRequestId);
+
+                var request = sentRequestIdToRequest[sentRequestId];
+                sentRequestIdToRequest.Remove(sentRequestId);
+
+                var response = new <#= receivedResponseType #>(
+                    op.EntityId,
+                    op.Message,
+                    op.StatusCode,
+                    rawResponse,
+                    request.Payload,
+                    request.Context,
+                    request.RequestId);
+
+                responsesReceived.Add(response);
             }
         }
+<# } #>
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
