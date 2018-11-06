@@ -9,8 +9,8 @@ The GDK is composed of three layers:
 **The GDK Feature Modules:** a library of solutions for hard or common networked game development problems, such as Character Movement and Shooting.
 
 **The GDK Starter Projects:**
-* a [**First Person Shooter (FPS) Starter Project**](https://github.com/spatialos/gdk-for-unity-fps-starter-project/) that enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games.
-* a [**Blank Starter Project**](https://github.com/spatialos/gdk-for-unity-blank-project) containing the minimum GDK feature set you need to start developing games for SpatialOS.
+* A [**First Person Shooter (FPS) Starter Project**](https://github.com/spatialos/gdk-for-unity-fps-starter-project/) that enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games.
+* A [**Blank Starter Project**](https://github.com/spatialos/gdk-for-unity-blank-project) containing the minimum GDK feature set you need to start developing games for SpatialOS.
 
 [Get started](https://docs.improbable.io/unity/alpha/get-started) with the SpatialOS GDK for Unity, by setting up the FPS Starter Project.
 
