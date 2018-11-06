@@ -34,7 +34,7 @@
 - <h3> + GDK concepts</h3>
     - Workers
         - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-        - [Connecting to SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
+        - [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
         - [API - worker]({{urlRoot}}/content/workers/api-worker)
         - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
     - SpatialOS entities
@@ -62,7 +62,7 @@
         - [Readers and writers]({{urlRoot}}/content/gameobject/readers-writers)
         - [Readers and writers: SpatialOS component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
         - [Readers and writers: Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
-        - [Commands: SpatialOS Component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+        - [Commands: SpatialOS component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
         - [Commands: World commands]({{urlRoot}}/content/gameobject/world-commands)
     - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
     - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
