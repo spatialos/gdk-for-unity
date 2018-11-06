@@ -26,14 +26,24 @@ namespace Improbable.Gdk.Core
             ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
         }
 
-        public void SendResponse<T>(T response, long requestId)
+        public void SendResponse<T>(T response)
         {
             if (!responseTypeToIndex.TryGetValue(typeof(T), out var index))
             {
                 throw new ArgumentException("Type is not a valid command request");
             }
 
-            ((ICommandResponseSender<T>) managers[index]).SendResponse(response, requestId);
+            ((ICommandResponseSender<T>) managers[index]).SendResponse(response);
+        }
+
+        public List<T> GetResponses<T>()
+        {
+            if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
+            {
+                throw new ArgumentException("Type is not a valid received response");
+            }
+
+            return ((ICommandResponseReceiver<T>) managers[index]).GetResponsesReceived();
         }
 
         protected override void OnCreateManager()

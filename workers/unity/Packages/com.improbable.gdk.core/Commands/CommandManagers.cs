@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core.Commands
 
     public interface ICommandResponseSender<TResponse> : ICommandManager
     {
-        void SendResponse(TResponse response, long requestId);
+        void SendResponse(TResponse response);
         List<TResponse> GetResponsesToSend();
     }
 

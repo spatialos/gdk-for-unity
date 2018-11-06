@@ -632,19 +632,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                             {
                                 foreach (var response in responses)
                                 {
-                                    var requestId = response.RequestId;
-
-                                    if (response.FailureMessage != null)
-                                    {
-                                        // Send a command failure if the string is non-null.
-                                        connection.SendCommandFailure((uint) requestId, response.FailureMessage);
-                                        continue;
-                                    }
-
-                                    var schemaCommandResponse = new global::Improbable.Worker.CInterop.SchemaCommandResponse(ComponentId, <#= commandDetails.CommandIndex #>);
-                                    <#= commandDetails.FqnResponseType #>.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
-
-                                    connection.SendCommandResponse((uint) requestId, new global::Improbable.Worker.CInterop.CommandResponse(schemaCommandResponse));
+                                    commandSystem.SendResponse(response);
                                 }
 
                                 responses.Clear();
@@ -660,6 +648,46 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 <# } #>
             }
         }
+
+<# foreach (var command in commandDetailsList) {
+        var requestType = command.CommandName + ".Request";
+        var receivedRequestType = command.CommandName + ".ReceivedRequest";
+        var responseType = command.CommandName + ".Response";
+        var receivedResponseType = command.CommandName + ".ReceivedResponse";
+        var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{command.CommandName}";
+#>
+        public class <#= command.CommandName #>CommandComponentManager : ICommandComponentManager
+        {
+            public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager, World world)
+            {
+                var receivedResponses = commandSystem.GetResponses<<#= receivedResponseType #>>();
+                // todo Not efficient if it keeps jumping all over entities but don't care right now
+                foreach (var response in receivedResponses)
+                {
+                    if (response.Sender == Unity.Entities.Entity.Null || !entityManager.Exists(response.Sender))
+                    {
+                        continue;
+                    }
+
+                    List<<#= receivedResponseType #>> responses;
+                    if (entityManager.HasComponent<<#= commandResponseBufferType #>>(response.Sender))
+                    {
+                        responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(response.Sender).Responses;
+                    }
+                    else
+                    {
+                        var data = new <#= commandResponseBufferType #>
+                        {
+                            CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
+                        };
+                        responses = data.Responses = new List<<#= receivedResponseType #>>();
+                        entityManager.AddComponentData(response.Sender, data);
+                    }
+                }
+            }
+        }
+
+<# } #>
 <# foreach (var command in commandDetailsList) {
         var requestType = command.CommandName + ".Request";
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
@@ -734,6 +762,23 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     sentWorkerRequestIdToInternalRequestId[requestId.Id] = request.RequestId;
                 }
 
+                foreach (var response in responsesToSend)
+                {
+                    var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(response.RequestId);
+
+                    if (response.FailureMessage != null)
+                    {
+                        // Send a command failure if the string is non-null.
+                        connection.SendCommandFailure(requestId, response.FailureMessage);
+                        continue;
+                    }
+
+                    var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= command.CommandIndex #>);
+                    <#= command.FqnResponseType #>.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
+
+                    connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                }
+
                 requestsToSend.Clear();
                 requestsReceived.Clear();
                 responsesReceived.Clear();
@@ -762,7 +807,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 sentRequestIdToRequest[request.RequestId] = request;
             }
 
-            public void SendResponse(<#= responseType #> response, long requestId)
+            public void SendResponse(<#= responseType #> response)
             {
                 responsesToSend.Add(response);
             }
@@ -885,6 +930,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     request.Payload,
                     request.Context,
                     request.RequestId);
+
+                response.Sender = sendingEntity;
 
                 responsesReceived.Add(response);
             }
