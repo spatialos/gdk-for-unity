@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
             Connection connection);
 
         public abstract void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system,
-            Connection connection);
+            World world, Connection connection);
 
         protected EntityManager EntityManager;
         protected readonly CommandParameters ShortCircuitParameters;

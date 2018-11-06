@@ -78,7 +78,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             throw new System.NotImplementedException();
         }
 
-        public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, Connection connection)
+        public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, World world, Connection connection)
         {
             throw new System.NotImplementedException();
         }
