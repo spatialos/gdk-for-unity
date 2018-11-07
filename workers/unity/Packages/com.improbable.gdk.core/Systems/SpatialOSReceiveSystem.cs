@@ -202,7 +202,6 @@ namespace Improbable.Gdk.Core
             }
 
             Profiler.BeginSample("OnCommandRequest");
-            specificDispatcher.OnCommandRequest(op);
             Profiler.EndSample();
         }
 
@@ -215,7 +214,6 @@ namespace Improbable.Gdk.Core
             }
 
             Profiler.BeginSample("OnCommandResponse");
-            specificDispatcher.OnCommandResponse(op);
             Profiler.EndSample();
         }
 

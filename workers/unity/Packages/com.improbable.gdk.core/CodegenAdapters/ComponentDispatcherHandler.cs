@@ -14,9 +14,6 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract void OnComponentUpdate(ComponentUpdateOp op);
         public abstract void OnAuthorityChange(AuthorityChangeOp op);
 
-        public abstract void OnCommandRequest(CommandRequestOp op);
-        public abstract void OnCommandResponse(CommandResponseOp op);
-
         public abstract void AddCommandComponents(Entity entity);
 
         public abstract void Dispose();
