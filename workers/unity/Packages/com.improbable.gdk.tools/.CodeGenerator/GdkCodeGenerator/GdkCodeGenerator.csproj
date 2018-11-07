@@ -42,7 +42,6 @@
     <T4Files Include="Templates\UnityReferenceTypeProviderGenerator.tt" />
     <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
     <T4Files Include="Templates\UnityCommandComponentsGenerator.tt" />
-    <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
     <T4Files Include="Templates\UnityWorkerMenuGenerator.tt" />
     <T4Files Include="Templates\BuildSystemAssemblyGenerator.tt" />
   </ItemGroup>
