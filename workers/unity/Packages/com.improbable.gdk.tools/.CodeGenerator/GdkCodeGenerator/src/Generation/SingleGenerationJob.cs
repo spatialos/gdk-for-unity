@@ -49,8 +49,6 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -96,7 +94,6 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
-            var commandStorageGenerator = new UnityCommandStorageGenerator();
             var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
             var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
             var readerWriterGenerator = new UnityReaderWriterGenerator();
@@ -134,11 +131,6 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandComponentsCode =
                         commandComponentsGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
-
-                    var commandStorageFileName =
-                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension);
-                    var commandStorageCode = commandStorageGenerator.Generate(component, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandStorageFileName), commandStorageCode);
                 }
 
                 if (component.EventDefinitions.Count > 0)
