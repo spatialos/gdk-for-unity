@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Worker.Core;
 using Unity.Entities;
@@ -18,15 +18,25 @@ namespace Playground
 
         private float timeElapsedSinceUpdate;
 
-        private readonly Queue<float> fpsMeasurements = new Queue<float>();
-        private const int MaxFpsSamples = 50;
         private const float TimeBetweenMetricUpdatesSecs = 2.0f;
         private const int DefaultTargetFrameRate = 60;
+
+        private float TargetFps;
+
+        private float totalFpsCount;
+        private int fpsMeasurements;
+
+        private Improbable.Worker.Metrics Metrics;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
+            Metrics = new Improbable.Worker.Metrics();
+
+            TargetFps = Application.targetFrameRate == -1
+                ? DefaultTargetFrameRate
+                : Application.targetFrameRate;
         }
 
         protected override void OnUpdate()
@@ -37,52 +47,37 @@ namespace Playground
             }
 
             timeElapsedSinceUpdate += Time.deltaTime;
-            
+
             AddFpsSample();
             if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
             {
                 timeElapsedSinceUpdate = 0;
-                var fps = CalculateFps();
-                var load = DefaultLoadCalculation(fps);
-                var metrics = new Improbable.Worker.Metrics
-                {
-                    Load = load
-                };
-                connection.SendMetrics(metrics);
+
+                var dynamicFps = CalculateFps();
+                Metrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
+                Metrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
+                Metrics.Load = CalculateLoad(dynamicFps);
+
+                connection.SendMetrics(Metrics);
             }
         }
 
-        private static float DefaultLoadCalculation(float fps)
+        private float CalculateLoad(float dynamicFps)
         {
-            float targetFps = Application.targetFrameRate;
-
-            if (targetFps == -1)
-            {
-                targetFps = DefaultTargetFrameRate;
-            }
-
-            return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
+            return Mathf.Max(0.0f, 0.5f * TargetFps / dynamicFps);
         }
 
         private void AddFpsSample()
         {
-            if (fpsMeasurements.Count == MaxFpsSamples)
-            {
-                fpsMeasurements.Dequeue();
-            }
-
-            fpsMeasurements.Enqueue(1.0f / Time.deltaTime);
+            totalFpsCount += 1.0f / Time.deltaTime;
+            fpsMeasurements++;
         }
 
         private float CalculateFps()
         {
-            var fps = 0.0f;
-            foreach (var measurement in fpsMeasurements)
-            {
-                fps += measurement;
-            }
-
-            fps /= fpsMeasurements.Count;
+            var fps = totalFpsCount / fpsMeasurements;
+            totalFpsCount = 0;
+            fpsMeasurements = 0;
             return fps;
         }
     }
