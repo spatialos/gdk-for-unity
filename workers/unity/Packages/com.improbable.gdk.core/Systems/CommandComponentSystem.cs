@@ -33,12 +33,13 @@ namespace Improbable.Gdk.Core
 
         [Inject] private EntityManager entityManager;
         [Inject] private CommandSystem commandSystem;
+        [Inject] private WorkerSystem workerSystem;
 
         protected override void OnUpdate()
         {
             foreach (var manager in managers)
             {
-                manager.PopulateCommandComponents(commandSystem, entityManager, World);
+                manager.PopulateCommandComponents(commandSystem, entityManager, workerSystem, World);
             }
         }
     }

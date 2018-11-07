@@ -240,6 +240,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandRequest(CommandRequestOp op)
             {
+                return;
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
 <# if (commandDetailsList.Count > 0) { #>
 
@@ -654,12 +655,42 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
         var responseType = command.CommandName + ".Response";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
+
         var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{command.CommandName}";
+        var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{command.CommandName}";
 #>
         public class <#= command.CommandName #>CommandComponentManager : ICommandComponentManager
         {
-            public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager, World world)
+            public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
             {
+                var receivedRequests = commandSystem.GetRequests<<#= receivedRequestType #>>();
+                // todo Not efficient if it keeps jumping all over entities but don't care right now
+                foreach (var request in receivedRequests)
+                {
+                    if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    List<<#= receivedRequestType #>> requests;
+                    if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
+                    {
+                        requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
+                    }
+                    else
+                    {
+                        var data = new <#= commandRequestBufferType #>
+                        {
+                            CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
+                        };
+                        requests = data.Requests = new List<<#= receivedRequestType #>>();
+                        entityManager.AddComponentData(entity, data);
+                    }
+
+                    requests.Add(request);
+                }
+
+
                 var receivedResponses = commandSystem.GetResponses<<#= receivedResponseType #>>();
                 // todo Not efficient if it keeps jumping all over entities but don't care right now
                 foreach (var response in receivedResponses)
@@ -683,6 +714,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         responses = data.Responses = new List<<#= receivedResponseType #>>();
                         entityManager.AddComponentData(response.Sender, data);
                     }
+
+                    responses.Add(response);
                 }
             }
         }
@@ -889,6 +922,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     op.CallerWorkerId,
                     op.CallerAttributeSet,
                     deserializedRequest);
+                request.EntityId = op.EntityId;
 
                 requestsReceived.Add(request);
             }

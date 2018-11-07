@@ -36,6 +36,16 @@ namespace Improbable.Gdk.Core
             ((ICommandResponseSender<T>) managers[index]).SendResponse(response);
         }
 
+        public List<T> GetRequests<T>()
+        {
+            if (!receivedRequestTypeToIndex.TryGetValue(typeof(T), out var index))
+            {
+                throw new ArgumentException("Type is not a valid received request");
+            }
+
+            return ((ICommandRequestReceiver<T>) managers[index]).GetRequestsReceived();
+        }
+
         public List<T> GetResponses<T>()
         {
             if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
