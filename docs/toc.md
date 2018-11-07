@@ -39,7 +39,7 @@
         - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
     - SpatialOS entities
         - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
-        - [Creating SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
+        - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
         - [API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
     - Commands
         - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
