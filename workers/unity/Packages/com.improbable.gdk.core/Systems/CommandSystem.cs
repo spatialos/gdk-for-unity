@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, int> responseTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> receivedResponseTypeToIndex = new Dictionary<Type, int>();
 
-        public void SendCommand<T>(T request, Entity sendingEntity)
+        public void SendCommand<T>(T request, Entity sendingEntity) where T : ICommandRequest
         {
             if (!requestTypeToIndex.TryGetValue(typeof(T), out var index))
             {
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core
             ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
         }
 
-        public void SendResponse<T>(T response)
+        public void SendResponse<T>(T response) where T : ICommandResponse
         {
             if (!responseTypeToIndex.TryGetValue(typeof(T), out var index))
             {
@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
             ((ICommandResponseSender<T>) managers[index]).SendResponse(response);
         }
 
-        public List<T> GetRequests<T>()
+        public List<T> GetRequests<T>() where T : IReceivedCommandRequest
         {
             if (!receivedRequestTypeToIndex.TryGetValue(typeof(T), out var index))
             {
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
             return ((ICommandRequestReceiver<T>) managers[index]).GetRequestsReceived();
         }
 
-        public List<T> GetResponses<T>()
+        public List<T> GetResponses<T>() where T : IReceivedCommandResponse
         {
             if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
             {
