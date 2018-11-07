@@ -61,9 +61,6 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandStorage", FileExtension)));
-
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension)));
                 }
 
@@ -100,7 +97,6 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
-            var commandStorageGenerator = new UnityCommandStorageGenerator();
             var gameObjectComponentDispatcherGenerator = new UnityGameObjectComponentDispatcherGenerator();
             var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
             var readerWriterGenerator = new UnityReaderWriterGenerator();
@@ -142,11 +138,6 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandComponentsCode =
                         commandComponentsGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
-
-                    var commandStorageFileName =
-                        Path.ChangeExtension($"{componentName}CommandStorage", FileExtension);
-                    var commandStorageCode = commandStorageGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandStorageFileName), commandStorageCode);
 
                     var monobehaviourCommandHandlerFileName =
                         Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension);
