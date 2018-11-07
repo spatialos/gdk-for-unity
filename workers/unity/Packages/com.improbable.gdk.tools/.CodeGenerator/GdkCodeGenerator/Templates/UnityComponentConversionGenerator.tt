@@ -37,17 +37,9 @@ namespace <#= qualifiedNamespace #>
 
             private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
 
-<# foreach (var commandDetails in commandDetailsList) { #>
-            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
-<# } #>
-
             public DispatcherHandler(WorkerSystem worker, World world) : base(worker, world)
             {
                 entityManager = world.GetOrCreateManager<EntityManager>();
-                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
-<# foreach (var commandDetails in commandDetailsList) { #>
-                <#= commandDetails.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName #>>();
-<# } #>
             }
 
             public override void Dispose()
@@ -385,16 +377,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-<# foreach (var commandDetails in commandDetailsList) { #>
-            private CommandStorages.<#= commandDetails.CommandName#> <#= commandDetails.CamelCaseCommandName #>Storage;
-<# } #>
-
             public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
             {
-                var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
-<# foreach (var commandDetails in commandDetailsList) { #>
-                <#= commandDetails.CamelCaseCommandName #>Storage = bookkeepingSystem.GetCommandStorageForType<CommandStorages.<#= commandDetails.CommandName#>>();
-<# } #>
             }
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
