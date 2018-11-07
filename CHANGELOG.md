@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for the Steam authentication flow.
+- Added a reference to Blank Starter Project in the README.
 
 ## `0.1.2` - 2018-11-01
 
