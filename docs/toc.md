@@ -34,7 +34,7 @@
 - <h3> + GDK concepts</h3>
     - Workers
         - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-        - [Connecting to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
+        - [Connect to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
         - [API - worker]({{urlRoot}}/content/workers/api-worker)
         - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
     - SpatialOS entities
