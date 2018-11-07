@@ -729,16 +729,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             HasAuthorityChangedReceived = true;
         }
 
-        public override void OnCommandRequest(CommandRequestOp op)
-        {
-            HasCommandRequestReceived = true;
-        }
-
-        public override void OnCommandResponse(CommandResponseOp op)
-        {
-            HasCommandResponseReceived = true;
-        }
-
         public override void Dispose()
         {
         }
