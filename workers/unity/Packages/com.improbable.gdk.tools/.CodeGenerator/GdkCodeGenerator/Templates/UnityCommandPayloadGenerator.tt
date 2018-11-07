@@ -57,12 +57,14 @@ namespace <#= qualifiedNamespace #>
                 public List<string> CallerAttributeSet { get; }
                 public <#= commandDetails.FqnRequestType #> Payload { get; }
 
-                public ReceivedRequest(long requestId,
+                public ReceivedRequest(
+                    EntityId entityId,
+                    long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     <#= commandDetails.FqnRequestType #> request)
                 {
-                    EntityId = new EntityId(0);
+                    EntityId = entityId;
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
@@ -101,18 +103,20 @@ namespace <#= qualifiedNamespace #>
                 };
             }
 
-            public struct ReceivedResponse
+            public readonly struct ReceivedResponse
             {
-                public Unity.Entities.Entity Sender;
-                public EntityId EntityId { get; }
-                public string Message { get; }
-                public StatusCode StatusCode { get; }
-                public <#= commandDetails.FqnResponseType #>? ResponsePayload { get; }
-                public <#= commandDetails.FqnRequestType #> RequestPayload { get; }
-                public System.Object Context { get; }
-                public long RequestId { get; }
+                public readonly Unity.Entities.Entity SendingEntity;
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly <#= commandDetails.FqnResponseType #>? ResponsePayload;
+                public readonly <#= commandDetails.FqnRequestType #> RequestPayload;
+                public readonly System.Object Context;
+                public readonly long RequestId;
 
-                public ReceivedResponse(EntityId entityId,
+                public ReceivedResponse(
+                    Unity.Entities.Entity sendingEntity,
+                    EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     <#= commandDetails.FqnResponseType #>? response,
@@ -120,7 +124,7 @@ namespace <#= qualifiedNamespace #>
                     System.Object context,
                     long requestId)
                 {
-                    Sender = Unity.Entities.Entity.Null;
+                    SendingEntity = sendingEntity;
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
