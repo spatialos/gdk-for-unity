@@ -238,54 +238,6 @@ namespace <#= qualifiedNamespace #>
                 <#= profilingEnd #>
             }
 
-            public override void OnCommandRequest(CommandRequestOp op)
-            {
-                return;
-                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-<# if (commandDetailsList.Count > 0) { #>
-
-                <#= profilingStart #>
-                switch (commandIndex)
-                {
-<# foreach(var commandDetails in commandDetailsList) { #>
-                    case <#= commandDetails.CommandIndex #>:
-                        On<#= commandDetails.CommandName #>Request(op);
-                        break;
-<# } #>
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
-                }
-
-                <#= profilingEnd #>
-<# } else { #>
-                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
-<# } #>
-            }
-
-            public override void OnCommandResponse(CommandResponseOp op)
-            {
-                return;
-                var commandIndex = op.CommandIndex;
-<# if (commandDetailsList.Count > 0) { #>
-
-                <#= profilingStart #>
-                switch (commandIndex)
-                {
-<# foreach(var commandDetails in commandDetailsList) { #>
-                    case <#= commandDetails.CommandIndex #>:
-                        On<#= commandDetails.CommandName #>Response(op);
-                        break;
-<# } #>
-                    default:
-                        throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
-                }
-
-                <#= profilingEnd #>
-<# } else { #>
-                throw new UnknownCommandIndexException(commandIndex, "<#= componentDetails.ComponentName #>");
-<# } #>
-            }
-
             public override void AddCommandComponents(Unity.Entities.Entity entity)
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -396,92 +348,6 @@ namespace <#= qualifiedNamespace #>
                     .WithField("Component", "<#= componentNamespace #>")
                 );
             }
-<# foreach (var commandDetails in commandDetailsList) {
-    var wrappedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
-    var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
-
-    var wrappedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
-    var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{commandDetails.CommandName}";
-
-    var commandStorage = $"{commandDetails.CamelCaseCommandName}Storage";
-#>
-
-            private void On<#= commandDetails.CommandName #>Request(CommandRequestOp op)
-            {
-                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
-
-                var deserializedRequest = <#= commandDetails.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
-
-                List<<#= wrappedCommandRequestType #>> requests;
-                if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
-                {
-                    requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
-                }
-                else
-                {
-                    var data = new <#= commandRequestBufferType #>
-                    {
-                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.Allocate(World)
-                    };
-                    requests = data.Requests = new List<<#= wrappedCommandRequestType #>>();
-                    entityManager.AddComponentData(entity, data);
-                }
-
-                requests.Add(new <#= wrappedCommandRequestType #>(op.RequestId,
-                    op.CallerWorkerId,
-                    op.CallerAttributeSet,
-                    deserializedRequest));
-            }
-
-            private void On<#= commandDetails.CommandName #>Response(CommandResponseOp op)
-            {
-                if (!<#= commandStorage #>.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
-                {
-                    throw new InvalidOperationException($"Could not find corresponding request for RequestId {op.RequestId} and command <#= commandDetails.CommandName #>.");
-                }
-
-                var entity = requestBundle.Entity;
-                <#= commandStorage #>.CommandRequestsInFlight.Remove(op.RequestId);
-                if (!entityManager.Exists(entity))
-                {
-                    LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField("Op", "CommandResponseOp - <#= commandDetails.CommandName #>")
-                        .WithField("Component", "<#= componentNamespace #>")
-                    );
-                    return;
-                }
-
-                <#= commandDetails.FqnResponseType #>? response = null;
-                if (op.StatusCode == StatusCode.Success)
-                {
-                    response = <#= commandDetails.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
-                }
-
-                List<<#= wrappedCommandResponseType #>> responses;
-                if (entityManager.HasComponent<<#= commandResponseBufferType #>>(entity))
-                {
-                    responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(entity).Responses;
-                }
-                else
-                {
-                    var data = new <#= commandResponseBufferType #>
-                    {
-                        CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.Allocate(World)
-                    };
-                    responses = data.Responses = new List<<#= wrappedCommandResponseType #>>();
-                    entityManager.AddComponentData(entity, data);
-                }
-
-                responses.Add(new <#= wrappedCommandResponseType #>(new EntityId(op.EntityId),
-                    op.Message,
-                    op.StatusCode,
-                    response,
-                    requestBundle.Request,
-                    requestBundle.Context,
-                    requestBundle.RequestId));
-            }
-<# } #>
         }
 
         internal class ComponentReplicator : ComponentReplicationHandler
@@ -683,7 +549,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         {
                             CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
                         };
-                        requests = data.Requests = new List<<#= receivedRequestType #>>();
+                        data.Requests = new List<<#= receivedRequestType #>>();
+                        requests = data.Requests;
                         entityManager.AddComponentData(entity, data);
                     }
 
@@ -695,15 +562,15 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 // todo Not efficient if it keeps jumping all over entities but don't care right now
                 foreach (var response in receivedResponses)
                 {
-                    if (response.Sender == Unity.Entities.Entity.Null || !entityManager.Exists(response.Sender))
+                    if (response.SendingEntity == Unity.Entities.Entity.Null || !entityManager.Exists(response.SendingEntity))
                     {
                         continue;
                     }
 
                     List<<#= receivedResponseType #>> responses;
-                    if (entityManager.HasComponent<<#= commandResponseBufferType #>>(response.Sender))
+                    if (entityManager.HasComponent<<#= commandResponseBufferType #>>(response.SendingEntity))
                     {
-                        responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(response.Sender).Responses;
+                        responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(response.SendingEntity).Responses;
                     }
                     else
                     {
@@ -711,8 +578,9 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         {
                             CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
                         };
-                        responses = data.Responses = new List<<#= receivedResponseType #>>();
-                        entityManager.AddComponentData(response.Sender, data);
+                        data.Responses = new List<<#= receivedResponseType #>>();
+                        responses = data.Responses;
+                        entityManager.AddComponentData(response.SendingEntity, data);
                     }
 
                     responses.Add(response);
@@ -776,11 +644,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             public void SendAll()
             {
                 var connection = workerSystem.Connection;
-
-                if (requestsToSend.Count == 0)
-                {
-                    return;
-                }
 
                 foreach (var request in requestsToSend)
                 {
@@ -918,11 +781,12 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                 var deserializedRequest = <#= command.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
-                var request = new <#= receivedRequestType #>(op.RequestId.Id,
+                var request = new <#= receivedRequestType #>(
+                    op.EntityId,
+                    op.RequestId.Id,
                     op.CallerWorkerId,
                     op.CallerAttributeSet,
                     deserializedRequest);
-                request.EntityId = op.EntityId;
 
                 requestsReceived.Add(request);
             }
@@ -957,6 +821,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 sentRequestIdToRequest.Remove(sentRequestId);
 
                 var response = new <#= receivedResponseType #>(
+                    sendingEntity,
                     op.EntityId,
                     op.Message,
                     op.StatusCode,
@@ -964,8 +829,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     request.Payload,
                     request.Context,
                     request.RequestId);
-
-                response.Sender = sendingEntity;
 
                 responsesReceived.Add(response);
             }
