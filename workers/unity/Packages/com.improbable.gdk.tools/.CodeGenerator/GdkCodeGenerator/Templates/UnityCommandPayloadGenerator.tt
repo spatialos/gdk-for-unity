@@ -51,6 +51,7 @@ namespace <#= qualifiedNamespace #>
 
             public struct ReceivedRequest
             {
+                public EntityId EntityId;
                 public long RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
@@ -61,6 +62,7 @@ namespace <#= qualifiedNamespace #>
                     List<string> callerAttributeSet,
                     <#= commandDetails.FqnRequestType #> request)
                 {
+                    EntityId = new EntityId(0);
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;

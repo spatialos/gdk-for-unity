@@ -4,6 +4,6 @@ namespace Improbable.Gdk.Core.Commands
 {
     public interface ICommandComponentManager
     {
-        void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManger, World world);
+        void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManger, WorkerSystem workerSystem, World world);
     }
 }
