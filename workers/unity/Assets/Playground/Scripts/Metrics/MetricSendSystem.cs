@@ -26,7 +26,7 @@ namespace Playground
         private double targetFps;
 
         private int lastFrameCount;
-        private double lastSentFps;
+        private double calculatedFps;
 
         // We use exponential smoothing for the FPS metric
         // larger value == more smoothing, 0 = no smoothing
@@ -43,6 +43,12 @@ namespace Playground
             targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate
                 : Application.targetFrameRate;
+
+            lastFrameCount = Time.frameCount;
+            calculatedFps = targetFps;
+
+            timeOfLastUpdate = DateTime.Now;
+            timeOfNextUpdate = timeOfLastUpdate.AddSeconds(TimeBetweenMetricUpdatesSecs);
         }
 
         protected override void OnUpdate()
@@ -54,34 +60,32 @@ namespace Playground
 
             if (DateTime.Now >= timeOfNextUpdate)
             {
-                var dynamicFps = CalculateFps();
-                WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
+                CalculateFps();
+                WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = calculatedFps;
                 WorkerMetrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
-                WorkerMetrics.Load = CalculateLoad(dynamicFps);
+                WorkerMetrics.Load = CalculateLoad();
 
                 connection.SendMetrics(WorkerMetrics);
 
-                lastSentFps = dynamicFps;
                 timeOfLastUpdate = DateTime.Now;
-                timeOfNextUpdate = DateTime.Now.AddSeconds(TimeBetweenMetricUpdatesSecs);
+                timeOfNextUpdate = timeOfLastUpdate.AddSeconds(TimeBetweenMetricUpdatesSecs);
             }
         }
 
         // Load defined as performance relative to target FPS.
         // i.e. a load of 0.5 means that the worker is hitting the target FPS
         // but achieving less than half the target FPS takes load above 1.0
-        private double CalculateLoad(double dynamicFps)
+        private double CalculateLoad()
         {
-            return Math.Max(0.0d, 0.5d * targetFps / dynamicFps);
+            return Math.Max(0.0d, 0.5d * targetFps / calculatedFps);
         }
 
-
-        private double CalculateFps()
+        private void CalculateFps()
         {
             var frameCount = Time.frameCount - lastFrameCount;
             lastFrameCount = Time.frameCount;
             var rawFps = frameCount / (DateTime.Now - timeOfLastUpdate).TotalSeconds;
-            return (rawFps * (1 - smoothing)) + (lastSentFps * smoothing);
+            calculatedFps = (rawFps * (1 - smoothing)) + (calculatedFps * smoothing);
         }
     }
 }
