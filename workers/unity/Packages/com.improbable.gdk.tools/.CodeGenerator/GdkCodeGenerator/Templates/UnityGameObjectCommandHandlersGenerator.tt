@@ -45,13 +45,13 @@ namespace <#= qualifiedNamespace #>
                 public void SendResponse(<#= responsePayloadType #> payload)
                 {
                     entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
-                        .Add(<#= commandDetails.CommandName #>.CreateResponse(Request, payload));
+                        .Add(new <#= commandDetails.CommandName #>.Response(Request.RequestId, payload));
                 }
 
                 public void SendResponseFailure(string message)
                 {
                     entityManager.GetComponentData<CommandResponders.<#= commandDetails.CommandName #>>(entity).ResponsesToSend
-                        .Add(<#= commandDetails.CommandName #>.CreateResponseFailure(Request, message));
+                        .Add(new <#= commandDetails.CommandName #>.Response(Request.RequestId, message));
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace <#= qualifiedNamespace #>
                         return -1;
                     }
 
-                    var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
+                    var request = new <#= commandDetails.CommandName #>.Request(entityId, payload, timeoutMillis, allowShortCircuiting, context);
                     return commandSystem.SendCommand(request, entity);
                 }
 
@@ -109,7 +109,7 @@ namespace <#= qualifiedNamespace #>
                         return -1;
                     }
 
-                    var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
+                    var request = new <#= commandDetails.CommandName #>.Request(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
                     return commandSystem.SendCommand(request, entity);
                 }
 
