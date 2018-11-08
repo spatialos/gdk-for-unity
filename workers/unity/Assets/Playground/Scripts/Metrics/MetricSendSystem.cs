@@ -66,9 +66,9 @@ namespace Playground
             }
         }
 
-        // Load defined as performance relative to target FPS
-        // i.e. 0.5 load means that worker is meeting target FPS and
-        // hitting less than half the target FPS takes load above 1.0
+        // Load defined as performance relative to target FPS.
+        // i.e. a load of 0.5 means that the worker is hitting the target FPS
+        // but achieving less than half the target FPS takes load above 1.0
         private double CalculateLoad(double dynamicFps)
         {
             return Math.Max(0.0d, 0.5d * TargetFps / dynamicFps);
