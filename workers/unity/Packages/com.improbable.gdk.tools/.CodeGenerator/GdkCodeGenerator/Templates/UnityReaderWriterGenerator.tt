@@ -27,7 +27,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
             internal class ReaderWriterCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
                     return new ReaderWriterImpl(entity, entityManager, logDispatcher);
                 }
