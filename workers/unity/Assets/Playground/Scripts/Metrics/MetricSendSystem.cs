@@ -33,7 +33,7 @@ namespace Playground
         // 0 <= smoothing < 1
         private const double smoothing = 0;
 
-        private static readonly Metrics Metrics = new Metrics();
+        private static readonly Metrics WorkerMetrics = new Metrics();
 
         protected override void OnCreateManager()
         {
@@ -55,11 +55,11 @@ namespace Playground
             if (DateTime.Now >= timeOfNextUpdate)
             {
                 var dynamicFps = CalculateFps();
-                Metrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
-                Metrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
-                Metrics.Load = CalculateLoad(dynamicFps);
+                WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
+                WorkerMetrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
+                WorkerMetrics.Load = CalculateLoad(dynamicFps);
 
-                connection.SendMetrics(Metrics);
+                connection.SendMetrics(WorkerMetrics);
 
                 lastSentFps = dynamicFps;
                 timeOfLastUpdate = DateTime.Now;
