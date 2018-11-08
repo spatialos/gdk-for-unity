@@ -70,7 +70,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             GenerateComponentGroups();
 
             logger = worker.LogDispatcher;
-            injector = new RequiredFieldInjector(EntityManager, logger);
+            injector = new RequiredFieldInjector(World, EntityManager, logger);
         }
 
         protected override void OnUpdate()

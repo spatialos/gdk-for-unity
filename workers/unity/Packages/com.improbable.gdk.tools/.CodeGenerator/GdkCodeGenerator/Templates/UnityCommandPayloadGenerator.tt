@@ -30,7 +30,6 @@ namespace <#= qualifiedNamespace #>
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
                 public System.Object Context { get; internal set; }
-                public long RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -46,7 +45,6 @@ namespace <#= qualifiedNamespace #>
                     TimeoutMillis = timeoutMillis,
                     AllowShortCircuiting = allowShortCircuiting,
                     Context = context,
-                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
                 };
             }
 

@@ -27,12 +27,14 @@ namespace Improbable.Gdk.Core.Commands
             {
                 private readonly Entity entity;
                 private readonly EntityManager entityManager;
+                private readonly CommandSystem commandSystem;
 
-                private WorldCommandRequestSender(Entity entity, EntityManager entityManager,
+                private WorldCommandRequestSender(World world, Entity entity, EntityManager entityManager,
                     ILogDispatcher logDispatcher) : base(logDispatcher)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
+                    commandSystem = world.GetExistingManager<CommandSystem>();
                 }
 
                 /// <summary>
@@ -297,10 +299,10 @@ namespace Improbable.Gdk.Core.Commands
                 [InjectableId(InjectableType.WorldCommandRequestSender, InjectableId.NullComponentId)]
                 private class WorldCommandRequestSenderCreator : IInjectableCreator
                 {
-                    public IInjectable CreateInjectable(Entity entity, EntityManager entityManager,
+                    public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager,
                         ILogDispatcher logDispatcher)
                     {
-                        return new WorldCommandRequestSender(entity, entityManager, logDispatcher);
+                        return new WorldCommandRequestSender(world, entity, entityManager, logDispatcher);
                     }
                 }
             }
