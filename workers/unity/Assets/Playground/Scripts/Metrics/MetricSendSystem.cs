@@ -16,16 +16,20 @@ namespace Playground
     {
         private Connection connection;
 
-        private long timeOfNextUpdate;
-        private long timeOfLastUpdate;
+        private DateTime timeOfNextUpdate;
+        private DateTime timeOfLastUpdate;
 
         private const double TimeBetweenMetricUpdatesSecs = 2;
         private const int DefaultTargetFrameRate = 60;
 
         private double TargetFps;
 
-        private float lastSentFps;
         private int lastFrameCount;
+        private double lastSentFps;
+
+        // 0 <= smoothing < 1
+        // larger value == more smoothing
+        private const double smoothing = 0;
 
         private Improbable.Worker.Metrics Metrics;
 
@@ -47,7 +51,7 @@ namespace Playground
                 return;
             }
 
-            if (DateTime.Now.Ticks >= timeOfNextUpdate)
+            if (DateTime.Now >= timeOfNextUpdate)
             {
                 var dynamicFps = CalculateFps();
                 Metrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
@@ -56,11 +60,15 @@ namespace Playground
 
                 connection.SendMetrics(Metrics);
 
-                timeOfLastUpdate = DateTime.Now.Ticks;
-                timeOfNextUpdate = DateTime.Now.AddSeconds(TimeBetweenMetricUpdatesSecs).Ticks;
+                lastSentFps = dynamicFps;
+                timeOfLastUpdate = DateTime.Now;
+                timeOfNextUpdate = DateTime.Now.AddSeconds(TimeBetweenMetricUpdatesSecs);
             }
         }
 
+        // Load defined as performance relative to target FPS
+        // i.e. 0.5 load means that worker is meeting target FPS and
+        // hitting less than half the target FPS takes load above 1.0
         private double CalculateLoad(double dynamicFps)
         {
             return Math.Max(0.0d, 0.5d * TargetFps / dynamicFps);
@@ -68,10 +76,10 @@ namespace Playground
 
         private double CalculateFps()
         {
-            var elapsedTime = DateTime.Now.Ticks - timeOfLastUpdate;
-            var frames = Time.frameCount - lastFrameCount;
+            var frameCount = Time.frameCount - lastFrameCount;
             lastFrameCount = Time.frameCount;
-            return frames / TimeSpan.FromTicks(elapsedTime).TotalSeconds;
+            var rawFps = frameCount / (DateTime.Now - timeOfLastUpdate).TotalSeconds;
+            return (rawFps * (1 - smoothing)) + (lastSentFps * smoothing);
         }
     }
 }
