@@ -66,7 +66,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 for (var i = 0; i < requestSenders.Length; i++)
                 {
                     requestSenders[i].RequestsToSend
-                        .Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateRequest(spatialIds[i].EntityId, new Empty()));
+                        .Add(new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIds[i].EntityId, new Empty()));
                 }
             }
 
