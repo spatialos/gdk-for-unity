@@ -70,10 +70,20 @@ namespace Improbable.Gdk.Core
                     var instance = (ICommandManager) Activator.CreateInstance(type);
                     instance.Init(World);
 
-                    requestTypeToIndex.Add(instance.GetRequestType(), managers.Count);
-                    receivedRequestTypeToIndex.Add(instance.GetReceivedRequestType(), managers.Count);
-                    responseTypeToIndex.Add(instance.GetResponseType(), managers.Count);
-                    receivedResponseTypeToIndex.Add(instance.GetReceivedResponseType(), managers.Count);
+                    switch (instance)
+                    {
+                        case IComponentCommandManager componentCommandManager:
+                            requestTypeToIndex.Add(componentCommandManager.GetRequestType(), managers.Count);
+                            receivedRequestTypeToIndex.Add(componentCommandManager.GetReceivedRequestType(), managers.Count);
+                            responseTypeToIndex.Add(componentCommandManager.GetResponseType(), managers.Count);
+                            receivedResponseTypeToIndex.Add(componentCommandManager.GetReceivedResponseType(), managers.Count);
+                            break;
+                        case IWorldCommandManager worldCommandManager:
+                            requestTypeToIndex.Add(worldCommandManager.GetRequestType(), managers.Count);
+                            receivedResponseTypeToIndex.Add(worldCommandManager.GetReceivedResponseType(), managers.Count);
+                            break;
+                    }
+
                     managers.Add(instance);
                 }
             }
