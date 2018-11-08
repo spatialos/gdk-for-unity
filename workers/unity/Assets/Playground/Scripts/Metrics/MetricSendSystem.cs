@@ -22,7 +22,7 @@ namespace Playground
         private const double TimeBetweenMetricUpdatesSecs = 2;
         private const int DefaultTargetFrameRate = 60;
 
-        private double TargetFps;
+        private double targetFps;
 
         private int lastFrameCount;
         private double lastSentFps;
@@ -39,7 +39,7 @@ namespace Playground
             connection = World.GetExistingManager<WorkerSystem>().Connection;
             Metrics = new Improbable.Worker.Metrics();
 
-            TargetFps = Application.targetFrameRate == -1
+            targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate
                 : Application.targetFrameRate;
         }
@@ -71,9 +71,10 @@ namespace Playground
         // but achieving less than half the target FPS takes load above 1.0
         private double CalculateLoad(double dynamicFps)
         {
-            return Math.Max(0.0d, 0.5d * TargetFps / dynamicFps);
+            return Math.Max(0.0d, 0.5d * targetFps / dynamicFps);
         }
 
+        // FPS calculation (optionally) includes exponential smoothing
         private double CalculateFps()
         {
             var frameCount = Time.frameCount - lastFrameCount;
