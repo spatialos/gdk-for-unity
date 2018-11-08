@@ -49,7 +49,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                     var responsesToSend = responders[i].ResponsesToSend;
                     foreach (var request in requests[i].Requests)
                     {
-                        responsesToSend.Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateResponse(request, new Empty()));
+                        responsesToSend.Add(new PlayerHeartbeatClient.PlayerHeartbeat.Response(request.RequestId, new Empty()));
                     }
                 }
             }

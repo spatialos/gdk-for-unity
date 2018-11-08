@@ -61,7 +61,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < sendData.Length; ++i)
             {
                 var request = new CreatePlayerRequestType(new Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
-                var createPlayerRequest = PlayerCreator.CreatePlayer.CreateRequest(playerCreatorEntityId, request);
+                var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
                 sendData.RequestSenders[i].RequestsToSend
                     .Add(createPlayerRequest);

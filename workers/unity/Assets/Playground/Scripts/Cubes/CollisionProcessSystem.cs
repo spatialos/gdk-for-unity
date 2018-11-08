@@ -62,7 +62,7 @@ namespace Playground
                 {
                     if (ourOwner.IsValid())
                     {
-                        sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(
+                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
                             ourOwner, new ScoreIncreaseRequest(1)));
                         data.Sender[i] = sender;
                     }
@@ -71,7 +71,7 @@ namespace Playground
                 {
                     if (!ourOwner.IsValid())
                     {
-                        sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(otherOwner,
+                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(otherOwner,
                             new ScoreIncreaseRequest(1)));
                         data.Sender[i] = sender;
 

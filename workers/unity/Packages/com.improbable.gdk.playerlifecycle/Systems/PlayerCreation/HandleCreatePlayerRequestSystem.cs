@@ -77,15 +77,15 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                     if (receivedResponse.StatusCode != StatusCode.Success || !receivedResponse.EntityId.HasValue)
                     {
-                        responder.ResponsesToSend.Add(PlayerCreator.CreatePlayer
-                            .CreateResponseFailure(requestContext.createPlayerRequest,
+                        responder.ResponsesToSend.Add(new PlayerCreator.CreatePlayer
+                            .Response(requestContext.createPlayerRequest.RequestId,
                                 $"Failed to create player: \"{receivedResponse.Message}\""));
 
                         continue;
                     }
 
-                    responder.ResponsesToSend.Add(PlayerCreator.CreatePlayer
-                        .CreateResponse(requestContext.createPlayerRequest, new CreatePlayerResponseType
+                    responder.ResponsesToSend.Add(new PlayerCreator.CreatePlayer
+                        .Response(requestContext.createPlayerRequest.RequestId, new CreatePlayerResponseType
                         {
                             CreatedEntityId = receivedResponse.EntityId.Value
                         }));

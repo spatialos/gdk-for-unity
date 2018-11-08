@@ -62,7 +62,7 @@ namespace Playground
                 {
                     var info = requests[j].Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    var request = Launchable.LaunchMe.CreateRequest(info.EntityToLaunch,
+                    var request = new Launchable.LaunchMe.Request(info.EntityToLaunch,
                         new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
                             energy, info.Player));
                     commandSender.SendCommand(request, entity);
@@ -102,7 +102,7 @@ namespace Playground
                     );
                     launchable.MostRecentLauncher = info.Player;
 
-                    sender.RequestsToSend.Add(Launcher.IncreaseScore.CreateRequest(
+                    sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
                         launchable.MostRecentLauncher,
                         new ScoreIncreaseRequest(1.0f)));
                 }
