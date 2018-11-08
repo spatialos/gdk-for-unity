@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
             template = entity;
         }
 
-        internal Entity GetEntity()
+        public Entity GetEntity()
         {
             if (hasBeenUsed)
             {

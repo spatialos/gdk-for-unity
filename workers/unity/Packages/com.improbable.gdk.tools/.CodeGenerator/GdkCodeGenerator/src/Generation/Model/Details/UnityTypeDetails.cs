@@ -17,5 +17,10 @@ namespace Improbable.Gdk.CodeGenerator
                 "global::" + Formatting.CapitaliseQualifiedNameParts(typeDefinition.QualifiedName);
             FullyQualifiedTypeName = "global::" + Formatting.CapitaliseQualifiedNameParts(typeDefinition.QualifiedName);
         }
+
+        public string GetPartialFileName()
+        {
+            return FullyQualifiedTypeName.Split("::")[1];
+        }
     }
 }

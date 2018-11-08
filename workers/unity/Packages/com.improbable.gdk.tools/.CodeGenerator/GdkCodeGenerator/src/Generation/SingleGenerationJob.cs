@@ -51,6 +51,7 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
+                    
                 }
 
                 if (component.EventDefinitions.Count > 0)

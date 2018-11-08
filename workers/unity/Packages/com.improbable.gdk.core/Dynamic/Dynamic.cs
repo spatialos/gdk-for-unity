@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
             void Accept<TData, TUpdate>(uint componentId,
                 ComponentDeserializer<TData> deserializeComponentData,
                 UpdateDeserializer<TUpdate> deserializeComponentUpdate)
-                where TData : ISpatialComponentData
+                where TData : struct, ISpatialComponentData, IComponentData
                 where TUpdate : ISpatialComponentUpdate;
         }
 
@@ -46,6 +46,15 @@ namespace Improbable.Gdk.Core
             }
 
             return id;
+        }
+
+        public static Type GetComponentType(uint componentId) 
+        {
+            if (!ComponentDatabase.IdsToComponents.TryGetValue(componentId, out var componentType)) {
+                throw new ArgumentException($"Can not find type for unregistered SpatialOS component with ID {componentId}");
+            }
+
+            return componentType;
         }
     }
 }

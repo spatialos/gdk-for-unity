@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core
         private readonly Acl acl = new Acl();
         private bool hasBuiltOnce;
 
+        public HashSet<uint> ComponentsAdded => componentsAdded;
+
         private readonly HashSet<uint> componentsAdded = new HashSet<uint>();
 
         private const uint EntityAclComponentId = 50;
@@ -63,6 +65,21 @@ namespace Improbable.Gdk.Core
             componentsAdded.Add(componentData.ComponentId);
             acl.SetComponentWriteAccess(componentData.ComponentId, writeAccess);
             return this;
+        }
+
+        public ComponentData? GetComponentData(uint componentId) 
+        {
+            return entity.Get(componentId);
+        }
+
+        public void ReplaceComponent(ComponentData componentData) {
+            if (!componentsAdded.Contains(componentData.ComponentId)) {
+                throw new InvalidOperationException($"Cannot set a component data if it has not been added before.");
+            }
+
+            var oldData = entity.Get(componentData.ComponentId);
+            oldData.Value.SchemaData.Value.Dispose();
+            entity.Add(componentData);
         }
 
         /// <summary>
@@ -159,6 +176,12 @@ namespace Improbable.Gdk.Core
             {
                 acl.AddReadAccess(attribute);
             }
+
+            return this;
+        }
+
+        public EntityBuilder SetWriteAccess(uint componentId, string attribute) {
+            acl.SetComponentWriteAccess(componentId, attribute);
 
             return this;
         }

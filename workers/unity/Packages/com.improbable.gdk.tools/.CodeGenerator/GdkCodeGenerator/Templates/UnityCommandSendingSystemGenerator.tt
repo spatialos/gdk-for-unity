@@ -1,0 +1,65 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+#>
+<#= generatedHeader #>
+
+using System;
+using Unity.Entities;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Worker;
+
+namespace Improbable.Gdk.Generated
+{
+    public class CommandSendingSystem : ComponentSystem 
+    {
+        public Entity WorkerEntity;
+        
+        public EntityManager EntityMgr => this.EntityManager;
+        
+        protected override void OnCreateManager() 
+        {
+            base.OnCreateManager();
+            
+            WorkerEntity = World.GetExistingManager<WorkerSystem>().WorkerEntity;
+            this.Enabled = false;
+        }
+        
+        protected override void OnUpdate() 
+        {
+        }
+        
+        public long SendCommand<TCommand, TRequest, TResponse>(
+            CommandTypeInformation<TCommand, TRequest, TResponse> typeInformation,
+            EntityId entityId, TRequest request, Action<TResponse> callback, uint? timeoutMillis,
+            bool allowShortCircuiting) 
+            where TRequest: struct
+            where TResponse: struct, IReceivedResponse    
+        {
+            
+<# foreach (var commandGroupInfo in commandGroupInfos) { #>
+<# foreach (var commandDetails in commandGroupInfo.GetDetails()) { #>
+            if (typeof(TCommand) == typeof(<#= commandGroupInfo.QualifiedNamespace #>.<#= commandDetails.CommandName #>)) {
+                switch(request)
+                {
+                    case <#= commandDetails.FqnRequestType #> concreteRequest:
+                    {
+                        var ecsCommandRequestSender = EntityManager.GetComponentData<<#= commandGroupInfo.QualifiedNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(WorkerEntity);
+                        var commandRequest = <#= commandGroupInfo.QualifiedNamespace #>.<#= commandDetails.CommandName #>.CreateRequest(entityId, concreteRequest, timeoutMillis, allowShortCircuiting, callback);
+                        ecsCommandRequestSender.RequestsToSend.Add(commandRequest);
+                        return commandRequest.RequestId;
+                    }
+                    default: 
+                        throw new ArgumentException($"Unknown command combination: {nameof(TCommand)} with request payload {nameof(TRequest)}");
+                }
+            }
+<# } #>
+<# } #>
+            throw new ArgumentException($"Unknown command combination: {nameof(TCommand)}");
+
+        }
+    }
+}

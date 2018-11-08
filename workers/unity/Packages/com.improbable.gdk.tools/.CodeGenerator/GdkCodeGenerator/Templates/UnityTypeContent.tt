@@ -3,6 +3,7 @@
 <#
     var typeDetails = GetTypeDetails();
     var fieldDetailsList = GetFieldDetailsList();
+    var hasPartial = PartialsDatabase.TryGetPartial(typeDetails.GetPartialFileName(), out var partial);
 #>
 
 public struct <#= typeDetails.CapitalisedName #>
@@ -22,6 +23,10 @@ if (fieldDetailsList.Count > 0)
         <#= fieldDetails.PascalCaseName #> = <#= fieldDetails.CamelCaseName #>;
 <# } #>
     }
+<# } #>
+
+<# if (hasPartial) { #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(partial) #>
 <# } #>
 
     public static class Serialization

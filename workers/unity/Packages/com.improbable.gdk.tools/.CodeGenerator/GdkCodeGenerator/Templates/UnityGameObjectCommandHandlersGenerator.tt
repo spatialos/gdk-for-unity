@@ -71,6 +71,8 @@ namespace <#= qualifiedNamespace #>
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandRequestSender : RequirableBase, ICommandRequestSender
             {
+                public EntityId EntityId { get; private set; }
+            
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
@@ -80,13 +82,14 @@ namespace <#= qualifiedNamespace #>
                     this.entity = entity;
                     this.entityManager = entityManager;
                     this.logger = logger;
+                    EntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
                 }
 
 <#
     foreach(var commandDetails in commandDetailsList) {
         var receivedResponseType = commandDetails.CommandName + ".ReceivedResponse";
 #>
-                public CommandTypeInformation<<#= commandDetails.CommandName #>, <#= commandDetails.FqnRequestType #>, <#= receivedResponseType #>> <#= commandDetails.CommandName #>TypeInformation;
+                public static CommandTypeInformation<<#= commandDetails.CommandName #>, <#= commandDetails.FqnRequestType #>, <#= receivedResponseType #>> <#= commandDetails.CommandName #>TypeInformation;
 
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)
@@ -126,7 +129,7 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
                 long ICommandRequestSender.SendCommand<TCommand, TRequest, TResponse>(CommandTypeInformation<TCommand, TRequest, TResponse> commandTypeInformation, EntityId entityId, TRequest request,
-                    Action<TResponse> callback, uint? timeoutMillis = null, bool allowShortCircuiting = false)
+                    Action<TResponse> callback, uint? timeoutMillis, bool allowShortCircuiting)
                 {
 <#
     foreach(var commandDetails in commandDetailsList) {

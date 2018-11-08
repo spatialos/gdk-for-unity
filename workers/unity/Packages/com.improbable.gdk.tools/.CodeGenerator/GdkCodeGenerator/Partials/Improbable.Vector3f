@@ -1,0 +1,97 @@
+/// <summary>
+///     A Vector3f with 0f in each dimension.
+/// </summary>
+public static readonly Vector3f ZERO = new Vector3f(0f, 0f, 0f);
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator *(Vector3f vector3f, float scalar)
+{
+    return new Vector3f(vector3f.X * scalar, vector3f.Y * scalar, vector3f.Z * scalar);
+}
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator *(float scalar, Vector3f vector3f)
+{
+    return new Vector3f(vector3f.X * scalar, vector3f.Y * scalar, vector3f.Z * scalar);
+}
+
+/// <summary>
+///     Override of the division operator. Used for dividing the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator /(Vector3f vector3f, float scalar)
+{
+    return new Vector3f(vector3f.X / scalar, vector3f.Y / scalar, vector3f.Z / scalar);
+}
+
+/// <summary>
+///     Override of the addition operator. Used for adding two Vector3s.
+/// </summary>
+public static Vector3f operator +(Vector3f vector3f, Vector3f addVector3f)
+{
+    return new Vector3f(vector3f.X + addVector3f.X, vector3f.Y + addVector3f.Y, vector3f.Z + addVector3f.Z);
+}
+
+/// <summary>
+///     Override of the subtraction operator. Used for subtracting one Vector3f from another.
+/// </summary>
+public static Vector3f operator -(Vector3f vector3f, Vector3f subtractVector3f)
+{
+    return new Vector3f(vector3f.X - subtractVector3f.X, vector3f.Y - subtractVector3f.Y, vector3f.Z - subtractVector3f.Z);
+}
+
+/// <summary>
+///     Computes the square of the magnitude of the Vector3f.
+/// </summary>
+public float SquareMagnitude()
+{
+    return X * X + Y * Y + Z * Z;
+}
+
+/// <summary>
+///     Returns the normal of the Vector3f (does not modify the original Vector3f).
+/// </summary>
+public Vector3f Normalized()
+{
+    var magnitude = (float) System.Math.Sqrt(SquareMagnitude());
+    return new Vector3f(X / magnitude, Y / magnitude, Z / magnitude);
+}
+
+/// <summary>
+///     True if all components of the Vector3f are real numbers.
+/// </summary>
+public bool IsFinite
+{
+    get
+    {
+        return !float.IsNaN(X) && !float.IsNaN(Y) && !float.IsNaN(Z) &&
+               !float.IsInfinity(X) && !float.IsInfinity(Y) && !float.IsInfinity(Z);
+    }
+}
+
+/// <summary>
+///     Converts the Vector3f to a Unity Vector3.
+/// </summary>
+public Vector3 ToUnityVector()
+{
+    return new Vector3(X, Y, Z);
+}
+
+/// <summary>
+///     Converts the Vector3f to a Unity Quaternion.
+/// </summary>
+public Quaternion ToUnityQuaternion()
+{
+    return Quaternion.Euler(ToUnityVector());
+}
+
+/// <summary>
+///     Returns the string representation of the Vector3f.
+/// </summary>
+public override string ToString()
+{
+    return "Vector3f(" + X + ", " + Y + ", " + Z + ")";
+}

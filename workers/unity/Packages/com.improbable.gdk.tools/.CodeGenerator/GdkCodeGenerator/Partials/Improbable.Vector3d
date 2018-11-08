@@ -1,0 +1,97 @@
+/// <summary>
+///     A Vector3d with 0 in each dimension.
+/// </summary>
+public static readonly Vector3d ZERO = new Vector3d(0, 0, 0);
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3d by a float scalar.
+/// </summary>
+public static Vector3d operator *(Vector3d vector3d, double scalar)
+{
+    return new Vector3d(vector3d.X * scalar, vector3d.Y * scalar, vector3d.Z * scalar);
+}
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3d by a float scalar.
+/// </summary>
+public static Vector3d operator *(double scalar, Vector3d vector3d)
+{
+    return new Vector3d(vector3d.X * scalar, vector3d.Y * scalar, vector3d.Z * scalar);
+}
+
+/// <summary>
+///     Override of the division operator. Used for dividing the Vector3d by a float scalar.
+/// </summary>
+public static Vector3d operator /(Vector3d vector3d, double scalar)
+{
+    return new Vector3d(vector3d.X / scalar, vector3d.Y / scalar, vector3d.Z / scalar);
+}
+
+/// <summary>
+///     Override of the addition operator. Used for adding two Vector3s.
+/// </summary>
+public static Vector3d operator +(Vector3d vector3d, Vector3d addvector3d)
+{
+    return new Vector3d(vector3d.X + addvector3d.X, vector3d.Y + addvector3d.Y, vector3d.Z + addvector3d.Z);
+}
+
+/// <summary>
+///     Override of the subtraction operator. Used for subtracting one Vector3d from another.
+/// </summary>
+public static Vector3d operator -(Vector3d vector3d, Vector3d subtractVector3d)
+{
+    return new Vector3d(vector3d.X - subtractVector3d.X, vector3d.Y - subtractVector3d.Y, vector3d.Z - subtractVector3d.Z);
+}
+
+/// <summary>
+///     Computes the square of the magnitude of the Vector3d.
+/// </summary>
+public double SquareMagnitude()
+{
+    return X * X + Y * Y + Z * Z;
+}
+
+/// <summary>
+///     Returns the normal of the Vector3d (does not modify the original Vector3f).
+/// </summary>
+public Vector3d Normalized()
+{
+    var magnitude = System.Math.Sqrt(SquareMagnitude());
+    return new Vector3d(X / magnitude, Y / magnitude, Z / magnitude);
+}
+
+/// <summary>
+///     True if all components of the Vector3d are real numbers.
+/// </summary>
+public bool IsFinite
+{
+    get
+    {
+        return !double.IsNaN(X) && !double.IsNaN(Y) && !double.IsNaN(Z) &&
+               !double.IsInfinity(X) && !double.IsInfinity(Y) && !double.IsInfinity(Z);
+    }
+}
+
+/// <summary>
+///     Converts the Vector3d to a Unity Vector3.
+/// </summary>
+public Vector3 ToUnityVector()
+{
+    return new Vector3((float) X, (float) Y, (float) Z);
+}
+
+/// <summary>
+///     Converts the Vector3d to a Unity Quaternion.
+/// </summary>
+public Quaternion ToUnityQuaternion()
+{
+    return Quaternion.Euler(ToUnityVector());
+}
+
+/// <summary>
+///     Returns the string representation of the Vector3d.
+/// </summary>
+public override string ToString()
+{
+    return "Vector3d(" + X + ", " + Y + ", " + Z + ")";
+}

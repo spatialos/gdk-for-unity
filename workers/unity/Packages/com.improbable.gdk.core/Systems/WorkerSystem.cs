@@ -49,6 +49,11 @@ namespace Improbable.Gdk.Core
             return EntityIdToEntity.TryGetValue(entityId, out entity);
         }
 
+        public bool HasEntity(EntityId entityId) 
+        {
+            return EntityIdToEntity.ContainsKey(entityId);
+        }
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();

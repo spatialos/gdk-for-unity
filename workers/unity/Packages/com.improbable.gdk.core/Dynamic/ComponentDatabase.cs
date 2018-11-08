@@ -10,12 +10,15 @@ namespace Improbable.Gdk.Core
         public static Dictionary<Type, uint> ComponentsToIds { get; }
 
         public static Dictionary<Type, uint> SnapshotsToIds { get; }
+        
+        public static Dictionary<uint, Type> IdsToComponents { get; }
 
         static ComponentDatabase()
         {
             IdsToDynamicInvokers = new Dictionary<uint, IDynamicInvokable>();
             ComponentsToIds = new Dictionary<Type, uint>();
             SnapshotsToIds = new Dictionary<Type, uint>();
+            IdsToComponents = new Dictionary<uint, Type>();
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -31,6 +34,7 @@ namespace Improbable.Gdk.Core
                     {
                         var instance = (ISpatialComponentData) Activator.CreateInstance(type);
                         ComponentsToIds.Add(type, instance.ComponentId);
+                        IdsToComponents.Add(instance.ComponentId, type);
                     }
 
                     if (typeof(ISpatialComponentSnapshot).IsAssignableFrom(type) && !type.IsAbstract)

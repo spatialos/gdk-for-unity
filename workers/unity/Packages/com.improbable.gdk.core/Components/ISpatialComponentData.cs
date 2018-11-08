@@ -1,3 +1,5 @@
+using Unity.Entities;
+
 namespace Improbable.Gdk.Core
 {
     /// <summary>
@@ -9,5 +11,9 @@ namespace Improbable.Gdk.Core
         ///     The component ID of the SpatialOS component as defined in schema.
         /// </summary>
         uint ComponentId { get; }
+    }
+
+    public interface ISnapshottable<T> where T : ISpatialComponentSnapshot {
+        T TakeSnapshot(World world);
     }
 }

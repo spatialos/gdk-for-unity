@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Improbable.CodeGeneration.FileHandling;
 using Improbable.CodeGeneration.Jobs;
@@ -65,10 +66,11 @@ namespace Improbable.Gdk.CodeGenerator
             
             var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
+            var commandSenderJob = new CommandSendingSytemJob(options.NativeOutputDirectory, fileSystem, schemaProcessor.ProcessedSchemaFiles.ToList());
             
             var runner = new JobRunner(fileSystem);
             
-            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob }, 
+            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob, commandSenderJob }, 
                 new[] { options.NativeOutputDirectory });
             return 0;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -11,8 +12,10 @@ namespace Improbable.Gdk.GameObjectRepresentation
     public abstract class ReaderWriterBase<TSpatialComponentData, TComponentUpdate>
         : RequirableBase, IWriter<TSpatialComponentData, TComponentUpdate>
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
-        where TComponentUpdate : ISpatialComponentUpdate
-    {
+        where TComponentUpdate : ISpatialComponentUpdate {
+        
+        protected readonly EntityId EntityId;
+        
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
         protected readonly ILogDispatcher logDispatcher;
@@ -23,6 +26,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             Entity = entity;
             EntityManager = entityManager;
             this.logDispatcher = logDispatcher;
+            EntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
         /// <summary>

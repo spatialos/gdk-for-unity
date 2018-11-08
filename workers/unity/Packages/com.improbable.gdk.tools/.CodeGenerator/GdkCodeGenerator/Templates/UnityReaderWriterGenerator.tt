@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
+using Improbable.Worker;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Entity = Unity.Entities.Entity;
@@ -37,6 +38,8 @@ namespace <#= qualifiedNamespace #>
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
+                EntityId EntityId { get; }
+            
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 event Action<<#= fieldDetails.Type #>> <#= fieldDetails.PascalCaseName #>Updated;
 <# } #>
@@ -59,6 +62,9 @@ namespace <#= qualifiedNamespace #>
             internal class ReaderWriterImpl :
                 ReaderWriterBase<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+                
+                
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
