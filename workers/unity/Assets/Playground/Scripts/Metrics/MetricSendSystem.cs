@@ -16,15 +16,16 @@ namespace Playground
     {
         private Connection connection;
 
-        private float timeElapsedSinceUpdate;
+        private long timeOfNextUpdate;
+        private long timeOfLastUpdate;
 
-        private const float TimeBetweenMetricUpdatesSecs = 2.0f;
+        private const double TimeBetweenMetricUpdatesSecs = 2;
         private const int DefaultTargetFrameRate = 60;
 
-        private float TargetFps;
+        private double TargetFps;
 
-        private float totalFpsCount;
-        private int fpsMeasurements;
+        private float lastSentFps;
+        private int lastFrameCount;
 
         private Improbable.Worker.Metrics Metrics;
 
@@ -46,39 +47,31 @@ namespace Playground
                 return;
             }
 
-            timeElapsedSinceUpdate += Time.deltaTime;
-
-            AddFpsSample();
-            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
+            if (DateTime.Now.Ticks >= timeOfNextUpdate)
             {
-                timeElapsedSinceUpdate = 0;
-
                 var dynamicFps = CalculateFps();
                 Metrics.GaugeMetrics["Dynamic.FPS"] = dynamicFps;
                 Metrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
                 Metrics.Load = CalculateLoad(dynamicFps);
 
                 connection.SendMetrics(Metrics);
+
+                timeOfLastUpdate = DateTime.Now.Ticks;
+                timeOfNextUpdate = DateTime.Now.AddSeconds(TimeBetweenMetricUpdatesSecs).Ticks;
             }
         }
 
-        private float CalculateLoad(float dynamicFps)
+        private double CalculateLoad(double dynamicFps)
         {
-            return Mathf.Max(0.0f, 0.5f * TargetFps / dynamicFps);
+            return Math.Max(0.0d, 0.5d * TargetFps / dynamicFps);
         }
 
-        private void AddFpsSample()
+        private double CalculateFps()
         {
-            totalFpsCount += 1.0f / Time.deltaTime;
-            fpsMeasurements++;
-        }
-
-        private float CalculateFps()
-        {
-            var fps = totalFpsCount / fpsMeasurements;
-            totalFpsCount = 0;
-            fpsMeasurements = 0;
-            return fps;
+            var elapsedTime = DateTime.Now.Ticks - timeOfLastUpdate;
+            var frames = Time.frameCount - lastFrameCount;
+            lastFrameCount = Time.frameCount;
+            return frames / TimeSpan.FromTicks(elapsedTime).TotalSeconds;
         }
     }
 }
