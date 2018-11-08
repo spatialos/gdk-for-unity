@@ -62,9 +62,9 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandRequestSender, <#= componentDetails.ComponentId #>)]
             internal class CommandRequestSenderCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
-                    return new CommandRequestSender(entity, entityManager, logDispatcher);
+                    return new CommandRequestSender(world, entity, entityManager, logDispatcher);
                 }
             }
 
@@ -75,12 +75,14 @@ namespace <#= qualifiedNamespace #>
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
+                private readonly CommandSystem commandSystem;
 
-                public CommandRequestSender(Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
+                public CommandRequestSender(World world, Entity entity, EntityManager entityManager, ILogDispatcher logger) : base(logger)
                 {
                     this.entity = entity;
                     this.entityManager = entityManager;
                     this.logger = logger;
+                    commandSystem = world.GetExistingManager<CommandSystem>();
                 }
 
 <#
@@ -95,10 +97,8 @@ namespace <#= qualifiedNamespace #>
                         return -1;
                     }
 
-                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, context);
-                    ecsCommandRequestSender.RequestsToSend.Add(request);
-                    return request.RequestId;
+                    return commandSystem.SendCommand(request, entity);
                 }
 
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
@@ -109,10 +109,8 @@ namespace <#= qualifiedNamespace #>
                         return -1;
                     }
 
-                    var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
                     var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, payload, timeoutMillis, allowShortCircuiting, callback);
-                    ecsCommandRequestSender.RequestsToSend.Add(request);
-                    return request.RequestId;
+                    return commandSystem.SendCommand(request, entity);
                 }
 
 <# } #>
@@ -121,7 +119,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandRequestHandler, <#= componentDetails.ComponentId #>)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
                     return new CommandRequestHandler(entity, entityManager, logDispatcher);
                 }
@@ -181,7 +179,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.CommandResponseHandler, <#= componentDetails.ComponentId #>)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
                     return new CommandResponseHandler(entity, entityManager, logDispatcher);
                 }

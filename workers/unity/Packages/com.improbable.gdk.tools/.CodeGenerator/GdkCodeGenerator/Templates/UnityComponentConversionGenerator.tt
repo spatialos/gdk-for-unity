@@ -594,14 +594,14 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
 
-            private List<<#= requestType #>> requestsToSend = new List<<#= requestType #>>();
+            private List<(<#= requestType #> Request, long Id)> requestsToSend = new List<(<#= requestType #> Request, long Id)>();
             private List<<#= receivedRequestType #>> requestsReceived = new List<<#= receivedRequestType #>>();
 
             private List<<#= receivedResponseType #>> responsesReceived = new List<<#= receivedResponseType #>>();
             private List<<#= responseType #>> responsesToSend = new List<<#= responseType #>>();
 
-            private Dictionary<long, <#= requestType #>> sentRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
-            private Dictionary<long, Unity.Entities.Entity> sentRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();
+            private Dictionary<long, <#= requestType #>> sentInternalRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
+            private Dictionary<long, Unity.Entities.Entity> sentInternalRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();
 
             private Dictionary<long, long> sentWorkerRequestIdToInternalRequestId = new Dictionary<long, long>();
 
@@ -629,7 +629,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             {
                 var connection = workerSystem.Connection;
 
-                foreach (var request in requestsToSend)
+                foreach (var (request, id) in requestsToSend)
                 {
                     var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
                     <#= command.FqnRequestType #>.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
@@ -639,7 +639,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         request.TimeoutMillis,
                         request.AllowShortCircuiting ? shortCircuitingParameters : null);
 
-                    sentWorkerRequestIdToInternalRequestId[requestId.Id] = request.RequestId;
+                    sentWorkerRequestIdToInternalRequestId[requestId.Id] = id;
                 }
 
                 foreach (var response in responsesToSend)
@@ -680,11 +680,13 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 dispatcher.OnCommandResponse(AddResponse);
             }
 
-            public void SendCommand(<#= requestType #> request, Unity.Entities.Entity entity)
+            public long SendCommand(<#= requestType #> request, Unity.Entities.Entity entity)
             {
-                requestsToSend.Add(request);
-                sentRequestIdToEntity.Add(request.RequestId, entity);
-                sentRequestIdToRequest[request.RequestId] = request;
+                var id = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext();
+                requestsToSend.Add((request, id));
+                sentInternalRequestIdToEntity.Add(id, entity);
+                sentInternalRequestIdToRequest[id] = request;
+                return id;
             }
 
             public void SendResponse(<#= responseType #> response)
@@ -692,7 +694,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 responsesToSend.Add(response);
             }
 
-            public List<<#= requestType #>> GetRequestsToSend()
+            public List<(<#= requestType #> Request, long Id)> GetRequestsToSend()
             {
                 return requestsToSend;
             }
@@ -724,7 +726,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 // todo don't actually use this - decide if this function is needed or not and if so index things properly
                 return responsesReceived.Where(response =>
                 {
-                    if (!sentRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
+                    if (!sentInternalRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
                     {
                         return false;
                     }
@@ -795,14 +797,14 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     rawResponse = <#= command.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var sentRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
+                var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
                 sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
 
-                var sendingEntity = sentRequestIdToEntity[sentRequestId];
-                sentRequestIdToEntity.Remove(sentRequestId);
+                var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
+                sentInternalRequestIdToEntity.Remove(internalRequestId);
 
-                var request = sentRequestIdToRequest[sentRequestId];
-                sentRequestIdToRequest.Remove(sentRequestId);
+                var request = sentInternalRequestIdToRequest[internalRequestId];
+                sentInternalRequestIdToRequest.Remove(internalRequestId);
 
                 var response = new <#= receivedResponseType #>(
                     sendingEntity,
@@ -812,7 +814,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     rawResponse,
                     request.Payload,
                     request.Context,
-                    request.RequestId);
+                    internalRequestId);
 
                 responsesReceived.Add(response);
             }
