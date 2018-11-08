@@ -27,8 +27,9 @@ namespace Playground
         private int lastFrameCount;
         private double lastSentFps;
 
+        // We use exponential smoothing for the FPS metric
+        // larger value == more smoothing, 0 = no smoothing
         // 0 <= smoothing < 1
-        // larger value == more smoothing
         private const double smoothing = 0;
 
         private Improbable.Worker.Metrics Metrics;
@@ -74,7 +75,7 @@ namespace Playground
             return Math.Max(0.0d, 0.5d * targetFps / dynamicFps);
         }
 
-        // FPS calculation (optionally) includes exponential smoothing
+
         private double CalculateFps()
         {
             var frameCount = Time.frameCount - lastFrameCount;
