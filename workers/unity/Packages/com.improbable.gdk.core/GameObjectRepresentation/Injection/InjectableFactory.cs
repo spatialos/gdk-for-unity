@@ -55,7 +55,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             }
         }
 
-        internal IInjectable CreateInjectable(InjectableId injectableId, Entity entity)
+        internal IInjectable CreateInjectable(InjectableId injectableId, World world, Entity entity)
         {
             if (!injectableIdToReaderWriterCreator.ContainsKey(injectableId))
             {
@@ -65,7 +65,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return null;
             }
 
-            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(entity, entityManager, logger);
+            return injectableIdToReaderWriterCreator[injectableId].CreateInjectable(world, entity, entityManager, logger);
         }
     }
 }
