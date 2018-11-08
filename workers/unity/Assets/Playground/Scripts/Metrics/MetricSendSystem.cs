@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -32,13 +33,12 @@ namespace Playground
         // 0 <= smoothing < 1
         private const double smoothing = 0;
 
-        private Improbable.Worker.Metrics Metrics;
+        private static readonly Metrics Metrics = new Metrics();
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
-            Metrics = new Improbable.Worker.Metrics();
 
             targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate
