@@ -219,166 +219,18 @@ namespace Improbable.Gdk.Core
 
         internal void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
-            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
-            {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId));
-            }
-
-            var entity = requestBundle.Entity;
-            createEntityStorage.CommandRequestsInFlight.Remove(op.RequestId);
-
-            if (!EntityManager.Exists(entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("Op", "CreateEntityResponseOp")
-                );
-                return;
-            }
-
-            List<WorldCommands.CreateEntity.ReceivedResponse> responses;
-            if (EntityManager.HasComponent<WorldCommands.CreateEntity.CommandResponses>(entity))
-            {
-                responses = EntityManager.GetComponentData<WorldCommands.CreateEntity.CommandResponses>(entity)
-                    .Responses;
-            }
-            else
-            {
-                var data = new WorldCommands.CreateEntity.CommandResponses
-                {
-                    Handle = WorldCommands.CreateEntity.ResponsesProvider.Allocate(World)
-                };
-                responses = data.Responses = new List<WorldCommands.CreateEntity.ReceivedResponse>();
-                EntityManager.AddComponentData(entity, data);
-            }
-
-            responses.Add(
-                new WorldCommands.CreateEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
-                    requestBundle.RequestId));
         }
 
         internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
-            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
-            {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId));
-            }
-
-            var entity = requestBundle.Entity;
-            deleteEntityStorage.CommandRequestsInFlight.Remove(op.RequestId);
-
-            if (!EntityManager.Exists(entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("Op", "DeleteEntityResponseOp")
-                );
-                return;
-            }
-
-            List<WorldCommands.DeleteEntity.ReceivedResponse> responses;
-            if (EntityManager.HasComponent<WorldCommands.DeleteEntity.CommandResponses>(entity))
-            {
-                responses = EntityManager.GetComponentData<WorldCommands.DeleteEntity.CommandResponses>(entity)
-                    .Responses;
-            }
-            else
-            {
-                var data = new WorldCommands.DeleteEntity.CommandResponses
-                {
-                    Handle = WorldCommands.DeleteEntity.ResponsesProvider.Allocate(World)
-                };
-                responses = data.Responses = new List<WorldCommands.DeleteEntity.ReceivedResponse>();
-                EntityManager.AddComponentData(entity, data);
-            }
-
-            responses.Add(
-                new WorldCommands.DeleteEntity.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
-                    requestBundle.RequestId));
         }
 
         internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
-            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
-            {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId));
-            }
-
-            var entity = requestBundle.Entity;
-            reserveEntityIdsStorage.CommandRequestsInFlight.Remove(op.RequestId);
-
-            if (!EntityManager.Exists(entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("Op", "ReserveEntityIdsResponseOp")
-                );
-                return;
-            }
-
-            List<WorldCommands.ReserveEntityIds.ReceivedResponse> responses;
-            if (EntityManager.HasComponent<WorldCommands.ReserveEntityIds.CommandResponses>(entity))
-            {
-                responses = EntityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandResponses>(entity)
-                    .Responses;
-            }
-            else
-            {
-                var data = new WorldCommands.ReserveEntityIds.CommandResponses
-                {
-                    Handle = WorldCommands.ReserveEntityIds.ResponsesProvider.Allocate(World)
-                };
-                responses = data.Responses = new List<WorldCommands.ReserveEntityIds.ReceivedResponse>();
-                EntityManager.AddComponentData(entity, data);
-            }
-
-            responses.Add(
-                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
-                    requestBundle.RequestId));
         }
 
         internal void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
-            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
-            {
-                throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId));
-            }
-
-            var entity = requestBundle.Entity;
-            entityQueryStorage.CommandRequestsInFlight.Remove(op.RequestId);
-
-            if (!EntityManager.Exists(entity))
-            {
-                worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent(EntityNotFound)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField("Op", "EntityQueryResponseOp")
-                );
-                return;
-            }
-
-            List<WorldCommands.EntityQuery.ReceivedResponse> responses;
-            if (EntityManager.HasComponent<WorldCommands.EntityQuery.CommandResponses>(entity))
-            {
-                responses = EntityManager.GetComponentData<WorldCommands.EntityQuery.CommandResponses>(entity)
-                    .Responses;
-            }
-            else
-            {
-                var data = new WorldCommands.EntityQuery.CommandResponses
-                {
-                    Handle = WorldCommands.EntityQuery.ResponsesProvider.Allocate(World)
-                };
-                responses = data.Responses = new List<WorldCommands.EntityQuery.ReceivedResponse>();
-                EntityManager.AddComponentData(entity, data);
-            }
-
-            responses.Add(
-                new WorldCommands.EntityQuery.ReceivedResponse(op, requestBundle.Request, requestBundle.Context,
-                    requestBundle.RequestId, World));
         }
 
         internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
@@ -414,13 +266,13 @@ namespace Improbable.Gdk.Core
             Dispatcher.OnComponentUpdate(OnComponentUpdate);
             Dispatcher.OnAuthorityChange(OnAuthorityChange);
 
-            Dispatcher.OnCommandRequest(OnCommandRequest);
-            Dispatcher.OnCommandResponse(OnCommandResponse);
+            // Dispatcher.OnCommandRequest(OnCommandRequest);
+            // Dispatcher.OnCommandResponse(OnCommandResponse);
 
-            Dispatcher.OnCreateEntityResponse(OnCreateEntityResponse);
-            Dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
-            Dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
-            Dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
+            // Dispatcher.OnCreateEntityResponse(OnCreateEntityResponse);
+            // Dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
+            // Dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
+            // Dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
         }
 
         private static class Errors

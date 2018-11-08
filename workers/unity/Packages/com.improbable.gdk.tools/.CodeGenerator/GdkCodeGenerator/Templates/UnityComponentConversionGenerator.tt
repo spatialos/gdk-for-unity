@@ -580,11 +580,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
 
-        public class <#= command.CommandName #>CommandManager :
-            ICommandRequestReceiver<<#= receivedRequestType #>>,
-            ICommandRequestSender<<#= requestType #>>,
-            ICommandResponseSender<<#= responseType #>>,
-            ICommandResponseReceiver<<#= receivedResponseType #>>
+        public class <#= command.CommandName #>CommandManager : IComponentCommandManager<
+            <#= requestType #>, <#= responseType #>, <#= receivedRequestType #>, <#= receivedResponseType #>>
         {
             private readonly Improbable.Worker.Core.CommandParameters shortCircuitingParameters = new CommandParameters
             {

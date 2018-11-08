@@ -25,14 +25,14 @@ namespace <#= qualifiedNamespace #>
                 public <#= commandDetails.FqnRequestType #> Payload;
                 public uint? TimeoutMillis;
                 public bool AllowShortCircuiting;
-                public System.Object Context;
+                public object Context;
 
                 public Request(
                     EntityId targetEntityId,
                     <#= commandDetails.FqnRequestType #> request,
                     uint? timeoutMillis = null,
                     bool allowShortCircuiting = false,
-                    System.Object context = null)
+                    object context = null)
                 {
                     TargetEntityId = targetEntityId;
                     Payload = request;
