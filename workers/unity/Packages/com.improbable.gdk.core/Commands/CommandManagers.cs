@@ -21,8 +21,8 @@ namespace Improbable.Gdk.Core.Commands
 
     public interface ICommandRequestSender<TRequest> : ICommandManager where TRequest : ICommandRequest
     {
-        void SendCommand(TRequest request, Entity entity);
-        List<TRequest> GetRequestsToSend();
+        long SendCommand(TRequest request, Entity entity);
+        List<(TRequest Request, long Id)> GetRequestsToSend();
     }
 
     public interface ICommandResponseSender<TResponse> : ICommandManager where TResponse : ICommandResponse
