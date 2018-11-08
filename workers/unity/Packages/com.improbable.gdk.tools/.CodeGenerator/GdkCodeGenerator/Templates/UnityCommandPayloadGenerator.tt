@@ -19,34 +19,29 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var commandDetails in commandDetailsList) {#>
         public partial class <#= commandDetails.CommandName #>
         {
-            /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
-            /// </summary>
             public struct Request : ICommandRequest
             {
-                public EntityId TargetEntityId { get; internal set; }
-                public <#= commandDetails.FqnRequestType #> Payload { get; internal set; }
-                public uint? TimeoutMillis { get; internal set; }
-                public bool AllowShortCircuiting { get; internal set; }
-                public System.Object Context { get; internal set; }
+                public EntityId TargetEntityId;
+                public <#= commandDetails.FqnRequestType #> Payload;
+                public uint? TimeoutMillis;
+                public bool AllowShortCircuiting;
+                public System.Object Context;
+
+                public Request(
+                    EntityId targetEntityId,
+                    <#= commandDetails.FqnRequestType #> request,
+                    uint? timeoutMillis = null,
+                    bool allowShortCircuiting = false,
+                    System.Object context = null)
+                {
+                    TargetEntityId = targetEntityId;
+                    Payload = request;
+                    TimeoutMillis = timeoutMillis;
+                    AllowShortCircuiting = allowShortCircuiting;
+                    Context = context;
+                }
             }
 
-            public static Request CreateRequest(EntityId targetEntityId,
-                <#= commandDetails.FqnRequestType #> request,
-                uint? timeoutMillis = null,
-                bool allowShortCircuiting = false,
-                System.Object context = null)
-            {
-                return new Request
-                {
-                    TargetEntityId = targetEntityId,
-                    Payload = request,
-                    TimeoutMillis = timeoutMillis,
-                    AllowShortCircuiting = allowShortCircuiting,
-                    Context = context,
-                };
-            }
 
             public readonly struct ReceivedRequest : IReceivedCommandRequest
             {
@@ -72,34 +67,28 @@ namespace <#= qualifiedNamespace #>
             }
 
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
-            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
+            ///     A Response will be considered a failure if FailureMessage is not null;
             /// </summary>
+            // Should consider making this a union of a failure and a response
             public struct Response : ICommandResponse
             {
-                public long RequestId { get; internal set; }
-                public <#= commandDetails.FqnResponseType #>? Payload { get; internal set; }
-                public string FailureMessage { get; internal set; }
-            }
+                public long RequestId;
+                public <#= commandDetails.FqnResponseType #>? Payload;
+                public string FailureMessage;
 
-            public static Response CreateResponse(ReceivedRequest req, <#= commandDetails.FqnResponseType #> payload)
-            {
-                return new Response
+                public Response(long requestId, <#= commandDetails.FqnResponseType #> payload)
                 {
-                    RequestId = req.RequestId,
-                    Payload = payload,
-                    FailureMessage = null,
-                };
-            }
+                    RequestId = requestId;
+                    Payload = payload;
+                    FailureMessage = null;
+                }
 
-            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
-            {
-                return new Response
+                public Response(long requestId, string failureMessage)
                 {
-                    RequestId = req.RequestId,
-                    Payload = null,
-                    FailureMessage = failureMessage,
-                };
+                    RequestId = requestId;
+                    Payload = null;
+                    FailureMessage = failureMessage;
+                }
             }
 
             public readonly struct ReceivedResponse : IReceivedCommandResponse
