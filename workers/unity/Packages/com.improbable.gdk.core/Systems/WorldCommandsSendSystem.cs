@@ -31,23 +31,12 @@ namespace Improbable.Gdk.Core
 
         private ComponentGroup group;
 
-        private WorldCommands.CreateEntity.Storage createEntityStorage;
-        private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
-        private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
-        private WorldCommands.EntityQuery.Storage entityQueryStorage;
-
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
 
             group = GetComponentGroup(worldCommandSendersQuery);
-
-            var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
-            createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
-            deleteEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.DeleteEntity.Storage>();
-            reserveEntityIdsStorage = requestTracker.GetCommandStorageForType<WorldCommands.ReserveEntityIds.Storage>();
-            entityQueryStorage = requestTracker.GetCommandStorageForType<WorldCommands.EntityQuery.Storage>();
         }
 
         [Inject] private CommandSystem commandSystem;

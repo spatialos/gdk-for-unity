@@ -266,12 +266,6 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
-            internal class Storage : CommandStorage
-            {
-                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<Request>>();
-            }
-
             public class CommandComponentManager : ICommandComponentManager
             {
                 public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager,

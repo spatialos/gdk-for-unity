@@ -30,15 +30,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
         private WorkerSystem worker;
         private SpatialOSReceiveSystem receiveSystem;
+        private CommandSystem commandSystem;
 
         private FirstComponentDispatcher firstComponentDispatcher;
         private SecondComponentDispatcher secondComponentDispatcher;
         private TestLogDispatcher logDispatcher;
-
-        private WorldCommands.CreateEntity.Storage createEntityStorage;
-        private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
-        private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
-        private WorldCommands.EntityQuery.Storage entityQueryStorage;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -48,6 +44,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             logDispatcher = new TestLogDispatcher();
 
             worker = world.CreateManager<WorkerSystem>(null, logDispatcher, TestWorkerType, Vector3.zero);
+            commandSystem = world.CreateManager<CommandSystem>();
 
             firstComponentDispatcher = new FirstComponentDispatcher(worker, world);
             secondComponentDispatcher = new SecondComponentDispatcher(worker, world);
@@ -58,12 +55,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             receiveSystem.AddAllCommandComponents.Clear();
             receiveSystem.AddDispatcherHandler(firstComponentDispatcher);
             receiveSystem.AddDispatcherHandler(secondComponentDispatcher);
-
-            var requestTracker = world.GetOrCreateManager<CommandRequestTrackerSystem>();
-            createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
-            deleteEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.DeleteEntity.Storage>();
-            reserveEntityIdsStorage = requestTracker.GetCommandStorageForType<WorldCommands.ReserveEntityIds.Storage>();
-            entityQueryStorage = requestTracker.GetCommandStorageForType<WorldCommands.EntityQuery.Storage>();
         }
 
         [OneTimeTearDown]
@@ -100,10 +91,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             firstComponentDispatcher.Reset();
             secondComponentDispatcher.Reset();
 
-            createEntityStorage.CommandRequestsInFlight.Clear();
-            deleteEntityStorage.CommandRequestsInFlight.Clear();
-            reserveEntityIdsStorage.CommandRequestsInFlight.Clear();
-            entityQueryStorage.CommandRequestsInFlight.Clear();
+            // clear commands
 
             WorldCommands.CreateEntity.ResponsesProvider.CleanDataInWorld(world);
             WorldCommands.EntityQuery.ResponsesProvider.CleanDataInWorld(world);
@@ -378,18 +366,20 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCreateEntityResponse_should_add_received_responses_to_entity()
         {
+            Assert.IsTrue(false);
             var entity = SetupTestEntity();
 
             var emptyRequest = new WorldCommands.CreateEntity.Request();
             var context = "Some context";
 
-            createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity,
-                    emptyRequest, context, TestCommandRequestId));
+            // commandSystem
+            // createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity,
+            //         emptyRequest, context, TestCommandRequestId));
 
             using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
             {
-                receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+                // receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
 
                 Assert.IsTrue(entityManager.HasComponent<WorldCommands.CreateEntity.CommandResponses>(entity));
 
@@ -413,234 +403,245 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [Test]
         public void OnCreateEntityResponse_should_error_if_request_id_not_found()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
-            {
-                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnCreateEntityResponse(wrappedOp.Op); });
-            }
+            Assert.IsTrue(false);
+            // using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
+            // {
+            //     Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnCreateEntityResponse(wrappedOp.Op); });
+            // }
         }
 
         [Test]
         public void OnCreateEntityResponse_should_log_if_corresponding_entity_not_found()
         {
-            var emptyRequest = new WorldCommands.CreateEntity.Request();
-
-            createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.CreateEntity.Request>(Entity.Null,
-                    emptyRequest, null, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
-            {
-                using (var expectingScope = logDispatcher.EnterExpectingScope())
-                {
-                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
-                    receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
-                }
-            }
+            Assert.IsTrue(false);
+            // var emptyRequest = new WorldCommands.CreateEntity.Request();
+            //
+            // createEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.CreateEntity.Request>(Entity.Null,
+            //         emptyRequest, null, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateCreateEntityResponseOp(TestCommandRequestId))
+            // {
+            //     using (var expectingScope = logDispatcher.EnterExpectingScope())
+            //     {
+            //         expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+            //         receiveSystem.OnCreateEntityResponse(wrappedOp.Op);
+            //     }
+            // }
         }
 
         [Test]
         public void OnDeleteEntityResponse_should_add_received_responses_to_entity()
         {
-            var entity = SetupTestEntity();
-
-            var emptyRequest = new WorldCommands.DeleteEntity.Request();
-            var context = "Some context";
-
-            deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity,
-                    emptyRequest, context, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
-            {
-                receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
-
-                Assert.IsTrue(entityManager.HasComponent<WorldCommands.DeleteEntity.CommandResponses>(entity));
-
-                var responses = entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandResponses>(entity);
-
-                var count = 0;
-                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
-                Assert.AreEqual(1, count);
-
-                var response = responses.Responses[0];
-
-                Assert.AreEqual(emptyRequest, response.RequestPayload);
-                Assert.AreEqual(context, response.Context);
-                Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
-                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId.Id);
-            }
+            Assert.IsTrue(false);
+            // var entity = SetupTestEntity();
+            //
+            // var emptyRequest = new WorldCommands.DeleteEntity.Request();
+            // var context = "Some context";
+            //
+            // deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity,
+            //         emptyRequest, context, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            // {
+            //     receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+            //
+            //     Assert.IsTrue(entityManager.HasComponent<WorldCommands.DeleteEntity.CommandResponses>(entity));
+            //
+            //     var responses = entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandResponses>(entity);
+            //
+            //     var count = 0;
+            //     Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+            //     Assert.AreEqual(1, count);
+            //
+            //     var response = responses.Responses[0];
+            //
+            //     Assert.AreEqual(emptyRequest, response.RequestPayload);
+            //     Assert.AreEqual(context, response.Context);
+            //     Assert.AreEqual(TestCommandRequestId, response.RequestId);
+            //     Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+            //     Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+            //     Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId);
+            // }
         }
 
         [Test]
         public void OnDeleteEntityResponse_should_error_if_request_id_not_found()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
-            {
-                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnDeleteEntityResponse(wrappedOp.Op); });
-            }
+            Assert.IsTrue(false);
+            // using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            // {
+            //     Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnDeleteEntityResponse(wrappedOp.Op); });
+            // }
         }
 
         [Test]
         public void OnDeleteEntityResponse_should_log_if_corresponding_entity_not_found()
         {
-            var emptyRequest = new WorldCommands.DeleteEntity.Request();
-
-            deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.DeleteEntity.Request>(Entity.Null,
-                    emptyRequest, null, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
-            {
-                using (var expectingScope = logDispatcher.EnterExpectingScope())
-                {
-                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
-                    receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
-                }
-            }
+            Assert.IsTrue(false);
+            // var emptyRequest = new WorldCommands.DeleteEntity.Request();
+            //
+            // deleteEntityStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.DeleteEntity.Request>(Entity.Null,
+            //         emptyRequest, null, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateDeleteEntityResponseOp(TestCommandRequestId))
+            // {
+            //     using (var expectingScope = logDispatcher.EnterExpectingScope())
+            //     {
+            //         expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+            //         receiveSystem.OnDeleteEntityResponse(wrappedOp.Op);
+            //     }
+            // }
         }
 
         [Test]
         public void OnEntityQueryResponse_should_add_received_responses_to_entity()
         {
-            var entity = SetupTestEntity();
-
-            var emptyRequest = new WorldCommands.EntityQuery.Request();
-            var context = "Some context";
-
-            entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity,
-                    emptyRequest, context, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
-            {
-                receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
-
-                Assert.IsTrue(entityManager.HasComponent<WorldCommands.EntityQuery.CommandResponses>(entity));
-
-                var responses = entityManager.GetComponentData<WorldCommands.EntityQuery.CommandResponses>(entity);
-
-                var count = 0;
-                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
-                Assert.AreEqual(1, count);
-
-                var response = responses.Responses[0];
-
-                Assert.AreEqual(emptyRequest, response.RequestPayload);
-                Assert.AreEqual(context, response.Context);
-                Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
-                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.ResultCount, response.ResultCount);
-
-                // Check that the result and the op contain snapshots of the same entities
-                // Or that they are both null if one of them is null
-                // todo UTY-1361 clean this up
-                if (wrappedOp.Op.Result == null)
-                {
-                    Assert.IsNull(response.Result);
-                }
-                else
-                {
-                    CollectionAssert.AreEquivalent(wrappedOp.Op.Result.Keys, response.Result.Keys);
-                }
-            }
+            Assert.IsTrue(false);
+            // var entity = SetupTestEntity();
+            //
+            // var emptyRequest = new WorldCommands.EntityQuery.Request();
+            // var context = "Some context";
+            //
+            // entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity,
+            //         emptyRequest, context, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            // {
+            //     receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+            //
+            //     Assert.IsTrue(entityManager.HasComponent<WorldCommands.EntityQuery.CommandResponses>(entity));
+            //
+            //     var responses = entityManager.GetComponentData<WorldCommands.EntityQuery.CommandResponses>(entity);
+            //
+            //     var count = 0;
+            //     Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+            //     Assert.AreEqual(1, count);
+            //
+            //     var response = responses.Responses[0];
+            //
+            //     Assert.AreEqual(emptyRequest, response.RequestPayload);
+            //     Assert.AreEqual(context, response.Context);
+            //     Assert.AreEqual(TestCommandRequestId, response.RequestId);
+            //     Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+            //     Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+            //     Assert.AreEqual(wrappedOp.Op.ResultCount, response.ResultCount);
+            //
+            //     // Check that the result and the op contain snapshots of the same entities
+            //     // Or that they are both null if one of them is null
+            //     // todo UTY-1361 clean this up
+            //     if (wrappedOp.Op.Result == null)
+            //     {
+            //         Assert.IsNull(response.Result);
+            //     }
+            //     else
+            //     {
+            //         CollectionAssert.AreEquivalent(wrappedOp.Op.Result.Keys, response.Result.Keys);
+            //     }
+            // }
         }
 
         [Test]
         public void OnEntityQueryResponse_should_error_if_request_id_not_found()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
-            {
-                Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnEntityQueryResponse(wrappedOp.Op); });
-            }
+            Assert.IsTrue(false);
+            // using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            // {
+            //     Assert.Throws<UnknownRequestIdException>(() => { receiveSystem.OnEntityQueryResponse(wrappedOp.Op); });
+            // }
         }
 
         [Test]
         public void OnEntityQueryResponse_should_log_if_corresponding_entity_not_found()
         {
-            var emptyRequest = new WorldCommands.EntityQuery.Request();
-
-            entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.EntityQuery.Request>(Entity.Null,
-                    emptyRequest, null, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
-            {
-                using (var expectingScope = logDispatcher.EnterExpectingScope())
-                {
-                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
-                    receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
-                }
-            }
+            Assert.IsTrue(false);
+            // var emptyRequest = new WorldCommands.EntityQuery.Request();
+            //
+            // entityQueryStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.EntityQuery.Request>(Entity.Null,
+            //         emptyRequest, null, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateEntityQueryResponseOp(TestCommandRequestId))
+            // {
+            //     using (var expectingScope = logDispatcher.EnterExpectingScope())
+            //     {
+            //         expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+            //         receiveSystem.OnEntityQueryResponse(wrappedOp.Op);
+            //     }
+            // }
         }
 
         [Test]
         public void OnReserveEntityIdsResponse_should_add_received_responses_to_entity()
         {
-            var entity = SetupTestEntity();
-
-            var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
-            var context = "Some context";
-
-            reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity,
-                    emptyRequest, context, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
-            {
-                receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
-
-                Assert.IsTrue(entityManager.HasComponent<WorldCommands.ReserveEntityIds.CommandResponses>(entity));
-
-                var responses = entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandResponses>(entity);
-
-                var count = 0;
-                Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
-                Assert.AreEqual(1, count);
-
-                var response = responses.Responses[0];
-
-                Assert.AreEqual(emptyRequest, response.RequestPayload);
-                Assert.AreEqual(context, response.Context);
-                Assert.AreEqual(TestCommandRequestId, response.RequestId);
-                Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
-                Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.FirstEntityId, response.FirstEntityId);
-                Assert.AreEqual(wrappedOp.Op.NumberOfEntityIds, response.NumberOfEntityIds);
-            }
+            Assert.IsTrue(false);
+            // var entity = SetupTestEntity();
+            //
+            // var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
+            // var context = "Some context";
+            //
+            // reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity,
+            //         emptyRequest, context, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            // {
+            //     receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+            //
+            //     Assert.IsTrue(entityManager.HasComponent<WorldCommands.ReserveEntityIds.CommandResponses>(entity));
+            //
+            //     var responses = entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandResponses>(entity);
+            //
+            //     var count = 0;
+            //     Assert.DoesNotThrow(() => { count = responses.Responses.Count; });
+            //     Assert.AreEqual(1, count);
+            //
+            //     var response = responses.Responses[0];
+            //
+            //     Assert.AreEqual(emptyRequest, response.RequestPayload);
+            //     Assert.AreEqual(context, response.Context);
+            //     Assert.AreEqual(TestCommandRequestId, response.RequestId);
+            //     Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
+            //     Assert.AreEqual(wrappedOp.Op.Message, response.Message);
+            //     Assert.AreEqual(wrappedOp.Op.FirstEntityId, response.FirstEntityId);
+            //     Assert.AreEqual(wrappedOp.Op.NumberOfEntityIds, response.NumberOfEntityIds);
+            // }
         }
 
         [Test]
         public void OnReserveEntityIdsResponse_should_error_if_request_id_not_found()
         {
-            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
-            {
-                Assert.Throws<UnknownRequestIdException>(() =>
-                {
-                    receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
-                });
-            }
+            Assert.IsTrue(false);
+            // using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            // {
+            //     Assert.Throws<UnknownRequestIdException>(() =>
+            //     {
+            //         receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+            //     });
+            // }
         }
 
         [Test]
         public void OnReserveEntityIdsResponse_should_log_if_corresponding_entity_not_found()
         {
-            var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
-
-            reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
-                new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(Entity.Null,
-                    emptyRequest, null, TestCommandRequestId));
-
-            using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
-            {
-                using (var expectingScope = logDispatcher.EnterExpectingScope())
-                {
-                    expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
-                    receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
-                }
-            }
+            Assert.IsTrue(false);
+            // var emptyRequest = new WorldCommands.ReserveEntityIds.Request();
+            //
+            // reserveEntityIdsStorage.CommandRequestsInFlight.Add(TestCommandRequestId,
+            //     new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(Entity.Null,
+            //         emptyRequest, null, TestCommandRequestId));
+            //
+            // using (var wrappedOp = WorkerOpFactory.CreateReserveEntityIdsResponseOp(TestCommandRequestId))
+            // {
+            //     using (var expectingScope = logDispatcher.EnterExpectingScope())
+            //     {
+            //         expectingScope.Expect(LogType.Log, LoggingUtils.LoggerName, "Op");
+            //         receiveSystem.OnReserveEntityIdsResponse(wrappedOp.Op);
+            //     }
+            // }
         }
     }
 

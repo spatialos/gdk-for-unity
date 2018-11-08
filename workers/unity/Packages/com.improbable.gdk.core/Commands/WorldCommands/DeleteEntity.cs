@@ -257,12 +257,6 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
-            internal class Storage : CommandStorage
-            {
-                public Dictionary<long, CommandRequestStore<Request>> CommandRequestsInFlight =
-                    new Dictionary<long, CommandRequestStore<Request>>();
-            }
-
             public class DeleteEntityComponentManager : ICommandComponentManager
             {
                 public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager,

@@ -34,11 +34,6 @@ namespace Improbable.Gdk.Core
         private const string EntityNotFound = "No entity found for SpatialOS EntityId specified in op.";
         private const string RequestIdNotFound = "No corresponding request found for response.";
 
-        private WorldCommands.CreateEntity.Storage createEntityStorage;
-        private WorldCommands.DeleteEntity.Storage deleteEntityStorage;
-        private WorldCommands.ReserveEntityIds.Storage reserveEntityIdsStorage;
-        private WorldCommands.EntityQuery.Storage entityQueryStorage;
-
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
@@ -46,12 +41,6 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingManager<WorkerSystem>();
             Dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
-
-            var requestTracker = World.GetOrCreateManager<CommandRequestTrackerSystem>();
-            createEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.CreateEntity.Storage>();
-            deleteEntityStorage = requestTracker.GetCommandStorageForType<WorldCommands.DeleteEntity.Storage>();
-            reserveEntityIdsStorage = requestTracker.GetCommandStorageForType<WorldCommands.ReserveEntityIds.Storage>();
-            entityQueryStorage = requestTracker.GetCommandStorageForType<WorldCommands.EntityQuery.Storage>();
         }
 
         protected override void OnDestroyManager()
@@ -217,22 +206,6 @@ namespace Improbable.Gdk.Core
             Profiler.EndSample();
         }
 
-        internal void OnCreateEntityResponse(CreateEntityResponseOp op)
-        {
-        }
-
-        internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
-        {
-        }
-
-        internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
-        {
-        }
-
-        internal void OnEntityQueryResponse(EntityQueryResponseOp op)
-        {
-        }
-
         internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
         {
             componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
@@ -265,14 +238,6 @@ namespace Improbable.Gdk.Core
             Dispatcher.OnRemoveComponent(OnRemoveComponent);
             Dispatcher.OnComponentUpdate(OnComponentUpdate);
             Dispatcher.OnAuthorityChange(OnAuthorityChange);
-
-            // Dispatcher.OnCommandRequest(OnCommandRequest);
-            // Dispatcher.OnCommandResponse(OnCommandResponse);
-
-            // Dispatcher.OnCreateEntityResponse(OnCreateEntityResponse);
-            // Dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
-            // Dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
-            // Dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
         }
 
         private static class Errors
