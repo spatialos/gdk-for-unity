@@ -16,14 +16,14 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, int> responseTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> receivedResponseTypeToIndex = new Dictionary<Type, int>();
 
-        public void SendCommand<T>(T request, Entity sendingEntity) where T : ICommandRequest
+        public long SendCommand<T>(T request, Entity sendingEntity) where T : ICommandRequest
         {
             if (!requestTypeToIndex.TryGetValue(typeof(T), out var index))
             {
                 throw new ArgumentException("Type is not a valid command request");
             }
 
-            ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
+            return ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
         }
 
         public void SendResponse<T>(T response) where T : ICommandResponse

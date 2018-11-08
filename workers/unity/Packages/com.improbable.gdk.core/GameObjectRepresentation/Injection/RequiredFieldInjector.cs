@@ -27,6 +27,8 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private readonly ILogDispatcher logger;
         private readonly InjectableFactory injectableFactory;
 
+        private readonly World world;
+
         private const string LoggerName = nameof(RequiredFieldInjector);
 
         private const string BadRequiredMemberWarning
@@ -39,10 +41,11 @@ namespace Improbable.Gdk.GameObjectRepresentation
         private const string RequirableFieldDoesNotInheritRequirableBase
             = "[Require] field element does not inherit RequirableBase. This is most likely a bug in the SpatialOS GDK.";
 
-        public RequiredFieldInjector(EntityManager entityManager, ILogDispatcher logger)
+        public RequiredFieldInjector(World world, EntityManager entityManager, ILogDispatcher logger)
         {
             this.logger = logger;
             injectableFactory = new InjectableFactory(entityManager, logger);
+            this.world = world;
         }
 
         public bool IsSpatialOSBehaviour(Type behaviourType)
@@ -74,7 +77,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
         private IInjectable Inject(MonoBehaviour behaviour, InjectableId injectableId, Entity entity, FieldInfo field)
         {
-            var injectable = injectableFactory.CreateInjectable(injectableId, entity);
+            var injectable = injectableFactory.CreateInjectable(injectableId, world, entity);
             field.SetValue(behaviour, injectable);
             return injectable;
         }
