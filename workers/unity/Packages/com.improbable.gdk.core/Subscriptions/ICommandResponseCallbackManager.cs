@@ -2,7 +2,7 @@ using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public interface ICommandRequestCallbackManager
+    public interface ICommandResponseCallbackManager
     {
         void InvokeCallbacks(CommandSystem commandSystem);
     }

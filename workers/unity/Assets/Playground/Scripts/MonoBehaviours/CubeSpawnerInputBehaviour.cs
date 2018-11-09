@@ -26,12 +26,6 @@ namespace Playground.MonoBehaviours
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
 
-        private void OnEnable()
-        {
-            //cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
-            //cubeSpawnerCommandResponseHandler.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
-        }
-
         private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
         {
             if (response.StatusCode != StatusCode.Success)
@@ -69,8 +63,8 @@ namespace Playground.MonoBehaviours
 
         private void SendSpawnCubeCommand()
         {
-            var request = CubeSpawner.SpawnCube.CreateRequest(entityId, new Empty());
-            cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
+            var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
+            cubeSpawnerCommandSender.SendSpawnCubeCommand(request, OnSpawnCubeResponse);
         }
 
         private void SendDeleteCubeCommand()
@@ -83,11 +77,11 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var request = CubeSpawner.DeleteSpawnedCube.CreateRequest(entityId, new DeleteCubeRequest
+            var request = new CubeSpawner.DeleteSpawnedCube.Request(entityId, new DeleteCubeRequest
             {
                 CubeEntityId = spawnedCubes[0]
             });
-            cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request);
+            cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request, OnDeleteSpawnedCubeResponse);
         }
     }
 }
