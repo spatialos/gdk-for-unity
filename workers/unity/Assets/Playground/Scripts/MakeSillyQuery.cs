@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Improbable;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.CInterop.Query;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
 [WorkerType("UnityClient")]
 public class MakeSillyQuery : MonoBehaviour
 {
-    [Require] private WorldCommands.Requirable.WorldCommandRequestSender sender;
-    [Require] private WorldCommands.Requirable.WorldCommandResponseHandler handler;
+    [Require] private WorldCommandSender sender;
 
     private void OnEnable()
     {
@@ -24,9 +24,10 @@ public class MakeSillyQuery : MonoBehaviour
             ResultType = new SnapshotResultType(new List<uint> { Position.ComponentId }),
             Constraint = nearTheOriginConstraint
         };
-        sender.EntityQuery(query);
 
-        handler.OnEntityQueryResponse += HandleQuery;
+        sender.SendEntityQueryCommand(new WorldCommands.EntityQuery.Request(query));
+
+        //handler.OnEntityQueryResponse += HandleQuery;
     }
 
     private void HandleQuery(WorldCommands.EntityQuery.ReceivedResponse response)

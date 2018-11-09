@@ -198,7 +198,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
             World.GetOrCreateManager<CommandSystem>();
             World.GetOrCreateManager<CommandComponentSystem>();
-            World.GetOrCreateManager<CommandReceiverCallbackSystem>();
+            World.GetOrCreateManager<CommandCallbackSystem>();
             World.GetOrCreateManager<SubscriptionSystem>();
         }
 
