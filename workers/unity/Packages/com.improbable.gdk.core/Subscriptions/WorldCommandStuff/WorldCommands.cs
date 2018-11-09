@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
@@ -8,6 +9,35 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
+    public class CreateEntityResponseCallbackManager : ICommandResponseCallbackManager
+    {
+        private readonly IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse> callbacks =
+            new IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse>();
+
+        private ulong nextCallbackId = 1;
+
+        public void InvokeCallbacks(CommandSystem commandSystem)
+        {
+            var responses = commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
+            foreach (var response in responses)
+            {
+                // todo should then remove all callbacks that have this request ID as they will never be called again
+                callbacks.InvokeAll(response.RequestId, response);
+            }
+        }
+
+        public ulong RegisterCallback(long requestId, Action<WorldCommands.CreateEntity.ReceivedResponse> callback)
+        {
+            callbacks.Add(requestId, nextCallbackId, callback);
+            return nextCallbackId++;
+        }
+
+        public bool UnregisterCallback(ulong callbackKey)
+        {
+            return callbacks.Remove(callbackKey);
+        }
+    }
+
     [AutoRegisterSubscriptionManager]
     public class WorldCommandSenderSubscriptionManager : SubscriptionManager<WorldCommandSender>
     {
