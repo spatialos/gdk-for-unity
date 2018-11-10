@@ -151,7 +151,7 @@ namespace Improbable.Gdk.Core
         }
 
         public void SendReserveEntityIdsCommand(WorldCommands.ReserveEntityIds.Request request,
-            Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
+            Action<WorldCommands.ReserveEntityIds.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
             if (callback != null)
@@ -161,7 +161,7 @@ namespace Improbable.Gdk.Core
         }
 
         public void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request,
-            Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
+            Action<WorldCommands.EntityQuery.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
             if (callback != null)
