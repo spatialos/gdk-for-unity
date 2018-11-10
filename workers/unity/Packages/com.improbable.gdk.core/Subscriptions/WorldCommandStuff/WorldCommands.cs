@@ -9,40 +9,10 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
-    public class CreateEntityResponseCallbackManager : ICommandResponseCallbackManager
-    {
-        private readonly IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse> callbacks =
-            new IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse>();
-
-        private ulong nextCallbackId = 1;
-
-        public void InvokeCallbacks(CommandSystem commandSystem)
-        {
-            var responses = commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
-            foreach (var response in responses)
-            {
-                // todo should then remove all callbacks that have this request ID as they will never be called again
-                callbacks.InvokeAll(response.RequestId, response);
-            }
-        }
-
-        public ulong RegisterCallback(long requestId, Action<WorldCommands.CreateEntity.ReceivedResponse> callback)
-        {
-            callbacks.Add(requestId, nextCallbackId, callback);
-            return nextCallbackId++;
-        }
-
-        public bool UnregisterCallback(ulong callbackKey)
-        {
-            return callbacks.Remove(callbackKey);
-        }
-    }
-
     [AutoRegisterSubscriptionManager]
     public class WorldCommandSenderSubscriptionManager : SubscriptionManager<WorldCommandSender>
     {
         private readonly Dispatcher dispatcher;
-        private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
 
@@ -53,7 +23,6 @@ namespace Improbable.Gdk.Core
         public WorldCommandSenderSubscriptionManager(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
 
             // Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
@@ -150,36 +119,55 @@ namespace Improbable.Gdk.Core
     public class WorldCommandSender
     {
         private readonly Entity entity;
-        private readonly EntityManager entityManager;
+        private readonly CommandSystem commandSystem;
+        private readonly CommandCallbackSystem callbackSystem;
 
         public WorldCommandSender(Entity entity, World world)
         {
             this.entity = entity;
-            entityManager = world.GetOrCreateManager<EntityManager>();
+            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            // todo check if this exists probably put getting this in a static function that does it in one place
+            commandSystem = world.GetExistingManager<CommandSystem>();
         }
 
-        public void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request)
+        public void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request,
+            Action<WorldCommands.CreateEntity.ReceivedResponse> callback = null)
         {
-            var commandSender = entityManager.GetComponentData<WorldCommands.CreateEntity.CommandSender>(entity);
-            commandSender.RequestsToSend.Add(request);
+            var requestId = commandSystem.SendCommand(request, entity);
+            if (callback != null)
+            {
+                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+            }
         }
 
-        public void SendDeleteEntityCommand(WorldCommands.DeleteEntity.Request request)
+        public void SendDeleteEntityCommand(WorldCommands.DeleteEntity.Request request,
+            Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
         {
-            var commandSender = entityManager.GetComponentData<WorldCommands.DeleteEntity.CommandSender>(entity);
-            commandSender.RequestsToSend.Add(request);
+            var requestId = commandSystem.SendCommand(request, entity);
+            if (callback != null)
+            {
+                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+            }
         }
 
-        public void SendReserveEntityIdsCommand(WorldCommands.ReserveEntityIds.Request request)
+        public void SendReserveEntityIdsCommand(WorldCommands.ReserveEntityIds.Request request,
+            Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
         {
-            var commandSender = entityManager.GetComponentData<WorldCommands.ReserveEntityIds.CommandSender>(entity);
-            commandSender.RequestsToSend.Add(request);
+            var requestId = commandSystem.SendCommand(request, entity);
+            if (callback != null)
+            {
+                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+            }
         }
 
-        public void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request)
+        public void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request,
+            Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
         {
-            var commandSender = entityManager.GetComponentData<WorldCommands.EntityQuery.CommandSender>(entity);
-            commandSender.RequestsToSend.Add(request);
+            var requestId = commandSystem.SendCommand(request, entity);
+            if (callback != null)
+            {
+                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+            }
         }
     }
 }

@@ -172,9 +172,62 @@ namespace Improbable.Gdk.Subscriptions
                 return false;
             }
 
-            callbacks.Remove(index);
+            callbacks[index].Remove(callbackKey);
             callbackKeyToIndex.Remove(callbackKey);
             return true;
+        }
+
+        public void InvokeAll(long index, T op)
+        {
+            if (callbacks.ContainsKey(index))
+            {
+                callbacks[index].InvokeAll(op);
+            }
+        }
+
+        public void InvokeAllReverse(long index, T op)
+        {
+            if (callbacks.ContainsKey(index))
+            {
+                callbacks[index].InvokeAllReverse(op);
+            }
+        }
+    }
+
+    // Efficient ability to remove all callbacks for an index, but slow to remove a single callback
+    public class SingleUseIndexCallbacks<T>
+    {
+        private readonly Dictionary<long, Callbacks<T>> callbacks = new Dictionary<long, Callbacks<T>>();
+
+        public void Add(long index, ulong callbackKey, Action<T> value)
+        {
+            if (!callbacks.ContainsKey(index))
+            {
+                callbacks.Add(index, new Callbacks<T>());
+            }
+
+            callbacks[index].Add(callbackKey, value);
+        }
+
+        public void RemoveAllCallbacksForIndex(long index)
+        {
+            if (callbacks.ContainsKey(index))
+            {
+                callbacks.Remove(index);
+            }
+        }
+
+        public bool Remove(ulong callbackKey)
+        {
+            foreach (var callback in callbacks)
+            {
+                if (callback.Value.Remove(callbackKey))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void InvokeAll(long index, T op)
