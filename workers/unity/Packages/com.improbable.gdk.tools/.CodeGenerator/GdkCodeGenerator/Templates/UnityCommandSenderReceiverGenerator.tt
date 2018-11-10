@@ -24,78 +24,6 @@ using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
 {
-<# foreach (var commandDetails in commandDetailsList) {
-    var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
-#>
-    public class <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager : ICommandRequestCallbackManager
-    {
-        private readonly IndexedCallbacks<<#= receivedCommandRequestType #>> callbacks =
-            new IndexedCallbacks<<#= receivedCommandRequestType #>>();
-
-        private ulong nextCallbackId = 1;
-
-        public void InvokeCallbacks(CommandSystem commandSystem)
-        {
-            var requests = commandSystem.GetRequests<<#= receivedCommandRequestType #>>();
-            foreach (var request in requests)
-            {
-                callbacks.InvokeAll(request.EntityId.Id, request);
-            }
-        }
-
-        public ulong RegisterCallback(EntityId entityId, Action<<#= receivedCommandRequestType #>> callback)
-        {
-            Action<<#= receivedCommandRequestType #>> wrappedCallback = response =>
-            {
-                callback(response);
-                UnregisterCallback(nextCallbackId);
-            };
-            callbacks.Add(entityId.Id, nextCallbackId, wrappedCallback);
-            return nextCallbackId++;
-        }
-
-        public bool UnregisterCallback(ulong callbackKey)
-        {
-            return callbacks.Remove(callbackKey);
-        }
-    }
-
-<# } #>
-
-<# foreach (var commandDetails in commandDetailsList) {
-    var receivedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
-#>
-    public class <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager : ICommandResponseCallbackManager
-    {
-        private readonly IndexedCallbacks<<#= receivedCommandResponseType #>> callbacks =
-            new IndexedCallbacks<<#= receivedCommandResponseType #>>();
-
-        private ulong nextCallbackId = 1;
-
-        public void InvokeCallbacks(CommandSystem commandSystem)
-        {
-            var responses = commandSystem.GetResponses<<#= receivedCommandResponseType #>>();
-            foreach (var response in responses)
-            {
-                // todo should then remove all callbacks that have this request ID as they will never be called again
-                callbacks.InvokeAll(response.RequestId, response);
-            }
-        }
-
-        public ulong RegisterCallback(long requestId, Action<<#= receivedCommandResponseType #>> callback)
-        {
-            callbacks.Add(requestId, nextCallbackId, callback);
-            return nextCallbackId++;
-        }
-
-        public bool UnregisterCallback(ulong callbackKey)
-        {
-            return callbacks.Remove(callbackKey);
-        }
-    }
-
-<# } #>
-
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandSenderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandSender>
     {
@@ -116,13 +44,6 @@ namespace <#= qualifiedNamespace #>
             // Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
-
-            var callbackSystem = world.GetExistingManager<CommandCallbackSystem>();
-<# foreach (var commandDetails in commandDetailsList) { #>
-            callbackSystem.RegisterCommandResponseCallbackManager(
-                typeof(<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager),
-                new <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager());
-<# } #>
 
             dispatcher.OnAddEntity(op =>
             {
@@ -196,9 +117,8 @@ namespace <#= qualifiedNamespace #>
             var sub = ((Subscription<<#= componentDetails.ComponentName #>CommandSender>) subscription);
             if (sub.HasValue)
             {
-                // var reader = sub.Value;
-                // reader.IsValid = false;
-                // reader.RemoveAllCallbacks();
+                var sender = sub.Value;
+                sender.IsValid = false;
             }
         }
 
@@ -207,7 +127,7 @@ namespace <#= qualifiedNamespace #>
             var sub = ((Subscription<<#= componentDetails.ComponentName #>CommandSender>) subscription);
             if (sub.HasValue)
             {
-                //sub.Value.IsValid = true;
+                sub.Value.IsValid = true;
             }
         }
     }
@@ -233,13 +153,6 @@ namespace <#= qualifiedNamespace #>
             // Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
-
-            var callbackSystem = world.GetExistingManager<CommandCallbackSystem>();
-<# foreach (var commandDetails in commandDetailsList) { #>
-            callbackSystem.RegisterCommandRequestCallbackManager(
-                typeof(<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager),
-                new <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager());
-<# } #>
 
             dispatcher.OnAuthorityChange(op =>
             {
@@ -362,33 +275,39 @@ namespace <#= qualifiedNamespace #>
 
     public class <#= componentDetails.ComponentName #>CommandSender
     {
+        public bool IsValid;
+
         private readonly Entity entity;
         private readonly CommandSystem commandSender;
-
-<# foreach (var commandDetails in commandDetailsList) { #>
-        private readonly <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager <#= commandDetails.CamelCaseCommandName #>CallbackManager;
-<# } #>
+        private readonly CommandCallbackSystem callbackSystem;
 
         public <#= componentDetails.ComponentName #>CommandSender(Entity entity, World world)
         {
             this.entity = entity;
-
-<# foreach (var commandDetails in commandDetailsList) { #>
-            <#= commandDetails.CamelCaseCommandName #>CallbackManager = (<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager) world
-                .GetExistingManager<CommandCallbackSystem>()
-                .GetCommandResponseCallbackManager(typeof(<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandResponseCallbackManager));
-<# } #>
+            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            // todo check that this exists
+            commandSender = world.GetExistingManager<CommandSystem>();
         }
 
 <# foreach (var commandDetails in commandDetailsList) {
     var receivedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
     var commandRequest = $"{componentDetails.ComponentName}.{commandDetails.CommandName}.Request";
-    var commandRequestSender = $"{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
 #>
         public void Send<#= commandDetails.CommandName #>Command(<#= commandRequest #> request, Action<<#= receivedCommandResponseType #>> callback = null)
         {
             var requestId = commandSender.SendCommand(request, entity);
-            <#= commandDetails.CamelCaseCommandName #>CallbackManager.RegisterCallback(requestId, callback);
+            if (callback != null)
+            {
+                Action<<#= receivedCommandResponseType #>> wrappedCallback = response =>
+                {
+                    if (!this.IsValid)
+                    {
+                        return;
+                    }
+                    callback(response);
+                };
+                callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
+            }
         }
 <# } #>
     }
@@ -398,16 +317,11 @@ namespace <#= qualifiedNamespace #>
         public bool IsValid;
 
         private readonly EntityId entityId;
+        private readonly CommandCallbackSystem callbackSystem;
 
 <# foreach (var commandDetails in commandDetailsList) {
     var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
-    var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{commandDetails.CommandName}";
-    var commandRequest = $"{componentDetails.ComponentName}.{commandDetails.CommandName}.Request";
-    var commandRequestSender = $"{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
 #>
-        // <#= commandDetails.CommandName #> callbacks
-        private readonly <#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager <#= commandDetails.CamelCaseCommandName #>CallbackManager;
-
         private Dictionary<Action<<#= receivedCommandRequestType #>>, ulong> <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey;
 
         public event Action<<#= receivedCommandRequestType #>> On<#= commandDetails.CommandName #>RequestReceived
@@ -419,7 +333,7 @@ namespace <#= qualifiedNamespace #>
                     <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey = new Dictionary<Action<<#= receivedCommandRequestType #>>, ulong>();
                 }
 
-                var key = <#= commandDetails.CamelCaseCommandName #>CallbackManager.RegisterCallback(entityId, value);
+                var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
                 <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -429,7 +343,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                <#= commandDetails.CamelCaseCommandName #>CallbackManager.UnregisterCallback(key);
+                callbackSystem.UnregisterCommandRequestCallback<<#= receivedCommandRequestType #>>(key);
                 <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey.Remove(value);
             }
         }
@@ -438,25 +352,22 @@ namespace <#= qualifiedNamespace #>
         internal <#= componentDetails.ComponentName #>CommandReceiver(World world, Entity entity, EntityId entityId)
         {
             this.entityId = entityId;
+            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
             // should check the system actually exists
-
-<# foreach (var commandDetails in commandDetailsList) { #>
-            <#= commandDetails.CamelCaseCommandName #>CallbackManager = (<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager) world
-                .GetExistingManager<CommandCallbackSystem>()
-                .GetCommandRequestCallbackManager(typeof(<#= componentDetails.ComponentName #><#= commandDetails.CommandName #>CommandRequestCallbackManager));
-<# } #>
 
             IsValid = true;
         }
 
         public void RemoveAllCallbacks()
         {
-<# foreach (var commandDetails in commandDetailsList) { #>
+<# foreach (var commandDetails in commandDetailsList) {
+    var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
+#>
             if (<#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey != null)
             {
                 foreach (var callbackToKey in <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey)
                 {
-                    <#= commandDetails.CamelCaseCommandName #>CallbackManager.UnregisterCallback(callbackToKey.Value);
+                    callbackSystem.UnregisterCommandRequestCallback<<#= receivedCommandRequestType #>>(callbackToKey.Value);
                 }
             }
 
