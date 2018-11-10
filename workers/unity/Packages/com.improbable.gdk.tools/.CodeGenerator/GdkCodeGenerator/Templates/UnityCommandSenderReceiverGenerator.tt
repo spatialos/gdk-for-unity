@@ -287,6 +287,8 @@ namespace <#= qualifiedNamespace #>
             callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
             // todo check that this exists
             commandSender = world.GetExistingManager<CommandSystem>();
+
+            IsValid = true;
         }
 
 <# foreach (var commandDetails in commandDetailsList) {
