@@ -28,6 +28,9 @@ namespace Improbable.Gdk.Subscriptions
         private readonly List<ICommandResponseCallbackManager> responseCallbackManagers =
             new List<ICommandResponseCallbackManager>();
 
+        private List<Type> responseCallbackManagerTypesToAdd = new List<Type>();
+        private List<Type> requestCallbackManagerTypesToAdd = new List<Type>();
+
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
             where T : IReceivedCommandRequest
         {
@@ -35,7 +38,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 manager = new CommandRequestCallbackManager<T>();
                 typeToRequestCallbackManager.Add(typeof(T), manager);
-                requestCallbackManagers.Add(manager);
+                requestCallbackManagerTypesToAdd.Add(typeof(T));
             }
 
             return ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
@@ -48,7 +51,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 manager = new CommandResponseCallbackManager<T>();
                 typeToResponseCallbackManager.Add(typeof(T), manager);
-                responseCallbackManagers.Add(manager);
+                responseCallbackManagerTypesToAdd.Add(typeof(T));
             }
 
             return ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
@@ -69,10 +72,24 @@ namespace Improbable.Gdk.Subscriptions
 
         protected override void OnUpdate()
         {
+            foreach (var type in requestCallbackManagerTypesToAdd)
+            {
+                requestCallbackManagers.Add(typeToRequestCallbackManager[type]);
+            }
+
+            requestCallbackManagerTypesToAdd.Clear();
+
             foreach (var callbackManager in requestCallbackManagers)
             {
                 callbackManager.InvokeCallbacks(commandSystem);
             }
+
+            foreach (var type in responseCallbackManagerTypesToAdd)
+            {
+                responseCallbackManagers.Add(typeToResponseCallbackManager[type]);
+            }
+
+            responseCallbackManagerTypesToAdd.Clear();
 
             foreach (var callbackManager in responseCallbackManagers)
             {
