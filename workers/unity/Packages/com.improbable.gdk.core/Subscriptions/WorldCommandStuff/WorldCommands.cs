@@ -83,9 +83,8 @@ namespace Improbable.Gdk.Core
         public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<WorldCommandSender>) subscription);
-            // var reader = sub.Value;
-            // reader.IsValid = false;
-            // reader.RemoveAllCallbacks();
+            var sender = sub.Value;
+            sender.IsValid = false;
 
             var subscriptions = entityIdToSenderSubscriptions[entityId];
             subscriptions.Remove(sub);
@@ -100,9 +99,8 @@ namespace Improbable.Gdk.Core
             var sub = ((Subscription<WorldCommandSender>) subscription);
             if (sub.HasValue)
             {
-                // var reader = sub.Value;
-                // reader.IsValid = false;
-                // reader.RemoveAllCallbacks();
+                var sender = sub.Value;
+                sender.IsValid = false;
             }
         }
 
@@ -111,13 +109,15 @@ namespace Improbable.Gdk.Core
             var sub = ((Subscription<WorldCommandSender>) subscription);
             if (sub.HasValue)
             {
-                //sub.Value.IsValid = true;
+                sub.Value.IsValid = true;
             }
         }
     }
 
     public class WorldCommandSender
     {
+        public bool IsValid;
+
         private readonly Entity entity;
         private readonly CommandSystem commandSystem;
         private readonly CommandCallbackSystem callbackSystem;
@@ -125,6 +125,7 @@ namespace Improbable.Gdk.Core
         public WorldCommandSender(Entity entity, World world)
         {
             this.entity = entity;
+            IsValid = true;
             callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
             // todo check if this exists probably put getting this in a static function that does it in one place
             commandSystem = world.GetExistingManager<CommandSystem>();
@@ -134,40 +135,76 @@ namespace Improbable.Gdk.Core
             Action<WorldCommands.CreateEntity.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
-            if (callback != null)
+            if (callback == null)
             {
-                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+                return;
             }
+
+            Action<WorldCommands.CreateEntity.ReceivedResponse> wrappedCallback = response =>
+            {
+                if (IsValid)
+                {
+                    callback(response);
+                }
+            };
+            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
         }
 
         public void SendDeleteEntityCommand(WorldCommands.DeleteEntity.Request request,
             Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
-            if (callback != null)
+            if (callback == null)
             {
-                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+                return;
             }
+
+            Action<WorldCommands.DeleteEntity.ReceivedResponse> wrappedCallback = response =>
+            {
+                if (IsValid)
+                {
+                    callback(response);
+                }
+            };
+            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
         }
 
         public void SendReserveEntityIdsCommand(WorldCommands.ReserveEntityIds.Request request,
             Action<WorldCommands.ReserveEntityIds.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
-            if (callback != null)
+            if (callback == null)
             {
-                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+                return;
             }
+
+            Action<WorldCommands.ReserveEntityIds.ReceivedResponse> wrappedCallback = response =>
+            {
+                if (IsValid)
+                {
+                    callback(response);
+                }
+            };
+            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
         }
 
         public void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request,
             Action<WorldCommands.EntityQuery.ReceivedResponse> callback = null)
         {
             var requestId = commandSystem.SendCommand(request, entity);
-            if (callback != null)
+            if (callback == null)
             {
-                callbackSystem.RegisterCommandResponseCallback(requestId, callback);
+                return;
             }
+
+            Action<WorldCommands.EntityQuery.ReceivedResponse> wrappedCallback = response =>
+            {
+                if (IsValid)
+                {
+                    callback(response);
+                }
+            };
+            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
         }
     }
 }
