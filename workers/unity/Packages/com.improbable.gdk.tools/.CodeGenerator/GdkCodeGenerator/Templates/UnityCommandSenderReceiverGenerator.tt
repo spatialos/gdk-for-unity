@@ -320,6 +320,7 @@ namespace <#= qualifiedNamespace #>
 
         private readonly EntityId entityId;
         private readonly CommandCallbackSystem callbackSystem;
+        private readonly CommandSystem commandSystem;
 
 <# foreach (var commandDetails in commandDetailsList) {
     var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
@@ -355,10 +356,21 @@ namespace <#= qualifiedNamespace #>
         {
             this.entityId = entityId;
             callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            commandSystem = world.GetExistingManager<CommandSystem>();
             // should check the system actually exists
 
             IsValid = true;
         }
+
+<# foreach (var commandDetails in commandDetailsList) {
+    var commandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Response";
+#>
+        // todo could just aske for an id and a payload
+        public void Send<#= commandDetails.CommandName #>Response(<#= commandResponseType #> response)
+        {
+            commandSystem.SendResponse(response);
+        }
+<# } #>
 
         public void RemoveAllCallbacks()
         {
