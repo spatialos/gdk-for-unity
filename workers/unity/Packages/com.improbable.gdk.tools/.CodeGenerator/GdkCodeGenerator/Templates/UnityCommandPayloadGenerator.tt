@@ -64,6 +64,16 @@ namespace <#= qualifiedNamespace #>
                     CallerAttributeSet = callerAttributeSet;
                     Payload = request;
                 }
+
+                long IReceivedCommandRequest.GetRequestId()
+                {
+                    return RequestId;
+                }
+
+                EntityId IReceivedCommandRequest.GetTargetEntityId()
+                {
+                    return EntityId;
+                }
             }
 
             /// <summary>
@@ -120,6 +130,11 @@ namespace <#= qualifiedNamespace #>
                     RequestPayload = request;
                     Context = context;
                     RequestId = requestId;
+                }
+
+                long IReceivedCommandResponse.GetRequestId()
+                {
+                    return RequestId;
                 }
             }
         }

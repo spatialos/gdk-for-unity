@@ -1,13 +1,13 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 
-namespace Improbable.Gdk.Subscriptions.CommandCallbackManagers
+namespace Improbable.Gdk.Subscriptions
 {
     public class CommandResponseCallbackManager<T> : ICommandResponseCallbackManager where T : IReceivedCommandResponse
     {
-        private readonly IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse> callbacks =
-            new IndexedCallbacks<WorldCommands.CreateEntity.ReceivedResponse>();
+        private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
 
         private ulong nextCallbackId = 1;
 
@@ -16,12 +16,12 @@ namespace Improbable.Gdk.Subscriptions.CommandCallbackManagers
             var responses = commandSystem.GetResponses<T>();
             foreach (var response in responses)
             {
-                // todo should then remove all callbacks that have this request ID as they will never be called again
-                callbacks.InvokeAll(response.RequestId, response);
+                callbacks.InvokeAll(response.GetRequestId(), response);
+                callbacks.RemoveAllCallbacksForIndex(response.GetRequestId());
             }
         }
 
-        public ulong RegisterCallback(long requestId, Action<WorldCommands.CreateEntity.ReceivedResponse> callback)
+        public ulong RegisterCallback(long requestId, Action<T> callback)
         {
             callbacks.Add(requestId, nextCallbackId, callback);
             return nextCallbackId++;

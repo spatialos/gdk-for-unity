@@ -98,6 +98,11 @@ namespace Improbable.Gdk.Core.Commands
                         ? new EntityId(op.FirstEntityId.Value)
                         : (EntityId?) null;
                 }
+
+                long IReceivedCommandResponse.GetRequestId()
+                {
+                    return RequestId;
+                }
             }
 
             /// <summary>
