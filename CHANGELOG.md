@@ -6,6 +6,12 @@
 
 - Added support for the Steam authentication flow.
 - Added a reference to Blank Starter Project in the README.
+- Added Frames Per Second (FPS) and Unity heap usage as metrics sent by `MetricSendSystem.cs`.
+
+### Changed
+
+- Improved the method of calculating load and FPS.
+- Updated test project Unity version to `2018.2.14f`.
 
 ## `0.1.2` - 2018-11-01
 
