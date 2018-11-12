@@ -1,8 +1,6 @@
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.TransformSynchronization;
-using Improbable.WorkerCore;
-using Improbable.WorkerCore;
 
 namespace Playground
 {

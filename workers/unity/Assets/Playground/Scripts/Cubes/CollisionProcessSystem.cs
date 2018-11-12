@@ -1,7 +1,7 @@
 using Improbable.Gdk.Core;
-using Improbable.WorkerCore;
 using Unity.Collections;
 using Unity.Entities;
+using Entity = Unity.Entities.Entity;
 
 #region Diagnostic control
 

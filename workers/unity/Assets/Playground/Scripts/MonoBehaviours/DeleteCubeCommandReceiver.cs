@@ -4,7 +4,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
 using UnityEngine;
 
 #region Diagnostic control
