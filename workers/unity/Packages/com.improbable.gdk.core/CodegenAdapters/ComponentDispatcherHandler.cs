@@ -1,6 +1,6 @@
 using System;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 

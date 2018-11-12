@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;

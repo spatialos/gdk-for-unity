@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using UnityEngine;
 
 namespace Improbable.Gdk.Core

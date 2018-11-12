@@ -5,7 +5,6 @@ using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Profiling;

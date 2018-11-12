@@ -71,22 +71,24 @@ namespace Improbable.Gdk.Core
                 var entityArray = chunk.GetNativeArray(entityType);
 
                 var createEntitySenders = chunk.GetNativeArray(createEntityType);
-                for (int i = 0; i < createEntitySenders.Length; ++i)
+                for (var i = 0; i < createEntitySenders.Length; ++i)
                 {
                     var requestsToSend = createEntitySenders[i].RequestsToSend;
                     var entity = entityArray[i];
                     foreach (var req in requestsToSend)
                     {
-                        var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId.Value.Id, req.TimeoutMillis);
+                        var reqId = connection.SendCreateEntityRequest(req.Entity,
+                            req.EntityId.HasValue ? new long?(req.EntityId.Value.Id) : null, req.TimeoutMillis);
                         createEntityStorage.CommandRequestsInFlight.Add(reqId,
-                            new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context, req.RequestId));
+                            new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context,
+                                req.RequestId));
                     }
 
                     requestsToSend.Clear();
                 }
 
                 var deleteEntitySenders = chunk.GetNativeArray(deleteEntityType);
-                for (int i = 0; i < deleteEntitySenders.Length; ++i)
+                for (var i = 0; i < deleteEntitySenders.Length; ++i)
                 {
                     var requestsToSend = deleteEntitySenders[i].RequestsToSend;
                     var entity = entityArray[i];
@@ -94,14 +96,15 @@ namespace Improbable.Gdk.Core
                     {
                         var reqId = connection.SendDeleteEntityRequest(req.EntityId.Id, req.TimeoutMillis);
                         deleteEntityStorage.CommandRequestsInFlight.Add(reqId,
-                            new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context, req.RequestId));
+                            new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context,
+                                req.RequestId));
                     }
 
                     requestsToSend.Clear();
                 }
 
                 var reserveEntityIdsSenders = chunk.GetNativeArray(reserveEntityIdsType);
-                for (int i = 0; i < reserveEntityIdsSenders.Length; ++i)
+                for (var i = 0; i < reserveEntityIdsSenders.Length; ++i)
                 {
                     var requestsToSend = reserveEntityIdsSenders[i].RequestsToSend;
                     var entity = entityArray[i];
@@ -109,14 +112,15 @@ namespace Improbable.Gdk.Core
                     {
                         var reqId = connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
                         reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId,
-                            new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context, req.RequestId));
+                            new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context,
+                                req.RequestId));
                     }
 
                     requestsToSend.Clear();
                 }
 
                 var entityQuerySenders = chunk.GetNativeArray(entityQueryType);
-                for (int i = 0; i < entityQuerySenders.Length; ++i)
+                for (var i = 0; i < entityQuerySenders.Length; ++i)
                 {
                     var requestsToSend = entityQuerySenders[i].RequestsToSend;
                     var entity = entityArray[i];
@@ -124,7 +128,8 @@ namespace Improbable.Gdk.Core
                     {
                         var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
                         entityQueryStorage.CommandRequestsInFlight.Add(reqId,
-                            new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));
+                            new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context,
+                                req.RequestId));
                     }
 
                     requestsToSend.Clear();

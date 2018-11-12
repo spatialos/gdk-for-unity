@@ -4,7 +4,7 @@ using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;

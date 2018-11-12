@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.WorkerCore;
-using Improbable.WorkerCore;
+
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation
