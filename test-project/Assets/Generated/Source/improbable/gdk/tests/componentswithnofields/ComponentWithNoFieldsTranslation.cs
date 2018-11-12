@@ -10,7 +10,7 @@ using UnityEngine.Profiling;
 using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
@@ -37,12 +37,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             public override void Dispose()
             {
                 ComponentWithNoFields.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(World);
-
             }
 
             public override void OnAddComponent(AddComponentOp op)
             {
-                var entity = TryGetEntityFromEntityId(op.EntityId);
+                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
                 Profiler.BeginSample("ComponentWithNoFields");
                 var data = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
@@ -79,7 +78,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(LoggingUtils.EntityId, op.EntityId)
                         .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields")
                     );
                 }
@@ -89,7 +88,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnRemoveComponent(RemoveComponentOp op)
             {
-                var entity = TryGetEntityFromEntityId(op.EntityId);
+                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
                 Profiler.BeginSample("ComponentWithNoFields");
 
@@ -107,7 +106,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
                         .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId.Id)
+                        .WithField(LoggingUtils.EntityId, op.EntityId)
                         .WithField("Component", "Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields")
                     );
                 }
@@ -117,7 +116,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnComponentUpdate(ComponentUpdateOp op)
             {
-                var entity = TryGetEntityFromEntityId(op.EntityId);
+                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
                 Profiler.BeginSample("ComponentWithNoFields");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(entity))
@@ -153,10 +152,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnAuthorityChange(AuthorityChangeOp op)
             {
-                var entity = TryGetEntityFromEntityId(op.EntityId);
+                var entityId = new EntityId(op.EntityId);
+                var entity = TryGetEntityFromEntityId(entityId);
 
                 Profiler.BeginSample("ComponentWithNoFields");
-                ApplyAuthorityChange(entity, op.Authority, op.EntityId);
+                ApplyAuthorityChange(entity, op.Authority, entityId);
                 Profiler.EndSample();
             }
 
@@ -176,7 +176,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
             }
 
-            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Worker.EntityId entityId)
+            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Gdk.Core.EntityId entityId)
             {
                 switch (authority)
                 {
@@ -240,7 +240,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 authorityChanges.Add(authority);
             }
 
-            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Worker.EntityId entityId)
+            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Gdk.Core.EntityId entityId)
             {
                 LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
                     .WithField(LoggingUtils.LoggerName, LoggerName)
@@ -278,7 +278,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var bookkeepingSystem = world.GetOrCreateManager<CommandRequestTrackerSystem>();
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
                 Profiler.BeginSample("ComponentWithNoFields");
 
@@ -296,11 +296,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                         if (data.IsDataDirty() || eventsToSend > 0)
                         {
-                            var update = new global::Improbable.Worker.Core.SchemaComponentUpdate(1003);
+                            var update = new global::Improbable.Worker.CInterop.SchemaComponentUpdate(1003);
                             Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.SerializeUpdate(data, update);
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId, new global::Improbable.Worker.Core.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
 
                             data.MarkDataClean();
                             componentArray[i] = data;
@@ -312,7 +312,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 Profiler.EndSample();
             }
 
-            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.Core.Connection connection)
+            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
             }
         }
@@ -413,7 +413,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             };
 
             public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
-                Improbable.Worker.Core.Connection connection)
+                Improbable.Worker.CInterop.Connection connection)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
@@ -429,7 +429,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     {
                         if (authorityArray[i].AcknowledgeAuthorityLoss)
                         {
-                            connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdArray[i].EntityId,
+                            connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdArray[i].EntityId.Id,
                                 1003);
                         }
                     }

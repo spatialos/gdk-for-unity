@@ -3,7 +3,7 @@
 // ===========
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.Tests
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
-                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
@@ -297,7 +297,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field16Handle;
 
-            public global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> Field16
+            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> Field16
             {
                 get => Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
@@ -319,7 +319,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
                 global::System.Collections.Generic.Dictionary<BlittableBool,string> field1,
                 global::System.Collections.Generic.Dictionary<float,string> field2,
                 global::System.Collections.Generic.Dictionary<byte[],string> field3,
@@ -335,11 +335,11 @@ namespace Improbable.Gdk.Tests
                 global::System.Collections.Generic.Dictionary<ulong,string> field13,
                 global::System.Collections.Generic.Dictionary<int,string> field14,
                 global::System.Collections.Generic.Dictionary<long,string> field15,
-                global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> field16,
+                global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16,
                 global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197719);
+                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197719);
                 var obj = schemaComponentData.GetFields();
                 {
                     foreach (var keyValuePair in field1)
@@ -494,7 +494,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -517,13 +517,13 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.Dictionary<ulong,string> Field13;
             public global::System.Collections.Generic.Dictionary<int,string> Field14;
             public global::System.Collections.Generic.Dictionary<long,string> Field15;
-            public global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> Field16;
+            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> Field16;
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> Field17;
         }
 
         public static class Serialization
         {
-            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 {
                     foreach (var keyValuePair in component.Field1)
@@ -680,7 +680,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -991,7 +991,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveMapKey.Component();
 
@@ -1207,13 +1207,13 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field16Handle = Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 {
-                    component.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>();
+                    component.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>();
                     var map = component.Field16;
                     var mapSize = obj.GetObjectCount(16);
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
-                        var key = mapObj.GetEntityId(1);
+                        var key = mapObj.GetEntityIdStruct(1);
                         var value = mapObj.GetString(2);
                         map.Add(key, value);
                     }
@@ -1236,7 +1236,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var update = new Improbable.Gdk.Tests.ExhaustiveMapKey.Update();
                 var obj = updateObj.GetFields();
@@ -1616,12 +1616,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (mapSize > 0 || isCleared)
                     {
-                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>>(new global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>());
+                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>(new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>());
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
-                        var key = mapObj.GetEntityId(1);
+                        var key = mapObj.GetEntityIdStruct(1);
                         var value = mapObj.GetString(2);
                         update.Field16.Value.Add(key, value);
                     }
@@ -1654,7 +1654,7 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveMapKey.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveMapKey.Snapshot();
 
@@ -1869,13 +1869,13 @@ namespace Improbable.Gdk.Tests
                 }
 
                 {
-                    component.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>();
+                    component.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>();
                     var map = component.Field16;
                     var mapSize = obj.GetObjectCount(16);
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
-                        var key = mapObj.GetEntityId(1);
+                        var key = mapObj.GetEntityIdStruct(1);
                         var value = mapObj.GetString(2);
                         map.Add(key, value);
                     }
@@ -1899,7 +1899,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveMapKey.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveMapKey.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -2283,7 +2283,7 @@ namespace Improbable.Gdk.Tests
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
-                        var key = mapObj.GetEntityId(1);
+                        var key = mapObj.GetEntityIdStruct(1);
                         var value = mapObj.GetString(2);
                         component.Field16.Add(key, value);
                     }
@@ -2335,7 +2335,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.Dictionary<ulong,string>> Field13;
             public Option<global::System.Collections.Generic.Dictionary<int,string>> Field14;
             public Option<global::System.Collections.Generic.Dictionary<long,string>> Field15;
-            public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>> Field16;
+            public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> Field16;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string>> Field17;
         }
 

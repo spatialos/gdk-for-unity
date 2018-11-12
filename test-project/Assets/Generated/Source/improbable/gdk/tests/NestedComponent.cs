@@ -3,7 +3,7 @@
 // ===========
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -93,7 +93,7 @@ namespace Improbable.Gdk.Tests
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
-                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
@@ -111,16 +111,16 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
                 global::Improbable.Gdk.Tests.TypeName nestedType
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(20152);
+                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(20152);
                 var obj = schemaComponentData.GetFields();
                 {
                     global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(nestedType, obj.AddObject(1));
                 }
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -133,14 +133,14 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
-            public static void SerializeComponent(Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 {
                     global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
                 }
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.NestedComponent.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -152,7 +152,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static Improbable.Gdk.Tests.NestedComponent.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.NestedComponent.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.NestedComponent.Component();
 
@@ -162,7 +162,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.NestedComponent.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.NestedComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var update = new Improbable.Gdk.Tests.NestedComponent.Update();
                 var obj = updateObj.GetFields();
@@ -178,7 +178,7 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.NestedComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.NestedComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.NestedComponent.Snapshot();
 
@@ -189,7 +189,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.NestedComponent.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.NestedComponent.Component component)
             {
                 var obj = updateObj.GetFields();
 

@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Tests
                 event Action<ulong> Field13Updated;
                 event Action<int> Field14Updated;
                 event Action<long> Field15Updated;
-                event Action<global::Improbable.Worker.EntityId> Field16Updated;
+                event Action<global::Improbable.Gdk.Core.EntityId> Field16Updated;
                 event Action<global::Improbable.Gdk.Tests.SomeType> Field17Updated;
             }
 
@@ -372,9 +372,9 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
-                private readonly List<Action<global::Improbable.Worker.EntityId>> field16Delegates = new List<Action<global::Improbable.Worker.EntityId>>();
+                private readonly List<Action<global::Improbable.Gdk.Core.EntityId>> field16Delegates = new List<Action<global::Improbable.Gdk.Core.EntityId>>();
 
-                public event Action<global::Improbable.Worker.EntityId> Field16Updated
+                public event Action<global::Improbable.Gdk.Core.EntityId> Field16Updated
                 {
                     add
                     {

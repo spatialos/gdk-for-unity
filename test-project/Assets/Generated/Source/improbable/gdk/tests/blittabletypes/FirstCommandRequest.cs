@@ -19,14 +19,14 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     
         public static class Serialization
         {
-            public static void Serialize(FirstCommandRequest instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(FirstCommandRequest instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 {
                     obj.AddInt32(1, instance.Field);
                 }
             }
     
-            public static FirstCommandRequest Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static FirstCommandRequest Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new FirstCommandRequest();
                 {

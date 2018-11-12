@@ -19,14 +19,14 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
     
         public static class Serialization
         {
-            public static void Serialize(SecondCommandResponse instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(SecondCommandResponse instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 {
                     obj.AddString(1, instance.Response);
                 }
             }
     
-            public static SecondCommandResponse Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static SecondCommandResponse Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new SecondCommandResponse();
                 {
