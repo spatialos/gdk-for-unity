@@ -15,6 +15,4 @@ The GDK is composed of three layers:
 
 #### [Get started]({{urlRoot}}/content/get-started/get-started) with the SpatialOS GDK for Unity.
 
-
-
 >This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback.
