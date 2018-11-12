@@ -11,6 +11,7 @@
 ### Changed
 
 - Improved the method of calculating load and FPS.
+- Updated test project Unity version to `2018.2.14f`.
 
 ## `0.1.2` - 2018-11-01
 
