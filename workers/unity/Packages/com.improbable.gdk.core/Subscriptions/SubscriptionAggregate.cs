@@ -98,18 +98,13 @@ namespace Improbable.Gdk.Subscriptions
             {
                 foreach (var sub in subscriptions)
                 {
-                    sub.Invalidate();
+                    sub.ResetValue();
                 }
 
                 OnSubscriptionsNoLongerSatisfied?.Invoke();
             }
 
             --subscriptionsSatisfied;
-
-            foreach (var sub in subscriptions)
-            {
-                sub.Restore();
-            }
         }
 
         private void HandleSubscriptionAvailable()

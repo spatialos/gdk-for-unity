@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Improbable;
+using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
@@ -32,30 +33,23 @@ namespace Playground.MonoBehaviours
         {
             //logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerCommandRequestHandler.OnSpawnCubeRequestReceived += OnSpawnCubeRequest;
-            // worldCommandResponseHandler.OnReserveEntityIdsResponse += OnEntityIdsReserved;
-            // worldCommandResponseHandler.OnCreateEntityResponse += OnEntityCreated;
         }
 
-        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestResponder)
+        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestReceived)
         {
-            //requestResponder.SendResponse(new Empty());
+            cubeSpawnerCommandRequestHandler.SendSpawnCubeResponse(
+                new CubeSpawner.SpawnCube.Response(requestReceived.RequestId, new Empty()));
 
             var request = new WorldCommands.ReserveEntityIds.Request
             {
                 NumberOfEntityIds = 1,
                 Context = this,
             };
-            worldCommandRequestSender.SendReserveEntityIdsCommand(request);
+            worldCommandRequestSender.SendReserveEntityIdsCommand(request, OnEntityIdsReserved);
         }
 
         private void OnEntityIdsReserved(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
-            if (!ReferenceEquals(this, response.Context))
-            {
-                // This response was not for a command from this behaviour.
-                return;
-            }
-
             if (response.StatusCode != StatusCode.Success)
             {
                 // logDispatcher.HandleLog(LogType.Error,
@@ -78,23 +72,18 @@ namespace Playground.MonoBehaviours
             });
             var expectedEntityId = response.FirstEntityId.Value;
 
-            //worldCommandRequestSender.CreateEntity(cubeEntityTemplate, expectedEntityId, context: this);
+            worldCommandRequestSender.SendCreateEntityCommand(
+                new WorldCommands.CreateEntity.Request(cubeEntityTemplate, expectedEntityId), OnEntityCreated);
         }
 
         private void OnEntityCreated(WorldCommands.CreateEntity.ReceivedResponse response)
         {
-            if (!ReferenceEquals(this, response.Context))
-            {
-                // This response was not for a command from this behaviour.
-                return;
-            }
-
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("CreateEntity failed.")
-                        .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
-                        .WithField("Reason", response.Message));
+                // logDispatcher.HandleLog(LogType.Error,
+                //     new LogEvent("CreateEntity failed.")
+                //         .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
+                //         .WithField("Reason", response.Message));
 
                 return;
             }

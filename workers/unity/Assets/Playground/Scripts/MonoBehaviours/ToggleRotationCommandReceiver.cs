@@ -1,3 +1,4 @@
+using Improbable.Common;
 using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
@@ -35,7 +36,8 @@ namespace Playground.MonoBehaviours
         {
             if (Time.time < nextAvailableSpinChangeTime)
             {
-                //spinnerToggleRotationRequest.SendResponseFailure("Cannot change spinning direction too frequently.");
+                requestHandler.SendSpinnerToggleRotationResponse(new SpinnerRotation.SpinnerToggleRotation.Response(
+                    spinnerToggleRotationRequest.RequestId, "Cannot change spinning direction too frequently."));
             }
             else
             {
@@ -43,7 +45,9 @@ namespace Playground.MonoBehaviours
 
                 nextAvailableSpinChangeTime = Time.time + TimeBetweenSpinChanges;
 
-                //spinnerToggleRotationRequest.SendResponse(new Empty());
+                requestHandler.SendSpinnerToggleRotationResponse(
+                    new SpinnerRotation.SpinnerToggleRotation.Response(spinnerToggleRotationRequest.RequestId,
+                        new Empty()));
             }
         }
     }

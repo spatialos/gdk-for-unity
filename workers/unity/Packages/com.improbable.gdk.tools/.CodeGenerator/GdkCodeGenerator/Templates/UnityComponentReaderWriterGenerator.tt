@@ -87,6 +87,7 @@ namespace <#= qualifiedNamespace #>
 
                 foreach (var subscription in entityIdToReaderSubscriptions[op.EntityId])
                 {
+                    ResetValue(subscription);
                     subscription.SetUnavailable();
                 }
 
@@ -108,41 +109,24 @@ namespace <#= qualifiedNamespace #>
             {
                 subscriptions = new HashSet<Subscription<<#= componentDetails.ComponentName #>Reader>>();
                 entityIdToReaderSubscriptions.Add(entityId, subscriptions);
+            }
 
-                if (workerSystem.TryGetEntity(entityId, out var entity))
-                {
-                    if (entityManager.HasComponent<<#= componentDetails.ComponentName #>.Component>(entity))
-                    {
-                        entitiesMatchingRequirements.Add(entityId);
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, entityId, readerCallbackManager));
-                    }
-                }
-                else
-                {
-                    entitiesNotMatchingRequirements.Add(entityId);
-                }
+            if (workerSystem.TryGetEntity(entityId, out var entity)
+                && entityManager.HasComponent<<#= componentDetails.ComponentName #>.Component>(entity))
+            {
+                entitiesMatchingRequirements.Add(entityId);
+                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, entityId, readerCallbackManager));
+            }
+            else
+            {
+                entitiesNotMatchingRequirements.Add(entityId);
             }
 
             subscriptions.Add(subscription);
             return subscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-            var sub = ((Subscription<<#= componentDetails.ComponentName #>Reader>) subscription);
-            var reader = sub.Value;
-            reader.IsValid = false;
-            reader.RemoveAllCallbacks();
-
-            var subscriptions = entityIdToReaderSubscriptions[entityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToReaderSubscriptions.Remove(entityId);
-            }
-        }
-
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Reader>) subscription);
             if (sub.HasValue)
@@ -151,14 +135,23 @@ namespace <#= qualifiedNamespace #>
                 reader.IsValid = false;
                 reader.RemoveAllCallbacks();
             }
+
+            var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
+            subscriptions.Remove(sub);
+            if (subscriptions.Count == 0)
+            {
+                entityIdToReaderSubscriptions.Remove(sub.EntityId);
+                entitiesMatchingRequirements.Remove(sub.EntityId);
+                entitiesNotMatchingRequirements.Remove(sub.EntityId);
+            }
         }
 
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Reader>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.IsValid = true;
+                sub.Value.RemoveAllCallbacks();
             }
         }
     }
@@ -231,6 +224,7 @@ namespace <#= qualifiedNamespace #>
 
                     foreach (var subscription in entityIdToWriterSubscriptions[op.EntityId])
                     {
+                        ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
 
@@ -253,41 +247,24 @@ namespace <#= qualifiedNamespace #>
             {
                 subscriptions = new HashSet<Subscription<<#= componentDetails.ComponentName #>Writer>>();
                 entityIdToWriterSubscriptions.Add(entityId, subscriptions);
+            }
 
-                if (workerSystem.TryGetEntity(entityId, out var entity))
-                {
-                    if (entityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(entity))
-                    {
-                        entitiesMatchingRequirements.Add(entityId);
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, entityId, readerCallbackManager));
-                    }
-                }
-                else
-                {
-                    entitiesNotMatchingRequirements.Add(entityId);
-                }
+            if (workerSystem.TryGetEntity(entityId, out var entity)
+                && entityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(entity))
+            {
+                entitiesMatchingRequirements.Add(entityId);
+                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, entityId, readerCallbackManager));
+            }
+            else
+            {
+                entitiesNotMatchingRequirements.Add(entityId);
             }
 
             subscriptions.Add(subscription);
             return subscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-            var sub = ((Subscription<<#= componentDetails.ComponentName #>Writer>) subscription);
-            var reader = sub.Value;
-            reader.IsValid = false;
-            reader.RemoveAllCallbacks();
-
-            var subscriptions = entityIdToWriterSubscriptions[entityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToWriterSubscriptions.Remove(entityId);
-            }
-        }
-
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Writer>) subscription);
             if (sub.HasValue)
@@ -296,14 +273,23 @@ namespace <#= qualifiedNamespace #>
                 reader.IsValid = false;
                 reader.RemoveAllCallbacks();
             }
+
+            var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
+            subscriptions.Remove(sub);
+            if (subscriptions.Count == 0)
+            {
+                entityIdToWriterSubscriptions.Remove(sub.EntityId);
+                entitiesMatchingRequirements.Remove(sub.EntityId);
+                entitiesNotMatchingRequirements.Remove(sub.EntityId);
+            }
         }
 
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Writer>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.IsValid = true;
+                sub.Value.RemoveAllCallbacks();
             }
         }
     }

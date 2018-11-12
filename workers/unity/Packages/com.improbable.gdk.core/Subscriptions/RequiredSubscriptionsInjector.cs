@@ -3,6 +3,7 @@ using Improbable.Worker;
 
 namespace Improbable.Gdk.Subscriptions
 {
+    // todo this should probably be an interface to be able to remove reflection via baking
     public class RequiredSubscriptionsInjector
     {
         private readonly SubscriptionAggregate subscriptions;
@@ -12,6 +13,8 @@ namespace Improbable.Gdk.Subscriptions
         private Action onEnable;
         private Action onDisable;
 
+        // todo should either special case monobehaviours or not use callbacks
+        // for non monobehaviours we could use functors
         public RequiredSubscriptionsInjector(object target, EntityId entityId, SubscriptionSystem subscriptionSystem,
             Action onEnable = null, Action onDisable = null)
         {
@@ -52,7 +55,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var field in info.RequiredFields)
             {
-                // should really do this as they become available rather than all at once
+                // todo should really do this as they become available rather than all at once
                 field.SetValue(target, subscriptions.GetErasedValue(field.FieldType));
             }
 

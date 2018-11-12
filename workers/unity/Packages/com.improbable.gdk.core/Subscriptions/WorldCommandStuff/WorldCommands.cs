@@ -35,9 +35,10 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
+                workerSystem.TryGetEntity(op.EntityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.SetUnavailable();
+                    subscription.SetAvailable(new WorldCommandSender(entity, world));
                 }
             });
 
@@ -48,10 +49,10 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.SetAvailable(new WorldCommandSender(entity, world));
+                    ResetValue(subscription);
+                    subscription.SetUnavailable();
                 }
             });
         }
@@ -69,48 +70,35 @@ namespace Improbable.Gdk.Core
             {
                 subscriptions = new HashSet<Subscription<WorldCommandSender>>();
                 entityIdToSenderSubscriptions.Add(entityId, subscriptions);
+            }
 
-                if (workerSystem.TryGetEntity(entityId, out var entity))
-                {
-                    subscription.SetAvailable(new WorldCommandSender(entity, world));
-                }
+            if (workerSystem.TryGetEntity(entityId, out var entity))
+            {
+                subscription.SetAvailable(new WorldCommandSender(entity, world));
             }
 
             subscriptions.Add(subscription);
             return subscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
             var sub = ((Subscription<WorldCommandSender>) subscription);
-            var sender = sub.Value;
-            sender.IsValid = false;
+            if (sub.HasValue)
+            {
+                sub.Value.IsValid = false;
+            }
 
-            var subscriptions = entityIdToSenderSubscriptions[entityId];
+            var subscriptions = entityIdToSenderSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
             if (subscriptions.Count == 0)
             {
-                entityIdToSenderSubscriptions.Remove(entityId);
+                entityIdToSenderSubscriptions.Remove(sub.EntityId);
             }
         }
 
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
-            var sub = ((Subscription<WorldCommandSender>) subscription);
-            if (sub.HasValue)
-            {
-                var sender = sub.Value;
-                sender.IsValid = false;
-            }
-        }
-
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-            var sub = ((Subscription<WorldCommandSender>) subscription);
-            if (sub.HasValue)
-            {
-                sub.Value.IsValid = true;
-            }
         }
     }
 

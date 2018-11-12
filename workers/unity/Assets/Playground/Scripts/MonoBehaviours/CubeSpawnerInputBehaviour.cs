@@ -18,7 +18,6 @@ namespace Playground.MonoBehaviours
         [Require] private PlayerInputWriter playerInputWriter;
         [Require] private CubeSpawnerReader cubeSpawnerReader;
         [Require] private CubeSpawnerCommandSender cubeSpawnerCommandSender;
-        [Require] private CubeSpawnerCommandReceiver cubeSpawnerCommandResponseHandler;
 
         [Require] private EntityId entityId;
         [Require] private World world;
@@ -30,7 +29,7 @@ namespace Playground.MonoBehaviours
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
+                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
             }
         }
 
@@ -38,18 +37,12 @@ namespace Playground.MonoBehaviours
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
             }
         }
 
         private void Update()
         {
-            if (playerInputWriter.Authority != Authority.Authoritative)
-            {
-                // Only send commands if we're the player with input
-                return;
-            }
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SendSpawnCubeCommand();
@@ -73,7 +66,7 @@ namespace Playground.MonoBehaviours
 
             if (spawnedCubes.Count == 0)
             {
-                logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
+                //logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
                 return;
             }
 

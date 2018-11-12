@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Worker;
-using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
     public interface ITypeErasedSubscription
     {
         bool HasValue { get; }
+        EntityId EntityId { get; }
 
         // todo think of an actual name
         event Action OnAvailable_Internal;
         event Action OnUnavailable_Internal;
 
+        // todo see if there is a way to get away without this
         object GetErasedValue();
 
         void Cancel();
-        void Invalidate();
-        void Restore();
+        void ResetValue();
     }
 
     // possible this can be made a struct
@@ -26,7 +27,7 @@ namespace Improbable.Gdk.Subscriptions
     {
         // Want a custom event thing that gives an add and invoke option
         public bool HasValue { get; private set; }
-        public EntityId EntityId;
+        public EntityId EntityId { get; }
 
         private readonly SubscriptionManagerBase manager;
 
@@ -76,7 +77,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void Cancel()
         {
-            manager.Cancel(EntityId, this);
+            manager.Cancel(this);
         }
 
         // Would like to find a way to make these internal and have managers update via a proxy
@@ -106,7 +107,7 @@ namespace Improbable.Gdk.Subscriptions
         public void SetUnavailable()
         {
             HasValue = false;
-            manager.Invalidate(EntityId, this);
+            value = default(T);
 
             if (onUnavailable_internal != null)
             {
@@ -166,15 +167,9 @@ namespace Improbable.Gdk.Subscriptions
             return Value;
         }
 
-        void ITypeErasedSubscription.Invalidate()
+        void ITypeErasedSubscription.ResetValue()
         {
-            HasValue = false;
-            manager.Invalidate(EntityId, this);
-        }
-
-        void ITypeErasedSubscription.Restore()
-        {
-            manager.Restore(EntityId, this);
+            manager.ResetValue(this);
         }
 
         #endregion

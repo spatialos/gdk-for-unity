@@ -25,7 +25,7 @@ public class MakeSillyQuery : MonoBehaviour
             Constraint = nearTheOriginConstraint
         };
 
-        sender.SendEntityQueryCommand(new WorldCommands.EntityQuery.Request(query));
+        sender.SendEntityQueryCommand(new WorldCommands.EntityQuery.Request(query), HandleQuery);
 
         //handler.OnEntityQueryResponse += HandleQuery;
     }

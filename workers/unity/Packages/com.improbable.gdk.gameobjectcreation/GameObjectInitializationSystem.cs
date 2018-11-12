@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Subscriptions;
@@ -43,8 +44,9 @@ namespace Improbable.Gdk.GameObjectCreation
         [Inject] private WorkerSystem worker;
 
         private readonly IEntityGameObjectCreator gameObjectCreator;
-
         private EntityGameObjectLinker linker;
+
+        private List<EntityId> entitiesRemoved = new List<EntityId>();
 
         protected override void OnCreateManager()
         {
@@ -57,7 +59,7 @@ namespace Improbable.Gdk.GameObjectCreation
             this.gameObjectCreator = gameObjectCreator;
         }
 
-        protected override void OnUpdate()
+        protected override unsafe void OnUpdate()
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
             {
@@ -65,22 +67,29 @@ namespace Improbable.Gdk.GameObjectCreation
                 var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
                 gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), linker);
 
-                PostUpdateCommands.AddComponent<InitializedEntitySystemState>(entity, new InitializedEntitySystemState
+                PostUpdateCommands.AddComponent(entity, new InitializedEntitySystemState
                 {
                     EntityId = spatialEntityId
                 });
             }
 
+            EntityId* entitiesToRemove = stackalloc EntityId[removedEntitiesData.Length];
             for (var i = 0; i < removedEntitiesData.Length; i++)
             {
                 var entity = removedEntitiesData.Entities[i];
                 var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
+                entitiesToRemove[i] = spatialEntityId;
                 linker.UnlinkAllGameObjectsFromEntity(spatialEntityId);
 
                 PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
             }
 
             linker.FlushCommandBuffer();
+
+            for (var i = 0; i < removedEntitiesData.Length; i++)
+            {
+                gameObjectCreator.OnEntityRemoved(entitiesToRemove[i]);
+            }
         }
 
         protected override void OnDestroyManager()

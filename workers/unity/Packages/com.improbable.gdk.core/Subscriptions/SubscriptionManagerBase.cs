@@ -8,10 +8,8 @@ namespace Improbable.Gdk.Subscriptions
         public abstract Type SubscriptionType { get; }
 
         public abstract ITypeErasedSubscription SubscribeTypeErased(EntityId entityId);
-        public abstract void Cancel(EntityId entityId, ITypeErasedSubscription subscription);
-
-        public abstract void Invalidate(EntityId entityId, ITypeErasedSubscription subscription);
-        public abstract void Restore(EntityId entityId, ITypeErasedSubscription subscription);
+        public abstract void Cancel(ITypeErasedSubscription subscription);
+        public abstract void ResetValue(ITypeErasedSubscription subscription);
     }
 
     public abstract class SubscriptionManager<T> : SubscriptionManagerBase

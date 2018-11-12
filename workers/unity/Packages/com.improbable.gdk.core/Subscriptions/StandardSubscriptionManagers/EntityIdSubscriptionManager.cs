@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
 
@@ -21,15 +18,11 @@ namespace Improbable.Gdk.Subscriptions
             return subscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
         }
 
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-        }
-
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
         }
     }
