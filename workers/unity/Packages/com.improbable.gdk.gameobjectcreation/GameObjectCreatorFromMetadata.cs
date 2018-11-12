@@ -71,8 +71,12 @@ namespace Improbable.Gdk.GameObjectCreation
 
         public void OnEntityRemoved(EntityId entityId)
         {
-            var go = entityIdToGameObject[entityId];
-            GameObject.Destroy(go);
+            if (!entityIdToGameObject.TryGetValue(entityId, out var go))
+            {
+                return;
+            }
+
+            Object.Destroy(go);
             entityIdToGameObject.Remove(entityId);
         }
     }

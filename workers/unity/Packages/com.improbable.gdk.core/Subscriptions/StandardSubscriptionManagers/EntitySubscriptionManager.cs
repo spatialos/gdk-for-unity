@@ -75,21 +75,21 @@ namespace Improbable.Gdk.Subscriptions
             return subscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
-            if (!entityIdToSubscriptions.TryGetValue(entityId, out var subscriptions))
+            if (!entityIdToSubscriptions.TryGetValue(subscription.EntityId, out var subscriptions))
             {
                 throw new ArgumentException("Go away");
             }
 
-            subscriptions.Remove((Subscription<Entity>) subscription);
+            var x = subscriptions.Remove((Subscription<Entity>) subscription);
+            if (x == false)
+            {
+                int y = 9;
+            }
         }
 
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-        }
-
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
         }
     }
