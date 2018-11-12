@@ -44,7 +44,9 @@ namespace Improbable.Gdk.CodeGenerator
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return $"Get{ToUppercase(builtInType)}";
+            return builtInType == BuiltInTypeConstants.builtInEntityId
+                ? $"Get{ToUppercase(builtInType)}Struct"
+                : $"Get{ToUppercase(builtInType)}";
         }
 
         public static string GetCountSchemaFunctionFromType(string builtInType)
@@ -64,7 +66,9 @@ namespace Improbable.Gdk.CodeGenerator
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return $"Index{ToUppercase(builtInType)}";
+            return builtInType == BuiltInTypeConstants.builtInEntityId
+                ? $"Index{ToUppercase(builtInType)}Struct"
+                : $"Index{ToUppercase(builtInType)}";
         }
 
         private static string ToUppercase(string s)
