@@ -14,7 +14,11 @@ namespace Improbable.Gdk.Tools
         private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
 
-
+        private const string SchemaWarningMessage =
+            "// ------------------------------------------------------------------------\n" +
+            "// WARNING: DO NOT EDIT.\n" +
+            "// Any changes made to this file will be overwritten by the Code Generator.\n" +
+            "// ------------------------------------------------------------------------\n\n";
 
         private static readonly string SchemaCompilerRelativePath =
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
@@ -206,7 +210,7 @@ namespace Improbable.Gdk.Tools
                     }
                 }
 
-                File.Copy(file, to);
+                File.WriteAllText(to, SchemaWarningMessage + File.ReadAllText(file));
             }
         }
 
