@@ -3,7 +3,7 @@
 // ===========
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -251,9 +251,9 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            private global::Improbable.Worker.EntityId field16;
+            private global::Improbable.Gdk.Core.EntityId field16;
 
-            public global::Improbable.Worker.EntityId Field16
+            public global::Improbable.Gdk.Core.EntityId Field16
             {
                 get => field16;
                 set
@@ -275,7 +275,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.WorkerCore.ComponentData CreateSchemaComponentData(
                 BlittableBool field1,
                 float field2,
                 int field4,
@@ -289,11 +289,11 @@ namespace Improbable.Gdk.Tests
                 ulong field13,
                 int field14,
                 long field15,
-                global::Improbable.Worker.EntityId field16,
+                global::Improbable.Gdk.Core.EntityId field16,
                 global::Improbable.Gdk.Tests.SomeType field17
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197720);
+                var schemaComponentData = new global::Improbable.WorkerCore.SchemaComponentData(197720);
                 var obj = schemaComponentData.GetFields();
                 {
                     obj.AddBool(1, field1);
@@ -340,7 +340,7 @@ namespace Improbable.Gdk.Tests
                 {
                     global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17, obj.AddObject(17));
                 }
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.WorkerCore.ComponentData(schemaComponentData);
             }
         }
 
@@ -361,13 +361,13 @@ namespace Improbable.Gdk.Tests
             public ulong Field13;
             public int Field14;
             public long Field15;
-            public global::Improbable.Worker.EntityId Field16;
+            public global::Improbable.Gdk.Core.EntityId Field16;
             public global::Improbable.Gdk.Tests.SomeType Field17;
         }
 
         public static class Serialization
         {
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component, global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -477,7 +477,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component Deserialize(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component();
 
@@ -529,7 +529,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update DeserializeUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var update = new Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update();
                 var obj = updateObj.GetFields();
@@ -642,7 +642,7 @@ namespace Improbable.Gdk.Tests
                     if (obj.GetEntityIdCount(16) == 1)
                     {
                         var value = obj.GetEntityId(16);
-                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Worker.EntityId>(value);
+                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId>(value);
                     }
                     
                 }
@@ -657,7 +657,7 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Snapshot DeserializeSnapshot(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Snapshot();
 
@@ -724,7 +724,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component)
+            public static void ApplyUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -868,7 +868,7 @@ namespace Improbable.Gdk.Tests
             public Option<ulong> Field13;
             public Option<int> Field14;
             public Option<long> Field15;
-            public Option<global::Improbable.Worker.EntityId> Field16;
+            public Option<global::Improbable.Gdk.Core.EntityId> Field16;
             public Option<global::Improbable.Gdk.Tests.SomeType> Field17;
         }
 

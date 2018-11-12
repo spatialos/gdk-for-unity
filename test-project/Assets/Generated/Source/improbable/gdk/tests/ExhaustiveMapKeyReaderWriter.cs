@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Tests
                 event Action<global::System.Collections.Generic.Dictionary<ulong,string>> Field13Updated;
                 event Action<global::System.Collections.Generic.Dictionary<int,string>> Field14Updated;
                 event Action<global::System.Collections.Generic.Dictionary<long,string>> Field15Updated;
-                event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>> Field16Updated;
+                event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> Field16Updated;
                 event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string>> Field17Updated;
             }
 
@@ -422,9 +422,9 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
-                private readonly List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>>>();
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>> field16Delegates = new List<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>>();
 
-                public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>> Field16Updated
+                public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> Field16Updated
                 {
                     add
                     {

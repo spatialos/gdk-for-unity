@@ -3,7 +3,7 @@
 // ===========
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -285,7 +285,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field16Handle;
 
-            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId> Field16
+            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> Field16
             {
                 get => Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
@@ -307,7 +307,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.WorkerCore.ComponentData CreateSchemaComponentData(
                 global::System.Collections.Generic.Dictionary<string,BlittableBool> field1,
                 global::System.Collections.Generic.Dictionary<string,float> field2,
                 global::System.Collections.Generic.Dictionary<string,byte[]> field3,
@@ -323,11 +323,11 @@ namespace Improbable.Gdk.Tests
                 global::System.Collections.Generic.Dictionary<string,ulong> field13,
                 global::System.Collections.Generic.Dictionary<string,int> field14,
                 global::System.Collections.Generic.Dictionary<string,long> field15,
-                global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId> field16,
+                global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> field16,
                 global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> field17
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197718);
+                var schemaComponentData = new global::Improbable.WorkerCore.SchemaComponentData(197718);
                 var obj = schemaComponentData.GetFields();
                 {
                     foreach (var keyValuePair in field1)
@@ -482,7 +482,7 @@ namespace Improbable.Gdk.Tests
                 }
                 
                 }
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.WorkerCore.ComponentData(schemaComponentData);
             }
         }
 
@@ -505,13 +505,13 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.Dictionary<string,ulong> Field13;
             public global::System.Collections.Generic.Dictionary<string,int> Field14;
             public global::System.Collections.Generic.Dictionary<string,long> Field15;
-            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId> Field16;
+            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> Field16;
             public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> Field17;
         }
 
         public static class Serialization
         {
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapValue.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapValue.Component component, global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -822,7 +822,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Component Deserialize(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveMapValue.Component();
 
@@ -1038,7 +1038,7 @@ namespace Improbable.Gdk.Tests
                 }
                 component.field16Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 {
-                    component.Field16 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>();
+                    component.Field16 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>();
                     var map = component.Field16;
                     var mapSize = obj.GetObjectCount(16);
                     for (var i = 0; i < mapSize; i++)
@@ -1067,7 +1067,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Update DeserializeUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var update = new Improbable.Gdk.Tests.ExhaustiveMapValue.Update();
                 var obj = updateObj.GetFields();
@@ -1447,7 +1447,7 @@ namespace Improbable.Gdk.Tests
                     }
                     if (mapSize > 0 || isCleared)
                     {
-                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>>(new global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>());
+                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>>(new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>());
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -1485,7 +1485,7 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveMapValue.Snapshot DeserializeSnapshot(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveMapValue.Snapshot();
 
@@ -1700,7 +1700,7 @@ namespace Improbable.Gdk.Tests
                 }
 
                 {
-                    component.Field16 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>();
+                    component.Field16 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>();
                     var map = component.Field16;
                     var mapSize = obj.GetObjectCount(16);
                     for (var i = 0; i < mapSize; i++)
@@ -1730,7 +1730,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveMapValue.Component component)
+            public static void ApplyUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveMapValue.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -2166,7 +2166,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.Dictionary<string,ulong>> Field13;
             public Option<global::System.Collections.Generic.Dictionary<string,int>> Field14;
             public Option<global::System.Collections.Generic.Dictionary<string,long>> Field15;
-            public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Worker.EntityId>> Field16;
+            public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>> Field16;
             public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType>> Field17;
         }
 

@@ -13,11 +13,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
     
         public static class Serialization
         {
-            public static void Serialize(Empty instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(Empty instance, global::Improbable.WorkerCore.SchemaObject obj)
             {
             }
     
-            public static Empty Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static Empty Deserialize(global::Improbable.WorkerCore.SchemaObject obj)
             {
                 var instance = new Empty();
                 return instance;

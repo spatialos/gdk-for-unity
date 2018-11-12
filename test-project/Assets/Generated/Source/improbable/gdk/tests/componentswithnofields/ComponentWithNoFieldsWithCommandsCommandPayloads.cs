@@ -3,8 +3,8 @@
 // ===========
 
 using System.Collections.Generic;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
+using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 public uint? TimeoutMillis { get; internal set; }
                 public bool AllowShortCircuiting { get; internal set; }
                 public System.Object Context { get; internal set; }
-                public long RequestId { get; internal set; }
+                public uint RequestId { get; internal set; }
             }
 
             public static Request CreateRequest(EntityId targetEntityId,
@@ -45,12 +45,12 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public struct ReceivedRequest
             {
-                public long RequestId { get; }
+                public uint RequestId { get; }
                 public string CallerWorkerId { get; }
                 public List<string> CallerAttributeSet { get; }
                 public global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty Payload { get; }
 
-                public ReceivedRequest(long requestId,
+                public ReceivedRequest(uint requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request)
@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             /// </summary>
             public struct Response
             {
-                public long RequestId { get; internal set; }
+                public uint RequestId { get; internal set; }
                 public global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? Payload { get; internal set; }
                 public string FailureMessage { get; internal set; }
             }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 public global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? ResponsePayload { get; }
                 public global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RequestPayload { get; }
                 public System.Object Context { get; }
-                public long RequestId { get; }
+                public uint RequestId { get; }
 
                 public ReceivedResponse(EntityId entityId,
                     string message,
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? response,
                     global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request,
                     System.Object context,
-                    long requestId)
+                    uint requestId)
                 {
                     EntityId = entityId;
                     Message = message;

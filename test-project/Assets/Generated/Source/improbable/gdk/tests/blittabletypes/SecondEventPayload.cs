@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     
         public static class Serialization
         {
-            public static void Serialize(SecondEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(SecondEventPayload instance, global::Improbable.WorkerCore.SchemaObject obj)
             {
                 {
                     obj.AddFloat(1, instance.Field1);
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
     
-            public static SecondEventPayload Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static SecondEventPayload Deserialize(global::Improbable.WorkerCore.SchemaObject obj)
             {
                 var instance = new SecondEventPayload();
                 {
