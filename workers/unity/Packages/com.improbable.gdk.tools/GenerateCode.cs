@@ -14,9 +14,9 @@ namespace Improbable.Gdk.Tools
         private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
 
-        private const string SchemaWarningMessage = 
+        private static string SchemaWarningMessage =
             "// ------------------------------------------------------------------------" + Environment.NewLine +
-            "// WARNING: DO NOT EDIT."                                                    + Environment.NewLine +
+            "// WARNING: DO NOT EDIT." + Environment.NewLine +
             "// Any changes made to this file will be overwritten by the Code Generator." + Environment.NewLine +
             "// ------------------------------------------------------------------------" + Environment.NewLine +
             Environment.NewLine;
