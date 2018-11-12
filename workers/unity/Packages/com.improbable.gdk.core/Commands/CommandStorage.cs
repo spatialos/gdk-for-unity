@@ -11,9 +11,9 @@ namespace Improbable.Gdk.Core.Commands
         public Entity Entity;
         public T Request;
         public object Context;
-        public long RequestId;
+        public uint RequestId;
 
-        public CommandRequestStore(Entity entity, T request, object context, long requestId)
+        public CommandRequestStore(Entity entity, T request, object context, uint requestId)
         {
             Entity = entity;
             Request = request;

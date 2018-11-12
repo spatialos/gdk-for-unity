@@ -69,6 +69,26 @@ namespace Improbable.Gdk.Core
             return !entityId1.Equals(entityId2);
         }
 
+        /// <summary>
+        ///     Implicit cast operator from EntityId to long.
+        /// </summary>
+        /// <param name="entityId">The EntityId to cast.</param>
+        /// <returns>A long that represents that EntityId.</returns>
+        public static implicit operator long(EntityId entityId)
+        {
+            return entityId.Id;
+        }
+
+        /// <summary>
+        ///     Implicit cast operator from long to EntityId
+        /// </summary>
+        /// <param name="entityId">The long to cast.</param>
+        /// <returns>A EntityId that represents that long.</returns>
+        public static implicit operator EntityId(long entityId)
+        {
+            return new EntityId(entityId);
+        }
+
         /// <inheritdoc cref="object" />
         public override int GetHashCode()
         {

@@ -9,7 +9,7 @@
 <#= generatedHeader #>
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -142,7 +142,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
 
 <# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.WorkerCore.ComponentData CreateSchemaComponentData(
 <# foreach(var fieldDetails in fieldDetailsList) {
     var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
 #>
@@ -150,14 +150,14 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
+                var schemaComponentData = new global::Improbable.WorkerCore.SchemaComponentData(<#= componentDetails.ComponentId #>);
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
                 }
 <# } #>
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.WorkerCore.ComponentData(schemaComponentData);
             }
 <# } #>
         }
@@ -173,7 +173,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
         public static class Serialization
         {
-            public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
@@ -191,7 +191,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             }
 
-            public static <#= componentNamespace #>.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Component Deserialize(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Component();
 
@@ -206,7 +206,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return component;
             }
 
-            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj)
             {
                 var update = new <#= componentNamespace #>.Update();
                 var obj = updateObj.GetFields();
@@ -223,7 +223,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return update;
             }
 
-            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.WorkerCore.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Snapshot();
 
@@ -236,7 +236,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
+            public static void ApplyUpdate(global::Improbable.WorkerCore.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
             {
                 var obj = updateObj.GetFields();
 

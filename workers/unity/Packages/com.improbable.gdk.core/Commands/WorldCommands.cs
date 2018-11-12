@@ -84,7 +84,7 @@ namespace Improbable.Gdk.Core.Commands
                 public EntityId? EntityId;
                 public uint? TimeoutMillis;
                 public Object Context;
-                public long RequestId;
+                public uint RequestId;
             }
 
             /// <summary>
@@ -150,9 +150,9 @@ namespace Improbable.Gdk.Core.Commands
                 /// <summary>
                 ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
-                public long RequestId { get; }
+                public uint RequestId { get; }
 
-                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, long requestId)
+                internal ReceivedResponse(CreateEntityResponseOp op, Request req, object context, uint requestId)
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
@@ -348,7 +348,7 @@ namespace Improbable.Gdk.Core.Commands
                 public EntityId EntityId;
                 public uint? TimeoutMillis;
                 public Object Context;
-                public long RequestId;
+                public uint RequestId;
             }
 
             /// <summary>
@@ -407,9 +407,9 @@ namespace Improbable.Gdk.Core.Commands
                 /// <summary>
                 ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
-                public long RequestId { get; }
+                public uint RequestId { get; }
 
-                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, long requestId)
+                internal ReceivedResponse(DeleteEntityResponseOp op, Request req, object context, uint requestId)
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
@@ -605,7 +605,7 @@ namespace Improbable.Gdk.Core.Commands
                 public uint NumberOfEntityIds;
                 public uint? TimeoutMillis;
                 public Object Context;
-                public long RequestId;
+                public uint RequestId;
             }
 
             /// <summary>
@@ -670,9 +670,9 @@ namespace Improbable.Gdk.Core.Commands
                 /// <summary>
                 ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
-                public long RequestId { get; }
+                public uint RequestId { get; }
 
-                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, long requestId)
+                internal ReceivedResponse(ReserveEntityIdsResponseOp op, Request req, object context, uint requestId)
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
@@ -869,7 +869,7 @@ namespace Improbable.Gdk.Core.Commands
                 public Improbable.WorkerCore.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
                 public Object Context;
-                public long RequestId;
+                public uint RequestId;
             }
 
             /// <summary>
@@ -934,9 +934,9 @@ namespace Improbable.Gdk.Core.Commands
                 /// <summary>
                 ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
-                public long RequestId { get; }
+                public uint RequestId { get; }
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, long requestId, World world)
+                internal ReceivedResponse(EntityQueryResponseOp op, Request req, object context, uint requestId, World world)
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
