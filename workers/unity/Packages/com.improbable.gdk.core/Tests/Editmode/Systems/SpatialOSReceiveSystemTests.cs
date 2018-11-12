@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         private const long TestEntityId = 1;
 
         private const uint TestCommandIndex = 1;
-        private const long TestCommandRequestId = 1;
+        private const uint TestCommandRequestId = 1;
 
         private World world;
         private EntityManager entityManager;
