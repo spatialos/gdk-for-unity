@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
+using Improbable.WorkerCore;
 using Unity.Entities;
 using UnityEngine;
 

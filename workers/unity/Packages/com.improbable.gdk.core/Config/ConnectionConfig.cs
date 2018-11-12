@@ -1,5 +1,5 @@
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
+using Improbable.WorkerCore;
 
 namespace Improbable.Gdk.Core
 {

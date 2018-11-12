@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using System.Linq;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 

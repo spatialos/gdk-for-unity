@@ -1,5 +1,5 @@
 using Improbable.Gdk.Core;
-using Improbable.Worker;
+using Improbable.WorkerCore;
 using Unity.Collections;
 using Unity.Entities;
 

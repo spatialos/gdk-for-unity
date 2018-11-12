@@ -1,7 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using Unity.Entities;
 using UnityEngine;
 
@@ -58,7 +57,14 @@ namespace Playground
                 return;
             }
 
+<<<<<<< HEAD
             if (DateTime.Now >= timeOfNextUpdate)
+=======
+            timeElapsedSinceUpdate += Time.deltaTime;
+
+            AddFpsSample();
+            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
+>>>>>>> worker.core -> workercore
             {
                 CalculateFps();
                 WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = calculatedFps;

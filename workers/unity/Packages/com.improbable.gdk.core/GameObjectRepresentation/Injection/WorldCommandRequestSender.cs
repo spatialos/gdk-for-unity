@@ -1,6 +1,6 @@
 ﻿using System;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker;
+using Improbable.WorkerCore;
 using Unity.Entities;
 
 #region Diagnostic control

@@ -1,5 +1,5 @@
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using UnityEngine;
 
 namespace Playground

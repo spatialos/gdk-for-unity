@@ -1,6 +1,6 @@
 using System;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using Unity.Collections;
 using Unity.Entities;
 

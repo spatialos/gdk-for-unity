@@ -4,8 +4,8 @@ using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
+using Improbable.WorkerCore;
 
 namespace Playground
 {

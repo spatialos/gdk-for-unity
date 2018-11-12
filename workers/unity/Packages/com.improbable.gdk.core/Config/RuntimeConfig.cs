@@ -1,4 +1,4 @@
-using Improbable.Worker;
+using Improbable.WorkerCore;
 
 namespace Improbable.Gdk.Core
 {

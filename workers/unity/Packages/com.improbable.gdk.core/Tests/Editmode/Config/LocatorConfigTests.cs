@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Improbable.Worker;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.Core.EditmodeTests

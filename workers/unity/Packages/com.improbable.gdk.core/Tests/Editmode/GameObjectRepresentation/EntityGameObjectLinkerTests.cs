@@ -1,6 +1,6 @@
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.TestUtils;
-using Improbable.Worker;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Entities;

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
+using Improbable.WorkerCore;
 using Improbable.Worker.Query;
 using Unity.Entities;
 using UnityEngine;
