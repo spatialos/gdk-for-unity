@@ -1,7 +1,6 @@
 ﻿using Improbable.Gdk.Core;
 using Improbable.Gdk.Tests.ComponentsWithNoFields;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 using Unity.Entities;
 

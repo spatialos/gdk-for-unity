@@ -1,4 +1,4 @@
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 
 

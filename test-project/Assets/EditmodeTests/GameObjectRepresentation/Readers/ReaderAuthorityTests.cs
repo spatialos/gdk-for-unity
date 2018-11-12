@@ -2,7 +2,7 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.Tests.BlittableTypes;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;

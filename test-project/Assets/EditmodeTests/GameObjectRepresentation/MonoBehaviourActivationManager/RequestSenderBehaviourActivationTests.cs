@@ -1,7 +1,7 @@
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.Tests.ComponentsWithNoFields;
-using Improbable.Worker.Core;
+using Improbable.WorkerCore;
 using NUnit.Framework;
 using UnityEngine;
 
