@@ -27,19 +27,13 @@ namespace Improbable.Gdk.Subscriptions
             return worldSubscription;
         }
 
-        public override void Cancel(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void Cancel(ITypeErasedSubscription subscription)
         {
             // Could count number of subscriptions and delete after that
         }
 
-        public override void Invalidate(EntityId entityId, ITypeErasedSubscription subscription)
+        public override void ResetValue(ITypeErasedSubscription subscription)
         {
-            // Could set to 0 or something invalid
-        }
-
-        public override void Restore(EntityId entityId, ITypeErasedSubscription subscription)
-        {
-            // Only needs to do something if invalidate does
         }
     }
 }
