@@ -81,7 +81,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     Yield authority during soft handover
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if the authority is not <see cref="Improbable.Worker.Core.Authority.AuthorityLossImminent"/>
+        ///     Thrown if the authority is not <see cref="Improbable.WorkerCore.Authority.AuthorityLossImminent"/>
         /// </exception>
         public void SendAuthorityLossImminentAcknowledgement()
         {

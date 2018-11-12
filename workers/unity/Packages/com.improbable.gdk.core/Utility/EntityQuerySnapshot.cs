@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     ///     A  snapshot of a SpatialOS entity, containing the result of a entity query.
     /// </summary>
     /// <remarks>
-    ///     This copies entity components from <see cref="Improbable.Worker.Core.Entity"/> for long term storage.
+    ///     This copies entity components from <see cref="Improbable.WorkerCore.Entity"/> for long term storage.
     ///     This may only be a partial snapshot of an entity.
     ///     The components present depend on the component filter used when making the entity query.
     /// </remarks>
