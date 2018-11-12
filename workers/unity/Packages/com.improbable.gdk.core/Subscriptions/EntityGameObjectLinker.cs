@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Improbable.Gdk.Core;
 using Improbable.Worker;
 using Unity.Entities;
@@ -15,10 +14,10 @@ namespace Improbable.Gdk.Subscriptions
         private readonly SubscriptionSystem subscriptionSystem;
         private readonly EntityManager entityManager;
 
-        private Dictionary<EntityId, HashSet<GameObject>> entityToGameObjects =
+        private readonly Dictionary<EntityId, HashSet<GameObject>> entityIdToGameObjects =
             new Dictionary<EntityId, HashSet<GameObject>>();
 
-        private Dictionary<GameObject, List<RequiredSubscriptionsInjector>> gameObjectToInjectors =
+        private readonly Dictionary<GameObject, List<RequiredSubscriptionsInjector>> gameObjectToInjectors =
             new Dictionary<GameObject, List<RequiredSubscriptionsInjector>>();
 
         private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
@@ -52,6 +51,14 @@ namespace Improbable.Gdk.Subscriptions
             {
                 throw new ArgumentException("Entity not in view");
             }
+
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var linkedGameObjects))
+            {
+                linkedGameObjects = new HashSet<GameObject>();
+                entityIdToGameObjects.Add(entityId, linkedGameObjects);
+            }
+
+            linkedGameObjects.Add(gameObject);
 
             if (!entityManager.HasComponent<Transform>(entity))
             {
@@ -90,6 +97,7 @@ namespace Improbable.Gdk.Subscriptions
                 if (RequiredSubscriptionsDatabase.HasRequiredSubscriptions(type) &&
                     RequiredSubscriptionsDatabase.WorkerTypeMatchesRequirements(workerSystem.WorkerType, type))
                 {
+                    // todo this should possibly happen when the command buffer is flushed too
                     injectors.Add(new RequiredSubscriptionsInjector(component, entityId, subscriptionSystem,
                         () => component.enabled = true, () => component.enabled = false));
                 }
@@ -100,7 +108,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void UnlinkGameObjectFromEntity(EntityId entityId, GameObject gameObject)
         {
-            if (!entityToGameObjects.TryGetValue(entityId, out var gameObjectSet))
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
             {
                 throw new ArgumentException("This princess is in another castle");
             }
@@ -120,23 +128,33 @@ namespace Improbable.Gdk.Subscriptions
             gameObjectSet.Remove(gameObject);
             if (gameObjectSet.Count == 0)
             {
-                entityToGameObjects.Remove(entityId);
+                entityIdToGameObjects.Remove(entityId);
             }
         }
 
         public void UnlinkAllGameObjectsFromEntity(EntityId entityId)
         {
-            if (!entityToGameObjects.TryGetValue(entityId, out var gameObjectSet))
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
             {
                 return;
             }
 
             foreach (var gameObject in gameObjectSet)
             {
-                UnlinkGameObjectFromEntity(entityId, gameObject);
+                if (!gameObjectToInjectors.TryGetValue(gameObject, out var injectors))
+                {
+                    continue;
+                }
+
+                foreach (var injector in injectors)
+                {
+                    injector.CancelSubscriptions();
+                }
+
+                gameObjectToInjectors.Remove(gameObject);
             }
 
-            entityToGameObjects.Remove(entityId);
+            entityIdToGameObjects.Remove(entityId);
         }
 
         public void FlushCommandBuffer()

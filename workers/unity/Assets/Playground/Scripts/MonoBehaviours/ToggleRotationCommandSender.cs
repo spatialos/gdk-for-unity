@@ -18,8 +18,6 @@ namespace Playground.MonoBehaviours
         [Require] private SpinnerRotationReader reader;
         [Require] private SpinnerRotationCommandSender requestSender;
 
-        //[SamiRequire] private SpinnerRotation.Requirable.CommandResponseHandler responseHandler;
-
         [Require] private EntityId ownEntityId;
 
         private void OnEnable()
