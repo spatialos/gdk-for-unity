@@ -10,8 +10,7 @@
 
 ### Changed
 
-- Changed the method of calculating load.
-- Changed the method of calculating FPS.
+- Improved the method of calculating load and FPS.
 
 ## `0.1.2` - 2018-11-01
 
