@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId);
+                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId.HasValue ? new long?(entityId.Value.Id) : null);
             }
             finally
             {

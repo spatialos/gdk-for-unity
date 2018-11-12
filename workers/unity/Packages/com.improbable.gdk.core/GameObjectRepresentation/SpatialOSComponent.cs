@@ -2,6 +2,7 @@ using Improbable.Gdk.Core;
 using Improbable.WorkerCore;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {

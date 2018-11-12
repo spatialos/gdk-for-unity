@@ -77,8 +77,8 @@ namespace Improbable.Gdk.Core
                     var entity = entityArray[i];
                     foreach (var req in requestsToSend)
                     {
-                        var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId, req.TimeoutMillis);
-                        createEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        var reqId = connection.SendCreateEntityRequest(req.Entity, req.EntityId.Value.Id, req.TimeoutMillis);
+                        createEntityStorage.CommandRequestsInFlight.Add(reqId,
                             new CommandRequestStore<WorldCommands.CreateEntity.Request>(entity, req, req.Context, req.RequestId));
                     }
 
@@ -92,8 +92,8 @@ namespace Improbable.Gdk.Core
                     var entity = entityArray[i];
                     foreach (var req in requestsToSend)
                     {
-                        var reqId = connection.SendDeleteEntityRequest(req.EntityId, req.TimeoutMillis);
-                        deleteEntityStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        var reqId = connection.SendDeleteEntityRequest(req.EntityId.Id, req.TimeoutMillis);
+                        deleteEntityStorage.CommandRequestsInFlight.Add(reqId,
                             new CommandRequestStore<WorldCommands.DeleteEntity.Request>(entity, req, req.Context, req.RequestId));
                     }
 
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.Core
                     foreach (var req in requestsToSend)
                     {
                         var reqId = connection.SendReserveEntityIdsRequest(req.NumberOfEntityIds, req.TimeoutMillis);
-                        reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        reserveEntityIdsStorage.CommandRequestsInFlight.Add(reqId,
                             new CommandRequestStore<WorldCommands.ReserveEntityIds.Request>(entity, req, req.Context, req.RequestId));
                     }
 
@@ -123,7 +123,7 @@ namespace Improbable.Gdk.Core
                     foreach (var req in requestsToSend)
                     {
                         var reqId = connection.SendEntityQueryRequest(req.EntityQuery, req.TimeoutMillis);
-                        entityQueryStorage.CommandRequestsInFlight.Add(reqId.Id,
+                        entityQueryStorage.CommandRequestsInFlight.Add(reqId,
                             new CommandRequestStore<WorldCommands.EntityQuery.Request>(entity, req, req.Context, req.RequestId));
                     }
 

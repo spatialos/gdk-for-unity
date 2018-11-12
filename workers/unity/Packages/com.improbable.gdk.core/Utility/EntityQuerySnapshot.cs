@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Improbable.WorkerCore;
 using Unity.Entities;
-using Entity = Improbable.Worker.Core.Entity;
+using Entity = Improbable.WorkerCore.Entity;
 
 namespace Improbable.Gdk.Core
 {
