@@ -3,10 +3,10 @@
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     A unique identifier used to look up entity in SpatialOS.
+    ///     A unique identifier used to look up an entity in SpatialOS.
     /// </summary>
     /// <remarks>
-    ///     Instances of this type should be treated as a transient identifiers that will not be
+    ///     Instances of this type should be treated as transient identifiers that will not be
     ///     consistent between different runs of the same simulation.
     /// </remarks>
     public struct EntityId : IEquatable<EntityId>
