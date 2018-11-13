@@ -8,12 +8,29 @@
 <#= generatedHeader #>
 
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Unity.Entities;
 
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<# foreach (var eventDetails in eventDetailsList) { #>
+        public static class <#= eventDetails.EventName #>
+        {
+            public readonly struct Event : IEvent
+            {
+                public readonly <#= eventDetails.FqnPayloadType #> Payload;
+
+                public Event(<#= eventDetails.FqnPayloadType #> payload)
+                {
+                    Payload = payload;
+                }
+            }
+        }
+
+<# } #>
         public static class ReceivedEvents
         {
 <# foreach (var eventDetails in eventDetailsList) { #>
