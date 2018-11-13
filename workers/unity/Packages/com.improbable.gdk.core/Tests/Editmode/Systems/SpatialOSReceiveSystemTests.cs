@@ -469,7 +469,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
                 Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
                 Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId);
+                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId.Id);
             }
         }
 
