@@ -794,6 +794,179 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         }
 <# } #>
 
+        public class UpdateEventManager : IUpdateEventManager, IUpdateSender<Update>, IUpdateReceiver<Update>
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            , IEventManager<<#= eventType #>>
+<# } #>
+        {
+            private WorkerSystem workerSystem;
+            private EntityManager entityManager;
+            private World world;
+
+            private ulong currentUpdateId;
+
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            private readonly List<ComponentEventToSend<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
+                new List<ComponentEventToSend<<#= eventType #>>>();
+            private readonly List<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
+                new List<ComponentEventReceived<<#= eventType #>>>();
+<# } #>
+
+            private readonly List<ComponentUpdateToSend<Update>> updatesToSend = new List<ComponentUpdateToSend<Update>>();
+            private readonly List<ComponentUpdateReceived<Update>> updatesReceived =
+                new List<ComponentUpdateReceived<Update>>();
+
+            public Type[] GetEventTypes()
+            {
+                return new Type[]
+                {
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+                    typeof(<#= eventType #>),
+<# } #>
+                };
+            }
+
+            public Type GetUpdateType()
+            {
+                return typeof(Update);
+            }
+
+            public void SendAll()
+            {
+                var connection = workerSystem.Connection;
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+
+                foreach (var eventToSend in <#= ev.CamelCaseEventName #>EventsToSend)
+                {
+                    if (!workerSystem.TryGetEntity(eventToSend.EntityId, out var entity))
+                    {
+                        throw new ArgumentException("Entity is not in view");
+                    }
+
+                    if (entityManager.HasComponent<EventSender.<#= ev.EventName #>>(entity))
+                    {
+                        entityManager.GetComponentData<EventSender.<#= ev.EventName #>>(entity).Events
+                            .Add(eventToSend.Event.Payload);
+                    }
+                }
+<# } #>
+
+                updatesToSend.Clear();
+                updatesReceived.Clear();
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+                <#= ev.CamelCaseEventName #>EventsToSend.Clear();
+                <#= ev.CamelCaseEventName #>EventsReceived.Clear();
+<# } #>
+            }
+
+            public void Init(World world)
+            {
+                this.world = world;
+                entityManager = world.GetOrCreateManager<EntityManager>();
+
+                workerSystem = world.GetExistingManager<WorkerSystem>();
+
+                if (workerSystem == null)
+                {
+                    throw new ArgumentException("World instance is not running a valid SpatialOS worker");
+                }
+
+                var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
+
+                dispatcher.OnComponentUpdate(OnUpdate);
+            }
+
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            public void SendEvent(<#= eventType #> eventToSend, EntityId entityId)
+            {
+                <#= ev.CamelCaseEventName #>EventsToSend.Add(new ComponentEventToSend<<#= eventType #>>(eventToSend, entityId));
+            }
+
+<# } #>
+
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            List<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
+            {
+                return <#= ev.CamelCaseEventName #>EventsReceived;
+            }
+
+<# } #>
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            List<ComponentEventToSend<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsToSend()
+            {
+                return <#= ev.CamelCaseEventName #>EventsToSend;
+            }
+
+<# } #>
+            public void SendComponentUpdate(Update update, EntityId entityId)
+            {
+                updatesToSend.Add(new ComponentUpdateToSend<Update>(update, entityId));
+            }
+
+            public List<ComponentUpdateToSend<Update>> GetComponentUpdatesToSend()
+            {
+                return updatesToSend;
+            }
+
+            public List<ComponentUpdateReceived<Update>> GetComponentUpdatesReceived()
+            {
+                return updatesReceived;
+            }
+
+            private void OnUpdate(ComponentUpdateOp op)
+            {
+                var componentId = op.Update.ComponentId;
+                if (componentId != ComponentId)
+                {
+                    return;
+                }
+
+                workerSystem.TryGetEntity(op.EntityId, out var entity);
+
+                ++currentUpdateId;
+
+                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+
+                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, op.EntityId, currentUpdateId));
+
+<# if (eventDetailsList.Count > 0) { #>
+                var eventsObject = op.Update.SchemaData.Value.GetEvents();
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+                {
+                    var eventCount = eventsObject.GetObjectCount(<#= ev.EventIndex #>);
+                    if (eventCount > 0)
+                    {
+                        for (uint i = 0; i < eventCount; i++)
+                        {
+                            var payload = <#= ev.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= ev.EventIndex #>, i));
+                            var e = new <#= eventType #>(payload);
+                            <#= ev.CamelCaseEventName #>EventsReceived.Add(new ComponentEventReceived<<#= eventType #>>(e, op.EntityId, currentUpdateId));
+                        }
+                    }
+                }
+<# } #>
+<# } #>
+            }
+        }
+
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
