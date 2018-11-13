@@ -585,7 +585,7 @@ namespace Improbable.Gdk.Tests
                     component.Field15 = obj.GetSfixed64(15);
                 }
                 {
-                    component.Field16 = obj.GetEntityId(16);
+                    component.Field16 = obj.GetEntityIdStruct(16);
                 }
                 {
                     component.Field17 = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
@@ -721,7 +721,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
+                        var value = obj.GetEntityIdStruct(16);
                         update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId>(value);
                     }
                     
@@ -802,7 +802,7 @@ namespace Improbable.Gdk.Tests
                 }
 
                 {
-                    component.Field16 = obj.GetEntityId(16);
+                    component.Field16 = obj.GetEntityIdStruct(16);
                 }
 
                 {
@@ -939,7 +939,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
+                        var value = obj.GetEntityIdStruct(16);
                         component.Field16 = value;
                     }
                     

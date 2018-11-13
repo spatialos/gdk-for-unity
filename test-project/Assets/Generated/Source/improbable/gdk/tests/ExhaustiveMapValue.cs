@@ -1045,7 +1045,7 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
                         var key = mapObj.GetString(1);
-                        var value = mapObj.GetEntityId(2);
+                        var value = mapObj.GetEntityIdStruct(2);
                         map.Add(key, value);
                     }
                     
@@ -1453,7 +1453,7 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
                         var key = mapObj.GetString(1);
-                        var value = mapObj.GetEntityId(2);
+                        var value = mapObj.GetEntityIdStruct(2);
                         update.Field16.Value.Add(key, value);
                     }
                     
@@ -1707,7 +1707,7 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
                         var key = mapObj.GetString(1);
-                        var value = mapObj.GetEntityId(2);
+                        var value = mapObj.GetEntityIdStruct(2);
                         map.Add(key, value);
                     }
                     
@@ -2115,7 +2115,7 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(16, (uint) i);
                         var key = mapObj.GetString(1);
-                        var value = mapObj.GetEntityId(2);
+                        var value = mapObj.GetEntityIdStruct(2);
                         component.Field16.Add(key, value);
                     }
                     

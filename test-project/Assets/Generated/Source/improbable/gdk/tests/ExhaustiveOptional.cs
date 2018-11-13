@@ -882,7 +882,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityId(16));
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityIdStruct(16));
                     }
                     
                 }
@@ -1235,7 +1235,7 @@ namespace Improbable.Gdk.Tests
                     }
                     else if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
+                        var value = obj.GetEntityIdStruct(16);
                         update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId?>(new global::Improbable.Gdk.Core.EntityId?(value));
                     }
                     
@@ -1391,7 +1391,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityId(16));
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityIdStruct(16));
                     }
                     
                 }
@@ -1744,7 +1744,7 @@ namespace Improbable.Gdk.Tests
                     }
                     else if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
+                        var value = obj.GetEntityIdStruct(16);
                         component.Field16 = new global::Improbable.Gdk.Core.EntityId?(value);
                     }
                     

@@ -930,7 +930,7 @@ namespace Improbable.Gdk.Tests
                     var listLength = obj.GetEntityIdCount(16);
                     for (var i = 0; i < listLength; i++)
                     {
-                        list.Add(obj.IndexEntityId(16, (uint) i));
+                        list.Add(obj.IndexEntityIdStruct(16, (uint) i));
                     }
                     
                 }
@@ -1302,7 +1302,7 @@ namespace Improbable.Gdk.Tests
                     }
                     for (var i = 0; i < listSize; i++)
                     {
-                        var value = obj.IndexEntityId(16, (uint) i);
+                        var value = obj.IndexEntityIdStruct(16, (uint) i);
                         update.Field16.Value.Add(value);
                     }
                     
@@ -1507,7 +1507,7 @@ namespace Improbable.Gdk.Tests
                     var listLength = obj.GetEntityIdCount(16);
                     for (var i = 0; i < listLength; i++)
                     {
-                        list.Add(obj.IndexEntityId(16, (uint) i));
+                        list.Add(obj.IndexEntityIdStruct(16, (uint) i));
                     }
                     
                 }
@@ -1879,7 +1879,7 @@ namespace Improbable.Gdk.Tests
                     }
                     for (var i = 0; i < listSize; i++)
                     {
-                        var value = obj.IndexEntityId(16, (uint) i);
+                        var value = obj.IndexEntityIdStruct(16, (uint) i);
                         component.Field16.Add(value);
                     }
                     
