@@ -57,32 +57,12 @@ namespace Playground
                 return;
             }
 
-<<<<<<< HEAD
             if (DateTime.Now >= timeOfNextUpdate)
-=======
-            timeElapsedSinceUpdate += Time.deltaTime;
-
-            AddFpsSample();
-            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
->>>>>>> worker.core -> workercore
             {
-<<<<<<< HEAD
                 CalculateFps();
                 WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = calculatedFps;
                 WorkerMetrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
                 WorkerMetrics.Load = CalculateLoad();
-=======
-                timeElapsedSinceUpdate = 0;
-                var fps = CalculateFps();
-                var load = DefaultLoadCalculation(fps);
-                var metrics = new Metrics
-                {
-                    Load = load
-                };
-                connection.SendMetrics(metrics);
-            }
-        }
->>>>>>> fix playground
 
                 connection.SendMetrics(WorkerMetrics);
 
