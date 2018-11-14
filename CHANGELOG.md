@@ -15,6 +15,10 @@
 - Improved the method of calculating load and FPS.
 - Updated test project Unity version to `2018.2.14f`.
 
+### Fixed
+
+- Fixed a bug where schema components with a field named `value` would generate invalid code.
+
 ## `0.1.2` - 2018-11-01
 
 ### Added
