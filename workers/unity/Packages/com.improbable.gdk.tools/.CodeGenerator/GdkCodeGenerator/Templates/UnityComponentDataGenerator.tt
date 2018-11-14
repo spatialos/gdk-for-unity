@@ -134,7 +134,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 set
                 {
                     MarkDataDirty(<#= i #>);
-                    <#= fieldDetails.CamelCaseName #> = value;
+                    this.<#= fieldDetails.CamelCaseName #> = value;
                 }
             }
 <# } else { #>
