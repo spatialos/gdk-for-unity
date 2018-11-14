@@ -20,7 +20,7 @@ namespace <#= qualifiedNamespace #>
     {
         public const uint ComponentId = <#= componentDetails.ComponentId #>;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
@@ -110,6 +110,18 @@ namespace <#= qualifiedNamespace #>
                 dirtyBits<#= i #> = 0x0;
 <# } #>
             }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(<#= componentDetails.ComponentId #>));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
+            }
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
 <# if (fieldDetails.IsBlittable) { #>
@@ -154,7 +166,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
-                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 5) #>
                 }
 <# } #>
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
@@ -173,6 +185,16 @@ var fieldDetails = fieldDetailsList[i]; #>
 
         public static class Serialization
         {
+            public static void SerializeComponent(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
+                {
+                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+<# } #>
+            }
+
             public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
@@ -181,11 +203,11 @@ var fieldDetails = fieldDetailsList[i]; #>
                 {
                     if (component.IsDataDirty(<#= i #>))
                     {
-                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 6) #>
                     }
 
 <# if (ShouldGenerateClearedFieldsSet()) { #>
-                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
+                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 6) #>
 <# } #>
                 }
 <# } #>

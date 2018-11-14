@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197719;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197719;
 
@@ -101,6 +101,18 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197719));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -331,156 +343,156 @@ namespace Improbable.Gdk.Tests
                 var obj = schemaComponentData.GetFields();
                 {
                     foreach (var keyValuePair in field1)
-                {
-                    var mapObj = obj.AddObject(1);
-                    mapObj.AddBool(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(1);
+                        mapObj.AddBool(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field2)
-                {
-                    var mapObj = obj.AddObject(2);
-                    mapObj.AddFloat(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(2);
+                        mapObj.AddFloat(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field3)
-                {
-                    var mapObj = obj.AddObject(3);
-                    mapObj.AddBytes(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(3);
+                        mapObj.AddBytes(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field4)
-                {
-                    var mapObj = obj.AddObject(4);
-                    mapObj.AddInt32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(4);
+                        mapObj.AddInt32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field5)
-                {
-                    var mapObj = obj.AddObject(5);
-                    mapObj.AddInt64(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(5);
+                        mapObj.AddInt64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field6)
-                {
-                    var mapObj = obj.AddObject(6);
-                    mapObj.AddDouble(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(6);
+                        mapObj.AddDouble(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field7)
-                {
-                    var mapObj = obj.AddObject(7);
-                    mapObj.AddString(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(7);
+                        mapObj.AddString(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field8)
-                {
-                    var mapObj = obj.AddObject(8);
-                    mapObj.AddUint32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(8);
+                        mapObj.AddUint32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field9)
-                {
-                    var mapObj = obj.AddObject(9);
-                    mapObj.AddUint64(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(9);
+                        mapObj.AddUint64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field10)
-                {
-                    var mapObj = obj.AddObject(10);
-                    mapObj.AddSint32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(10);
+                        mapObj.AddSint32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field11)
-                {
-                    var mapObj = obj.AddObject(11);
-                    mapObj.AddSint64(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(11);
+                        mapObj.AddSint64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field12)
-                {
-                    var mapObj = obj.AddObject(12);
-                    mapObj.AddFixed32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(12);
+                        mapObj.AddFixed32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field13)
-                {
-                    var mapObj = obj.AddObject(13);
-                    mapObj.AddFixed64(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(13);
+                        mapObj.AddFixed64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field14)
-                {
-                    var mapObj = obj.AddObject(14);
-                    mapObj.AddSfixed32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(14);
+                        mapObj.AddSfixed32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field15)
-                {
-                    var mapObj = obj.AddObject(15);
-                    mapObj.AddSfixed64(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(15);
+                        mapObj.AddSfixed64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field16)
-                {
-                    var mapObj = obj.AddObject(16);
-                    mapObj.AddEntityId(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(16);
+                        mapObj.AddEntityId(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in field17)
-                {
-                    var mapObj = obj.AddObject(17);
-                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(17);
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -511,6 +523,163 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    foreach (var keyValuePair in component.Field1)
+                    {
+                        var mapObj = obj.AddObject(1);
+                        mapObj.AddBool(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field2)
+                    {
+                        var mapObj = obj.AddObject(2);
+                        mapObj.AddFloat(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field3)
+                    {
+                        var mapObj = obj.AddObject(3);
+                        mapObj.AddBytes(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field4)
+                    {
+                        var mapObj = obj.AddObject(4);
+                        mapObj.AddInt32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field5)
+                    {
+                        var mapObj = obj.AddObject(5);
+                        mapObj.AddInt64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field6)
+                    {
+                        var mapObj = obj.AddObject(6);
+                        mapObj.AddDouble(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field7)
+                    {
+                        var mapObj = obj.AddObject(7);
+                        mapObj.AddString(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field8)
+                    {
+                        var mapObj = obj.AddObject(8);
+                        mapObj.AddUint32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field9)
+                    {
+                        var mapObj = obj.AddObject(9);
+                        mapObj.AddUint64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field10)
+                    {
+                        var mapObj = obj.AddObject(10);
+                        mapObj.AddSint32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field11)
+                    {
+                        var mapObj = obj.AddObject(11);
+                        mapObj.AddSint64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field12)
+                    {
+                        var mapObj = obj.AddObject(12);
+                        mapObj.AddFixed32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field13)
+                    {
+                        var mapObj = obj.AddObject(13);
+                        mapObj.AddFixed64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field14)
+                    {
+                        var mapObj = obj.AddObject(14);
+                        mapObj.AddSfixed32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field15)
+                    {
+                        var mapObj = obj.AddObject(15);
+                        mapObj.AddSfixed64(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field16)
+                    {
+                        var mapObj = obj.AddObject(16);
+                        mapObj.AddEntityId(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field17)
+                    {
+                        var mapObj = obj.AddObject(17);
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapKey.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
@@ -518,307 +687,307 @@ namespace Improbable.Gdk.Tests
                     if (component.IsDataDirty(0))
                     {
                         foreach (var keyValuePair in component.Field1)
-                    {
-                        var mapObj = obj.AddObject(1);
-                        mapObj.AddBool(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(1);
+                            mapObj.AddBool(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field1.Count == 0)
-                    {
-                        updateObj.AddClearedField(1);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(1);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(1))
                     {
                         foreach (var keyValuePair in component.Field2)
-                    {
-                        var mapObj = obj.AddObject(2);
-                        mapObj.AddFloat(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(2);
+                            mapObj.AddFloat(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field2.Count == 0)
-                    {
-                        updateObj.AddClearedField(2);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(2);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(2))
                     {
                         foreach (var keyValuePair in component.Field3)
-                    {
-                        var mapObj = obj.AddObject(3);
-                        mapObj.AddBytes(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(3);
+                            mapObj.AddBytes(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field3.Count == 0)
-                    {
-                        updateObj.AddClearedField(3);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(3);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(3))
                     {
                         foreach (var keyValuePair in component.Field4)
-                    {
-                        var mapObj = obj.AddObject(4);
-                        mapObj.AddInt32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(4);
+                            mapObj.AddInt32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field4.Count == 0)
-                    {
-                        updateObj.AddClearedField(4);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(4);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(4))
                     {
                         foreach (var keyValuePair in component.Field5)
-                    {
-                        var mapObj = obj.AddObject(5);
-                        mapObj.AddInt64(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(5);
+                            mapObj.AddInt64(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field5.Count == 0)
-                    {
-                        updateObj.AddClearedField(5);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(5);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(5))
                     {
                         foreach (var keyValuePair in component.Field6)
-                    {
-                        var mapObj = obj.AddObject(6);
-                        mapObj.AddDouble(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(6);
+                            mapObj.AddDouble(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field6.Count == 0)
-                    {
-                        updateObj.AddClearedField(6);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(6);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(6))
                     {
                         foreach (var keyValuePair in component.Field7)
-                    {
-                        var mapObj = obj.AddObject(7);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(7);
+                            mapObj.AddString(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field7.Count == 0)
-                    {
-                        updateObj.AddClearedField(7);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(7))
                     {
                         foreach (var keyValuePair in component.Field8)
-                    {
-                        var mapObj = obj.AddObject(8);
-                        mapObj.AddUint32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(8);
+                            mapObj.AddUint32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field8.Count == 0)
-                    {
-                        updateObj.AddClearedField(8);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(8))
                     {
                         foreach (var keyValuePair in component.Field9)
-                    {
-                        var mapObj = obj.AddObject(9);
-                        mapObj.AddUint64(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(9);
+                            mapObj.AddUint64(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field9.Count == 0)
-                    {
-                        updateObj.AddClearedField(9);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(9))
                     {
                         foreach (var keyValuePair in component.Field10)
-                    {
-                        var mapObj = obj.AddObject(10);
-                        mapObj.AddSint32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(10);
+                            mapObj.AddSint32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field10.Count == 0)
-                    {
-                        updateObj.AddClearedField(10);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(10);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(10))
                     {
                         foreach (var keyValuePair in component.Field11)
-                    {
-                        var mapObj = obj.AddObject(11);
-                        mapObj.AddSint64(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(11);
+                            mapObj.AddSint64(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field11.Count == 0)
-                    {
-                        updateObj.AddClearedField(11);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(11);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(11))
                     {
                         foreach (var keyValuePair in component.Field12)
-                    {
-                        var mapObj = obj.AddObject(12);
-                        mapObj.AddFixed32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(12);
+                            mapObj.AddFixed32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field12.Count == 0)
-                    {
-                        updateObj.AddClearedField(12);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(12);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(12))
                     {
                         foreach (var keyValuePair in component.Field13)
-                    {
-                        var mapObj = obj.AddObject(13);
-                        mapObj.AddFixed64(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(13);
+                            mapObj.AddFixed64(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field13.Count == 0)
-                    {
-                        updateObj.AddClearedField(13);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(13);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(13))
                     {
                         foreach (var keyValuePair in component.Field14)
-                    {
-                        var mapObj = obj.AddObject(14);
-                        mapObj.AddSfixed32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(14);
+                            mapObj.AddSfixed32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field14.Count == 0)
-                    {
-                        updateObj.AddClearedField(14);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(14);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(14))
                     {
                         foreach (var keyValuePair in component.Field15)
-                    {
-                        var mapObj = obj.AddObject(15);
-                        mapObj.AddSfixed64(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(15);
+                            mapObj.AddSfixed64(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field15.Count == 0)
-                    {
-                        updateObj.AddClearedField(15);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(15);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(15))
                     {
                         foreach (var keyValuePair in component.Field16)
-                    {
-                        var mapObj = obj.AddObject(16);
-                        mapObj.AddEntityId(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(16);
+                            mapObj.AddEntityId(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field16.Count == 0)
-                    {
-                        updateObj.AddClearedField(16);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(16);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(16))
                     {
                         foreach (var keyValuePair in component.Field17)
-                    {
-                        var mapObj = obj.AddObject(17);
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(17);
+                            global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.Field17.Count == 0)
-                    {
-                        updateObj.AddClearedField(17);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(17);
+                        }
+                        
                 }
             }
 

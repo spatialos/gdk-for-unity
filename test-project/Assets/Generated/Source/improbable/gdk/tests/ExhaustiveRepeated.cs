@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197717;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197717;
 
@@ -101,6 +101,18 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197717));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -331,122 +343,122 @@ namespace Improbable.Gdk.Tests
                 var obj = schemaComponentData.GetFields();
                 {
                     foreach (var value in field1)
-                {
-                    obj.AddBool(1, value);
-                }
-                
+                    {
+                        obj.AddBool(1, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field2)
-                {
-                    obj.AddFloat(2, value);
-                }
-                
+                    {
+                        obj.AddFloat(2, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field3)
-                {
-                    obj.AddBytes(3, value);
-                }
-                
+                    {
+                        obj.AddBytes(3, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field4)
-                {
-                    obj.AddInt32(4, value);
-                }
-                
+                    {
+                        obj.AddInt32(4, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field5)
-                {
-                    obj.AddInt64(5, value);
-                }
-                
+                    {
+                        obj.AddInt64(5, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field6)
-                {
-                    obj.AddDouble(6, value);
-                }
-                
+                    {
+                        obj.AddDouble(6, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field7)
-                {
-                    obj.AddString(7, value);
-                }
-                
+                    {
+                        obj.AddString(7, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field8)
-                {
-                    obj.AddUint32(8, value);
-                }
-                
+                    {
+                        obj.AddUint32(8, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field9)
-                {
-                    obj.AddUint64(9, value);
-                }
-                
+                    {
+                        obj.AddUint64(9, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field10)
-                {
-                    obj.AddSint32(10, value);
-                }
-                
+                    {
+                        obj.AddSint32(10, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field11)
-                {
-                    obj.AddSint64(11, value);
-                }
-                
+                    {
+                        obj.AddSint64(11, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field12)
-                {
-                    obj.AddFixed32(12, value);
-                }
-                
+                    {
+                        obj.AddFixed32(12, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field13)
-                {
-                    obj.AddFixed64(13, value);
-                }
-                
+                    {
+                        obj.AddFixed64(13, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field14)
-                {
-                    obj.AddSfixed32(14, value);
-                }
-                
+                    {
+                        obj.AddSfixed32(14, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field15)
-                {
-                    obj.AddSfixed64(15, value);
-                }
-                
+                    {
+                        obj.AddSfixed64(15, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field16)
-                {
-                    obj.AddEntityId(16, value);
-                }
-                
+                    {
+                        obj.AddEntityId(16, value);
+                    }
+                    
                 }
                 {
                     foreach (var value in field17)
-                {
-                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
-                }
-                
+                    {
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                    }
+                    
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -477,6 +489,129 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    foreach (var value in component.Field1)
+                    {
+                        obj.AddBool(1, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field2)
+                    {
+                        obj.AddFloat(2, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field3)
+                    {
+                        obj.AddBytes(3, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field4)
+                    {
+                        obj.AddInt32(4, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field5)
+                    {
+                        obj.AddInt64(5, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field6)
+                    {
+                        obj.AddDouble(6, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field7)
+                    {
+                        obj.AddString(7, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field8)
+                    {
+                        obj.AddUint32(8, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field9)
+                    {
+                        obj.AddUint64(9, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field10)
+                    {
+                        obj.AddSint32(10, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field11)
+                    {
+                        obj.AddSint64(11, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field12)
+                    {
+                        obj.AddFixed32(12, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field13)
+                    {
+                        obj.AddFixed64(13, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field14)
+                    {
+                        obj.AddSfixed32(14, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field15)
+                    {
+                        obj.AddSfixed64(15, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field16)
+                    {
+                        obj.AddEntityId(16, value);
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field17)
+                    {
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                    }
+                    
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
@@ -484,273 +619,273 @@ namespace Improbable.Gdk.Tests
                     if (component.IsDataDirty(0))
                     {
                         foreach (var value in component.Field1)
-                    {
-                        obj.AddBool(1, value);
-                    }
-                    
+                        {
+                            obj.AddBool(1, value);
+                        }
+                        
                     }
 
                     if (component.Field1.Count == 0)
-                    {
-                        updateObj.AddClearedField(1);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(1);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(1))
                     {
                         foreach (var value in component.Field2)
-                    {
-                        obj.AddFloat(2, value);
-                    }
-                    
+                        {
+                            obj.AddFloat(2, value);
+                        }
+                        
                     }
 
                     if (component.Field2.Count == 0)
-                    {
-                        updateObj.AddClearedField(2);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(2);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(2))
                     {
                         foreach (var value in component.Field3)
-                    {
-                        obj.AddBytes(3, value);
-                    }
-                    
+                        {
+                            obj.AddBytes(3, value);
+                        }
+                        
                     }
 
                     if (component.Field3.Count == 0)
-                    {
-                        updateObj.AddClearedField(3);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(3);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(3))
                     {
                         foreach (var value in component.Field4)
-                    {
-                        obj.AddInt32(4, value);
-                    }
-                    
+                        {
+                            obj.AddInt32(4, value);
+                        }
+                        
                     }
 
                     if (component.Field4.Count == 0)
-                    {
-                        updateObj.AddClearedField(4);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(4);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(4))
                     {
                         foreach (var value in component.Field5)
-                    {
-                        obj.AddInt64(5, value);
-                    }
-                    
+                        {
+                            obj.AddInt64(5, value);
+                        }
+                        
                     }
 
                     if (component.Field5.Count == 0)
-                    {
-                        updateObj.AddClearedField(5);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(5);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(5))
                     {
                         foreach (var value in component.Field6)
-                    {
-                        obj.AddDouble(6, value);
-                    }
-                    
+                        {
+                            obj.AddDouble(6, value);
+                        }
+                        
                     }
 
                     if (component.Field6.Count == 0)
-                    {
-                        updateObj.AddClearedField(6);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(6);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(6))
                     {
                         foreach (var value in component.Field7)
-                    {
-                        obj.AddString(7, value);
-                    }
-                    
+                        {
+                            obj.AddString(7, value);
+                        }
+                        
                     }
 
                     if (component.Field7.Count == 0)
-                    {
-                        updateObj.AddClearedField(7);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(7))
                     {
                         foreach (var value in component.Field8)
-                    {
-                        obj.AddUint32(8, value);
-                    }
-                    
+                        {
+                            obj.AddUint32(8, value);
+                        }
+                        
                     }
 
                     if (component.Field8.Count == 0)
-                    {
-                        updateObj.AddClearedField(8);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(8))
                     {
                         foreach (var value in component.Field9)
-                    {
-                        obj.AddUint64(9, value);
-                    }
-                    
+                        {
+                            obj.AddUint64(9, value);
+                        }
+                        
                     }
 
                     if (component.Field9.Count == 0)
-                    {
-                        updateObj.AddClearedField(9);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(9))
                     {
                         foreach (var value in component.Field10)
-                    {
-                        obj.AddSint32(10, value);
-                    }
-                    
+                        {
+                            obj.AddSint32(10, value);
+                        }
+                        
                     }
 
                     if (component.Field10.Count == 0)
-                    {
-                        updateObj.AddClearedField(10);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(10);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(10))
                     {
                         foreach (var value in component.Field11)
-                    {
-                        obj.AddSint64(11, value);
-                    }
-                    
+                        {
+                            obj.AddSint64(11, value);
+                        }
+                        
                     }
 
                     if (component.Field11.Count == 0)
-                    {
-                        updateObj.AddClearedField(11);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(11);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(11))
                     {
                         foreach (var value in component.Field12)
-                    {
-                        obj.AddFixed32(12, value);
-                    }
-                    
+                        {
+                            obj.AddFixed32(12, value);
+                        }
+                        
                     }
 
                     if (component.Field12.Count == 0)
-                    {
-                        updateObj.AddClearedField(12);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(12);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(12))
                     {
                         foreach (var value in component.Field13)
-                    {
-                        obj.AddFixed64(13, value);
-                    }
-                    
+                        {
+                            obj.AddFixed64(13, value);
+                        }
+                        
                     }
 
                     if (component.Field13.Count == 0)
-                    {
-                        updateObj.AddClearedField(13);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(13);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(13))
                     {
                         foreach (var value in component.Field14)
-                    {
-                        obj.AddSfixed32(14, value);
-                    }
-                    
+                        {
+                            obj.AddSfixed32(14, value);
+                        }
+                        
                     }
 
                     if (component.Field14.Count == 0)
-                    {
-                        updateObj.AddClearedField(14);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(14);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(14))
                     {
                         foreach (var value in component.Field15)
-                    {
-                        obj.AddSfixed64(15, value);
-                    }
-                    
+                        {
+                            obj.AddSfixed64(15, value);
+                        }
+                        
                     }
 
                     if (component.Field15.Count == 0)
-                    {
-                        updateObj.AddClearedField(15);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(15);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(15))
                     {
                         foreach (var value in component.Field16)
-                    {
-                        obj.AddEntityId(16, value);
-                    }
-                    
+                        {
+                            obj.AddEntityId(16, value);
+                        }
+                        
                     }
 
                     if (component.Field16.Count == 0)
-                    {
-                        updateObj.AddClearedField(16);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(16);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(16))
                     {
                         foreach (var value in component.Field17)
-                    {
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
-                    }
-                    
+                        {
+                            global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                        }
+                        
                     }
 
                     if (component.Field17.Count == 0)
-                    {
-                        updateObj.AddClearedField(17);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(17);
+                        }
+                        
                 }
             }
 

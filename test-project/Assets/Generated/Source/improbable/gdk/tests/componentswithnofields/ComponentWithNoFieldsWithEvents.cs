@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         public const uint ComponentId = 1004;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 1004;
 
@@ -58,6 +58,18 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 dirtyBits0 = 0x0;
             }
 
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(1004));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
+            }
+
             public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
             )
             {
@@ -75,6 +87,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();

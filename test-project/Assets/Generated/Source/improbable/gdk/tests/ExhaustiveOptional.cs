@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197716;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197716;
 
@@ -101,6 +101,18 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197716));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -331,122 +343,122 @@ namespace Improbable.Gdk.Tests
                 var obj = schemaComponentData.GetFields();
                 {
                     if (field1.HasValue)
-                {
-                    obj.AddBool(1, field1.Value);
-                }
-                
+                    {
+                        obj.AddBool(1, field1.Value);
+                    }
+                    
                 }
                 {
                     if (field2.HasValue)
-                {
-                    obj.AddFloat(2, field2.Value);
-                }
-                
+                    {
+                        obj.AddFloat(2, field2.Value);
+                    }
+                    
                 }
                 {
                     if (field3.HasValue)
-                {
-                    obj.AddBytes(3, field3.Value);
-                }
-                
+                    {
+                        obj.AddBytes(3, field3.Value);
+                    }
+                    
                 }
                 {
                     if (field4.HasValue)
-                {
-                    obj.AddInt32(4, field4.Value);
-                }
-                
+                    {
+                        obj.AddInt32(4, field4.Value);
+                    }
+                    
                 }
                 {
                     if (field5.HasValue)
-                {
-                    obj.AddInt64(5, field5.Value);
-                }
-                
+                    {
+                        obj.AddInt64(5, field5.Value);
+                    }
+                    
                 }
                 {
                     if (field6.HasValue)
-                {
-                    obj.AddDouble(6, field6.Value);
-                }
-                
+                    {
+                        obj.AddDouble(6, field6.Value);
+                    }
+                    
                 }
                 {
                     if (field7.HasValue)
-                {
-                    obj.AddString(7, field7.Value);
-                }
-                
+                    {
+                        obj.AddString(7, field7.Value);
+                    }
+                    
                 }
                 {
                     if (field8.HasValue)
-                {
-                    obj.AddUint32(8, field8.Value);
-                }
-                
+                    {
+                        obj.AddUint32(8, field8.Value);
+                    }
+                    
                 }
                 {
                     if (field9.HasValue)
-                {
-                    obj.AddUint64(9, field9.Value);
-                }
-                
+                    {
+                        obj.AddUint64(9, field9.Value);
+                    }
+                    
                 }
                 {
                     if (field10.HasValue)
-                {
-                    obj.AddSint32(10, field10.Value);
-                }
-                
+                    {
+                        obj.AddSint32(10, field10.Value);
+                    }
+                    
                 }
                 {
                     if (field11.HasValue)
-                {
-                    obj.AddSint64(11, field11.Value);
-                }
-                
+                    {
+                        obj.AddSint64(11, field11.Value);
+                    }
+                    
                 }
                 {
                     if (field12.HasValue)
-                {
-                    obj.AddFixed32(12, field12.Value);
-                }
-                
+                    {
+                        obj.AddFixed32(12, field12.Value);
+                    }
+                    
                 }
                 {
                     if (field13.HasValue)
-                {
-                    obj.AddFixed64(13, field13.Value);
-                }
-                
+                    {
+                        obj.AddFixed64(13, field13.Value);
+                    }
+                    
                 }
                 {
                     if (field14.HasValue)
-                {
-                    obj.AddSfixed32(14, field14.Value);
-                }
-                
+                    {
+                        obj.AddSfixed32(14, field14.Value);
+                    }
+                    
                 }
                 {
                     if (field15.HasValue)
-                {
-                    obj.AddSfixed64(15, field15.Value);
-                }
-                
+                    {
+                        obj.AddSfixed64(15, field15.Value);
+                    }
+                    
                 }
                 {
                     if (field16.HasValue)
-                {
-                    obj.AddEntityId(16, field16.Value);
-                }
-                
+                    {
+                        obj.AddEntityId(16, field16.Value);
+                    }
+                    
                 }
                 {
                     if (field17.HasValue)
-                {
-                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17.Value, obj.AddObject(17));
-                }
-                
+                    {
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17.Value, obj.AddObject(17));
+                    }
+                    
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -477,6 +489,129 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    if (component.Field1.HasValue)
+                    {
+                        obj.AddBool(1, component.Field1.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field2.HasValue)
+                    {
+                        obj.AddFloat(2, component.Field2.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field3.HasValue)
+                    {
+                        obj.AddBytes(3, component.Field3.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field4.HasValue)
+                    {
+                        obj.AddInt32(4, component.Field4.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field5.HasValue)
+                    {
+                        obj.AddInt64(5, component.Field5.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field6.HasValue)
+                    {
+                        obj.AddDouble(6, component.Field6.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field7.HasValue)
+                    {
+                        obj.AddString(7, component.Field7.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field8.HasValue)
+                    {
+                        obj.AddUint32(8, component.Field8.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field9.HasValue)
+                    {
+                        obj.AddUint64(9, component.Field9.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field10.HasValue)
+                    {
+                        obj.AddSint32(10, component.Field10.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field11.HasValue)
+                    {
+                        obj.AddSint64(11, component.Field11.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field12.HasValue)
+                    {
+                        obj.AddFixed32(12, component.Field12.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field13.HasValue)
+                    {
+                        obj.AddFixed64(13, component.Field13.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field14.HasValue)
+                    {
+                        obj.AddSfixed32(14, component.Field14.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field15.HasValue)
+                    {
+                        obj.AddSfixed64(15, component.Field15.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field16.HasValue)
+                    {
+                        obj.AddEntityId(16, component.Field16.Value);
+                    }
+                    
+                }
+                {
+                    if (component.Field17.HasValue)
+                    {
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17.Value, obj.AddObject(17));
+                    }
+                    
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
@@ -484,273 +619,273 @@ namespace Improbable.Gdk.Tests
                     if (component.IsDataDirty(0))
                     {
                         if (component.Field1.HasValue)
-                    {
-                        obj.AddBool(1, component.Field1.Value);
-                    }
-                    
+                        {
+                            obj.AddBool(1, component.Field1.Value);
+                        }
+                        
                     }
 
                     if (!component.Field1.HasValue)
-                    {
-                        updateObj.AddClearedField(1);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(1);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(1))
                     {
                         if (component.Field2.HasValue)
-                    {
-                        obj.AddFloat(2, component.Field2.Value);
-                    }
-                    
+                        {
+                            obj.AddFloat(2, component.Field2.Value);
+                        }
+                        
                     }
 
                     if (!component.Field2.HasValue)
-                    {
-                        updateObj.AddClearedField(2);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(2);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(2))
                     {
                         if (component.Field3.HasValue)
-                    {
-                        obj.AddBytes(3, component.Field3.Value);
-                    }
-                    
+                        {
+                            obj.AddBytes(3, component.Field3.Value);
+                        }
+                        
                     }
 
                     if (!component.Field3.HasValue)
-                    {
-                        updateObj.AddClearedField(3);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(3);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(3))
                     {
                         if (component.Field4.HasValue)
-                    {
-                        obj.AddInt32(4, component.Field4.Value);
-                    }
-                    
+                        {
+                            obj.AddInt32(4, component.Field4.Value);
+                        }
+                        
                     }
 
                     if (!component.Field4.HasValue)
-                    {
-                        updateObj.AddClearedField(4);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(4);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(4))
                     {
                         if (component.Field5.HasValue)
-                    {
-                        obj.AddInt64(5, component.Field5.Value);
-                    }
-                    
+                        {
+                            obj.AddInt64(5, component.Field5.Value);
+                        }
+                        
                     }
 
                     if (!component.Field5.HasValue)
-                    {
-                        updateObj.AddClearedField(5);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(5);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(5))
                     {
                         if (component.Field6.HasValue)
-                    {
-                        obj.AddDouble(6, component.Field6.Value);
-                    }
-                    
+                        {
+                            obj.AddDouble(6, component.Field6.Value);
+                        }
+                        
                     }
 
                     if (!component.Field6.HasValue)
-                    {
-                        updateObj.AddClearedField(6);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(6);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(6))
                     {
                         if (component.Field7.HasValue)
-                    {
-                        obj.AddString(7, component.Field7.Value);
-                    }
-                    
+                        {
+                            obj.AddString(7, component.Field7.Value);
+                        }
+                        
                     }
 
                     if (!component.Field7.HasValue)
-                    {
-                        updateObj.AddClearedField(7);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(7))
                     {
                         if (component.Field8.HasValue)
-                    {
-                        obj.AddUint32(8, component.Field8.Value);
-                    }
-                    
+                        {
+                            obj.AddUint32(8, component.Field8.Value);
+                        }
+                        
                     }
 
                     if (!component.Field8.HasValue)
-                    {
-                        updateObj.AddClearedField(8);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(8))
                     {
                         if (component.Field9.HasValue)
-                    {
-                        obj.AddUint64(9, component.Field9.Value);
-                    }
-                    
+                        {
+                            obj.AddUint64(9, component.Field9.Value);
+                        }
+                        
                     }
 
                     if (!component.Field9.HasValue)
-                    {
-                        updateObj.AddClearedField(9);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(9))
                     {
                         if (component.Field10.HasValue)
-                    {
-                        obj.AddSint32(10, component.Field10.Value);
-                    }
-                    
+                        {
+                            obj.AddSint32(10, component.Field10.Value);
+                        }
+                        
                     }
 
                     if (!component.Field10.HasValue)
-                    {
-                        updateObj.AddClearedField(10);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(10);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(10))
                     {
                         if (component.Field11.HasValue)
-                    {
-                        obj.AddSint64(11, component.Field11.Value);
-                    }
-                    
+                        {
+                            obj.AddSint64(11, component.Field11.Value);
+                        }
+                        
                     }
 
                     if (!component.Field11.HasValue)
-                    {
-                        updateObj.AddClearedField(11);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(11);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(11))
                     {
                         if (component.Field12.HasValue)
-                    {
-                        obj.AddFixed32(12, component.Field12.Value);
-                    }
-                    
+                        {
+                            obj.AddFixed32(12, component.Field12.Value);
+                        }
+                        
                     }
 
                     if (!component.Field12.HasValue)
-                    {
-                        updateObj.AddClearedField(12);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(12);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(12))
                     {
                         if (component.Field13.HasValue)
-                    {
-                        obj.AddFixed64(13, component.Field13.Value);
-                    }
-                    
+                        {
+                            obj.AddFixed64(13, component.Field13.Value);
+                        }
+                        
                     }
 
                     if (!component.Field13.HasValue)
-                    {
-                        updateObj.AddClearedField(13);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(13);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(13))
                     {
                         if (component.Field14.HasValue)
-                    {
-                        obj.AddSfixed32(14, component.Field14.Value);
-                    }
-                    
+                        {
+                            obj.AddSfixed32(14, component.Field14.Value);
+                        }
+                        
                     }
 
                     if (!component.Field14.HasValue)
-                    {
-                        updateObj.AddClearedField(14);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(14);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(14))
                     {
                         if (component.Field15.HasValue)
-                    {
-                        obj.AddSfixed64(15, component.Field15.Value);
-                    }
-                    
+                        {
+                            obj.AddSfixed64(15, component.Field15.Value);
+                        }
+                        
                     }
 
                     if (!component.Field15.HasValue)
-                    {
-                        updateObj.AddClearedField(15);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(15);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(15))
                     {
                         if (component.Field16.HasValue)
-                    {
-                        obj.AddEntityId(16, component.Field16.Value);
-                    }
-                    
+                        {
+                            obj.AddEntityId(16, component.Field16.Value);
+                        }
+                        
                     }
 
                     if (!component.Field16.HasValue)
-                    {
-                        updateObj.AddClearedField(16);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(16);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(16))
                     {
                         if (component.Field17.HasValue)
-                    {
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17.Value, obj.AddObject(17));
-                    }
-                    
+                        {
+                            global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17.Value, obj.AddObject(17));
+                        }
+                        
                     }
 
                     if (!component.Field17.HasValue)
-                    {
-                        updateObj.AddClearedField(17);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(17);
+                        }
+                        
                 }
             }
 

@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197720;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197720;
 
@@ -93,6 +93,18 @@ namespace Improbable.Gdk.Tests
             {
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197720));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
             }
 
             private BlittableBool field1;
@@ -367,6 +379,55 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    obj.AddBool(1, component.Field1);
+                }
+                {
+                    obj.AddFloat(2, component.Field2);
+                }
+                {
+                    obj.AddInt32(4, component.Field4);
+                }
+                {
+                    obj.AddInt64(5, component.Field5);
+                }
+                {
+                    obj.AddDouble(6, component.Field6);
+                }
+                {
+                    obj.AddUint32(8, component.Field8);
+                }
+                {
+                    obj.AddUint64(9, component.Field9);
+                }
+                {
+                    obj.AddSint32(10, component.Field10);
+                }
+                {
+                    obj.AddSint64(11, component.Field11);
+                }
+                {
+                    obj.AddFixed32(12, component.Field12);
+                }
+                {
+                    obj.AddFixed64(13, component.Field13);
+                }
+                {
+                    obj.AddSfixed32(14, component.Field14);
+                }
+                {
+                    obj.AddSfixed64(15, component.Field15);
+                }
+                {
+                    obj.AddEntityId(16, component.Field16);
+                }
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17, obj.AddObject(17));
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
