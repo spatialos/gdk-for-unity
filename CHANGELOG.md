@@ -14,6 +14,10 @@
 
 - Improved the method of calculating load and FPS.
 - Updated test project Unity version to `2018.2.14f`.
+- Upgraded the Worker SDK snapshot version. This entails the following changes:
+    - `EntityId` is now in the `Improbable.Gdk.Core` namespace. (Previously `Improbable.Worker`).
+    - `Dispatcher` is now in the `Improbable.Gdk.Core` namespace. (Previously `Improbable.Worker`).
+    - The `Improbable.Worker.Core` namespace is now `Improbable.Worker.CInterop`.
 
 ### Fixed
 
