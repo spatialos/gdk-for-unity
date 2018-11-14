@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197718;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197718;
 
@@ -101,6 +101,17 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197718));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -511,6 +522,163 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveMapValue.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    foreach (var keyValuePair in component.Field1)
+                {
+                    var mapObj = obj.AddObject(1);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddBool(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field2)
+                {
+                    var mapObj = obj.AddObject(2);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFloat(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field3)
+                {
+                    var mapObj = obj.AddObject(3);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddBytes(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field4)
+                {
+                    var mapObj = obj.AddObject(4);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddInt32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field5)
+                {
+                    var mapObj = obj.AddObject(5);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddInt64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field6)
+                {
+                    var mapObj = obj.AddObject(6);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddDouble(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field7)
+                {
+                    var mapObj = obj.AddObject(7);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddString(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field8)
+                {
+                    var mapObj = obj.AddObject(8);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddUint32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field9)
+                {
+                    var mapObj = obj.AddObject(9);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddUint64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field10)
+                {
+                    var mapObj = obj.AddObject(10);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSint32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field11)
+                {
+                    var mapObj = obj.AddObject(11);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSint64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field12)
+                {
+                    var mapObj = obj.AddObject(12);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFixed32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field13)
+                {
+                    var mapObj = obj.AddObject(13);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFixed64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field14)
+                {
+                    var mapObj = obj.AddObject(14);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSfixed32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field15)
+                {
+                    var mapObj = obj.AddObject(15);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSfixed64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field16)
+                {
+                    var mapObj = obj.AddObject(16);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddEntityId(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in component.Field17)
+                {
+                    var mapObj = obj.AddObject(17);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
+                }
+                
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveMapValue.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();

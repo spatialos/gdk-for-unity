@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197717;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197717;
 
@@ -101,6 +101,17 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197717));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -477,6 +488,129 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    foreach (var value in component.Field1)
+                {
+                    obj.AddBool(1, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field2)
+                {
+                    obj.AddFloat(2, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field3)
+                {
+                    obj.AddBytes(3, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field4)
+                {
+                    obj.AddInt32(4, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field5)
+                {
+                    obj.AddInt64(5, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field6)
+                {
+                    obj.AddDouble(6, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field7)
+                {
+                    obj.AddString(7, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field8)
+                {
+                    obj.AddUint32(8, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field9)
+                {
+                    obj.AddUint64(9, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field10)
+                {
+                    obj.AddSint32(10, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field11)
+                {
+                    obj.AddSint64(11, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field12)
+                {
+                    obj.AddFixed32(12, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field13)
+                {
+                    obj.AddFixed64(13, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field14)
+                {
+                    obj.AddSfixed32(14, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field15)
+                {
+                    obj.AddSfixed64(15, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field16)
+                {
+                    obj.AddEntityId(16, value);
+                }
+                
+                }
+                {
+                    foreach (var value in component.Field17)
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                }
+                
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveRepeated.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();

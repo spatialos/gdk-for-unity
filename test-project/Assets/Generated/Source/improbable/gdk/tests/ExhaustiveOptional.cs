@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tests
     {
         public const uint ComponentId = 197716;
 
-        public struct Component : IComponentData, ISpatialComponentData
+        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197716;
 
@@ -101,6 +101,17 @@ namespace Improbable.Gdk.Tests
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
                 dirtyBits2 = 0x0;
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(new SchemaComponentData(197716));
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+
+                componentDataSchema.SchemaData?.Dispose();
+
+                return snapshot;
             }
 
             internal uint field1Handle;
@@ -477,6 +488,129 @@ namespace Improbable.Gdk.Tests
 
         public static class Serialization
         {
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            {
+                {
+                    if (component.Field1.HasValue)
+                {
+                    obj.AddBool(1, component.Field1.Value);
+                }
+                
+                }
+                {
+                    if (component.Field2.HasValue)
+                {
+                    obj.AddFloat(2, component.Field2.Value);
+                }
+                
+                }
+                {
+                    if (component.Field3.HasValue)
+                {
+                    obj.AddBytes(3, component.Field3.Value);
+                }
+                
+                }
+                {
+                    if (component.Field4.HasValue)
+                {
+                    obj.AddInt32(4, component.Field4.Value);
+                }
+                
+                }
+                {
+                    if (component.Field5.HasValue)
+                {
+                    obj.AddInt64(5, component.Field5.Value);
+                }
+                
+                }
+                {
+                    if (component.Field6.HasValue)
+                {
+                    obj.AddDouble(6, component.Field6.Value);
+                }
+                
+                }
+                {
+                    if (component.Field7.HasValue)
+                {
+                    obj.AddString(7, component.Field7.Value);
+                }
+                
+                }
+                {
+                    if (component.Field8.HasValue)
+                {
+                    obj.AddUint32(8, component.Field8.Value);
+                }
+                
+                }
+                {
+                    if (component.Field9.HasValue)
+                {
+                    obj.AddUint64(9, component.Field9.Value);
+                }
+                
+                }
+                {
+                    if (component.Field10.HasValue)
+                {
+                    obj.AddSint32(10, component.Field10.Value);
+                }
+                
+                }
+                {
+                    if (component.Field11.HasValue)
+                {
+                    obj.AddSint64(11, component.Field11.Value);
+                }
+                
+                }
+                {
+                    if (component.Field12.HasValue)
+                {
+                    obj.AddFixed32(12, component.Field12.Value);
+                }
+                
+                }
+                {
+                    if (component.Field13.HasValue)
+                {
+                    obj.AddFixed64(13, component.Field13.Value);
+                }
+                
+                }
+                {
+                    if (component.Field14.HasValue)
+                {
+                    obj.AddSfixed32(14, component.Field14.Value);
+                }
+                
+                }
+                {
+                    if (component.Field15.HasValue)
+                {
+                    obj.AddSfixed64(15, component.Field15.Value);
+                }
+                
+                }
+                {
+                    if (component.Field16.HasValue)
+                {
+                    obj.AddEntityId(16, component.Field16.Value);
+                }
+                
+                }
+                {
+                    if (component.Field17.HasValue)
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17.Value, obj.AddObject(17));
+                }
+                
+                }
+            }
+
             public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
