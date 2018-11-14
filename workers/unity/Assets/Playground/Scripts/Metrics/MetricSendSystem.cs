@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using System;
 using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Improbable.Worker.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -16,17 +17,38 @@ namespace Playground
     {
         private Connection connection;
 
-        private float timeElapsedSinceUpdate;
+        private DateTime timeOfNextUpdate;
+        private DateTime timeOfLastUpdate;
 
-        private readonly Queue<float> fpsMeasurements = new Queue<float>();
-        private const int MaxFpsSamples = 50;
-        private const float TimeBetweenMetricUpdatesSecs = 2.0f;
+        private const double TimeBetweenMetricUpdatesSecs = 2;
         private const int DefaultTargetFrameRate = 60;
+
+        private double targetFps;
+
+        private int lastFrameCount;
+        private double calculatedFps;
+
+        // We use exponential smoothing for the FPS metric
+        // larger value == more smoothing, 0 = no smoothing
+        // 0 <= smoothing < 1
+        private const double smoothing = 0;
+
+        private static readonly Metrics WorkerMetrics = new Metrics();
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             connection = World.GetExistingManager<WorkerSystem>().Connection;
+
+            targetFps = Application.targetFrameRate == -1
+                ? DefaultTargetFrameRate
+                : Application.targetFrameRate;
+
+            lastFrameCount = Time.frameCount;
+            calculatedFps = targetFps;
+
+            timeOfLastUpdate = DateTime.Now;
+            timeOfNextUpdate = timeOfLastUpdate.AddSeconds(TimeBetweenMetricUpdatesSecs);
         }
 
         protected override void OnUpdate()
@@ -36,54 +58,34 @@ namespace Playground
                 return;
             }
 
-            timeElapsedSinceUpdate += Time.deltaTime;
-            
-            AddFpsSample();
-            if (timeElapsedSinceUpdate >= TimeBetweenMetricUpdatesSecs)
+            if (DateTime.Now >= timeOfNextUpdate)
             {
-                timeElapsedSinceUpdate = 0;
-                var fps = CalculateFps();
-                var load = DefaultLoadCalculation(fps);
-                var metrics = new Improbable.Worker.Metrics
-                {
-                    Load = load
-                };
-                connection.SendMetrics(metrics);
+                CalculateFps();
+                WorkerMetrics.GaugeMetrics["Dynamic.FPS"] = calculatedFps;
+                WorkerMetrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
+                WorkerMetrics.Load = CalculateLoad();
+
+                connection.SendMetrics(WorkerMetrics);
+
+                timeOfLastUpdate = DateTime.Now;
+                timeOfNextUpdate = timeOfLastUpdate.AddSeconds(TimeBetweenMetricUpdatesSecs);
             }
         }
 
-        private static float DefaultLoadCalculation(float fps)
+        // Load defined as performance relative to target FPS.
+        // i.e. a load of 0.5 means that the worker is hitting the target FPS
+        // but achieving less than half the target FPS takes load above 1.0
+        private double CalculateLoad()
         {
-            float targetFps = Application.targetFrameRate;
-
-            if (targetFps == -1)
-            {
-                targetFps = DefaultTargetFrameRate;
-            }
-
-            return Mathf.Max(0.0f, (targetFps - fps) / (0.5f * targetFps));
+            return Math.Max(0.0d, 0.5d * targetFps / calculatedFps);
         }
 
-        private void AddFpsSample()
+        private void CalculateFps()
         {
-            if (fpsMeasurements.Count == MaxFpsSamples)
-            {
-                fpsMeasurements.Dequeue();
-            }
-
-            fpsMeasurements.Enqueue(1.0f / Time.deltaTime);
-        }
-
-        private float CalculateFps()
-        {
-            var fps = 0.0f;
-            foreach (var measurement in fpsMeasurements)
-            {
-                fps += measurement;
-            }
-
-            fps /= fpsMeasurements.Count;
-            return fps;
+            var frameCount = Time.frameCount - lastFrameCount;
+            lastFrameCount = Time.frameCount;
+            var rawFps = frameCount / (DateTime.Now - timeOfLastUpdate).TotalSeconds;
+            calculatedFps = (rawFps * (1 - smoothing)) + (calculatedFps * smoothing);
         }
     }
 }
