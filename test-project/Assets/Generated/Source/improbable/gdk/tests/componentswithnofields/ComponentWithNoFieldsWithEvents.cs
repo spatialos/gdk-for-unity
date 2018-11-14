@@ -65,6 +65,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
                 componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
 
                 return snapshot;
             }

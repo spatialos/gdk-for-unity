@@ -102,6 +102,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
                 componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
 
                 return snapshot;
             }
@@ -248,26 +249,26 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
                 {
                     if (optionalField.HasValue)
-                {
-                    obj.AddInt32(7, optionalField.Value);
-                }
-                
+                    {
+                        obj.AddInt32(7, optionalField.Value);
+                    }
+                    
                 }
                 {
                     foreach (var value in listField)
-                {
-                    obj.AddInt32(8, value);
-                }
-                
+                    {
+                        obj.AddInt32(8, value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in mapField)
-                {
-                    var mapObj = obj.AddObject(9);
-                    mapObj.AddInt32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(9);
+                        mapObj.AddInt32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
@@ -312,26 +313,26 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
                 {
                     if (component.OptionalField.HasValue)
-                {
-                    obj.AddInt32(7, component.OptionalField.Value);
-                }
-                
+                    {
+                        obj.AddInt32(7, component.OptionalField.Value);
+                    }
+                    
                 }
                 {
                     foreach (var value in component.ListField)
-                {
-                    obj.AddInt32(8, value);
-                }
-                
+                    {
+                        obj.AddInt32(8, value);
+                    }
+                    
                 }
                 {
                     foreach (var keyValuePair in component.MapField)
-                {
-                    var mapObj = obj.AddObject(9);
-                    mapObj.AddInt32(1, keyValuePair.Key);
-                    mapObj.AddString(2, keyValuePair.Value);
-                }
-                
+                    {
+                        var mapObj = obj.AddObject(9);
+                        mapObj.AddInt32(1, keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
                 }
             }
 
@@ -390,51 +391,51 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     if (component.IsDataDirty(6))
                     {
                         if (component.OptionalField.HasValue)
-                    {
-                        obj.AddInt32(7, component.OptionalField.Value);
-                    }
-                    
+                        {
+                            obj.AddInt32(7, component.OptionalField.Value);
+                        }
+                        
                     }
 
                     if (!component.OptionalField.HasValue)
-                    {
-                        updateObj.AddClearedField(7);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(7))
                     {
                         foreach (var value in component.ListField)
-                    {
-                        obj.AddInt32(8, value);
-                    }
-                    
+                        {
+                            obj.AddInt32(8, value);
+                        }
+                        
                     }
 
                     if (component.ListField.Count == 0)
-                    {
-                        updateObj.AddClearedField(8);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
                 }
                 {
                     if (component.IsDataDirty(8))
                     {
                         foreach (var keyValuePair in component.MapField)
-                    {
-                        var mapObj = obj.AddObject(9);
-                        mapObj.AddInt32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
+                        {
+                            var mapObj = obj.AddObject(9);
+                            mapObj.AddInt32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
                     }
 
                     if (component.MapField.Count == 0)
-                    {
-                        updateObj.AddClearedField(9);
-                    }
-                    
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
                 }
             }
 
