@@ -118,6 +118,7 @@ namespace <#= qualifiedNamespace #>
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
                 componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData = null;
 
                 return snapshot;
             }
@@ -165,7 +166,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
-                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 4) #>
+                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 5) #>
                 }
 <# } #>
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
@@ -189,7 +190,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
                 {
-                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 4) #>
+                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
                 }
 <# } #>
             }
@@ -202,11 +203,11 @@ var fieldDetails = fieldDetailsList[i]; #>
                 {
                     if (component.IsDataDirty(<#= i #>))
                     {
-                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 6) #>
                     }
 
 <# if (ShouldGenerateClearedFieldsSet()) { #>
-                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
+                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 6) #>
 <# } #>
                 }
 <# } #>
