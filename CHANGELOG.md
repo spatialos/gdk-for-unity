@@ -8,6 +8,7 @@
 - Added a reference to Blank Starter Project in the README.
 - Added Frames Per Second (FPS) and Unity heap usage as metrics sent by `MetricSendSystem.cs`.
 - Added a warning message to the top of schema files copied into the `from_gdk_packages` directory.
+- Added an `ISnapshottable<T>` interface to all generated components. This allows you to convert a component to a snapshot.
 
 ### Changed
 
