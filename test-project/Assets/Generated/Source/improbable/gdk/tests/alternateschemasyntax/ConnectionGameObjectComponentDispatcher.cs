@@ -47,6 +47,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override ComponentType[] ComponentsUpdatedComponentTypes => new ComponentType[]
             {
+                ComponentType.ReadOnly<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(), ComponentType.ReadOnly<GameObjectReference>()
             };
 
             public override ComponentType[][] EventsReceivedComponentTypeArrays => new ComponentType[][]
@@ -149,6 +150,33 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override void InvokeOnComponentUpdateCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)
             {
+                if (ComponentsUpdatedComponentGroup.IsEmptyIgnoreFilter)
+                {
+                    return;
+                }
+
+                Profiler.BeginSample("Connection");
+                var entities = ComponentsUpdatedComponentGroup.GetEntityArray();
+                var updateLists = ComponentsUpdatedComponentGroup.GetComponentDataArray<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    var injectableStore = entityToInjectableStore[entities[i]];
+                    if (!injectableStore.TryGetInjectablesForComponent(readerWriterInjectableId, out var readersWriters))
+                    {
+                        continue;
+                    }
+
+                    var updateList = updateLists[i];
+                    foreach (Requirable.ReaderWriterImpl readerWriter in readersWriters)
+                    {
+                        foreach (var update in updateList.Updates)
+                        {
+                            readerWriter.OnComponentUpdate(update);
+                        }
+                    }
+                }
+
+                Profiler.EndSample();
             }
 
             public override void InvokeOnEventCallbacks(Dictionary<Unity.Entities.Entity, InjectableStore> entityToInjectableStore)

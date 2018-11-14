@@ -43,14 +43,43 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                throw new InvalidOperationException("IsDataDirty(int propertyIndex) may not be called on components with no properties.");
+                if (propertyIndex < 0 || propertyIndex >= 1)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 0]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
+                }
+
+                return false;
             }
 
             // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                throw new InvalidOperationException("MarkDataDirty(int propertyIndex) may not be called on components with no properties.");
+                if (propertyIndex < 0 || propertyIndex >= 1)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 0]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex / 8;
+                switch (dirtyBitsByteIndex)
+                {
+                    case 0:
+                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
+                }
             }
 
             public void MarkDataClean()
@@ -70,11 +99,27 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 return snapshot;
             }
 
+            private int value;
+
+            public int Value
+            {
+                get => value;
+                set
+                {
+                    MarkDataDirty(0);
+                    this.value = value;
+                }
+            }
+
             public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+                int value
             )
             {
                 var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(1105);
                 var obj = schemaComponentData.GetFields();
+                {
+                    obj.AddInt32(1, value);
+                }
                 return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
             }
         }
@@ -83,23 +128,37 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             public uint ComponentId => 1105;
 
+            public int Value;
         }
 
         public static class Serialization
         {
             public static void SerializeComponent(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
+                {
+                    obj.AddInt32(1, component.Value);
+                }
             }
 
             public static void SerializeUpdate(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
+                {
+                    if (component.IsDataDirty(0))
+                    {
+                        obj.AddInt32(1, component.Value);
+                    }
+
+                }
             }
 
             public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component();
 
+                {
+                    component.Value = obj.GetInt32(1);
+                }
                 return component;
             }
 
@@ -108,12 +167,24 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 var update = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update();
                 var obj = updateObj.GetFields();
 
+                {
+                    if (obj.GetInt32Count(1) == 1)
+                    {
+                        var value = obj.GetInt32(1);
+                        update.Value = new global::Improbable.Gdk.Core.Option<int>(value);
+                    }
+                    
+                }
                 return update;
             }
 
             public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot();
+
+                {
+                    component.Value = obj.GetInt32(1);
+                }
 
                 return component;
             }
@@ -122,6 +193,14 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 var obj = updateObj.GetFields();
 
+                {
+                    if (obj.GetInt32Count(1) == 1)
+                    {
+                        var value = obj.GetInt32(1);
+                        component.Value = value;
+                    }
+                    
+                }
             }
         }
 
@@ -129,6 +208,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
+            public Option<int> Value;
         }
 
         public struct ReceivedUpdates : IComponentData

@@ -53,6 +53,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 var update = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update
                 {
+                    Value = data.Value,
                 };
 
                 var updates = new List<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
