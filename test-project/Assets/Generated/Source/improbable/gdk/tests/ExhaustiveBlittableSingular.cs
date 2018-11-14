@@ -115,7 +115,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(0);
-                    field1 = value;
+                    this.field1 = value;
                 }
             }
 
@@ -127,7 +127,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(1);
-                    field2 = value;
+                    this.field2 = value;
                 }
             }
 
@@ -139,7 +139,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(2);
-                    field4 = value;
+                    this.field4 = value;
                 }
             }
 
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(3);
-                    field5 = value;
+                    this.field5 = value;
                 }
             }
 
@@ -163,7 +163,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(4);
-                    field6 = value;
+                    this.field6 = value;
                 }
             }
 
@@ -175,7 +175,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(5);
-                    field8 = value;
+                    this.field8 = value;
                 }
             }
 
@@ -187,7 +187,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(6);
-                    field9 = value;
+                    this.field9 = value;
                 }
             }
 
@@ -199,7 +199,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(7);
-                    field10 = value;
+                    this.field10 = value;
                 }
             }
 
@@ -211,7 +211,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(8);
-                    field11 = value;
+                    this.field11 = value;
                 }
             }
 
@@ -223,7 +223,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(9);
-                    field12 = value;
+                    this.field12 = value;
                 }
             }
 
@@ -235,7 +235,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(10);
-                    field13 = value;
+                    this.field13 = value;
                 }
             }
 
@@ -247,7 +247,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(11);
-                    field14 = value;
+                    this.field14 = value;
                 }
             }
 
@@ -259,7 +259,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(12);
-                    field15 = value;
+                    this.field15 = value;
                 }
             }
 
@@ -271,7 +271,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(13);
-                    field16 = value;
+                    this.field16 = value;
                 }
             }
 
@@ -283,7 +283,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(14);
-                    field17 = value;
+                    this.field17 = value;
                 }
             }
 

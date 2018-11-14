@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 set
                 {
                     MarkDataDirty(0);
-                    boolField = value;
+                    this.boolField = value;
                 }
             }
 
@@ -119,7 +119,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 set
                 {
                     MarkDataDirty(1);
-                    intField = value;
+                    this.intField = value;
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 set
                 {
                     MarkDataDirty(2);
-                    longField = value;
+                    this.longField = value;
                 }
             }
 
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 set
                 {
                     MarkDataDirty(3);
-                    floatField = value;
+                    this.floatField = value;
                 }
             }
 
@@ -155,7 +155,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 set
                 {
                     MarkDataDirty(4);
-                    doubleField = value;
+                    this.doubleField = value;
                 }
             }
 

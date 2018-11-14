@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests
                 set
                 {
                     MarkDataDirty(0);
-                    nestedType = value;
+                    this.nestedType = value;
                 }
             }
 

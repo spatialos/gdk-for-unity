@@ -29,6 +29,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
+                event Action<int> ValueUpdated;
                 event Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
             }
 
@@ -47,12 +48,41 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                 }
 
+                private readonly List<Action<int>> valueDelegates = new List<Action<int>>();
+
+                public event Action<int> ValueUpdated
+                {
+                    add
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        valueDelegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        valueDelegates.Remove(value);
+                    }
+                }
+
                 protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update)
                 {
+                    DispatchWithErrorHandling(update.Value, valueDelegates);
                 }
 
                 protected override void ApplyUpdate(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update, ref Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component data)
                 {
+                    if (update.Value.HasValue)
+                    {
+                        data.Value = update.Value.Value;
+                    }
                 }
 
                 private readonly List<Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>> MyEventDelegates = new List<Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType>>();
