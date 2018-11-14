@@ -1,9 +1,9 @@
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.TestUtils;
-using Improbable.Worker;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.EditmodeTests
 {

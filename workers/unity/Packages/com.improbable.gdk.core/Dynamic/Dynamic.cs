@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core

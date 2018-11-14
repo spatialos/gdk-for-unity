@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     Yield authority during soft handover
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if the authority is not <see cref="Improbable.Worker.Core.Authority.AuthorityLossImminent"/>
+        ///     Thrown if the authority is not <see cref="Improbable.Worker.CInterop.Authority.AuthorityLossImminent"/>
         /// </exception>
         public void SendAuthorityLossImminentAcknowledgement()
         {

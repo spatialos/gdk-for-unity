@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
 

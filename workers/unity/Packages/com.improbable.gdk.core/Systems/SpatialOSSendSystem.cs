@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine.Profiling;
 

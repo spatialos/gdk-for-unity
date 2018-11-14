@@ -2,9 +2,9 @@ namespace Improbable.Gdk.Core
 {
     public static class CommandRequestIdGenerator
     {
-        private static long nextRequestId;
+        private static uint nextRequestId;
 
-        public static long GetNext()
+        public static uint GetNext()
         {
             nextRequestId++;
 

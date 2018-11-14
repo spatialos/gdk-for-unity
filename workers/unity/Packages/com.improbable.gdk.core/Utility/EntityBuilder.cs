@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {

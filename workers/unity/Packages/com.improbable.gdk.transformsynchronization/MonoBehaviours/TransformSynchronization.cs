@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Transform;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;

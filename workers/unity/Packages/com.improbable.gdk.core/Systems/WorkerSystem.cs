@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;

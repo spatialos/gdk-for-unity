@@ -1,5 +1,5 @@
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 
 namespace Improbable.Gdk.Core
 {
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
         public abstract bool Validate(out string errorMessage);
 
         /// <summary>
-        ///     Creates the <see cref="Improbable.Worker.Core.ConnectionParameters"/> corresponding to this
+        ///     Creates the <see cref="Improbable.Worker.CInterop.ConnectionParameters"/> corresponding to this
         ///     <see cref="ConnectionConfig"/> instance.
         /// </summary>
         /// <returns></returns>

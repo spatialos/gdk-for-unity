@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Improbable.Worker;
-using Improbable.Worker.Core;
-using UnityEngine;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.TestUtils
 {
@@ -18,7 +15,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new AddEntityOp
             {
-                EntityId = new EntityId(entityId)
+                EntityId = entityId
             };
             return new WrappedOp<AddEntityOp>(op);
         }
@@ -27,7 +24,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new RemoveEntityOp
             {
-                EntityId = new EntityId(entityId)
+                EntityId = entityId
             };
             return new WrappedOp<RemoveEntityOp>(op);
         }
@@ -38,7 +35,7 @@ namespace Improbable.Gdk.TestUtils
             var op = new AddComponentOp
             {
                 Data = new ComponentData(schemaComponentData),
-                EntityId = new EntityId(entityId)
+                EntityId = entityId
             };
             return new WrappedOp<AddComponentOp>(op);
         }
@@ -49,7 +46,7 @@ namespace Improbable.Gdk.TestUtils
             var op = new ComponentUpdateOp
             {
                 Update = new ComponentUpdate(schemaComponentUpdate),
-                EntityId = new EntityId(entityId)
+                EntityId = entityId
             };
 
             return new WrappedOp<ComponentUpdateOp>(op);
@@ -59,7 +56,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new RemoveComponentOp
             {
-                EntityId = new EntityId(entityId),
+                EntityId = entityId,
                 ComponentId = componentId
             };
 
@@ -70,7 +67,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new AuthorityChangeOp
             {
-                EntityId = new EntityId(entityId),
+                EntityId = entityId,
                 ComponentId = componentId
             };
 
@@ -83,7 +80,7 @@ namespace Improbable.Gdk.TestUtils
             var op = new CommandRequestOp
             {
                 Request = new CommandRequest(schemaRequest),
-                RequestId = new RequestId<IncomingCommandRequest>(requestId)
+                RequestId = (uint) requestId
             };
 
             return new WrappedOp<CommandRequestOp>(op);
@@ -96,7 +93,7 @@ namespace Improbable.Gdk.TestUtils
             var op = new CommandResponseOp
             {
                 Response = new CommandResponse(schemaResponse),
-                RequestId = new RequestId<OutgoingCommandRequest>(requestId)
+                RequestId = (uint) requestId
             };
 
             return new WrappedOp<CommandResponseOp>(op);
@@ -112,7 +109,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new CreateEntityResponseOp
             {
-                RequestId = new RequestId<CreateEntityRequest>(requestId)
+                RequestId = (uint) requestId
             };
 
             return new WrappedOp<CreateEntityResponseOp>(op);
@@ -122,7 +119,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new DeleteEntityResponseOp
             {
-                RequestId = new RequestId<DeleteEntityRequest>(requestId)
+                RequestId = (uint) requestId
             };
 
             return new WrappedOp<DeleteEntityResponseOp>(op);
@@ -132,7 +129,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new ReserveEntityIdsResponseOp
             {
-                RequestId = new RequestId<ReserveEntityIdsRequest>(requestId)
+                RequestId = (uint) requestId
             };
 
             return new WrappedOp<ReserveEntityIdsResponseOp>(op);
@@ -142,8 +139,8 @@ namespace Improbable.Gdk.TestUtils
         {
             var op = new EntityQueryResponseOp
             {
-                RequestId = new RequestId<EntityQueryRequest>(requestId),
-                Result = new Dictionary<EntityId, Entity>(),
+                RequestId = (uint) requestId,
+                Result = new Dictionary<long, Entity>(),
                 ResultCount = 0,
             };
 
@@ -170,16 +167,16 @@ namespace Improbable.Gdk.TestUtils
             switch (Op)
             {
                 case AddComponentOp addComponentOp:
-                    addComponentOp.Data.SchemaData?.Dispose();
+                    addComponentOp.Data.SchemaData?.Destroy();
                     break;
                 case ComponentUpdateOp componentUpdateOp:
-                    componentUpdateOp.Update.SchemaData?.Dispose();
+                    componentUpdateOp.Update.SchemaData?.Destroy();
                     break;
                 case CommandRequestOp commandRequestOp:
-                    commandRequestOp.Request.SchemaData?.Dispose();
+                    commandRequestOp.Request.SchemaData?.Destroy();
                     break;
                 case CommandResponseOp commandResponseOp:
-                    commandResponseOp.Response.SchemaData?.Dispose();
+                    commandResponseOp.Response.SchemaData?.Destroy();
                     break;
             }
         }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation

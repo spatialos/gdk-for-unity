@@ -1,6 +1,6 @@
 ﻿using Improbable.Gdk.Core;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 
 namespace Improbable.Gdk.GameObjectRepresentation
 {

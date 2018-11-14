@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 

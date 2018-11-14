@@ -3,8 +3,8 @@ using System.Linq;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;
@@ -469,7 +469,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
                 Assert.AreEqual(TestCommandRequestId, response.RequestId);
                 Assert.AreEqual(wrappedOp.Op.StatusCode, response.StatusCode);
                 Assert.AreEqual(wrappedOp.Op.Message, response.Message);
-                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId);
+                Assert.AreEqual(wrappedOp.Op.EntityId, response.EntityId.Id);
             }
         }
 

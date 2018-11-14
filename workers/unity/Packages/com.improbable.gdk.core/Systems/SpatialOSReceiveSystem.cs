@@ -4,8 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -85,7 +84,7 @@ namespace Improbable.Gdk.Core
 
         internal void OnAddEntity(AddEntityOp op)
         {
-            var entityId = op.EntityId;
+            var entityId = new EntityId(op.EntityId);
             if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
                 throw new InvalidSpatialEntityStateException(
@@ -112,7 +111,7 @@ namespace Improbable.Gdk.Core
 
         internal void OnRemoveEntity(RemoveEntityOp op)
         {
-            var entityId = op.EntityId;
+            var entityId = new EntityId(op.EntityId);
             if (!worker.TryGetEntity(entityId, out var entity))
             {
                 throw new InvalidSpatialEntityStateException(
@@ -214,14 +213,14 @@ namespace Improbable.Gdk.Core
 
         internal void OnCreateEntityResponse(CreateEntityResponseOp op)
         {
-            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!createEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
             {
                 throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId.Id));
+                    op.RequestId));
             }
 
             var entity = requestBundle.Entity;
-            createEntityStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
+            createEntityStorage.CommandRequestsInFlight.Remove(op.RequestId);
 
             if (!EntityManager.Exists(entity))
             {
@@ -255,14 +254,14 @@ namespace Improbable.Gdk.Core
 
         internal void OnDeleteEntityResponse(DeleteEntityResponseOp op)
         {
-            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!deleteEntityStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
             {
                 throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId.Id));
+                    op.RequestId));
             }
 
             var entity = requestBundle.Entity;
-            deleteEntityStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
+            deleteEntityStorage.CommandRequestsInFlight.Remove(op.RequestId);
 
             if (!EntityManager.Exists(entity))
             {
@@ -296,14 +295,14 @@ namespace Improbable.Gdk.Core
 
         internal void OnReserveEntityIdsResponse(ReserveEntityIdsResponseOp op)
         {
-            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!reserveEntityIdsStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
             {
                 throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId.Id));
+                    op.RequestId));
             }
 
             var entity = requestBundle.Entity;
-            reserveEntityIdsStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
+            reserveEntityIdsStorage.CommandRequestsInFlight.Remove(op.RequestId);
 
             if (!EntityManager.Exists(entity))
             {
@@ -337,14 +336,14 @@ namespace Improbable.Gdk.Core
 
         internal void OnEntityQueryResponse(EntityQueryResponseOp op)
         {
-            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId.Id, out var requestBundle))
+            if (!entityQueryStorage.CommandRequestsInFlight.TryGetValue(op.RequestId, out var requestBundle))
             {
                 throw new UnknownRequestIdException(string.Format(Errors.UnknownRequestIdError, op.GetType(),
-                    op.RequestId.Id));
+                    op.RequestId));
             }
 
             var entity = requestBundle.Entity;
-            entityQueryStorage.CommandRequestsInFlight.Remove(op.RequestId.Id);
+            entityQueryStorage.CommandRequestsInFlight.Remove(op.RequestId);
 
             if (!EntityManager.Exists(entity))
             {

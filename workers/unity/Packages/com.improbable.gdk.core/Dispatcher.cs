@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Improbable.WorkerCore;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {

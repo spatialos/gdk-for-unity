@@ -1,5 +1,5 @@
 using System;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
             foreach (var id in template.GetComponentIds())
             {
                 var componentData = template.Get(id);
-                componentData?.SchemaData?.Dispose();
+                componentData?.SchemaData.Value.Destroy();
             }
         }
     }
