@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<BlittableBool> BoolFieldUpdated;
                 event Action<int> IntFieldUpdated;
                 event Action<long> LongFieldUpdated;
@@ -53,6 +55,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component, Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
@@ -353,7 +357,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 public void OnFirstEventEvent(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, LogDispatcher);
                 }
 
                 public void SendFirstEvent(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
@@ -393,7 +397,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 public void OnSecondEventEvent(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, LogDispatcher);
                 }
 
                 public void SendSecondEvent(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)

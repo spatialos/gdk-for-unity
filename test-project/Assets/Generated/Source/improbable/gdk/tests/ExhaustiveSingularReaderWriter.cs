@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.ExhaustiveSingular.Component, Improbable.Gdk.Tests.ExhaustiveSingular.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<BlittableBool> Field1Updated;
                 event Action<float> Field2Updated;
                 event Action<byte[]> Field3Updated;
@@ -57,6 +59,8 @@ namespace Improbable.Gdk.Tests
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.ExhaustiveSingular.Component, Improbable.Gdk.Tests.ExhaustiveSingular.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {

@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>
             {
+                EntityId EntityId { get; }
+
             }
 
             [InjectableId(InjectableType.ReaderWriter, 1005)]
@@ -40,6 +42,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
