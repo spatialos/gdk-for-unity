@@ -5,10 +5,11 @@
 ### Added
 
 - Added support for the Steam authentication flow.
-- Added a reference to Blank Starter Project in the README.
 - Added Frames Per Second (FPS) and Unity heap usage as metrics sent by `MetricSendSystem.cs`.
 - Added a warning message to the top of schema files copied into the `from_gdk_packages` directory.
 - Added an `ISnapshottable<T>` interface to all generated components. This allows you to convert a component to a snapshot.
+- Added an `EntityId` property on the Readers/Writers to access the `EntityId` of the underlying SpatialOS entity.
+- Added a `HasEntity` method to the `WorkerSystem`. This allows you to check if an entity is checked out on your worker.
 
 ### Changed
 
