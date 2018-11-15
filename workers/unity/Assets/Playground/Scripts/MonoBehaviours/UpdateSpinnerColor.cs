@@ -30,7 +30,7 @@ namespace Playground.MonoBehaviours
             {
                 return;
             }
-
+           
             colorIndex = (colorIndex + 1) % colorValues.Length;
             nextColorChangeTime = Time.time + 2;
 

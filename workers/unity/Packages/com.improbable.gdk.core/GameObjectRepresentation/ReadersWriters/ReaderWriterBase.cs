@@ -13,16 +13,18 @@ namespace Improbable.Gdk.GameObjectRepresentation
         where TSpatialComponentData : struct, ISpatialComponentData, IComponentData
         where TComponentUpdate : ISpatialComponentUpdate
     {
+        protected readonly EntityId EntityId;
         protected readonly Entity Entity;
         protected readonly EntityManager EntityManager;
-        protected readonly ILogDispatcher logDispatcher;
+        protected readonly ILogDispatcher LogDispatcher;
 
         protected ReaderWriterBase(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher) : base(
             logDispatcher)
         {
             Entity = entity;
             EntityManager = entityManager;
-            this.logDispatcher = logDispatcher;
+            LogDispatcher = logDispatcher;
+            EntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
         ///     Yield authority during soft handover
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if the authority is not <see cref="Improbable.Worker.CInterop.Authority.AuthorityLossImminent"/>
+        ///     Thrown if the authority is not <see cref="Improbable.Worker.CInterop.Authority.AuthorityLossImminent" />
         /// </exception>
         public void SendAuthorityLossImminentAcknowledgement()
         {
@@ -179,7 +181,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 return;
             }
 
-            GameObjectDelegates.DispatchWithErrorHandling(payload.Value, callbacks, logDispatcher);
+            GameObjectDelegates.DispatchWithErrorHandling(payload.Value, callbacks, LogDispatcher);
         }
 
         public void OnAuthorityChange(Authority authority)
@@ -193,7 +195,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 catch (Exception e)
                 {
                     // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception,
+                    LogDispatcher.HandleLog(LogType.Exception,
                         new LogEvent("Caught exception in a MonoBehaviour authority change callback").WithException(e));
                 }
             }
@@ -238,7 +240,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
                 catch (Exception e)
                 {
                     // Log the exception but do not rethrow it, as other delegates should still get called
-                    logDispatcher.HandleLog(LogType.Exception,
+                    LogDispatcher.HandleLog(LogType.Exception,
                         new LogEvent("Caught exception in a MonoBehaviour component update callback").WithException(e));
                 }
             }
