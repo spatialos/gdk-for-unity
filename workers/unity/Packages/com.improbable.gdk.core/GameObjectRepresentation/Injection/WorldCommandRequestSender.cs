@@ -1,7 +1,8 @@
 ﻿using System;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
+using Entity = Unity.Entities.Entity;
 
 #region Diagnostic control
 
@@ -252,7 +253,7 @@ namespace Improbable.Gdk.Core.Commands
                 ///     (Optional) A context object that will be returned with the command response.
                 /// </param>
                 /// <returns>The request ID of the command request.</returns>
-                public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null,
+                public long EntityQuery(Improbable.Worker.CInterop.Query.EntityQuery entityQuery, uint? timeoutMillis = null,
                     object context = null)
                 {
                     if (!IsValid())
@@ -278,7 +279,7 @@ namespace Improbable.Gdk.Core.Commands
                 ///     (Optional) The command timeout in milliseconds. If not specified, will default to 5 seconds.
                 /// </param>
                 /// <returns>The request ID of the command request.</returns>
-                public long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery,
+                public long EntityQuery(Improbable.Worker.CInterop.Query.EntityQuery entityQuery,
                     Action<EntityQuery.ReceivedResponse> callback, uint? timeoutMillis = null)
                 {
                     if (!IsValid())

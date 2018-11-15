@@ -8,9 +8,10 @@ using System.Collections.Generic;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {

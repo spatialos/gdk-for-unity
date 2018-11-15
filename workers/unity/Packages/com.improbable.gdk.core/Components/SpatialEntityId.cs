@@ -1,4 +1,4 @@
-using Improbable.Worker;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core

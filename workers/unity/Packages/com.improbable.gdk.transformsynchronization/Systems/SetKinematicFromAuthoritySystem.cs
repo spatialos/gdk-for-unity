@@ -1,6 +1,6 @@
 ﻿using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;

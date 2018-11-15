@@ -19,14 +19,14 @@ namespace Improbable.Gdk.Tests
     
         public static class Serialization
         {
-            public static void Serialize(TypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(TypeName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 {
                     global::Improbable.Gdk.Tests.TypeName.Other.Serialization.Serialize(instance.OtherType, obj.AddObject(1));
                 }
             }
     
-            public static TypeName Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static TypeName Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new TypeName();
                 {
@@ -48,14 +48,14 @@ namespace Improbable.Gdk.Tests
         
             public static class Serialization
             {
-                public static void Serialize(Other instance, global::Improbable.Worker.Core.SchemaObject obj)
+                public static void Serialize(Other instance, global::Improbable.Worker.CInterop.SchemaObject obj)
                 {
                     {
                         global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Serialization.Serialize(instance.SameName, obj.AddObject(1));
                     }
                 }
         
-                public static Other Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                public static Other Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
                 {
                     var instance = new Other();
                     {
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Tests
             
                 public static class Serialization
                 {
-                    public static void Serialize(NestedTypeName instance, global::Improbable.Worker.Core.SchemaObject obj)
+                    public static void Serialize(NestedTypeName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
                     {
                         {
                             global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0.Serialization.Serialize(instance.OtherZero, obj.AddObject(1));
@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Tests
                         }
                     }
             
-                    public static NestedTypeName Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                    public static NestedTypeName Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
                     {
                         var instance = new NestedTypeName();
                         {
@@ -114,14 +114,14 @@ namespace Improbable.Gdk.Tests
                 
                     public static class Serialization
                     {
-                        public static void Serialize(Other0 instance, global::Improbable.Worker.Core.SchemaObject obj)
+                        public static void Serialize(Other0 instance, global::Improbable.Worker.CInterop.SchemaObject obj)
                         {
                             {
                                 obj.AddInt32(1, instance.Foo);
                             }
                         }
                 
-                        public static Other0 Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+                        public static Other0 Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
                         {
                             var instance = new Other0();
                             {

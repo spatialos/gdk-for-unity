@@ -13,11 +13,11 @@ namespace Improbable.Gdk.Tests
     
         public static class Serialization
         {
-            public static void Serialize(SomeType instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(SomeType instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
             }
     
-            public static SomeType Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static SomeType Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new SomeType();
                 return instance;

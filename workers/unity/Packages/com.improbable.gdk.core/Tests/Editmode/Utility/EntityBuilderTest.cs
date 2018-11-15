@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core.EditmodeTests

@@ -1,5 +1,5 @@
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
 

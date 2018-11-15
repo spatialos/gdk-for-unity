@@ -3,7 +3,7 @@
 // ===========
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.Tests
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
-                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
@@ -297,7 +297,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field16Handle;
 
-            public global::Improbable.Worker.EntityId? Field16
+            public global::Improbable.Gdk.Core.EntityId? Field16
             {
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
@@ -319,7 +319,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
                 BlittableBool? field1,
                 float? field2,
                 global::Improbable.Gdk.Core.Option<byte[]> field3,
@@ -335,11 +335,11 @@ namespace Improbable.Gdk.Tests
                 ulong? field13,
                 int? field14,
                 long? field15,
-                global::Improbable.Worker.EntityId? field16,
+                global::Improbable.Gdk.Core.EntityId? field16,
                 global::Improbable.Gdk.Tests.SomeType? field17
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(197716);
+                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197716);
                 var obj = schemaComponentData.GetFields();
                 {
                     if (field1.HasValue)
@@ -460,7 +460,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -483,13 +483,13 @@ namespace Improbable.Gdk.Tests
             public ulong? Field13;
             public int? Field14;
             public long? Field15;
-            public global::Improbable.Worker.EntityId? Field16;
+            public global::Improbable.Gdk.Core.EntityId? Field16;
             public global::Improbable.Gdk.Tests.SomeType? Field17;
         }
 
         public static class Serialization
         {
-            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 {
                     if (component.Field1.HasValue)
@@ -612,7 +612,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveOptional.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -889,7 +889,7 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveOptional.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveOptional.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveOptional.Component();
 
@@ -1017,7 +1017,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        component.Field16 = new global::Improbable.Worker.EntityId?(obj.GetEntityId(16));
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityIdStruct(16));
                     }
                     
                 }
@@ -1032,7 +1032,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveOptional.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static Improbable.Gdk.Tests.ExhaustiveOptional.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var update = new Improbable.Gdk.Tests.ExhaustiveOptional.Update();
                 var obj = updateObj.GetFields();
@@ -1366,12 +1366,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (isCleared)
                     {
-                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Worker.EntityId?>(new global::Improbable.Worker.EntityId?());
+                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId?>(new global::Improbable.Gdk.Core.EntityId?());
                     }
                     else if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
-                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Worker.EntityId?>(new global::Improbable.Worker.EntityId?(value));
+                        var value = obj.GetEntityIdStruct(16);
+                        update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId?>(new global::Improbable.Gdk.Core.EntityId?(value));
                     }
                     
                 }
@@ -1399,7 +1399,7 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot();
 
@@ -1526,7 +1526,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
-                        component.Field16 = new global::Improbable.Worker.EntityId?(obj.GetEntityId(16));
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityIdStruct(16));
                     }
                     
                 }
@@ -1542,7 +1542,7 @@ namespace Improbable.Gdk.Tests
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveOptional.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveOptional.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -1875,12 +1875,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (isCleared)
                     {
-                        component.Field16 = new global::Improbable.Worker.EntityId?();
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?();
                     }
                     else if (obj.GetEntityIdCount(16) == 1)
                     {
-                        var value = obj.GetEntityId(16);
-                        component.Field16 = new global::Improbable.Worker.EntityId?(value);
+                        var value = obj.GetEntityIdStruct(16);
+                        component.Field16 = new global::Improbable.Gdk.Core.EntityId?(value);
                     }
                     
                 }
@@ -1927,7 +1927,7 @@ namespace Improbable.Gdk.Tests
             public Option<ulong?> Field13;
             public Option<int?> Field14;
             public Option<long?> Field15;
-            public Option<global::Improbable.Worker.EntityId?> Field16;
+            public Option<global::Improbable.Gdk.Core.EntityId?> Field16;
             public Option<global::Improbable.Gdk.Tests.SomeType?> Field17;
         }
 

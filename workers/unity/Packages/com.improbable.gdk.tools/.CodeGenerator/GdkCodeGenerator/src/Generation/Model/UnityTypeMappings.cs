@@ -36,7 +36,7 @@ namespace Improbable.Gdk.CodeGenerator
                 { BuiltInTypeConstants.builtInBool, "BlittableBool" },
                 { BuiltInTypeConstants.builtInString, "string" },
                 { BuiltInTypeConstants.builtInBytes, "byte[]" },
-                { BuiltInTypeConstants.builtInEntityId, "global::Improbable.Worker.EntityId" },
+                { BuiltInTypeConstants.builtInEntityId, "global::Improbable.Gdk.Core.EntityId" },
                 { BuiltInTypeConstants.builtInCoordinates, "global::Improbable.Coordinates" },
                 { BuiltInTypeConstants.builtInVector3d, "global::Improbable.Vector3d" },
                 { BuiltInTypeConstants.builtInVector3f, "global::Improbable.Vector3f" }

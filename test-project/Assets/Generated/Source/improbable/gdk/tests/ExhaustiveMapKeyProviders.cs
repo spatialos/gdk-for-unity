@@ -1087,7 +1087,7 @@ namespace Improbable.Gdk.Tests
 
             public static class Field16Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1096,13 +1096,13 @@ namespace Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1112,7 +1112,7 @@ namespace Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Worker.EntityId,string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
-using Improbable.Worker;
-using Improbable.Worker.Core;
 
 namespace Playground
 {

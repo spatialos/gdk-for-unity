@@ -1,7 +1,7 @@
 ﻿using System;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.TestUtils;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;

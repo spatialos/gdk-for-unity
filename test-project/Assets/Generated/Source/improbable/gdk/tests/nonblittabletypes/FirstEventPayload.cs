@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
     
         public static class Serialization
         {
-            public static void Serialize(FirstEventPayload instance, global::Improbable.Worker.Core.SchemaObject obj)
+            public static void Serialize(FirstEventPayload instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 {
                     obj.AddBool(1, instance.Field1);
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
     
-            public static FirstEventPayload Deserialize(global::Improbable.Worker.Core.SchemaObject obj)
+            public static FirstEventPayload Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new FirstEventPayload();
                 {

@@ -9,7 +9,7 @@
 <#= generatedHeader #>
 
 using Improbable.Gdk.Core;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -117,7 +117,7 @@ namespace <#= qualifiedNamespace #>
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
 
-                componentDataSchema.SchemaData?.Dispose();
+                componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
@@ -154,7 +154,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
 
 <# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
-            public static global::Improbable.Worker.Core.ComponentData CreateSchemaComponentData(
+            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
 <# foreach(var fieldDetails in fieldDetailsList) {
     var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
 #>
@@ -162,14 +162,14 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             )
             {
-                var schemaComponentData = new global::Improbable.Worker.Core.SchemaComponentData(<#= componentDetails.ComponentId #>);
+                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(<#= componentDetails.ComponentId #>);
                 var obj = schemaComponentData.GetFields();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 5) #>
                 }
 <# } #>
-                return new global::Improbable.Worker.Core.ComponentData(schemaComponentData);
+                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
 <# } #>
         }
@@ -185,7 +185,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
         public static class Serialization
         {
-            public static void SerializeComponent(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(<#= componentNamespace #>.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
@@ -195,7 +195,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             }
 
-            public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(<#= componentNamespace #>.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
@@ -213,7 +213,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             }
 
-            public static <#= componentNamespace #>.Component Deserialize(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Component();
 
@@ -228,7 +228,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return component;
             }
 
-            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj)
+            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var update = new <#= componentNamespace #>.Update();
                 var obj = updateObj.GetFields();
@@ -245,7 +245,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return update;
             }
 
-            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.Core.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Snapshot();
 
@@ -258,7 +258,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.Core.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Component component)
             {
                 var obj = updateObj.GetFields();
 

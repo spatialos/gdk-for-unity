@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker;
-using Improbable.Worker.Core;
-using Improbable.Worker.Query;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
-using Entity = Improbable.Worker.Core.Entity;
+using Entity = Improbable.Worker.CInterop.Entity;
 using Object = System.Object;
 
 namespace Improbable.Gdk.Core.Commands
@@ -158,7 +156,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    EntityId = op.EntityId;
+                    EntityId = op.EntityId.HasValue ? new EntityId?(new EntityId(op.EntityId.Value)) : null;
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
@@ -415,7 +413,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    EntityId = op.EntityId;
+                    EntityId = new EntityId(op.EntityId);
                     RequestPayload = req;
                     Context = context;
                     RequestId = requestId;
@@ -678,7 +676,7 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    FirstEntityId = op.FirstEntityId;
+                    FirstEntityId = op.FirstEntityId.HasValue ? new EntityId?(new EntityId(op.FirstEntityId.Value)) : null;
                     NumberOfEntityIds = op.NumberOfEntityIds;
                     RequestPayload = req;
                     Context = context;
@@ -868,7 +866,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </remarks>
             public struct Request
             {
-                public Improbable.Worker.Query.EntityQuery EntityQuery;
+                public Improbable.Worker.CInterop.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
                 public Object Context;
                 public long RequestId;
@@ -885,7 +883,7 @@ namespace Improbable.Gdk.Core.Commands
             ///    (Optional) A context object that will be returned with the command response.
             /// </param>
             /// <returns></returns>
-            public static Request CreateRequest(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
+            public static Request CreateRequest(Improbable.Worker.CInterop.Query.EntityQuery entityQuery, uint? timeoutMillis = null, Object context = null)
             {
                 return new Request
                 {
@@ -956,7 +954,7 @@ namespace Improbable.Gdk.Core.Commands
                     Result = new Dictionary<EntityId, EntityQuerySnapshot>();
                     foreach (var entityIdToEntity in op.Result)
                     {
-                        Result.Add(entityIdToEntity.Key, new EntityQuerySnapshot(entityIdToEntity.Value, world));
+                        Result.Add(new EntityId(entityIdToEntity.Key), new EntityQuerySnapshot(entityIdToEntity.Value, world));
                     }
                 }
             }

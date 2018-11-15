@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectRepresentation

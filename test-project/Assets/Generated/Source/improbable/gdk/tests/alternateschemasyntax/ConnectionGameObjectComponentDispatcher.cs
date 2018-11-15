@@ -9,7 +9,7 @@ using Unity.Entities;
 using UnityEngine.Profiling;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {

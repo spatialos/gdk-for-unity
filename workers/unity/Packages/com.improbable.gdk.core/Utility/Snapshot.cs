@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
+
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
                 {
                     try
                     {
-                        outputStream.WriteEntity(entry.Key, entry.Value);
+                        outputStream.WriteEntity(entry.Key.Id, entry.Value);
                     }
                     catch (System.IO.InvalidDataException e)
                     {

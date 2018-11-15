@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Improbable.Worker;
+using Improbable.Worker.CInterop;
 
 #region Diagnostic control
 
