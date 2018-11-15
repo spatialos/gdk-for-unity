@@ -98,7 +98,7 @@ namespace Improbable.Gdk.Core
             try
             {
                 EnterUpdateGuard();
-                foreach (var pair in map)
+                foreach (var pair in mapReversed)
                 {
                     pair.Value(op);
                 }
