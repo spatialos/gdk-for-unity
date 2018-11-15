@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Improbable.Worker.CInterop;
-
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -39,7 +38,7 @@ namespace Improbable.Gdk.Core
         /// <param name="entityId">The SpatialOS entity ID.</param>
         /// <param name="entity">
         ///     When this method returns, contains the ECS entity associated with the SpatialOS entity ID if one was
-        ///     found, else the default value for <see cref="Entity"/>.
+        ///     found, else the default value for <see cref="Entity" />.
         /// </param>
         /// <returns>
         ///     True, if an ECS entity associated with the SpatialOS entity ID was found, false otherwise.
@@ -47,6 +46,16 @@ namespace Improbable.Gdk.Core
         public bool TryGetEntity(EntityId entityId, out Entity entity)
         {
             return EntityIdToEntity.TryGetValue(entityId, out entity);
+        }
+
+        /// <summary>
+        ///     Checks whether a SpatialOS entity is checked out on this worker.
+        /// </summary>
+        /// <param name="entityId">The SpatialOS entity ID to check for.</param>
+        /// <returns>True, if the SpatialOS entity is checked out on this worker, false otherwise.</returns>
+        public bool HasEntity(EntityId entityId)
+        {
+            return EntityIdToEntity.ContainsKey(entityId);
         }
 
         protected override void OnCreateManager()
