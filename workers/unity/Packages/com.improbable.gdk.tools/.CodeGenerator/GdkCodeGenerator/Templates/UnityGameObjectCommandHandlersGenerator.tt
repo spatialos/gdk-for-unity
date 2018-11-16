@@ -72,7 +72,7 @@ namespace <#= qualifiedNamespace #>
             public class CommandRequestSender : RequirableBase, ICommandRequestSender
             {
                 public EntityId EntityId { get; private set; }
-            
+
                 private Entity entity;
                 private readonly EntityManager entityManager;
                 private readonly ILogDispatcher logger;
@@ -90,6 +90,32 @@ namespace <#= qualifiedNamespace #>
         var receivedResponseType = commandDetails.CommandName + ".ReceivedResponse";
 #>
                 public static CommandTypeInformation<<#= commandDetails.CommandName #>, <#= commandDetails.FqnRequestType #>, <#= receivedResponseType #>> <#= commandDetails.CommandName #>TypeInformation;
+
+                public class SpecialCommandSender<#= commandDetails.CommandName #>  : ISpecialCommandSender {
+
+                    public void RegisterSelf(Dictionary<Type, Func<EntityManager, global::Unity.Entities.Entity, object, EntityId, object, object, uint?, bool, long>> callbacks)
+                    {
+                        callbacks[typeof(CommandTypeInformation<<#= commandDetails.CommandName #>, <#= commandDetails.FqnRequestType #>, <#= receivedResponseType #>>)] = SendCommandInternal;
+                    }
+
+                    public long SendCommandInternal(
+                        EntityManager entityManager,
+                        global::Unity.Entities.Entity entity,
+                        object typeInfo,
+                        EntityId entityId,
+                        object payload,
+                        object callback,
+                        uint? timeoutMillis,
+                        bool allowShortCircuiting)
+                    {
+                        var ecsCommandRequestSender = entityManager.GetComponentData<CommandSenders.<#= commandDetails.CommandName #>>(entity);
+                        var request = <#= commandDetails.CommandName #>.CreateRequest(entityId, (<#= commandDetails.FqnRequestType #>) payload, timeoutMillis, allowShortCircuiting, callback);
+                        ecsCommandRequestSender.RequestsToSend.Add(request);
+                        return request.RequestId;
+                    }
+
+                }
+
 
                 public long Send<#= commandDetails.CommandName #>Request(EntityId entityId, <#= commandDetails.FqnRequestType #> payload,
                     uint? timeoutMillis = null, bool allowShortCircuiting = false, object context = null)

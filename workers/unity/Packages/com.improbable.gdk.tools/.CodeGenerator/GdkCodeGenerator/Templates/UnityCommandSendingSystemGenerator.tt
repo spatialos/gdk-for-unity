@@ -6,6 +6,9 @@
 <#= generatedHeader #>
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
@@ -14,52 +17,51 @@ using Improbable.Worker;
 
 namespace Improbable.Gdk.Generated
 {
-    public class CommandSendingSystem : ComponentSystem 
+    public class CommandSendingSystem : ComponentSystem
     {
         public Entity WorkerEntity;
-        
+
         public EntityManager EntityMgr => this.EntityManager;
-        
-        protected override void OnCreateManager() 
+
+        private readonly Dictionary<Type, Func<EntityManager, global::Unity.Entities.Entity, object, EntityId, object, object, uint?, bool, long>> internalCommandHandlers = new Dictionary<Type, Func<EntityManager, global::Unity.Entities.Entity, object, EntityId, object, object, uint?, bool, long>>();
+
+        protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            
+
             WorkerEntity = World.GetExistingManager<WorkerSystem>().WorkerEntity;
             this.Enabled = false;
+            RegisterAllTypes();
         }
-        
-        protected override void OnUpdate() 
+
+        protected override void OnUpdate()
         {
         }
-        
+
         public long SendCommand<TCommand, TRequest, TResponse>(
             CommandTypeInformation<TCommand, TRequest, TResponse> typeInformation,
             EntityId entityId, TRequest request, Action<TResponse> callback, uint? timeoutMillis,
-            bool allowShortCircuiting) 
+            bool allowShortCircuiting)
             where TRequest: struct
-            where TResponse: struct, IReceivedResponse    
+            where TResponse: struct, IReceivedResponse
         {
-            
-<# foreach (var commandGroupInfo in commandGroupInfos) { #>
-<# foreach (var commandDetails in commandGroupInfo.GetDetails()) { #>
-            if (typeof(TCommand) == typeof(<#= commandGroupInfo.QualifiedNamespace #>.<#= commandDetails.CommandName #>)) {
-                switch(request)
-                {
-                    case <#= commandDetails.FqnRequestType #> concreteRequest:
-                    {
-                        var ecsCommandRequestSender = EntityManager.GetComponentData<<#= commandGroupInfo.QualifiedNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(WorkerEntity);
-                        var commandRequest = <#= commandGroupInfo.QualifiedNamespace #>.<#= commandDetails.CommandName #>.CreateRequest(entityId, concreteRequest, timeoutMillis, allowShortCircuiting, callback);
-                        ecsCommandRequestSender.RequestsToSend.Add(commandRequest);
-                        return commandRequest.RequestId;
-                    }
-                    default: 
-                        throw new ArgumentException($"Unknown command combination: {nameof(TCommand)} with request payload {nameof(TRequest)}");
-                }
+            if (!internalCommandHandlers.TryGetValue(typeInformation.GetType(), out var func))
+            {
+                throw new ArgumentException("NO");
             }
-<# } #>
-<# } #>
-            throw new ArgumentException($"Unknown command combination: {nameof(TCommand)}");
 
+            return func(EntityMgr, WorkerEntity, typeInformation, entityId, request, callback, timeoutMillis, allowShortCircuiting);
+        }
+
+        private void RegisterAllTypes()
+        {
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(ass => ass.GetTypes()).Where(typ =>
+                typeof(ISpecialCommandSender).IsAssignableFrom(typ) && !typ.IsAbstract);
+            foreach (var typ in types)
+            {
+                var sender = (ISpecialCommandSender) Activator.CreateInstance(typ);
+                sender.RegisterSelf(internalCommandHandlers);
+            }
         }
     }
 }
