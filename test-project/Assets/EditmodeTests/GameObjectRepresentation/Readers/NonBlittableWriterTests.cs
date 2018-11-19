@@ -17,6 +17,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
                 entityManager.SetComponentData(entity, new NonBlittableComponent.Component());
+                entityManager.AddComponentData(entity, new SpatialEntityId());
                 var writer =
                     new NonBlittableComponent.Requirable.ReaderWriterImpl(entity, entityManager,
                         new LoggingDispatcher());
@@ -38,6 +39,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
             {
                 var entityManager = world.GetOrCreateManager<EntityManager>();
                 var entity = entityManager.CreateEntity(typeof(NonBlittableComponent.Component));
+                entityManager.AddComponentData(entity, new SpatialEntityId());
 
                 var schemaComponentData = NonBlittableComponent.Component.CreateSchemaComponentData(
                     boolField: false,

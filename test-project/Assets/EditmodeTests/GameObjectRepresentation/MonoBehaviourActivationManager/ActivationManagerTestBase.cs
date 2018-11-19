@@ -33,6 +33,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.MonoBehaviourAct
             var spatialOSComponent = TestGameObject.AddComponent<SpatialOSComponent>();
             spatialOSComponent.Worker = workerSystem;
             spatialOSComponent.Entity = entityManager.CreateEntity();
+            entityManager.AddComponentData(spatialOSComponent.Entity, new SpatialEntityId());
 
             var injectableStore = new InjectableStore();
             var requiredFieldInjector = new RequiredFieldInjector(entityManager, loggingDispatcher);
