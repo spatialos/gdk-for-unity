@@ -12,7 +12,7 @@ The `WorkerSystem` class stores information about a worker during [Runtime]({{ur
 
 | Field             | Type                   | Description                    |
 |-------------------|------------------------|--------------------------------|
-| Connection    | [Connection]({{urlRoot}}/content/connecting-to-spatialos) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
+| Connection    | [`Connection`]({{urlRoot}}/content/connecting-to-spatialos) | The connection to the SpatialOS Runtime. You can use it to send data and messages. |
 | WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary#worker-types). |
 | Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
 | WorkerEntity  | `Entity`                 | The corresponding [Worker entity]({{urlRoot}}/content/workers/worker-entity) which allows you to query the current state of the worker as well as send and receive commands. |
@@ -30,6 +30,17 @@ Parameters:
   * `Entity entity`: The ECS entity that represents the SpatialOS entity that you want to retrieve. It will be `Entity.Null`, if this ECS entity does not exist.
 
 Returns: `true`, if the queried SpatialOS entity is checked out on this worker, `false` otherwise.
+
+
+```csharp
+bool HasEntity(EntityId entityId);
+```
+
+Parameters:
+
+  * `EntityId entityId`: The entity ID of the SpatialOS entity you want to check.
+
+Returns: `true`, if the SpatialOS entity is checked out on this worker, `false` otherwise.
 
 ### ECS: How to access the WorkerSystem in the ECS workflow
 
