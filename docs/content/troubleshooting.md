@@ -56,7 +56,7 @@ The most common causes of this exception are `bool` and `System.Boolean`, both o
 
 **Fix**<br/>
 
- Instead of `bool` and `System.Boolean`, please use `Improbable.Gdk.Core.BlittableBool`, a blittable alternative implementation we provide, in that case.
+ Instead of `bool` and `System.Boolean`, please use `Improbable.Gdk.Core.BlittableBool`, a blittable alternative implementation we provide as a workaround for this limitation.
 
 <br/>
 
@@ -64,7 +64,7 @@ The most common causes of this exception are `bool` and `System.Boolean`, both o
 
 **Cause**<br/>
 
-This is a benign exception that is thrown when building a worker while burst compilation is turned on. Your worker was successfully built despite this error.
+This is a benign exception that is thrown when building a worker while burst compilation is turned on. Your worker was successfully built despite this error. This occurs becayse Unity's burst compiler doesn't yet fully support cross compilation (Windows to Linux ,for example).
 
 **Workaround**<br/>
 
@@ -83,7 +83,7 @@ These warnings originate from code written by Unity, `com.unity.mathematics` or 
 These warnings occur when a [GameObject]({{urlRoot}}/content/glossary#gameobject) or [ECS entity]({{urlRoot}}/content/glossary#unity-ecs-entity) that represents a SpatialOS entity is deleted before its corresponding SpatialOS entity leaves the worker's view. The GDK is designed so that the GameObjects and ECS entities that represent SpatialOS entities should only be deleted after the SpatialOS entity they represent has left that worker's view. ECS entities are deleted automatically by the GDK when their corresponding SpatialOS entities leaves that worker's view. In the case of GameObjects, the SpatialOS Runtime sends a message to the Unity worker when a SpatialOS entity leaves that worker's view, the GDK passes this message onto you. It's your responsibility to act upon these commands in your code.
 
 **Fix**<br/>
-When you want to delete a GameObject or ECS entity, send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
+When you want to delete a GameObject or ECS entity that represent SpatialOS entity, send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
 
 ## Problems
 
@@ -115,5 +115,7 @@ You don't have the correct compilation units installed.
 
 **Fix**<br/>
 
+Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
+
 1. Follow the Visual Studio instalation steps on our [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine)).
-1. Restart your computer.
+2. Restart your computer.
