@@ -17,6 +17,7 @@ using Improbable.Worker;
 
 namespace Improbable.Gdk.Generated
 {
+    [DisableAutoCreation]
     public class CommandSendingSystem : ComponentSystem
     {
         public Entity WorkerEntity;
