@@ -28,8 +28,6 @@ When building workers by selecting **Build For Cloud** > **my_worker_name** the 
  
  **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can cause further build errors.
 
-<br/>
-
 #### Could not discover location for dotnet.exe
 
 **Cause**<br/>
@@ -38,8 +36,8 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 **Fix**<br/>
 
 1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine)).
-1. Ensure that the dotnet executable is added to your PATH environment variable.
-1. Restart your computer after making the above changes.
+2. Ensure that the dotnet executable is added to your PATH environment variable.
+3. Restart your computer after making the above changes.
 
 <br/>
 
