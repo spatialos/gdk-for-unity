@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.NestedComponent.Component, Improbable.Gdk.Tests.NestedComponent.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<global::Improbable.Gdk.Tests.TypeName> NestedTypeUpdated;
             }
 
@@ -41,6 +43,8 @@ namespace Improbable.Gdk.Tests
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.NestedComponent.Component, Improbable.Gdk.Tests.NestedComponent.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {

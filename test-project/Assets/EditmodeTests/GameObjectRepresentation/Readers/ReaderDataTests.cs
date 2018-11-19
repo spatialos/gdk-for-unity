@@ -16,5 +16,11 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
             Assert.AreEqual(data, ReaderPublic.Data);
             Assert.AreEqual(data.FloatField, ReaderPublic.Data.FloatField);
         }
+
+        [Test]
+        public void EntityId_returns_spatial_entity_id()
+        {
+            Assert.AreEqual(EntityId, ReaderPublic.EntityId);
+        }
     }
 }

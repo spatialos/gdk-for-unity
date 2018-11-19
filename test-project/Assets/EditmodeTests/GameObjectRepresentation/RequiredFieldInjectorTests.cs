@@ -59,6 +59,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation
             var entityManager = world.GetOrCreateManager<EntityManager>();
             injector = new RequiredFieldInjector(entityManager, new LoggingDispatcher());
             testEntity = entityManager.CreateEntity();
+            entityManager.AddComponentData(testEntity, new SpatialEntityId());
             testGameObject = new GameObject();
         }
 
