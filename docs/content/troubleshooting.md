@@ -26,7 +26,7 @@ When building workers by selecting **Build For Cloud** > **my_worker_name** the 
   * Unity gives you build support for your development machine (Windows or Mac) by default.
   * _**In addition**_, make sure you have **Linux** build support enabled. You need Linux build support because all server-workers in a cloud deployment run in a Linux environment.
 
- Fix this by runing the Unity installer and selecting the appropriate build support options during the instalation. See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine) for more information.
+ Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine) for more information.
  
  **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can cause further build errors.
 
@@ -64,7 +64,7 @@ The most common causes of this exception are `bool` and `System.Boolean`, both o
 
 **Cause**<br/>
 
-This is a benign exception that is thrown when building a worker while burst compilation is turned on. Your worker was successfully built despite this error. This occurs becayse Unity's burst compiler doesn't yet fully support cross compilation (Windows to Linux ,for example).
+This is a benign exception that is thrown when building a worker while burst compilation is turned on. Your worker was successfully built despite this error. This occurs becayse Unity's burst compiler doesn't yet fully support cross compilation (Windows to Linux, for example).
 
 **Workaround**<br/>
 
@@ -117,5 +117,5 @@ You don't have the correct compilation units installed.
 
 Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
 
-1. Follow the Visual Studio instalation steps on our [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine).
+1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine).
 2. Restart your computer.
