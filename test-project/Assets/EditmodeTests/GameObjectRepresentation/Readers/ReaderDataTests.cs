@@ -20,7 +20,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
         [Test]
         public void EntityId_returns_spatial_entity_id()
         {
-            Assert.AreEqual(EntityId, ReaderPublic.EntityId.Id);
+            Assert.AreEqual(EntityId, ReaderPublic.EntityId);
         }
     }
 }
