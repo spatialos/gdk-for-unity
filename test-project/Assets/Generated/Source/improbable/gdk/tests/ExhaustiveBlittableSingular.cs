@@ -22,12 +22,14 @@ namespace Improbable.Gdk.Tests
             // Each byte tracks 8 component properties.
             private byte dirtyBits0;
             private byte dirtyBits1;
+            private byte dirtyBits2;
 
             public bool IsDataDirty()
             {
                 var isDataDirty = false;
                 isDataDirty |= (dirtyBits0 != 0x0);
                 isDataDirty |= (dirtyBits1 != 0x0);
+                isDataDirty |= (dirtyBits2 != 0x0);
                 return isDataDirty;
             }
 
@@ -45,9 +47,9 @@ namespace Improbable.Gdk.Tests
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 15)
+                if (propertyIndex < 0 || propertyIndex >= 16)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 14]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 15]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -60,6 +62,8 @@ namespace Improbable.Gdk.Tests
                         return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
                     case 1:
                         return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
+                    case 2:
+                        return (dirtyBits2 & (0x1 << propertyIndex % 8)) != 0x0;
                 }
 
                 return false;
@@ -69,9 +73,9 @@ namespace Improbable.Gdk.Tests
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 15)
+                if (propertyIndex < 0 || propertyIndex >= 16)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 14]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 15]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -86,6 +90,9 @@ namespace Improbable.Gdk.Tests
                     case 1:
                         dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
                         break;
+                    case 2:
+                        dirtyBits2 |= (byte) (0x1 << propertyIndex % 8);
+                        break;
                 }
             }
 
@@ -93,6 +100,7 @@ namespace Improbable.Gdk.Tests
             {
                 dirtyBits0 = 0x0;
                 dirtyBits1 = 0x0;
+                dirtyBits2 = 0x0;
             }
 
             public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
@@ -287,6 +295,18 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
+            private global::Improbable.Gdk.Tests.SomeEnum field18;
+
+            public global::Improbable.Gdk.Tests.SomeEnum Field18
+            {
+                get => field18;
+                set
+                {
+                    MarkDataDirty(15);
+                    this.field18 = value;
+                }
+            }
+
             public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
                 BlittableBool field1,
                 float field2,
@@ -302,7 +322,8 @@ namespace Improbable.Gdk.Tests
                 int field14,
                 long field15,
                 global::Improbable.Gdk.Core.EntityId field16,
-                global::Improbable.Gdk.Tests.SomeType field17
+                global::Improbable.Gdk.Tests.SomeType field17,
+                global::Improbable.Gdk.Tests.SomeEnum field18
             )
             {
                 var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197720);
@@ -352,6 +373,9 @@ namespace Improbable.Gdk.Tests
                 {
                     global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17, obj.AddObject(17));
                 }
+                {
+                    obj.AddEnum(18, (uint) field18);
+                }
                 return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
@@ -375,6 +399,7 @@ namespace Improbable.Gdk.Tests
             public long Field15;
             public global::Improbable.Gdk.Core.EntityId Field16;
             public global::Improbable.Gdk.Tests.SomeType Field17;
+            public global::Improbable.Gdk.Tests.SomeEnum Field18;
         }
 
         public static class Serialization
@@ -425,6 +450,9 @@ namespace Improbable.Gdk.Tests
                 }
                 {
                     global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17, obj.AddObject(17));
+                }
+                {
+                    obj.AddEnum(18, (uint) component.Field18);
                 }
             }
 
@@ -536,6 +564,13 @@ namespace Improbable.Gdk.Tests
                     }
 
                 }
+                {
+                    if (component.IsDataDirty(15))
+                    {
+                        obj.AddEnum(18, (uint) component.Field18);
+                    }
+
+                }
             }
 
             public static Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -586,6 +621,9 @@ namespace Improbable.Gdk.Tests
                 }
                 {
                     component.Field17 = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
+                }
+                {
+                    component.Field18 = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
                 }
                 return component;
             }
@@ -715,6 +753,14 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    if (obj.GetEnumCount(18) == 1)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Tests.SomeEnum>(value);
+                    }
+                    
+                }
                 return update;
             }
 
@@ -780,6 +826,10 @@ namespace Improbable.Gdk.Tests
 
                 {
                     component.Field17 = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
+                }
+
+                {
+                    component.Field18 = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
                 }
 
                 return component;
@@ -909,6 +959,14 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    if (obj.GetEnumCount(18) == 1)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                        component.Field18 = value;
+                    }
+                    
+                }
             }
         }
 
@@ -931,6 +989,7 @@ namespace Improbable.Gdk.Tests
             public Option<long> Field15;
             public Option<global::Improbable.Gdk.Core.EntityId> Field16;
             public Option<global::Improbable.Gdk.Tests.SomeType> Field17;
+            public Option<global::Improbable.Gdk.Tests.SomeEnum> Field18;
         }
 
         public struct ReceivedUpdates : IComponentData

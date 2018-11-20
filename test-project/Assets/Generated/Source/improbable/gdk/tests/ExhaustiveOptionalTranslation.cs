@@ -54,6 +54,7 @@ namespace Improbable.Gdk.Tests
                 ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(World);
                 ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(World);
                 ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(World);
+                ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(World);
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -85,6 +86,7 @@ namespace Improbable.Gdk.Tests
                     Field15 = data.Field15,
                     Field16 = data.Field16,
                     Field17 = data.Field17,
+                    Field18 = data.Field18,
                 };
 
                 var updates = new List<Improbable.Gdk.Tests.ExhaustiveOptional.Update>
@@ -144,6 +146,7 @@ namespace Improbable.Gdk.Tests
                 ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
                 ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
                 ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+                ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveOptional.Component>(entity);
 
