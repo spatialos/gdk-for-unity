@@ -11,6 +11,12 @@
     <Compile Remove="dependencies\**" />
     <EmbeddedResource Remove="dependencies\**" />
     <None Remove="dependencies\**" />
+    <None Remove="Partials\Improbable.Vector3d" />
+    <EmbeddedResource Include="Partials\Improbable.Vector3d" />
+    <None Remove="Partials\Improbable.Vector3f" />
+    <EmbeddedResource Include="Partials\Improbable.Vector3f" />
+    <None Remove="Partials\Improbable.Coordinates" />
+    <EmbeddedResource Include="Partials\Improbable.Coordinates" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
@@ -43,6 +49,9 @@
     <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
     <T4Files Include="Templates\UnityWorkerMenuGenerator.tt" />
     <T4Files Include="Templates\BuildSystemAssemblyGenerator.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Partials" />
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">

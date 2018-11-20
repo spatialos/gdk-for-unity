@@ -86,8 +86,8 @@ namespace Playground
                 return;
             }
 
-            var impactPoint = info.point.ToSpatialVector3f();
-            var launchDirection = ray.direction.ToSpatialVector3f();
+            var impactPoint = Vector3f.FromUnityVector(info.point);
+            var launchDirection = Vector3f.FromUnityVector(ray.direction);
 
             sender.RequestsToSend.Add(Launcher.LaunchEntity.CreateRequest(playerId,
                 new LaunchCommandRequest(component.SpatialEntityId, impactPoint, launchDirection,

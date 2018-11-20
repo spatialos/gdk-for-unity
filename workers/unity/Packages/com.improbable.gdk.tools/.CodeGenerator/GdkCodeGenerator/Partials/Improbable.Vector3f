@@ -1,0 +1,97 @@
+/// <summary>
+///     A Vector3f with 0f in each dimension.
+/// </summary>
+public static readonly Vector3f Zero = new Vector3f(0f, 0f, 0f);
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator *(Vector3f vector3f, float scalar)
+{
+    return new Vector3f(vector3f.X * scalar, vector3f.Y * scalar, vector3f.Z * scalar);
+}
+
+/// <summary>
+///     Override of the multiplication operator. Used for multiplying the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator *(float scalar, Vector3f vector3f)
+{
+    return new Vector3f(vector3f.X * scalar, vector3f.Y * scalar, vector3f.Z * scalar);
+}
+
+/// <summary>
+///     Override of the division operator. Used for dividing the Vector3f by a float scalar.
+/// </summary>
+public static Vector3f operator /(Vector3f vector3f, float scalar)
+{
+    return new Vector3f(vector3f.X / scalar, vector3f.Y / scalar, vector3f.Z / scalar);
+}
+
+/// <summary>
+///     Override of the addition operator. Used for adding two Vector3s.
+/// </summary>
+public static Vector3f operator +(Vector3f vector3f, Vector3f addVector3f)
+{
+    return new Vector3f(vector3f.X + addVector3f.X, vector3f.Y + addVector3f.Y, vector3f.Z + addVector3f.Z);
+}
+
+/// <summary>
+///     Override of the subtraction operator. Used for subtracting one Vector3f from another.
+/// </summary>
+public static Vector3f operator -(Vector3f vector3f, Vector3f subtractVector3f)
+{
+    return new Vector3f(vector3f.X - subtractVector3f.X, vector3f.Y - subtractVector3f.Y, vector3f.Z - subtractVector3f.Z);
+}
+
+public static bool operator ==(Vector3f a, Vector3f b) => a.Equals(b);
+public static bool operator !=(Vector3f a, Vector3f b) => !a.Equals(b);
+
+public override bool Equals(object obj)
+{
+    if (ReferenceEquals(null, obj))
+    {
+        return false;
+    }
+
+    return obj is Vector3f other && Equals(other);
+}
+
+public bool Equals(Vector3f other)
+{
+    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+}
+
+public override int GetHashCode()
+{
+    unchecked
+    {
+        var hashCode = X.GetHashCode();
+        hashCode = (hashCode * 397) ^ Y.GetHashCode();
+        hashCode = (hashCode * 397) ^ Z.GetHashCode();
+        return hashCode;
+    }
+}
+
+/// <summary>
+///     Returns the string representation of the Vector3f.
+/// </summary>
+public override string ToString()
+{
+    return "Vector3f(" + X + ", " + Y + ", " + Z + ")";
+}
+
+/// <summary>
+///     Converts a Unity vector to a Spatial Vector3f.
+/// </summary>
+public static Vector3f FromUnityVector(Vector3 unityVector) 
+{
+    return new Vector3f(unityVector.x, unityVector.y, unityVector.z);
+}
+
+/// <summary>
+///     Converts the Vector3f to a Unity Vector3.
+/// </summary>
+public Vector3 ToUnityVector()
+{
+    return new Vector3(X, Y, Z);
+}

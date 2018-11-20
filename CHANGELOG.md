@@ -10,6 +10,8 @@
 - Added an `ISnapshottable<T>` interface to all generated components. This allows you to convert a component to a snapshot.
 - Added an `EntityId` property on the Readers/Writers to access the `EntityId` of the underlying SpatialOS entity.
 - Added a `HasEntity` method to the `WorkerSystem`. This allows you to check if an entity is checked out on your worker.
+- Added operators and conversion methods to `Coordinates`, `Vector3d`, and `Vector3f` in code generation.
+    - This supercedes the `StandardLibraryUtils` feature module which was removed as a consequence.
 
 ### Changed
 
@@ -23,6 +25,10 @@
 ### Fixed
 
 - Fixed a bug where schema components with a field named `value` would generate invalid code.
+
+### Removed
+
+- Removed the `StandardLibraryUtils` feature module as it was superceded by inserting the methods during code generation.
 
 ## `0.1.2` - 2018-11-01
 
