@@ -43,6 +43,35 @@ public static Vector3d operator -(Vector3d vector3d, Vector3d subtractVector3d)
     return new Vector3d(vector3d.X - subtractVector3d.X, vector3d.Y - subtractVector3d.Y, vector3d.Z - subtractVector3d.Z);
 }
 
+public static bool operator ==(Vector3d a, Vector3d b) => a.Equals(b);
+public static bool operator !=(Vector3d a, Vector3d b) => !a.Equals(b);
+
+public override bool Equals(object obj)
+{
+    if (ReferenceEquals(null, obj))
+    {
+        return false;
+    }
+
+    return obj is Vector3d other && Equals(other);
+}
+
+public bool Equals(Vector3d other)
+{
+    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+}
+
+public override int GetHashCode()
+{
+    unchecked
+    {
+        var hashCode = X.GetHashCode();
+        hashCode = (hashCode * 397) ^ Y.GetHashCode();
+        hashCode = (hashCode * 397) ^ Z.GetHashCode();
+        return hashCode;
+    }
+}
+
 /// <summary>
 ///     Converts the Vector3d to a Unity Vector3.
 /// </summary>

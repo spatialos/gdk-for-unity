@@ -43,6 +43,35 @@ public static Vector3f operator -(Vector3f vector3f, Vector3f subtractVector3f)
     return new Vector3f(vector3f.X - subtractVector3f.X, vector3f.Y - subtractVector3f.Y, vector3f.Z - subtractVector3f.Z);
 }
 
+public static bool operator ==(Vector3f a, Vector3f b) => a.Equals(b);
+public static bool operator !=(Vector3f a, Vector3f b) => !a.Equals(b);
+
+public override bool Equals(object obj)
+{
+    if (ReferenceEquals(null, obj))
+    {
+        return false;
+    }
+
+    return obj is Vector3f other && Equals(other);
+}
+
+public bool Equals(Vector3f other)
+{
+    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+}
+
+public override int GetHashCode()
+{
+    unchecked
+    {
+        var hashCode = X.GetHashCode();
+        hashCode = (hashCode * 397) ^ Y.GetHashCode();
+        hashCode = (hashCode * 397) ^ Z.GetHashCode();
+        return hashCode;
+    }
+}
+
 /// <summary>
 ///     Converts a Unity vector to a Spatial Vector3f.
 /// </summary>

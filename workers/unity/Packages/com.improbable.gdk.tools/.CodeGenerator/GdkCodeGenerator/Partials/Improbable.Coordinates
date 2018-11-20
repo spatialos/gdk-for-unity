@@ -33,14 +33,30 @@ public static Coordinates operator /(Coordinates coords, double d)
 public static bool operator ==(Coordinates a, Coordinates b) => a.Equals(b);
 public static bool operator !=(Coordinates a, Coordinates b) => !a.Equals(b);
 
-public override bool Equals(object obj) 
+public override bool Equals(object obj)
 {
-    if (obj is Coordinates otherCoord) 
+    if (ReferenceEquals(null, obj))
     {
-        return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
+        return false;
     }
 
-    return false;
+    return obj is Coordinates other && Equals(other);
+}
+
+public bool Equals(Coordinates other)
+{
+    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+}
+
+public override int GetHashCode()
+{
+    unchecked
+    {
+        var hashCode = X.GetHashCode();
+        hashCode = (hashCode * 397) ^ Y.GetHashCode();
+        hashCode = (hashCode * 397) ^ Z.GetHashCode();
+        return hashCode;
+    }
 }
 
 /// <summary>
