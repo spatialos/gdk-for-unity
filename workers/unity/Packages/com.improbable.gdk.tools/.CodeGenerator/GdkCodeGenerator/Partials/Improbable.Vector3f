@@ -73,6 +73,14 @@ public override int GetHashCode()
 }
 
 /// <summary>
+///     Returns the string representation of the Vector3f.
+/// </summary>
+public override string ToString()
+{
+    return "Vector3f(" + X + ", " + Y + ", " + Z + ")";
+}
+
+/// <summary>
 ///     Converts a Unity vector to a Spatial Vector3f.
 /// </summary>
 public static Vector3f FromUnityVector(Vector3 unityVector) 
@@ -86,12 +94,4 @@ public static Vector3f FromUnityVector(Vector3 unityVector)
 public Vector3 ToUnityVector()
 {
     return new Vector3(X, Y, Z);
-}
-
-/// <summary>
-///     Returns the string representation of the Vector3f.
-/// </summary>
-public override string ToString()
-{
-    return "Vector3f(" + X + ", " + Y + ", " + Z + ")";
 }

@@ -60,6 +60,14 @@ public override int GetHashCode()
 }
 
 /// <summary>
+///     Returns the string representation of the Coordinates.
+/// </summary>
+public override string ToString()
+{
+    return "Coordinates(" + X + ", " + Y + ", " + Z + ")";
+}
+
+/// <summary>
 ///     Converts to a Unity Vector3.
 /// </summary>
 public Vector3 ToUnityVector()
@@ -73,12 +81,4 @@ public Vector3 ToUnityVector()
 public Vector3d ToSpatialVector3d()
 {
     return new Vector3d(X, Y, Z);
-}
-
-/// <summary>
-///     Returns the string representation of the Coordinates.
-/// </summary>
-public override string ToString()
-{
-    return "Coordinates(" + X + ", " + Y + ", " + Z + ")";
 }

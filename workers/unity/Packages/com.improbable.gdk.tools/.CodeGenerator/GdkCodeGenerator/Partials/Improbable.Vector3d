@@ -73,17 +73,17 @@ public override int GetHashCode()
 }
 
 /// <summary>
-///     Converts the Vector3d to a Unity Vector3.
-/// </summary>
-public Vector3 ToUnityVector()
-{
-    return new Vector3((float) X, (float) Y, (float) Z);
-}
-
-/// <summary>
 ///     Returns the string representation of the Vector3d.
 /// </summary>
 public override string ToString()
 {
     return "Vector3d(" + X + ", " + Y + ", " + Z + ")";
+}
+
+/// <summary>
+///     Converts the Vector3d to a Unity Vector3.
+/// </summary>
+public Vector3 ToUnityVector()
+{
+    return new Vector3((float) X, (float) Y, (float) Z);
 }
