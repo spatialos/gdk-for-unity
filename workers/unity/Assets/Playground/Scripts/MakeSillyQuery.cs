@@ -2,7 +2,7 @@
 using Improbable;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker.Query;
+using Improbable.Worker.CInterop.Query;
 using UnityEngine;
 
 [WorkerType("UnityClient")]
