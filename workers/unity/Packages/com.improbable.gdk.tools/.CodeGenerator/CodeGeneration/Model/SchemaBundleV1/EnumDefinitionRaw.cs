@@ -5,7 +5,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
 {
     public class EnumDefinitionRaw
     {
-        [JsonProperty("identifier")] public Identifier EnumIdentifier;
+        [JsonProperty("identifier")] public Identifier Identifier;
         [JsonProperty("valueDefinitions")] public List<Value> Values;
 
         public class Value
