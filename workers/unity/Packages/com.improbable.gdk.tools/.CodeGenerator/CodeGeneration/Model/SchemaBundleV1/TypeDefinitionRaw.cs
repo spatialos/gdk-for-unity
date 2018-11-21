@@ -39,7 +39,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
                 [JsonProperty("type")] public InnerType Type;
             }
 
-            // Note: Mutually exclusive
+            // Note: Only one of these fields should ever be non-null.
+            // The type is either a primitive or its a user defined type.
             public class InnerType
             {
                 [JsonProperty("type")] public UserType UserType;
