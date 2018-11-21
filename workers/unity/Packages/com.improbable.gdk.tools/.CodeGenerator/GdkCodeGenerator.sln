@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mono.TextTemplating", "Mono
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Improbable.TextTemplating", "Improbable.TextTemplating\Improbable.TextTemplating.csproj", "{69CD28E2-1217-47A9-BFFE-6D82701C4839}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGeneration\CodeGeneration.csproj", "{8E7F9819-2E8E-49B7-8640-CDA500E8DCA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{69CD28E2-1217-47A9-BFFE-6D82701C4839}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69CD28E2-1217-47A9-BFFE-6D82701C4839}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69CD28E2-1217-47A9-BFFE-6D82701C4839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E7F9819-2E8E-49B7-8640-CDA500E8DCA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E7F9819-2E8E-49B7-8640-CDA500E8DCA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E7F9819-2E8E-49B7-8640-CDA500E8DCA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E7F9819-2E8E-49B7-8640-CDA500E8DCA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
