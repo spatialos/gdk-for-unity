@@ -1,17 +1,26 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Worker;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public interface IUpdateEventManager
+    // todo look into validating at initialisation that types implementing these interfaces are valid
+    public interface IComponentManager
     {
         void SendAll();
         void Init(World world);
 
         Type[] GetEventTypes();
         Type GetUpdateType();
+        uint GetComponentId();
+    }
+
+    public interface IAuthorityManager
+    {
+        Authority GetAuthority(EntityId entityId);
+        void AcknowledgeAuthorityLoss(EntityId entityId);
     }
 
     public interface IEventManager<T> where T : IEvent
@@ -21,14 +30,10 @@ namespace Improbable.Gdk.Core
         List<ComponentEventToSend<T>> GetEventsToSend();
     }
 
-    public interface IUpdateSender<T> where T : ISpatialComponentUpdate
+    public interface IUpdateManager<T> where T : ISpatialComponentUpdate
     {
         void SendComponentUpdate(T updateToSend, EntityId entityId);
         List<ComponentUpdateToSend<T>> GetComponentUpdatesToSend();
-    }
-
-    public interface IUpdateReceiver<T> where T : ISpatialComponentUpdate
-    {
         List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived();
     }
 }
