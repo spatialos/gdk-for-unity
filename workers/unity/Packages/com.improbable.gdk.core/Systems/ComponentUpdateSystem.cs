@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -10,13 +11,16 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(SpatialOSSendSystem))]
     public class ComponentUpdateSystem : ComponentSystem
     {
-        private readonly List<IUpdateEventManager> managers = new List<IUpdateEventManager>();
+        private readonly List<IComponentManager> managers = new List<IComponentManager>();
 
-        private readonly Dictionary<Type, IUpdateEventManager> eventTypeToManager =
-            new Dictionary<Type, IUpdateEventManager>();
+        private readonly Dictionary<Type, IComponentManager> eventTypeToManager =
+            new Dictionary<Type, IComponentManager>();
 
-        private readonly Dictionary<Type, IUpdateEventManager> updateTypeToManager =
-            new Dictionary<Type, IUpdateEventManager>();
+        private readonly Dictionary<Type, IComponentManager> updateTypeToManager =
+            new Dictionary<Type, IComponentManager>();
+
+        private readonly Dictionary<uint, IComponentManager> componentIdToManager =
+            new Dictionary<uint, IComponentManager>();
 
         public void SendEvent<T>(T eventToSend, EntityId entityId) where T : IEvent
         {
@@ -66,7 +70,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Type is not a valid update");
             }
 
-            return ((IUpdateSender<T>) manager).GetComponentUpdatesToSend();
+            return ((IUpdateManager<T>) manager).GetComponentUpdatesToSend();
         }
 
         public List<ComponentUpdateReceived<T>> GetComponentUpdatesToSend<T>() where T : ISpatialComponentUpdate
@@ -76,7 +80,27 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Type is not a valid update");
             }
 
-            return ((IUpdateReceiver<T>) manager).GetComponentUpdatesReceived();
+            return ((IUpdateManager<T>) manager).GetComponentUpdatesReceived();
+        }
+
+        public Authority GetAuthority(EntityId entityId, uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return ((IAuthorityManager) manager).GetAuthority(entityId);
+        }
+
+        public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            ((IAuthorityManager) manager).AcknowledgeAuthorityLoss(entityId);
         }
 
         protected override void OnCreateManager()
@@ -87,12 +111,12 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (!typeof(IUpdateEventManager).IsAssignableFrom(type) || type.IsAbstract)
+                    if (!typeof(IComponentManager).IsAssignableFrom(type) || type.IsAbstract)
                     {
                         continue;
                     }
 
-                    var instance = (IUpdateEventManager) Activator.CreateInstance(type);
+                    var instance = (IComponentManager) Activator.CreateInstance(type);
                     instance.Init(World);
 
                     updateTypeToManager.Add(instance.GetUpdateType(), instance);
