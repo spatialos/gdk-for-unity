@@ -1,5 +1,5 @@
-﻿using Improbable.Gdk.Subscriptions;
-using Improbable.Worker;
+﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
 
