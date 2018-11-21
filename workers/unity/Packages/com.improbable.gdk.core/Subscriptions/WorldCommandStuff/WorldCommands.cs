@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Worker;
-using Improbable.Worker.Core;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
@@ -30,12 +28,12 @@ namespace Improbable.Gdk.Core
 
             dispatcher.OnAddEntity(op =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
+                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new WorldCommandSender(entity, world));
@@ -44,7 +42,7 @@ namespace Improbable.Gdk.Core
 
             dispatcher.OnRemoveEntity(op =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }

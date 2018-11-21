@@ -18,8 +18,7 @@ using Unity.Entities;
 using Unity.Collections;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
@@ -47,12 +46,12 @@ namespace <#= qualifiedNamespace #>
 
             dispatcher.OnAddEntity(op =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
+                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(entity, world));
@@ -61,7 +60,7 @@ namespace <#= qualifiedNamespace #>
 
             dispatcher.OnRemoveEntity(op =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }
@@ -152,20 +151,20 @@ namespace <#= qualifiedNamespace #>
 
                 if (op.Authority == Authority.Authoritative)
                 {
-                    if (!entitiesNotMatchingRequirements.Contains(op.EntityId))
+                    if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(op.EntityId, out var entity);
+                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                    foreach (var subscription in entityIdToReceiveSubscriptions[op.EntityId])
+                    foreach (var subscription in entityIdToReceiveSubscriptions[new EntityId(op.EntityId)])
                     {
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandReceiver(world, entity, op.EntityId));
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandReceiver(world, entity, new EntityId(op.EntityId)));
                     }
 
-                    entitiesMatchingRequirements.Add(op.EntityId);
-                    entitiesNotMatchingRequirements.Remove(op.EntityId);
+                    entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
+                    entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
@@ -175,21 +174,21 @@ namespace <#= qualifiedNamespace #>
                         return;
                     }
 
-                    if (!entitiesMatchingRequirements.Contains(op.EntityId))
+                    if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(op.EntityId, out var entity);
+                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                    foreach (var subscription in entityIdToReceiveSubscriptions[op.EntityId])
+                    foreach (var subscription in entityIdToReceiveSubscriptions[new EntityId(op.EntityId)])
                     {
                         ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
 
-                    entitiesNotMatchingRequirements.Add(op.EntityId);
-                    entitiesMatchingRequirements.Remove(op.EntityId);
+                    entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
+                    entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
                 }
             });
         }

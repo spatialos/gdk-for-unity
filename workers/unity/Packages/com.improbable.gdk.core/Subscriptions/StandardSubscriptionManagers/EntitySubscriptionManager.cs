@@ -30,12 +30,12 @@ namespace Improbable.Gdk.Subscriptions
 
             receiveSystem.Dispatcher.OnAddEntity(op =>
             {
-                if (!entityIdToSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
+                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(entity);
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Subscriptions
 
             receiveSystem.Dispatcher.OnRemoveEntity(op =>
             {
-                if (!entityIdToSubscriptions.TryGetValue(op.EntityId, out var subscriptions))
+                if (!entityIdToSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
                 {
                     return;
                 }

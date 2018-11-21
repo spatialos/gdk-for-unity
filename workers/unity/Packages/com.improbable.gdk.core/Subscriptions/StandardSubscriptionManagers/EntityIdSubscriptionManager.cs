@@ -1,4 +1,4 @@
-using Improbable.Worker;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions

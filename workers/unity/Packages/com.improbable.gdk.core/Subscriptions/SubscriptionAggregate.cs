@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using Improbable.Worker;
-using Unity.Entities;
+using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Subscriptions
 {
