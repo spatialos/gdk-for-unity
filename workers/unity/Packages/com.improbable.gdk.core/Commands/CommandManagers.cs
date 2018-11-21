@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Worker;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
@@ -41,13 +40,11 @@ namespace Improbable.Gdk.Core.Commands
     public interface ICommandRequestReceiver<TReceivedRequest> where TReceivedRequest : IReceivedCommandRequest
     {
         List<TReceivedRequest> GetRequestsReceived();
-        List<TReceivedRequest> GetRequestsReceivedForEntityId(EntityId entity);
     }
 
     public interface ICommandResponseReceiver<TReceivedResponse> where TReceivedResponse : IReceivedCommandResponse
     {
         List<TReceivedResponse> GetResponsesReceived();
-        List<TReceivedResponse> GetResponsesReceivedForEntity(Entity entity);
         bool TryGetResponseReceivedForRequestId(long requestId, out TReceivedResponse response);
     }
 

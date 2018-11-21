@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
@@ -90,11 +89,14 @@ namespace Improbable.Gdk.Core.Commands
                     SendingEntity = sendingEntity;
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    FirstEntityId = op.FirstEntityId;
                     NumberOfEntityIds = op.NumberOfEntityIds;
                     RequestPayload = req;
                     Context = req.Context;
                     RequestId = requestId;
+
+                    FirstEntityId = op.FirstEntityId.HasValue
+                        ? new EntityId(op.FirstEntityId.Value)
+                        : (EntityId?) null;
                 }
             }
 
@@ -351,7 +353,7 @@ namespace Improbable.Gdk.Core.Commands
                         var requestId = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds,
                             request.TimeoutMillis);
 
-                        sentWorkerRequestIdToInternalRequestId[requestId.Id] = id;
+                        sentWorkerRequestIdToInternalRequestId[requestId] = id;
                     }
 
                     requestsToSend.Clear();
@@ -424,8 +426,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private void AddResponse(ReserveEntityIdsResponseOp op)
                 {
-                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
-                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
+                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
+                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
 
                     var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
                     sentInternalRequestIdToEntity.Remove(internalRequestId);

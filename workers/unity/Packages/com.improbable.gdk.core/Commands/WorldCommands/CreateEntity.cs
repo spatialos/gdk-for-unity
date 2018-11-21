@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
@@ -17,7 +16,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             public struct Request : ICommandRequest
             {
-                public Improbable.Worker.Core.Entity Entity;
+                public Improbable.Worker.CInterop.Entity Entity;
                 public EntityId? EntityId;
                 public uint? TimeoutMillis;
                 public object Context;
@@ -92,10 +91,13 @@ namespace Improbable.Gdk.Core.Commands
                     SendingEntity = sendingEntity;
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    EntityId = op.EntityId;
                     RequestPayload = req;
                     Context = req.Context;
                     RequestId = requestId;
+
+                    EntityId = op.EntityId.HasValue
+                        ? new EntityId(op.EntityId.Value)
+                        : (EntityId?) null;
                 }
             }
 
@@ -349,11 +351,15 @@ namespace Improbable.Gdk.Core.Commands
 
                     foreach (var (request, id) in requestsToSend)
                     {
+                        long? entityId = request.EntityId.HasValue
+                            ? request.EntityId.Value.Id
+                            : (long?) null;
+
                         var requestId = connection.SendCreateEntityRequest(request.Entity,
-                            request.EntityId,
+                            entityId,
                             request.TimeoutMillis);
 
-                        sentWorkerRequestIdToInternalRequestId[requestId.Id] = id;
+                        sentWorkerRequestIdToInternalRequestId[requestId] = id;
                     }
 
                     requestsToSend.Clear();
@@ -426,8 +432,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private void AddResponse(CreateEntityResponseOp op)
                 {
-                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
-                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
+                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
+                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
 
                     var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
                     sentInternalRequestIdToEntity.Remove(internalRequestId);
