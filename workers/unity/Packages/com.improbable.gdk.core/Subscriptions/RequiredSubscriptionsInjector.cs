@@ -1,5 +1,5 @@
 using System;
-using Improbable.Worker;
+using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Subscriptions
 {
