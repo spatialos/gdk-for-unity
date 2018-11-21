@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Worker;
-using Improbable.Worker.Core;
-using Improbable.Worker.Query;
+using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop.Query;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
@@ -18,7 +17,7 @@ namespace Improbable.Gdk.Core.Commands
             /// </summary>
             public struct Request : ICommandRequest
             {
-                public Improbable.Worker.Query.EntityQuery EntityQuery;
+                public Improbable.Worker.CInterop.Query.EntityQuery EntityQuery;
                 public uint? TimeoutMillis;
                 public object Context;
 
@@ -33,7 +32,7 @@ namespace Improbable.Gdk.Core.Commands
                 ///    (Optional) A context object that will be returned with the command response.
                 /// </param>
                 /// <returns></returns>
-                public Request(Improbable.Worker.Query.EntityQuery entityQuery,
+                public Request(Improbable.Worker.CInterop.Query.EntityQuery entityQuery,
                     uint? timeoutMillis = null, object context = null)
                 {
                     EntityQuery = entityQuery;
@@ -106,7 +105,7 @@ namespace Improbable.Gdk.Core.Commands
                     Result = new Dictionary<EntityId, EntityQuerySnapshot>();
                     foreach (var entityIdToEntity in op.Result)
                     {
-                        Result.Add(entityIdToEntity.Key, new EntityQuerySnapshot(entityIdToEntity.Value, world));
+                        Result.Add(new EntityId(entityIdToEntity.Key), new EntityQuerySnapshot(entityIdToEntity.Value, world));
                     }
                 }
             }
@@ -367,7 +366,7 @@ namespace Improbable.Gdk.Core.Commands
                         var requestId = connection.SendEntityQueryRequest(request.EntityQuery,
                             request.TimeoutMillis);
 
-                        sentWorkerRequestIdToInternalRequestId[requestId.Id] = id;
+                        sentWorkerRequestIdToInternalRequestId[requestId] = id;
                     }
 
                     requestsToSend.Clear();
@@ -441,8 +440,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private void AddResponse(EntityQueryResponseOp op)
                 {
-                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
-                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
+                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
+                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
 
                     var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
                     sentInternalRequestIdToEntity.Remove(internalRequestId);

@@ -583,7 +583,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         public class <#= command.CommandName #>CommandManager : IComponentCommandManager<
             <#= requestType #>, <#= responseType #>, <#= receivedRequestType #>, <#= receivedResponseType #>>
         {
-            private readonly Improbable.Worker.Core.CommandParameters shortCircuitingParameters = new CommandParameters
+            private readonly Improbable.Worker.CInterop.CommandParameters shortCircuitingParameters = new CommandParameters
             {
                 AllowShortCircuiting = true
             };
@@ -628,32 +628,30 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                 foreach (var (request, id) in requestsToSend)
                 {
-                    var schemaCommandRequest = new global::Improbable.Worker.Core.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
+                    var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
                     <#= command.FqnRequestType #>.Serialization.Serialize(request.Payload, schemaCommandRequest.GetObject());
 
-                    var requestId = connection.SendCommandRequest(request.TargetEntityId,
-                        new global::Improbable.Worker.Core.CommandRequest(schemaCommandRequest),
+                    var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
+                        new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
                         request.TimeoutMillis,
                         request.AllowShortCircuiting ? shortCircuitingParameters : null);
 
-                    sentWorkerRequestIdToInternalRequestId[requestId.Id] = id;
+                    sentWorkerRequestIdToInternalRequestId[requestId] = id;
                 }
 
                 foreach (var response in responsesToSend)
                 {
-                    var requestId = new global::Improbable.Worker.Core.RequestId<IncomingCommandRequest>(response.RequestId);
-
                     if (response.FailureMessage != null)
                     {
                         // Send a command failure if the string is non-null.
-                        connection.SendCommandFailure(requestId, response.FailureMessage);
+                        connection.SendCommandFailure((uint) response.RequestId, response.FailureMessage);
                         continue;
                     }
 
-                    var schemaCommandResponse = new global::Improbable.Worker.Core.SchemaCommandResponse(ComponentId, <#= command.CommandIndex #>);
+                    var schemaCommandResponse = new global::Improbable.Worker.CInterop.SchemaCommandResponse(ComponentId, <#= command.CommandIndex #>);
                     <#= command.FqnResponseType #>.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
 
-                    connection.SendCommandResponse(requestId, new global::Improbable.Worker.Core.CommandResponse(schemaCommandResponse));
+                    connection.SendCommandResponse((uint) response.RequestId, new global::Improbable.Worker.CInterop.CommandResponse(schemaCommandResponse));
                 }
 
                 requestsToSend.Clear();
@@ -701,13 +699,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 return requestsReceived;
             }
 
-            public List<<#= receivedRequestType #>> GetRequestsReceivedForEntityId(Improbable.Worker.EntityId entityId)
-            {
-                return null;
-                // todo don't actually use this - decide if this function is needed or not and if so index things properly
-                //return requestsReceived.Where(request => request.TargetId == entityId).ToList();
-            }
-
             public List<<#= responseType #>> GetResponsesToSend()
             {
                 return responsesToSend;
@@ -716,21 +707,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             public List<<#= receivedResponseType #>> GetResponsesReceived()
             {
                 return responsesReceived;
-            }
-
-            public List<<#= receivedResponseType #>> GetResponsesReceivedForEntity(Unity.Entities.Entity entity)
-            {
-                // todo don't actually use this - decide if this function is needed or not and if so index things properly
-                return responsesReceived.Where(response =>
-                {
-                    if (!sentInternalRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
-                    {
-                        return false;
-                    }
-
-                    return entityForRequest == entity;
-                }).ToList();
-                return null;
             }
 
             public bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
@@ -765,8 +741,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 var deserializedRequest = <#= command.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
                 var request = new <#= receivedRequestType #>(
-                    op.EntityId,
-                    op.RequestId.Id,
+                    new EntityId(op.EntityId),
+                    op.RequestId,
                     op.CallerWorkerId,
                     op.CallerAttributeSet,
                     deserializedRequest);
@@ -794,8 +770,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     rawResponse = <#= command.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId.Id];
-                sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId.Id);
+                var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
+                sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
 
                 var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
                 sentInternalRequestIdToEntity.Remove(internalRequestId);
@@ -805,7 +781,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                 var response = new <#= receivedResponseType #>(
                     sendingEntity,
-                    op.EntityId,
+                    new EntityId(op.EntityId),
                     op.Message,
                     op.StatusCode,
                     rawResponse,
