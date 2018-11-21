@@ -70,6 +70,7 @@ namespace Improbable.Gdk.Tests
                     Field15 = data.Field15,
                     Field16 = data.Field16,
                     Field17 = data.Field17,
+                    Field18 = data.Field18,
                 };
 
                 var updates = new List<Improbable.Gdk.Tests.ExhaustiveSingular.Update>

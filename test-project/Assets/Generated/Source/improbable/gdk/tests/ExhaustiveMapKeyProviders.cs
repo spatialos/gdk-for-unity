@@ -1219,6 +1219,73 @@ namespace Improbable.Gdk.Tests
             }
             
 
+            public static class Field18Provider 
+            {
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>>();
+                private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
+            
+                private static uint nextHandle = 0;
+            
+                public static uint Allocate(global::Unity.Entities.World world)
+                {
+                    var handle = GetNextHandle();
+            
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>));
+                    WorldMapping.Add(handle, world);
+            
+                    return handle;
+                }
+            
+                public static global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> Get(uint handle)
+                {
+                    if (!Storage.TryGetValue(handle, out var value))
+                    {
+                        throw new ArgumentException($"Field18Provider does not contain handle {handle}");
+                    }
+            
+                    return value;
+                }
+            
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> value)
+                {
+                    if (!Storage.ContainsKey(handle))
+                    {
+                        throw new ArgumentException($"Field18Provider does not contain handle {handle}");
+                    }
+            
+                    Storage[handle] = value;
+                }
+            
+                public static void Free(uint handle)
+                {
+                    Storage.Remove(handle);
+                    WorldMapping.Remove(handle);
+                }
+            
+                public static void CleanDataInWorld(global::Unity.Entities.World world)
+                {
+                    var handles = WorldMapping.Where(pair => pair.Value == world).Select(pair => pair.Key).ToList();
+            
+                    foreach (var handle in handles)
+                    {
+                        Free(handle);
+                    }
+                }
+            
+                private static uint GetNextHandle() 
+                {
+                    nextHandle++;
+                    
+                    while (Storage.ContainsKey(nextHandle))
+                    {
+                        nextHandle++;
+                    }
+            
+                    return nextHandle;
+                }
+            }
+            
+
         }
     }
 }

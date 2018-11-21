@@ -2,7 +2,10 @@ package improbable.gdk.tests;
 
 type SomeType {}
 
-// Non-Blittable Components.
+enum SomeEnum {
+  FIRST_VALUE = 0;
+  SECOND_VALUE = 1;
+}
 
 component ExhaustiveSingular {
   id = 197715;
@@ -23,6 +26,7 @@ component ExhaustiveSingular {
   sfixed64 field15 = 15;
   EntityId field16 = 16;
   SomeType field17 = 17;
+  SomeEnum field18 = 18;
 }
 
 component ExhaustiveOptional {
@@ -44,6 +48,7 @@ component ExhaustiveOptional {
   option<sfixed64> field15 = 15;
   option<EntityId> field16 = 16;
   option<SomeType> field17 = 17;
+  option<SomeEnum> field18 = 18;
 }
 
 component ExhaustiveRepeated {
@@ -65,6 +70,7 @@ component ExhaustiveRepeated {
   list<sfixed64> field15 = 15;
   list<EntityId> field16 = 16;
   list<SomeType> field17 = 17;
+  list<SomeEnum> field18 = 18;
 }
 
 component ExhaustiveMapValue {
@@ -86,6 +92,7 @@ component ExhaustiveMapValue {
   map<string, sfixed64> field15 = 15;
   map<string, EntityId> field16 = 16;
   map<string, SomeType> field17 = 17;
+  map<string, SomeEnum> field18 = 18;
 }
 
 component ExhaustiveMapKey {
@@ -107,6 +114,7 @@ component ExhaustiveMapKey {
   map<sfixed64, string> field15 = 15;
   map<EntityId, string> field16 = 16;
   map<SomeType, string> field17 = 17;
+  map<SomeEnum, string> field18 = 18;
 }
 
 // Blittable subset
@@ -127,4 +135,5 @@ component ExhaustiveBlittableSingular {
   sfixed64 field15 = 15;
   EntityId field16 = 16;
   SomeType field17 = 17;
+  SomeEnum field18 = 18;
 }

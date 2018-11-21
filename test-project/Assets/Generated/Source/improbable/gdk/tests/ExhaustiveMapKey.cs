@@ -47,9 +47,9 @@ namespace Improbable.Gdk.Tests
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -73,9 +73,9 @@ namespace Improbable.Gdk.Tests
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -319,6 +319,18 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
+            internal uint field18Handle;
+
+            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> Field18
+            {
+                get => Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                set
+                {
+                    MarkDataDirty(17);
+                    Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
+                }
+            }
+
             public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
                 global::System.Collections.Generic.Dictionary<BlittableBool,string> field1,
                 global::System.Collections.Generic.Dictionary<float,string> field2,
@@ -336,7 +348,8 @@ namespace Improbable.Gdk.Tests
                 global::System.Collections.Generic.Dictionary<int,string> field14,
                 global::System.Collections.Generic.Dictionary<long,string> field15,
                 global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16,
-                global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17
+                global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17,
+                global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> field18
             )
             {
                 var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197719);
@@ -494,6 +507,15 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    foreach (var keyValuePair in field18)
+                    {
+                        var mapObj = obj.AddObject(18);
+                        mapObj.AddEnum(1, (uint) keyValuePair.Key);
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
                 return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
@@ -519,6 +541,7 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.Dictionary<long,string> Field15;
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> Field16;
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> Field17;
+            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> Field18;
         }
 
         public static class Serialization
@@ -674,6 +697,15 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.AddObject(17);
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Key, mapObj.AddObject(1));
+                        mapObj.AddString(2, keyValuePair.Value);
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field18)
+                    {
+                        var mapObj = obj.AddObject(18);
+                        mapObj.AddEnum(1, (uint) keyValuePair.Key);
                         mapObj.AddString(2, keyValuePair.Value);
                     }
                     
@@ -989,6 +1021,24 @@ namespace Improbable.Gdk.Tests
                         }
                         
                 }
+                {
+                    if (component.IsDataDirty(17))
+                    {
+                        foreach (var keyValuePair in component.Field18)
+                        {
+                            var mapObj = obj.AddObject(18);
+                            mapObj.AddEnum(1, (uint) keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
+                    }
+
+                    if (component.Field18.Count == 0)
+                        {
+                            updateObj.AddClearedField(18);
+                        }
+                        
+                }
             }
 
             public static Improbable.Gdk.Tests.ExhaustiveMapKey.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -1228,6 +1278,20 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(17, (uint) i);
                         var key = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(1));
+                        var value = mapObj.GetString(2);
+                        map.Add(key, value);
+                    }
+                    
+                }
+                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                {
+                    component.Field18 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>();
+                    var map = component.Field18;
+                    var mapSize = obj.GetObjectCount(18);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(1);
                         var value = mapObj.GetString(2);
                         map.Add(key, value);
                     }
@@ -1651,6 +1715,30 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var mapSize = obj.GetObjectCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (mapSize > 0 || isCleared)
+                    {
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>>(new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>());
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(1);
+                        var value = mapObj.GetString(2);
+                        update.Field18.Value.Add(key, value);
+                    }
+                    
+                }
                 return update;
             }
 
@@ -1890,6 +1978,20 @@ namespace Improbable.Gdk.Tests
                     {
                         var mapObj = obj.IndexObject(17, (uint) i);
                         var key = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(1));
+                        var value = mapObj.GetString(2);
+                        map.Add(key, value);
+                    }
+                    
+                }
+
+                {
+                    component.Field18 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>();
+                    var map = component.Field18;
+                    var mapSize = obj.GetObjectCount(18);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(1);
                         var value = mapObj.GetString(2);
                         map.Add(key, value);
                     }
@@ -2313,6 +2415,30 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var mapSize = obj.GetObjectCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (mapSize > 0 || isCleared)
+                    {
+                        component.Field18.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(1);
+                        var value = mapObj.GetString(2);
+                        component.Field18.Add(key, value);
+                    }
+                    
+                }
             }
         }
 
@@ -2337,6 +2463,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.Dictionary<long,string>> Field15;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> Field16;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string>> Field17;
+            public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string>> Field18;
         }
 
         public struct ReceivedUpdates : IComponentData

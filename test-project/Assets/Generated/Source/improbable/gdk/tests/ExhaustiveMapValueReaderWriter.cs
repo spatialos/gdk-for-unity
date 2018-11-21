@@ -48,6 +48,7 @@ namespace Improbable.Gdk.Tests
                 event Action<global::System.Collections.Generic.Dictionary<string,long>> Field15Updated;
                 event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>> Field16Updated;
                 event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType>> Field17Updated;
+                event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>> Field18Updated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197718)]
@@ -474,6 +475,30 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
+                private readonly List<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>>> field18Delegates = new List<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>>>();
+
+                public event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>> Field18Updated
+                {
+                    add
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        field18Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        field18Delegates.Remove(value);
+                    }
+                }
+
                 protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.ExhaustiveMapValue.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
@@ -493,6 +518,7 @@ namespace Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field15, field15Delegates);
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
+                    DispatchWithErrorHandling(update.Field18, field18Delegates);
                 }
 
                 protected override void ApplyUpdate(Improbable.Gdk.Tests.ExhaustiveMapValue.Update update, ref Improbable.Gdk.Tests.ExhaustiveMapValue.Component data)
@@ -564,6 +590,10 @@ namespace Improbable.Gdk.Tests
                     if (update.Field17.HasValue)
                     {
                         data.Field17 = update.Field17.Value;
+                    }
+                    if (update.Field18.HasValue)
+                    {
+                        data.Field18 = update.Field18.Value;
                     }
                 }
             }
