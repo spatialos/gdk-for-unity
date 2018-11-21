@@ -11,8 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -54,20 +53,20 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                if (!entitiesNotMatchingRequirements.Contains(op.EntityId))
+                if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
+                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                foreach (var subscription in entityIdToReaderSubscriptions[op.EntityId])
+                foreach (var subscription in entityIdToReaderSubscriptions[new EntityId(op.EntityId)])
                 {
-                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, op.EntityId, readerCallbackManager));
+                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, new EntityId(op.EntityId), readerCallbackManager));
                 }
 
-                entitiesMatchingRequirements.Add(op.EntityId);
-                entitiesNotMatchingRequirements.Remove(op.EntityId);
+                entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
+                entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
             });
 
             dispatcher.OnRemoveComponent(op =>
@@ -78,21 +77,21 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                if (!entitiesMatchingRequirements.Contains(op.EntityId))
+                if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(op.EntityId, out var entity);
+                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                foreach (var subscription in entityIdToReaderSubscriptions[op.EntityId])
+                foreach (var subscription in entityIdToReaderSubscriptions[new EntityId(op.EntityId)])
                 {
                     ResetValue(subscription);
                     subscription.SetUnavailable();
                 }
 
-                entitiesNotMatchingRequirements.Add(op.EntityId);
-                entitiesMatchingRequirements.Remove(op.EntityId);
+                entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
+                entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
             });
         }
 
@@ -192,20 +191,20 @@ namespace <#= qualifiedNamespace #>
 
                 if (op.Authority == Authority.Authoritative)
                 {
-                    if (!entitiesNotMatchingRequirements.Contains(op.EntityId))
+                    if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(op.EntityId, out var entity);
+                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                    foreach (var subscription in entityIdToWriterSubscriptions[op.EntityId])
+                    foreach (var subscription in entityIdToWriterSubscriptions[new EntityId(op.EntityId)])
                     {
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, op.EntityId, readerCallbackManager));
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, new EntityId(op.EntityId), readerCallbackManager));
                     }
 
-                    entitiesMatchingRequirements.Add(op.EntityId);
-                    entitiesNotMatchingRequirements.Remove(op.EntityId);
+                    entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
+                    entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
                 }
                 else if (op.Authority == Authority.NotAuthoritative)
                 {
@@ -215,21 +214,21 @@ namespace <#= qualifiedNamespace #>
                         return;
                     }
 
-                    if (!entitiesMatchingRequirements.Contains(op.EntityId))
+                    if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(op.EntityId, out var entity);
+                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
-                    foreach (var subscription in entityIdToWriterSubscriptions[op.EntityId])
+                    foreach (var subscription in entityIdToWriterSubscriptions[new EntityId(op.EntityId)])
                     {
                         ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
 
-                    entitiesNotMatchingRequirements.Add(op.EntityId);
-                    entitiesMatchingRequirements.Remove(op.EntityId);
+                    entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
+                    entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
                 }
             });
         }
@@ -326,12 +325,12 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var update = <#= componentDetails.ComponentName #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
-                updateCallbacks?.InvokeAll(op.EntityId.Id, update);
+                updateCallbacks?.InvokeAll(op.EntityId, update);
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
                 if (<#= fieldDetails.CamelCaseName #>UpdateCallbacks != null && update.<#= fieldDetails.PascalCaseName #>.HasValue)
                 {
-                    <#= fieldDetails.CamelCaseName #>UpdateCallbacks.InvokeAll(op.EntityId.Id, update.<#= fieldDetails.PascalCaseName #>.Value);
+                    <#= fieldDetails.CamelCaseName #>UpdateCallbacks.InvokeAll(op.EntityId, update.<#= fieldDetails.PascalCaseName #>.Value);
                 }
 <# } #>
 
@@ -344,7 +343,7 @@ namespace <#= qualifiedNamespace #>
                     for (uint i = 0; i < eventCount; i++)
                     {
                         var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= eventDetails.EventIndex #>, i));
-                        <#= eventDetails.CamelCaseEventName #>EventCallbacks.InvokeAll(op.EntityId.Id, e);
+                        <#= eventDetails.CamelCaseEventName #>EventCallbacks.InvokeAll(op.EntityId, e);
                     }
                 }
 <# } #>
@@ -365,11 +364,11 @@ namespace <#= qualifiedNamespace #>
 
                 if (op.Authority == Authority.Authoritative)
                 {
-                    authorityCallbacks?.InvokeAll(op.EntityId.Id, op.Authority);
+                    authorityCallbacks?.InvokeAll(op.EntityId, op.Authority);
                 }
                 else
                 {
-                    authorityCallbacks?.InvokeAllReverse(op.EntityId.Id, op.Authority);
+                    authorityCallbacks?.InvokeAllReverse(op.EntityId, op.Authority);
                 }
             });
         }
