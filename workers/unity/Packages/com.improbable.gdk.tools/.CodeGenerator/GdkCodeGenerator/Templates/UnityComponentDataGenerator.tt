@@ -213,6 +213,16 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             }
 
+            public static void SerializeSnapshot(<#= componentNamespace #>.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
+                {
+                    <#= fieldDetails.GetSerializationString("snapshot." + fieldDetails.PascalCaseName, "obj", 4) #>
+                }
+<# } #>
+            }
+
             public static <#= componentNamespace #>.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Component();
@@ -329,6 +339,17 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeData, DeserializeUpdate);
@@ -336,7 +357,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

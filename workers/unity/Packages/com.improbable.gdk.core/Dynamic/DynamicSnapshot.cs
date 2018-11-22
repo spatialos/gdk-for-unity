@@ -8,11 +8,22 @@ namespace Improbable.Gdk.Core
     {
         public delegate T SnapshotDeserializer<out T>(ComponentData update, World world) where T : ISpatialComponentSnapshot;
 
+        public delegate void SnapshotSerializer<T>(T snapshot, ComponentData data) where T : ISpatialComponentSnapshot;
+
         public interface ISnapshotHandler
         {
             void Accept<T>(uint componentId,
-                SnapshotDeserializer<T> deserializeComponentData)
+                SnapshotDeserializer<T> deserializeSnapshot,
+                SnapshotSerializer<T> serializeSnapshot)
                 where T : ISpatialComponentSnapshot;
+        }
+
+        internal static void ForEachSnapshotComponent(ISnapshotHandler snapshotHandler)
+        {
+            foreach (var component in ComponentDatabase.IdsToDynamicInvokers.Values)
+            {
+                component.InvokeSnapshotHandler(snapshotHandler);
+            }
         }
 
         internal static void ForSnapshotComponent(uint componentId, ISnapshotHandler handler)

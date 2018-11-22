@@ -20,10 +20,10 @@ namespace Improbable.Gdk.Core
             public World World;
             public Dictionary<uint, ISpatialComponentSnapshot> Components;
 
-            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeComponentData) where T : ISpatialComponentSnapshot
+            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
             {
                 var schemaObject = EntitySnapshot.Get(componentId).Value;
-                Components.Add(componentId, deserializeComponentData(schemaObject, World));
+                Components.Add(componentId, deserializeSnapshot(schemaObject, World));
             }
         }
 
