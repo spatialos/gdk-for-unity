@@ -13,7 +13,7 @@ The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to
 
 ## Overview
 
-The code generator generates two structs for each SpatialOS component defined in schema. The generation process places these structs in namespace according to the schemalang component name: `{schema package}.{name of schema component}`. The two structs it generates are:
+The code generator generates two structs for each SpatialOS component defined in schema. The generation process places these structs in a namespace according to the SpatialOS component name: `{schema package}.{name of schema component}`. The two structs it generates are:
 
   * A `struct` which implements `Improbable.Gdk.Core.ISpatialComponentSnapshot`. Its fully qualified name is: `{schema package}.{name of schema component}.Snapshot`.
   * A `struct` which implements `Unity.Entities.IComponentData`, `Improbable.Gdk.Core.ISpatialComponentData`, and `Improbable.Gdk.Core.ISnapshottable<{schema package}.{name of schema component}.Snapshot>`. Its fully qualified name is: `{schema package}.{name of schema component}.Component`.
@@ -37,12 +37,12 @@ Additionally, for each field defined in your schema file, the generated C# struc
 This struct contains the following fields:
 
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang
-  * the public property `BlittableBool DirtyBit` used internally to identify whether a component update needs to be sent to the SpatialOS Runtime
+  * the private fields `byte dirtyBits{i}`, which represents a bitmask used internally to identify whether a component field needs to be replicated to the SpatialOS runtime.
 
 Additionally, for each field defined in your schema file, the generated C# struct creates:
 
   * a private field corresponding to the field defined in schemalang
-  * a public property that can be used for reading and writing the value of this field. Changing the value of this property makes sure that `DirtyBit` is set to `true`.
+  * a public property that can be used for reading and writing the value of this field. Changing the value of this property sets the corresponding `dirtyBit` to true.
 
 The struct also contains the following methods:
 ```csharp
