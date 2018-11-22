@@ -8,9 +8,9 @@ namespace Improbable.Gdk.Subscriptions
     {
         public abstract Type SubscriptionType { get; }
 
-        public abstract ITypeErasedSubscription SubscribeTypeErased(EntityId entityId);
-        public abstract void Cancel(ITypeErasedSubscription subscription);
-        public abstract void ResetValue(ITypeErasedSubscription subscription);
+        public abstract ISubscription SubscribeTypeErased(EntityId entityId);
+        public abstract void Cancel(ISubscription subscription);
+        public abstract void ResetValue(ISubscription subscription);
     }
 
     public abstract class SubscriptionManager<T> : SubscriptionManagerBase
@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public override Type SubscriptionType => typeof(T);
 
-        public override ITypeErasedSubscription SubscribeTypeErased(EntityId entityId)
+        public override ISubscription SubscribeTypeErased(EntityId entityId)
         {
             return Subscribe(entityId);
         }
