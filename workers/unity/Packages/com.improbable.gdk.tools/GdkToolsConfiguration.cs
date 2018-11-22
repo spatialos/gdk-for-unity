@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Tools
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
 
-        private static string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
+        private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()
         {
