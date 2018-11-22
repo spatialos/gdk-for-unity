@@ -13,12 +13,28 @@ The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to
 
 ## Overview
 
-A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`, is generated for each SpatialOS component. It has the same name as the corresponding schema component.
-The generation process creates a namespace for each struct according to the relevant schemalang component name: `{name of schema component}.Component`
+The code generator generates two structs for each SpatialOS component defined in schema. The generation process places these structs in namespace according to the schemalang component name: `{schema package}.{name of schema component}`. The two structs it generates are:
+
+  * A `struct` which implements `Improbable.Gdk.Core.ISpatialComponentSnapshot`. Its fully qualified name is: `{schema package}.{name of schema component}.Snapshot`.
+  * A `struct` which implements `Unity.Entities.IComponentData`, `Improbable.Gdk.Core.ISpatialComponentData`, and `Improbable.Gdk.Core.ISnapshottable<{schema package}.{name of schema component}.Snapshot>`. Its fully qualified name is: `{schema package}.{name of schema component}.Component`.
+
 These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands) or [events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
 
 ## Generation details
-Each struct contains the following fields:
+
+### Snapshot
+
+This struct contains the following fields:
+
+  * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang
+
+Additionally, for each field defined in your schema file, the generated C# struct creates:
+  
+  * a public field corresponding to the field defined in schemalang.
+
+### Component
+
+This struct contains the following fields:
 
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang
   * the public property `BlittableBool DirtyBit` used internally to identify whether a component update needs to be sent to the SpatialOS Runtime
@@ -28,12 +44,18 @@ Additionally, for each field defined in your schema file, the generated C# struc
   * a private field corresponding to the field defined in schemalang
   * a public property that can be used for reading and writing the value of this field. Changing the value of this property makes sure that `DirtyBit` is set to `true`.
 
-The struct also contains the following method:
+The struct also contains the following methods:
 ```csharp
 public static Improbable.Worker.Core.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
 ```
 
-This method can be used to add his component to your [entity template]({{urlRoot}}/content/entity-templates).
+This method can be used to add this component to your [entity template]({{urlRoot}}/content/entity-templates).
+
+```csharp
+public Snapshot ToComponentSnapshot(Unity.Entities.World world);
+```
+
+This method can be used to convert this component into the corresponding `ISpatialComponentSnapshot`.
 
 ### Primitive types
 Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
