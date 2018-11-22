@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public event Action OnSubscriptionsNoLongerSatisfied;
 
-        private readonly ITypeErasedSubscription[] subscriptions;
+        private readonly ISubscription[] subscriptions;
         private readonly Dictionary<Type, int> typesToSubscriptionIndexes = new Dictionary<Type, int>();
 
         private int subscriptionsSatisfied;
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Subscriptions
         public SubscriptionAggregate(SubscriptionSystem subscriptionSystem, EntityId entityId,
             params Type[] typesToSubscribeTo)
         {
-            subscriptions = new ITypeErasedSubscription[typesToSubscribeTo.Length];
+            subscriptions = new ISubscription[typesToSubscribeTo.Length];
 
             for (int i = 0; i < typesToSubscribeTo.Length; ++i)
             {
@@ -45,8 +45,7 @@ namespace Improbable.Gdk.Subscriptions
                 typesToSubscriptionIndexes.Add(typesToSubscribeTo[i], i);
                 subscriptions[i] = subscription;
 
-                subscription.OnAvailable_Internal += HandleSubscriptionAvailable;
-                subscription.OnUnavailable_Internal += HandleSubscriptionUnavailable;
+                subscription.SetAvailabilityHandler(Handler.Pool.Rent(this));
             }
         }
 
@@ -113,6 +112,43 @@ namespace Improbable.Gdk.Subscriptions
                 foreach (var callback in onSubscriptionsSatisfied)
                 {
                     callback();
+                }
+            }
+        }
+
+        private class Handler : ISubscriptionAvailabilityHandler
+        {
+            private SubscriptionAggregate aggregate;
+
+            public void OnAvailable()
+            {
+                aggregate.HandleSubscriptionAvailable();
+            }
+
+            public void OnUnavailable()
+            {
+                aggregate.HandleSubscriptionUnavailable();
+            }
+
+            public class Pool
+            {
+                private static readonly Stack<Handler> handlerPool = new Stack<Handler>();
+
+                public static Handler Rent(SubscriptionAggregate aggregate)
+                {
+                    Handler handler = handlerPool.Count == 0
+                        ? new Handler()
+                        : handlerPool.Pop();
+
+                    handler.aggregate = aggregate;
+                    return handler;
+                }
+
+                public static void Return(Handler handler)
+                {
+                    // todo this should be bounded
+                    handler.aggregate = null;
+                    handlerPool.Push(handler);
                 }
             }
         }
