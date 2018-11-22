@@ -125,7 +125,7 @@ namespace <#= qualifiedNamespace #>
             return subscription;
         }
 
-        public override void Cancel(ITypeErasedSubscription subscription)
+        public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Reader>) subscription);
             if (sub.HasValue)
@@ -145,7 +145,7 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
-        public override void ResetValue(ITypeErasedSubscription subscription)
+        public override void ResetValue(ISubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Reader>) subscription);
             if (sub.HasValue)
@@ -263,7 +263,7 @@ namespace <#= qualifiedNamespace #>
             return subscription;
         }
 
-        public override void Cancel(ITypeErasedSubscription subscription)
+        public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Writer>) subscription);
             if (sub.HasValue)
@@ -283,7 +283,7 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
-        public override void ResetValue(ITypeErasedSubscription subscription)
+        public override void ResetValue(ISubscription subscription)
         {
             var sub = ((Subscription<<#= componentDetails.ComponentName #>Writer>) subscription);
             if (sub.HasValue)

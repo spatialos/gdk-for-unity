@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Subscriptions
             return subscription;
         }
 
-        public override void Cancel(ITypeErasedSubscription subscription)
+        public override void Cancel(ISubscription subscription)
         {
             if (!entityIdToSubscriptions.TryGetValue(subscription.EntityId, out var subscriptions))
             {
@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public override void ResetValue(ITypeErasedSubscription subscription)
+        public override void ResetValue(ISubscription subscription)
         {
         }
     }
