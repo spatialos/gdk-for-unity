@@ -152,26 +152,6 @@ var fieldDetails = fieldDetailsList[i]; #>
             }
 <# } #>
 <# } #>
-
-<# if (!UnityTypeMappings.WellKnownComponents.Contains(componentDetails.ComponentId)) { #>
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-<# foreach(var fieldDetails in fieldDetailsList) {
-    var lastItem = fieldDetailsList[fieldDetailsList.Count - 1];
-#>
-                <#= fieldDetails.Type #> <#= fieldDetails.CamelCaseName #><#= lastItem != fieldDetails ? "," : "" #>
-<# } #>
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(<#= componentDetails.ComponentId #>);
-                var obj = schemaComponentData.GetFields();
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetSerializationString(fieldDetails.CamelCaseName, "obj", 5) #>
-                }
-<# } #>
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
-<# } #>
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
