@@ -18,11 +18,11 @@ namespace Improbable.Gdk.Subscriptions
             return subscription;
         }
 
-        public override void Cancel(ITypeErasedSubscription subscription)
+        public override void Cancel(ISubscription subscription)
         {
         }
 
-        public override void ResetValue(ITypeErasedSubscription subscription)
+        public override void ResetValue(ISubscription subscription)
         {
         }
     }

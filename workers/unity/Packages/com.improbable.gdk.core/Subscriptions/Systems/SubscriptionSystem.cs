@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Subscriptions
             return ((SubscriptionManager<T>) manager).Subscribe(entity);
         }
 
-        public ITypeErasedSubscription Subscribe(EntityId entity, Type type)
+        public ISubscription Subscribe(EntityId entity, Type type)
         {
             if (!typeToSubscriptionManager.TryGetValue(type, out var manager))
             {

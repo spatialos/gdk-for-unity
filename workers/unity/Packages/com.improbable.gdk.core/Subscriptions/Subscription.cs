@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
-using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public interface ITypeErasedSubscription
+    public interface ISubscription
     {
+        // todo not all of these need to be here
         bool HasValue { get; }
         EntityId EntityId { get; }
 
-        // todo think of an actual name
-        event Action OnAvailable_Internal;
-        event Action OnUnavailable_Internal;
-
-        // todo see if there is a way to get away without this
+        // todo put these in their own interface
+        void SetAvailabilityHandler(ISubscriptionAvailabilityHandler handler);
         object GetErasedValue();
 
         void Cancel();
@@ -24,13 +20,15 @@ namespace Improbable.Gdk.Subscriptions
 
     // possible this can be made a struct
     // might need to make HasValue a property though and give it an ID
-    public class Subscription<T> : ITypeErasedSubscription
+    public class Subscription<T> : ISubscription
     {
         // Want a custom event thing that gives an add and invoke option
         public bool HasValue { get; private set; }
         public EntityId EntityId { get; }
 
         private readonly SubscriptionManagerBase manager;
+
+        private ISubscriptionAvailabilityHandler availabilityHandler;
 
         private List<Action<T>> onAvailable;
 
@@ -88,13 +86,7 @@ namespace Improbable.Gdk.Subscriptions
             value = subscribedObject;
             HasValue = true;
 
-            if (onAvailable_internal != null)
-            {
-                foreach (var callback in onAvailable_internal)
-                {
-                    callback();
-                }
-            }
+            availabilityHandler?.OnUnavailable();
 
             if (onAvailable != null)
             {
@@ -110,13 +102,7 @@ namespace Improbable.Gdk.Subscriptions
             HasValue = false;
             value = default(T);
 
-            if (onUnavailable_internal != null)
-            {
-                foreach (var callback in onUnavailable_internal)
-                {
-                    callback();
-                }
-            }
+            availabilityHandler?.OnUnavailable();
 
             OnUnavailable?.Invoke(value);
         }
@@ -124,51 +110,23 @@ namespace Improbable.Gdk.Subscriptions
         // I'm still unsure about this way of doing things.
         // But nothing in here strictly has to be hidden from users but it's not the stuff they want their IDEs showing them
 
-        #region ITypeErasedSubscription implementation
+        #region type erased and internal things that should really be somewhere else. This will probably be fixed by making Subscription just an ID and a view onto a manager.
 
-        private List<Action> onAvailable_internal;
-
-        event Action ITypeErasedSubscription.OnAvailable_Internal
+        void ISubscription.SetAvailabilityHandler(ISubscriptionAvailabilityHandler handler)
         {
-            add
+            availabilityHandler = handler;
+            if (HasValue)
             {
-                if (HasValue)
-                {
-                    value();
-                }
-
-                if (onAvailable_internal == null)
-                {
-                    onAvailable_internal = new List<Action>();
-                }
-
-                onAvailable_internal.Add(value);
+                handler.OnAvailable();
             }
-            remove => onAvailable_internal.Remove(value);
         }
 
-        private List<Action> onUnavailable_internal;
-
-        event Action ITypeErasedSubscription.OnUnavailable_Internal
-        {
-            add
-            {
-                if (onUnavailable_internal == null)
-                {
-                    onUnavailable_internal = new List<Action>();
-                }
-
-                onUnavailable_internal.Add(value);
-            }
-            remove => onUnavailable_internal.Remove(value);
-        }
-
-        object ITypeErasedSubscription.GetErasedValue()
+        object ISubscription.GetErasedValue()
         {
             return Value;
         }
 
-        void ITypeErasedSubscription.ResetValue()
+        void ISubscription.ResetValue()
         {
             manager.ResetValue(this);
         }

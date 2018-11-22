@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Core
             return subscription;
         }
 
-        public override void Cancel(ITypeErasedSubscription subscription)
+        public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<WorldCommandSender>) subscription);
             if (sub.HasValue)
@@ -95,7 +95,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public override void ResetValue(ITypeErasedSubscription subscription)
+        public override void ResetValue(ISubscription subscription)
         {
         }
     }
