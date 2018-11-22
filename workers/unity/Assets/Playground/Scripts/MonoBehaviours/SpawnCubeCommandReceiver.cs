@@ -7,6 +7,7 @@ using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Transform;
 using Improbable.Worker.CInterop;
 using UnityEngine;
+using Quaternion = Improbable.Transform.Quaternion;
 
 #region Diagnostic control
 
@@ -62,8 +63,16 @@ namespace Playground.MonoBehaviours
             }
 
             var location = transformReader.Data.Location;
-            var cubeEntityTemplate =
-                CubeTemplate.CreateCubeEntityTemplate(new Coordinates(location.X, location.Y + 2, location.Z));
+            var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
+            cubeEntityTemplate.ReplaceComponent(new Position.Snapshot
+            {
+                Coords = new Coordinates(location.X, location.Y + 2, location.Z)
+            });
+            cubeEntityTemplate.ReplaceComponent(new TransformInternal.Snapshot
+            {
+                Location = new Location(location.X, location.Y + 2, location.Z),
+                Rotation = new Quaternion(1, 0, 0, 0)
+            });
             var expectedEntityId = response.FirstEntityId.Value;
 
             worldCommandRequestSender.CreateEntity(cubeEntityTemplate, expectedEntityId, context: this);

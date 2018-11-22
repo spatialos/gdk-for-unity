@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
@@ -11,26 +12,23 @@ namespace Playground
         {
             var clientAttribute = $"workerId:{workerId}";
 
-            var playerInput = PlayerInput.Component.CreateSchemaComponentData(0, 0, false);
-            var launcher = Launcher.Component.CreateSchemaComponentData(100, 0);
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), clientAttribute);
+            template.AddComponent(new Metadata.Snapshot { EntityType = "Character" }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new PlayerInput.Snapshot(), clientAttribute);
+            template.AddComponent(new Launcher.Snapshot { EnergyLeft = 100, RechargeTimeLeft = 0 },
+                WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Score.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new CubeSpawner.Snapshot { SpawnedCubes = new List<EntityId>() },
+                WorkerUtils.UnityGameLogic);
+            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
+            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, workerId, clientAttribute,
+                WorkerUtils.UnityGameLogic);
 
-            var score = Score.Component.CreateSchemaComponentData(0);
-            var cubeSpawner = CubeSpawner.Component.CreateSchemaComponentData(new List<EntityId>());
+            template.SetReadAccess(WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
-            var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, clientAttribute)
-                .AddMetadata("Character", WorkerUtils.UnityGameLogic)
-                .SetPersistence(false)
-                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
-                .SetEntityAclComponentWriteAccess(WorkerUtils.UnityGameLogic)
-                .AddComponent(playerInput, clientAttribute)
-                .AddComponent(launcher, WorkerUtils.UnityGameLogic)
-                .AddComponent(score, WorkerUtils.UnityGameLogic)
-                .AddComponent(cubeSpawner, WorkerUtils.UnityGameLogic)
-                .AddTransformSynchronizationComponents(clientAttribute)
-                .AddPlayerLifecycleComponents(workerId, clientAttribute, WorkerUtils.UnityGameLogic);
-
-            return entityBuilder.Build();
+            return template;
         }
     }
 }

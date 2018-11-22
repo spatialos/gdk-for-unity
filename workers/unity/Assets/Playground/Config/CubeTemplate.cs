@@ -6,24 +6,22 @@ namespace Playground
 {
     public static class CubeTemplate
     {
-        public static EntityTemplate CreateCubeEntityTemplate(Coordinates coords)
+        public static EntityTemplate CreateCubeEntityTemplate()
         {
-            var cubeColor = CubeColor.Component.CreateSchemaComponentData();
-            var cubeTargetVelocity = CubeTargetVelocity.Component.CreateSchemaComponentData(new Vector3f { X = -2.0f });
-            var launchable = Launchable.Component.CreateSchemaComponentData(new EntityId(0));
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Metadata.Snapshot { EntityType = "Cube" }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new CubeColor.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new CubeTargetVelocity.Snapshot { TargetVelocity = new Vector3f(-2.0f, 0, 0) },
+                WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Launchable.Snapshot(), WorkerUtils.UnityGameLogic);
+            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic);
 
-            var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
-                .AddMetadata("Cube", WorkerUtils.UnityGameLogic)
-                .SetPersistence(true)
-                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
-                .AddComponent(cubeColor, WorkerUtils.UnityGameLogic)
-                .AddComponent(cubeTargetVelocity, WorkerUtils.UnityGameLogic)
-                .AddComponent(launchable, WorkerUtils.UnityGameLogic)
-                .AddTransformSynchronizationComponents(WorkerUtils.UnityGameLogic,
-                    location: coords.ToUnityVector());
+            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
-            return entityBuilder.Build();
+            return template;
         }
     }
 }

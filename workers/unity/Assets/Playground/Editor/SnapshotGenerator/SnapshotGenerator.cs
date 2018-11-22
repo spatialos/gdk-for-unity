@@ -39,19 +39,22 @@ namespace Playground.Editor.SnapshotGenerator
 
         private static void AddPlayerSpawner(Snapshot snapshot)
         {
-            var playerCreator = PlayerCreator.Component.CreateSchemaComponentData();
-            var spawner = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, WorkerUtils.UnityGameLogic)
-                .AddMetadata("PlayerCreator", WorkerUtils.UnityGameLogic)
-                .SetPersistence(true)
-                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
-                .AddComponent(playerCreator, WorkerUtils.UnityGameLogic)
-                .Build();
-            snapshot.AddEntity(spawner);
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Metadata.Snapshot { EntityType = "PlayerCreator" }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new PlayerCreator.Snapshot(), WorkerUtils.UnityGameLogic);
+
+            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
+
+            snapshot.AddEntity(template);
         }
 
         private static void AddCubeGrid(Snapshot snapshot, int cubeCount)
         {
+            var cubeTemplate = CubeTemplate.CreateCubeEntityTemplate();
+
             // Calculate grid size
             var gridLength = (int) Math.Ceiling(Math.Sqrt(cubeCount));
             if (gridLength % 2 == 1) // To make sure nothing is in (0, 0)
@@ -77,8 +80,20 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
-                    var entityTemplate = CubeTemplate.CreateCubeEntityTemplate(new Coordinates(x, 1, z));
-                    snapshot.AddEntity(entityTemplate);
+                    var positionSnapshot = new Position.Snapshot
+                    {
+                        Coords = new Coordinates(x, 1, z)
+                    };
+                    var transformSnapshot = new TransformInternal.Snapshot
+                    {
+                        Location = new Location(x, 1, z),
+                        Rotation = new Quaternion(1, 0, 0, 0),
+                        TicksPerSecond = 1f / Time.fixedDeltaTime
+                    };
+
+                    cubeTemplate.ReplaceComponent(positionSnapshot);
+                    cubeTemplate.ReplaceComponent(transformSnapshot);
+                    snapshot.AddEntity(cubeTemplate);
                 }
             }
         }
@@ -87,30 +102,27 @@ namespace Playground.Editor.SnapshotGenerator
         {
             const string entityType = "Spinner";
 
-            var transform = TransformInternal.Component.CreateSchemaComponentData(
-                new Location { X = (float) coords.X, Y = (float) coords.Y, Z = (float) coords.Z },
-                new Quaternion { W = 1, X = 0, Y = 0, Z = 0 },
-                new Velocity(0.0f, 0.0f, 0.0f),
-                0,
-                0.0f
-            );
+            var transform = new TransformInternal.Snapshot
+            {
+                Location = new Location((float) coords.X, (float) coords.Y, (float) coords.Z),
+                Rotation = new Quaternion(1, 0, 0, 0),
+                TicksPerSecond = 1f / Time.fixedDeltaTime
+            };
 
-            var collisions = Collisions.Component.CreateSchemaComponentData();
-            var color = SpinnerColor.Component.CreateSchemaComponentData(Color.BLUE);
-            var spinnerRotation = SpinnerRotation.Component.CreateSchemaComponentData();
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot { Coords = coords }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Metadata.Snapshot { EntityType = entityType }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(transform, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new SpinnerColor.Snapshot { Color = Color.BLUE }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
-            var entityTemplate = EntityBuilder.Begin()
-                .AddPosition(coords.X, coords.Y, coords.Z, WorkerUtils.UnityGameLogic)
-                .AddMetadata(entityType, WorkerUtils.UnityGameLogic)
-                .SetPersistence(true)
-                .SetReadAcl(WorkerUtils.AllWorkerAttributes)
-                .AddComponent(collisions, WorkerUtils.UnityGameLogic)
-                .AddComponent(transform, WorkerUtils.UnityGameLogic)
-                .AddComponent(color, WorkerUtils.UnityGameLogic)
-                .AddComponent(spinnerRotation, WorkerUtils.UnityGameLogic)
-                .Build();
+            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
-            snapshot.AddEntity(entityTemplate);
+
+            snapshot.AddEntity(template);
         }
     }
 }
