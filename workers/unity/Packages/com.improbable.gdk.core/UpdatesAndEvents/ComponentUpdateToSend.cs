@@ -2,7 +2,7 @@ using Improbable.Worker;
 
 namespace Improbable.Gdk.Core
 {
-    public struct ComponentUpdateToSend<T> where T : ISpatialComponentUpdate
+    public struct ComponentUpdateToSend<T> where T : ISpatialComponentData
     {
         public T Update;
         public EntityId EntityId;
