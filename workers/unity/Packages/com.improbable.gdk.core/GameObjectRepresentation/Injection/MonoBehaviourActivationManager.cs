@@ -147,7 +147,13 @@ namespace Improbable.Gdk.GameObjectRepresentation
 
             foreach (var behaviour in behaviours)
             {
-                RunWithExceptionHandling(() => behaviour.enabled = false);
+                RunWithExceptionHandling(() =>
+                {
+                    if (behaviour)
+                    {
+                        behaviour.enabled = false;
+                    }
+                });
             }
 
             foreach (var behaviour in behaviours)
