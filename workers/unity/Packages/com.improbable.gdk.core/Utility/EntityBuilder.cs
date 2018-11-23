@@ -180,6 +180,11 @@ namespace Improbable.Gdk.Core
             return this;
         }
 
+        public string GetWriteAccess(uint componentId)
+        {
+            return acl.GetComponentWriteAccess(componentId);
+        }
+
         public EntityBuilder SetWriteAccess(uint componentId, string attribute) {
             acl.SetComponentWriteAccess(componentId, attribute);
 
@@ -241,6 +246,16 @@ namespace Improbable.Gdk.Core
             public void SetComponentWriteAccess(uint componentId, string attribute)
             {
                 writePermissions[componentId] = attribute;
+            }
+
+            public string GetComponentWriteAccess(uint componentId)
+            {
+                if (writePermissions.TryGetValue(componentId, out var value))
+                {
+                    return value;
+                }
+
+                return null;
             }
 
             public void AddReadAccess(string attribute)
