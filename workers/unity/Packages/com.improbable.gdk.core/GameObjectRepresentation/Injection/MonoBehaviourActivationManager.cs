@@ -46,7 +46,7 @@ namespace Improbable.Gdk.GameObjectRepresentation
             var workerType = spatialComponent.Worker.WorkerType;
             entity = spatialComponent.Entity;
 
-            foreach (var behaviour in gameObject.GetComponents<MonoBehaviour>())
+            foreach (var behaviour in gameObject.GetComponentsInChildren<MonoBehaviour>())
             {
                 if (ReferenceEquals(behaviour, null))
                 {

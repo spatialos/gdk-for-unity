@@ -56,7 +56,7 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
                 var prefabWasFixed = false;
 
                 foreach (var monoBehaviour in prefabObject
-                    .GetComponents<MonoBehaviour>()
+                    .GetComponentsInChildren<MonoBehaviour>()
                     .Where(DoesBehaviourNeedFixing))
                 {
                     assetsUpdated = true;
