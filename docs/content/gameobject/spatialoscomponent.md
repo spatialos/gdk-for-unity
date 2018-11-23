@@ -18,7 +18,7 @@ The SpatialOS GDK automatically adds a `SpatialOSComponent` MonoBehaviour to eac
 
 | Field         	| Type 	| Description                        	|
 |-------------------|----------|----------------------------------------|
-| SpatialEntityId | `EntityId` | The SpatialOS Entity Id of the entity that this GameObject is linked to. |
+| SpatialEntityId | `EntityId` | The [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) ID of the SpatialOS entity that this GameObject is linked to.  |
 | Entity | `Entity` | The linked ECS entity. |
 | World | `World` | The [world]({{urlRoot}}/content/glossary#unity-ecs-world) that the linked ECS entity belongs to. |
 | Worker | `WorkerSystem` | The worker that is responsible for the linked SpatialOS entity. |
