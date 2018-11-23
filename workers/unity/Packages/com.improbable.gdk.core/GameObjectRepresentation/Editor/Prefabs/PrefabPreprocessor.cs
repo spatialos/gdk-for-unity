@@ -42,6 +42,11 @@ namespace Improbable.Gdk.GameObjectRepresentation.Editor
 
         private static void PreprocessPrefabs()
         {
+            // TODO: this should be optionally disabled with an EditorPrefs setting.
+            // This should be clearly visible and easily configurable (toggle?)
+            // within SpatialOS menu, or via a config window.
+            return;
+
             var assetsUpdated = false;
 
             var allPrefabObjectsInResources = AssetDatabase.FindAssets("t:Prefab")
