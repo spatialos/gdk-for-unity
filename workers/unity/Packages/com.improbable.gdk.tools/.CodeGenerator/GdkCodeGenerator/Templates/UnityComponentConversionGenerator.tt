@@ -153,14 +153,6 @@ namespace <#= qualifiedNamespace #>
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
                 <#= profilingStart #>
-                if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
-                {
-                    var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.MarkDataClean();
-                    entityManager.SetComponentData(entity, data);
-                }
-
                 var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
                 List<<#= componentNamespace #>.Update> updates;
@@ -810,8 +802,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             private readonly List<ComponentUpdateToSend<Component>> updatesToSend =
                 new List<ComponentUpdateToSend<Component>>();
 
-            private readonly List<ComponentUpdateReceived<Update>> updatesReceived =
-                new List<ComponentUpdateReceived<Update>>();
+            private readonly SortedList<ComponentUpdateReceived<Update>> updatesReceived =
+                new SortedList<ComponentUpdateReceived<Update>>();
 
             private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
                 new Dictionary<EntityId, Authority>();
@@ -1001,6 +993,14 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
 
                 ++currentUpdateId;
+
+                if (entityIdToAuthority[new EntityId(op.EntityId)] == Authority.NotAuthoritative)
+                {
+                    var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
+                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
+                    data.MarkDataClean();
+                    entityManager.SetComponentData(entity, data);
+                }
 
                 var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
 
