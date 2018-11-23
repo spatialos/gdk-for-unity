@@ -29,7 +29,7 @@ The following code snippet shows an example of how to create an entity inside a 
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 public class EntityCreationBehaviour : MonoBehaviour
@@ -89,7 +89,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 public class MultipleEntityCreationBehaviour : MonoBehaviour
@@ -175,7 +175,7 @@ The following code snippet shows an example of how to delete an entity inside a 
 ```csharp
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Worker.Core;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 public class EntityDeletionBehaviour : MonoBehaviour

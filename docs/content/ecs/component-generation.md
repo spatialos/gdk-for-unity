@@ -30,7 +30,7 @@ Additionally, for each field defined in your schema file, the generated C# struc
 
 The struct also contains the following method:
 ```csharp
-public static Improbable.Worker.Core.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
+public static Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
 ```
 
 This method can be used to add his component to your [entity template]({{urlRoot}}/content/entity-templates).
