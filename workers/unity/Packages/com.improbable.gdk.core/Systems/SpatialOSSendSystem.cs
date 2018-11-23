@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core
             foreach (var replicator in componentReplicators)
             {
                 Profiler.BeginSample("ExecuteReplication");
-                replicator.Handler.ExecuteReplication(replicator.UpdateGroup, this, connection);
+                replicator.Handler.ExecuteReplication(replicator.UpdateGroup, this, World, connection);
                 Profiler.EndSample();
 
                 Profiler.BeginSample("SendCommands");

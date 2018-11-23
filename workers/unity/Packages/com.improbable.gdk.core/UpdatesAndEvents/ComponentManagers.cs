@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Core
 
         Type[] GetEventTypes();
         Type GetUpdateType();
+        Type GetComponentType();
         uint GetComponentId();
     }
 
@@ -27,13 +28,15 @@ namespace Improbable.Gdk.Core
     {
         void SendEvent(T eventToSend, EntityId entityId);
         List<ComponentEventReceived<T>> GetEventsReceived();
-        List<ComponentEventToSend<T>> GetEventsToSend();
     }
 
-    public interface IUpdateManager<T> where T : ISpatialComponentUpdate
+    public interface IUpdateSender<T> where T : ISpatialComponentData
     {
         void SendComponentUpdate(T updateToSend, EntityId entityId);
-        List<ComponentUpdateToSend<T>> GetComponentUpdatesToSend();
+    }
+
+    public interface IUpdateReceiver<T> where T : ISpatialComponentUpdate
+    {
         List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived();
     }
 }

@@ -19,6 +19,9 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, IComponentManager> updateTypeToManager =
             new Dictionary<Type, IComponentManager>();
 
+        private readonly Dictionary<Type, IComponentManager> componentTypeToManager =
+            new Dictionary<Type, IComponentManager>();
+
         private readonly Dictionary<uint, IComponentManager> componentIdToManager =
             new Dictionary<uint, IComponentManager>();
 
@@ -42,45 +45,24 @@ namespace Improbable.Gdk.Core
             return ((IEventManager<T>) managers).GetEventsReceived();
         }
 
-        public List<ComponentEventToSend<T>> GetEventsToSend<T>() where T : IEvent
+        public void SendComponentUpdate<T>(T updateToSend, EntityId entityId) where T : ISpatialComponentData
         {
-            if (!eventTypeToManager.TryGetValue(typeof(T), out var manager))
+            if (!componentTypeToManager.TryGetValue(typeof(T), out var manager))
             {
-                throw new ArgumentException("Type is not a valid event");
+                throw new ArgumentException("Type is not a valid update");
             }
 
-            return ((IEventManager<T>) manager).GetEventsToSend();
+            ((IUpdateSender<T>) manager).SendComponentUpdate(updateToSend, entityId);
         }
 
-        // todo turn this on and have it populated from components
-        // public void SendComponentUpdate<T>(T updateToSend, EntityId entityId) where T : ISpatialComponentUpdate
-        // {
-        //     if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
-        //     {
-        //         throw new ArgumentException("Type is not a valid update");
-        //     }
-        //
-        //     ((IUpdateSender<T>) manager).SendComponentUpdate(updateToSend, entityId);
-        // }
-
-        public List<ComponentUpdateToSend<T>> GetComponentUpdatesReceived<T>() where T : ISpatialComponentUpdate
+        public List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>() where T : ISpatialComponentUpdate
         {
             if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
             {
                 throw new ArgumentException("Type is not a valid update");
             }
 
-            return ((IUpdateManager<T>) manager).GetComponentUpdatesToSend();
-        }
-
-        public List<ComponentUpdateReceived<T>> GetComponentUpdatesToSend<T>() where T : ISpatialComponentUpdate
-        {
-            if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
-            {
-                throw new ArgumentException("Type is not a valid update");
-            }
-
-            return ((IUpdateManager<T>) manager).GetComponentUpdatesReceived();
+            return ((IUpdateReceiver<T>) manager).GetComponentUpdatesReceived();
         }
 
         public Authority GetAuthority(EntityId entityId, uint componentId)
@@ -120,6 +102,7 @@ namespace Improbable.Gdk.Core
                     instance.Init(World);
 
                     updateTypeToManager.Add(instance.GetUpdateType(), instance);
+                    componentTypeToManager.Add(instance.GetComponentType(), instance);
 
                     foreach (var eventType in instance.GetEventTypes())
                     {

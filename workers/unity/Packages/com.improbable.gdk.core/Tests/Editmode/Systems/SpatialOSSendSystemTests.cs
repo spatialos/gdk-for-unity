@@ -73,7 +73,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
         }
 
-        public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, Connection connection)
+        public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, World world, Connection connection)
         {
             throw new System.NotImplementedException();
         }

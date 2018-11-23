@@ -381,9 +381,11 @@ namespace <#= qualifiedNamespace #>
             {
             }
 
-            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
+            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, World world, global::Improbable.Worker.CInterop.Connection connection)
             {
                 <#= profilingStart #>
+
+                var updateSystem = world.GetExistingManager<ComponentUpdateSystem>();
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
@@ -401,40 +403,23 @@ namespace <#= qualifiedNamespace #>
                     for (var i = 0; i < componentArray.Length; i++)
                     {
                         var data = componentArray[i];
-                        var eventsToSend = 0;
-<# foreach (var eventDetail in eventDetailsList) { #>
-                        var events<#= eventDetail.EventName #> = event<#= eventDetail.EventName #>Array[i].Events;
-                        eventsToSend += events<#= eventDetail.EventName #>.Count;
-<# } #>
-
-                        if (data.IsDataDirty() || eventsToSend > 0)
+                        if (data.IsDataDirty())
                         {
-                            var update = new global::Improbable.Worker.CInterop.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
-                            <#= componentNamespace #>.Serialization.SerializeUpdate(data, update);
-
-<# if (eventDetailsList.Count > 0) { #>
-                            // Serialize events
-                            var eventsObject = update.GetEvents();
-<# foreach (var eventDetail in eventDetailsList) { #>
-                            if (events<#= eventDetail.EventName #>.Count > 0)
-                            {
-                                foreach (var e in events<#= eventDetail.EventName #>)
-                                {
-                                    var obj = eventsObject.AddObject(<#= eventDetail.EventIndex #>);
-                                    <#= eventDetail.FqnPayloadType #>.Serialization.Serialize(e, obj);
-                                }
-
-                                events<#= eventDetail.EventName #>.Clear();
-                            }
-
-<# } #>
-<# } #>
-                            // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
-
+                            updateSystem.SendComponentUpdate(data, entityIdArray[i].EntityId);
                             data.MarkDataClean();
                             componentArray[i] = data;
                         }
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+
+                        foreach (var e in event<#= ev.EventName #>Array[i].Events)
+                        {
+                            updateSystem.SendEvent(new <#= eventType #>(e), entityIdArray[i].EntityId);
+                        }
+
+                        event<#= ev.EventName #>Array[i].Events.Clear();
+<# } #>
                     }
                 }
 
@@ -794,7 +779,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         }
 <# } #>
 
-        public class UpdateEventManager : IComponentManager, IUpdateManager<Update>, IAuthorityManager
+        public class UpdateEventManager : IComponentManager, IUpdateSender<Component>, IUpdateReceiver<Update>, IAuthorityManager
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
@@ -810,14 +795,21 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
-            private readonly List<ComponentEventToSend<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
-                new List<ComponentEventToSend<<#= eventType #>>>();
+            private ListPool<<#= eventType #>> <#= ev.CamelCaseEventName #>EventPool = new ListPool<<#= eventType #>>(5, 2, 20);
+
+            private readonly Dictionary<EntityId, List<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
+                new Dictionary<EntityId, List<<#= eventType #>>>();
+
             private readonly List<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
                 new List<ComponentEventReceived<<#= eventType #>>>();
+
 <# } #>
 
-            private readonly List<ComponentUpdateToSend<Update>> updatesToSend =
-                new List<ComponentUpdateToSend<Update>>();
+            private readonly List<EntityId> entitiesWithEventsToSend = new List<EntityId>();
+
+            private readonly List<ComponentUpdateToSend<Component>> updatesToSend =
+                new List<ComponentUpdateToSend<Component>>();
+
             private readonly List<ComponentUpdateReceived<Update>> updatesReceived =
                 new List<ComponentUpdateReceived<Update>>();
 
@@ -848,6 +840,11 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 return typeof(Update);
             }
 
+            public Type GetComponentType()
+            {
+                return typeof(Component);
+            }
+
             public void SendAll()
             {
                 var connection = workerSystem.Connection;
@@ -857,24 +854,57 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     connection.SendAuthorityLossImminentAcknowledgement(entityId.Id, ComponentId);
                 }
 
-<# foreach (var ev in eventDetailsList) {
-        var eventType = ev.EventName + ".Event";
-#>
-                foreach (var eventToSend in <#= ev.CamelCaseEventName #>EventsToSend)
+                foreach (var update in updatesToSend)
                 {
-                    if (!workerSystem.TryGetEntity(eventToSend.EntityId, out var entity))
-                    {
-                        throw new ArgumentException("Entity is not in view");
-                    }
+                    entitiesWithEventsToSend.Remove(update.EntityId);
 
-                    if (entityManager.HasComponent<EventSender.<#= ev.EventName #>>(entity))
+                    var componentUpdate = new global::Improbable.Worker.CInterop.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
+                    <#= componentNamespace #>.Serialization.SerializeUpdate(update.Update, componentUpdate);
+
+<# if (eventDetailsList.Count > 0) { #>
+                    // Serialize events
+                    var eventsObject = componentUpdate.GetEvents();
+<# foreach (var ev in eventDetailsList) { #>
+                    if (<#= ev.CamelCaseEventName #>EventsToSend.TryGetValue(update.EntityId, out var <#= ev.CamelCaseEventName #>Events))
                     {
-                        entityManager.GetComponentData<EventSender.<#= ev.EventName #>>(entity).Events
-                            .Add(eventToSend.Event.Payload);
+                        foreach (var e in <#= ev.CamelCaseEventName #>Events)
+                        {
+                            var obj = eventsObject.AddObject(<#= ev.EventIndex #>);
+                            <#= ev.FqnPayloadType #>.Serialization.Serialize(e.Payload, obj);
+                        }
+
+                        <#= ev.CamelCaseEventName #>EventPool.Return(<#= ev.CamelCaseEventName #>Events);
+                        <#= ev.CamelCaseEventName #>EventsToSend.Remove(update.EntityId);
                     }
-                }
+<# } #>
 <# } #>
 
+                    connection.SendComponentUpdate(update.EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(componentUpdate));
+                }
+
+                foreach (var entityId in entitiesWithEventsToSend)
+                {
+                    var componentUpdate = new global::Improbable.Worker.CInterop.SchemaComponentUpdate(<#= componentDetails.ComponentId #>);
+                    var eventsObject = componentUpdate.GetEvents();
+<# foreach (var ev in eventDetailsList) { #>
+
+                    if (<#= ev.CamelCaseEventName #>EventsToSend.TryGetValue(entityId, out var events))
+                    {
+                        foreach (var e in events)
+                        {
+                            var obj = eventsObject.AddObject(<#= ev.EventIndex #>);
+                            <#= ev.FqnPayloadType #>.Serialization.Serialize(e.Payload, obj);
+                        }
+
+                        <#= ev.CamelCaseEventName #>EventPool.Return(events);
+                        <#= ev.CamelCaseEventName #>EventsToSend.Remove(entityId);
+                    }
+<# } #>
+
+                    connection.SendComponentUpdate(entityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(componentUpdate));
+                }
+
+                entitiesWithEventsToSend.Clear();
                 authLossToAck.Clear();
                 updatesToSend.Clear();
                 updatesReceived.Clear();
@@ -905,43 +935,35 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 dispatcher.OnAddComponent(OnAddComponent);
                 dispatcher.OnRemoveComponent(OnRemoveComponent);
             }
-
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
+
             public void SendEvent(<#= eventType #> eventToSend, EntityId entityId)
             {
-                <#= ev.CamelCaseEventName #>EventsToSend.Add(new ComponentEventToSend<<#= eventType #>>(eventToSend, entityId));
+                if (!entitiesWithEventsToSend.Contains(entityId))
+                {
+                    entitiesWithEventsToSend.Add(entityId);
+                }
+
+                if (!<#= ev.CamelCaseEventName #>EventsToSend.TryGetValue(entityId, out var events))
+                {
+                    events = <#= ev.CamelCaseEventName #>EventPool.Rent();
+                    <#= ev.CamelCaseEventName #>EventsToSend.Add(entityId, events);
+                }
+
+                events.Add(eventToSend);
             }
 
-<# } #>
-
-<# foreach (var ev in eventDetailsList) {
-        var eventType = ev.EventName + ".Event";
-#>
             List<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
             {
                 return <#= ev.CamelCaseEventName #>EventsReceived;
             }
 
 <# } #>
-<# foreach (var ev in eventDetailsList) {
-        var eventType = ev.EventName + ".Event";
-#>
-            List<ComponentEventToSend<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsToSend()
+            public void SendComponentUpdate(Component updateToSend, EntityId entityId)
             {
-                return <#= ev.CamelCaseEventName #>EventsToSend;
-            }
-
-<# } #>
-            public void SendComponentUpdate(Update update, EntityId entityId)
-            {
-                updatesToSend.Add(new ComponentUpdateToSend<Update>(update, entityId));
-            }
-
-            public List<ComponentUpdateToSend<Update>> GetComponentUpdatesToSend()
-            {
-                return updatesToSend;
+                updatesToSend.Add(new ComponentUpdateToSend<Component>(updateToSend, entityId));
             }
 
             public List<ComponentUpdateReceived<Update>> GetComponentUpdatesReceived()
