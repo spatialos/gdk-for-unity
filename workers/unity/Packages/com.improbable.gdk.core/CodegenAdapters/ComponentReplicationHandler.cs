@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         public abstract EntityArchetypeQuery[] CommandQueries { get; }
 
         public abstract void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system,
-            Connection connection);
+            World world, Connection connection);
 
         public abstract void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system,
             World world, Connection connection);

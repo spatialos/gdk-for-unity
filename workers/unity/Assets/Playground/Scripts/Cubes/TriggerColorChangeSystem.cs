@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -20,10 +21,12 @@ namespace Playground
         private struct CubeColorData
         {
             public readonly int Length;
-            public ComponentDataArray<CubeColor.EventSender.ChangeColor> EventSenders;
+            [ReadOnly] public SharedComponentDataArray<CubeColor.ComponentAuthority> DenotesAuthority;
+            public ComponentDataArray<SpatialEntityId> Entities;
         }
 
         [Inject] private CubeColorData cubeColorData;
+        [Inject] private ComponentUpdateSystem updateSystem;
 
         private Array colorValues;
         private int colorIndex;
@@ -52,10 +55,11 @@ namespace Playground
 
             for (var i = 0; i < cubeColorData.Length; i++)
             {
-                var eventSender = cubeColorData.EventSenders[i];
-
-                eventSender.Events.Add(colorEventData);
-                cubeColorData.EventSenders[i] = eventSender;
+                if (cubeColorData.DenotesAuthority[i].HasAuthority)
+                {
+                    updateSystem.SendEvent(new CubeColor.ChangeColor.Event(colorEventData),
+                        cubeColorData.Entities[i].EntityId);
+                }
             }
 
             colorIndex = (colorIndex + 1) % colorValues.Length;
