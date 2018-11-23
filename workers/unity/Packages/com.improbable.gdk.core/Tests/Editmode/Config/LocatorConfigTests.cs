@@ -15,6 +15,20 @@ namespace Improbable.Gdk.Core.EditmodeTests
         }
 
         [Test]
+        public void ConnectionTimeoutMillis_should_be_60000_by_default()
+        {
+            var config = GetDefaultWorkingConfigWithLoginToken();
+            Assert.AreEqual(60000, config.ConnectionTimeoutMillis);
+        }
+
+        [Test]
+        public void DefaultCommandTimeoutMillis_should_be_5000_by_default()
+        {
+            var config = GetDefaultWorkingConfigWithLoginToken();
+            Assert.AreEqual(5000, config.DefaultCommandTimeoutMillis);
+        }
+
+        [Test]
         public void Validate_should_return_true_when_LocatorConfig_is_set_to_default_value()
         {
             var config = GetDefaultWorkingConfigWithLoginToken();

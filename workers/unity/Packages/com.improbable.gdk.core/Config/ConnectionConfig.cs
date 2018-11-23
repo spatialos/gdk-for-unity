@@ -34,6 +34,22 @@ namespace Improbable.Gdk.Core
         public bool UseExternalIp = false;
 
         /// <summary>
+        ///     Timeout in milliseconds for the connection to SpatialOS to be established.
+        /// </summary>
+        /// <remarks>
+        ///     Default is 60000ms (60 seconds).
+        /// </remarks>
+        public ulong ConnectionTimeoutMillis = 60000;
+
+        /// <summary>
+        ///     Default timeout in milliseconds for worker commands if one is not specified when command is sent.
+        /// </summary>
+        /// <remarks>
+        ///     Default is 5000ms (5 seconds).
+        /// </remarks>
+        public uint DefaultCommandTimeoutMillis = 5000;
+
+        /// <summary>
         ///     The ID of the worker.
         /// </summary>
         public string WorkerId;
@@ -66,6 +82,8 @@ namespace Improbable.Gdk.Core
                 {
                     ConnectionType = LinkProtocol,
                     UseExternalIp = UseExternalIp,
+                    ConnectionTimeoutMillis = ConnectionTimeoutMillis,
+                    DefaultCommandTimeoutMillis = DefaultCommandTimeoutMillis
                 },
                 EnableProtocolLoggingAtStartup = EnableProtocolLoggingAtStartup,
                 DefaultComponentVtable = new PassthroughComponentVtable()

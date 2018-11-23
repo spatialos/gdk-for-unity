@@ -11,6 +11,22 @@ namespace Improbable.Gdk.Core
         public bool UseExternalIp;
 
         /// <summary>
+        ///     Timeout in milliseconds for the connection to SpatialOS to be established.
+        /// </summary>
+        /// <remarks>
+        ///     Default is 60000ms (60 seconds).
+        /// </remarks>
+        public ulong ConnectionTimeoutMillis = 60000;
+
+        /// <summary>
+        ///     Default timeout in milliseconds for worker commands if one is not specified when command is sent.
+        /// </summary>
+        /// <remarks>
+        ///     Default is 5000ms (5 seconds).
+        /// </remarks>
+        public uint DefaultCommandTimeoutMillis = 5000;
+
+        /// <summary>
         ///     Determines whether to connect via the locator.
         /// </summary>
         /// <returns>True, if should connect via the Locator, false otherwise.</returns>
@@ -39,7 +55,9 @@ namespace Improbable.Gdk.Core
                 {
                     WorkerType = workerType,
                     WorkerId = CreateNewWorkerId(workerType),
-                    UseExternalIp = UseExternalIp
+                    UseExternalIp = UseExternalIp,
+                    DefaultCommandTimeoutMillis = DefaultCommandTimeoutMillis,
+                    ConnectionTimeoutMillis = ConnectionTimeoutMillis,
                 };
             }
             else
@@ -49,6 +67,8 @@ namespace Improbable.Gdk.Core
                 config = ReceptionistConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
                 config.WorkerType = workerType;
                 config.UseExternalIp = UseExternalIp;
+                config.DefaultCommandTimeoutMillis = DefaultCommandTimeoutMillis;
+                config.ConnectionTimeoutMillis = ConnectionTimeoutMillis;
                 if (!commandLineArgs.ContainsKey(RuntimeConfigNames.WorkerId))
                 {
                     config.WorkerId = CreateNewWorkerId(workerType);
@@ -65,6 +85,8 @@ namespace Improbable.Gdk.Core
             var config = LocatorConfig.CreateConnectionConfigFromCommandLine(commandLineArgs);
             config.WorkerType = workerType;
             config.WorkerId = CreateNewWorkerId(workerType);
+            config.DefaultCommandTimeoutMillis = DefaultCommandTimeoutMillis;
+            config.ConnectionTimeoutMillis = ConnectionTimeoutMillis;
             return config;
         }
     }
