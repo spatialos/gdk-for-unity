@@ -802,13 +802,17 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             private readonly List<ComponentUpdateToSend<Component>> updatesToSend =
                 new List<ComponentUpdateToSend<Component>>();
 
-            private readonly SortedList<ComponentUpdateReceived<Update>> updatesReceived =
-                new SortedList<ComponentUpdateReceived<Update>>();
+            private readonly List<ComponentUpdateReceived<Update>> updatesReceived =
+                new List<ComponentUpdateReceived<Update>>();
 
             private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
                 new Dictionary<EntityId, Authority>();
 
             private readonly List<EntityId> authLossToAck = new List<EntityId>();
+
+            private readonly UpdateComparer updateComparer = new UpdateComparer();
+
+            private bool updatesSorted;
 
             public uint GetComponentId()
             {
@@ -900,6 +904,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 authLossToAck.Clear();
                 updatesToSend.Clear();
                 updatesReceived.Clear();
+                updatesSorted = false;
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
@@ -951,8 +956,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             {
                 return <#= ev.CamelCaseEventName #>EventsReceived;
             }
-
 <# } #>
+
             public void SendComponentUpdate(Component updateToSend, EntityId entityId)
             {
                 updatesToSend.Add(new ComponentUpdateToSend<Component>(updateToSend, entityId));
@@ -961,6 +966,17 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             public List<ComponentUpdateReceived<Update>> GetComponentUpdatesReceived()
             {
                 return updatesReceived;
+            }
+
+            public ComponentUpdateSlice<Update> GetComponentUpdatesReceived(EntityId entityId)
+            {
+                if (!updatesSorted)
+                {
+                    updatesSorted = true;
+                    updatesReceived.Sort(updateComparer);
+                }
+
+                return new ComponentUpdateSlice<Update>(updatesReceived, entityId);
             }
 
             public Authority GetAuthority(EntityId entityId)
@@ -1062,6 +1078,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     return;
                 }
 
+                entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
             }
@@ -1076,6 +1093,20 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
                 entityIdToAuthority.Remove(new EntityId(op.EntityId));
+            }
+
+            private class UpdateComparer : IComparer<ComponentUpdateReceived<Update>>
+            {
+                public int Compare(ComponentUpdateReceived<Update> x, ComponentUpdateReceived<Update> y)
+                {
+                    var entityIdCompare = x.EntityId.Id.CompareTo(y.EntityId.Id);
+                    if (entityIdCompare == 0)
+                    {
+                        return x.UpdateId.CompareTo(y.UpdateId);
+                    }
+
+                    return entityIdCompare;
+                }
             }
         }
 

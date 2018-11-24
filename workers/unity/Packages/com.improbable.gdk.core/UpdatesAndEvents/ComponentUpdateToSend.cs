@@ -1,5 +1,3 @@
-using Improbable.Worker;
-
 namespace Improbable.Gdk.Core
 {
     public struct ComponentUpdateToSend<T> where T : ISpatialComponentData

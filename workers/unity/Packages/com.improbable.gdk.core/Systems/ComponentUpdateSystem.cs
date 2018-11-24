@@ -65,6 +65,17 @@ namespace Improbable.Gdk.Core
             return ((IUpdateReceiver<T>) manager).GetComponentUpdatesReceived();
         }
 
+        public ComponentUpdateSlice<T> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
+            where T : ISpatialComponentUpdate
+        {
+            if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
+            {
+                throw new ArgumentException("Type is not a valid update");
+            }
+
+            return ((IUpdateReceiver<T>) manager).GetComponentUpdatesReceived(entityId);
+        }
+
         public Authority GetAuthority(EntityId entityId, uint componentId)
         {
             if (!componentIdToManager.TryGetValue(componentId, out var manager))
