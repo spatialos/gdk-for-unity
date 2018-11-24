@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Worker;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 
@@ -38,5 +37,6 @@ namespace Improbable.Gdk.Core
     public interface IUpdateReceiver<T> where T : ISpatialComponentUpdate
     {
         List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived();
+        ComponentUpdateSlice<T> GetComponentUpdatesReceived(EntityId entityId);
     }
 }

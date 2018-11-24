@@ -29,16 +29,17 @@ namespace Improbable.Gdk.TransformSynchronization
             public BufferArray<BufferedTransform> TransformBuffer;
             public ComponentDataArray<DeferredUpdateTransform> LastTransformValue;
             [ReadOnly] public SharedComponentDataArray<InterpolationConfig> Config;
-            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> EntityIds;
         }
 
         [Inject] private Data data;
+        [Inject] private ComponentUpdateSystem updateSystem;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; ++i)
+            for (int i = 0; i < data.Length; ++i)
             {
                 var config = data.Config[i];
                 var transformBuffer = data.TransformBuffer[i];
@@ -64,7 +65,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
-                    var ticksToFill = math.max((uint) config.TargetBufferSize, 1);
+                    uint ticksToFill = math.max((uint) config.TargetBufferSize, 1);
 
                     if (ticksToFill > 1)
                     {
@@ -84,9 +85,14 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                foreach (var update in data.Updates[i].Updates)
+                var updates =
+                    updateSystem
+                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(data.EntityIds[i].EntityId);
+
+                for (int j = 0; j < updates.Count; ++j)
                 {
-                    UpdateLastTransform(ref lastTransformApplied, update);
+                    var update = updates[j].Update;
+                    UpdateLastTransfrom(ref lastTransformApplied, update);
                     data.LastTransformValue[i] = new DeferredUpdateTransform
                     {
                         Transform = lastTransformApplied
@@ -100,30 +106,29 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 
                     var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
-                    var lastTickId = transformToInterpolateFrom.PhysicsTick;
+                    uint lastTickId = transformToInterpolateFrom.PhysicsTick;
 
-                    if (transformToInterpolateTo.PhysicsTick <= lastTickId)
+                    uint remoteTickDifference = transformToInterpolateTo.PhysicsTick - lastTickId;
+                    // This could go backwards if authority trashes between two workers with different loads
+                    if (remoteTickDifference <= 0)
                     {
                         continue;
                     }
 
-                    var remoteTickDifference = (int) (transformToInterpolateTo.PhysicsTick - lastTickId);
-                    var bufferedTransforms = new NativeArray<BufferedTransform>(remoteTickDifference, Allocator.Temp,
-                        NativeArrayOptions.UninitializedMemory);
-                    for (var j = 0; j < remoteTickDifference - 1; ++j)
+                    uint ticksToFill =
+                        math.max((uint) (transformToInterpolateTo.PhysicsTick - lastTickId), 1);
+                    for (uint k = 0; k < ticksToFill - 1; ++k)
                     {
-                        bufferedTransforms[j] = InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
-                            (uint) j + 1);
+                        transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
+                            k + 1));
                     }
 
-                    bufferedTransforms[remoteTickDifference - 1] = transformToInterpolateTo;
-                    transformBuffer.AddRange(bufferedTransforms);
-                    bufferedTransforms.Dispose();
+                    transformBuffer.Add(transformToInterpolateTo);
                 }
             }
         }
 
-        private void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        private void UpdateLastTransfrom(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {
@@ -176,7 +181,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private static BufferedTransform InterpolateValues(BufferedTransform first, BufferedTransform second,
             uint ticksAfterFirst)
         {
-            var t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
+            float t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
             return new BufferedTransform
             {
                 Position = Vector3.Lerp(first.Position, second.Position, t),
