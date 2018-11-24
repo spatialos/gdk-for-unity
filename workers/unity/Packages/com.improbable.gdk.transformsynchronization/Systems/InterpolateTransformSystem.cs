@@ -29,12 +29,13 @@ namespace Improbable.Gdk.TransformSynchronization
             public BufferArray<BufferedTransform> TransformBuffer;
             public ComponentDataArray<DeferredUpdateTransform> LastTransformValue;
             [ReadOnly] public SharedComponentDataArray<InterpolationConfig> Config;
-            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
             [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
             [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
+            [ReadOnly] public ComponentDataArray<SpatialEntityId> EntityIds;
         }
 
         [Inject] private Data data;
+        [Inject] private ComponentUpdateSystem updateSystem;
 
         protected override void OnUpdate()
         {
@@ -84,8 +85,13 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                foreach (var update in data.Updates[i].Updates)
+                var updates =
+                    updateSystem
+                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(data.EntityIds[i].EntityId);
+
+                for (int j = 0; j < updates.Count; ++j)
                 {
+                    var update = updates[j].Update;
                     UpdateLastTransfrom(ref lastTransformApplied, update);
                     data.LastTransformValue[i] = new DeferredUpdateTransform
                     {
@@ -110,10 +116,10 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     uint ticksToFill =
                         math.max((uint) (transformToInterpolateTo.PhysicsTick - lastTickId), 1);
-                    for (uint j = 0; j < ticksToFill - 1; ++j)
+                    for (uint k = 0; k < ticksToFill - 1; ++k)
                     {
                         transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
-                            j + 1));
+                            k + 1));
                     }
 
                     transformBuffer.Add(transformToInterpolateTo);
