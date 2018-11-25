@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    public readonly struct ComponentUpdateReceived<T> where T : ISpatialComponentUpdate
+    public readonly struct ComponentUpdateReceived<T> : IReceivedEntityMessage where T : ISpatialComponentUpdate
     {
         public readonly T Update;
         public readonly ulong UpdateId;
@@ -36,9 +36,14 @@ namespace Improbable.Gdk.Core
             UpdateId = updateId;
             EntityId = entityId;
         }
+
+        EntityId IReceivedEntityMessage.GetEntityId()
+        {
+            return EntityId;
+        }
     }
 
-    public readonly struct ComponentEventReceived<T> where T : IEvent
+    public readonly struct ComponentEventReceived<T> : IReceivedEntityMessage where T : IEvent
     {
         public readonly T Event;
         public readonly ulong UpdateId;
@@ -49,6 +54,11 @@ namespace Improbable.Gdk.Core
             Event = @event;
             UpdateId = updateId;
             EntityId = entityId;
+        }
+
+        EntityId IReceivedEntityMessage.GetEntityId()
+        {
+            return EntityId;
         }
     }
 }

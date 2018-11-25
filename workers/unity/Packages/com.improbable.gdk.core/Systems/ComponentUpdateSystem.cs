@@ -55,7 +55,8 @@ namespace Improbable.Gdk.Core
             ((IUpdateSender<T>) manager).SendComponentUpdate(updateToSend, entityId);
         }
 
-        public List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>() where T : ISpatialComponentUpdate
+        public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>()
+            where T : ISpatialComponentUpdate
         {
             if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
             {
@@ -65,7 +66,7 @@ namespace Improbable.Gdk.Core
             return ((IUpdateReceiver<T>) manager).GetComponentUpdatesReceived();
         }
 
-        public ComponentUpdateSlice<T> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
+        public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
             where T : ISpatialComponentUpdate
         {
             if (!updateTypeToManager.TryGetValue(typeof(T), out var manager))
