@@ -142,15 +142,15 @@ namespace <#= qualifiedNamespace #>
                     var eventsObject = componentUpdate.GetEvents();
 <# foreach (var ev in eventDetailsList) { #>
 
-                    if (<#= ev.CamelCaseEventName #>EventsToSend.TryGetValue(entityId, out var events))
+                    if (<#= ev.CamelCaseEventName #>EventsToSend.TryGetValue(entityId, out var <#= ev.CamelCaseEventName #>Events))
                     {
-                        foreach (var e in events)
+                        foreach (var e in <#= ev.CamelCaseEventName #>Events)
                         {
                             var obj = eventsObject.AddObject(<#= ev.EventIndex #>);
                             <#= ev.FqnPayloadType #>.Serialization.Serialize(e.Payload, obj);
                         }
 
-                        <#= ev.CamelCaseEventName #>EventPool.Return(events);
+                        <#= ev.CamelCaseEventName #>EventPool.Return(<#= ev.CamelCaseEventName #>Events);
                         <#= ev.CamelCaseEventName #>EventsToSend.Remove(entityId);
                     }
 <# } #>
