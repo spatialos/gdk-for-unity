@@ -115,6 +115,7 @@ namespace Improbable.Gdk.Core
 
                     updateTypeToManager.Add(instance.GetUpdateType(), instance);
                     componentTypeToManager.Add(instance.GetComponentType(), instance);
+                    componentIdToManager.Add(instance.GetComponentId(), instance);
 
                     foreach (var eventType in instance.GetEventTypes())
                     {
