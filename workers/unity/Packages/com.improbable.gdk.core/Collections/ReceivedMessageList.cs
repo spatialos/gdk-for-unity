@@ -6,23 +6,24 @@ namespace Improbable.Gdk.Core
 {
     /// <summary>
     ///     Wrapper around an array for use in command and update managers
-    ///     Returns values by ref and values added can not be modified
+    ///     Returns values by ref readonly
+    ///     Values can be added but only removed via Clear
     /// </summary>
     /// <remarks>
+    ///     Should only be used with readonly structs
     ///     Intended use is to use Add, Clear, Sort, ref [], and to iterate via a regular for loop
     ///     Missing most safety checks used in List as it is for internal use only
     ///     T constrained to struct so that null checks aren't needed
     ///     Does not detect the array being edited during iteration
-    ///     Items are not set to default on clear
+    ///     Items are not removed or set to default on clear
     /// </remarks>
-    internal class ReceivedMessageList<T> : ICollection<T> where T : struct
+    internal class ReceivedMessageList<T> : ICollection<T> where T : struct, IReceivedMessage
     {
         private static readonly T[] EmptyArray = new T[0];
 
         private T[] items;
-        private int size;
 
-        public int Count => size;
+        public int Count { get; private set; }
 
         public bool IsReadOnly => false;
 
@@ -31,11 +32,11 @@ namespace Improbable.Gdk.Core
             items = EmptyArray;
         }
 
-        public ref T this[int index]
+        public ref readonly T this[int index]
         {
             get
             {
-                if (index >= size || index < 0)
+                if (index >= Count || index < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -46,26 +47,26 @@ namespace Improbable.Gdk.Core
 
         public void Add(T item)
         {
-            if (items.Length <= size)
+            if (items.Length <= Count)
             {
                 int targetLength = items.Length == 0 ? 4 : items.Length * 2;
                 var temp = new T[targetLength];
-                Array.Copy(items, temp, size);
+                Array.Copy(items, temp, Count);
                 items = temp;
             }
 
-            items[size] = item;
-            ++size;
+            items[Count] = item;
+            ++Count;
         }
 
         public void Clear()
         {
-            size = 0;
+            Count = 0;
         }
 
         public void Sort(IComparer<T> comparer)
         {
-            Array.Sort(items, 0, size, comparer);
+            Array.Sort(items, 0, Count, comparer);
         }
 
         public bool Contains(T item)
@@ -124,7 +125,7 @@ namespace Improbable.Gdk.Core
             {
                 ++currentIndex;
 
-                if (currentIndex >= list.size)
+                if (currentIndex >= list.Count)
                 {
                     currentIndex = -1;
                     return false;

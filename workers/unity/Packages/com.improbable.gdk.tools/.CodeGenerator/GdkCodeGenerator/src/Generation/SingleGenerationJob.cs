@@ -73,7 +73,13 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Translation", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
+<<<<<<< HEAD
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
+=======
+                    Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
+>>>>>>> more tinkering with how to store updates
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ComponentReaderWriter", FileExtension)));
             }
@@ -94,6 +100,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
@@ -154,7 +161,11 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentTranslationCode = componentConversionGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
-                var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
+                var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension);
+                var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
+
+                var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", FileExtension);
                 var referenceProviderTranslationCode =
                     referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
