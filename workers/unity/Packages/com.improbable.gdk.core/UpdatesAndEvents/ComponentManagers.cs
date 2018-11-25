@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
 
     public interface IUpdateReceiver<T> where T : ISpatialComponentUpdate
     {
-        List<ComponentUpdateReceived<T>> GetComponentUpdatesReceived();
-        ComponentUpdateSlice<T> GetComponentUpdatesReceived(EntityId entityId);
+        ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived();
+        ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived(EntityId entityId);
     }
 }
