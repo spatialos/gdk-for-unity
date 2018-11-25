@@ -63,6 +63,8 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ComponentReaderWriter", fileExtension)));
@@ -88,6 +90,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
@@ -143,6 +146,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
+
+                var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension);
+                var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
 
                 var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
                 var referenceProviderTranslationCode =
