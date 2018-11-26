@@ -6,7 +6,7 @@
 
 - Added support for the Steam authentication flow.
 
-### Changed
+### Fixed
 
 - `Clean all workers` now cleans worker configs in addition to built-out workers.
 
