@@ -96,7 +96,9 @@ namespace Improbable.Gdk.Tools
             }
             catch (Exception e)
             {
-                throw new ArgumentException($"Failed to parse dependencies: {e.Message}");
+                var errorMessage = $"Failed to parse dependencies: {e.Message}";
+                Debug.LogError(errorMessage);
+                throw new ArgumentException(errorMessage);
             }
         }
 
