@@ -1,6 +1,0 @@
-package improbable.tests;
-
-component TestDependency {
-    id = 11111;
-    uint32 test_dependency = 1;
-}
