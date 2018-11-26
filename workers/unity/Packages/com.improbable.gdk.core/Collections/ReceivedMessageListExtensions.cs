@@ -2,7 +2,7 @@ namespace Improbable.Gdk.Core
 {
     internal static class ReceivedMessageListExtensions
     {
-        public static (int firstIndex, int count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)
+        public static (int FirstIndex, int Count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)
             where T : struct, IReceivedEntityMessage
         {
             long targetId = entityId.Id;
