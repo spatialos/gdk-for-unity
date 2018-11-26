@@ -28,8 +28,6 @@ Unity gives you Windows build support by default.
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
-> **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
-
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
 
 - This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
@@ -59,6 +57,8 @@ Once you have navigated to the **Workloads** tab:
 
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
+**Step 5.** Restart your machine.
+
 <%(/Expandable)%>
 
 <%(#Expandable title="Setup for Mac")%>
@@ -78,8 +78,6 @@ Unity gives you Mac build support by default.
 
 - Verified with versions `2.1.3xx` and `2.1.4xx`
 
-> **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
-
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Mac|label=Mac" target="_blank">SpatialOS installer</a>**
 
 - This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
@@ -95,6 +93,8 @@ Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/)
 **Using Rider?**
 
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
+
+**Step 5.** Restart your machine.
 
 <%(/Expandable)%>
 
