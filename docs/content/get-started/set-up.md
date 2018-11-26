@@ -136,7 +136,7 @@ Clone the FPS starter project using one of the following commands:
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity-fps-starter-project.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity-fps-starter-project.git` |
 
-Then navigate to the root folder of the FPS starter project and run the following command: `git checkout 0.1.2`
+Then navigate to the root folder of the FPS starter project and run the following command: `git checkout 0.1.3`
 
 This ensures that you are on the alpha release version of the FPS starter project.
 
