@@ -470,10 +470,10 @@ namespace <#= qualifiedNamespace #>
     {
         public bool IsValid;
 
+        protected readonly ComponentUpdateSystem ComponentUpdateSystem;
         protected readonly EntityManager EntityManager;
         protected readonly Entity Entity;
-
-        private readonly EntityId entityId;
+        protected readonly EntityId EntityId;
 
         private readonly <#= componentDetails.ComponentName #>ReaderCallbackManager manager;
 
@@ -499,22 +499,7 @@ namespace <#= qualifiedNamespace #>
                     throw new InvalidOperationException("Oh noes!");
                 }
 
-                if (EntityManager.HasComponent<AuthorityLossImminent<<#= componentDetails.ComponentName #>.Component>>(Entity))
-                {
-                    return Authority.AuthorityLossImminent;
-                }
-
-                if (EntityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(Entity))
-                {
-                    return Authority.Authoritative;
-                }
-
-                if (EntityManager.HasComponent<NotAuthoritative<<#= componentDetails.ComponentName #>.Component>>(Entity))
-                {
-                    return Authority.NotAuthoritative;
-                }
-
-                throw new InvalidOperationException("What did you do?");
+                return ComponentUpdateSystem.GetAuthority(EntityId, <#= componentDetails.ComponentName #>.ComponentId);
             }
         }
 
@@ -528,7 +513,7 @@ namespace <#= qualifiedNamespace #>
                     authorityCallbackToCallbackKey = new Dictionary<Action<Authority>, ulong>();
                 }
 
-                var key = manager.RegisterAuthorityCallback(entityId, value);
+                var key = manager.RegisterAuthorityCallback(EntityId, value);
                 authorityCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -553,7 +538,7 @@ namespace <#= qualifiedNamespace #>
                     updateCallbackToCallbackKey = new Dictionary<Action<<#= componentDetails.ComponentName #>.Update>, ulong>();
                 }
 
-                var key = manager.RegisterUpdateCallback(entityId, value);
+                var key = manager.RegisterUpdateCallback(EntityId, value);
                 updateCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -579,7 +564,7 @@ namespace <#= qualifiedNamespace #>
                     <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey = new Dictionary<Action<<#= fieldDetails.Type #>>, ulong>();
                 }
 
-                var key = manager.Register<#= fieldDetails.PascalCaseName #>UpdateCallback(entityId, value);
+                var key = manager.Register<#= fieldDetails.PascalCaseName #>UpdateCallback(EntityId, value);
                 <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -607,7 +592,7 @@ namespace <#= qualifiedNamespace #>
                     <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey = new Dictionary<Action<<#= eventDetails.FqnPayloadType #>>, ulong>();
                 }
 
-                var key = manager.Register<#= eventDetails.EventName #>EventCallback(entityId, value);
+                var key = manager.Register<#= eventDetails.EventName #>EventCallback(EntityId, value);
                 <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -626,12 +611,13 @@ namespace <#= qualifiedNamespace #>
         internal <#= componentDetails.ComponentName #>Reader(World world, Entity entity, EntityId entityId,
             <#= componentDetails.ComponentName #>ReaderCallbackManager callbackManager)
         {
-            this.Entity = entity;
-            this.entityId = entityId;
+            Entity = entity;
+            EntityId = entityId;
             manager = callbackManager;
 
             IsValid = true;
 
+            ComponentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
             EntityManager = world.GetExistingManager<EntityManager>();
         }
 
@@ -706,11 +692,7 @@ namespace <#= qualifiedNamespace #>
 
         public void AcknowledgeAuthorityLoss()
         {
-            var component = EntityManager.GetComponentData<AuthorityLossImminent<<#= componentDetails.ComponentName #>.Component>>(Entity);
-            // depends on the auth loss pr
-            // component.ackauthloss = true;
-
-            EntityManager.SetComponentData(Entity, component);
+            ComponentUpdateSystem.AcknowledgeAuthorityLoss(EntityId, <#= componentDetails.ComponentName #>.ComponentId);
         }
     }
 }
