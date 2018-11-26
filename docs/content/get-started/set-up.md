@@ -67,6 +67,8 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 **Step 5.** Restart your machine.
 
+> If you do not restart your machine, you may experience errors when opening a GDK project.
+
 <%(/Expandable)%>
 
 <%(#Expandable title="Setup for Mac")%>
@@ -104,6 +106,8 @@ Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/)
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 **Step 5.** Restart your machine.
+
+> If you do not restart your machine, you may experience errors when opening a GDK project.
 
 <%(/Expandable)%>
 
