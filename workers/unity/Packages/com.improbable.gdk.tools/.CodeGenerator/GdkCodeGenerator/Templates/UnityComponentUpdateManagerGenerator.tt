@@ -226,7 +226,7 @@ namespace <#= qualifiedNamespace #>
 
                 var range = updatesReceived.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(
-                    <#= ev.CamelCaseEventName #>EventsReceived, range.firstIndex, range.count);
+                    <#= ev.CamelCaseEventName #>EventsReceived, range.FirstIndex, range.Count);
             }
 
             ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
@@ -269,8 +269,8 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var range = updatesReceived.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updatesReceived, range.firstIndex,
-                    range.count);
+                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updatesReceived, range.FirstIndex,
+                    range.Count);
             }
 
             public Authority GetAuthority(EntityId entityId)
