@@ -50,9 +50,14 @@ namespace <#= qualifiedNamespace #>
             private readonly Dictionary<EntityId, List<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
                 new Dictionary<EntityId, List<<#= eventType #>>>();
 
-            private readonly List<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
-                new List<ComponentEventReceived<<#= eventType #>>>();
+            private readonly ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
+                new ReceivedMessageList<ComponentEventReceived<<#= eventType #>>>();
 
+            // todo consider putting this in the list type
+            private bool <#= ev.CamelCaseEventName #>Sorted;
+
+            private readonly EventComparer<<#= eventType #>> <#= ev.CamelCaseEventName #>Comparer =
+                new EventComparer<<#= eventType #>>();
 <# } #>
 
             private readonly List<EntityId> entitiesWithEventsToSend = new List<EntityId>();
@@ -68,7 +73,7 @@ namespace <#= qualifiedNamespace #>
 
             private readonly List<EntityId> authLossToAck = new List<EntityId>();
 
-            private readonly UpdateComparer updateComparer = new UpdateComparer();
+            private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
             private bool updatesSorted;
 
@@ -166,6 +171,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
+                <#= ev.CamelCaseEventName #>Sorted = false;
                 <#= ev.CamelCaseEventName #>EventsToSend.Clear();
                 <#= ev.CamelCaseEventName #>EventsReceived.Clear();
 <# } #>
@@ -210,9 +216,28 @@ namespace <#= qualifiedNamespace #>
                 events.Add(eventToSend);
             }
 
-            List<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
+            ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived(EntityId entityId)
             {
-                return <#= ev.CamelCaseEventName #>EventsReceived;
+                if (!<#= ev.CamelCaseEventName #>Sorted)
+                {
+                    <#= ev.CamelCaseEventName #>EventsReceived.Sort(<#= ev.CamelCaseEventName #>Comparer);
+                    <#= ev.CamelCaseEventName #>Sorted = true;
+                }
+
+                var range = updatesReceived.GetEntityRange(entityId);
+                return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(
+                    <#= ev.CamelCaseEventName #>EventsReceived, range.firstIndex, range.count);
+            }
+
+            ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
+            {
+                if (!<#= ev.CamelCaseEventName #>Sorted)
+                {
+                    <#= ev.CamelCaseEventName #>EventsReceived.Sort(<#= ev.CamelCaseEventName #>Comparer);
+                    <#= ev.CamelCaseEventName #>Sorted = true;
+                }
+
+                return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(<#= ev.CamelCaseEventName #>EventsReceived);
             }
 <# } #>
 
@@ -362,20 +387,6 @@ namespace <#= qualifiedNamespace #>
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
                 entityIdToAuthority.Remove(new EntityId(op.EntityId));
-            }
-
-            private class UpdateComparer : IComparer<ComponentUpdateReceived<Update>>
-            {
-                public int Compare(ComponentUpdateReceived<Update> x, ComponentUpdateReceived<Update> y)
-                {
-                    var entityIdCompare = x.EntityId.Id.CompareTo(y.EntityId.Id);
-                    if (entityIdCompare == 0)
-                    {
-                        return x.UpdateId.CompareTo(y.UpdateId);
-                    }
-
-                    return entityIdCompare;
-                }
             }
         }
     }

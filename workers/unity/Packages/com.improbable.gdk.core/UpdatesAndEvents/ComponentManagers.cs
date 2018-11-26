@@ -26,7 +26,8 @@ namespace Improbable.Gdk.Core
     public interface IEventManager<T> where T : IEvent
     {
         void SendEvent(T eventToSend, EntityId entityId);
-        List<ComponentEventReceived<T>> GetEventsReceived();
+        ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived();
+        ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived(EntityId entityId);
     }
 
     public interface IUpdateSender<T> where T : ISpatialComponentData
