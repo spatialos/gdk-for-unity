@@ -176,21 +176,21 @@ namespace Improbable.Gdk.Tools
                 var schemaRoot = toolsConfig.SchemaSourceDirs[0];
                 CleanDestination(schemaRoot);
 
-                // Get paths of directly dependant packages.
-                var packages = Common.GetManifestDependencies().GetPackagePaths();
+                var packages = new Dictionary<string, string>();
+                var dependencyQueue = new Queue<string>();
 
-                // Find and include paths of all indirect dependencies.
-                Queue<string> dependencyQueue = new Queue<string>(packages.Values);
+                // Find and include paths of all direct and nested dependencies.
+                dependencyQueue.Enqueue(Common.ManifestPath);
                 while (dependencyQueue.Count > 0)
                 {
-                    var dependencies = Common.GetPackageDependencies(dependencyQueue.Dequeue()).GetPackagePaths();
+                    var dependencies = GetLocalPathsInPackage(Common.ParseDependencies(dependencyQueue.Dequeue()));
 
                     foreach (var dependency in dependencies)
                     {
                         if (!packages.ContainsKey(dependency.Key))
                         {
                             packages.Add(dependency.Key, dependency.Value);
-                            dependencyQueue.Enqueue(dependency.Value);
+                            dependencyQueue.Enqueue($"{dependency.Value}/package.json");
                         }
                     }
                 }
@@ -231,11 +231,11 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static Dictionary<string, string> GetPackagePaths(this Dictionary<string, string> packages)
+        private static Dictionary<string, string> GetLocalPathsInPackage(Dictionary<string, string> packages)
         {
             return packages.Where(kv => kv.Value.StartsWith("file:"))
                 .ToDictionary(kv => kv.Key, RemoveFilePrefix)
-                .ToDictionary(kv => kv.Key, kv => Path.Combine("Packages", kv.Value));
+                .ToDictionary(kv => kv.Key, kv => Path.Combine(Common.PackagesDir, kv.Value));
         }
 
         private static bool SchemaPathExists(KeyValuePair<string, string> arg)

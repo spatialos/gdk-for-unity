@@ -5,7 +5,10 @@
 ### Added
 
 - Added support for the Steam authentication flow.
-- `CopySchema` now scans for nested package dependencies.
+
+### Fixed
+
+- Fixed a bug where nested package dependencies were not captured during Code Generation.
 
 ## `0.1.3` - 2018-11-26
 
